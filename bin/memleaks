@@ -1,0 +1,4 @@
+#!/bin/bash
+VALGRINDOUTFILE="./mem.txt"
+mv $VALGRINDOUTFILE $VALGRINDOUTFILE.old
+valgrind --tool=memcheck --leak-check=full --show-reachable=yes ./StarClone 2>$VALGRINDOUTFILE > $VALGRINDOUTFILE

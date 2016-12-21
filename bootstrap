@@ -1,0 +1,7 @@
+#! /bin/sh
+
+if [ -f Makefile ] ; then
+    make distclean
+fi
+touch ./NEWS ./README ./AUTHORS ./ChangeLog
+autoreconf -fvi

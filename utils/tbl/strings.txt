@@ -1,0 +1,54 @@
+
+Melee
+Free For All
+Use Map Settings
+Local Area Network (UDP)
+Modem
+Direct Connection
+Local Area Network (TCP)
+Requirments: All computers must be connected to the same local area network with TCP/IP compatible network.
+Requirements: Each computer will need a properly configured modem connected to a phone line. Each player needs a different phone number.
+Requirements: The computers must be linked together using a null-modem cable that is connected to serial port on each computer.
+Requirments: All computers must be connected to the same local area network with TCP/IP compatible network.
+Network port already used. Change network port in configuration.
+You can not play any campaign.#This option is disabled.
+Load saved games disabled.#Not programmed.
+Load replays disabled.#Not programmed.
+Delete this replay file?
+Error to delete replay file
+Error to delete character name
+Error!#Can not save the game into %s
+Error!#Can not loading saved game.
+Destroy all enemy builds.
+Cannot join to the game.#Game host not responding.
+Please wait. Checking network games.
+A game by that name already exists!#Please enter a game name to continue.
+Please wait. Sending a joining request.
+Cannot join the game.#Not opened available game slots
+Error! Can't bind any ports for reseiving data
+Error! Could not send any info to host
+Error! Game host has wrong information
+There was an error initializing the network.
+Timeout due respond from a game host.
+The game host has left.
+Could not send any packet#There was an error in the network.
+%s was banned by host game.
+You can not join to the game.#You have been banned!
+You can not join to the game.#ID exist in the game
+Can not loading the map file
+Computer %u
+%s %s not found.#Do you want to download from Internet?
+Error!##wget not found#To download files you need to install wget!
+Error!##Download aborted by user!
+Starting download %s
+Downloading %s#%lld of %lld KB (%d%%)
+Error!##%s not found on ftp##Exit to System
+Timeout due respond from players.
+Not enough opponents in order to start a game.
+Message:
+To All:
+To Allies:
+To %s:
+Starting in: %d %s
+To Play Campaign Created By Blizzard#You need to:##1. Copy install.exe from CD's to bin/#2. Rename those install.exe files#to starinstall.exe and broodinstall.exe
+Corrupted Character data file#Please create another one

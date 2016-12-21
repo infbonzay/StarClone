@@ -1,0 +1,3 @@
+#define GAMEVERSION "0.3.1-183"
+#define GAMECOMPILE "20161213175701"
+#define GAMENAME "StarClone"

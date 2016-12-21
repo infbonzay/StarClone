@@ -1,0 +1,322 @@
+*	bug fixed
+# 	bug partially fixed, remain something and may be a feature.
+?	not fixed
+'space'	reported as bug
+
+
+*01. command go to down, but the place is occuped in time of landing.
+?02. 'useplace' not moved with units
+*03. cancel units in time of construction was not decrease psy
+*04. SCV exit from bunker(dropships) segmentation
+*05. need to make magies in queue
+#06. creep go under terran/protoss builds
+    in starcraft I see creep dont go under every build and zerg too, but the creep under zerg build apear in time of 'done'
+    and under build don't go out if creep colony died.(we may have leave this)
+*07. power of pylons work only for player 0 (if enemy (not player 0 ) pylon's exist in loaded map)
+*08. regenerate shield with upgrades and without them the same time 
+*09. can not cancel if poweroff protoss build (fixed)
+*10. need to change arbiter cloak radius
+*11. if hydralisk morth and cancel , we cannot see defence & atack parameters
+*12. after object leave the stasis he continue that he doing before
+*13. repair moved object error
+*14. change creep sprite decorations
+*15. add many creep sprite decorations from tileset\\*\\*.grp
+*16. remove bugs in starmap.cpp about walktile
+*17. geyser with many smokes
+*18. place more then one assi/refin/extr on gayser
+*19. used psi before mineral & gas cost
+*20. exist only one type of psi for player played for 2 or 3 races
+*21. bug in decostruct units in build psi not decr
+*22. unburrow with out dust
+*23. bug in pss sound 
+*24. medic heal enemy
+*25. irradiate mage completed(include irradiate units in transport and bunker)
+#26. nuclear mage is buggy (done), but don't see the laser (done), nuclear dust not appear(need to find needed .grp file)
+*27. sound bug (detached we hear power off sound on any unit click)
+*28. cloak don't decrease the mana
+*29. addon show's before build, so we have a bug we dont's see addon's connected tube. 
+*30. recall died objects
+*31. scan region no work
+*32. we hear clock/declock unit sound on not opened map
+*33. scan move somewere?(now scan have lifetime limit)
+*34. now, the fog is done. URAAAAAAAAAAA
+*35. unload templar have backeffects in loaded place
+*36. can cancel archon cancel
+*37. archon apear in 2 second after suicide templars
+*38. print some errors in cancel turret,cannon etc..,need to change mage properties(remove hotkey from text and add to other variable)
+*39. after die object open map (if died object remain garbage)
+*40. object in transport revel map in place were he seat in transport
+*41. sound cloak under arbiter is everytime?(cloak every tick?)
+*42. fog creep , is done!!!(remove bugs)
+*43. fog objects (minerals,gas,builds)
+*44. 2 psionik do twice damage :(, doe only one psionic do damage
+*45. garbage of died unit see on halffog map
+*46. zerg spore colony without detector :(
+*47. fog assimilator,refinery,extractor
+*48. bug we can select/see geyser after place ass/ref/extr
+*49. put builds in fog place(corrected)
+*50. sound of placed build is current playerrace, need to be race of unit
+*51. unit leave ass/ref/extr have incorrect position
+*52. unit exit from destroyed ass/ref/extr with GPF(General Protection Fault Application) (cannon decrease resource from NULL object)
+*53. yamato don't folow unit(battlecruiser not rotate after unit)
+*54. if buncker destroyed -by nuke, unit also destroyed :(
+?55. ungry sound on changed unit remain
+?56. moveobj() can scv,probe,drone construct every build and zerg,protoss,terran
+*57. mind control dont decrease shield
+*58. mind control transport not increase/decrease psi
+*59. mind control don't control child units(interceptors,etc)
+*60. warp dark archon and psi?
+*61. scroll water on map (on desert ok,but on others map have a bugs, may be different scrolling palette on diferent map?)
+?62. need to change minimap color of the every tile32 or tile8
+*63. tank seage/normal need some wait
+*64. removed.psi limits at start for every race :(
+*65. underfog smoke for geyser/ass/ref/extractor
+*66. no race at modify pci at larva die
+*67. put back the many types(4) in vision.cpp
+*69. after die egg remain something and disolve
+*70. added.if unit move he open map again
+*71. doodads done for all tileset's(need to check on many maps)
+*72. tank/seagemode under arbiter have wrong texture
+*73. scv/drone/scv return resource to enemy base, if select at target
+*74. stars for spaceplatform tileset completed
+*75. remove bug if minerals in stack > 1500
+*76. move mouse on minimap only if press on minimap
+*77. remove bugs in load_terrain_tiles (remove static creep tiles number,add places where builds can place and creep can grow)
+*78. change creep growing(by spirale around build)
+*79. need changing creep functionality grow,dissapear,etc.
+*80. morfing archon do not have correct life/shield
+*81. irradiate dont damage around :(
+*82. remove bug in putfntsymbol, now all SC fonts draw correctly
+?83. if mouse on gameplace the cps decrease very much
+*84. on border we see fog
+*85. faults then carrier die's and battery charge him??????
+*86. psionic storm do once damage per tick
+*87. portraits changes error
+*88. hallucination do damage
+*89. carriing minerals place error
+*90. damage from probe is not from probe
+*91. bad sound from unpowered protoss build
+*92. error rotation turret after atack(rocket at low orbit)
+*93. repair after destroy build (repair remnants)
+*94. criters under control of player3 and don't move from self
+*95. upgrade messages under portrait
+*96. after disapear unit(go to fog,cloak,...) we see they portrait.
+*97. flingy,backeff,... need to remove after close map (after load new card this flingy apear)
+?98. visibility cloak do not remove atack from any unit
+?99. atacking teleportation unit make flingy goes around
+*100. lurker atack twice on drone hatchery (on big unit) & at maximum range bug with spines
+*101. on first appear map - the getmapinfo is not activate
+*102. prionic don't do damage (conflict with lurker spines)
+*103. psionic storm see at fog.
+*104. every player have own fog/opened map and old see it builds/creep etc.
+*105. yamato dont kill hallucination
+*106. dark swarm open map
+*107. plague take life very fast
+*108. flingy (ex.mutalisk atack can see at closed map)
+*109. yamato dont do damage
+*110. splash dont do damage under swarm
+*111. irradite can not apply under swarm
+*112. scourge atack , can not see dieing sprites
+*113. seage atack do damage to underground(under swarm)????
+*114. after set share with other player and unset we continue to see those enemy builds(but not scroll sprites) (units remain unsee it)
+	    (need to clear old vision table if total close/unseen map)
+*115. all minerals,supply,...  parameters need to shift left
+*116. dark swarm placed wrong(effect of darkswarm) more at right
+*117. see in minimap enemy assimilator,refinery,extractor
+*118. under geyser we see red cursor not yellow
+*120. unpowered terran addons is not yellow
+*121. died build garbage error 
+*122. under partial opened map (option in video menu) we dont see minerals and gas and neutral builds
+*123. acidspores bug
+*124. decrement minerals at screen rapidly if repair to 0 minerals
+*125. some bugs with enginering bay landing (something wrong with dust)
+*126. neutral units can speak to you (need to leave for criters)
+*127. burrowed mine not have hole and have infinite move sound
+*128. drone atack (with poison and claw and taking minerals not correct)
+*129. CTRL+select not work
+*130. zergling sound atack founded in ultralisk wav's
+*131. scan region not reveal map
+*132. devourer spore not appear on friendly unit
+*133. remain under atack after lift off and land on
+*134. zergling atack speed not increased
+*135. addons dont have maximum life at construct (may be only in speed construction cheats)
+*136. select not refinery but geyser with sound
+*137. caanot select ghost after launching nuclear
+*138. unit under disruption now can't atack
+*139. selected died larvae
+*140. error creep at initial with one hatchery
+*141. doodads unit in installation tileset is not complete.
+*142. hear sound of previous select if select no objects
+*143. bug in load save game menu
+*144. add preview map in selection map menu
+*145. damage to constructing unit does not kill they, if health is to be to die
+*146. after repstart game we have wrong text colors everywere
+*147. flingy die sound(power of sound) is not the same as create flingy sound(power of sound)
+*148. select units infos is not correct (may be and transport info)
+*149. collect from gas is fast
+*150. update minimap units very slow
+*151. in udp,ums 2 players+2 objserv, change to player 6 produce GPF (the fog array for player 6 is not alloced(object with playernr==11 (neutralobj)))
+	(add code in key.cpp to prevent to see from player that not exist)
+*152. opening map at different location (player not see this location) we do not see the creep (but only builds)
+*153. trigger remove unit
+*155. defeat or victory and mouse on karta 
+*156. if mind controlled unit double unit so controlled
+*157. infested cc bug do unit
+*158. nydus enter & exit(created by map) have option to make exit
+*159. zerg brood 30 min mission fault die stasis,gpf,etc (unit->parentof[X] can be NULL),stasis give 1% life and not burn so can't die, script do not go further
+*160. computer players unit do not open map for him
+*161. esli umiraet nositeli, oject padaet (esli on ne mojet sushestvovati bez nositelia on umiraet(minerals,gas),mojet sushestvovati - crysalis,etc.. )
+*161. prison/cell is a protoss unit,but burn at red life 
+*162. zerg5 trigger condition 7,17 done
+*163. terrancampaigns & zergcampaigns & protoss campaigns
+*164. scourge atack die and ot die :(
+*165. on protoss1 can not see upgrade level at forge if max level is 1
+*166. (removeunit) die/marktoremove from trigger provoke bad sound or not at all,no visions on allied(check at xzerg 30 min mission)
+*167. a.creating archons | dark archons. b.if one of the templar is die in process of meld archons
+*168. consume not showed
+?169. mpqlib is not reentrant :( (may have corrupt reading???) need lockaudio to perform reading from mpq, because audio callback
+	use mpqread too.
+ 170. fadeout music the close
+*171. do not play if musicvolume = 0 	
+*172. units in transport moving with transport
+*173. victory/defeat menu delay more seconds (>2)
+ 174. do not change portraits if transmission is active
+*175. drone atack enemy and after that atack own build(not move)
+*176. probe with minerals not atack enemy build
+*177. can not see minarals carryed by enemy drons
+*178. open map from atacket unit
+ 180. goliath launch rockets & fire from autocannons
+*181. sarah atack and cloak (result bad moving)
+*182. zealot atack but drgoon go way long time ago
+*183. tank seage error atacking 
+*184. after die atacked unit, atacker blocked.
+*185. bug range firebat bunker atacking dragoon and cc and builds
+*186. marine frombunker atack 
+*187. marine atack range and dragoon atackrange
+*188. use max repeat in upgrades to show upgrade level 1 or not show
+*189. mission terran 5  creating 2 scv and 1 marine is hallusinated and in air
+*190. mines need to burrow/unburrow on atacking
+*191. need to forgot atack unit if lost see !!!!! tank continue atack if not see enemy but in range
+*192. neutral units cannot automatic atack 
+*193. L R - change to from alldattbl 
+*194 after message of win/defeat appeat need to change mouse to normal cursor
+?195 minimap shows the hided traps & maprevealunit,scannersweep, disruption & darkswarm (ONLY TRAPS REMAIN)
+*196 fireing trap and hide is bad
+*197 marine continue fire intrap after hide trap
+*198 sweep scan need to show 8 times around
+*199 the atacker loose destobj and do not atack other
+*200 if seage tank do damage to unit and unit come close the tank continue fire to that unit
+ 201 mind controlled hatchery produce more then 3 larvae and larva have colour of player not of hatchery(larva loose parent bug)
+*202 lurker backatack error
+*203 mines need to ignore buildings
+*204 lurker not do damage at very near unit
+*205 startlocations,whitefog check
+*206 carryobj do not change the playernr
+*207 check for new movelocation at mission terr01 & xzerg02
+*208 unknplnt change pylonloc from player 4 to player 3
+*209 do search atack first for atacking units
+ 210 replay atack if somebody hit's (if nobody atack me)
+*213. pickup unit if is near the scv,drone,probe need to atach to them
+*214. zerg9 protoss cannon atack protoss build?!!!
+*215. trigger do cloak unit but it is not researched
+*216. at xterran8 turret go up & go down after marine aproach to first computer
+*217 bug visio at xprot3 
+*218  sunken bug atack
+*219 sunken one position atack (have 3 positions in grp - this not typical pictures inside grp file)
+ 220 if obj is destroy, the array of objects is changes but unitopenmap not - so last unit(s) not reveal they seable area on map
+ 221 in transmission need to change sound volume to half
+*222 medic atack mode change to heal mode
+*223 decloaked if decrease cloaking not then 0(fully decloak)
+*224 bug in xzerg2 tank receive rrecursive patrol action from triggers
+*225 move many units to they selected center.
+*226 then select many objects (hero must respond sound, after the higher level unit)
+ 227 xzerg2 tank unsiege and addnextmodemove is full, drop ship to take scv is atacking by my units
+ 228 xterran7 icon talking duran & stukov GFP at showportrait (change to something else)
+*229 initial position of units in bunker the go in
+
+
+*1. at 2 second draw creep, we have hallucinated creep.
+*2. creep go out under fog.
+*3. patrol flingy units
+*4. decr hatchery resource not correct
+*5. decr psi limit after hatchery die
+*6. die sprite with move
+*7. if cloaked units, they can do up/down and 'dance' than idle
+*8. defencive matrix overlay back is on ground not on unit
+*9. can apply many defensivematrict images
+*10. landing - addon not attach     
+*11. resource chunk not move with worker correctly
+*12. destroy mineral field in time worker go where to harvest
+*13. incorrct place from drone zerg extractor  
+*14. in time of place ass/ref/extr we see green(can place) on every geyser (and occupied with ass/extr/ref too)
+*15. ass/ref/ext initial gas is 4000 not 5000?
+*16. after mage done, unit continue follow target (only medic remain)
+*17 restoration is not good
+*18 hallucinated use food
+*19 nuke dont use food if created from triggers
+*20.units shadow not same xpos than move to bunker
+*21 stasis on builds
+*22 optic flare cant cast
+*23 bunker dies, and play unload from bunker sounds
+*24 irradiate and plague not have damage yet
+*25 darkswarm & disruption field not cover units yet
+ 26 consume on non zerg units
+*27 fire not move with builds
+*28 convert to infested cc not show compelete infest build
+*29 archon icon is active then 1 templar selected
+*30 recall out of border map
+*31 clocked nuke after launch if arbiter nearly
+*32 cancel morthing archons
+*33 zerg build after construct not have maximum life
+*34 pylon area over pylon
+*35 mine burrowed drawed as not burrowed
+*36 iradiates over burrowed units
+*37 tank seage under arbiter decloak them
+*38 consumehero 
+*39 probe 9 icon error & infsarah 5 icon error
+*40 morph to lurker if hydralist underground 
+*41 lockdown in this time obj die
+ 42 battle cruiser need to disrupt casting if do moveobj
+*43 atack error on enemy beacon, not move closely to own beacon 
+*44 create larva at not ready hatchery
+*45 death in bunker from irradiate
+*46 after cancel train unit gas not give back
+*47 battle cruiser glow in casting time
+*48 battery glow not show then constructed
+*49 yamatogun sprite error
+*50 unload all from transport
+*51 unload one from transport
+*52 construct addon in other place 
+*53 bug then die nucklear silo with nuke (decrease nuke supply twicely)
+*54 yamatoo no damage
+ 55 goliath turret move than move to destobj
+*56 created psionic out of vision?
+*57 locked down at exploded unit
+*58 zergling move to destobj rotation to 0,0
+*59 hero zeratul darktemplar not do damage 
+*60 casting spell have errors (templar)
+*61 dtemplar do not die fro dtempalr damage
+*62 cannon appear flingy is not correct
+*63 check creation of battlecruiser weapon flingy distance from front
+*64 missile turret not continue atacking
+*65 cannon continue fire then poweroff
+*66 medic not rotation then heal nearest unit
+*67 medic continue heal then healing unit is dead
+*68 continue recharge shield on small & medium units
+*69 teleport forge and cybecnetic core not correct
+*70 battery recharge builds
+*71 wait to long if zealot need to atack,object is near and need to rotation to atack
+ 71 atack to ground not continue move after atack somebody
+ 72 after atack do stop
+ 73 stimpack both for marine and firebat not showed
+*74 turret under fog bad show only rotation part
+*75 jim raynor vulture do not atack enemy turret at Tmap5
+*76 firebat from bunker move to atack other unit (and remain undetectable)
+*77 fire need to add +2 to elevation
+*78 max saves images under fog is +1 (now is 6) 
+*79 under fog images accumulates not correct  > 6
+*80 enemy cloak then not researched at Tmap5
+ 81 mine unburrow but didnot follow the target
+*82 changing life with triggers,do not show fire/blood sprites
+ 
+ 

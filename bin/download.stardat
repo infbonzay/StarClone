@@ -1,0 +1,20 @@
+#!/bin/bash
+
+if [ -z "$1" ] ; then
+    exit
+fi
+FILEIN="ftp://213.226.252.231/03 Instal/01 hry/Starcraft 1.16.1.1/StarDat.mpq"
+MPQFILEOUT="StarDat.mpq"
+FILEOUT="mpq1.info"
+
+size=`wget --tries 2 --timeout 5 --spider "$FILEIN" 2>&1 | grep "SIZE" | gawk ' { print $5 }'` 
+if [ "x$size" == "x" ] ; then
+    size="0"
+fi
+if [ $size -gt 0 ] ; then
+    wget  --tries 2 --timeout 5 -c "$FILEIN" -O $MPQFILEOUT 2>/dev/null > /dev/null &
+    id=$!
+    echo "$size $id" > $FILEOUT
+else
+    echo "0 0" > $FILEOUT
+fi
