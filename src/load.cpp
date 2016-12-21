@@ -1150,7 +1150,7 @@ int loadbeforestarmap(int race)
 	images_tbl=alldattbl.images_dat->images_tbl[images_id];
 	GetLoadedImage(images_tbl,(void **)&grpmingas[i]);
     }
-    LoadOverlaysGRP();
+//    LoadOverlaysGRP();
     int err=readmageproperties();
     if (err<0)
     {
@@ -1191,7 +1191,7 @@ void unloadafterstarmap(void)
     DialogBin_FreeItemCoords(statbtnmenu);
     DialogBin_FreeItemCoords(f10menu);
     DialogBin_FreeItemCoords(minimapmenu);
-    UnloadAllOverlaysGRP();
+//    UnloadAllOverlaysGRP();
     unloadcircles();
     unloadtexturegrp();
     Unload_SC_Images_List();

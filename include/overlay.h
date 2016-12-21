@@ -38,16 +38,8 @@
 
 //=====================================================
 void Images_FUNC(OVERLAY_IMG *img,int func,int remap,char *grptable,char *grpmethod);
-void UnloadAllOverlaysGRP(void);
-void LoadOverlaysGRP(void);
-void FillUnitOverlays(struct OBJstruct *b,int SC_Unit);
 int  DamageFactor(int number,int maxnumber);
-void ShowShieldOverlay(struct OBJ *a,struct LOFILE *lo,int directiondamage);
-void ShowRechargeShield(struct OBJ *a);
-void SetBunkerShowFire(struct OBJ *marine,struct OBJ *a);
-
 int  GetCorrosiveAcidValue(struct OBJ *a);
-void ShowCorrosiveAcid(struct OBJ *a,struct OBJstruct *b);
 //=====================================================
 
 #endif
