@@ -2,8 +2,8 @@
 *
 # Except this file
 !.gitignore
-!Makefile
-!Makefile.in
-!config.log
-!config.status
-!configure
+Makefile
+Makefile.in
+config.log
+config.status
+configure
