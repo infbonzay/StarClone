@@ -14,7 +14,7 @@ long long usec;
 
 #define MAXCYCLES	1
 #define MAXELEMS	500
-#define PRINTF
+//#define PRINTF
 int main(void)
 {
     int i,j;
@@ -59,10 +59,11 @@ int main(void)
 	    #ifdef PRINTF
 		printf("%u=%u\n",i,(int)elem);
 	    #endif
-	    a.DelList(i);
+//	    a.DelList(i);
 	}
     }
     gettimeofday(&tm,NULL);
+    a.FlushList();
     printf("parsing all elements with GetNextListElem microseconds=%llu\n",tm.tv_sec*1000000+tm.tv_usec-usec);
 }
 
