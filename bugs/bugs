@@ -319,4 +319,8 @@
  81 mine unburrow but didnot follow the target
 *82 changing life with triggers,do not show fire/blood sprites
 *83 armed nuclear silo is not active on ghost, but we have nuclean in silo active
+ 84 birth devourer delayed
+ 85 scourge do not atack
+ 86 devourer do not have correct atack
+ 87 save to filename do not appear
  
