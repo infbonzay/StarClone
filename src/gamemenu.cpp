@@ -169,7 +169,7 @@ void listfiles(char *fromdir,mylist *flist,char *mask,char *rootdir,char *remove
     char templistname[512];
     char tempdir[1024];
     DIR *dir;
-    char *pos;
+    char *pos,*pointposition;
     struct dirent *ent;
     getcwd(tempdir,sizeof(tempdir)-1);
     if (!strcmp(tempdir,rootdir))
@@ -207,7 +207,9 @@ void listfiles(char *fromdir,mylist *flist,char *mask,char *rootdir,char *remove
 			else
 			{
 //			    if (strstr(ent->d_name,mask))
-			    if (!strncasecmp(ent->d_name+strlen(ent->d_name)-strlen(mask)-1,mask,strlen(mask)))
+			    pointposition = strrchr(ent->d_name,'.');
+			    if (pointposition && !strncasecmp(pointposition,mask,strlen(mask)))
+//			    if (!strncasecmp(ent->d_name+strlen(ent->d_name)-strlen(mask)-1,mask,strlen(mask)))
 			    {
 				nroffiles++;
 			        needaddtolist=1;
@@ -5629,7 +5631,7 @@ int savegame_ondeleteaction(MENUSTR *allmenus,int menuitem)
     switch(menuitem)
     {
 	case 0://confirm delete
-	    unlink(fileforsaveload);
+	    unlink(fileforsaveload);//???? if error delete savegame
 	    break;
 	default:
 	    break;//cancel delete
@@ -5692,7 +5694,8 @@ int savegame(MENUDRAW *menudraw,MENUPARAMS *menuparams)
 		    strcpy(fileforsaveload,SAVEPATH);
 		    strcat(fileforsaveload,(char *)menudraw->menutodraw->menu[4].item.listbox->flist->GetElemNr(elemnr));
 		    strcat(fileforsaveload,".sav");
-		    MENUPARAMS *mp=new MENUPARAMS(&savegame_ondeleteaction,NETWSTR(NETWORK_TBL_DELSAVE));
+		    sprintf(SAVELOADFILENAME,NETWSTR(NETWORK_TBL_DELSAVE),fileforsaveload);
+		    MENUPARAMS *mp=new MENUPARAMS(&savegame_ondeleteaction,SAVELOADFILENAME);
 		    showedmenu.prepareforshowmenu(&xputokcancelmenu,mp);
 		    return(0);
 		}
@@ -5734,7 +5737,9 @@ void savegametofile_err2(void)
 {
     MENUPARAMS *mp;
     menustatus=MAINMENUSTATUS_SAVEGAMEFAILED;
-    mp=new MENUPARAMS(&savegametofile_err1,NETWSTR(NETWORK_TBL_ERRSAVE));
+    sprintf(SAVELOADFILENAME,NETWSTR(NETWORK_TBL_ERRSAVE),fileforsaveload);
+    mp=new MENUPARAMS(&savegametofile_err1,SAVELOADFILENAME);
+//    mp=new MENUPARAMS(&savegametofile_err1,NETWSTR(NETWORK_TBL_ERRSAVE));
     showedmenu.prepareforshowmenu(&xputokmenu,mp);
 }
 //==========================================
@@ -5760,7 +5765,10 @@ int savegametofile(void)
     {
 	fclose(f);
 	menustatus=MAINMENUSTATUS_SAVEGAMEFAILED;
-	mp=new MENUPARAMS(&savegametofile_replace,NETWSTR(NETWORK_TBL_REPLACESAVE));
+	sprintf(SAVELOADFILENAME,NETWSTR(NETWORK_TBL_REPLACESAVE),fileforsaveload);
+	mp=new MENUPARAMS(&savegametofile_replace,SAVELOADFILENAME);
+	
+//	mp=new MENUPARAMS(&savegametofile_replace,NETWSTR(NETWORK_TBL_REPLACESAVE));
 	showedmenu.prepareforshowmenu(&xputokcancelmenu,mp);
 	return(0);
     }

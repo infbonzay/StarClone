@@ -322,5 +322,7 @@
  84 birth devourer delayed
  85 scourge do not atack
  86 devourer do not have correct atack
- 87 save to filename do not appear
+*87 save to filename do not appear
+*88 save/load dialog 'save to %s?"
+ 
  
