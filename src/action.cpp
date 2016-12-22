@@ -367,7 +367,7 @@ int FindSC_UnitType(OBJ *a2,int player,int SC_Unit,int SC_AddonUnit)
 	{
 	    if (a->SC_Unit==SC_Unit)
 	    {
-		if (!IsOBJUnderConstruct(a))
+		if (IsReadyOBJ(a))
 		{
 		    if (SC_AddonUnit==SC_NOUNITNR)
 		    {
@@ -375,8 +375,7 @@ int FindSC_UnitType(OBJ *a2,int player,int SC_Unit,int SC_AddonUnit)
 		    }
 		    else
 		    {
-	    	        if (a->addonobj&&a->addonobj->SC_Unit==SC_AddonUnit&&
-			    !IsOBJUnderConstruct(a->addonobj))
+	    	        if (a->addonobj && a->addonobj->SC_Unit==SC_AddonUnit && IsReadyOBJ(a->addonobj))
 			    return(1);
 		    }
 		}

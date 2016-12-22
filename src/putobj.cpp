@@ -272,6 +272,7 @@ OBJ *CreateUnitInUnit(struct OBJ *a,int obj_id,int playsound,int first_xpos,int 
 	if (obj_id==SC_NUKEOBJ)
 	{
 	    PLAYER[a->playernr].nukes++;
+	    temp->prop |= VARREADY;
 	    if (playsound)
 		playinfoadvisorsound(a->playernr,TERRANRACE,ADVNUCLREADY,PLAYADVISOR_TEXTANDSOUND);
 	}
