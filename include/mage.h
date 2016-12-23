@@ -18,7 +18,6 @@
 void mageeffect(int typemage,struct OBJ *a,struct OBJ *whoobjputmage);
 void restoreatribute(struct OBJ *a);
 void magemakeatribute(struct MAGEARRAY *b);
-void CorrosiveAcidSplash(OBJ *atacker,int xshot,int yshot,int splashsize,int incrvalue);
 void ApplyCastedMage(OBJ *a,OBJ *destobj,int typemage);
 int  accessatronunit(struct OBJ *myobj,struct OBJ *destobj,unsigned char weapon_id);
 int  accesstomage(struct OBJ *a,struct OBJ *destobj,int mode);

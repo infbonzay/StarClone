@@ -206,6 +206,7 @@ void CreatePylonSelectArea(void);
 void RemovePylonSelectArea(void);
 void AddImagesForAtribute(OBJ *a,int atributenr,short image_id,int independentofmain);
 void DelImagesForAtribute(OBJ *a,int atributenr);
+void InitSporeImage(OBJ *a,int acidvalue);
 void ChangeSporeImage(OBJ *a,int prevspores,int nextspores);
 void ChangeMineralSprite(OBJ *a);
 void SaveOBJImagesToFogTable(OBJ *a);

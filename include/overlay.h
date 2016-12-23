@@ -32,10 +32,11 @@
 #define DRAWFUNC_WARP2		17
 
 //=====================================================
-#define CORROSIVEACIDMAXSPORES	9
-#define CORROSIVEACIDDIVFACTOR	(10<<8)
-#define CORROSIVEACIDMAXATRVAL	(CORROSIVEACIDMAXSPORES*CORROSIVEACIDDIVFACTOR-1)
-
+#define CORROSIVEACIDMAXSPORES		9
+#define CORROSIVEACIDDIVFACTOR		(10<<8)
+#define CORROSIVEACIDMAXATRVAL		(CORROSIVEACIDMAXSPORES*CORROSIVEACIDDIVFACTOR-1)
+#define CORROSIVEACIDSPLASHRADIUS	(48<<8)
+#define CORROSIVEACIDINCREMENTTICKS	(5<<8)
 //=====================================================
 void Images_FUNC(OVERLAY_IMG *img,int func,int remap,char *grptable,char *grpmethod);
 int  DamageFactor(int number,int maxnumber);

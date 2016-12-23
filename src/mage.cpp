@@ -270,6 +270,7 @@ void DecrementOBJAtr(struct OBJ *a)
 				break;
 			    case ATRCORROSIVEACID:
             			SetMageAtr(&a->atrobj,i,0);
+				DelImagesForAtribute(a,ATRCORROSIVEACID);
 				break;
 			    case ATRSTASIS:
             			SetMageAtr(&a->atrobj,i,0);
@@ -500,40 +501,6 @@ int ifcanworkatr_onme(OBJ *a,OBJstruct *b,int atr,int typemage)
     return(1);
 }
 //==============================================
-void CorrosiveAcidSplash(OBJ *atacker,int xshot,int yshot,int splashsize,int incrvalue)
-{
-    int i;
-    int corrvalue,prevsporecnt;
-    OBJ *a;
-    for (i=0;i<MaxObjects;i++)
-    {
-	a=objects[i];
-	if (IsOnSkyOBJ(a)&&!IsInvincibleOBJ(a))
-	{
-	    if (a->playernr!=atacker->playernr||atacker==a)
-	    {
-		if (GetMageAtr(&a->atrobj,ATRSTASIS)==0)
-		{
-		    if (GetMageAtr(&a->atrobj,ATRHALLUCINATION)!=0)
-		    {
-			dieobj(a);
-	    	    }
-	    	    else
-	    		if (hypot(xshot-GetOBJx(a),yshot-GetOBJy(a))<=splashsize)
-			{
-			    prevsporecnt = GetCorrosiveAcidValue(a);
-			    corrvalue = GetMageAtr(&a->atrobj,ATRCORROSIVEACID)+incrvalue;
-			    if (corrvalue>CORROSIVEACIDMAXATRVAL)
-		    		corrvalue = CORROSIVEACIDMAXATRVAL;
-			    SetMageAtr(&a->atrobj,ATRCORROSIVEACID,corrvalue);
-			    ChangeSporeImage(a,prevsporecnt,GetCorrosiveAcidValue(a));
-			}
-		}
-	    }
-	}
-    }//for
-}
-//=======================================
 void CastSpell(OBJ *casterobj)
 {
     int needmana,finalx,finaly;

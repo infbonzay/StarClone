@@ -1183,6 +1183,15 @@ void DelImagesForAtribute(OBJ *a,int atributenr)
 }
 //========================================
 short IMAGEID_ATRCORROSIVEACID[3]={IMAGEID_ACIDSPORES1,IMAGEID_ACIDSPOREM1,IMAGEID_ACIDSPOREL1};
+//========================================
+void InitSporeImage(OBJ *a,int acidvalue)
+{
+    int deltaimg;
+    unsigned short image_id;
+    image_id = IMAGEID_ATRCORROSIVEACID[GetUnitOverlaySize(a->SC_Unit)];
+    AddImagesForAtribute(a,ATRCORROSIVEACID,image_id,IMAGEOVERLAY_DEPENDONMAINIMG);
+}
+//========================================
 void ChangeSporeImage(OBJ *a,int prevspores,int nextspores)
 {
     MAIN_IMG *img;

@@ -401,7 +401,7 @@ void WeaponDoDamage(OBJ *atacker,OBJ *destobj,int x256,int y256,unsigned char SC
 {
     MAIN_IMG *newimg;
     OBJ *a;
-    int mindist[3],i,realdamage,damage,distance256;
+    int mindist[3],i,realdamage,damage,distance256,prevsporecnt,corrvalue;
     switch(alldattbl.weapons_dat->WeaponEffect[weapon_id])
     {
 	case WEFFECT_NONE:
@@ -801,6 +801,40 @@ void WeaponDoDamage(OBJ *atacker,OBJ *destobj,int x256,int y256,unsigned char SC
 		}
 	    }
 	    break;
+	case WEFFECT_CORROSIVEACID:
+	    realdamage = GetWeaponDamage(SC_Unit,playernr,weapon_id) << 8;
+	    realdamage = realdamage * BounceDamage[targetnr] / 256;
+	    LowLevelDamage( atacker,destobj,loadobj(destobj->SC_Unit),weapon_id,
+			    alldattbl.weapons_dat->WeaponType[weapon_id],
+			    realdamage,0,0);
+	    for (i=0;i<MaxObjects;i++)
+	    {
+		a=objects[i];
+		if (IsOnSkyOBJ(a) && (player_aliance(playernr,a->playernr) == ENEMYOBJ )) //&& IsActiveUnit(a) && || a == destobj))
+    		if (WeaponCanApplyOnUnit(a,playernr,weapon_id))
+		{
+		    if (GetMageAtr(&a->atrobj,ATRHALLUCINATION)!=0)
+		    {
+			dieobj(a);
+			continue;
+		    }
+		    if ( GetDistanceTo256(a,x256,y256) <= CORROSIVEACIDSPLASHRADIUS )
+		    {
+			prevsporecnt = GetCorrosiveAcidValue(a);
+			corrvalue = GetMageAtr(&a->atrobj,ATRCORROSIVEACID) + CORROSIVEACIDINCREMENTTICKS;
+			if (a == destobj)
+			    corrvalue += CORROSIVEACIDINCREMENTTICKS;
+			if (corrvalue>CORROSIVEACIDMAXATRVAL)
+		    	    corrvalue = CORROSIVEACIDMAXATRVAL;
+			SetMageAtr(&a->atrobj,ATRCORROSIVEACID,corrvalue);
+			if (!prevsporecnt)
+			    InitSporeImage(a,corrvalue);
+			else
+			    ChangeSporeImage(a,prevsporecnt,GetCorrosiveAcidValue(a));
+		    }
+		}
+	    }
+	    break;
 	default:
 	    DEBUGMESSCR("damage not developed\n");
 	    break;
@@ -853,6 +887,7 @@ int GetDeltaWeaponElevationLevel(unsigned char weapon_id)
 	case WEFFECT_NORMALHIT:
 	case WEFFECT_SPLASHENEMY:
 	case WEFFECT_SPLASHENEMYAIR:
+	case WEFFECT_CORROSIVEACID:
 	    return(+1);
 	case WEFFECT_BROODLINGS:
 	case WEFFECT_ENSNARE:
