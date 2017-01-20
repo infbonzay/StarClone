@@ -306,7 +306,7 @@ void Remove_Briefing(mapinfo *info)
     {
 	Brief_ShowPortrait(i,PORTRAIT_NONE);
 	if (brief_slots[i].portraits)
-	    FreeSMKInfo(brief_slots[slotnr].portraits);
+	    FreeSMKInfo(brief_slots[i].portraits);
 //	    wfree(brief_slots[i].portraits);
     }
     memset(brief_slots,0,sizeof(brief_slots));
