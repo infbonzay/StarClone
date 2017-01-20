@@ -209,7 +209,8 @@ int BAction_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int actiononplayers,int con
 		    brief_slots[slotnr].unitid=temptrg->action[i].unitorrestype;
 		    if (brief_slots[slotnr].portraits)
 		    {
-			wfree(brief_slots[slotnr].portraits);
+//			wfree(brief_slots[slotnr].portraits);
+			FreeSMKInfo(brief_slots[slotnr].portraits);
 		    }
 		    brief_slots[slotnr].portraits=FillSMKInfo(brief_slots[slotnr].unitid);
 		    brief_slots[slotnr].command = PORTRAIT_APPEAR;
@@ -305,7 +306,8 @@ void Remove_Briefing(mapinfo *info)
     {
 	Brief_ShowPortrait(i,PORTRAIT_NONE);
 	if (brief_slots[i].portraits)
-	    wfree(brief_slots[i].portraits);
+	    FreeSMKInfo(brief_slots[slotnr].portraits);
+//	    wfree(brief_slots[i].portraits);
     }
     memset(brief_slots,0,sizeof(brief_slots));
     if (brief_counter)

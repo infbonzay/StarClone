@@ -59,8 +59,6 @@ void PrepareForDeallocOBJstruct(mylist *pointerlist,OBJstruct *obj)
     int i,j;
     if (obj->portraits)
         pointerlist->AddUniqueElem(obj->portraits);
-//    if (obj->rocketinfo)
-//        pointerlist->AddUniqueElem(obj->rocketinfo);
 }
 //==========================================
 void freeOBJstructs(int withupgradeandtechrace)

@@ -1307,6 +1307,11 @@ return(totalmage);
 char typeofsmk1[MAXFIDSMKFILE]={SMKNORMAL,SMKNORMAL2,SMKNORMAL2,SMKNORMAL2};
 char typeofsmk2[MAXTLKSMKFILE]={SMKTALK,SMKTALK,SMKTALK};
 //=====================================================
+void FreeSMKInfo(SMKPORTRAITS *smkinfo)
+{
+    wfree(smkinfo);
+}
+//=====================================================
 SMKPORTRAITS *FillSMKInfo(int SC_Unit)
 {
     SMKPORTRAITS *portraits=NULL;
