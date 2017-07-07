@@ -4735,7 +4735,7 @@ void AdditionalUnitsProceed(void)
 //=================================
 void AllFlingyControlOBJMoving(void)
 {
-    int i,rot,deltax,deltay,deltaz,widthsumm;
+    int i,rot,deltax,deltay,deltaz,widthsumm,curspeed;
     signed char incfactor;
     unsigned char flingy_id,side1,side2;
     MAIN_IMG *img;
@@ -4820,7 +4820,9 @@ void AllFlingyControlOBJMoving(void)
 			continue;
 		}
 	    }
+	    curspeed = GetSpeed(a,a->currentspeed);
 	    PathFinding_MovePortionType2(a,img,flingy_id,GetSpeed(a,a->currentspeed));
+	    printf("speed=%d ensnaired=%d\n",a->currentspeed,curspeed);
 	}
     }
 }

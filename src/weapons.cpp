@@ -767,6 +767,8 @@ void WeaponDoDamage(OBJ *atacker,OBJ *destobj,int x256,int y256,unsigned char SC
 	    break;
 	case WEFFECT_SPLASHENEMY:
 	case WEFFECT_SPLASHENEMYAIR:
+	    if (atacker && IsHallucination(atacker))
+		break;
 	    mindist[0] = alldattbl.weapons_dat->InnerSplash[weapon_id] * 256;
 	    mindist[1] = alldattbl.weapons_dat->MediumSplash[weapon_id] * 256;
 	    mindist[2] = alldattbl.weapons_dat->OuterSplash[weapon_id] * 256;
@@ -802,6 +804,8 @@ void WeaponDoDamage(OBJ *atacker,OBJ *destobj,int x256,int y256,unsigned char SC
 	    }
 	    break;
 	case WEFFECT_CORROSIVEACID:
+	    if (atacker && IsHallucination(atacker))
+		break;
 	    realdamage = GetWeaponDamage(SC_Unit,playernr,weapon_id) << 8;
 	    realdamage = realdamage * BounceDamage[targetnr] / 256;
 	    LowLevelDamage( atacker,destobj,loadobj(destobj->SC_Unit),weapon_id,
