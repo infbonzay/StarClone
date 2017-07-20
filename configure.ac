@@ -32,6 +32,11 @@ AC_HEADER_STDC
     	[ warning=yes ],
 	[ warning=no ])
 
+    AC_ARG_ENABLE([locallibs],
+	[ --enable-locallibs      linking with compiled libs in ./bin/libs directory (Enabled By Default)],
+    	[ locallibs=yes ],
+	[ locallibs=no ])
+
     AC_ARG_ENABLE([stormlib],
 	[ --enable-stormlib      Enable compiling with StormLib ],
     	[ stormlib=yes mpqlib=no ],
@@ -92,7 +97,9 @@ else
     fi
 fi
 
-COMPILEVER=no
+if test "$locallibs" = "no" ; then
+    
+    COMPILEVER=no
 		_libs=$LIBS
 		LIBS="$LIBS -lz"
 	    AC_LINK_IFELSE([
@@ -124,7 +131,7 @@ COMPILEVER=no
 	exit -1
     fi
 
-COMPILEVER=no
+    COMPILEVER=no
 		_libs=$LIBS
 		LIBS="$LIBS -lrt"
 	    AC_LINK_IFELSE([
@@ -325,25 +332,36 @@ COMPILEVER=no
 	     [sdlmcurver=`./conftest$EXEEXT` COMPILEVER="yes"],
 	     [sdlmcurver="0" COMPILEVER="no"]
 	    )
-    LIBS=$_libs
-    NEEDVER="1.2.5"
-    echo -n "checking for libSDL_mixer >= $NEEDVER..."
-    if test "$COMPILEVER" = "yes"; then
-	checkver $NEEDVER $sdlmcurver 100
-	if test "$?" = "0"; then
-	    HAVESDLMIXERLIB="yes"
-	    sdlmstrver=$strver
+	LIBS=$_libs
+	NEEDVER="1.2.5"
+	echo -n "checking for libSDL_mixer >= $NEEDVER..."
+	if test "$COMPILEVER" = "yes"; then
+	    checkver $NEEDVER $sdlmcurver 100
+	    if test "$?" = "0"; then
+		HAVESDLMIXERLIB="yes"
+		sdlmstrver=$strver
+	    else
+		HAVESDLMIXERLIB="no"
+    	    fi
 	else
 	    HAVESDLMIXERLIB="no"
+	    echo "no. no any version installed"
 	fi
-    else
-	HAVESDLMIXERLIB="no"
-	echo "no. no any version installed"
     fi
-    fi
+else
+    HAVELOCALLIBS="yes"
+    HAVEZLIB="yes"
+    HAVERT="yes"
+    HAVEGRPLIB="yes"
+    HAVEMPQLIB="yes"
+    HAVESDLLIB="yes"
+    HAVESDLMIXERLIB="yes"
+    echo "Link with ./libs"
+fi
 
     AM_CONDITIONAL(HAVEDEBUG,test "$debug" = "yes" )
     AM_CONDITIONAL(HAVECPP,test "$HAVECPP" = "yes")
+    AM_CONDITIONAL(HAVELOCALLIBS,test "$locallibs" = "yes")
     AM_CONDITIONAL(HAVEGRPLIB,test "$HAVEGRPLIB" = "yes")
     AM_CONDITIONAL(HAVEMPQLIB,test "$HAVEMPQLIB" = "yes")
     AM_CONDITIONAL(HAVEZLIB,test "$HAVEZLIB" = "yes")
@@ -373,28 +391,32 @@ AC_OUTPUT(Makefile)
     else
 	echo "compile with out warnings"
     fi
-    if test "$HAVEZLIB" = "yes"; then
-	echo "link with libz $zstrver version"
-    fi
-    if test "$HAVERT" = "yes"; then
-	echo "link with rt"
-    fi
-    if test "$HAVEGRPLIB" = "yes"; then
-	echo "link with libgrp $grpstrver version"
-    fi
-    if test "$HAVEMPQLIB" = "yes"; then
-	echo "link with libmpq $mpqstrver version"
-    fi
-    if test "$HAVESTORMLIB" = "yes"; then
-	echo "link with StormLib $stormstrver version"
-    fi
-    if test "$HAVESDLLIB" = "yes"; then
-	echo "link with libSDL $sdlstrver version"
-    fi
-    if test "$HAVESDLMIXERLIB" = "yes"; then
-	echo "link with libSDL_mixer $sdlmstrver version"
+    if test $locallibs = "no" ; then
+	if test "$HAVEZLIB" = "yes"; then
+	    echo "link with libz $zstrver version"
+	fi
+	if test "$HAVERT" = "yes"; then
+	    echo "link with rt"
+	fi
+	if test "$HAVEGRPLIB" = "yes"; then
+	    echo "link with libgrp $grpstrver version"
+	fi
+	if test "$HAVEMPQLIB" = "yes"; then
+	    echo "link with libmpq $mpqstrver version"
+	fi
+	if test "$HAVESTORMLIB" = "yes"; then
+	    echo "link with StormLib $stormstrver version"
+        fi
+	if test "$HAVESDLLIB" = "yes"; then
+	    echo "link with libSDL $sdlstrver version"
+	fi
+	if test "$HAVESDLMIXERLIB" = "yes"; then
+	    echo "link with libSDL_mixer $sdlmstrver version"
+	else
+	    echo "link with no libSDL_mixer"
+	fi
     else
-	echo "link with no libSDL_mixer"
+	echo "link with compiled libraries"
     fi
     rm -f bin/${PACKAGE}.conf
     echo "***************************************"

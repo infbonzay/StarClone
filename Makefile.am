@@ -22,12 +22,18 @@ EXTRA_DIST = bin bugs include obj src
 ADDVARS = -DUNDERLINUX 
 OPTIM = -m$(SUFFIX)
 CFLAGS=$(WARN) $(DEBUG) $(OPTIM) $(ADDVARS) -funsigned-char -Iinclude -Iinclude/network
-LDPATH= -L/lib$(SUFFIX) -L/usr/lib$(SUFFIX) -L/usr/local/lib$(SUFFIX)
+if HAVELOCALLIBS
+    LDPATH= -L$(abs_builddir)/libs -L/lib$(SUFFIX) -L/usr/lib$(SUFFIX) -L/usr/local/lib$(SUFFIX)
+else
+    LDPATH= -L/lib$(SUFFIX) -L/usr/lib$(SUFFIX) -L/usr/local/lib$(SUFFIX)
+endif
 LFLAGS = $(WARN) $(DEBUG) $(OPTIM) $(LDPATH)
 
-if HAVECPP
-    LFLAGS+= -lstdc++
-endif
+if HAVELOCALLIBS
+    LFLAGS+= -l:libs/librt-2.15.so -l:libs/libz.so.1.2.7  -l:libs/libgrp-0.4.so.18.0.0 -l:libs/libmpq-0.5.so.3.0.0 -l:libs/libSDL-1.2.so.0.11.4 -l:libs/libSDL_mixer-1.2.so.0.12.0
+    CFLAGS+= -DWITHMPQLIB -Iinclude/sdl -DWITHSDL -DWITHSDLMIXER
+    AUDIODIR=sound.sdl
+else
 if HAVERT
     LFLAGS+= -lrt
 endif
@@ -56,7 +62,7 @@ if HAVESDLMIXERLIB
 else
     AUDIODIR=sound.null
 endif
-
+endif
 PROGS = bin/$(PACKAGE)
 OBJS =  obj/flingy.o obj/iscript.o obj/images.o obj/music.o obj/myfifo.o obj/triggers.o obj/briefing.o obj/video.o \
 	obj/network_general.o obj/network_udp.o obj/network_tcp.o obj/network_dc.o obj/network_modem.o \
