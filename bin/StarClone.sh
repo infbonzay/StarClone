@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash
 PREVDIR=`pwd`
 MYPATH=`dirname $0`
 cd "$MYPATH"
