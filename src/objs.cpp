@@ -3100,7 +3100,7 @@ void dieobj(struct OBJ *a)
 		if (!IsBuild(SC_Unit))
 		    changesupply=1;
 		else
-		    if (a->SC_FromUnit != SC_DRONEOBJ)	//hive or lair
+		    if (a->SC_FromUnit == SC_HIVEOBJ || a->SC_FromUnit == SC_LAIROBJ)	//hive or lair
 			changesupply=1;
 	    }
 	    if (changesupply)
