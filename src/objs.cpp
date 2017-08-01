@@ -4827,7 +4827,7 @@ void AllFlingyControlOBJMoving(void)
 	    }
 	    curspeed = GetSpeed(a,a->currentspeed);
 	    PathFinding_MovePortionType2(a,img,flingy_id,GetSpeed(a,a->currentspeed));
-	    printf("speed=%d ensnaired=%d\n",a->currentspeed,curspeed);
+//	    printf("speed=%d ensnaired=%d\n",a->currentspeed,curspeed);
 	}
     }
 }

@@ -204,7 +204,7 @@ void wscreenonregions(int nrregions,SCREEN_REGION regions[])
 	nodraw=0;
     }
     if (nodraw||gameconf.speedconf.cputhrottling)
-        usleep(1);
+        usleep(8000);
 }
 //==========================
 void wscreenonregion(int x,int y,int xsize,int ysize)
