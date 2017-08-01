@@ -2345,7 +2345,12 @@ escapeconstrslots:
 		a->modemove = MODEATACK;
 		ret = AtackCoolDownEnds(a,destobj,0,showerrorflag);
 		if (ret == MOVEOBJ_DONE)
-		    initmoveaction(a,destobj,MODEATACK,0,0,x,y);
+		{
+//		    initmoveaction(a,destobj,MODEATACK,0,0,x,y);
+		    a->finalOBJ = destobj;
+		    SetAtackType(a,destobj);
+		    AtackAction(a,destobj,0);
+		}
 	    }
 	    else
 	    {
