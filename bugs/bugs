@@ -327,5 +327,5 @@
  89 then ensnared unit, at decceleration speed big than maxslowedspeed
 *90 bug on unknown planet warp pylon and unwarp - decrease psi limit
  91 icons of speaking units not changes but smk portraits changes
- 92 after unburrow unit have modemove equal with MODEUNBURROW (need to be MODESTOP)
- 
+*92 after unburrow unit have modemove equal with MODEUNBURROW (need to be MODESTOP)
+*93 bug in forcechangeimage

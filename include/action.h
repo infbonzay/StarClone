@@ -99,6 +99,7 @@ void UnitEndATACK(OBJ *a);
 int  AttachAddonToBuild(OBJ *a1);
 int  AttachNearestAddon(OBJ *a1);
 void AttachAddonDeltaCoords(unsigned char base_SC_Unit,unsigned char addon_SC_Unit,int *deltax,int *deltay);
+int SearchForUnitMask(int playernr,int mask,int *x,int *y);
 
 
 #endif /*_ACTION_W */

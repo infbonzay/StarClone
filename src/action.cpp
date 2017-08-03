@@ -350,6 +350,22 @@ void DettachAddon(OBJ *a)
     }
 }
 //=================================
+int SearchForUnitMask(int playernr,int mask,int *x,int *y)
+{
+    OBJ *a;
+    for (int i=0;i<MaxObjects;i++)
+    {
+	a = objects[i];
+	if ( a->playernr == playernr && (alldattbl.units_dat->SpecialAbilityFlags[a->SC_Unit] & mask))
+	{
+	    *x = (a->mainimage->xpos>>8);
+	    *y = (a->mainimage->ypos>>8);
+	    return(TRUE);
+	}
+    }
+    return(FALSE);
+}
+//=================================
 int FindSC_UnitType(OBJ *a2,int player,int SC_Unit,int SC_AddonUnit)
 {
     OBJ *a;

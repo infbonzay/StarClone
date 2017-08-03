@@ -1663,6 +1663,26 @@ int TRG_RunAIScriptAtLocation(mapinfo *info,int aiscriptnr,int playernr,int play
 		    CreateAliance(info,i,playernr,ALLIANCEOBJ);
 		}    
 	    break;
+	case TRG_AISCRIPT_SETALLUNITSTORANDOMSUICIDEMISSION:
+	    //!!!!!need to check how player is weak and go where, no  numbgamer!!!!!
+	    if (SearchForUnitMask(NUMBGAMER,SPECIAL_ISBUILD,&xpos,&ypos))
+	    {
+		for (j=0;j<MaxObjects;j++)
+		{
+    		    a = objects[j];
+		    if (a->playernr == playernr && (a->modemove != MODEATACK || a->modemove != MODEATACKREADY))
+			if (IsOBJBurrowed(objects[j]))
+			{
+			    if (moveobj(a,NULL,MODEUNBURROW,0,0,NOSHOWERROR,0) == MOVEOBJ_DONE)
+				AddModeMove(a,NULL,MODEATACK,xpos,ypos,NOSHOWERROR);
+			}
+			else
+			{
+			    moveobj(a,NULL,MODEATACK,xpos,ypos,NOSHOWERROR,0);
+			}
+		}
+	    }
+	    break;
 	default:
 showdefaulterror:
 	    DEBUGMESSCR("unknown aiscriptnr=0x%04x (pl=%d) at [%s]\n",aiscriptnr,playernr,TRIG_commentstr);
