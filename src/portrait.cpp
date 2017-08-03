@@ -305,6 +305,8 @@ int SetPortrait(int SC_Unit,int typeofport,int soundfilenr,int showedtime)
     {
 	SetPortraitOBJ(NULL);
 	SC_Unit = GetFirstUnitBuild(gameconf.pl_race[NUMBGAMER],FIRSTBUILD);//????? this is pl_race[6] is random_race and SC_Unit == 255 so the GPF
+	if (SC_Unit == SC_NOUNITNR)
+	    SC_Unit = GetFirstUnitBuild(ZERGRACE,FIRSTBUILD);	//so if unknown race set the zerg by default
 	typeofport=SMKNORMAL;
     }
     b=loadobj(SC_Unit);

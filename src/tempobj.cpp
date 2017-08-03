@@ -57,7 +57,7 @@ int GetPlayerByLocation(struct mapinfo *tempmap,int location)
 unsigned char GetFirstUnitBuild(int race,int build_or_unit)
 {
     if (race>2||race<0)
-	return -1;
+	return SC_NOUNITNR;
     else
 	return (First_Unit_Build[race][build_or_unit]);
 }
