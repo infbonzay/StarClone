@@ -772,11 +772,7 @@ int AdditionalUnitProceed(OBJ *a,MAIN_IMG *img)
 	{
 	    if (a->modemove == MODEATACK)
 	    {
-//		if (!a->finalOBJ || AtackCoolDownEnds(a,a->finalOBJ,1,NOSHOWERROR) == MOVEOBJ_NOACT)
-//		{
-//		    EndAtackAction(a);
-//		}
-		if (!a->finalOBJ)
+		if (!a->finalOBJ || a->finalOBJ->modemove == MODEDIE)//!!! here was error in freeze atack mode
 		{
 		    EndAtackAction(a);
 		    a->modemove = MODESTOP;
@@ -858,8 +854,9 @@ int AtackCoolDownEnds(OBJ *a,OBJ *destobj,int continueatack,int showerrorflag)
 		if (!a->atackcooldowntime)
 		{
 		    AtackAction(a,destobj,continueatack);
+		    return(MOVEOBJ_DONE);
 		}
-		return(MOVEOBJ_DONE);
+		return(MOVEOBJ_NOACT);
 	    case CREATEDWEAPONSTATUS_ATACKSUCCESSWITHROTATION:
 		a->finalOBJ = destobj;
 		a->finalx = GetOBJx256(destobj);

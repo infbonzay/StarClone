@@ -230,12 +230,9 @@ int main(int c,char **parm,char **env)
     SetVisionTables();
 
     createtemptables();
-    setseed(mytimer.GetCurrentTimerTick());
-//    for (int i=0;i<3000;i++)
-//    {
-//	usleep(1000);
-//	mytimer.CallTimer();
-//    }
+//    setseed(mytimer.GetCurrentTimerTick());
+    setseed(0);
+
     iscriptinfo.CompileIScripts("data/iscript");
 
     cleartitle(title);

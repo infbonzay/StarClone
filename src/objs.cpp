@@ -4054,7 +4054,7 @@ void trapprepareforatack(OBJ *a,OBJ *a2)
 	}
     }
 }
-//#define DONOTATACKBACKTEST
+#define DONOTATACKBACKTEST
 //=================================
 void atackback(OBJ *firstatacker,OBJ *destobj,int directiondamage)
 {
@@ -4893,7 +4893,7 @@ int ApplyNextModeMove(OBJ *a)
 	//check if we have move in lists, if have do that move
 	if (!a->movelist || !a->movelist->GetUsedElem())
 	{
-	    if (!a->finalOBJ)
+	    if (!a->finalOBJ )
 		return(moveobj(a,NULL,MODESTOP,0,0,NOSHOWERROR,0));
 //	    else
 //		a->modemove = MODESTOP;

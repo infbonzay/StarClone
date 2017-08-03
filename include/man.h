@@ -215,6 +215,8 @@ struct OBJ
 	short		deacceleration;
 	int		finalx;
 	int		finaly;
+	int		finalxatack;
+	int		finalyatack;
 	OBJ		*finalOBJ;
 	int		currentspeed;	//for unit move by flingy control
 	short		deltavertpos;
