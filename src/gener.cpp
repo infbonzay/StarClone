@@ -1554,12 +1554,19 @@ void wscreenonmem(int nrregions,SCREEN_REGION regions[])
 	strcat(s,ss);
     }
 */
-    strcat(s," playernr:");
+    strcat(s," pl:");
     itoa(NUMBGAMER,ss,10);
     strcat(s,ss);
     strcat(s,"/");
     itoa(PLAYEDPLAYERS,ss,10);
     strcat(s,ss);
+
+    if (fordeselect[0])
+    {
+	strcat(s," modemove:");
+	itoa(fordeselect[0]->modemove,ss,10);
+	strcat(s,ss);
+    }
 /*    if (fordeselect[0])
     {
 	strcat(s,"x=");

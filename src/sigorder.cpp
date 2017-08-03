@@ -226,6 +226,10 @@ int  SIGOrder_AfterUnburrow(OBJ *a)
 	ApplyNextModeMove(a);
 	return(1);
     }
+    else
+    {
+	a->modemove = MODESTOP;		//to prevent obj to stay with unburrow mode
+    }
     return(0);
 }
 //==================================

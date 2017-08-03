@@ -307,7 +307,7 @@
 *70 battery recharge builds
 *71 wait to long if zealot need to atack,object is near and need to rotation to atack
  71 atack to ground not continue move after atack somebody
- 72 after atack do stop
+*72 after atack do stop
  73 stimpack both for marine and firebat not showed
 *74 turret under fog bad show only rotation part
 *75 jim raynor vulture do not atack enemy turret at Tmap5
@@ -327,4 +327,5 @@
  89 then ensnared unit, at decceleration speed big than maxslowedspeed
 *90 bug on unknown planet warp pylon and unwarp - decrease psi limit
  91 icons of speaking units not changes but smk portraits changes
+ 92 after unburrow unit have modemove equal with MODEUNBURROW (need to be MODESTOP)
  

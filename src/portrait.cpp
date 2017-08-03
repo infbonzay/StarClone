@@ -299,6 +299,8 @@ int SetPortrait(int SC_Unit,int typeofport,int soundfilenr,int showedtime)
     OBJstruct *b;
     if (typeofport==SMKNONE)
 	return -1;
+//    if (SC_Unit == SC_NOUNITNR)
+//	return -1;
     if (typeofport==SMKRETURNTOADVISOR||SC_Unit==SC_NOUNITNR)
     {
 	SetPortraitOBJ(NULL);
