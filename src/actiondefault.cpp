@@ -782,6 +782,7 @@ int AdditionalUnitProceed(OBJ *a,MAIN_IMG *img)
 		{
 		    case MOVEOBJ_NOACT:
 			EndAtackAction(a);
+			SetModeMove(a,MODESTOP);
 			return(0);
 		}
 	    }
@@ -831,6 +832,7 @@ int AtackCoolDownEnds(OBJ *a,OBJ *destobj,int continueatack,int showerrorflag)
 		        Play_sfxdata_id(NULL,TARGETERROR[GetUnitRace(a->SC_Unit)],3,0);
 		        showadvisortext(errmes);
 		    }
+		    return(MOVEOBJ_NOACT);
 		}
 		else
 		{
