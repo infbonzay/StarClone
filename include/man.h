@@ -305,40 +305,8 @@ struct OBJ
                                        //(6-bit)-_dx
                                        //(7-bit) up/down
 
-        unsigned int	prop;          
-    					//(0-bit)  - notwork
-                                        //(1-bit)  - nothere (may be stasis)
-                                        //(2-bit)  - intransport
-                                        //(3-bit)  - ready
-                                        //(4-bit)  - {0-(++mage),1-(--mage)}
-                                        //(5-bit)  - die
-                                        //(6-bit)  - 0 - on terra,under terra
-                                        //          zerg burrowing
-                                        //(7-bit)  - power off protoss builds
-                                        //(8-bit)  - on sky
-				        //(9-bit)  - move throw units
-				        //(10-bit) - VARNOTSEEPROP
-				        //(11-bit) - VARSUICIDE
-				        //(12-bit) - VARCANTSELECT can't be selected
-				    	//13-bit   -  VARMOVEINATACKMODE
-				        //(14-bit) - 1 - WAITDISTANCE
-				        //(15-bit) - 1 - if child in base or larva in construction
-				        //(16-bit) - 1 - if automaticaly need to return with resource
-				        //(17-bit) - 1 - if coolatackdown
-				        //(18-bit) - die silently (without show img,sounds, and force destroy img & childimgs)
-				        //(19-bit) - 0-atackground/1-atackair
-				        //(20-bit) - changes xkart or ykart
-				        //(21-bit) - mark for destroy at end of cycle
-				        //(22-bit) - no increase life at constructing time (egg|nydus exit)
-				        // 23-bit  - accelerationbit
-				        // 24-bit  - holdposition
-				        // 25-bit  - unit have atack goal
-				    	// 26-bit  - prop_prevcloak
-				        // 27-bit  - invincibility
-				        // 28-bit  - automaticdoodad
-				        // 29-bit  - has on move act
-				        // 30-bit  - moveobjact
-				        // 31-bit  - patrolflag
+        unsigned int	prop;          //see man.h
+
 };
 //=======================================
 struct ONEMODEMOVE

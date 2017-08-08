@@ -1448,7 +1448,7 @@ ENDOBJ           = 1
 
 [NEWOBJECT]      = 203 Floor_Missile_Trap NEUTRAL SMALL TECHNIC
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   384
-			0   0   0   0   0   0   0   0   0
+			0 257 333   0   0   0   0   0   0
 ENDOBJ           = 1
 
 
@@ -1475,7 +1475,7 @@ ENDOBJ           = 1
 
 [NEWOBJECT]      = 209 Floor_Gun_Trap NEUTRAL SMALL TECHNIC
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   384
-			0   0   0   0   0   0   0   0   0
+			0 257 333   0   0   0   0   0   0
 ENDOBJ           = 1
 
 [NEWOBJECT]      = 210 Left_Wall_Missle_Trap NEUTRAL SMALL TECHNIC

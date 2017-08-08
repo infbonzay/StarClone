@@ -772,17 +772,32 @@ int AdditionalUnitProceed(OBJ *a,MAIN_IMG *img)
 	{
 	    if (a->modemove == MODEATACK)
 	    {
-		if (!a->finalOBJ || a->finalOBJ->modemove == MODEDIE)//!!! here was error in freeze atack mode
+		if (!a->finalOBJ || a->finalOBJ->modemove == MODEDIE)
 		{
-		    EndAtackAction(a);
-		    a->modemove = MODESTOP;
+		    if (a->prop & VARMOVEINATACKMODE)
+		    {
+    			moveobj(a,NULL,MODEATACK,a->finalxatack,a->finalyatack,NOSHOWERROR|ATACKMOVEBIT,0);
+		    }
+		    else
+		    {
+			EndAtackAction(a);
+//????			SetModeMove(a,MODESTOP);
+			a->modemove = MODESTOP;
+		    }
 		    return 0;
 		}
 		switch(AtackCoolDownEnds(a,a->finalOBJ,1,NOSHOWERROR))
 		{
 		    case MOVEOBJ_NOACT:
 			EndAtackAction(a);
-			SetModeMove(a,MODESTOP);
+		        if (a->prop & VARMOVEINATACKMODE)
+		        {
+    			    moveobj(a,NULL,MODEATACK,a->finalxatack,a->finalyatack,NOSHOWERROR|ATACKMOVEBIT,0);
+			}
+			else
+			{
+			    SetModeMove(a,MODESTOP);
+			}
 			return(0);
 		}
 	    }
@@ -919,7 +934,7 @@ void EndAtackAction(OBJ *a)
         SetOBJIScriptNr(a,ISCRIPTNR_GNDATTKTOIDLE,ISCRIPTNR_SETONLY);
     }
 //    if (a->prop & VARMOVEINATACKMODE)
-//    	moveobj(a,NULL,MODEATACK,a->finalx,a->finaly,NOSHOWERROR,0);
+//    	moveobj(a,NULL,MODEATACK,a->finalxatack,a->finalyatack,NOSHOWERROR,0);
 }
 //=================================
 

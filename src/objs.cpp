@@ -1566,6 +1566,8 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
 	}    
 //    if (a->mainimage->flags & SC_IMAGE_FLAG_CANTBREAKCODE && mode != MODEDIE)
 //        return(MOVEOBJ_NOACT);
+    if (!(showerrorflag & ATACKMOVEBIT))
+        a->prop &= ~VARMOVEINATACKMODE;
     if (mageprop[mode].type_id==ORDERS_UNIT)
     {
 	if (IsAddon(mageprop[mode].obj_id))
@@ -2341,7 +2343,8 @@ escapeconstrslots:
 	case MODEATACK:
 	    if (destobj)
 	    {
-		a->prop &= ~VARMOVEINATACKMODE;
+		if (!(showerrorflag & ATACKMOVEBIT))
+		    a->prop &= ~VARMOVEINATACKMODE;
 		a->modemove = MODEATACK;
 		ret = AtackCoolDownEnds(a,destobj,0,showerrorflag);
 		if (ret == MOVEOBJ_DONE)
@@ -2361,6 +2364,8 @@ escapeconstrslots:
 		    a->prop |= VARMOVEINATACKMODE;
 		    a->searchforatack_tick = 0;//fast search
 		    a->modemove = MODEATACK;
+		    a->finalxatack = x;
+		    a->finalyatack = y;
 		    initmoveaction(a,NULL,MODEATACK,0,0,x,y);
 //		    AddModeMove(a,destobj,MODEATACK,x,y,NOSHOWERROR);
 		}
@@ -2546,7 +2551,7 @@ int makemove(struct OBJ *a,struct OBJ *destobj,int locx,int locy,int mode,int pl
 //==================================
 int selectedobjmove(struct OBJ *destobj,int locx,int locy,int mode,int player,int showerrorflag,int rightclick)
 {
-    int minx,miny,maxx,maxy,midx=0,midy=0,deltax=0,deltay=0;;
+    int minx,miny,maxx,maxy,midx=0,midy=0,deltax=0,deltay=0,flags=SHOWERRORTEXT;
     int i,k=0,maxmoveobj=0;
     struct OBJ *speakOBJ;
     struct OBJ *moveobjects[12];
@@ -2600,6 +2605,8 @@ int selectedobjmove(struct OBJ *destobj,int locx,int locy,int mode,int player,in
 	        midy=(maxy-miny)/2+miny;
 	    }
 	}
+	if (mode == MODEATACK)
+	    flags |= ATACKMOVEBIT;
     	for (i=0;i<maxmoveobj;i++)
     	{
     	    if (midx)
@@ -2611,7 +2618,7 @@ int selectedobjmove(struct OBJ *destobj,int locx,int locy,int mode,int player,in
 	    if (rightclick && destobj)
 		mode = GetDefaultModeForRightClick(moveobjects[i],destobj,player);
 	    if (mode != MODENON)
-		k |= makemove(moveobjects[i],destobj,locx+deltax,locy+deltay,mode,player,SHOWERRORTEXT);
+		k |= makemove(moveobjects[i],destobj,locx+deltax,locy+deltay,mode,player,flags);
         }
 	speakOBJ = GetMaxRankOBJ(maxmoveobj,moveobjects);
 	if (speakOBJ)
@@ -3529,7 +3536,7 @@ void setpropertiestounit(struct OBJ *a,int special_props,int state_flags)
 		else
 		    if (a->SC_Unit == SC_WRAITHOBJ)
 			mode = MODECLOAKFIELD;
-	    moveobj(a,NULL,mode,0,0,NOSHOWERROR,0);
+	    moveobj(a,NULL,mode,0,0,NOSHOWERROR|ATACKMOVEBIT,0);
 	}
     if (state_flags&UNITONMAP_STATEFLAGS_BURROW)
 	if (special_props&UNITONMAP_STATEFLAGS_BURROW)
@@ -3994,8 +4001,8 @@ void unitprepareforatack(OBJ *a,OBJ *a2)
 	}
 	if (doatack)
 	{
-	    a->prop &= ~VARMOVEINATACKMODE;
-	    moveobj(a,a2,MODEATACK,0,0,NOSHOWERROR,0);
+//????	    a->prop &= ~VARMOVEINATACKMODE;
+	    moveobj(a,a2,MODEATACK,0,0,NOSHOWERROR|ATACKMOVEBIT,0);
 	}
     }
     else//no body to atack
@@ -4107,10 +4114,10 @@ void atackback(OBJ *firstatacker,OBJ *destobj,int directiondamage)
 		    {
 		    }
 		    else
-			moveobj(destobj,firstatacker->in_transport,MODEATACK,0,0,NOSHOWERROR,0);	//atack bunker back
+			moveobj(destobj,firstatacker->in_transport,MODEATACK,0,0,NOSHOWERROR|ATACKMOVEBIT,0);	//atack bunker back
 		}
 		else
-		    moveobj(destobj,firstatacker,MODEATACK,0,0,NOSHOWERROR,0);
+		    moveobj(destobj,firstatacker,MODEATACK,0,0,NOSHOWERROR|ATACKMOVEBIT,0);
 	    }
 	}
     }
@@ -4907,7 +4914,7 @@ int ApplyNextModeMove(OBJ *a)
 	showerrmes = onemodemove->showerrflag;
 	a->movelist->DelCurElem();
     }while(modemove == MODENON);
-    moveobj(a,destobj,modemove,dx,dy,showerrmes,0);
+    moveobj(a,destobj,modemove,dx,dy,showerrmes|ATACKMOVEBIT,0);
     return(1);
 }
 //==================================

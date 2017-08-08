@@ -329,3 +329,5 @@
  91 icons of speaking units not changes but smk portraits changes
 *92 after unburrow unit have modemove equal with MODEUNBURROW (need to be MODESTOP)
 *93 bug in forcechangeimage
+ 94 bug in trap floor atacking on brood/terran/map7
+
