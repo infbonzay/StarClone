@@ -232,8 +232,8 @@ OVERLAY_IMG::OVERLAY_IMG(MAIN_IMG *parent,unsigned short image_id,signed char xo
 	parent->AddImageToParent(this);
     if (usescriptnr != ISCRIPTNR_UNKNOWN)
 	SetIScriptNr(usescriptnr);
-    else
-	printf("iscriptnt=255\n");
+//    else
+//	printf("iscriptnt=255\n");
 }
 //============================================
 MAIN_IMG::MAIN_IMG( unsigned short image_id,int x,int y,int elevation,
@@ -276,8 +276,8 @@ OVERLAY_IMG::OVERLAY_IMG(MAIN_IMG *parent,unsigned short image_id,unsigned short
 	DEBUGMESSCR("lo.cant load images_tbl=%d\n",imagelo_tbl);
     if (usescriptnr != ISCRIPTNR_UNKNOWN)
 	SetIScriptNr(usescriptnr);
-    else
-	printf("iscriptnt=255\n");
+//    else
+//	printf("iscriptnt=255\n");
 }
 //============================================
 MAIN_IMG::MAIN_IMG( unsigned short image_id,int x,int y,int elevation,
@@ -324,8 +324,8 @@ OVERLAY_IMG::OVERLAY_IMG(MAIN_IMG *parent,GRPFILE *grpimg,unsigned short unitfla
 	parent->AddImageToParent(this);
     if (usescriptnr != ISCRIPTNR_UNKNOWN)
 	SetIScriptNr(usescriptnr);
-    else
-	printf("iscriptnt=255\n");
+//    else
+//	printf("iscriptnt=255\n");
 }
 //============================================
 MAIN_IMG::MAIN_IMG( GRPFILE *grpimg, int x,int y,
@@ -751,8 +751,8 @@ MAIN_IMG *OBJCreateImage(OBJ *a,int x256,int y256,unsigned char useiscriptnr,int
     img->flags |= SC_IMAGE_FLAG_IMGOBJMAIN;
     if (useiscriptnr != ISCRIPTNR_UNKNOWN)
 	iscriptinfo.ExecuteScript(img);	//executing on creation
-    else
-	printf("iscriptnt=255\n");
+//    else
+//	printf("iscriptnt=255\n");
     return(img);
 }
 //============================================
