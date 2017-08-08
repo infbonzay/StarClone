@@ -778,10 +778,11 @@ int AdditionalUnitProceed(OBJ *a,MAIN_IMG *img)
 		    a->modemove = MODESTOP;
 		    return 0;
 		}
-		if (AtackCoolDownEnds(a,a->finalOBJ,1,NOSHOWERROR) == MOVEOBJ_NOACT)
+		switch(AtackCoolDownEnds(a,a->finalOBJ,1,NOSHOWERROR))
 		{
-		    EndAtackAction(a);
-		    return(0);
+		    case MOVEOBJ_NOACT:
+			EndAtackAction(a);
+			return(0);
 		}
 	    }
 	}
@@ -838,7 +839,7 @@ int AtackCoolDownEnds(OBJ *a,OBJ *destobj,int continueatack,int showerrorflag)
 		    initmoveaction(a,destobj,MODEATACK,a->usedweapon_id,0,GetOBJx(destobj),GetOBJy(destobj));
 		    AddModeMove(a,destobj,MODEATACKREADY,0,0,NOSHOWERROR);
 		}
-		return(MOVEOBJ_NOACT);
+		return(MOVEOBJ_CONTINUEJOB);
 	    case CREATEDWEAPONSTATUS_DESTTOCLOSE://to close
 	    case CREATEDWEAPONSTATUS_CANTATACKTHISUNIT:
 		if (showerrorflag)
