@@ -1174,8 +1174,8 @@ void invisiblestick(void)
         a = objects[i];
         if (a->modemove == MODEDIE || IsInvincibleUnit(a->SC_Unit))
     	    continue;
-	if (IsDoodadState(a->SC_Unit) || IsBuild(a->SC_Unit))
-	    continue;
+//	if (IsDoodadState(a->SC_Unit) || IsBuild(a->SC_Unit))
+//	    continue;
         if (GetMageAtr(&a->atrobj,ATRSTASIS)==0 )
         {
     	    if (makeinvisibles(a))
@@ -1650,8 +1650,6 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
 	case MODECASTSPELL:
 	    SetOrder(a,1,&SIGOrder_AfterCastMage);
 	    SetOBJIScriptNr(a,ISCRIPTNR_CASTSPELL,ISCRIPTNR_EXECUTE);
-	    //????
-	    //AddModeMove(a,destobj,MODESTOP,x,y,0);
 	    break;
 	case MODEPSIONICSTORM:
 	case MODEHALLUCINATION:
@@ -2023,7 +2021,7 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
 	case MODEDIE:
             doselectedOBJbit(a,NUMBGAMER,0);
 	    deselectobj(a);
-            a->pulsate = 0;
+            a->blinkvalue = 0;
 	    if (a->movelist)
 		a->movelist->EmptyElemFifo();
 	    a->modemove = mode;
@@ -3237,22 +3235,22 @@ void coordcalc(struct OBJ *a,struct OBJstruct *b,int destx,int desty)
 {
 }
 //=================================
-void makeallpulsate(void)
+void makeallblinking(void)
 {
     int i;
     OBJ *a;
     for (i=0;i<MaxObjects;i++)
     {
 	a=objects[i];
-        if (a->pulsate)
-    	    a->pulsate--;
+        if (a->blinkvalue)
+    	    a->blinkvalue--;
     }
 }
 //=================================
-void makepulsate(struct OBJ *destobj)
+void SetBlinkOBJ(struct OBJ *destobj)
 {
     if (destobj)
-	destobj->pulsate=PULSATETIME;
+	destobj->blinkvalue=BLINKTIME;
 }
 //=================================
 int getcoordfrompatrate(int sx,int sy,int *retx,int *rety)
@@ -3504,7 +3502,7 @@ void applyrescuableunits(void)
 		if (c)
 		{
 		    MakeMindControl(a,NUMBGAMER,a->color);
-		    makepulsate(a);
+		    SetBlinkOBJ(a);
 		    if (++haverescued>2)
 			break;
 		}
@@ -3516,6 +3514,13 @@ void applyrescuableunits(void)
 	    play_race_rescue(gameconf.pl_race[NUMBGAMER],4,0);
 	}
     }
+}
+//==================================
+void SetInvisibleUnit(struct OBJ *a)
+{
+    a->mainimage->invisiblecolors = 255;
+    SetMageAtr(&a->atrobj,ATRINVISIBLE,ATRMAGEINFINITE);
+    SetCloakedFlag(a,1);
 }
 //==================================
 void setpropertiestounit(struct OBJ *a,int special_props,int state_flags)
@@ -3536,7 +3541,13 @@ void setpropertiestounit(struct OBJ *a,int special_props,int state_flags)
 		else
 		    if (a->SC_Unit == SC_WRAITHOBJ)
 			mode = MODECLOAKFIELD;
-	    moveobj(a,NULL,mode,0,0,NOSHOWERROR|ATACKMOVEBIT,0);
+		    else
+		    {
+			SetInvisibleUnit(a);
+			mode = MODENON;
+		    }
+		if (mode != MODENON)
+		    moveobj(a,NULL,mode,0,0,NOSHOWERROR|ATACKMOVEBIT,0);
 	}
     if (state_flags&UNITONMAP_STATEFLAGS_BURROW)
 	if (special_props&UNITONMAP_STATEFLAGS_BURROW)
@@ -3831,11 +3842,12 @@ void SearchForAtacks(void)
     {
 	a = objects[i];
         b = loadobj(a->SC_Unit);
-	if (a->searchforatack_tick--==0)
-	{
-	    a->searchforatack_tick = MAXWAIT_SEARCHATACK_TICK;
-	    OneUnitSearchGoal(a,b,0);
-	}    
+	if (!a->finalOBJ)
+	    if (a->searchforatack_tick--==0)
+	    {
+		a->searchforatack_tick = MAXWAIT_SEARCHATACK_TICK;
+		OneUnitSearchGoal(a,b,0);
+	    } 
     }
 }
 //=================================
@@ -4306,9 +4318,9 @@ void ShowCircleAndBar(OBJ *a)
     unsigned short flingy_id,sprites_id,sizexhealthbar;
 //    if (a->modemove == MODEDIE)
 //	return;
-    if (a->pulsate)
+    if (a->blinkvalue)
     {
-	if (a->pulsate&PULSATETICKS)
+	if (a->blinkvalue & BLINKTICKS)
 	    showcircle=1;
     }
 //    else

@@ -105,12 +105,12 @@ void moveinstorona(float acc,struct OBJ *a);
 void ReturnedToBase(struct OBJ *a,struct OBJstruct *b);
 void RechargingChilds(struct OBJ *a,struct OBJstruct *b);
 void coordcalc(struct OBJ *a,struct OBJstruct *b,int destx,int desty);
-void makepulsate(struct OBJ *destobj);
-int getcoordfrompatrate(int sx,int sy,int *retx,int *rety);
+void SetBlinkOBJ(struct OBJ *destobj);
+int  getcoordfrompatrate(int sx,int sy,int *retx,int *rety);
 void ChangeObjXY(struct OBJ *a,int x,int y);
 void ChangeObjXYDelta(struct OBJ *a,int xdelta,int ydelta);
 void DeleteOldObjPointers(struct OBJ *a);
-int QueueDelObj(struct OBJ *obj);
+int  QueueDelObj(struct OBJ *obj);
 void WakeUpChild(struct OBJ *a);
 void WakeUpAllChilds(struct OBJ *a,struct OBJstruct *b);
 
@@ -126,7 +126,7 @@ struct OBJ *createunitwithproperties(int xpos,int ypos,int unit_id,int playernr,
 				int hp,int sp,int ep,int resnr,int unitsinhanger);
 
 int  SearchObjInArea(struct OBJ *a,struct XY *area);
-void makeallpulsate(void);
+void makeallblinking(void);
 void MakeCoordsOfRes(struct OBJ *a,struct OBJstruct *b,int *resposx,int *resposy);
 
 void SetAtackTick(OBJ *a);

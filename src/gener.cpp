@@ -1153,7 +1153,7 @@ int gogame(struct mapinfo *info)
 
     		desenproperties(properties,selectableproperties);//draw properties of selected unit(s) on screen
 	    }
-	    makeallpulsate();
+	    makeallblinking();
 	    showportrait();
 	    drawGAMEMENUbutton(&dipl_menu,minimapmenu,MINIMAPDIALOG_DIPLOMACYBUTTON,
 	    		DIPLOMACYBUTTON_PICT,MOUSEONDIPLOMACYBUTTON,STATTXT_TBL_DIPLOMACY);

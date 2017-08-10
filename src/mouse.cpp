@@ -307,7 +307,7 @@ errbuildonminimap:
     	    mloc=1;
     	    xmloc=xm;
             ymloc=ym;
-	    makepulsate(destobj);
+	    SetBlinkOBJ(destobj);
         }
     }
 }

@@ -288,7 +288,7 @@ struct OBJ
 	OBJ		*baseobj;		//object from what we get resources
 	    
 	unsigned char	triggerstate;
-	unsigned char 	pulsate;
+	unsigned char 	blinkvalue;
 	unsigned char   shielddamageenabled;	//if 1 the shield appear on damaged unit
 	unsigned char   shieldrechargeenabled;	//if 1 the recharge shield appear
 

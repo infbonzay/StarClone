@@ -233,7 +233,7 @@ OVERLAY_IMG::OVERLAY_IMG(MAIN_IMG *parent,unsigned short image_id,signed char xo
     if (usescriptnr != ISCRIPTNR_UNKNOWN)
 	SetIScriptNr(usescriptnr);
 //    else
-//	printf("iscriptnt=255\n");
+//	printf("iscriptnr1=255\n");
 }
 //============================================
 MAIN_IMG::MAIN_IMG( unsigned short image_id,int x,int y,int elevation,
@@ -277,7 +277,7 @@ OVERLAY_IMG::OVERLAY_IMG(MAIN_IMG *parent,unsigned short image_id,unsigned short
     if (usescriptnr != ISCRIPTNR_UNKNOWN)
 	SetIScriptNr(usescriptnr);
 //    else
-//	printf("iscriptnt=255\n");
+//	printf("iscriptnr2=255\n");
 }
 //============================================
 MAIN_IMG::MAIN_IMG( unsigned short image_id,int x,int y,int elevation,
@@ -325,7 +325,7 @@ OVERLAY_IMG::OVERLAY_IMG(MAIN_IMG *parent,GRPFILE *grpimg,unsigned short unitfla
     if (usescriptnr != ISCRIPTNR_UNKNOWN)
 	SetIScriptNr(usescriptnr);
 //    else
-//	printf("iscriptnt=255\n");
+//	printf("iscriptnr3=255\n");
 }
 //============================================
 MAIN_IMG::MAIN_IMG( GRPFILE *grpimg, int x,int y,
@@ -752,7 +752,7 @@ MAIN_IMG *OBJCreateImage(OBJ *a,int x256,int y256,unsigned char useiscriptnr,int
     if (useiscriptnr != ISCRIPTNR_UNKNOWN)
 	iscriptinfo.ExecuteScript(img);	//executing on creation
 //    else
-//	printf("iscriptnt=255\n");
+//	printf("iscriptnr4=255\n");
     return(img);
 }
 //============================================

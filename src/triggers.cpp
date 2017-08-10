@@ -256,9 +256,9 @@ int CheckForUnit(int (*ConditionFunction)(int *, int),
     }
     for (i=0;i<MaxObjects;i++)
     {
-	if (actiononplayers&(1<<objects[i]->playernr))
+	if (actiononplayers & (1<<objects[i]->playernr))
 	{
-		if (checkready&&!IsReadyOBJ(objects[i]))
+		if (checkready && !IsReadyOBJ(objects[i]))
 		    continue;
 		else if ( (*UnitTypeFunc)(objects[i]->SC_Unit))
 		{
@@ -734,8 +734,22 @@ int Action_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int trig_nr,int playernr,int
 		    if (waittime<TRIGGER_DISPLAYMESSAGETIME)
 			waittime=TRIGGER_DISPLAYMESSAGETIME;
 		    unitnr=temptrg->action[i].unitorrestype;
+
+		    //show transmission smk portrait
 		    SetPortrait(unitnr,SMKTALK,NOSOUNDFILENR,TRIG_pause);
-		    if (playernr==NUMBGAMER&&temptrg->action[i].stringID)
+		    //blink transmission unit
+		    ownedactiononplayers=OneGroup_Prepare(info,temptrg->action[i].actiononplayers,playernrmask);
+		    newobj=NULL;
+		    nrofunits=CheckForUnit(NULL,ownedactiononplayers,unitnr,nrofunits,&newobj,&info->gamelocations[locnr].coords);
+		    if (newobj)
+		    {
+			if (GetTriggeredUnitState(newobj))
+		    	    SetTriggeredUnitState(newobj,0);
+			SetBlinkOBJ(newobj);
+		    }
+
+		    //show transmission text
+		    if (playernr==NUMBGAMER && temptrg->action[i].stringID)
 			chatbar.addbarmessage(getmapSTR(info,temptrg->action[i].stringID-1),IDFONT10,GWHITECOLORFONT,waittime,BF_ALLOCBUF|BF_FORCEADD);
 //		    printf("transmission pause=%d waivelength=%d\n",temptrg->action[i].pauseatime,waittime);
 		    triggset=1;
@@ -1292,7 +1306,7 @@ creationwithoutproperties:
 				//done by previous trigger
 				SetTriggeredUnitState(objects[j],0);
 				MakeMindControl(objects[j],playernr,objects[j]->color);
-		    		makepulsate(objects[j]);
+		    		SetBlinkOBJ(objects[j]);
 				if (--nrofunits==0)
 				    break;
     			    }
@@ -1670,7 +1684,7 @@ int TRG_RunAIScriptAtLocation(mapinfo *info,int aiscriptnr,int playernr,int play
 		for (j=0;j<MaxObjects;j++)
 		{
     		    a = objects[j];
-		    if (a->playernr == playernr && (a->modemove != MODEATACK || a->modemove != MODEATACKREADY))
+		    if (a->playernr == playernr && a->modemove == MODESTOP)
 			if (IsOBJBurrowed(objects[j]))
 			{
 			    if (moveobj(a,NULL,MODEUNBURROW,0,0,NOSHOWERROR,0) == MOVEOBJ_DONE)
