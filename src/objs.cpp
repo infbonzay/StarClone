@@ -1999,6 +1999,14 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
 		    a->mainimage->UnitNeededDirection256(9*8);
 		else
 		    a->mainimage->UnitNeededDirection256(12*8);
+		//special action for drone
+		if (a->SC_Unit == SC_DRONEOBJ)
+		{
+		    a->mainimage->flags |= SC_IMAGE_FLAG_ISCRIPTROTATION;//???? need to stop moving drone
+		    a->modemove=MODESTOP;
+		    a->prop &=~VARACCELERATIONBIT;
+		    a->currentspeed=0;
+		}
 		SetOrder(a,4,&SIGOrder_AfterBurrow);
 		SetModeMove(a,mode);
 		if (mode == MODEBURROW || (mode == MODEBURROW2 && a->SC_Unit !=SC_LURKEROBJ ))
@@ -2335,7 +2343,17 @@ escapeconstrslots:
 	    {
 		a->finalOBJ = destobj;
 		SetAtackType(a,destobj);
-		AtackAction(a,destobj,0);
+		switch(a->SC_Unit)
+		{
+		    case SC_VULTUREMINEOBJ:
+			SetOrder(a,1,&SIGOrder_NULL);
+			a->castmagenr = MODEMINEEXPLODE;
+    			SpecialAtackAction(a,destobj,ISCRIPTNR_SPECIALSTATE1);
+			break;
+		    default:
+			AtackAction(a,destobj,0);
+			break;
+		}
 	    }
 	    break;
 	case MODEATACK:
@@ -4107,7 +4125,7 @@ void atackback(OBJ *firstatacker,OBJ *destobj,int directiondamage)
 		TryToScanArea(destobj,firstatacker);
 	    }
 	    if (!notdetect)
-		err = IfCanCreateWeapon(destobj,firstatacker,NULL,NULL);
+		err = IfCanCreateWeapon(destobj,firstatacker,NULL,NULL,CREATEWEAPON_IGNOREVISION);
 	    if (notdetect || err == CREATEDWEAPONSTATUS_CANTATACKTHISUNIT)
 	    {
 		//cannot atackback
@@ -4159,12 +4177,12 @@ int tryaiaction(OBJ *a,OBJ *atacker,int directiondamage)
 	case SC_TANKSIEGEOBJ:
 	case SC_HERO_EDMUNDDUKESMOBJ:
 	    //check for distance to unit to check if we need to go normal tank mode
-	    err = IfCanCreateWeapon(a,atacker,NULL,NULL);
+	    err = IfCanCreateWeapon(a,atacker,NULL,NULL,0);
 	    if ( err == CREATEDWEAPONSTATUS_DESTTOCLOSE)
 		moveobj(a,NULL,MODETANKNORMAL,0,0,NOSHOWERROR,0);
 	    return(0);
 	case SC_LURKEROBJ:
-	    err = IfCanCreateWeapon(a,atacker,NULL,NULL);
+	    err = IfCanCreateWeapon(a,atacker,NULL,NULL,0);
 	    switch(err)
 	    {
 		//cannot atack ignore this atacker

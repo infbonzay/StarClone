@@ -44,7 +44,7 @@ struct WEAPONS_UNIT
 int  getgrpfunc(char *grpfunc,char *grptable,char *strvalue);
 int  GetAtackWeaponLevel(OBJ *atacker,OBJ *destobj);
 int  CreateWeapon(OBJ *atacker,OBJ *destobj);
-int  IfCanCreateWeapon(OBJ *atacker,OBJ *destobj,int *errmes,unsigned char *weapon_id);
+int  IfCanCreateWeapon(OBJ *atacker,OBJ *destobj,int *errmes,unsigned char *weapon_id,int flags);
 int  IsSplashDamage(unsigned char weapon_id);
 void WeaponPlaySFX(OBJ *a,int sfxdata_id,int distance,int x,int y);
 int  CalcMaxRangeCoordsXY(int deltax,int deltay,int *destx,int *desty,unsigned char weapon_id,unsigned char flingy_id);
@@ -68,6 +68,9 @@ int  loadweapons(void);
 #define CREATEDWEAPONSTATUS_CANTATACKTHISUNIT			0
 #define CREATEDWEAPONSTATUS_ATACKSUCCESS			1
 #define CREATEDWEAPONSTATUS_ATACKSUCCESSWITHROTATION		2
+
+
+#define CREATEWEAPON_IGNOREVISION				0x01
 
 #define BEFOREGROUNDOBJ		0	//3	the elevationlevel
 #define AFTERGROUNDOBJ		1	//11	

@@ -30,6 +30,7 @@ int CritterAction( OBJ *a,MAIN_IMG *img);
 
 int  AdditionalUnitProceed(OBJ *a,MAIN_IMG *img);
 int  AtackCoolDownEnds(OBJ *a,OBJ *destobj,int continueatack,int showerrorflag);
+void SpecialAtackAction(OBJ *a,OBJ *destobj,int iscriptstate);
 void AtackAction(OBJ *a,OBJ *destobj,int continueatack);
 void EndAtackAction(OBJ *a);
 void SetAtackType(OBJ *a,OBJ *destobj);

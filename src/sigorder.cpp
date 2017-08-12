@@ -33,7 +33,7 @@ void AfterConstruct(OBJ *a)
     ChangeMaxSupply(a->playernr,a->SC_Unit,PLUSFACTOR);
 }
 //==================================
-void SIGOrder_NULL(OBJ *a)
+int SIGOrder_NULL(OBJ *a)
 {
     DEBUGMESSCR("NULL order\n");
 }

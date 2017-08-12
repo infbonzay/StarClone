@@ -53,28 +53,14 @@ int loadweapons(void)
 	fscanf(f,"%s \n",strid);
 	strupr(strid);
 	flags=0;
-	fscanf(f,"%s \n",strvalue);//read '=' or flags
-	while(strcmp(strvalue,"="))//check if have flags
-	{
-	    //read flags
-	    if (!strcmp(strvalue,"SCROLLBACK"))
-	    {
-//????		flags|=EFF_GRPSCROLLRETURNBACK;
-	    }
-	    else
-	    {
-		printf("WEAPON:flag [%s] not fount\n",strvalue);
-		exit(-1);
-	    }
-    	    fscanf(f,"%s \n",strvalue);//read '='
-	}
+	fscanf(f,"%s \n",strvalue);//read '='
+	fscanf(f,"%s \n",strvalue);//read flags
 	for (j=0;j<sizeof(rezwp)/sizeof(char *);j++)
 	    if (!strcmp(strid,rezwp[j]))
     	    {
     		switch(j)
 		{
             	    case 0://[weapon] = nr_sc_weapon1-,: ... 
-			fscanf(f,"%s \n",strvalue);
 			nrofweapons=getallnumbers(strvalue,maxnrforread,100);
 			trailrefresh=255;
 			rangeupgnr=255;
@@ -83,7 +69,6 @@ int loadweapons(void)
 			goto readnext;
 			break;
 		    case 1://RANGEUPGNR upgrade_id increase_range_by_this_value
-			fscanf(f,"%s \n",strvalue);
     			rangeupgnr=atoi(strvalue);
 			fscanf(f,"%s \n",strvalue);
     			rangeupgaddfactor=atoi(strvalue);
@@ -112,7 +97,7 @@ readnext:
     return(0);
 }
 //===========================================
-int IfCanCreateWeapon(OBJ *atacker,OBJ *destobj,int *errmes,unsigned char *weapon_id)
+int IfCanCreateWeapon(OBJ *atacker,OBJ *destobj,int *errmes,unsigned char *weapon_id,int flags)
 {
     OBJstruct *batack;
     unsigned char SC_Unit=atacker->SC_Unit;
@@ -167,14 +152,13 @@ int IfCanCreateWeapon(OBJ *atacker,OBJ *destobj,int *errmes,unsigned char *weapo
 //	    if (destobj && (destobj->select[atacker->playernr] & VARNOTDETECT))
 	    if (  destobj && 
 		  (GetUnitProp(destobj,atacker->playernr,VARNOTDETECT) || 
-		   !GetUnitProp(destobj,atacker->playernr,VARSEE)) )
+		  (!GetUnitProp(destobj,atacker->playernr,VARSEE) && (!(flags & CREATEWEAPON_IGNOREVISION)))) )
 	    {
 		if (errmes)
 		    *errmes=875;//invalid target
 		return(CREATEDWEAPONSTATUS_CANTATACKTHISUNIT);
 	    }
 	    else
-//		rangebad = CheckWeaponRange(atacker,destobj,usedweapon_id,atacker->playernr,16);
 		rangebad = CheckWeaponRange(atacker,destobj,usedweapon_id,atacker->playernr,16);
 	}
 	if (weapon_id)
@@ -777,6 +761,43 @@ void WeaponDoDamage(OBJ *atacker,OBJ *destobj,int x256,int y256,unsigned char SC
 	    {
 		a = objects[i];
     		if (IsActiveUnit(a) && (player_aliance(playernr,a->playernr) == ENEMYOBJ || a == destobj))
+    		{
+		    distance256 = GetDistanceTo256(a,x256,y256);
+		    if ( distance256 < mindist[0] )
+			realdamage = damage;
+		    else
+			if ( distance256 < mindist[1] )
+			    realdamage = damage / 2;
+			else
+			    if ( distance256 < mindist[2] )
+				realdamage = damage / 4;
+			    else
+				continue;//out of damage range
+    		    if (!WeaponCanApplyOnUnit(a,playernr,weapon_id))
+			continue;
+		    if (listdamaged)
+		    {
+			if (listdamaged->HaveElem(a))
+			    continue;
+			listdamaged->AddList(a);
+		    }
+		    LowLevelDamage( atacker,a,loadobj(a->SC_Unit),weapon_id,
+				    alldattbl.weapons_dat->WeaponType[weapon_id],
+				    realdamage,0,0);
+		}
+	    }
+	    break;
+	case WEFFECT_SPLASHALL:
+	    if (atacker && IsHallucination(atacker))
+		break;
+	    mindist[0] = alldattbl.weapons_dat->InnerSplash[weapon_id] * 256;
+	    mindist[1] = alldattbl.weapons_dat->MediumSplash[weapon_id] * 256;
+	    mindist[2] = alldattbl.weapons_dat->OuterSplash[weapon_id] * 256;
+	    damage = GetWeaponDamage(SC_Unit,playernr,weapon_id)<<8;
+	    for (i=0;i<MaxObjects;i++)
+	    {
+		a = objects[i];
+    		if (IsActiveUnit(a))
     		{
 		    distance256 = GetDistanceTo256(a,x256,y256);
 		    if ( distance256 < mindist[0] )

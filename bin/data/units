@@ -103,7 +103,7 @@ ENDOBJ		= 1
 
 [NEWOBJECT]      = 13 Terran_Spider_Mine TERRAN SMALL OTHER
 PROPERTIES       = 3     0   0   0   0   0   0   0   0   0
-			 256 257 333   258 267 0   0   0   371
+			 256 257 333 258 267 0   0   0   371
 			 0   0   0   0   0   0   0   0   372
 
 ENDOBJ           = 1

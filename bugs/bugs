@@ -306,29 +306,29 @@
 *69 teleport forge and cybecnetic core not correct
 *70 battery recharge builds
 *71 wait to long if zealot need to atack,object is near and need to rotation to atack
- 71 atack to ground not continue move after atack somebody
 *72 after atack do stop
- 73 stimpack both for marine and firebat not showed
-*74 turret under fog bad show only rotation part
-*75 jim raynor vulture do not atack enemy turret at Tmap5
+*73 turret under fog bad show only rotation part
+*74 jim raynor vulture do not atack enemy turret at Tmap5
+*75 changing life with triggers,do not show fire/blood sprites
 *76 firebat from bunker move to atack other unit (and remain undetectable)
 *77 fire need to add +2 to elevation
 *78 max saves images under fog is +1 (now is 6) 
 *79 under fog images accumulates not correct  > 6
 *80 enemy cloak then not researched at Tmap5
- 81 mine unburrow but didnot follow the target
-*82 changing life with triggers,do not show fire/blood sprites
-*83 armed nuclear silo is not active on ghost, but we have nuclean in silo active
- 84 birth devourer delayed
- 85 scourge do not atack
-*86 devourer do not have correct atack( spores do not dissapear)
-*87 save to filename do not appear
-*88 save/load dialog 'save to %s?"
- 89 then ensnared unit, at decceleration speed big than maxslowedspeed
-*90 bug on unknown planet warp pylon and unwarp - decrease psi limit
-*91 icons of speaking units not changes but smk portraits changes in unknown plnt map
-*92 after unburrow unit have modemove equal with MODEUNBURROW (need to be MODESTOP)
-*93 bug in forcechangeimage
-*94 bug in trap floor atacking on brood/terran/map7
- 95 drone burrow in move action??
+*81 armed nuclear silo is not active on ghost, but we have nuclean in silo active
+*82 devourer do not have correct atack( spores do not dissapear)
+*83 save to filename do not appear
+*84 save/load dialog 'save to %s?"
+*85 bug on unknown planet warp pylon and unwarp - decrease psi limit
+*86 icons of speaking units not changes but smk portraits changes in unknown plnt map
+*87 after unburrow unit have modemove equal with MODEUNBURROW (need to be MODESTOP)
+*88 bug in forcechangeimage
+*89 bug in trap floor atacking on brood/terran/map7
+*90 drone burrow in move action??
+*91 atack to ground not continue move after atack somebody
+*92 scourge do not backatack
+*93 mine unburrow ,follow the target, but not explode
+    then ensnared unit, at decceleration speed big than maxslowedspeed
+    birth devourer delayed
+    stimpack both for marine and firebat not showed
  

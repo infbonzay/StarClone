@@ -833,7 +833,7 @@ int AtackCoolDownEnds(OBJ *a,OBJ *destobj,int continueatack,int showerrorflag)
 {
 	int resval,errmes;
 	//need to check if range is ok for atack again
-	resval = IfCanCreateWeapon(a,destobj,&errmes,&a->usedweapon_id);
+	resval = IfCanCreateWeapon(a,destobj,&errmes,&a->usedweapon_id,CREATEWEAPON_IGNOREVISION);
 	switch(resval)
 	{
 	    case CREATEDWEAPONSTATUS_UNDERDISRUPTION://atacker in disruption can't atack and no message to appear
@@ -893,6 +893,12 @@ void SetAtackType(OBJ *a,OBJ *destobj)
 	a->prop |= VARATACKAIROBJ;
     else
         a->prop &= ~VARATACKAIROBJ;
+}
+//=================================
+void SpecialAtackAction(OBJ *a,OBJ *destobj,int iscriptstate)
+{
+    a->mainimage->ForceSetIScript(255);
+    SetOBJIScriptNr(a,iscriptstate,ISCRIPTNR_SETONLY);
 }
 //=================================
 void AtackAction(OBJ *a,OBJ *destobj,int continueatack)

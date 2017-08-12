@@ -504,7 +504,6 @@ int NETW_PLAY::SendGame_ResendPackets(ALLNETWCONNECTION *conn,int netwstick,char
     {
 	if (sendtoplayers[i])
 	{
-	    //???? are you sure to send this curentticknr
 	    for (j=0;j<tick_t[curticknr].maxpackets[i];j++)
 	    {
 		if (tick_t[curticknr].packetscome[i][j]==0)

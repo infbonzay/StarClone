@@ -3,7 +3,7 @@
 
 
 #define ADDBUILD_AIR_ELEVATIONLEVEL	10
-void SIGOrder_NULL(OBJ *a);
+int  SIGOrder_NULL(OBJ *a);
 void SetOrder(OBJ *a,int signal,int (*func)(OBJ *a));
 int  SIGOrder_ZergBuildFinishConstruct(OBJ *a);
 int  SIGOrder_TerranBuildLastConstructSprite(OBJ *a);
