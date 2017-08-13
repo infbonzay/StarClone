@@ -461,6 +461,8 @@ int LowLevelDamage(OBJ *atacker,OBJ *a,OBJstruct *b,int weapon_id,int typedamage
 		    return(0);
 		}
 	}
+    if (atacker && a)
+	atacker->select[a->playernr] |= VARSEE;
     atackback(atacker,a,directiondamage);
     if (atacker)
     {

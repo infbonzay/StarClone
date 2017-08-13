@@ -149,10 +149,11 @@ int IfCanCreateWeapon(OBJ *atacker,OBJ *destobj,int *errmes,unsigned char *weapo
 	if (destobj || atacker)
 	{
 	    //check visibility
-//	    if (destobj && (destobj->select[atacker->playernr] & VARNOTDETECT))
+//	    if (destobj && GetUnitProp(destobj,atacker->playernr,VARNOTDETECT))
 	    if (  destobj && 
 		  (GetUnitProp(destobj,atacker->playernr,VARNOTDETECT) || 
-		  (!GetUnitProp(destobj,atacker->playernr,VARSEE) && (!(flags & CREATEWEAPON_IGNOREVISION)))) )
+		  (!GetUnitProp(destobj,atacker->playernr,VARSEE) ))) //&& (!(flags & CREATEWEAPON_IGNOREVISION)))) )
+
 	    {
 		if (errmes)
 		    *errmes=875;//invalid target
