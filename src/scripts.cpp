@@ -532,7 +532,7 @@ while(1)
                   break;
              case 27: //ATACKSIDES
                   break;
-             case 28: //have child ???? not correct
+             case 28: 
                   if (!strcmp(strvalue,"YES"))
 	              adr->UNITprop |= VARMAYHAVECHILD;
 //                  fscanf(f,"%s \n",strvalue);
@@ -546,7 +546,6 @@ while(1)
 	    case 29: //need recharge on base RECHARGE = N timerecharging
 //		    adr->UNITprop  &= ~VARSELECT; //cannot be selected
 		    adr->UNITprop |= VARNEEDRECHARGE;
-//????		    adr->maxbullets = intvalue;
                     fscanf(f,"%s \n",strvalue);
 		    adr->timerechargeonbase = atoi(strvalue);
                     fscanf(f,"%s \n",strvalue);

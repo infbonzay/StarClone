@@ -2002,7 +2002,7 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
 		//special action for drone
 		if (a->SC_Unit == SC_DRONEOBJ)
 		{
-		    a->mainimage->flags |= SC_IMAGE_FLAG_ISCRIPTROTATION;//???? need to stop moving drone
+		    a->mainimage->flags |= SC_IMAGE_FLAG_ISCRIPTROTATION;
 		    a->modemove=MODESTOP;
 		    a->prop &=~VARACCELERATIONBIT;
 		    a->currentspeed=0;
@@ -3979,7 +3979,6 @@ void unitprepareforatack(OBJ *a,OBJ *a2)
 		    if (aiaction)
 		    {
 			moveobj(a,NULL,MODEBURROW2,0,0,NOSHOWERROR,0);
-//????    			AddNextModeMove(a,a2,MODEATACK,0,0);
 		    }
 		}
 		break;
@@ -4024,14 +4023,13 @@ void unitprepareforatack(OBJ *a,OBJ *a2)
 		    if (aiaction)
 		    {
 			moveobj(a,NULL,MODEUNBURROW,0,0,NOSHOWERROR,0);
-//????    			AddNextModeMove(a,a2,MODEATACK,0,0);
+			AddModeMove(a,a2,MODEATACK,0,0,NOSHOWERROR);
 		    }	
 		}
 		break;
 	}
 	if (doatack)
 	{
-//????	    a->prop &= ~VARMOVEINATACKMODE;
 	    moveobj(a,a2,MODEATACK,0,0,NOSHOWERROR|ATACKMOVEBIT,0);
 	}
     }
@@ -4069,13 +4067,11 @@ void trapprepareforatack(OBJ *a,OBJ *a2)
 	{
 	    //need show trap & atack
 	    DoodadChangeState(a,DOODAD_TOP_STATE);
-//????    	    AddNextModeMove(a,a2,MODEATACK,0,0);
 	}
 	else
 	{
 	    if (a->movelist)
 	        a->movelist->EmptyElemFifo();
-//????    	    AddNextModeMove(a,a2,MODEATACK,0,0);
 	}
     }
     else
@@ -4206,7 +4202,6 @@ int tryaiaction(OBJ *a,OBJ *atacker,int directiondamage)
 		    if (IsOBJBurrowed(a))
 		    {
 			moveobj(a,NULL,MODEUNBURROW,0,0,NOSHOWERROR,0);
-//????			AddNextModeMove(a,atacker,MODEATACK,0,0);
 		    }
 		    else
 		    {
@@ -4262,7 +4257,6 @@ int tryunitaction(OBJ *a,OBJ *atacker)
     if (IsOBJBurrowed(a))
     {
 	moveobj(a,NULL,MODEUNBURROW,0,0,NOSHOWERROR,0);
-//????	AddNextModeMove(a,atacker,MODEATACK,0,0);
 	return(0);
     }
     return(1);
@@ -4315,7 +4309,6 @@ void TellOtherUnitsAboutAtacking(OBJ *a,OBJ *atacker)
 		    if (IsOBJBurrowed(a2) && a2->SC_Unit != SC_LURKEROBJ)
 		    {
 			moveobj(a2,NULL,MODEUNBURROW,0,0,NOSHOWERROR,0);
-//????			AddNextModeMove(a2,atacker,MODEATACK,0,0);
 		    }
 		    else
 		    {

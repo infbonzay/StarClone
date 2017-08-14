@@ -5554,8 +5554,8 @@ SpiderMineBurrow:
 	wait           	1
 	playfram       	11
 	wait           	1
-	sigorder       	4
 	nobrkcodeend   	
+	sigorder       	4
 	goto           	common_waitforever
 
 SpiderMineUnBurrow:
@@ -5569,8 +5569,8 @@ SpiderMineUnBurrow:
 	playfram       	8
 	wait           	1
 	playfram       	0
-	sigorder       	4
 	nobrkcodeend   	
+	sigorder       	4
 	goto           	SpiderMineWalkingToIdle
 
 

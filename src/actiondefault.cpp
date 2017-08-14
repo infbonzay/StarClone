@@ -87,7 +87,7 @@ int InterceptorsAction(struct OBJ *a,MAIN_IMG *img)
 	    {
 		//if parent die need to move around
 //		sxsource = (int) a->prevx;
-//????		sysource = (int) a->prevy;
+//		sysource = (int) a->prevy;
 	    }
 	    do{
 	        sx = sxsource + myrand(-INTERCEPTORFLYRANGE,INTERCEPTORFLYRANGE);
