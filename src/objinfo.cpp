@@ -229,7 +229,7 @@ int GetNrSomeObjects(OBJ *a,int *newunit,char **iconmes)
 	    tech_id=alldattbl.weapons_dat->Technology_id[weapon_id];
 	    if (GetTechTree(&map,a->playernr,tech_id))
 	    {
-		if (a->mines==0)
+		if (a->mines == 0)
 		    return(-1);
 		*iconmes=alldattbl.stattxt_tbl->get_TBL_STR(STATTXT_TBL_MINESTEXT);
 		return(a->mines);

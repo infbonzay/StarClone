@@ -2383,11 +2383,19 @@ escapeconstrslots:
 		    a->finalxatack = x;
 		    a->finalyatack = y;
 		    initmoveaction(a,NULL,MODEATACK,0,0,x,y);
-//		    AddModeMove(a,destobj,MODEATACK,x,y,NOSHOWERROR);
 		}
 		else
 		    return(MOVEOBJ_NOACT);
 	    }
+	    break;
+	case MODERELEASEMINENOW:
+	    if (a->mines--)
+		createobjfulllife(x,y,SC_VULTUREMINEOBJ,a->playernr);
+	    ApplyNextModeMove(a);
+	    break;
+	case MODERELEASEMINE:
+	    initmoveaction(a,NULL,mode,0,0,x,y);
+	    AddModeMove(a,destobj,MODERELEASEMINENOW,x,y,NOSHOWERROR);
 	    break;
 	default:
 	    DEBUGMESSCR("mode=%d(%s)not developed\n",mode,mageprop[mode].namemage);
@@ -4902,7 +4910,7 @@ void AddModeMove(OBJ *a,OBJ *destobj,int mode,int x,int y,int showmesflag)
     onemodemove->modemove = mode;
     onemodemove->destx = x;
     onemodemove->desty = y;
-    onemodemove->showerrflag = showmesflag;
+    onemodemove->showerrflag = NOSHOWERROR;//showmesflag;
 }
 //==================================
 int IfHaveNextModeMove(OBJ *a)

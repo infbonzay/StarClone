@@ -74,6 +74,8 @@
 #define MODEATACK		333
 #define MODEATACKREADY		334
 
+#define MODERELEASEMINENOW	366
+#define MODERELEASEMINE		367
 #define MODETANKSIEGE		368
 #define MODETANKNORMAL		369
 
@@ -170,7 +172,6 @@
 #define MAXMAGECAST		299	//                       |
 //=============================
 
-#define MODERELEASEMINE		367	//                       |
 #define MODERECHARGE		399
 
 #define ENDSIMPLEMODE		420
