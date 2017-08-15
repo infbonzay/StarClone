@@ -240,7 +240,7 @@ unsigned char warparchon;
 int totalimgs,drawedimgs;
 int irradiatedamagepertick,plaguedamagepertick;
 //============================CHEAT CODES===================
-char    CODEFORSCREEN		= 0;
+char    CODEFORSCREEN		= 1;
 char    CODEFORGOD		= 0;
 char    CODEFORMINERALS		= 0;
 char    CODEFORGAS		= 0;

@@ -5439,7 +5439,7 @@ AirAttkToIdle  	[NONE]
 Unused2        	[NONE]
 Walking        	common_waitforever
 WalkingToIdle  	common_waitforever
-SpecialState1  	VultureSpecialState1
+SpecialState1  	[NONE]
 .headerend
 # ----------------------------------------------------------------------------- #
 
@@ -5453,13 +5453,6 @@ VultureDeath:
 	imgol          	332 0 0	# TerranBuildingExplosionsmall (thingy\tBangS.grp)
 	wait           	3
 	end            	
-
-VultureSpecialState1:
-	attackwith     	1
-	sigorder       	1
-	wait           	1
-	end            	
-
 
 # ----------------------------------------------------------------------------- #
 # This header is used by images.dat entries:

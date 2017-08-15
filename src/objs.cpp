@@ -2022,6 +2022,9 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
 	        return(MOVEOBJ_NOACT);
 	    if (!SetOBJIScriptNr(a,ISCRIPTNR_UNBURROW,ISCRIPTNR_SETONLY))
 	    {
+		SetBurrowFlag(a,0);
+		SetMageAtr(&a->atrobj,ATRINVISIBLE,0);
+		a->mainimage->invisiblecolors = MININVISIBLECOLOR;
 		SetOrder(a,4,&SIGOrder_AfterUnburrow);
 		SetModeMove(a,mode);
 	    }
@@ -2355,6 +2358,8 @@ escapeconstrslots:
 			break;
 		}
 	    }
+	    else
+		ApplyNextModeMove(a);
 	    break;
 	case MODEATACK:
 	    if (destobj)

@@ -479,11 +479,14 @@ void ISCRIPT::CompileIScripts(char *filename)
 	}
 	else
 	{
+	    printf("compile iscript pass 1\n");
 //	    printf("totallabels=%d, labelreferiences=%d\n",labels.GetMaxElements(),nameoflabels.GetMaxElements());
 	    if (CompilePass2(f))
 	    {
 		printf("cannot complete pass 2\n");
 	    }
+	    else
+		printf("compile iscript pass 2\n");
 	}
 	fclose(f);
 //        savebuff("iscript.bin",compilediscripts,compilediscriptssize);

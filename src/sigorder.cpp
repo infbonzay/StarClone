@@ -211,20 +211,19 @@ int  SIGOrder_AfterBurrow(OBJ *a)
     return(0);    
 }
 //==================================
-int  SIGOrder_AfterUnburrow(OBJ *a)
+int SIGOrder_AfterUnburrow(OBJ *a)
 {
     ChangeTypeOfProp(a,PROPNORMAL1);
-
-    SetBurrowFlag(a,0);
-    SetMageAtr(&a->atrobj,ATRINVISIBLE,0);
-    a->mainimage->invisiblecolors = MININVISIBLECOLOR;
+//    SetBurrowFlag(a,0);
+//    SetMageAtr(&a->atrobj,ATRINVISIBLE,0);
+//    a->mainimage->invisiblecolors = MININVISIBLECOLOR;
     if (a->SC_Unit != SC_VULTUREMINEOBJ)
 	Play_sfxdata(a->mainimage->xpos>>8,a->mainimage->ypos>>8,SFXDATA_BURROWUP,2);
     SetOrder(a,0,NULL);
     if (IfHaveNextModeMove(a))
     {
 	ApplyNextModeMove(a);
-	return(1);
+	return(0);
     }
     else
     {
