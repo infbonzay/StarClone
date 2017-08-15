@@ -880,7 +880,8 @@ int AtackCoolDownEnds(OBJ *a,OBJ *destobj,int continueatack,int showerrorflag)
 		a->finalx = GetOBJx256(destobj);
 		a->finaly = GetOBJy256(destobj);
 		SetAtackType(a,destobj);
-		return(MOVEOBJ_NOACT);
+//		return(MOVEOBJ_NOACT);
+		return(MOVEOBJ_DONE);
 	    default:
 		DEBUGMESSCR("error resval from ifcreateweapon\n");
 		return(MOVEOBJ_NOACT);

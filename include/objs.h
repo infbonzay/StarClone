@@ -190,7 +190,7 @@ void FreeOBJFromTransport(OBJ *c,OBJ *a,int objnr);
 int  GetDestUnitHalfSize(unsigned char SC_Unit,int deltax,int deltay);
 
 
-#define UnitDoAiAction(playernr) (map.pl_owner[playernr] == OWNER_COMPUTER)
+#define UnitDoAiAction(playernr) (map.pl_owner[playernr] == OWNER_COMPUTER)// || map.pl_owner[playernr] == OWNER_HUMAN)
 
 
 #endif /*_OBJS_W*/

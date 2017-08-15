@@ -4156,7 +4156,17 @@ void atackback(OBJ *firstatacker,OBJ *destobj,int directiondamage)
 			moveobj(destobj,firstatacker->in_transport,MODEATACK,0,0,NOSHOWERROR|ATACKMOVEBIT,0);	//atack bunker back
 		}
 		else
-		    moveobj(destobj,firstatacker,MODEATACK,0,0,NOSHOWERROR|ATACKMOVEBIT,0);
+		{
+		    if (IsOBJBurrowed(destobj))
+		    {
+			moveobj(destobj,firstatacker,MODEUNBURROW,0,0,NOSHOWERROR|ATACKMOVEBIT,0);
+			AddModeMove(destobj,firstatacker,MODEATACK,0,0,NOSHOWERROR);
+		    }
+		    else
+		    {
+			moveobj(destobj,firstatacker,MODEATACK,0,0,NOSHOWERROR|ATACKMOVEBIT,0);
+		    }
+		}
 	    }
 	}
     }
