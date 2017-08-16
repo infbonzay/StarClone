@@ -781,8 +781,9 @@ int AdditionalUnitProceed(OBJ *a,MAIN_IMG *img)
 		    else
 		    {
 			EndAtackAction(a);
-//????			SetModeMove(a,MODESTOP);
-			a->modemove = MODESTOP;
+//			a->modemove = MODESTOP;
+			SetModeMove(a,MODESTOP);
+			a->finalOBJ=NULL;
 		    }
 		    return 0;
 		}
@@ -797,8 +798,12 @@ int AdditionalUnitProceed(OBJ *a,MAIN_IMG *img)
 			else
 			{
 			    SetModeMove(a,MODESTOP);
+			    a->finalOBJ=NULL;
 			}
 			return(0);
+		    case MOVEOBJ_WAITUNTIL:
+			a->atackcooldowntime = GetAtackCoolDown(a,a->usedweapon_id);
+			break;
 		}
 	    }
 	}
@@ -837,7 +842,9 @@ int AtackCoolDownEnds(OBJ *a,OBJ *destobj,int continueatack,int showerrorflag)
 	switch(resval)
 	{
 	    case CREATEDWEAPONSTATUS_UNDERDISRUPTION://atacker in disruption can't atack and no message to appear
-		return(MOVEOBJ_NOACT);
+		if (!a->atackcooldowntime)
+		    a->atackcooldowntime = 1;
+		return(MOVEOBJ_WAITUNTIL);
 	    case CREATEDWEAPONSTATUS_DESTOUTOFRANGE://out of range
 		if (!accesstomove(a,loadobj(a->SC_Unit),MODEMOVE,a->playernr) || a->in_transport)
 		{

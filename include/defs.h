@@ -251,6 +251,7 @@
 #define MOVEOBJ_NOACT		0
 #define MOVEOBJ_DONE		1
 #define MOVEOBJ_CONTINUEJOB	2
+#define MOVEOBJ_WAITUNTIL	3
 //=============================
 #define MINNOMOVE             	1
 #define MINDISTFORMOVE        	16

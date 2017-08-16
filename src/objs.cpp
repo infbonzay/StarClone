@@ -1911,6 +1911,7 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
 	    }
 	    break;
 	case MODESTOP:
+//	    a->finalOBJ=NULL;
 	    if (a->movelist)
 		a->movelist->EmptyElemFifo();
 	    if (a->modemove != mode)
@@ -2366,11 +2367,11 @@ escapeconstrslots:
 	    {
 		if (!(showerrorflag & ATACKMOVEBIT))
 		    a->prop &= ~VARMOVEINATACKMODE;
-		a->modemove = MODEATACK;
 		ret = AtackCoolDownEnds(a,destobj,0,showerrorflag);
 		if (ret == MOVEOBJ_DONE)
 		{
 //		    initmoveaction(a,destobj,MODEATACK,0,0,x,y);
+		    a->modemove = MODEATACK;
 		    a->finalOBJ = destobj;
 		    SetAtackType(a,destobj);
 		    AtackAction(a,destobj,0);

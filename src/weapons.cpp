@@ -169,7 +169,11 @@ int IfCanCreateWeapon(OBJ *atacker,OBJ *destobj,int *errmes,unsigned char *weapo
 	    case 0://range ok
 		if (!IsOnSkyOBJ(atacker))
 		    if (mapEFFECT(atacker->xkart,atacker->ykart,DISRUPTEFFECT))//unit under disruption
+		    {
 			return(CREATEDWEAPONSTATUS_UNDERDISRUPTION);//return 'under disruption'
+//		    	if (!atacker->atackcooldowntime)
+//		    	    atacker->atackcooldowntime = 1;
+		    }
 		if (UnitIgnoreInvisibles(SC_Unit) || !GetUnitProp(destobj,atacker->playernr,VARNOTDETECT))
     		{
 		    neededside = CalcDirection1(GetOBJx256(atacker),GetOBJy256(atacker),GetOBJx256(destobj),GetOBJy256(destobj));
