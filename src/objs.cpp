@@ -3568,6 +3568,7 @@ void setpropertiestounit(struct OBJ *a,int special_props,int state_flags)
 	    if (IsHeroUnit(a->SC_Unit))
 		mask=1;
 	    else
+	    {
 		if (a->SC_Unit == SC_GHOSTOBJ)
 		    mode = MODEPERSONNELCLOAK;
 		else
@@ -3580,6 +3581,7 @@ void setpropertiestounit(struct OBJ *a,int special_props,int state_flags)
 		    }
 		if (mode != MODENON)
 		    moveobj(a,NULL,mode,0,0,NOSHOWERROR|ATACKMOVEBIT,0);
+	    }
 	}
     if (state_flags&UNITONMAP_STATEFLAGS_BURROW)
 	if (special_props&UNITONMAP_STATEFLAGS_BURROW)
