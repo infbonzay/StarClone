@@ -81,20 +81,23 @@ extern char    	timemousewait;
 extern int memmouseposx,memmouseposy;
 extern int memmousepossizex,memmousepossizey;
 
-int loadonecursor(char *filename,int mousetype);
-int loadmousecursors(void);
+int  loadonecursor(char *filename,int mousetype);
+int  loadmousecursors(void);
 void unloadmousecursors(void);
-int restrictmousecoords(int REGIM);
+int  restrictmousecoords(int REGIM);
 void putmouseonscreen(void);
 void desenpatr(void);
-int mouseborder2(int x1,int y1,int x2,int y2);
-int mouseborder(struct XY *m);
+int  mouseborder2(int x1,int y1,int x2,int y2);
+int  mouseborder(struct XY *m);
 void desenlocation(void);
-void  putdestination(struct OBJ *destobj,int xm,int ym,int modemove,int posibleconstr,int rightclick);
+void putdestination(struct OBJ *destobj,int xm,int ym,int modemove,int posibleconstr,int rightclick);
 void nextmousespos(void);
 void getmousetype(int x,int y);
 void saveundermouse(void);
 void loadundermouse(void);
+void saveunderpatr(void);
+void loadunderpatr(void);
+
 float scrollmapx(int border,float factor);
 float scrollmapy(int border,float factor);
 

@@ -1288,9 +1288,11 @@ int gogame(struct mapinfo *info)
 	    	    _putcells();		//put borders
 #endif
 	saveundermouse();
+	saveunderpatr();
 //	desenpatr();
         putmouseonscreen();
         wscreenonmem(scrregions,scrparts);
+	loadunderpatr();
         loadundermouse();
 	showedmenu.EndDrawMenu();
 	if (retmenu)

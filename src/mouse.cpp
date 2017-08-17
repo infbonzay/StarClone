@@ -661,6 +661,14 @@ void saveundermouse(void)
     CGetImage8(memmouseposx,memmouseposy,memmousepossizex,memmousepossizey,pixundermouse);
 }
 //==========================
+void saveunderpatr(void)
+{
+}
+//==========================
+void loadunderpatr(void)
+{
+}
+//==========================
 void loadundermouse(void)
 {
     CPutImage8(memmouseposx,memmouseposy,memmousepossizex,memmousepossizey,pixundermouse);
