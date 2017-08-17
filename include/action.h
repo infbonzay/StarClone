@@ -59,7 +59,6 @@ struct QUEUEACTION
 #define ADDON_SUCCESS_ATTACH	1
 
 void PickupObj(OBJ *a,OBJ *pickupobj);
-int SplashShotDistance(int xshot,int yshot,OBJ *destobj);
 int GetMinDistanceBetweenUnits(OBJ *a1,OBJ *a2);
 int getminmovedistobj(struct OBJ *a1,struct OBJstruct *b1,struct OBJ *a2);
 int getminmovedistance(struct OBJ *a,struct OBJstruct *b);

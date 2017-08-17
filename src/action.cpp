@@ -17,19 +17,6 @@
 #include "action.h"
 
 //====================================
-int SplashShotDistance(int xshot,int yshot,OBJ *destobj)
-{
-    int deltaz,maxdist,deltax,deltay;
-    deltax = GetOBJx(destobj) - xshot;
-    deltay = GetOBJy(destobj) - yshot;
-    deltaz=(int)hypot(deltax,deltay);
-    if (abs(deltax)>abs(deltay))
-	deltaz-=GetUnitWidthAndHeight(destobj->SC_Unit,UNITDIM_WIDTH)/2;
-    else
-	deltaz-=GetUnitWidthAndHeight(destobj->SC_Unit,UNITDIM_HEIGHT)/2;
-    return(deltaz);
-}
-//====================================
 //get min-distance to do for next move
 //=================================
 //=================================
