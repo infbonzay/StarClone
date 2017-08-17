@@ -4086,6 +4086,7 @@ void trapprepareforatack(OBJ *a,OBJ *a2)
 	{
 	    if (a->movelist)
 	        a->movelist->EmptyElemFifo();
+	    moveobj(a,a2,MODEATACK,0,0,NOSHOWERROR,0);
 	}
     }
     else

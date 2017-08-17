@@ -622,7 +622,7 @@ int Action_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int trig_nr,int playernr,int
     int min,gas,settype,err,i,j,jj,mask,mask2,triggcnt,triggset,locnr,unitnr,sx,sy;
     int textid,waveid,soundid,funcdelta,deltapaused,waittime,switchnr,nrofunits;
     int searchloc,ownedactiononplayers,xobj,yobj,xobj2,yobj2,grpposx,grpposy,state,propnr;
-    int haverescued,openstate,deltax,deltay,oldsnd;
+    int haverescued,openstate,movestate,deltax,deltay,oldsnd;
 
     char *txtstr;
     struct triggerunit *triggerunitprop;
@@ -1123,12 +1123,24 @@ int Action_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int trig_nr,int playernr,int
 		    {
 			SetTriggeredUnitState(newobj,0);
 			state = GetDoodadState(newobj);
-//			if (state == DOODAD_MOVING_STATE)
-//			{
-//			    state = 1 - newobj->data.doodad.state2;
-//			}
+			movestate = GetDoodadMovingDirection(newobj);
+			if (movestate != DOODAD_MOVE_NONE)
+			    state ^= 1;
 			(*comparefunc)(&state,-1);
-			DoodadChangeState(newobj,state);
+			switch(movestate)
+			{
+			    case DOODAD_MOVE_NONE:
+				DoodadChangeState(newobj,state);
+				break;
+			    case DOODAD_MOVE_TOTOP:
+				if (state == DOODAD_BOTTOM_STATE)
+				    SetNextDoodadState(newobj,DOODAD_BOTTOM_STATE);
+				break;
+			    case DOODAD_MOVE_TOBOTTOM:
+				if (state == DOODAD_TOP_STATE)
+				    SetNextDoodadState(newobj,DOODAD_TOP_STATE);
+				break;
+			}
 		    }
 		    triggset=1;
 		    break;

@@ -328,7 +328,8 @@
 *91 atack to ground not continue move after atack somebody
 *92 scourge do not backatack
 *93 mine unburrow ,follow the target, but not explode
-    doors doodad bugly opened/closed if unit moves fast around it
+*94 doors doodad bugly opened/closed if unit moves fast around it
+    floor trap doodad do not atack
     then ensnared unit, at decceleration speed big than maxslowedspeed
     birth devourer delayed
     stimpack both for marine and firebat not showed
