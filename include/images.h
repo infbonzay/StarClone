@@ -123,7 +123,7 @@ public:
     int 		xpos;
     int			ypos;
     char		newgrpmethod;	//if changes by cloak algorithm
-    unsigned char	invisiblecolors; 	//0 - full visible
+    unsigned char	invisiblecolors; 	//0 - (0 - 0 colors invisible) full visible, 255 - (0-255 colors are invisible) invisible
     unsigned char	imageusercolor;	//0-15	playernrcolor,16-tored,17-togreen,18-toblue,19-tomono
     unsigned char	side;		//0-255		div to 8 to see actual side
     unsigned char	neededside;	
@@ -186,8 +186,8 @@ public:
 };
 
 
-int CheckIscriptNr(OVERLAY_IMG *img,int scriptnr);
-int SetOBJIScriptNr(OBJ *a,int scriptnr,int executeflag);
+int  CheckIscriptNr(OVERLAY_IMG *img,int scriptnr);
+int  SetOBJIScriptNr(OBJ *a,int scriptnr,int executeflag);
 
 void loadandputimage(int POSINMAP);
 void saveandputimage(int x,int y,int xdelta,int ydelta,GRPFILE *grppict,int format,
@@ -195,7 +195,7 @@ void saveandputimage(int x,int y,int xdelta,int ydelta,GRPFILE *grppict,int form
 void saveinfogtable(int x,int y,int POSINMAP,GRPFILE *grppict,int format,int colortable,
 		    int maxcolor,int grcolor,int nrpicture,unsigned short flags);
 void UnitsBloodFire_DrawImages(int groundair);
-int CheckForSpecificChildsImageID(OVERLAY_IMG *img,short image_idfrom,short image_idto);
+int  CheckForSpecificChildsImageID(OVERLAY_IMG *img,short image_idfrom,short image_idto);
 void DelSpecificChildsImageID(OVERLAY_IMG *img,short image_idfrom,short image_idto);
 void ShowBlink(int screenxpos,int screenypos,unsigned char color);
 void RemoveBloodFlameOverlays(OBJ *a, int from);

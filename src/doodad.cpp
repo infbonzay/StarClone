@@ -98,6 +98,7 @@ void SetDoodadState(OBJ *a,int state)
 void DoodadChangeState(OBJ *a,int state)
 {
     int sound_id,scriptseterrorstatus;
+    printf("change doodad state = %d\n",state);
     if (state == DOODAD_BOTTOM_STATE)
     {
 	switch(GetDoodadState(a))

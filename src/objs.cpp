@@ -1174,8 +1174,8 @@ void invisiblestick(void)
         a = objects[i];
         if (a->modemove == MODEDIE || IsInvincibleUnit(a->SC_Unit))
     	    continue;
-//	if (IsDoodadState(a->SC_Unit) || IsBuild(a->SC_Unit))
-//	    continue;
+	if (IsDoodadState(a->SC_Unit))// || IsBuild(a->SC_Unit))
+	    continue;
         if (GetMageAtr(&a->atrobj,ATRSTASIS)==0 )
         {
     	    if (makeinvisibles(a))

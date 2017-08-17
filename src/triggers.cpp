@@ -1109,7 +1109,7 @@ int Action_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int trig_nr,int playernr,int
 		    getmissionidformmissionname(txtstr,&nextscenario);
 		    break;
 		case TRG_ACTIONTYPE_SETDOODADSTATE://42
-		    if (temptrg->action[i].TriggerEntryFlags&TRIGGERENTRYFLAG_MANYUNITS)
+		    if (temptrg->action[i].TriggerEntryFlags & TRIGGERENTRYFLAG_MANYUNITS)
 			openstate = temptrg->action[i].subaction;
 		    else
 			openstate = TRG_TYPEFUNC_SWITCHTOGGLE;
