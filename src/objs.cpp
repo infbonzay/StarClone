@@ -3506,6 +3506,11 @@ void RemoveFromDestination(OBJ *a)
 void AddRefreshedOBJ(OBJ *a)
 {
     ObjsRevealMap[MaxObjsRevealMap++]=a;
+    if (MaxObjsRevealMap == MAXOBJDEFSCR)
+    {
+	printf("MAXOBJECTS REACHED = %d\n",MAXOBJDEFSCR);
+	exit(-1);
+    }
 }
 //==================================
 void FinishMainUnitConstruct(OBJ *a)

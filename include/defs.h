@@ -341,9 +341,9 @@
 
 
 //===========================================
-#define MAXOBJDEFSCR    1000               //maxobj for desen on screen
-#define MAXDAMDEFSCR    1000               //max 'vzrivov' for desen on screen
-#define MAXOBJECTONMAP  (MAXOBJDEFSCR*6)   //max objects on Karta(obj&builds)
+#define MAXOBJDEFSCR    3000               //maxobj for desen on screen
+#define MAXDAMDEFSCR    3000               //max 'vzrivov' for desen on screen
+#define MAXOBJECTONMAP  (MAXOBJDEFSCR*2)   //max objects on Karta(obj&builds)
 
 //===========================================
 #define MAXPSI    (200*2)

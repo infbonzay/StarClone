@@ -240,15 +240,15 @@ unsigned char warparchon;
 int totalimgs,drawedimgs;
 int irradiatedamagepertick,plaguedamagepertick;
 //============================CHEAT CODES===================
-char    CODEFORSCREEN		= 1;
+char    CODEFORSCREEN		= 0;
 char    CODEFORGOD		= 0;
 char    CODEFORMINERALS		= 0;
 char    CODEFORGAS		= 0;
 char    CODEFORQUICKMAKE	= 1;	//1-32	//!!!!!!! 0 is bad idea
 char    CHEATERBIT		= 0;
-char    CODEFORWITHOUTGOODS	= 1;
-char    CODEFORWITHOUTTECHTREE	= 1;
-char    CODEFORPSIUNLIMIT	= 1;
+char    CODEFORWITHOUTGOODS	= 0;
+char    CODEFORWITHOUTTECHTREE	= 0;
+char    CODEFORPSIUNLIMIT	= 0;
 char	SHOWCELLS		= 0;
 char	NETWORKGAME		= 0;		//set to value  if network
 char	EXPANSIONSET		= 1;
