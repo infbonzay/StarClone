@@ -182,7 +182,6 @@ union SOMEINFO
     {
 	signed char	state1;
 	signed char	movedirection;
-	signed char	nextstate;
     }doodad;
     struct
     {

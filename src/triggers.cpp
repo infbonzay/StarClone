@@ -216,6 +216,22 @@ int (*ConditionFunctions[TRG_MAXTYPEFUNC])(int *var1,int var2)=
 			&Switch_Randomize
 		    };
 //=================================================
+int (*DoorConditionFunctions[TRG_MAXTYPEFUNC])(int *var1,int var2)=
+		    {
+			&Condition_AtLeast,
+			&Condition_AtMost,
+			&Condition_IsSet,
+			&Condition_IsCleared,
+			&Switch_Clear,
+			&Switch_Set,
+			&Switch_Toggle,
+			&Function_Set,
+			&Function_Add,
+			&Function_Sub,
+			&Condition_Exact,
+			&Switch_Randomize
+		    };
+//=================================================
 int UNITNRFORCHECK;
 int CheckForUnit_UnitNr(int SC_Unit)
 {
@@ -1112,7 +1128,12 @@ int Action_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int trig_nr,int playernr,int
 		    if (temptrg->action[i].TriggerEntryFlags & TRIGGERENTRYFLAG_MANYUNITS)
 			openstate = temptrg->action[i].subaction;
 		    else
-			openstate = TRG_TYPEFUNC_SWITCHTOGGLE;
+			if (temptrg->action[i].subaction == TRG_TYPEFUNC_SWITCHSET   ||
+			    temptrg->action[i].subaction == TRG_TYPEFUNC_SWITCHCLEAR || 
+			    temptrg->action[i].subaction == TRG_TYPEFUNC_SWITCHTOGGLE )
+			    openstate = temptrg->action[i].subaction;
+			else
+			    openstate = TRG_TYPEFUNC_SWITCHTOGGLE;
 		    comparefunc=ConditionFunctions[openstate];
 		    searchloc=temptrg->action[i].locationnr-1;
 		    ownedactiononplayers=OneGroup_Prepare(info,temptrg->action[i].actiononplayers,playernrmask);
@@ -1122,8 +1143,13 @@ int Action_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int trig_nr,int playernr,int
 		    if (newobj)
 		    {
 			SetTriggeredUnitState(newobj,0);
-			state = GetDoodadState(newobj);
-			movestate = GetDoodadMovingDirection(newobj);
+			movestate = GetDoodadMoveDirection(newobj);
+			if (movestate == DOODAD_MOVE_NONE)
+			    moveobj(newobj,NULL,MODEDOODADCHANGESTATE,openstate,0,NOSHOWERROR,0);
+			else
+			    AddModeMove(newobj,NULL,MODEDOODADCHANGESTATE,openstate,0,NOSHOWERROR);
+/*			
+			
 			if (movestate != DOODAD_MOVE_NONE)
 			    state ^= 1;
 			(*comparefunc)(&state,-1);
@@ -1141,6 +1167,7 @@ int Action_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int trig_nr,int playernr,int
 				    SetNextDoodadState(newobj,DOODAD_TOP_STATE);
 				break;
 			}
+*/
 		    }
 		    triggset=1;
 		    break;

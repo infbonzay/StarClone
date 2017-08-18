@@ -92,6 +92,8 @@
 #define MODEPOWEROFF		380
 #define MODEMINEEXPLODE		381
 
+#define MODEDOODADCHANGESTATE	382
+
 #define MODEACTIVATE		383
 #define MODEESCAPE		384
 #define MODEESCAPE1            	385
@@ -99,7 +101,6 @@
 #define MODEESCAPE3            	387
 #define MODEESCAPE4            	388
 #define MODEESCAPE5            	389
-
 
 
 //==================================================old modes 

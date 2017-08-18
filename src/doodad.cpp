@@ -62,7 +62,6 @@ void CreateDoodadsFromLists(mylist *mapdoodads,mapinfo *loadedmap)
 	    {
 //		doodad->playernr=NUMBGAMER;
 		a = CreateUnitsFromMAP(doodad->xpos,doodad->ypos,doodad->sprites_id,doodad->playernr,loadedmap);
-		SetNextDoodadState(a,DOODAD_NEXTSTATE_NONE);
 		if (doodad->flags & DOODADBOTTOMSTATE)
 		{
 		    SetOrder(a,1,&SIGOrder_DoodadAfterBottom);
@@ -95,28 +94,14 @@ void SetDoodadState(OBJ *a,int state)
     a->data.doodad.state1 = state;
 }
 //=====================================================
-void SetDoodadMovingDirection(OBJ *a,int movedirection)
-{
-    a->data.doodad.movedirection = movedirection;
-}
-//=====================================================
-int GetDoodadMovingDirection(OBJ *a)
+int  GetDoodadMoveDirection(OBJ *a)
 {
     return(a->data.doodad.movedirection);
 }
 //=====================================================
-void SetNextDoodadState(OBJ *a,int state)
+void SetDoodadMoveDirection(OBJ *a,int movedirection)
 {
-    a->data.doodad.nextstate = state;
-}
-//=====================================================
-void SetNextDoodadAction(OBJ *a)
-{
-    if (a->data.doodad.nextstate != DOODAD_NEXTSTATE_NONE)
-    {
-	DoodadChangeState(a,a->data.doodad.nextstate);
-	SetNextDoodadState(a,DOODAD_NEXTSTATE_NONE);
-    }
+    a->data.doodad.movedirection = movedirection;
 }
 //=====================================================
 void DoodadChangeState(OBJ *a,int state)
@@ -130,14 +115,13 @@ void DoodadChangeState(OBJ *a,int state)
 	    case DOODAD_TOP_STATE:
 		//go bottom
 		SetOrder(a,1,&SIGOrder_DoodadAfterBottom);
-		SetDoodadMovingDirection(a,DOODAD_MOVE_TOBOTTOM);
-//		printf("doodad move DOODAD_MOVE_TOBOTTOM\n");
 		scriptseterrorstatus = SetOBJIScriptNr(a,ISCRIPTNR_DOODADGOBOTTOM,ISCRIPTNR_EXECUTE);
 		if (!scriptseterrorstatus)
 		{
 		    sound_id = GetUnitSound(a,UNITSOUND_WHATFIRST,UNITSOUND_WHATFIRST);
 	    	    Play_sfxdata(GetOBJx(a),GetOBJy(a),sound_id,2);
 		}
+		SetDoodadMoveDirection(a,DOODAD_MOVE_TOBOTTOM);
 	    break;
 	}
     }
@@ -150,8 +134,6 @@ void DoodadChangeState(OBJ *a,int state)
 	{
 	    case DOODAD_BOTTOM_STATE:
 		SetOrder(a,1,&SIGOrder_DoodadAfterTop);
-		SetDoodadMovingDirection(a,DOODAD_MOVE_TOTOP);
-//		printf("doodad move DOODAD_MOVE_TOTOP\n");
 		if (CheckIscriptNr(a->mainimage,ISCRIPTNR_SPECIALSTATE1))
 		{
 		    scriptseterrorstatus = SetOBJIScriptNr(a,ISCRIPTNR_SPECIALSTATE1,ISCRIPTNR_EXECUTE);
@@ -163,6 +145,7 @@ void DoodadChangeState(OBJ *a,int state)
 		    sound_id = GetUnitSound(a,UNITSOUND_WHATLAST,UNITSOUND_WHATLAST);
 		    Play_sfxdata(GetOBJx(a),GetOBJy(a),sound_id,2);
 		}
+		SetDoodadMoveDirection(a,DOODAD_MOVE_TOTOP);
 	    break;
 	}
     }	

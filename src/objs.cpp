@@ -1535,7 +1535,9 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
     OBJ *newobj;
     unsigned char flingy_id,SC_res_type,inv,useweapon_id;
     int needmana,type_id,obj_id,ret,slotnr,deltaz,constrerror,resval;
-    int i,tempvar,errmes;
+    int i,tempvar,errmes,state,openstate;
+    int (*comparefunc)(int *,int );					//for doodad
+    
     //prevent to move if is uninterrupted mode
     if (a->modemove == MODEDIE)
     {
@@ -2402,6 +2404,23 @@ escapeconstrslots:
 	case MODERELEASEMINE:
 	    initmoveaction(a,NULL,mode,0,0,x,y);
 	    AddModeMove(a,destobj,MODERELEASEMINENOW,x,y,NOSHOWERROR);
+	    break;
+	case MODEDOODADCHANGESTATE:
+	    state = GetDoodadState(a);
+	    openstate = x;
+	    if (a->SC_Unit == SC_LEFTUPPERLEVELDOOROBJ || 
+		a->SC_Unit == SC_RIGHTUPPERLEVELDOOROBJ || 
+		a->SC_Unit == SC_LEFTPITDOOROBJ || 
+		a->SC_Unit == SC_RIGHTPITDOOROBJ )
+	    {
+	        comparefunc = DoorConditionFunctions[openstate];
+	    }
+	    else
+	    {
+	        comparefunc = DoorConditionFunctions[openstate];
+    	    }
+    	    (*comparefunc)(&state,-1);
+	    DoodadChangeState(a,state);
 	    break;
 	default:
 	    DEBUGMESSCR("mode=%d(%s)not developed\n",mode,mageprop[mode].namemage);

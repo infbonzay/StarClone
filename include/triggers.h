@@ -318,8 +318,8 @@ void AI_SetSearchForAtacks(int playernr);
 #define TRG_TYPEFUNC_ATMOST				1
 #define TRG_TYPEFUNC_ISSET				2
 #define TRG_TYPEFUNC_ISCLEARED				3
-#define TRG_TYPEFUNC_SWITCHSET				4
-#define TRG_TYPEFUNC_SWITCHCLEAR			5
+#define TRG_TYPEFUNC_SWITCHSET				4		//enabled (closed door)
+#define TRG_TYPEFUNC_SWITCHCLEAR			5		//disabled (opened door)
 #define TRG_TYPEFUNC_SWITCHTOGGLE			6
 #define TRG_TYPEFUNC_SET				7
 #define TRG_TYPEFUNC_ADD				8
@@ -401,5 +401,6 @@ extern char	TRIG_leaderboardcomputerplayers;
 extern char	TRIG_stopalltriggers;
 extern char	TRIG_inittriggers;
 extern int	(*ConditionFunctions[])(int *var1,int var2);
+extern int	(*DoorConditionFunctions[])(int *var1,int var2);
 
 #endif /*TRIGGERS_H*/

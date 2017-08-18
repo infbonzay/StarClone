@@ -29,9 +29,7 @@ void CreateDoodadsFromLists(mylist *mapdoodads,struct mapinfo *loadedmap);
 int  GetDoodadState(struct OBJ *a);
 void SetDoodadState(struct OBJ *a,int state);
 void DoodadChangeState(OBJ *a,int state);
-void SetDoodadMovingDirection(OBJ *a,int movedirection);
-int  GetDoodadMovingDirection(OBJ *a);
-void SetNextDoodadState(OBJ *a,int state);
-void SetNextDoodadAction(OBJ *a);
+void SetDoodadMoveDirection(OBJ *a,int movedirection);
+int  GetDoodadMoveDirection(OBJ *a);
 
 #endif /*_DOODAD_W*/

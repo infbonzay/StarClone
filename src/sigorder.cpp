@@ -473,8 +473,8 @@ int  SIGOrder_DoodadAfterTop(OBJ *a)
         SetMageAtr(&a->atrobj,ATRINVISIBLE,0);
     }
     SetDoodadState(a,DOODAD_TOP_STATE);
-    SetDoodadMovingDirection(a,DOODAD_MOVE_NONE);
-    SetNextDoodadAction(a);
+    SetDoodadMoveDirection(a,DOODAD_MOVE_NONE);
+    ApplyNextModeMove(a);
     return(0);
 }
 //==================================
@@ -487,8 +487,8 @@ int  SIGOrder_DoodadAfterBottom(OBJ *a)
         SetMageAtr(&a->atrobj,ATRINVISIBLE,ATRMAGEINFINITE);
     }
     SetDoodadState(a,DOODAD_BOTTOM_STATE);
-    SetDoodadMovingDirection(a,DOODAD_MOVE_NONE);
-    SetNextDoodadAction(a);
+    SetDoodadMoveDirection(a,DOODAD_MOVE_NONE);
+    ApplyNextModeMove(a);
     return(0);
 }
 //==================================

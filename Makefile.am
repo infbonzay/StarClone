@@ -9,9 +9,9 @@ else
     DEBUG = -O2
 endif
 if HAVEWARNING
-    WARN = -Wno-write-strings -Wunreachable-code
+    WARN = -Wno-write-strings
 else
-    WARN = -Wno-write-strings -Wunreachable-code
+    WARN = -Wno-write-strings
 endif
 if HAVE64
     SUFFIX=64
