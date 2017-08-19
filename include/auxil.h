@@ -8,6 +8,7 @@
         #define _int3h() _asm{ int 3h}
 #endif
 #ifdef UNDERLINUX
+	#define ltoa(i,aa) sprintf(aa,"%ld",(long) i)
 	#define itoa2(i,aa) sprintf(aa,"%d",(int) i)
 	#define itoa(i,aa,format) itoa2(i,aa)
 #endif
