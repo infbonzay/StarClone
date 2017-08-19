@@ -330,8 +330,8 @@
 *93 mine unburrow ,follow the target, but not explode
 *94 doors doodad bugly opened/closed if unit moves fast around it
 *95 floor trap doodad do not atack
-    incorect showing mineral srite than change player nr
+*96 incorect showing mineral srite than change player nr
+*97 birth devourer delayed
     then ensnared unit, at decceleration speed big than maxslowedspeed
-    birth devourer delayed
     stimpack both for marine and firebat not showed
- 
+

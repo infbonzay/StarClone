@@ -1507,7 +1507,7 @@ int  desenbuildifconstr(void)
 //=============================================
 #define INCREMENTVALUE (10<<8)
 int showgoods_drawminerals,showgoods_drawgas;
-int showgoods_drawpsi[3],showgoods_drawmaxpsi[3];
+int showgoods_drawpsi[4],showgoods_drawmaxpsi[4];
 //=============================================
 void clearshowgoods(void)
 {
@@ -1516,15 +1516,17 @@ void clearshowgoods(void)
     showgoods_drawpsi[0]=0;
     showgoods_drawpsi[1]=0;
     showgoods_drawpsi[2]=0;
+    showgoods_drawpsi[3]=0;
     showgoods_drawmaxpsi[0]=0;
     showgoods_drawmaxpsi[1]=0;
     showgoods_drawmaxpsi[2]=0;
+    showgoods_drawmaxpsi[3]=0;
 }
 //=============================================
 void showgoods(void)
 {
     int offspsi,i,decrxcoord=0,race,racepos=1;
-    int drawrace[3],drawcolor[3];
+    int drawrace[4],drawcolor[3];
     static char minerals[20],gas[20],psi[40];
     if (showgoods_drawminerals<PLAYER[NUMBGAMER].minerals)
     {
@@ -1556,6 +1558,8 @@ void showgoods(void)
     sprintf(gas,"%c%c %d",COMMANDSYMB,GASSYMB,showgoods_drawgas>>8);
 
     race=gameconf.pl_race[NUMBGAMER];
+    if (race >= MAXRACE)
+	race=0;
     showgoods_drawmaxpsi[0]=PLAYER[NUMBGAMER].maxcurentpsi[race];
     if (showgoods_drawmaxpsi[0]>MAXPSI)
         showgoods_drawmaxpsi[0]=MAXPSI;    
@@ -1627,9 +1631,9 @@ void showgoods(void)
 	}
     }    
 */
-    putmessage(465+decrxcoord,15,IDFONT12,minerals,GGREENCOLORFONT,tfontgamp,gamedlggrp);
-    putmessage(525+decrxcoord,15,IDFONT12,gas,GGREENCOLORFONT,tfontgamp,gamedlggrp);
-    putmessage(580+decrxcoord,15,IDFONT12,psi,GGREENCOLORFONT,tfontgamp,gamedlggrp);
+    putmessage(460+decrxcoord,15,IDFONT12,minerals,GGREENCOLORFONT,tfontgamp,gamedlggrp);
+    putmessage(520+decrxcoord,15,IDFONT12,gas,GGREENCOLORFONT,tfontgamp,gamedlggrp);
+    putmessage(575+decrxcoord,15,IDFONT12,psi,GGREENCOLORFONT,tfontgamp,gamedlggrp);
 }
 //=============================
 void showadvisortext(int stat_txt_nr)

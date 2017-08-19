@@ -2510,8 +2510,12 @@ void preparegameconf_ums(void)
 	    }
 	    else
 	    {
-	        gameconf.pl_race[i]=RACE_INACTIVE;
-	        gameconf.pl_owner[i]=OWNER_NONE;
+//????!!!!!????!!!!?????!!!!
+
+	        gameconf.pl_race[i]=test_race[i];
+	        gameconf.pl_owner[i]=test_owner[i];
+//	        gameconf.pl_race[i]=RACE_INACTIVE;
+//	        gameconf.pl_owner[i]=OWNER_NONE;
 	    }
 	}
     }
