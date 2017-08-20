@@ -15,7 +15,8 @@
     void *wmalloc(int memsize);
     void wfree(void *buf);
     int  checkleak(void *buf);
-    void checkallwmalloc(void *buf,int incrval);
+    int  checkbuf(void *buf,int incrval,char *mes);
+    int  checkallwmalloc(char *mes);
 
 #endif
 //=============================

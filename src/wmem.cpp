@@ -32,7 +32,7 @@ void *wmalloc(int memsize)
     retval[memsize-2]=0xa5;
     retval[memsize-1]=0x3c;
 #ifdef CHECKALLMALLOC
-    checkallwmalloc(retval+8,1);
+//    checkallwmalloc(retval+8,1);
 #endif
     return(retval+8);
 #else
@@ -47,7 +47,7 @@ void wfree(void *buf)
     char *tempbuf=(char *)buf;
     char *buff=(char *)buf;
 #ifdef CHECKALLMALLOC
-    checkallwmalloc(buf,-1);
+//    checkallwmalloc(buf,-1);
 #else
     if (checkleakbefore(buf))
     {
@@ -109,9 +109,46 @@ int checkleak(void *buf)
 void *allmems[100000];
 int allmallocs;
 //==========================
-void checkallwmalloc(void *buf,int incrval)
+int checkbuf(void *buf,int incrval,char *mes)
 {
-
+    int i,err;
+    if (incrval == 1)
+    {
+	allmems[allmallocs] = buf;
+    }
+    else
+    {
+	for (i=0;i<allmallocs-1;i++)
+	{
+	    if (allmems[i] == buf )
+	    {
+    		allmems[i] = allmems[allmallocs-1];
+	    }
+	}
+    }
+    allmallocs += incrval;
+    return(checkallwmalloc("buf error\n"));
+}
+//==========================
+int checkallwmalloc(char *mes)
+{
+    int i,err;
+    for (i=0;i<allmallocs;i++)
+    {
+	err = checkleak(allmems[i]);
+	switch (err)
+	{
+	    case 1:
+		DEBUGMES("leak before:%s",mes);
+		return(1);
+		break;
+	    case 2:
+		DEBUGMES("leak  after:%s",mes);
+		return(2);
+		break;
+	}
+    }
+    return(0);
 }
 
 #endif

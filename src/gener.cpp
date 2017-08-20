@@ -1017,14 +1017,20 @@ int gogame(struct mapinfo *info)
 		    case TIMETOACT:		//timetoprocess
 			if (!PAUSEGAME&&!PAUSEINTRIG)
 			{
+			    checkallwmalloc("1.");
 			    QueueGame.QueueMain(INCREMENTTICKS);
+			    checkallwmalloc("2.");
 			    
 			    weaponflingy.MoveAllWeaponFlingy();
+			    checkallwmalloc("3.");
 
 			    AllFlingyControlOBJMoving();
+			    checkallwmalloc("4.");
 
 			    AllImages_ExecuteIScript();
+			    checkallwmalloc("5.");
 			    AdditionalUnitsProceed();
+			    checkallwmalloc("6.");
 			    
 			    			    
 			    invisiblestick();
@@ -1075,6 +1081,7 @@ int gogame(struct mapinfo *info)
         			calcfullinvandsee();
     			    }
 			}
+			checkallwmalloc("7.");
 			gamecycle++;
     			break;
 		    case TIMETOSLEEP:
@@ -1089,6 +1096,7 @@ int gogame(struct mapinfo *info)
 	    }
 	    if (!PAUSEGAME)
 	    {
+		checkallwmalloc("8.");
 		calculatefog(bitsplayer);			//calculate all fog
     		drawMAP(0);
 		showStars(map.MAPXGLOBAL,map.MAPYGLOBAL);//show stars if spacemap
@@ -1152,6 +1160,7 @@ int gogame(struct mapinfo *info)
     		CreateMenuProperties(properties,selectableproperties,fordeselect,NUMBGAMER);
 
     		desenproperties(properties,selectableproperties);//draw properties of selected unit(s) on screen
+		checkallwmalloc("9.");
 	    }
 	    makeallblinking();
 	    showportrait();
@@ -1308,6 +1317,8 @@ int gogame(struct mapinfo *info)
 	}
 	if (gamestatus!=NOGAMESTATUS)
 	    PAUSEGAME=1;
+	checkallwmalloc("10.");
+
     }while(menustatus==CONTINUEGAME);
     if (ALLMENUS.GetMaxElements()>0)
 	DEBUGMESSCR("REMAIN ALLMENUS lists\n");
