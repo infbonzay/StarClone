@@ -18,6 +18,7 @@ void *wmalloc(int memsize)
 #ifdef TESTMALLOC
     unsigned char *retval;
     int *retval2;
+
     memsize+=12;
     retval=(unsigned char *)malloc(memsize);
     retval[0]=MALLOCBYTE1;
@@ -30,12 +31,11 @@ void *wmalloc(int memsize)
     retval[memsize-3]=0x96;
     retval[memsize-2]=0xa5;
     retval[memsize-1]=0x3c;
+#ifdef CHECKALLMALLOC
+    checkallwmalloc(retval+8,1);
+#endif
     return(retval+8);
 #else
-//    void *retval;
-//    retval = malloc(memsize);
-//    DEBUGMESSCR("allocced = 08%x\n",retval);
-//    return(retval);
     return(malloc(memsize));
 #endif
 
@@ -46,30 +46,19 @@ void wfree(void *buf)
 #ifdef TESTMALLOC
     char *tempbuf=(char *)buf;
     char *buff=(char *)buf;
-    tempbuf-=8;
-    int *size=(int *)((char *)tempbuf+4);
-    if (tempbuf[0]!=MALLOCBYTE1||tempbuf[1]!=MALLOCBYTE2||tempbuf[2]!=MALLOCBYTE3||tempbuf[3]!=MALLOCBYTE4)
+#ifdef CHECKALLMALLOC
+    checkallwmalloc(buf,-1);
+#else
+    if (checkleakbefore(buf))
     {
 	printf("memory leak in free before allocation\n");
     }
-    tempbuf=tempbuf+8+*size;
-    if (tempbuf[0]!=0xc3||tempbuf[1]!=0x96||tempbuf[2]!=0xa5||tempbuf[3]!=0x3c)
+    if (checkleakafter(buf))
     {
 	printf("memory leak in free after allocation\n");
     }
-    if (buff[0] == MALLOCBYTE1 && 
-	buff[1] == MALLOCBYTE2 && 
-	buff[2] == MALLOCBYTE3 &&
-	buff[3] == MALLOCBYTE4)
-    {
-	printf("double free\n");
-    }
-    buff[0] = MALLOCBYTE1;
-    buff[1] = MALLOCBYTE2;
-    buff[3] = MALLOCBYTE3;
-    buff[4] = MALLOCBYTE4;
+#endif
     free((char *)buf-8);
-    tempbuf = NULL;
 #else
 //    DEBUGMESSCR("freed = 08%x\n",buf);
     free(buf);
@@ -117,6 +106,14 @@ int checkleak(void *buf)
     return(0);
 }
 //==========================
+void *allmems[100000];
+int allmallocs;
+//==========================
+void checkallwmalloc(void *buf,int incrval)
+{
+
+}
+
 #endif
 
 
