@@ -929,7 +929,7 @@ int gogame(struct mapinfo *info)
     resettimerforplayers=1<<16;
     activatedwaittimer=0;
     gamestatus=NOGAMESTATUS;
-    gameconf.speedconf.gamespeed=9;
+//    gameconf.speedconf.gamespeed=SPEED4X;
     clearopenseeKarta();
     clearopenseeKarta();
 

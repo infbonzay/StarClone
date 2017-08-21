@@ -219,6 +219,7 @@ int mylist::DelList(void *elem)
 	    if (curent->elements[i]==elem)
 		return(DelList(j+i));
 	j+=MAXLISTELEMENTS;
+	curent = curent->next;
     }
     return -1;
 }
