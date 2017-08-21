@@ -173,7 +173,8 @@ class MAINIMGLIST:public mylistsimple
 {
 public:
     MAINIMGLIST(int nrofelems) : mylistsimple(nrofelems) {};
-    inline void AddElem(void *elem) { elements[totalelem] = elem; ((MAIN_IMG *)elem)->imglist_elemnr = totalelem; totalelem++; };
+    inline void AddElem(void *elem) { if (totalelem<allocatedelem) { elements[totalelem] = elem; ((MAIN_IMG *)elem)->imglist_elemnr = totalelem; totalelem++; } else DEBUGMESSCR("MAINIMGLIST:max elems exceeded\n");};
+
     void DeleteMarked(void);
     void FreeAndEmptyAll(void);
 };

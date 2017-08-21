@@ -267,9 +267,10 @@ int IScriptCmd_end(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
 		if (img->parentimg->creator.flingycreator.flingy)
 		{
 		    img->parentimg->creator.flingycreator.flingy->DelFlingy();
+		    img->parentimg->DeleteMainImgAndChilds(&mainimageslist);
 		    return(1);
-		    img->parentimg->whocreate = SC_IMAGE_UNKNOWN_CREATOR;
-		    img->parentimg->creator.flingycreator.flingy = NULL;
+//		    img->parentimg->whocreate = SC_IMAGE_UNKNOWN_CREATOR;
+//		    img->parentimg->creator.flingycreator.flingy = NULL;
 		}
 		else
 		    DEBUGMESSCR("bad news END IMAGE flingy creator not developed :(\n");
@@ -284,6 +285,8 @@ int IScriptCmd_end(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
 	    case SC_IMAGE_SELF_CREATOR:
 	    case SC_IMAGE_OVERLAYOBJ_CREATOR:
 		img->parentimg->DeleteMainImg(&mainimageslist);
+	    default:
+		DEBUGMESSCR("bad news END IMAGE flingy creator unknown\n");
 		break;
 	}
     }

@@ -1,7 +1,7 @@
 #if !defined(_WMEM_W)
 #define _WMEM_W
 
-#define USEWMALLOC
+//#define USEWMALLOC
 //====================
 #ifndef USEWMALLOC
 

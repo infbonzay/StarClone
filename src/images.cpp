@@ -86,6 +86,10 @@ void MAINIMGLIST::DeleteMarked(void)
 		lastelem--;
 		totalmarked--;
 	    }
+	    else
+	    {
+//		printf("not deleted because of childs\n");
+	    }
 	}
     }
 }
