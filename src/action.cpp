@@ -25,9 +25,20 @@
 //=================================
 void PickupObj(OBJ *a,OBJ *pickupobj)
 {
+//    signed char xlo,ylo;
+
     a->carryobj = pickupobj;
     a->carryobj->carryobj=a;
     a->finalOBJ = NULL;
+    
+//    GetOBJXYSideOffsets(a,a->mainimage,IMAGE_OVERLAY_SPECIAL,&xlo,&ylo);
+
+    pickupobj->modemove = MODECARRYME;
+    pickupobj->prop |= VARCANTSELECT;
+	    
+    pickupobj->mainimage->side = a->mainimage->side;
+    pickupobj->mainimage->neededside = a->mainimage->side;
+
 }
 //=================================
 //callback function for queue

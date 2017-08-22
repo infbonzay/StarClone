@@ -392,7 +392,7 @@ struct OBJ *createobjlowlevel(OBJ *workerobj,int x,int y,int SC_Unit,int playern
 	//try to attach to near worker if any
 	a2 = SearchUnitFunc(a->playernr,&IsWorkerUnit,x,y,24);
 	if (a2)
-	    PickupObj(a,a2);
+	    PickupObj(a2,a);
     }
     return(a);
 }

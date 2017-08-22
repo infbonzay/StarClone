@@ -233,6 +233,10 @@ struct OBJ *SearchOBJforOBJ(struct OBJ *a,int modemage)
 			    }
 		    }
 		    break;
+//		case MODEPICKUP:
+//		    if (IsBuild(destobj->SC_Unit)&&GetUnitRace(destobj->SC_Unit)==TERRANRACE)
+//		    int IsNonNeutralFlag(int SC_Unit)
+//		    break;
 		default:
 		    DEBUGMESSCR("searchobj: %d mode not developed\n",modemage);
 		    break;

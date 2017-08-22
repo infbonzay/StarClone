@@ -401,6 +401,14 @@ int WorkersAction(struct OBJ *a,MAIN_IMG *img)
 		    }
 		    return(0);
 		}
+//		if (--a->data.gather.waitforrepair <= 0)
+//		{
+//		    a->data.gather.waitforrepair = WAITTICKBEFORESEARCHREPAIR;
+//	    	    newobj = SearchOBJforOBJ(a,MODEPICKUP);
+//	    	    if (newobj)
+//	    	    {
+//	    		//pickup object is near, need to take it
+//	    	    }
 	    }
 	    break;
     }
