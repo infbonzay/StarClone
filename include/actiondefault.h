@@ -17,6 +17,7 @@
 #include "action.h"
 
 #define LARVAEMOVEDELTA (SIZESPRLANSHX*2)
+#define WAITTICKBEFORESEARCHREPAIR	24
 
 int CarrierAction( OBJ *a,MAIN_IMG *img);
 int InterceptorsAction( OBJ *a,MAIN_IMG *img);

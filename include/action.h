@@ -59,9 +59,9 @@ struct QUEUEACTION
 #define ADDON_SUCCESS_ATTACH	1
 
 void PickupObj(OBJ *a,OBJ *pickupobj);
-int GetMinDistanceBetweenUnits(OBJ *a1,OBJ *a2);
-int getminmovedistobj(struct OBJ *a1,struct OBJstruct *b1,struct OBJ *a2);
-int getminmovedistance(struct OBJ *a,struct OBJstruct *b);
+int  GetMinDistanceBetweenUnits(OBJ *a1,OBJ *a2);
+int  getminmovedistobj(struct OBJ *a1,struct OBJstruct *b1,struct OBJ *a2);
+int  getminmovedistance(struct OBJ *a,struct OBJstruct *b);
 void QueueAction(void *IDQueueAction,int DestroyQueue);
 void MakeQueueAction(int actiontype,void *a,void *destobj,
 		    int param0,int param1,int param2,int afterexpiriedticks);
@@ -71,8 +71,6 @@ void DettachAddon(OBJ *a);
 unsigned char GetMotherAddon(unsigned char SC_Unit);
 void GetAddonType(unsigned char SC_Unit,unsigned char *addontype1,unsigned char *addontype2);
 
-OBJ *SearchObjs(int x,int y,int range,int *array,int arraydim);
-int  FindSC_UnitType(OBJ *a,int player,int typeofbuild);
 int  MageDepend(OBJ *a,int player,int typeofbuild);
 
 void getcoordofnewunit(OBJ *a,int nrunit,int *x,int *y);
@@ -98,7 +96,6 @@ void UnitEndATACK(OBJ *a);
 int  AttachAddonToBuild(OBJ *a1);
 int  AttachNearestAddon(OBJ *a1);
 void AttachAddonDeltaCoords(unsigned char base_SC_Unit,unsigned char addon_SC_Unit,int *deltax,int *deltay);
-int SearchForUnitMask(int playernr,int mask,int *x,int *y);
 
 
 #endif /*_ACTION_W */

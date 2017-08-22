@@ -189,44 +189,161 @@ struct OBJ *SearchUnit(int playernr,int SC_Unit,int shieldp,int lifep,int energy
 struct OBJ *SearchOBJforOBJ(struct OBJ *a,int modemage)
 {
     struct OBJ *destobj;
-    int temp,mindistance,i;
+    int temp,mindistance,i,findobj=0;
     mindistance = mageprop[modemage].diapazone;
     for (i=0;i<MaxObjects;i++)
     {
-	destobj = objects[i];
-	if (a == destobj || destobj->modemove == MODEDIE)
-	    continue;
-//	temp = controldistanceunit( GetOBJx(a),GetOBJy(a),GetOBJx(destobj),GetOBJy(destobj),mindistance);
-	if (GetDistanceBetweenUnits256(a,destobj) < mindistance)
-	{
+	    destobj = objects[i];
+	    if (a == destobj || destobj->modemove == MODEDIE)
+		continue;
 	    switch(modemage)
 	    {
 		case MODEHEAL:
 		    //need to healing obj and my troops
-		    if (ishealingobj(destobj)&&a->playernr == destobj->playernr)
-			return(destobj);
+		    if (ishealingobj(destobj) && a->playernr == destobj->playernr)
+			if (GetDistanceBetweenUnits256(a,destobj) < mindistance)
+			    findobj=1;
 		    break;
 		case MODERECHARGESHIELD:
 		    if (isrechargebleobj(destobj))
-			return(destobj);
+			if (GetDistanceBetweenUnits256(a,destobj) < mindistance)
+			    findobj=1;
 		    break;
 		case MODEATACK:
 		    if (canatackobj(a,destobj))
-			return (destobj);
+			if (GetDistanceBetweenUnits256(a,destobj) < mindistance)
+			    findobj=1;
 		    break;
 		case MODEINFEST:
 	    	    if (isobjtobeinfest(destobj))
-			return(destobj);
+			if (GetDistanceBetweenUnits256(a,destobj) < mindistance)
+			    findobj=1;
 		    break;
 		case MODERESCUABLE:
 		    if (destobj->playernr==NUMBGAMER)
-			return(destobj);
+			if (GetDistanceBetweenUnits256(a,destobj) < mindistance)
+			    findobj=1;
+		case MODEREPAIR:
+		    if (IsBuild(destobj->SC_Unit)&&GetUnitRace(destobj->SC_Unit)==TERRANRACE)
+		    {
+			if (destobj->life != GetUnitMaxLife(destobj->SC_Unit))
+			    if (GetDistanceBetweenUnits256(a,destobj) < (48<<8))
+			    {
+				findobj=1;
+			    }
+		    }
+		    break;
+		default:
+		    DEBUGMESSCR("searchobj: %d mode not developed\n",modemage);
+		    break;
 	    }
-	}
+	    if (findobj)
+		return(destobj);
     }
     return NULL;
 }
 //==========================================
+OBJ *SearchObjs(int x,int y,int range,int *array,int arraydim)
+{
+    int i,j;
+    OBJ *a;
+    for (i=0;i<MaxObjects;i++)
+    {
+	a = objects[i];
+	for (j=0;j<arraydim;j++)
+	    if (a->SC_Unit==array[j])
+	        if (controldistanceunit(x,y,GetOBJx(a),GetOBJy(a),range))
+	        {
+		    return(a);
+		}
+    }
+    return(NULL);
+}
+//=================================
+OBJ *SearchForObjInXY(int x,int y,unsigned char *SC_Units,int nrofunits)
+{
+    int i,j;
+    OBJ *a;
+    for (i=0;i<MaxObjects;i++)
+    {
+	a = objects[i];
+	for (j=0;j<nrofunits;j++)
+	    if (a->SC_Unit == SC_Units[j] && !IsOnSkyOBJ(a))
+		if (GetOBJx(a) == x && GetOBJy(a) == y)
+		    return(a);
+    }
+    return(NULL);
+}
+//=================================
+int SearchForUnitMask(int playernr,int mask,int *x,int *y)
+{
+    OBJ *a;
+    for (int i=0;i<MaxObjects;i++)
+    {
+	a = objects[i];
+	if ( a->playernr == playernr && (alldattbl.units_dat->SpecialAbilityFlags[a->SC_Unit] & mask))
+	{
+	    *x = (a->mainimage->xpos>>8);
+	    *y = (a->mainimage->ypos>>8);
+	    return(TRUE);
+	}
+    }
+    return(FALSE);
+}
+//=================================
+int FindSC_UnitType(OBJ *a2,int player,int SC_Unit,int SC_AddonUnit)
+{
+    OBJ *a;
+    //if check for addon, we need to check addon in selected build(OBJ *a2)
+    if (IsAddon(SC_Unit))
+    {
+	if (a2->addonobj)
+	    if (a2->addonobj->SC_Unit==SC_Unit)
+		return(1);
+    }
+    for (int i=0;i<MaxObjects;i++)
+    {
+	a=objects[i];
+	if (a->playernr==player)
+	{
+	    if (a->SC_Unit==SC_Unit)
+	    {
+		if (IsReadyOBJ(a))
+		{
+		    if (SC_AddonUnit==SC_NOUNITNR)
+		    {
+		        return(1);
+		    }
+		    else
+		    {
+	    	        if (a->addonobj && a->addonobj->SC_Unit==SC_AddonUnit && IsReadyOBJ(a->addonobj))
+			    return(1);
+		    }
+		}
+	    }
+	    else
+		if (SC_Unit==SC_HATCHERYOBJ)
+		{
+		    if ((a->SC_Unit==SC_LAIROBJ||a->SC_Unit==SC_HIVEOBJ))
+			return(1);
+		}
+		else
+		    if (SC_Unit==SC_LAIROBJ)
+		    {
+	    		if (a->SC_Unit==SC_HIVEOBJ)
+			    return(1);
+		    }
+		    else
+	    		if (SC_Unit==SC_SPIREOBJ)
+			{
+		    	    if (a->SC_Unit==SC_GREATERSPIREOBJ)
+				return(1);
+			}
+	}
+    }
+    return(0);
+}
+//=================================
 int controlifunitinunit(struct OBJ *a,struct OBJ *a2)
 {
     int sx,sy;

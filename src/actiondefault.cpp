@@ -383,6 +383,24 @@ int WorkersAction(struct OBJ *a,MAIN_IMG *img)
 			//if it is mineral or gas orb
 			moveobj(a,NULL,MODERETURNCARGO,0,0,NOSHOWERROR,0);
 		    }
+		return(0);
+	    }
+	    else
+	    {
+		if (a->SC_Unit == SC_SCVOBJ && UnitDoAiAction(a->playernr))	//if scv and computer control try to repair if need something
+		{
+		    if (--a->data.gather.waitforrepair <= 0)
+		    {
+			a->data.gather.waitforrepair = WAITTICKBEFORESEARCHREPAIR;
+	    		newobj = SearchOBJforOBJ(a,MODEREPAIR);
+			if (newobj)
+			{
+			    moveobj(a,newobj,MODEREPAIR,0,0,NOSHOWERROR,0);
+			    return(1);
+			}
+		    }
+		    return(0);
+		}
 	    }
 	    break;
     }

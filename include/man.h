@@ -187,6 +187,7 @@ union SOMEINFO
     {
 	signed char	gathertime;
 	signed char	waittoharvest;
+	signed char	waitforrepair;
     }gather;
     struct
     {

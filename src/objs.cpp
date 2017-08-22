@@ -1419,6 +1419,8 @@ int moveobj_buildmode(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int
     else
     {
 	//unit make build
+	if (a->carryobj && IsNonNeutralFlag(a->carryobj->SC_Unit))
+	    return(MOVEOBJ_NOACT);
 	if (GetDistanceTo(a,x,y) > mageprop[mode].mindistance/256 + 10)
 	{
 	    ChangeTypeOfProp(a,PROPNORMAL1);
@@ -1837,6 +1839,8 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
 	    a->finaly = y;
 	    break;
 	case MODEREPAIR:
+	    if (a->carryobj && IsNonNeutralFlag(a->carryobj->SC_Unit))
+		return(MOVEOBJ_NOACT);
 	    if (destobj)
 	    {
 		//continue construction
@@ -4354,7 +4358,7 @@ void TellOtherUnitsAboutAtacking(OBJ *a,OBJ *atacker)
 	{
 	    if (IsAtackerActiveUnit(a2))
 	    {
-		if (controldistanceunit(GetOBJx(a),GetOBJy(a),GetOBJx(a2),GetOBJy(a2),80))
+		if (controldistanceunit(GetOBJx(a),GetOBJy(a),GetOBJx(a2),GetOBJy(a2),MINREACTIONDISTANCEFORATACKING))
 		{
 		    //tell other unit to atack my atacker
 		    if (IsOBJBurrowed(a2) && a2->SC_Unit != SC_LURKEROBJ)
@@ -4635,8 +4639,8 @@ int PathFinding_MovePortionType1(OBJ *a,MAIN_IMG *img,int deltamove)
 	    }
 	}
     }
-    deltax = deltamove*deltax/deltaz;
-    deltay = deltamove*deltay/deltaz;
+    deltax = (long long)deltamove*deltax/deltaz;
+    deltay = (long long)deltamove*deltay/deltaz;
     img->SetDeltaCoords(a,deltax,deltay);
     return(1);//can pass
 }
@@ -4710,8 +4714,8 @@ int PathFinding_MovePortionType2(OBJ *a,MAIN_IMG *img,unsigned char flingy_id,in
 	    return(1);
 	}
     }
-    deltax = deltamove*deltax/deltaz;
-    deltay = deltamove*deltay/deltaz;
+    deltax = (long long)deltamove*deltax/deltaz;
+    deltay = (long long)deltamove*deltay/deltaz;
     img->SetDeltaCoords(a,deltax,deltay);
     return(1);//can pass
 }
@@ -4871,7 +4875,11 @@ void AllFlingyControlOBJMoving(void)
 	    else
 	    {
 		if (!a->currentspeed)
+		{
+		    if (a->movelist && a->movelist->GetUsedElem())
+			ApplyNextModeMove(a);
 		    continue;
+		}
 		if (alldattbl.flingy_dat->MoveControl[flingy_id] == FLINGYMOVECONTROL_WEAPON)
 		{
 		    a->currentspeed = a->currentspeed / 2;

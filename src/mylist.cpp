@@ -555,8 +555,10 @@ void mylistsimple::DeleteOneElem(int elemnr)
     if (elemnr != lastelem)
     {
 	elements[elemnr] = elements[lastelem];
+	deletemarked[elemnr] = deletemarked[lastelem];
     }
-    deletemarked[elemnr] = 0;
+    else
+	deletemarked[elemnr] = 0;
     totalelem--;
     lastelem--;
 }
@@ -575,8 +577,10 @@ void mylistsimple::DeleteMarked(void)
 	    if (i != lastelem)
 	    {
 		elements[i] = elements[lastelem];
+		deletemarked[i] = deletemarked[lastelem];
 	    }
-	    deletemarked[i] = 0;
+	    else
+		deletemarked[i] = 0;
 	    totalelem--;
 	    lastelem--;
 	}

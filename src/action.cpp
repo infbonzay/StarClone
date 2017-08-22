@@ -195,38 +195,6 @@ void GetAddonType(unsigned char SC_Unit,unsigned char *addontype1,unsigned char 
     }
 }
 //=================================
-OBJ *SearchObjs(int x,int y,int range,int *array,int arraydim)
-{
-    int i,j;
-    OBJ *a;
-    for (i=0;i<MaxObjects;i++)
-    {
-	a = objects[i];
-	    for (j=0;j<arraydim;j++)
-		if (a->SC_Unit==array[j])
-		    if (controldistanceunit(x,y,GetOBJx(a),GetOBJy(a),range))
-		    {
-			return(a);
-		    }
-    }
-    return(NULL);
-}
-//=================================
-OBJ *SearchForObjInXY(int x,int y,unsigned char *SC_Units,int nrofunits)
-{
-    int i,j;
-    OBJ *a;
-    for (i=0;i<MaxObjects;i++)
-    {
-	a = objects[i];
-	for (j=0;j<nrofunits;j++)
-	    if (a->SC_Unit == SC_Units[j] && !IsOnSkyOBJ(a))
-		if (GetOBJx(a) == x && GetOBJy(a) == y)
-		    return(a);
-    }
-    return(NULL);
-}
-//=================================
 void AttachAddonDeltaCoords(unsigned char base_SC_Unit,unsigned char addon_SC_Unit,int *deltax,int *deltay)
 {
     *deltax = - GetUnitBoxWidth(base_SC_Unit)/2  + GetDeltaAddonHorizontal(addon_SC_Unit) + GetUnitBoxWidth(addon_SC_Unit)/2;
@@ -337,74 +305,6 @@ void DettachAddon(OBJ *a)
     }
 }
 //=================================
-int SearchForUnitMask(int playernr,int mask,int *x,int *y)
-{
-    OBJ *a;
-    for (int i=0;i<MaxObjects;i++)
-    {
-	a = objects[i];
-	if ( a->playernr == playernr && (alldattbl.units_dat->SpecialAbilityFlags[a->SC_Unit] & mask))
-	{
-	    *x = (a->mainimage->xpos>>8);
-	    *y = (a->mainimage->ypos>>8);
-	    return(TRUE);
-	}
-    }
-    return(FALSE);
-}
-//=================================
-int FindSC_UnitType(OBJ *a2,int player,int SC_Unit,int SC_AddonUnit)
-{
-    OBJ *a;
-    //if check for addon, we need to check addon in selected build(OBJ *a2)
-    if (IsAddon(SC_Unit))
-    {
-	if (a2->addonobj)
-	    if (a2->addonobj->SC_Unit==SC_Unit)
-		return(1);
-    }
-    for (int i=0;i<MaxObjects;i++)
-    {
-	a=objects[i];
-	if (a->playernr==player)
-	{
-	    if (a->SC_Unit==SC_Unit)
-	    {
-		if (IsReadyOBJ(a))
-		{
-		    if (SC_AddonUnit==SC_NOUNITNR)
-		    {
-		        return(1);
-		    }
-		    else
-		    {
-	    	        if (a->addonobj && a->addonobj->SC_Unit==SC_AddonUnit && IsReadyOBJ(a->addonobj))
-			    return(1);
-		    }
-		}
-	    }
-	    else
-		if (SC_Unit==SC_HATCHERYOBJ)
-		{
-		    if ((a->SC_Unit==SC_LAIROBJ||a->SC_Unit==SC_HIVEOBJ))
-			return(1);
-		}
-		else
-		    if (SC_Unit==SC_LAIROBJ)
-		    {
-	    		if (a->SC_Unit==SC_HIVEOBJ)
-			    return(1);
-		    }
-		    else
-	    		if (SC_Unit==SC_SPIREOBJ)
-			{
-		    	    if (a->SC_Unit==SC_GREATERSPIREOBJ)
-				return(1);
-			}
-	}
-    }
-    return(0);
-}
 //=================================
 //return 0 - if not satisfy all dependency
 //=================================

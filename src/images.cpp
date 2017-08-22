@@ -44,8 +44,10 @@ void OVERLAYIMGLIST::DeleteMarked(void)
 	    if (i != lastelem)
 	    {
 		elements[i] = elements[lastelem];
+		deletemarked[i] = deletemarked[lastelem];;
 	    }
-	    deletemarked[i] = 0;
+	    else
+		deletemarked[i] = 0;
 	    totalelem--;
 	    lastelem--;
 	}
@@ -79,9 +81,11 @@ void MAINIMGLIST::DeleteMarked(void)
 		if (i != lastelem)
 		{
 	    	    elements[i] = elements[lastelem];			//last imaget move to deleted image
+	    	    deletemarked[i] = deletemarked[lastelem];
 	    	    ((MAIN_IMG *)(elements[i]))->imglist_elemnr = i;	//global nr of moved image also changes 
 		}
-		deletemarked[i] = 0;
+		else
+		    deletemarked[i] = 0;
 		totalelem--;
 		lastelem--;
 		totalmarked--;

@@ -772,7 +772,7 @@ void mouseonkartaarea(void)
 		//action on leftbutton on minimap
             	waitforleftbuton=0;
             	waitfordownleftbuton=0;
-            	putdestination(DestMouseOBJ,
+            	putdestination(/*DestMouseOBJ*/NULL,
                               (int)((mouse_x-Xkart-Xkartbeg)/factorx)*SIZESPRLANSHX,
                               (int)((mouse_y-Ykart-Ykartbeg)/factory)*SIZESPRLANSHY,
                               mouseprop,0,0);
@@ -792,7 +792,7 @@ void mouseonkartaarea(void)
         	if ((!buton2)&&(mouse_b&WMRIGHTKEY)&&!canceloperation)
         	{
             	    buton2=1;
-            	    putdestination(DestMouseOBJ,
+            	    putdestination(/*DestMouseOBJ*/NULL,
                               (int)((mouse_x-Xkart-Xkartbeg)/factorx)*SIZESPRLANSHX,
                               (int)((mouse_y-Ykart-Ykartbeg)/factory)*SIZESPRLANSHY,
                               MODEMOVE,0,0);
@@ -1265,21 +1265,10 @@ int gogame(struct mapinfo *info)
 		    scrparts[1].y=scrparts[0].y;
 		    scrparts[1].w=scrparts[0].w;
 		    scrparts[1].h=scrparts[0].h;
-/*		    if (retmenu)
-		    {
-			scrparts[0].x=lastmenuregion.x;
-	    		scrparts[0].y=lastmenuregion.y;
-			scrparts[0].w=lastmenuregion.w;
-			scrparts[0].h=lastmenuregion.h;
-		    }
-		    else
-*/
-		    {
-			scrparts[0].x=showedmenu.menutodraw->x;
-			scrparts[0].y=showedmenu.menutodraw->y;
-			scrparts[0].w=showedmenu.menutodraw->xsize;
-			scrparts[0].h=showedmenu.menutodraw->ysize;
-		    }
+		    scrparts[0].x=showedmenu.menutodraw->x;
+		    scrparts[0].y=showedmenu.menutodraw->y;
+		    scrparts[0].w=showedmenu.menutodraw->xsize;
+		    scrparts[0].h=showedmenu.menutodraw->ysize;
 		    scrregions=2;
 		}
 	    }

@@ -118,6 +118,11 @@ int  SetCloakedFlag(OBJ *a,int flag);
 char *getmapSTR(struct mapinfo *testmap,int nrofstr);
 struct OBJ *SearchUnit(int playernr,int SC_Unit,int shieldp,int lifep,int energyp);
 struct OBJ *SearchUnitFunc(int playernr,int (*funccheckunit)(int SC_Unit),int nearx,int neary,int dist);
+OBJ *SearchObjs(int x,int y,int range,int *array,int arraydim);
+int  FindSC_UnitType(OBJ *a,int player,int typeofbuild);
+int  SearchForUnitMask(int playernr,int mask,int *x,int *y);
+int  FindSC_UnitType(OBJ *a2,int player,int SC_Unit,int SC_AddonUnit);
+OBJ *SearchForObjInXY(int x,int y,unsigned char *SC_Units,int nrofunits);
 
 
 int  IfGeyserIsDepleted(OBJ *a);

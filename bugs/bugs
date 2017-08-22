@@ -260,7 +260,7 @@
 *23 bunker dies, and play unload from bunker sounds
 *24 irradiate and plague not have damage yet
 *25 darkswarm & disruption field not cover units yet
- 26 consume on non zerg units
+*26 move unit to destination on minimap is not correct then map is large
 *27 fire not move with builds
 *28 convert to infested cc not show compelete infest build
 *29 archon icon is active then 1 templar selected
@@ -276,7 +276,7 @@
 *39 probe 9 icon error & infsarah 5 icon error
 *40 morph to lurker if hydralist underground 
 *41 lockdown in this time obj die
- 42 battle cruiser need to disrupt casting if do moveobj
+*42 templar glow show that flingy creator is unknown
 *43 atack error on enemy beacon, not move closely to own beacon 
 *44 create larva at not ready hatchery
 *45 death in bunker from irradiate
@@ -289,7 +289,6 @@
 *52 construct addon in other place 
 *53 bug then die nucklear silo with nuke (decrease nuke supply twicely)
 *54 yamatoo no damage
- 55 goliath turret move than move to destobj
 *56 created psionic out of vision?
 *57 locked down at exploded unit
 *58 zergling move to destobj rotation to 0,0
@@ -332,7 +331,17 @@
 *95 floor trap doodad do not atack
 *96 incorect showing mineral srite than change player nr
 *97 birth devourer delayed
-*98 templar glow show that flingy creator is unknown
+*98 remove bugs in all mylists 'mark for deletion' so & this removed too (remain one img at all dies (scv & mineral))
+    marines not enter in transport,psi disruptor not attached to scv zerg2map
+    battle cruiser need to disrupt casting if do moveobj
+    delete unused queueaction
+    save/load mem under selectation box
+    move to battery need to recharge unit in battery
+    goliath turret move than move to destobj
+    consume on non zerg units
+    goliath img failure (add top of scince vessel)
+    tank not correct sprites at rotation
+    tank seage not correct fireing
     then ensnared unit, at decceleration speed big than maxslowedspeed
     stimpack both for marine and firebat not showed
-
+        

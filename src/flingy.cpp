@@ -41,8 +41,10 @@ void FLINGYLIST::DeleteMarked(void)	//delete marked
 	    {
 		elements[i] = elements[lastelem];			
 		((SC_FLINGY *)(elements[i]))->flingylist_elemnr = i;	
+		deletemarked[i] = deletemarked[lastelem];			
 	    }
-	    deletemarked[i] = 0;
+	    else
+		deletemarked[i] = 0;
 	    totalelem--;
 	    lastelem--;
 	}
