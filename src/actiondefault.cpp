@@ -737,6 +737,29 @@ int ResActionUnit(OBJ *a,MAIN_IMG *img)
     return(0);
 }
 //=================================
+//units 215-219 (flag,young chrysalis,psi emitter,data disc,khadarin crystal)
+int CarryActionUnit(OBJ *a,MAIN_IMG *img)
+{
+    signed char xlo,ylo;
+    OBJ *worker = a->carryobj;
+    if (a->modemove == MODEDIE)
+	return(0);
+    if (a->modemove != MODECARRYME || !worker)
+    {
+	//unit leave and don't move
+    }
+    else
+    {
+	//change coords of resources depend on worker + overlay special lo offset of worker
+	GetOBJXYSideOffsets(worker,worker->mainimage,IMAGE_OVERLAY_SPECIAL,&xlo,&ylo);
+	a->mainimage->xpos = GetOBJx256(worker)+(xlo<<8);
+	a->mainimage->ypos = GetOBJy256(worker)+(ylo<<8);
+	a->mainimage->side = worker->mainimage->side;
+	a->mainimage->neededside = worker->mainimage->side;
+    }
+    return(0);
+}
+//=================================
 //228 units
 int (*UnitActionDefaults[MAX_UNITS_ELEM])(struct OBJ *a,MAIN_IMG *img)=
 {
@@ -785,7 +808,7 @@ int (*UnitActionDefaults[MAX_UNITS_ELEM])(struct OBJ *a,MAIN_IMG *img)=
     &NoneActionUnit,&NoneActionUnit,&NoneActionUnit,&NoneActionUnit,&NoneActionUnit,	//200-204
     &NoneActionUnit,&NoneActionUnit,&NoneActionUnit,&NoneActionUnit,&NoneActionUnit,	//205-209
     &NoneActionUnit,&NoneActionUnit,&NoneActionUnit,&NoneActionUnit,&NoneActionUnit,	//210-214
-    &NoneActionUnit,&NoneActionUnit,&NoneActionUnit,&NoneActionUnit,&NoneActionUnit,	//215-219
+    &CarryActionUnit,&CarryActionUnit,&CarryActionUnit,&CarryActionUnit,&CarryActionUnit,//215-219
     &ResActionUnit, &ResActionUnit, &ResActionUnit, &ResActionUnit, &ResActionUnit,	//220-224
     &ResActionUnit, &ResActionUnit, &ResActionUnit                   			//225-227
 
