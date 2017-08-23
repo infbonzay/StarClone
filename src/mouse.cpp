@@ -661,13 +661,77 @@ void saveundermouse(void)
     CGetImage8(memmouseposx,memmouseposy,memmousepossizex,memmousepossizey,pixundermouse);
 }
 //==========================
+/*#define GRP_VIDMEM_OFFSET(x,y) (GRP_scanlineoffsets[y]+x)
+//==========================
+static char memunderpatr[4][1024];
 void saveunderpatr(void)
 {
+    if (patrate)
+    {
+	int x1,y1,x2,y2,sx,sy;
+	if (mouseprevx>mouse_x)
+	{
+	    x1 = mouse_x ;
+	    x2 = mouseprevx ;
+	}
+	else
+	{
+	    x2 = mouse_x ;
+	    x1 = mouseprevx ;
+	}
+	if (mouseprevy>mouse_y)
+	{
+	    y1 = mouse_y ;
+	    y2 = mouseprevy;
+	}
+	else
+	{
+	    y2 = mouse_y ;
+	    y1 = mouseprevy ;
+	}
+	sx = x2 - x1 + 1;
+	sy = y2 - y1 + 1;
+	memcpy(memunderpatr[0],GRP_vidmem+GRP_VIDMEM_OFFSET(x1+1,y1),sx - 2);
+	CGetImage8(x1,y1+1,1,sy-2,memunderpatr[1]);
+	memcpy(memunderpatr[2],GRP_vidmem+GRP_VIDMEM_OFFSET(x1+1,y2),sx - 2);
+	CGetImage8(x2,y1+1,1,sy-2,memunderpatr[3]);
+    }
 }
 //==========================
 void loadunderpatr(void)
 {
+    if (patrate)
+    {
+	int x1,y1,x2,y2,sx,sy;
+	if (mouseprevx>mouse_x)
+	{
+	    x1 = mouse_x ;
+	    x2 = mouseprevx ;
+	}
+	else
+	{
+	    x2 = mouse_x ;
+	    x1 = mouseprevx ;
+	}
+	if (mouseprevy>mouse_y)
+	{
+	    y1 = mouse_y ;
+	    y2 = mouseprevy ;
+	}
+	else
+	{
+	    y2 = mouse_y ;
+	    y1 = mouseprevy ;
+	}
+	sx = x2 - x1 + 1;
+	sy = y2 - y1 + 1;
+	memcpy(GRP_vidmem+GRP_VIDMEM_OFFSET(x1+1,y1),memunderpatr[0],sx - 2);
+	CPutImage8(x1,y1+1,1,sy-2,memunderpatr[1]);
+	memcpy(GRP_vidmem+GRP_VIDMEM_OFFSET(x1+1,y2),memunderpatr[2],sx - 2);
+	CPutImage8(x2,y1+1,1,sy-2,memunderpatr[3]);
+    }
 }
+*/
 //==========================
 void loadundermouse(void)
 {

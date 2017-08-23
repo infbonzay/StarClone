@@ -1269,13 +1269,13 @@ int gogame(struct mapinfo *info)
 		if (SHOWCELLS)
 	    	    _putcells();		//put borders
 #endif
+//	saveunderpatr();
 	saveundermouse();
-	saveunderpatr();
 //	desenpatr();
         putmouseonscreen();
         wscreenonmem(scrregions,scrparts);
-	loadunderpatr();
         loadundermouse();
+//	loadunderpatr();
 	showedmenu.EndDrawMenu();
 	if (retmenu)
 	{
@@ -1527,11 +1527,16 @@ void wscreenonmem(int nrregions,SCREEN_REGION regions[])
     strcat(s,ss);
     if (fordeselect[0])
     {
+	sprintf(ss," 0x%x",(long)fordeselect[0]);
+	strcat(s,ss);
+    }
+/*    if (fordeselect[0])
+    {
 	strcat(s," spores:");
 	itoa(GetMageAtr(&fordeselect[0]->atrobj,ATRCORROSIVEACID)>>8,ss,10);
 	strcat(s,ss);
     }
-/*    strcat(s," QueueElem:");
+    strcat(s," QueueElem:");
     itoa(QueueGame.GetQueueElements(),ss,10);
     strcat(s,ss);
 */    
