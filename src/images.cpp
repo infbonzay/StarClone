@@ -511,7 +511,8 @@ void MAIN_IMG::CheckForMouseOver(OBJ *a)
     int alliance,isbuild,mouseobjtype,focusonobj;
     if (IsDoodadState(a->SC_Unit) && (IsInvincibleUnit(a->SC_Unit)||GetDoodadState(a)==DOODAD_BOTTOM_STATE))
 	return;
-    if (IfCanClickOBJ(a->SC_Unit) && !IsPickupUnit(a->SC_Unit))
+//    if (IfCanClickOBJ(a->SC_Unit) && !IsPickupUnit(a->SC_Unit))
+    if (IfCanClickOBJ(a->SC_Unit) && ( !a->carryobj || !IsPickupUnit(a->SC_Unit)))
     {
 	alliance = player_aliance(NUMBGAMER,a->playernr);
 	isbuild = IsBuild(a->SC_Unit);

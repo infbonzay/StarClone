@@ -557,16 +557,22 @@ int CreateUnitProperties(struct OBJ *a,struct OBJstruct *b,int *prop,int playern
     }
     for (i=0;i<MAXUNITPROPERTIES;i++)
     {
-	if (prop[i]==MODERETURNCARGO&&!a->carryobj)
-	    prop[i]=MODENON;
-	else
-	if (prop[i]==MODEUNLOADUNITS)
+	if (prop[i]==MODERETURNCARGO)
+	{
+	    if (a->carryobj)
+	    {
+		 if (IsNonNeutralFlag(a->carryobj->SC_Unit))
+		    prop[i]=MODENON;
+	    }
+	    else
+		prop[i]=MODENON;
+	}
+	else if (prop[i]==MODEUNLOADUNITS)
 	{
 	    if (!a->loaded)
 	        prop[i]=MODENON;
 	}
-	else
-	    if ((a->SC_Unit==SC_VULTUREOBJ||a->SC_Unit==SC_HERO_JIMRAYNORVOBJ)&&prop[i]==MODERELEASEMINE&&!a->mines)
+	else if ((a->SC_Unit==SC_VULTUREOBJ||a->SC_Unit==SC_HERO_JIMRAYNORVOBJ)&&prop[i]==MODERELEASEMINE&&!a->mines)
 	    {
 		prop[i]=MODENON;
     	    }

@@ -80,6 +80,7 @@ void allobj_dieheal(void);
 void allobjconstr(void);
 int  moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerrorflag,int shiftbit);
 void CheckIfGotoTransport(OBJ *a,OBJ *destobj);
+void CheckIfGotoBattery(OBJ *a,OBJ *destobj);
 
 int accesstomove(struct OBJ *a,struct OBJstruct *b,int mode,int player);
 int movefrommouse(struct OBJ *a);

@@ -623,7 +623,7 @@ int foundonetypeobj(struct OBJ *a,struct OBJstruct *b)
 //=====================================
 struct OBJ *founduniqueobj(int x1,int y1)
 {
-int i,doodadok,x,y;
+int i,nodoodad,x,y;
 struct OBJ *a,*minobj=NULL;
 int yn,distx,disty,mindist=0x7fffffff;
     for (i=0;i<MaxObjects;i++)
@@ -632,10 +632,10 @@ int yn,distx,disty,mindist=0x7fffffff;
     	if (a->mainimage->flags & SC_IMAGE_FLAG_DISABLEDRAW)
     	    continue;
         yn=y1;
-	doodadok=1;
+	nodoodad=1;
     	if (IsDoodadState(a->SC_Unit)&&(IsInvincibleUnit(a->SC_Unit) || GetDoodadState(a)==DOODAD_BOTTOM_STATE))
-    	    doodadok=0;
-    	if (IfCanClickOBJ(a->SC_Unit)&&!IsPickupUnit(a->SC_Unit)&&doodadok)
+    	    nodoodad=0;
+    	    if (IfCanClickOBJ(a->SC_Unit)  && nodoodad && (!a->carryobj || !IsPickupUnit(a->SC_Unit)))
         {
     	    x = GetOBJx(a);
     	    y = GetOBJy(a);
@@ -717,7 +717,7 @@ int IfUnitIsSelectable(OBJ *a)
 #define MINHAP 2
 void selectMAN(int x1,int y1,int x2,int y2,int mode)
 {
-    int i,yn1,yn2,u=0,oldu,doodadok,x,y;
+    int i,yn1,yn2,u=0,oldu,nodoodad,x,y;
     struct OBJ *a,*firstobj=NULL,*speakOBJ;
     struct OBJstruct *b;
     deselectvars();
@@ -761,10 +761,10 @@ void selectMAN(int x1,int y1,int x2,int y2,int mode)
             a=objects[i];
     	    if (a->mainimage->flags & SC_IMAGE_FLAG_DISABLEDRAW)
     		continue;
-	    doodadok=1;
+	    nodoodad=1;
     	    if (IsDoodadState(a->SC_Unit) && (IsInvincibleUnit(a->SC_Unit)||GetDoodadState(a)==DOODAD_BOTTOM_STATE))
-    		doodadok=0;
-    	    if (IfCanClickOBJ(a->SC_Unit)&&!IsPickupUnit(a->SC_Unit)&&doodadok)
+    		nodoodad=0;
+    	    if (IfCanClickOBJ(a->SC_Unit)  && nodoodad && (!a->carryobj || !IsPickupUnit(a->SC_Unit)))
             {
                 yn1=y1;
                 yn2=y2;
@@ -1715,10 +1715,15 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
 	    }
 	    else
 	    {
-		SC_res_type = SC_ASSIMILATOROBJ;
-		ChangeResourcePlayer(a->playernr,PLUSFACTOR,0,newobj->data.resourcechunk.rescnt);
-    		if (TRIG_ChangeStat)
-		    PLAYER[a->playernr].statplayer.stat[STATPLAYER_GASMINED] += newobj->data.resourcechunk.rescnt;
+    		if (newobj->data.resourcechunk.restype == SC_CARRY_GAS[0])
+    		{
+		    SC_res_type = SC_ASSIMILATOROBJ;
+		    ChangeResourcePlayer(a->playernr,PLUSFACTOR,0,newobj->data.resourcechunk.rescnt);
+    		    if (TRIG_ChangeStat)
+			PLAYER[a->playernr].statplayer.stat[STATPLAYER_GASMINED] += newobj->data.resourcechunk.rescnt;
+		}
+		else
+		    break;
 	    }
 	    changegoods = 1;
 	    
@@ -1951,6 +1956,7 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
 	    if (destobj)
 	    {
 		CheckIfGotoTransport(a,destobj);
+		CheckIfGotoBattery(a,destobj);
 		if (!a->currentspeed)
 		{
 		    flingy_id = alldattbl.units_dat->flingy_id[a->SC_Unit];
@@ -2431,6 +2437,15 @@ escapeconstrslots:
 	    break;
     }
     return(MOVEOBJ_DONE);
+}
+//==========================================
+void CheckIfGotoBattery(OBJ *a,OBJ *destobj)
+{
+    switch(destobj->SC_Unit)
+    {
+	case SC_BATTERYOBJ:
+	    break;
+    }
 }
 //==========================================
 void CheckIfGotoTransport(OBJ *a,OBJ *destobj)
@@ -3232,6 +3247,8 @@ void dieobj(struct OBJ *a)
 	{
 	    //pickup unit will stopped
 	    a->carryobj->modemove = MODESTOP;
+	    a->carryobj->prop &= ~VARCANTSELECT;
+
 	}
 	a->carryobj->carryobj = NULL;
 	a->carryobj = NULL;
@@ -4878,6 +4895,10 @@ void AllFlingyControlOBJMoving(void)
 		{
 		    if (a->movelist && a->movelist->GetUsedElem())
 			ApplyNextModeMove(a);
+		    if (a->finalOBJ && IsPickupUnit(a->finalOBJ->SC_Unit) && IsWorkerUnit(a->SC_Unit) &&  !a->carryobj )
+		    {
+			PickupObj(a,a->finalOBJ);
+		    }
 		    continue;
 		}
 		if (alldattbl.flingy_dat->MoveControl[flingy_id] == FLINGYMOVECONTROL_WEAPON)

@@ -25,14 +25,12 @@
 //=================================
 void PickupObj(OBJ *a,OBJ *pickupobj)
 {
-//    signed char xlo,ylo;
 
+    pickupobj->mainimage->elevationlevel = a->mainimage->elevationlevel+1;
     a->carryobj = pickupobj;
     a->carryobj->carryobj=a;
     a->finalOBJ = NULL;
     
-//    GetOBJXYSideOffsets(a,a->mainimage,IMAGE_OVERLAY_SPECIAL,&xlo,&ylo);
-
     pickupobj->modemove = MODECARRYME;
     pickupobj->prop |= VARCANTSELECT;
 	    
