@@ -2322,7 +2322,8 @@ escapeconstrslots:
 		}
 		else
 		{
-		    //unit moves to shield battery?!
+		    MakeQueueAction(WAITSOMETIMEACTION,a,destobj,0,0,0,30);
+		    AddModeMove(a,destobj,mode,x,y,NOSHOWERROR);
 		}
 	    }
 	    break;
@@ -2444,6 +2445,7 @@ void CheckIfGotoBattery(OBJ *a,OBJ *destobj)
     switch(destobj->SC_Unit)
     {
 	case SC_BATTERYOBJ:
+	    moveobj(destobj,a,MODERECHARGESHIELD,0,0,NOSHOWERROR,0);
 	    break;
     }
 }

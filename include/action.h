@@ -14,12 +14,10 @@
 #include "maps.h"
 #include "unitaction.h"
 
-#define MOVEACTION		1
-#define BACKEFFACTION		2
-#define NONDETECTEDACTION	3
-#define CREATELARVAEACTION	4
-#define MAGETIMEDACTION		5
-#define SOMENEEDEDACTION	6
+#define NONDETECTEDACTION	1
+#define CREATELARVAEACTION	2
+#define WAITSOMETIMEACTION	3
+#define SOMENEEDEDACTION	4
 
 #define SPECIALMAPID			(void *)1
 #define SPECIALMAPUNITSID		(void *)2

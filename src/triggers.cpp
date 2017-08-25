@@ -1344,7 +1344,8 @@ creationwithoutproperties:
 			    {
 				//done by previous trigger
 				SetTriggeredUnitState(objects[j],0);
-				MakeMindControl(objects[j],playernr,objects[j]->color);
+//				MakeMindControl(objects[j],playernr,objects[j]->color);
+				MakeMindControl(objects[j],playernr,PLAYER[playernr].colorRACE);
 		    		SetBlinkOBJ(objects[j]);
 				if (--nrofunits==0)
 				    break;

@@ -419,6 +419,7 @@ void MakeMindControl(OBJ *a,int playernr,int ncolor)
     ChangeMaxSupply(a->playernr,a->SC_Unit,MINUSFACTOR);
     a->playernr = playernr;
     a->color = ncolor;
+    a->mainimage->imageusercolor = ncolor;
     if (a->myparent)			//now i have no parent
 	delchild(a->myparent,a);	//
     if (a->childs)			//the childs so is my

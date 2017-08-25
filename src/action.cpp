@@ -65,12 +65,10 @@ void QueueAction(void *IDQueueAction,int DestroyQueue)
 //			actobj->aftercooldownaction.destx,actobj->aftercooldownaction.desty,NOSHOWERROR);
 //	    }
 //	    break;
-	case MOVEACTION:
+//	case MOVEACTION:
 //	    AdditionalMoveProceed(actobj,act->param0,act->param1,act->param2);
-	    moveobj(actobj,actdestobj,act->param0,act->param1,act->param2,NOSHOWERROR,0);
-	    break;
-	case BACKEFFACTION:
-	    break;
+//	    moveobj(actobj,actdestobj,act->param0,act->param1,act->param2,NOSHOWERROR,0);
+//	    break;
 	case NONDETECTEDACTION:
 	    //now need to eliminate obj from wait
 	    temp = actobj->myparent;
@@ -96,7 +94,7 @@ void QueueAction(void *IDQueueAction,int DestroyQueue)
 		actobj->prop &= ~VARLARVAEONCONSTRUCT;
 	    }
 	    break;
-	case MAGETIMEDACTION:
+/*	case MAGETIMEDACTION:
 	    //the mage time expired
 	    //need to go from desenpicturemage to endpicturemage
 	    if (tempmage->nrdesen==DESENPICTUREMAGE)
@@ -105,11 +103,16 @@ void QueueAction(void *IDQueueAction,int DestroyQueue)
 		tempmage->pos=0;
 		tempmage->nrdesen=ENDPICTUREMAGE;
 	    }
-/*	    else
+	    else
 	    {
 		printf("an error apear in queue mage %s\n",mageprop[tempmage->typemage].namemage);
 	    }
 */
+	    break;
+	case WAITSOMETIMEACTION:
+	    actobj=(OBJ*)act->obj;
+	    actdestobj=(OBJ*)act->destobj;
+	    ApplyNextModeMove(actobj);
 	    break;
 	case SOMENEEDEDACTION:
 	    MakeQueueAction(SOMENEEDEDACTION,actobj,actdestobj,act->param0,act->param1,act->param2,act->param0);
@@ -137,17 +140,16 @@ void MakeQueueAction(int actiontype,void *a,void *destobj,
     act->param0 = param0;
     act->param1 = param1;
     act->param2 = param2;
-    switch(actiontype)
+/*    switch(actiontype)
     {
-	case BACKEFFACTION:
-	    break;
-//	case NONDETECTEDACTION:
-//	case MAGETIMEDACTION:
-//	case SOMENEEDEDACTION:
-//	case TIMETOWAITNUKE:
+	case NONDETECTEDACTION:
+	case MAGETIMEDACTION:
+	case SOMENEEDEDACTION:
+	case TIMETOWAITNUKE:
 	default:
 	    break;
     }
+*/
     act->obj=actobj;
     act->destobj=actdestobj;
     if (QueueGame.AddToQueue(act,afterexpiriedticks)==QUEUEFULL)
@@ -222,6 +224,7 @@ int AttachAddonToBuild(OBJ *a)
     {
 	a->playernr = a2->playernr;
 	a->color = a2->color;
+	a->mainimage->imageusercolor = a2->mainimage->imageusercolor;
 	if (a->SC_Unit == SC_NUCLEARSILOOBJ)
 	{
 	    nukes = getchilds(a);
@@ -258,6 +261,7 @@ int AttachNearestAddon(OBJ *a)
     {
 	a2->playernr = a->playernr;
 	a2->color = a->color;
+	a2->mainimage->imageusercolor = a->mainimage->imageusercolor;
 	if (a2->SC_Unit == SC_NUCLEARSILOOBJ)
 	{
 	    nukes=getchilds(a2);
