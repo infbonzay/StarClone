@@ -77,9 +77,7 @@ void QueueAction(void *IDQueueAction,int DestroyQueue)
 	    actobj->prop |= VARINBASE;
 	    if (temp)
 	    {
-		if ((temp->prop&VARNOTHERE)||
-		    (temp->prop&VARNOTWORK)||
-		    temp->modemove==MODESTOPPOWEROFF||
+		if ((temp->prop&VARNOTHERE)||(temp->prop&VARNOTWORK) || //)||temp->modemove==MODESTOPPOWEROFF||????unused
 		    GetMageAtr(&temp->atrobj,ATRSTASIS)>0)
 			;
 		else

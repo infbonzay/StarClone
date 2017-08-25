@@ -1527,7 +1527,7 @@ void wscreenonmem(int nrregions,SCREEN_REGION regions[])
     strcat(s,ss);
     if (fordeselect[0])
     {
-	sprintf(ss," 0x%x",(long)fordeselect[0]);
+	sprintf(ss," 0x%x",(int)fordeselect[0]);
 	strcat(s,ss);
     }
 /*    if (fordeselect[0])

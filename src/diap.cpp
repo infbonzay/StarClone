@@ -67,9 +67,9 @@ int probeconstruct(int nb)
     int k;
     struct OBJstruct *b;
     //for probe
-    if (nb==MODEWARPBUILD||
-        nb==MODEMUTATEBUILD||
-        nb==MODECONSTRUCTBUILD)
+    if (nb == MODEWARPBUILD ||
+        nb == MODEMUTATEBUILD ||
+        nb == MODECONSTRUCTBUILD )
        for (k=0;k<MAXSELECTMAN;k++)
            if (fordeselect[k])
            {
@@ -400,7 +400,7 @@ selectedicon:
                 {
         	    if (!probeconstruct(oldselectbuton))
             	    {
-                	if (localprop[i*3+j]!=MODEWARPARCHON&&
+                	if (localprop[i*3+j]!=MODEWARPARCHON &&
 			    localprop[i*3+j]!=MODEWARPDARCHON)
 			{
 			    for (k=0;k<MAXSELECTMAN;k++)

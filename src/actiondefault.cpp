@@ -24,7 +24,7 @@ int NoneActionUnit(struct OBJ *a,MAIN_IMG *img)
 //=================================
 int GoliathTAction(struct OBJ *a,MAIN_IMG *img)
 {
-    if (a->modemove==MODEATACK || a->modemove==MODEBEGINATACK || a->modemove==MODEENDATACK)
+    if (a->modemove==MODEATACK)
 	return(0);
     SetDestRotatePos(a,GetDestRotatePos(a->subunit));
     return(0);
@@ -36,8 +36,7 @@ int GoliathTAction(struct OBJ *a,MAIN_IMG *img)
 //=================================
 int TankTAction(struct OBJ *a,MAIN_IMG *img)
 {
-    if (a->modemove==MODEATACK || a->modemove==MODEBEGINATACK || a->modemove==MODEENDATACK || 
-	a->modemove==MODETANKSIEGE || a->modemove==MODETANKNORMAL)
+    if (a->modemove==MODEATACK || a->modemove==MODETANKSIEGE || a->modemove==MODETANKNORMAL)
 	return(0);
     SetDestRotatePos(a,GetDestRotatePos(a->subunit));
     return(0);

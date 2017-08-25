@@ -219,7 +219,7 @@ struct OBJ *SearchOBJforOBJ(struct OBJ *a,int modemage)
 			if (GetDistanceBetweenUnits256(a,destobj) < mindistance)
 			    findobj=1;
 		    break;
-		case MODERESCUABLE:
+		case SEARCHMODE_RESCUABLE:
 		    if (destobj->playernr==NUMBGAMER)
 			if (GetDistanceBetweenUnits256(a,destobj) < mindistance)
 			    findobj=1;

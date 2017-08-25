@@ -104,82 +104,20 @@
 #define MODEESCAPE5            	389
 
 
-//==================================================old modes 
-
-
-#define MODEROTATEBEFOREATACK	10      //
-#define MODEATACKMOVE		11      //
-
-#define MODELASTSIMPLEMOVE     	12      //                       |
-#define MODEUP                	15      //                       |
-#define MODEDOWN              	16      //                       |
-
-
+//special modes
 #define MODECARRYME		31
+#define MODEWARPBUILD         	134
+#define MODEADVWARPBUILD      	135
 
-#define MODESTAYANDUNLOADUNITS	32
-#define SELECTLARVAES	      	35
-#define MODEFORMAGE           	37      //                       |
+#define MODEMUTATEBUILD       	136
+#define MODEADVMUTATEBUILD    	137
 
-#define MODEBEGINCONSTRUCTION 	100
-//#define MODECONSTRUCTION      	101
-#define MODEDECONSTRUCTION    	102
-#define MODEBEGINWARP         	103
-#define MODEDONE              	104
-#define MODEMAKEING           	105
-#define MODEUNDONE		106      //                       |
-#define MODESTOPPOWEROFF	107      //                       |
-
-
-#define MODEBEGINATACK		110
-#define MODEENDATACK		111
-
-#define MODEWARPBUILD         	134        //                       |
-#define MODEADVWARPBUILD      	135        //                       |
-
-#define MODEMUTATEBUILD       	136        //                       |
-#define MODEADVMUTATEBUILD    	137        //                       |
-
-#define MODECONSTRUCTBUILD    	138      //                       |
-#define MODEADVCONSTRUCTBUILD 	139      //                       |
-
-//=============================units
-#define MODEMINUNIT           	141        //                       |
-
-#define MODEDOODADGOBOTTOM	143		//open door, hide traps
-#define MODEDOODADGOTOP		144		//close	door,show traps
-
-
-
-#define MODEMAXUNIT           	189        //                       |
-//=============================specific mage
-
-#define MODEGATHERGAZ		140
-
-
-//=============================builds
-#define MODEMAKEBUILD         	199
-#define MODEHOLDPOSMAGE       	255	//                       |
-//=============================
-#define MODELIFTDOWNWITHATTCHM	256
-
-
-#define MINMAGECAST		259	//                       |
-
-#define MODECORROCIVEACID	321	//                       |
-
-
-
-
-#define MAXMAGECAST		299	//                       |
-//=============================
+#define MODECONSTRUCTBUILD    	138
+#define MODEADVCONSTRUCTBUILD 	139
 
 #define MODERECHARGE		399
-
-#define ENDSIMPLEMODE		420
-#define UPGRADEMODES		420
 #define MODEMAKENUKEBOMB	472
+#define SEARCHMODE_RESCUABLE	499
 
-#define MODERESCUABLE		499
-#define MAXIMMODE		500	//  <--------------------|
+#define MAXIMMODE		500
 

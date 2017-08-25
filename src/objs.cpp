@@ -71,7 +71,7 @@ void destroyobj(struct OBJ *a)
 	    {
 		if (a->childs->parentof[i])
 		{
-		    if (a->childs->parentof[i]->modemove==MODERECHARGE)
+		    if (a->childs->parentof[i]->modemove == MODERECHARGE)
 			destroyobj(a->childs->parentof[i]);
 		    if (a->childs->parentof[i])
 		    {
@@ -2556,7 +2556,7 @@ int accesstomove(struct OBJ *a,struct OBJstruct *b,int mode,int player)
 	    //proceed next like a other probe or scv
 	case SC_PROBEOBJ:
 	case SC_SCVOBJ:
-	    if ((a->typeofprop != PROPNORMAL1) && a->modemove<=MODELASTSIMPLEMOVE)
+	    if ((a->typeofprop != PROPNORMAL1))// && a->modemove<=MODELASTSIMPLEMOVE) ????unused
 		    return 1;
 	    break;
 	case SC_LARVAEOBJ:
@@ -3575,7 +3575,7 @@ void applyrescuableunits(void)
 	    if (map.pl_iowner[a->playernr]==OWNER_RESCUABLE)
 	    {
 //		printf("rescuable=%s\n",getOBJname(a->SC_Unit));
-	    	c = SearchOBJforOBJ(a,MODERESCUABLE);
+	    	c = SearchOBJforOBJ(a,SEARCHMODE_RESCUABLE);
 		if (c)
 		{
 		    MakeMindControl(a,NUMBGAMER,a->color);
@@ -3881,7 +3881,7 @@ struct OBJ* OneUnitSearchGoal(OBJ *a,OBJstruct *b,int ignoremodes)
     if (IsAtackerActiveUnit(a)&& map.pl_owner[a->playernr] == OWNER_HUMAN || map.pl_owner[a->playernr] == OWNER_COMPUTER)
     {
 	if (ignoremodes || a->modemove == MODESTOP || a->modemove == MODEHOLDPOS || a->modemove == MODEPATROL || (a->prop & VARMOVEINATACKMODE)||
-	    (IsDoodadState(a->SC_Unit)&&!IsInvincibleUnit(a->SC_Unit)&&(a->modemove==MODEDOODADGOTOP || a->modemove==MODEDOODADGOBOTTOM)))
+	    (IsDoodadState(a->SC_Unit)&&!IsInvincibleUnit(a->SC_Unit)&&(GetDoodadMoveDirection(a) != DOODAD_MOVE_NONE)))
 	    {
 		//zero if usual unit,     bunker,reaver,carrie have a special unitatack_id
 		SC_Unit = a->SC_Unit;
