@@ -418,7 +418,7 @@ void MakeMindControl(OBJ *a,int playernr,int ncolor)
     ChangeSupply(a->playernr,a->SC_Unit,MINUSFACTOR);
     ChangeMaxSupply(a->playernr,a->SC_Unit,MINUSFACTOR);
     a->playernr = playernr;
-    a->color = ncolor;
+//    a->color = ncolor;
     a->mainimage->imageusercolor = ncolor;
     if (a->myparent)			//now i have no parent
 	delchild(a->myparent,a);	//
@@ -432,7 +432,7 @@ void MakeMindControl(OBJ *a,int playernr,int ncolor)
 		    PLAYER[a->childs->parentof[i]->playernr].nukes--;
 		ChangeSupply(a->playernr,a->childs->parentof[i]->SC_Unit,MINUSFACTOR);
 		a->childs->parentof[i]->playernr = playernr;
-	        a->childs->parentof[i]->color = ncolor;
+	        a->childs->parentof[i]->mainimage->imageusercolor = ncolor;
 		ChangeSupply(a->playernr,a->childs->parentof[i]->SC_Unit,PLUSFACTOR);
 		if (a->childs->parentof[i]->SC_Unit==SC_NUKEOBJ)
 		    PLAYER[a->childs->parentof[i]->playernr].nukes++;
@@ -447,7 +447,7 @@ void MakeMindControl(OBJ *a,int playernr,int ncolor)
 	    {
 		ChangeSupply(a->loaded->loadedunits[i]->playernr,a->loaded->loadedunits[i]->SC_Unit,MINUSFACTOR);
 		a->loaded->loadedunits[i]->playernr = playernr;
-		a->loaded->loadedunits[i]->color = ncolor;
+		a->loaded->loadedunits[i]->mainimage->imageusercolor = ncolor;
 		ChangeSupply(a->loaded->loadedunits[i]->playernr,a->loaded->loadedunits[i]->SC_Unit,PLUSFACTOR);
 	    }
 	}

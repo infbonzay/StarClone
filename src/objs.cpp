@@ -315,7 +315,6 @@ struct OBJ *createobjlowlevel(OBJ *workerobj,int x,int y,int SC_Unit,int playern
 	SetInvincibleOBJ(a,1);
     if (IsAirUnit(a->SC_Unit))
 	SetOnSkyOBJ(a,1);
-    a->color=PLAYER[playernr].colorRACE;
     a->playernr=playernr;
     if (IsSpellCaster(a->SC_Unit))//&&(GetMageAtr(&a->atrobj,ATRHALLUCINATION)==0))
     {
@@ -360,6 +359,7 @@ struct OBJ *createobjlowlevel(OBJ *workerobj,int x,int y,int SC_Unit,int playern
 	CreateImageAndAddToList(a,x<<8,y<<8,readyatbegin);
 //	iscriptinfo.ExecuteScript(a->image);
     }
+    a->mainimage->imageusercolor=PLAYER[playernr].colorRACE;
     ForceKartChanges(a);
     if (a->xkart>=MAXXMAP||a->ykart>=MAXYMAP)
     {
@@ -3580,7 +3580,7 @@ void applyrescuableunits(void)
 	    	c = SearchOBJforOBJ(a,SEARCHMODE_RESCUABLE);
 		if (c)
 		{
-		    MakeMindControl(a,NUMBGAMER,a->color);
+		    MakeMindControl(a,NUMBGAMER,a->mainimage->imageusercolor);
 		    SetBlinkOBJ(a);
 		    if (++haverescued>2)
 			break;

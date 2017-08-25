@@ -79,7 +79,7 @@ void minimap_showobj(OBJ *a,OBJstruct *b)
     {
 	sx=GetUnitBoxWidth(a->SC_Unit);
 	sy=GetUnitBoxHeight(a->SC_Unit);
-	ObjOnMiniMap(a->xkart-sx/64,a->ykart-sy/64,sx,sy,tableforminimap[a->color],Minimap);
+	ObjOnMiniMap(a->xkart-sx/64,a->ykart-sy/64,sx,sy,tableforminimap[a->mainimage->imageusercolor],Minimap);
     }
 }
 //==============================================

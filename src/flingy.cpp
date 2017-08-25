@@ -352,7 +352,7 @@ SC_FLINGY *CreateWeaponFlingy(OBJ *a,OBJ *destobj,int xstart256,int ystart256,in
 	if (IsOnSkyOBJ(a))
 	    flags |= SC_IMAGE_FLAG_AIRIMG;
     }
-    flingy->img = new MAIN_IMG(images_id,xstart256+(weaponxoffs<<8),ystart256+(weaponyoffs<<8),elevation+deltaelevation,0,0,launchside,a->color,flags,ISCRIPTNR_INIT);
+    flingy->img = new MAIN_IMG(images_id,xstart256+(weaponxoffs<<8),ystart256+(weaponyoffs<<8),elevation+deltaelevation,0,0,launchside,a->mainimage->imageusercolor,flags,ISCRIPTNR_INIT);
     mainimageslist.AddElem(flingy->img);
 
     flingy->img->whocreate = SC_IMAGE_FLINGY_CREATOR;

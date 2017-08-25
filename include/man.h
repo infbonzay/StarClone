@@ -261,7 +261,7 @@ struct OBJ
         unsigned char	mines;
 //	unsigned char	corrosiveacidsprnr;
 
-        unsigned char	color;               //tsvet unita
+//        unsigned char	color;               //tsvet unita
         unsigned char	whenregen;
 
         unsigned char	playernr;            //nomer igroca

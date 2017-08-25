@@ -223,7 +223,7 @@ int AttachAddonToBuild(OBJ *a)
     if (a2)
     {
 	a->playernr = a2->playernr;
-	a->color = a2->color;
+//	a->color = a2->color;
 	a->mainimage->imageusercolor = a2->mainimage->imageusercolor;
 	if (a->SC_Unit == SC_NUCLEARSILOOBJ)
 	{
@@ -260,7 +260,7 @@ int AttachNearestAddon(OBJ *a)
     if (a2)
     {
 	a2->playernr = a->playernr;
-	a2->color = a->color;
+//	a2->color = a->color;
 	a2->mainimage->imageusercolor = a->mainimage->imageusercolor;
 	if (a2->SC_Unit == SC_NUCLEARSILOOBJ)
 	{
