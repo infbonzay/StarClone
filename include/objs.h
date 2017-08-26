@@ -1,6 +1,7 @@
 #if !defined(_OBJS_W)
 #define _OBJS_W
 
+#define TANKSIEGESIDE		(12*8)
 #define WAITTOHARVEST		15
 
 #define DRONE_START_YPOS	7

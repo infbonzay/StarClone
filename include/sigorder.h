@@ -11,6 +11,7 @@ int  SIGOrder_TerranBuildFinishConstruct(OBJ *a);
 int  SIGOrder_ProtossBuildShowTexture(OBJ *a);
 int  SIGOrder_ProtossBuildWhiteAppear(OBJ *a);
 int  SIGOrder_ProtossBuildFinishConstruct(OBJ *a);
+int  SIGOrder_Tank_EndRotationBeforeSiege(OBJ *a);
 int  SIGOrder_Tank_AfterSiegeCmd(OBJ *a);
 int  SIGOrder_Tank_AfterNormalCmd(OBJ *a);
 int  SIGOrder_AfterBurrow(OBJ *a);

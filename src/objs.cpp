@@ -1975,20 +1975,24 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
 	    {
 	        return(MOVEOBJ_NOACT);
 	    }
+	    if (a->mainimage->side != TANKSIEGESIDE)
+	    {
+		SetOrder(a,1,&SIGOrder_Tank_EndRotationBeforeSiege);
+		a->mainimage->UnitNeededDirection256(TANKSIEGESIDE);
+		SetOBJIScriptNr(a,ISCRIPTNR_SPECIALSTATE2,ISCRIPTNR_SETONLY);
+		AddModeMove(a,NULL,mode,x,y,NOSHOWERROR);
+		break;
+	    }
 	    if (a->modemove == MODETANKSIEGE || a->modemove == MODETANKNORMAL)
 	        return(MOVEOBJ_NOACT);
-	    if (a->mainimage->side != 12*8)
-	    {
-		????
-	    }
 	    SetModeMove(a,mode);
 	    inv = a->mainimage->invisiblecolors;
 	    SetOrder(a,1,&SIGOrder_Tank_AfterSiegeCmd);
 	    if (a->SC_Unit == SC_TANKNORMALOBJ)
-		ChangeUnitAndImagesAssociated(a,SC_TANKSIEGEOBJ);
+	        ChangeUnitAndImagesAssociated(a,SC_TANKSIEGEOBJ);
 	    else
-		if (a->SC_Unit == SC_HERO_EDMUNDDUKETMOBJ)
-		    ChangeUnitAndImagesAssociated(a,SC_HERO_EDMUNDDUKESMOBJ);
+	        if (a->SC_Unit == SC_HERO_EDMUNDDUKETMOBJ)
+	    	ChangeUnitAndImagesAssociated(a,SC_HERO_EDMUNDDUKESMOBJ);
 	    a->mainimage->invisiblecolors = inv;
 	    break;
 	case MODETANKNORMAL:

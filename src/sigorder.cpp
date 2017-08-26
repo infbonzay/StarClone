@@ -176,6 +176,12 @@ int  SIGOrder_ProtossBuildFinishConstruct(OBJ *a)
     return(0);
 }
 //==================================
+int SIGOrder_Tank_EndRotationBeforeSiege(OBJ *a)
+{
+    SetOrder(a,0,NULL);
+    ApplyNextModeMove(a);
+}
+//==================================
 int  SIGOrder_Tank_AfterSiegeCmd(OBJ *a)
 {
     a->modemove = MODESTOP;

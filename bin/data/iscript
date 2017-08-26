@@ -5661,7 +5661,7 @@ Unused2        	[NONE]
 Walking        	SiegeTank_Tank_BaseWalking
 WalkingToIdle  	SiegeTank_Tank_BaseWalkingToIdle
 SpecialState1  	[NONE]
-SpecialState2  	[NONE]
+SpecialState2  	SiegeTank_Tank_Rotation
 AlmostBuilt    	[NONE]
 Built          	[NONE]
 Landing        	[NONE]
@@ -5703,7 +5703,10 @@ SiegeTank_Tank_BaseWalking:
 	playfram       	0x22	# frame set 2
 	goto           	SiegeTank_Tank_BaseWalking
 
-
+SiegeTank_Tank_Rotation:
+	sigorder	1
+	goto           	common_waitforever
+	
 # ----------------------------------------------------------------------------- #
 # This header is used by images.dat entries:
 # 251 SiegeTankTankTurret (terran\tankt.grp)
