@@ -1672,7 +1672,7 @@ int TRG_RunAIScriptAtLocation(mapinfo *info,int aiscriptnr,int playernr,int play
     		    {
 			if (map.pl_iowner[a->playernr] == OWNER_RESCUABLE)
 	    		{
-			    MakeMindControl(a,NUMBGAMER,a->mainimage->imageusercolor);
+			    MakeMindControl(a,NUMBGAMER,a->color);
 			    haverescued++;
 			}
 		    }

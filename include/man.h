@@ -275,6 +275,7 @@ struct OBJ
 
         unsigned char	xkart;               //
         unsigned char	ykart;               //coord.
+	unsigned char	color;
 
 	SFXPLAY		sfxplay;
 

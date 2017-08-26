@@ -359,7 +359,7 @@ struct OBJ *createobjlowlevel(OBJ *workerobj,int x,int y,int SC_Unit,int playern
 	CreateImageAndAddToList(a,x<<8,y<<8,readyatbegin);
 //	iscriptinfo.ExecuteScript(a->image);
     }
-    a->mainimage->imageusercolor=PLAYER[playernr].colorRACE;
+    a->color=PLAYER[playernr].colorRACE;
     ForceKartChanges(a);
     if (a->xkart>=MAXXMAP||a->ykart>=MAXYMAP)
     {
@@ -1977,6 +1977,10 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
 	    }
 	    if (a->modemove == MODETANKSIEGE || a->modemove == MODETANKNORMAL)
 	        return(MOVEOBJ_NOACT);
+	    if (a->mainimage->side != 12*8)
+	    {
+		????
+	    }
 	    SetModeMove(a,mode);
 	    inv = a->mainimage->invisiblecolors;
 	    SetOrder(a,1,&SIGOrder_Tank_AfterSiegeCmd);
@@ -2558,7 +2562,7 @@ int accesstomove(struct OBJ *a,struct OBJstruct *b,int mode,int player)
 	    //proceed next like a other probe or scv
 	case SC_PROBEOBJ:
 	case SC_SCVOBJ:
-	    if ((a->typeofprop != PROPNORMAL1))// && a->modemove<=MODELASTSIMPLEMOVE) ????unused
+	    if (a->typeofprop != PROPNORMAL1)
 		    return 1;
 	    break;
 	case SC_LARVAEOBJ:
@@ -3580,7 +3584,7 @@ void applyrescuableunits(void)
 	    	c = SearchOBJforOBJ(a,SEARCHMODE_RESCUABLE);
 		if (c)
 		{
-		    MakeMindControl(a,NUMBGAMER,a->mainimage->imageusercolor);
+		    MakeMindControl(a,NUMBGAMER,a->color);
 		    SetBlinkOBJ(a);
 		    if (++haverescued>2)
 			break;
@@ -4233,7 +4237,7 @@ void moveaway(OBJ *a,int directiondamage,int modeofmove,int addtoqueue)
     dx = inertion[side][0]*SIZESPRLANSHX*5;
     dy = inertion[side][1]*SIZESPRLANSHY*5;
     if (addtoqueue)
-	;//???? AddNextModeMove(a,NULL,modeofmove,a->sourcex+dx,a->sourcey+dy);
+	AddNextModeMove(a,NULL,modeofmove,a->sourcex+dx,a->sourcey+dy);
     else
 	moveobj(a,NULL,modeofmove,GetOBJx(a)+dx,GetOBJy(a)+dy,NOSHOWERROR,0);
 */

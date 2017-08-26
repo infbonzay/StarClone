@@ -75,8 +75,7 @@ void QueueAction(void *IDQueueAction,int DestroyQueue)
 	    actobj->prop |= VARINBASE;
 	    if (temp)
 	    {
-		if ((temp->prop&VARNOTHERE)||(temp->prop&VARNOTWORK) || //)||temp->modemove==MODESTOPPOWEROFF||????unused
-		    GetMageAtr(&temp->atrobj,ATRSTASIS)>0)
+		if ((temp->prop&VARNOTHERE)||(temp->prop&VARNOTWORK) || GetMageAtr(&temp->atrobj,ATRSTASIS)>0)
 			;
 		else
 		    WakeUpChild(actobj);
@@ -223,8 +222,7 @@ int AttachAddonToBuild(OBJ *a)
     if (a2)
     {
 	a->playernr = a2->playernr;
-//	a->color = a2->color;
-	a->mainimage->imageusercolor = a2->mainimage->imageusercolor;
+	a->color = a2->color;
 	if (a->SC_Unit == SC_NUCLEARSILOOBJ)
 	{
 	    nukes = getchilds(a);
@@ -260,8 +258,7 @@ int AttachNearestAddon(OBJ *a)
     if (a2)
     {
 	a2->playernr = a->playernr;
-//	a2->color = a->color;
-	a2->mainimage->imageusercolor = a->mainimage->imageusercolor;
+	a2->color = a->color;
 	if (a2->SC_Unit == SC_NUCLEARSILOOBJ)
 	{
 	    nukes=getchilds(a2);

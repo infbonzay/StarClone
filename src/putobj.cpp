@@ -298,7 +298,7 @@ void workingbuilds(struct OBJ *a)
     struct OBJ *temp;
     struct OBJstruct *b,*b2;
     b=loadobj(a->SC_Unit);
-    if ( (a->prop & VARPOWEROFF))// || a->modemove==MODEDONE || a->modemove == MODEUNDONE )????unused
+    if ( a->prop & VARPOWEROFF )
 	return;
     //no constructions
     if ( !GetConstructNR(a))
