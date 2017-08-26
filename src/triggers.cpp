@@ -1277,10 +1277,21 @@ creationwithoutproperties:
 				//done by previous trigger
 				SetTriggeredUnitState(objects[j],0);
 				//order unburrow if needed, after then move,atack,...
-				if (locnr != ANYWHERELOCATIONNR )//anywhere location
+/*				if (locnr != ANYWHERELOCATIONNR )//anywhere location
 				{
 				    deltax = GetOBJx(objects[j]) - xobj;
 				    deltay = GetOBJy(objects[j]) - yobj;
+				}
+*/
+				if (locnr != searchloc )
+				{
+				    deltax = GetOBJx(objects[j]) - xobj;
+				    deltay = GetOBJy(objects[j]) - yobj;
+				}
+				else
+				{
+				    deltax=0;
+				    deltay=0;
 				}
 				switch(objects[j]->SC_Unit)
 				{
@@ -1344,8 +1355,8 @@ creationwithoutproperties:
 			    {
 				//done by previous trigger
 				SetTriggeredUnitState(objects[j],0);
-//				MakeMindControl(objects[j],playernr,objects[j]->color);
 				MakeMindControl(objects[j],playernr,PLAYER[playernr].colorRACE);
+				moveobj(objects[j],NULL,MODESTOP,0,0,NOSHOWERROR,0);
 		    		SetBlinkOBJ(objects[j]);
 				if (--nrofunits==0)
 				    break;
