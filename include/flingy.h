@@ -10,6 +10,7 @@
 #define FLINGY_FLAG_ACCELERATIONBIT			0x04
 #define FLINGY_FLAG_BOUNCEATACK				0x08
 #define FLINGY_FLAG_AFTERLAUNCHCHANGEELEVATION		0x10
+#define FLINGY_IMG_NULL					0x20
 //===================================================
 class SC_FLINGY
 {

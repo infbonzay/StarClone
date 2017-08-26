@@ -87,7 +87,11 @@ int main(int c,char **parm,char **env)
     struct stat statpath;
     mapinfo *testmap;
     char temppath[1024];
-    
+
+#ifdef TESTMALLOC
+    char *testmem = (char *)wmalloc(16);
+    wfree(testmem);
+#endif    
 
     inivars();
     fflush(stdout);
@@ -1089,9 +1093,9 @@ int gogame(struct mapinfo *info)
 		CreatePylonSelectArea();
 		RemovePylonSelectArea();
 
-		AllImages_DeleteMarked();		//destroy images previously marked
-
 		weaponflingy.DeleteMarked();
+
+		AllImages_DeleteMarked();		//destroy images previously marked
 
     		DestroyMarked();			//destroy unit previously marked
 		

@@ -268,10 +268,12 @@ int IScriptCmd_end(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
 		{
 		    img->parentimg->creator.flingycreator.flingy->DelFlingy();
 		    img->parentimg->DeleteMainImg(&mainimageslist);
+		    img->parentimg->creator.flingycreator.flingy=NULL;
+		    img->parentimg->whocreate=SC_IMAGE_UNKNOWN_CREATOR;
 		    return(1);
 		}
 		else
-		    DEBUGMESSCR("bad news END IMAGE flingy creator not developed :(\n");
+		    DEBUGMESSCR("flingy creator is null :(\n");
 		img->parentimg->DeleteMainImg(&mainimageslist);
 		break;
 	    case SC_IMAGE_MINIMAP_CREATOR:

@@ -363,6 +363,13 @@ MAIN_IMG::~MAIN_IMG()
     {
         DEBUGMESSCR("main img with parent ??? :( \n",this->imageid);
     }
+    switch(parentimg->whocreate)
+    {
+	case SC_IMAGE_FLINGY_CREATOR:
+	    parentimg->creator.flingycreator.flingy->DelFlingy();
+	    break;
+    }	    
+//	printf("img creator was=%d\n",parentimg->whocreate);
 }
 //============================================
 void MAIN_IMG::DrawOnScreenImage(void)

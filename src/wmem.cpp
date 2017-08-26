@@ -32,7 +32,7 @@ void *wmalloc(int memsize)
     retval[memsize-2]=0xa5;
     retval[memsize-1]=0x3c;
 #ifdef CHECKALLMALLOC
-//    checkallwmalloc(retval+8,1);
+    checkallwmalloc((char *)retval+8);
 #endif
     return(retval+8);
 #else
@@ -45,9 +45,9 @@ void wfree(void *buf)
 {
 #ifdef TESTMALLOC
     char *tempbuf=(char *)buf;
-    char *buff=(char *)buf;
+    tempbuf-=8;
 #ifdef CHECKALLMALLOC
-//    checkallwmalloc(buf,-1);
+    checkallwmalloc((char *)buf);
 #else
     if (checkleakbefore(buf))
     {
@@ -58,6 +58,8 @@ void wfree(void *buf)
 	printf("memory leak in free after allocation\n");
     }
 #endif
+    int *size=(int *)((char *)tempbuf+4);
+    memset((char *)buf,255,*size);
     free((char *)buf-8);
 #else
 //    DEBUGMESSCR("freed = 08%x\n",buf);

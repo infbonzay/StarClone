@@ -635,8 +635,12 @@ void mylistsimple::DelElem(void *elem)
 	    if (i != lastelem)
 	    {
 		elements[i] = elements[lastelem];
+		deletemarked[i] = deletemarked[lastelem];
 	    }
+	    else
+	    	deletemarked[i] = 0;
 	    totalelem--;
+	    return;
 	}
     }
 }
