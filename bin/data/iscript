@@ -5660,8 +5660,8 @@ AirAttkToIdle  	[NONE]
 Unused2        	[NONE]
 Walking        	SiegeTank_Tank_BaseWalking
 WalkingToIdle  	SiegeTank_Tank_BaseWalkingToIdle
-SpecialState1  	[NONE]
-SpecialState2  	SiegeTank_Tank_Rotation
+SpecialState1  	SiegeTank_Tank_Rotation
+SpecialState2  	[NONE]
 AlmostBuilt    	[NONE]
 Built          	[NONE]
 Landing        	[NONE]
@@ -5766,7 +5766,7 @@ AirAttkToIdle  	[NONE]
 Unused2        	[NONE]
 Walking        	[NONE]
 WalkingToIdle  	[NONE]
-SpecialState1  	[NONE]
+SpecialState1  	SiegeTank_Tank_Rotation
 SpecialState2  	SiegeTank_Siege_BaseSpecialState2
 AlmostBuilt    	[NONE]
 Built          	[NONE]

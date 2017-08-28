@@ -176,7 +176,7 @@ int  SIGOrder_ProtossBuildFinishConstruct(OBJ *a)
     return(0);
 }
 //==================================
-int SIGOrder_Tank_EndRotationBeforeSiege(OBJ *a)
+int SIGOrder_Tank_EndRotationBeforeChangeMode(OBJ *a)
 {
     SetOrder(a,0,NULL);
     ApplyNextModeMove(a);

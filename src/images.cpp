@@ -445,8 +445,18 @@ void OVERLAY_IMG::DrawImageXY(int x,int y)
     {
 	//we have lo offsets
 	adrxyoffs = GetLoXY(lo,framenr+oneside,0);
-	if (flags & SC_IMAGE_FLAG_MIRRORIMAGE)
-	    xlo = -adrxyoffs[0];
+
+/*	if (flags & SC_IMAGE_FLAG_MIRRORIMAGE)
+		xlo = -adrxyoffs[0];
+	else
+	    xlo = adrxyoffs[0];
+	ylo = adrxyoffs[1];
+*/
+	if (mirror)
+	    if (alldattbl.images_dat->Graphic_Turns[parentimg->imageid])
+		xlo = -adrxyoffs[0];
+	    else
+		xlo = adrxyoffs[0];
 	else
 	    xlo = adrxyoffs[0];
 	ylo = adrxyoffs[1];

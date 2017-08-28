@@ -180,18 +180,18 @@ void keyhandler(void)
     }
     if (curentreadkey==F7)
     {
-//	map.CountDownTimer-=60*MAXGAMECYCLESPERSECOND;
 	if (fordeselect[0])
 	{
-	    DoodadChangeState(fordeselect[0],DOODAD_TOP_STATE);
+	    fordeselect[0]->mainimage->side += 8;
+	    fordeselect[0]->mainimage->neededside += 8;
 	}
     }
     if (curentreadkey==F8)
     {
 	if (fordeselect[0])
 	{
-//	    fordeselect[0]->mainimage->UnitDirection256(0*8);
-	    DoodadChangeState(fordeselect[0],DOODAD_BOTTOM_STATE);
+	    fordeselect[0]->mainimage->side += 128;
+	    fordeselect[0]->mainimage->neededside += 128;
 	}
     }
 #endif
