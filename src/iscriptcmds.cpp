@@ -509,24 +509,32 @@ int IScriptCmd_sigorder(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
 //============================================
 int IScriptCmd_attackwith(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
 {
+    unsigned char subunit;
     signed char *adrxyoffs;
     int retval;
     OBJ *a,*tr;
     LOFILE *lo;
     MAIN_IMG *newimg;
-    unsigned weapon_id;
+    unsigned int weapon_id;
     if (img->parentimg->whocreate == SC_IMAGE_OBJ_CREATOR)
     {
 	a = img->parentimg->creator.objcreator.obj;
 	if (a)
 	{
+	    subunit = alldattbl.units_dat->Subunit1[a->SC_Unit];
 	    switch(buf[0])
 	    {
 		case 1:
-		    weapon_id = alldattbl.units_dat->GroundWeapon[a->SC_Unit];
+		    if (subunit<MAX_UNITS_ELEM)
+			weapon_id = alldattbl.units_dat->GroundWeapon[subunit];
+		    else
+			weapon_id = alldattbl.units_dat->GroundWeapon[a->SC_Unit];
 		    break;
 		case 2:
-		    weapon_id = alldattbl.units_dat->AirWeapon[a->SC_Unit];
+		    if (subunit<MAX_UNITS_ELEM)
+			weapon_id = alldattbl.units_dat->GroundWeapon[subunit];
+		    else
+			weapon_id = alldattbl.units_dat->AirWeapon[a->SC_Unit];
 		    break;
 		default:
 		    weapon_id = 0;

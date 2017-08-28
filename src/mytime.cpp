@@ -26,8 +26,8 @@ long timewaitvalue[10]=
 		    TICKS_RES/FASTERSPEED_TICKS,
 		    TICKS_RES/FASTESTSPEED_TICKS,
 		    TICKS_RES/SPEED2X_TICKS,
-		    TICKS_RES/SPEED3X_TICKS,
-		    TICKS_RES/SPEED4X_TICKS
+		    TICKS_RES/SPEED4X_TICKS,
+		    TICKS_RES/SPEED6X_TICKS
 };
 //====================================================================
 unsigned char timewaitticks[10]=
@@ -40,8 +40,8 @@ unsigned char timewaitticks[10]=
 		    FASTERSPEED_TICKS,
 		    FASTESTSPEED_TICKS,
 		    SPEED2X_TICKS,
-		    SPEED3X_TICKS,
-		    SPEED4X_TICKS
+		    SPEED4X_TICKS,
+		    SPEED6X_TICKS
 };
 //====================================================================
 #ifdef UNDERLINUX

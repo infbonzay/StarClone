@@ -60,8 +60,8 @@
 #define FASTERSPEED		5
 #define FASTESTSPEED		6
 #define SPEED2X			7
-#define SPEED3X			8
-#define SPEED4X			9
+#define SPEED4X			8
+#define SPEED6X			9
 
 //=============================
 #define GREYNEUTRALCOLORPLAYER	11		//player 12 is neutral - minerals, gas, etc

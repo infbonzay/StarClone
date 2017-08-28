@@ -12,8 +12,8 @@
 #define	FASTERSPEED_TICKS	21
 #define	FASTESTSPEED_TICKS	24
 #define	SPEED2X_TICKS		30
-#define	SPEED3X_TICKS		45
 #define	SPEED4X_TICKS		60
+#define	SPEED6X_TICKS		90
 //=================================
 
 #define MYTIMERFUNC_FIRSTTIMEENTER	0

@@ -57,6 +57,7 @@ struct IMAGECREATOR_FLINGY
 struct IMAGECREATOR_OBJ
 {
     OBJ *obj;
+    unsigned char	image_id;
 };
 union IMAGECREATOR
 {
