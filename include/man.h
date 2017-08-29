@@ -98,8 +98,9 @@ struct APPEARORDER
     char  grpmethod;
     char  grptable;
 };
+
 //=======================================
-struct MOVESTRUCTMAGE
+/*struct MOVESTRUCTMAGE
 {
     struct	GRPFILE *grp[3];
       
@@ -111,42 +112,7 @@ struct MOVESTRUCTMAGE
     unsigned	char    tabltransp;//0 - none;1-redtable,2-greentable,3-bluetable,4-whitetable,5-blacktable,6-distortion
 		char    anim[MAXSTEP];
 };
-//=======================================
-struct BACKWARDSPR
-{
-    int		x;	//coords
-    int		y;
-    int		sprnr;
-    int		timewait;
-    int		mirror;
-    GRPFILE	*grp;
-};
-//=======================================
-struct	BACKWARDEFFECTS 
-{
-	mylist	sprs;
-	int	prop;			//properties
-};
-//=======================================
-struct	BACKEFF_GEN_STRUCT
-{
-	GRPFILE	*grp;			//grp 
-	int 	table;			//table of grd
-	int 	firstspr;		//first spr nr int grp
-	int 	maxsprs;		//max spr to draw
-	int	timewait;		//time to scroll to next spr
-	int	addeffecttime;		//effect apear after time period
-	int	sides;			//nt of sides
-};
-//=======================================
-struct AFTERCOOLDOWN
-{
-	int	destx;
-	int	desty;
-	OBJ	*destobj;
-	unsigned short modemove;
-	unsigned char  inuse;
-};
+*/
 //=======================================
 #define	MAXDAMAGEBLOODFLAMEOVERLAYS	3
 //=======================================
@@ -251,8 +217,6 @@ struct OBJ
         int 		shield,tempshield;
 
         int		shielddamage,lifedamage,dmatrixdamage,psistormdamage;
-//	short		xshot,yshot;		//saved coords for atack weapon
-//	AFTERCOOLDOWN	aftercooldownaction;
 	
 	signed char	atackcooldowntime;	//coolddown after atack
 	unsigned char	usedweapon_id;
@@ -261,7 +225,7 @@ struct OBJ
         unsigned char	mines;
 //	unsigned char	corrosiveacidsprnr;
 
-//        unsigned char	color;               //tsvet unita
+        unsigned char	color;               //tsvet unita
         unsigned char	whenregen;
 
         unsigned char	playernr;            //nomer igroca
@@ -275,7 +239,6 @@ struct OBJ
 
         unsigned char	xkart;               //
         unsigned char	ykart;               //coord.
-	unsigned char	color;
 
 	SFXPLAY		sfxplay;
 
@@ -441,25 +404,6 @@ struct OBJstruct
 	unsigned char      range[SIZERANGEFORBUILD];
 };
 //=======================================
-struct MAGEARRAY
-{
-       struct OBJ       *whoobjputmage;
-       struct OBJ       *destobj;
-       struct OBJ       *onwhoobj;
-       MAGEARRAY *nextmage;
-       MAGEARRAY *prevmage;
-       unsigned char	sizeobj;
-
-       short x;
-       short y;
-
-       unsigned char  beginwait;
-       unsigned char  timewait;
-       unsigned short timeleft;
-       signed	short typemage;
-       unsigned char  pos;
-       unsigned char  nrdesen;
-};
 //=======================================
 struct DEPENDONTYPE
 {
@@ -472,7 +416,7 @@ struct DEPENDONTYPE
 struct MAGEP
 {
 //	unsigned char		*feedbackvar[MAXPLAYERS];
-	MOVESTRUCTMAGE 		moves[5][2];
+//	MOVESTRUCTMAGE 		moves[5][2];
         signed   char		timewait[5];
         unsigned short		nsprite;            //nomer tipa
         int			mindistance;
@@ -483,9 +427,9 @@ struct MAGEP
 	unsigned short		dependtechnology;
 	unsigned char		order_id;		//point to orders.dat
 	
-	signed char 		race;			//race if mage is create unit
+	signed   char 		race;			//race if mage is create unit
         signed 	 char		atronobj;		//or -1 if no atr offset
-	short			images_id[3];       	//image_id for small,meduin,large
+	unsigned short		images_id[3];       	//image_id for small,meduim,large
         unsigned short		sound_id[2];
         signed	 char		soundmode;
         int 			diapazone;
@@ -512,7 +456,7 @@ struct MAGEP
     	char		namemage[50];
 };
 
-extern struct MAGEARRAY *firstmage;
+//extern struct MAGEARRAY *firstmage;
 extern struct OBJstruct *allobj[];
 extern char   Minimap[];
 

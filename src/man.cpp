@@ -6,5 +6,5 @@ char   Minimap[MAXIMSIZEMINIMAP*MAXIMSIZEMINIMAP];//color terrain(& ||)obj in mi
 //=======================================
 struct OBJstruct *allobj[NUMBRSPROBJ];
 //=======================================
-struct MAGEARRAY *firstmage;
+//struct MAGEARRAY *firstmage;
 //=======================================

@@ -44,7 +44,6 @@ void PickupObj(OBJ *a,OBJ *pickupobj)
 void QueueAction(void *IDQueueAction,int DestroyQueue)
 {
     int *regen,i,randd;
-    MAGEARRAY *tempmage;
     OBJ *temp,*actobj,*actdestobj;
     OBJstruct *b;
     int x,y;
@@ -53,22 +52,8 @@ void QueueAction(void *IDQueueAction,int DestroyQueue)
     {
 	actobj=(OBJ*)act->obj;
 	actdestobj=(OBJ*)act->destobj;
-	tempmage=(MAGEARRAY*) actobj;
 	switch(act->actiontype)
 	{
-//	case COOLDOWNACTION:
-//	    ClearCoolDown(actobj);
-//	    if (actobj->aftercooldownaction.inuse)
-//	    {
-//		actobj->aftercooldownaction.inuse=0;
-//		moveobj(actobj,actobj->aftercooldownaction.destobj,actobj->aftercooldownaction.modemove,
-//			actobj->aftercooldownaction.destx,actobj->aftercooldownaction.desty,NOSHOWERROR);
-//	    }
-//	    break;
-//	case MOVEACTION:
-//	    AdditionalMoveProceed(actobj,act->param0,act->param1,act->param2);
-//	    moveobj(actobj,actdestobj,act->param0,act->param1,act->param2,NOSHOWERROR,0);
-//	    break;
 	case NONDETECTEDACTION:
 	    //now need to eliminate obj from wait
 	    temp = actobj->myparent;
@@ -92,21 +77,6 @@ void QueueAction(void *IDQueueAction,int DestroyQueue)
 		addchild(actobj,temp);
 		actobj->prop &= ~VARLARVAEONCONSTRUCT;
 	    }
-	    break;
-/*	case MAGETIMEDACTION:
-	    //the mage time expired
-	    //need to go from desenpicturemage to endpicturemage
-	    if (tempmage->nrdesen==DESENPICTUREMAGE)
-	    {
-		tempmage->timeleft=0;
-		tempmage->pos=0;
-		tempmage->nrdesen=ENDPICTUREMAGE;
-	    }
-	    else
-	    {
-		printf("an error apear in queue mage %s\n",mageprop[tempmage->typemage].namemage);
-	    }
-*/
 	    break;
 	case WAITSOMETIMEACTION:
 	    actobj=(OBJ*)act->obj;

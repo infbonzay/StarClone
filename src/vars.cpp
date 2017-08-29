@@ -263,7 +263,7 @@ void inivars(void)
     keyactive=0;
     lastkey=0;
     mouse=1;
-    firstmage=NULL;
+//    firstmage=NULL;
 }
 //================================
 void addvars(void)

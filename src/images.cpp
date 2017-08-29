@@ -408,6 +408,8 @@ void OVERLAY_IMG::DrawImageXY(int x,int y)
 	a = parentimg->creator.objcreator.obj;
 	if (IsSubUnit(a->SC_Unit))
 	{
+	    if (!a->subunit)		//in dieing process
+		return;
 	    subunit = 1;
 	    mainside = a->subunit->mainimage->side;
 	    mirror = a->subunit->mainimage->flags & SC_IMAGE_FLAG_MIRRORIMAGE;
@@ -829,8 +831,6 @@ MAIN_IMG *OBJCreateImage(OBJ *a,int x256,int y256,unsigned char useiscriptnr,int
 	images_id = constr_id;
     }    
     elevationlevel = GetUnitElevationLevel(a->SC_Unit);
-//    if (imagelo_id)
-//	elevationlevel++;
     if ((IsBuild(a->SC_Unit)||IsDoodadState(a->SC_Unit)))
 	flags |= SC_IMAGE_FLAG_SAVEINFOGTABLE;
     if (groundair)

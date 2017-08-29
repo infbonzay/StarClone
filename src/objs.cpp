@@ -3277,9 +3277,13 @@ void dieobj(struct OBJ *a)
 	a->carryobj->carryobj = NULL;
 	a->carryobj = NULL;
     }
-    if (a->subunit && !IsSubUnit(a->SC_Unit))
+    if (a->subunit)
     {
-	dieobj(a->subunit);
+	if (!IsSubUnit(a->SC_Unit))
+	{
+	    dieobj(a->subunit);
+	}
+	a->subunit=NULL;
     }
     RemoveBloodFlameOverlays(a,0);
     if (b->creeptype!=NOCREEPBUILD)
@@ -3403,7 +3407,7 @@ void DeleteOldObjPointers(struct OBJ *a)
     int i;
     struct OBJ *b,*b2;
     struct OBJstruct *astr=loadobj(a->SC_Unit);
-    struct MAGEARRAY *c;
+//    struct MAGEARRAY *c;
     //find pointers in all objects
     for (i=0;i<MaxObjects;i++)
     {
@@ -3415,8 +3419,6 @@ void DeleteOldObjPointers(struct OBJ *a)
 	}
 	if (b->carryobj == a)
 	    b->carryobj = NULL;
-//	if (a->aftercooldownaction.destobj == a)
-//	    a->aftercooldownaction.destobj = NULL;
 	if (b->atrobj.arbiterrecallobj == a)
 	    //found an recalled obj without arbiter - master of this mage
 	    b->atrobj.arbiterrecallobj = NULL;
@@ -3429,27 +3431,13 @@ void DeleteOldObjPointers(struct OBJ *a)
 		    b->childs->parentof[j] = NULL;
 	    }
 	}
+	if (b->subunit == a)
+	    b->subunit = NULL;
 	if (b->resourceobj == a)
 	    b->resourceobj = NULL;
 	if (b->prevresourceobj == a)
 	    b->prevresourceobj = NULL;
-/*	if (IsResourceContainer(a->SC_Unit))
-	{
-	    if (a->resourceobj == b)
-	    {
-		b->resourceobj = NULL;
-		b->prevresourceobj = NULL;
-	    }
-	    if (a == b->destobj || (b->resourceobj == a && a!=b->destobj))
-	    {
-	        b2 = GetNearResource(b,a->SC_Unit);
-		if (!b2)
-		    moveobj(b,NULL,MODESTOP,0,0,NOSHOWERROR,0);
-		else
-	    	    moveobj(b,b2,MODEMOVE,0,0,NOSHOWERROR,0);
-	    }
-	}	
-*/	if (b->in_transport == a)
+	if (b->in_transport == a)
 	    b->in_transport = NULL;
 	if (b->whoatack == a)
 	    b->whoatack = NULL;
@@ -3460,7 +3448,7 @@ void DeleteOldObjPointers(struct OBJ *a)
 	}
 	if (b->constrobj == a)
 	    b->constrobj = NULL;
-	c = firstmage;
+/*	c = firstmage;
 	while(c)
 	{
 	    if (c->whoobjputmage == a)
@@ -3471,6 +3459,7 @@ void DeleteOldObjPointers(struct OBJ *a)
 		c->onwhoobj = NULL;
 	    c = c->nextmage;
 	}
+*/
 	DelOBJFromModeList(b,a);	//search in obj b ref to obj a
     }
     for (i=0;i<MAXSELECTMAN;i++)
