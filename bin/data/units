@@ -181,7 +181,7 @@ ENDOBJ           = 1
 [NEWOBJECT]      = 24 Edmund_Duke_Tank_Turret TERRAN MEDIUM TECHNIC
 
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
-			0   0   333   0   0   0   0   0   0
+			0   257 333 0   0   0  368  0   0
 
 ENDOBJ           = 1
 
@@ -194,7 +194,7 @@ ENDOBJ           = 1
 [NEWOBJECT]      = 26 Edmund_Duke_Siege_Turret TERRAN MEDIUM TECHNIC
 
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
-			0   0   333   0   0   0   0   0   0
+			0   257 333 0   0   0  369  0   0
 
 ENDOBJ           = 1
 
@@ -222,14 +222,14 @@ ENDOBJ		= 1
 
 [NEWOBJECT]      = 30 Terran_Siege_Tank TERRAN MEDIUM TECHNIC
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
-			0 257   333   0   0   0   369 0   0
+			0 257   333 0   0   0  369  0   0
 
 ENDOBJ           = 1
 
 [NEWOBJECT]      = 31 Terran_Siege_Tank_Turret TERRAN MEDIUM TECHNIC
 
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
-			0   0   333   0   0   0   0   0   0
+			0 257 333   0   0   0  369  0   0
 
 ENDOBJ           = 1
 

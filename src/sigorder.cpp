@@ -176,16 +176,36 @@ int  SIGOrder_ProtossBuildFinishConstruct(OBJ *a)
     return(0);
 }
 //==================================
-int SIGOrder_Tank_EndRotationBeforeChangeMode(OBJ *a)
+int SIGOrder_Tank_EndRotationBeforeSiegeMode(OBJ *a)
 {
     SetOrder(a,0,NULL);
-    ApplyNextModeMove(a);
+    //base and turret rotated to special position
+    if (a->mainimage->side == TANKSIEGESIDE && a->subunit->mainimage->side == TANKSIEGESIDE)
+    {
+	if (IsSubUnit(a->SC_Unit))
+	    ApplyNextModeMove(a->subunit);
+	else
+	    ApplyNextModeMove(a);
+    }
+}
+//==================================
+int SIGOrder_Tank_EndRotationBeforeTankMode(OBJ *a)
+{
+    SetOrder(a,0,NULL);
+    //base and turret rotated to special position
+    if (a->mainimage->side == TANKNORMALSIDE && a->subunit->mainimage->side == TANKNORMALSIDE)
+    {
+	if (IsSubUnit(a->SC_Unit))
+	    ApplyNextModeMove(a->subunit);
+	else
+	    ApplyNextModeMove(a);
+    }
 }
 //==================================
 int  SIGOrder_Tank_AfterSiegeCmd(OBJ *a)
 {
     a->modemove = MODESTOP;
-//    a->subunit->modemove = MODESTOP;
+    a->subunit->modemove = MODESTOP;
     SetOrder(a,0,NULL);
     return(0);
 }
@@ -195,20 +215,18 @@ int  SIGOrder_Tank_AfterNormalCmd(OBJ *a)
     unsigned char inv = a->mainimage->invisiblecolors;
     if (a->SC_Unit == SC_TANKSIEGEOBJ)
     {
-	ChangeUnitAndImagesAssociated(a,SC_TANKNORMALOBJ);
-//	ChangeUnitAndImagesAssociated(a->subunit,SC_TANKNORMALTURRETOBJ);
+	ChangeUnitSubUnitAndImagesAssociated(a,SC_TANKNORMALOBJ);
     }
     else
 	if (a->SC_Unit == SC_HERO_EDMUNDDUKESMOBJ)
 	{
-	    ChangeUnitAndImagesAssociated(a,SC_HERO_EDMUNDDUKETMOBJ);
-//	    ChangeUnitAndImagesAssociated(a->subunit,SC_HERO_EDMUNDDUKETMTURRETOBJ);
+	    ChangeUnitSubUnitAndImagesAssociated(a,SC_HERO_EDMUNDDUKETMOBJ);
 	}
     a->modemove = MODESTOP;
-//    a->subunit->modemove = MODESTOP;
+    a->subunit->modemove = MODESTOP;
     SetOrder(a,0,NULL);
     a->mainimage->invisiblecolors = inv;
-//    a->subunit->mainimage->invisiblecolors = inv;
+    a->subunit->mainimage->invisiblecolors = inv;
     return(1);
 }
 //==================================

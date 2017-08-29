@@ -410,16 +410,6 @@ void GeyserDisactivate(OBJ *a,OBJ *geyser)
     
 }
 //=====================================
-void LoadSubUnitLoFile(OBJ *a,OBJstruct *b)
-{
-    unsigned char flingy_id;
-    short sprites_id,images_id,overlay_id;
-    flingy_id = alldattbl.units_dat->flingy_id[a->SC_Unit];
-    sprites_id = alldattbl.flingy_dat->sprites_id[flingy_id];
-    images_id = alldattbl.sprites_dat->images_id[sprites_id];
-    GetLoadedImage(alldattbl.images_dat->Special_Overlay[images_id],(void **)&b->subunit_lo);
-}
-//=====================================
 static int selectbuilds[4],selectunits[4];
 //=====================================
 //=====================================
@@ -1287,6 +1277,29 @@ void CreateImageAndAddToList(OBJ *a,int x256,int y256,int readyatbegin,unsigned 
     }
 }
 //==================================
+void ChangeUnitSubUnitAndImagesAssociated(OBJ *a,int SC_NewUnit)
+{
+    OBJ *b;
+    unsigned char subunitnr;    
+    int x256,y256;
+    x256 = GetOBJx256(a);
+    y256 = GetOBJy256(a);
+
+    subunitnr = alldattbl.units_dat->Subunit1[a->SC_Unit];
+    b = a->subunit;
+
+    a->mainimage->DeleteMainImgAndChilds();
+    a->mainimage = NULL;
+    a->SC_Unit = SC_NewUnit;
+    CreateImageAndAddToList(a,x256,y256,2,NOLOIMAGE);//??tank to siegetank (lo changes)
+
+    b->mainimage->DeleteMainImgAndChilds();
+    b->mainimage = NULL;
+    b->SC_Unit = subunitnr;
+    CreateImageAndAddToList(b,x256,y256,2,NOLOIMAGE);
+    
+}
+//==================================
 void ChangeUnitAndImagesAssociated(OBJ *a,int SC_NewUnit)
 {
     int x256,y256;
@@ -1950,44 +1963,53 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
 	    {
 	        return(MOVEOBJ_NOACT);
 	    }
+	    if (a->modemove == MODETANKSIEGE || a->modemove == MODETANKNORMAL)
+	        return(MOVEOBJ_NOACT);
 	    if (a->mainimage->side != TANKSIEGESIDE || a->subunit->mainimage->side != TANKSIEGESIDE)
 	    {
-		SetOrder(a,1,&SIGOrder_Tank_EndRotationBeforeChangeMode);
+		SetOrder(a,1,&SIGOrder_Tank_EndRotationBeforeSiegeMode);
+		SetOrder(a->subunit,1,&SIGOrder_Tank_EndRotationBeforeSiegeMode);
 		a->mainimage->UnitNeededDirection256(TANKSIEGESIDE);
+		a->subunit->mainimage->UnitNeededDirection256(TANKSIEGESIDE);
 		SetOBJIScriptNr(a,ISCRIPTNR_SPECIALSTATE1,ISCRIPTNR_SETONLY);
+		SetOBJIScriptNr(a->subunit,ISCRIPTNR_SPECIALSTATE1,ISCRIPTNR_SETONLY);
 		AddModeMove(a,NULL,mode,x,y,NOSHOWERROR);
 		break;
 	    }
-	    if (a->modemove == MODETANKSIEGE || a->modemove == MODETANKNORMAL)
-	        return(MOVEOBJ_NOACT);
 	    SetModeMove(a,mode);
+	    SetModeMove(a->subunit,mode);
 	    inv = a->mainimage->invisiblecolors;
 	    SetOrder(a,1,&SIGOrder_Tank_AfterSiegeCmd);
 	    if (a->SC_Unit == SC_TANKNORMALOBJ)
-	        ChangeUnitAndImagesAssociated(a,SC_TANKSIEGEOBJ);
+	        ChangeUnitSubUnitAndImagesAssociated(a,SC_TANKSIEGEOBJ);
 	    else
 	        if (a->SC_Unit == SC_HERO_EDMUNDDUKETMOBJ)
-	    	ChangeUnitAndImagesAssociated(a,SC_HERO_EDMUNDDUKESMOBJ);
+	    	    ChangeUnitSubUnitAndImagesAssociated(a,SC_HERO_EDMUNDDUKESMOBJ);
 	    a->mainimage->invisiblecolors = inv;
+	    a->subunit->mainimage->invisiblecolors = inv;
 	    break;
 	case MODETANKNORMAL:
 	    if (!MageDepend(a,a->playernr,mode))
 	    {
 	        return(MOVEOBJ_NOACT);
 	    }
-	    if (a->mainimage->side != TANKNORMALSIDE)
+	    if (a->mainimage->side != TANKNORMALSIDE || a->subunit->mainimage->side != TANKNORMALSIDE)
 	    {
-		SetOrder(a,1,&SIGOrder_Tank_EndRotationBeforeChangeMode);
+		SetOrder(a,1,&SIGOrder_Tank_EndRotationBeforeTankMode);
+		SetOrder(a->subunit,1,&SIGOrder_Tank_EndRotationBeforeTankMode);
 		a->mainimage->UnitNeededDirection256(TANKNORMALSIDE);
+		a->subunit->mainimage->UnitNeededDirection256(TANKNORMALSIDE);
 		SetOBJIScriptNr(a,ISCRIPTNR_SPECIALSTATE1,ISCRIPTNR_SETONLY);
+		SetOBJIScriptNr(a->subunit,ISCRIPTNR_SPECIALSTATE1,ISCRIPTNR_SETONLY);
 		AddModeMove(a,NULL,mode,x,y,NOSHOWERROR);
 		break;
 	    }
 	    if (a->modemove == MODETANKSIEGE || a->modemove == MODETANKNORMAL)
 	        return(MOVEOBJ_NOACT);
-	    SetModeMove(a,mode);
+	    SetModeMove(a->subunit,mode);
 	    SetOrder(a,1,&SIGOrder_Tank_AfterNormalCmd);
 	    SetOBJIScriptNr(a,ISCRIPTNR_SPECIALSTATE2,ISCRIPTNR_SETONLY);
+	    SetOBJIScriptNr(a->subunit,ISCRIPTNR_SPECIALSTATE2,ISCRIPTNR_SETONLY);
 	    break;
 	case MODEBURROW:
 	case MODEBURROW2:

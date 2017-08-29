@@ -24,9 +24,13 @@ int NoneActionUnit(struct OBJ *a,MAIN_IMG *img)
 //=================================
 int GoliathTAction(struct OBJ *a,MAIN_IMG *img)
 {
+    if (a->subunit->modemove == MODEMOVE)
+    {
+	ChangeSubUnitCoords(a,a->subunit);
+    }
     if (a->modemove==MODEATACK)
 	return(0);
-    SetDestRotatePos(a,GetDestRotatePos(a->subunit));
+//    SetDestRotatePos(a,GetDestRotatePos(a->subunit));
     return(0);
 //    if (!(a->prop & VARHAVEGOAL) && !(a->select[0] & VARROTATION))
 //    {
@@ -42,7 +46,7 @@ int TankTAction(struct OBJ *a,MAIN_IMG *img)
     }
     if (a->modemove==MODEATACK || a->modemove==MODETANKSIEGE || a->modemove==MODETANKNORMAL)
 	return(0);
-    SetDestRotatePos(a,GetDestRotatePos(a->subunit));
+//    SetDestRotatePos(a,GetDestRotatePos(a->subunit));
     return(0);
 }
 //=================================

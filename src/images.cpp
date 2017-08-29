@@ -230,7 +230,7 @@ OVERLAY_IMG::OVERLAY_IMG(MAIN_IMG *parent,unsigned short image_id,signed char xo
     elevationlevel = elevation;
 
     SetGrpFunc(image_id);
-    lo = NULL;
+//    lo = NULL;
     framenr = 0;
     waitticks = 0;
     xdelta = xoffs;
@@ -272,7 +272,7 @@ OVERLAY_IMG::OVERLAY_IMG(MAIN_IMG *parent,unsigned short image_id,unsigned short
     elevationlevel = elevation;
 
     SetGrpFunc(image_id);
-    lo = NULL;
+//    lo = NULL;
     framenr = 0;
     waitticks = 0;
     xdelta = 0;
@@ -316,7 +316,7 @@ OVERLAY_IMG::OVERLAY_IMG(MAIN_IMG *parent,GRPFILE *grpimg,unsigned short unitfla
     parentimg = parent;
     elevationlevel = 255;
 
-    lo = NULL;
+//    lo = NULL;
 
     imageid = 0;
     iscriptid = useiscriptid;
@@ -467,7 +467,7 @@ void OVERLAY_IMG::DrawImageXY(int x,int y)
     }
     else
     {
-	if (alldattbl.images_dat->Graphic_Turns[imageid])
+	if (alldattbl.images_dat->Graphic_Turns[a->subunit->mainimage->imageid])
 	{
 	    if (mainside & 0x80)
 	    {
@@ -477,6 +477,15 @@ void OVERLAY_IMG::DrawImageXY(int x,int y)
 	    {
 		side2 = mainside / 8;
 	    }
+	
+	}
+	else
+	{
+	    mirror = 0;
+	    side2=0;
+	}
+	if (alldattbl.images_dat->Graphic_Turns[imageid])
+	{
 	    if (side & 0x80)
 	    {
 		mirror = SC_IMAGE_FLAG_MIRRORIMAGE;
@@ -490,8 +499,8 @@ void OVERLAY_IMG::DrawImageXY(int x,int y)
 	}
 	else
 	{
+	    mirror = 0;
 	    oneside=0;
-	    side2=0;
 	}
 	if (lo)
 	{

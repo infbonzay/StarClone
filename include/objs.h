@@ -162,6 +162,7 @@ int  makeinvisibles(struct OBJ *a);
 void invisiblestick(void);
 void SetHallucinationOBJ(OBJ *a);
 int  IfUnitIsSelectable(OBJ *a);
+void ChangeUnitSubUnitAndImagesAssociated(OBJ *a,int SC_NewUnit);
 void ChangeUnitAndImagesAssociated(OBJ *a,int SC_NewUnit);
 void SlotReturnResources(OBJ *a,int playernr,int slotnr);
 void ReturnResources(unsigned char SC_Unit,int playernr,int factorreturn);

@@ -63,31 +63,43 @@ unsigned char BUNKERFIRELO[16]={0,1,1,2,2,3,3,4,4,4,5,5,6,6,7,7};
 //============================================
 int IScriptCmd_imgol(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
 {
-    OBJ *a,*tr;
+    OBJ *a,*tr,*subunit;
     OVERLAY_IMG *newimg;
-    unsigned short image_id,flags;
+    unsigned short image_id,flags,imagelo_id;
+    unsigned char subunitnr;
     image_id = *((unsigned short *)&buf[0]);
     flags = img->flags;
     flags &= ~SC_IMAGE_FLAG_IMGOBJMAIN;
-    if (img->parentimg->whocreate == SC_IMAGE_OBJ_CREATOR)
+    if (img->flags & SC_IMAGE_FLAG_NEEDTOCREATESUBUNIT)		//need to create subunit
     {
+	img->flags &= ~SC_IMAGE_FLAG_NEEDTOCREATESUBUNIT;
 	a = img->parentimg->creator.objcreator.obj;
-	if (a)
+	subunitnr = alldattbl.units_dat->Subunit1[a->SC_Unit];
+	subunit = createobjlowlevel(NULL,img->parentimg->xpos>>8,img->parentimg->ypos>>8,subunitnr,a->playernr,3,100,100,100,NOLOIMAGE);
+	a->subunit = subunit;
+	subunit->subunit = a;
+	subunit->modemove=a->modemove;
+    }
+    else
+    {
+	if (img->parentimg->whocreate == SC_IMAGE_OBJ_CREATOR)
 	{
-	    if (a->finalOBJ)
+	    a = img->parentimg->creator.objcreator.obj;
+	    if (a)
 	    {
-		tr = a->in_transport;
-		if (a->SC_Unit == SC_FIREBATOBJ && tr)
+		if (a->finalOBJ)
 		{
-		    flags &= ~SC_IMAGE_FLAG_DISABLEDRAW;
+		    tr = a->in_transport;
+		    if (a->SC_Unit == SC_FIREBATOBJ && tr)
+		    {
+			flags &= ~SC_IMAGE_FLAG_DISABLEDRAW;
+		    }
 		}
 	    }
 	}
+        newimg = new OVERLAY_IMG(img->parentimg,image_id,buf[2],buf[3],img->elevationlevel+1,flags | SC_IMAGE_FLAG_IMGOVER,ISCRIPTNR_INIT);
+	iscriptinfo.ExecuteScript(newimg);
     }
-
-    newimg = new OVERLAY_IMG(img->parentimg,image_id,buf[2],buf[3],img->elevationlevel+1,flags | SC_IMAGE_FLAG_IMGOVER,ISCRIPTNR_INIT);
-    iscriptinfo.ExecuteScript(newimg);
-
     img->offsetcmdinbuf += cmdsize;
     return(0);
 }
@@ -148,6 +160,7 @@ int IScriptCmd_imgoluselo(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
 	a = img->parentimg->creator.objcreator.obj;
 	subunitnr = alldattbl.units_dat->Subunit1[a->SC_Unit];
 	subunit = createobjlowlevel(NULL,img->parentimg->xpos>>8,img->parentimg->ypos>>8,subunitnr,a->playernr,3,100,100,100,imagelo_id);
+	subunit->mainimage->side = TANKSIEGESIDE;
 	a->subunit = subunit;
 	subunit->subunit = a;
     }
