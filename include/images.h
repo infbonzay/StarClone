@@ -40,6 +40,7 @@ class OVERLAYIMGLIST;
 #define SC_IMAGE_FLAG_ISCRIPTROTATION		0x1000
 #define SC_IMAGE_FLAG_CANTBREAKCODE		0x2000
 #define SC_IMAGE_FLAG_AIRIMG			0x4000
+#define SC_IMAGE_FLAG_NEEDTOCREATESUBUNIT	0x8000
 
 #define SC_IMAGE_UNKNOWN_CREATOR		0
 #define SC_IMAGE_SELF_CREATOR			1
@@ -57,7 +58,6 @@ struct IMAGECREATOR_FLINGY
 struct IMAGECREATOR_OBJ
 {
     OBJ *obj;
-    unsigned char	image_id;
 };
 union IMAGECREATOR
 {
@@ -221,7 +221,7 @@ void AllImages_Draw(void);
 void AllImages_DeleteMarked(void);
 void MinimapImages_Draw(void);
 void AllImages_FreeAndEmpty(void);
-MAIN_IMG *OBJCreateImage(OBJ *a,int x256,int y256,unsigned char useiscriptnr,int groundair,unsigned short constr_id);
+MAIN_IMG *OBJCreateImage(OBJ *a,int x256,int y256,unsigned char useiscriptnr,int groundair,unsigned short constr_id,unsigned short imagelo_id);
 void SetOBJxy256(OBJ *a,int xpos256,int ypos256);
 void AddCircleImage(OBJ *a);
 void DelCircleImage(OBJ *a);

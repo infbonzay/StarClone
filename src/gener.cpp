@@ -1534,6 +1534,11 @@ void wscreenonmem(int nrregions,SCREEN_REGION regions[])
 	sprintf(ss," 0x%x",(int)fordeselect[0]);
 	strcat(s,ss);
     }
+    if (fordeselect[0])
+    {
+	sprintf(ss," %d",fordeselect[0]->mainimage->side);
+	strcat(s,ss);
+    }
 /*    if (fordeselect[0])
     {
 	strcat(s," spores:");

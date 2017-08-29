@@ -36,6 +36,10 @@ int GoliathTAction(struct OBJ *a,MAIN_IMG *img)
 //=================================
 int TankTAction(struct OBJ *a,MAIN_IMG *img)
 {
+    if (a->subunit->modemove == MODEMOVE)
+    {
+	ChangeSubUnitCoords(a,a->subunit);
+    }
     if (a->modemove==MODEATACK || a->modemove==MODETANKSIEGE || a->modemove==MODETANKNORMAL)
 	return(0);
     SetDestRotatePos(a,GetDestRotatePos(a->subunit));
@@ -252,7 +256,7 @@ int WorkersAction(struct OBJ *a,MAIN_IMG *img)
             	a->mainimage->DeleteMainImgAndChilds();
 
             	ChangeSC_Unit(a,a->playernr,a->SC_ConstrUnit,CHANGESC_UNIT_CONSTR);
-            	CreateImageAndAddToList(a,a->finalx,a->finaly,0);
+            	CreateImageAndAddToList(a,a->finalx,a->finaly,0,NOLOIMAGE);
             	SetUnitPercentLife(a,1);
             	SetUnitPercentShield(a,1);
             	SetBeginSelfConstruct(a);

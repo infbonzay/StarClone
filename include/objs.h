@@ -55,7 +55,8 @@ struct OBJ *createobjman(int x,int y,int nobj,int Pl,int typemoveatbegin,int per
 struct OBJ *createobjman(int x,int y,int nobj,int Pl,int typemoveatbegin);
 struct OBJ *createobjman(int x,int y,int nobj,int Pl);
 struct OBJ *createreschunk(OBJ *workerobj,int x,int y,unsigned char SC_Unit);
-struct OBJ *createobjlowlevel(OBJ *workerobj,int x,int y,int SC_Unit,int playernr,int readyatbegin,int persshield,int perslife,int energypers);
+struct OBJ *createobjlowlevel(OBJ *workerobj,int x,int y,int SC_Unit,int playernr,
+			      int readyatbegin,int persshield,int perslife,int energypers,unsigned short imagelo_id);
 void GeyserDisactivate(OBJ *a,OBJ *geyser);
 
 void deselectallexcludeone(struct OBJ *a1);
@@ -153,7 +154,7 @@ void TellOtherUnitsAboutAtacking(OBJ *a,OBJ *atacker);
 void LoadSubUnitLoFile(OBJ *a,OBJstruct *b);
 void FixSubUnitCoords(OBJ *a,OBJstruct *b);
 void ShowCircleAndBar(OBJ *a);
-void CreateImageAndAddToList(OBJ *a,int x256,int y256,int readyatbegin);
+void CreateImageAndAddToList(OBJ *a,int x256,int y256,int readyatbegin,unsigned short imagelo_id);
 
 int  ifselectedOBJbit(OBJ *a,int playernr);
 void doselectedOBJbit(OBJ *a,int playernr,int flag);
@@ -192,6 +193,7 @@ void DelOBJFromModeList(struct OBJ *a,struct OBJ *searchobj);
 int  GetOBJNrInTransport(OBJ *c,OBJ *a);
 void FreeOBJFromTransport(OBJ *c,OBJ *a,int objnr);
 int  GetDestUnitHalfSize(unsigned char SC_Unit,int deltax,int deltay);
+void ChangeSubUnitCoords(OBJ *turret,OBJ *base);
 
 
 #define UnitDoAiAction(playernr) (map.pl_owner[playernr] == OWNER_COMPUTER)// || map.pl_owner[playernr] == OWNER_HUMAN)

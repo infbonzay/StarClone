@@ -137,14 +137,27 @@ int IScriptCmd_imgolorig(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
 //============================================
 int IScriptCmd_imgoluselo(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
 {
+    OBJ *a,*subunit;
     unsigned short image_id,imagelo_id;
+    unsigned char subunitnr;
     image_id = *((unsigned short *)&buf[0]);
     imagelo_id = GetIDFromOverlayLayer(img->imageid,buf[2]);
-    if (imagelo_id)
-	new OVERLAY_IMG(img->parentimg,image_id,imagelo_id,img->elevationlevel+1,img->flags | SC_IMAGE_FLAG_IMGOVER,ISCRIPTNR_INIT);
+    if (img->flags & SC_IMAGE_FLAG_NEEDTOCREATESUBUNIT)		//need to create subunit
+    {
+	img->flags &= ~SC_IMAGE_FLAG_NEEDTOCREATESUBUNIT;
+	a = img->parentimg->creator.objcreator.obj;
+	subunitnr = alldattbl.units_dat->Subunit1[a->SC_Unit];
+	subunit = createobjlowlevel(NULL,img->parentimg->xpos>>8,img->parentimg->ypos>>8,subunitnr,a->playernr,3,100,100,100,imagelo_id);
+	a->subunit = subunit;
+	subunit->subunit = a;
+    }
     else
-	new OVERLAY_IMG(img->parentimg,image_id,buf[2],buf[3],img->elevationlevel+1,img->flags | SC_IMAGE_FLAG_IMGOVER,ISCRIPTNR_INIT);
-
+    {
+	if (imagelo_id)
+	    new OVERLAY_IMG(img->parentimg,image_id,imagelo_id,img->elevationlevel+1,img->flags | SC_IMAGE_FLAG_IMGOVER,ISCRIPTNR_INIT);
+	else
+	    new OVERLAY_IMG(img->parentimg,image_id,buf[2],buf[3],img->elevationlevel+1,img->flags | SC_IMAGE_FLAG_IMGOVER,ISCRIPTNR_INIT);
+    }
     img->offsetcmdinbuf += cmdsize;
     return(0);
 }
@@ -521,20 +534,13 @@ int IScriptCmd_attackwith(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
 	a = img->parentimg->creator.objcreator.obj;
 	if (a)
 	{
-	    subunit = alldattbl.units_dat->Subunit1[a->SC_Unit];
 	    switch(buf[0])
 	    {
 		case 1:
-		    if (subunit<MAX_UNITS_ELEM)
-			weapon_id = alldattbl.units_dat->GroundWeapon[subunit];
-		    else
-			weapon_id = alldattbl.units_dat->GroundWeapon[a->SC_Unit];
+		    weapon_id = alldattbl.units_dat->GroundWeapon[a->SC_Unit];
 		    break;
 		case 2:
-		    if (subunit<MAX_UNITS_ELEM)
-			weapon_id = alldattbl.units_dat->GroundWeapon[subunit];
-		    else
-			weapon_id = alldattbl.units_dat->AirWeapon[a->SC_Unit];
+		    weapon_id = alldattbl.units_dat->AirWeapon[a->SC_Unit];
 		    break;
 		default:
 		    weapon_id = 0;
@@ -547,17 +553,6 @@ int IScriptCmd_attackwith(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
 		tr = a->in_transport;
 		if (a->SC_Unit == SC_MARINEOBJ && tr)
 		{
-/*		    if (!CheckForSpecificChildsImageID(tr->mainimage,IMAGEID_BUNKERFIREOVERLAY,IMAGEID_BUNKERFIREOVERLAY))
-		    {
-			unsigned char side = CalcDirection1(GetOBJx256(tr),GetOBJy256(tr),GetOBJx256(a->finalOBJ),GetOBJy256(a->finalOBJ));
-			tr->mainimage->AllUnitDirection256(side);
-		    
-			GetLoadedImage( alldattbl.images_dat->Attack_Overlay[tr->mainimage->imageid],(void **)&lo);
-		        adrxyoffs = GetLoXY(lo,0,BUNKERFIRELO[tr->mainimage->side/16]);
-			new OVERLAY_IMG(tr->mainimage,IMAGEID_BUNKERFIREOVERLAY,adrxyoffs[0],adrxyoffs[1],
-					tr->mainimage->elevationlevel+1,tr->mainimage->flags | SC_IMAGE_FLAG_IMGOVER,ISCRIPTNR_INIT);
-		    }
-*/
 		    unsigned char side = CalcDirection1(GetOBJx256(tr),GetOBJy256(tr),GetOBJx256(a->finalOBJ),GetOBJy256(a->finalOBJ));
 		    tr->mainimage->AllUnitDirection256(side);
 		    

@@ -244,16 +244,17 @@ struct OBJ *createobjman(int x,int y,int SC_Unit,int playernr,int readyatbegin)
 //==========================================
 struct OBJ *createobjman(int x,int y,int SC_Unit,int playernr,int readyatbegin,int persshield,int perslife,int energypers)
 {
-    return(createobjlowlevel(NULL,x,y,SC_Unit,playernr,readyatbegin,persshield,perslife,energypers));
+    return(createobjlowlevel(NULL,x,y,SC_Unit,playernr,readyatbegin,persshield,perslife,energypers,NOLOIMAGE));
 }
 //==========================================
 struct OBJ *createreschunk(OBJ *workerobj,int x,int y,unsigned char SC_Unit)
 {
-    return(createobjlowlevel(workerobj,x,y,SC_Unit,GREYNEUTRALCOLORPLAYER,1,100,100,30));
+    return(createobjlowlevel(workerobj,x,y,SC_Unit,GREYNEUTRALCOLORPLAYER,1,100,100,30,NOLOIMAGE));
 }
 //==========================================
 //primary function to create an object
-struct OBJ *createobjlowlevel(OBJ *workerobj,int x,int y,int SC_Unit,int playernr,int readyatbegin,int persshield,int perslife,int energypers)
+struct OBJ *createobjlowlevel(OBJ *workerobj,int x,int y,int SC_Unit,int playernr,
+			      int readyatbegin,int persshield,int perslife,int energypers,unsigned short imagelo_id)
 {
     int i;
     OBJ *a;
@@ -351,12 +352,12 @@ struct OBJ *createobjlowlevel(OBJ *workerobj,int x,int y,int SC_Unit,int playern
     }
     if (IsDoodadState(a->SC_Unit))
     {
-	CreateImageAndAddToList(a,x<<8,y<<8,5);//5 is for doodadunit and no execute scripts
+	CreateImageAndAddToList(a,x<<8,y<<8,5,NOLOIMAGE);//5 is for doodadunit and no execute scripts
 //	iscriptinfo.ExecuteScript(a->image);
     }
     else
     {
-	CreateImageAndAddToList(a,x<<8,y<<8,readyatbegin);
+	CreateImageAndAddToList(a,x<<8,y<<8,readyatbegin,imagelo_id);
 //	iscriptinfo.ExecuteScript(a->image);
     }
     a->color=PLAYER[playernr].colorRACE;
@@ -1204,39 +1205,13 @@ void invisiblestick(void)
     }
 }
 //=============================================
-void FixSubUnitCoords(OBJ *a,OBJstruct *b)
+void ChangeSubUnitCoords(OBJ *turret,OBJ *base)
 {
-/*    int side,mirror;
-    signed char *adrlo,lox,loy;
-    if (alldattbl.units_dat->Subunit1[a->SC_Unit]<MAX_UNITS_ELEM)
-    {
-	if (b->subunit_lo)
-	{
-	    if (a->storonasveta>=SPRITE_SIDES)
-	    {
-		side=MAXFACEDIRECTIONS-a->storonasveta;
-		mirror=1;
-	    }
-	    else
-	    {
-		side=a->storonasveta;
-		mirror=0;
-	    }
-	    adrlo = GetLoXY(b->subunit_lo,side,0);
-	    if (mirror)
-		lox = -adrlo[0];
-	    else
-		lox = adrlo[0];
-	    loy = adrlo[1];
-	    a->subunit->sourcex = a->sourcex + lox;
-	    a->subunit->sourcey = a->sourcey + loy;
-	    ForceKartChanges(a->subunit);
-	}
-    }
-*/
+    turret->mainimage->xpos = base->mainimage->xpos;
+    turret->mainimage->ypos = base->mainimage->ypos;
 }
-//==================================
-void CreateImageAndAddToList(OBJ *a,int x256,int y256,int readyatbegin)
+//=============================================
+void CreateImageAndAddToList(OBJ *a,int x256,int y256,int readyatbegin,unsigned short imagelo_id)
 {
     unsigned char initscriptnr;
     unsigned short constr_id=0;
@@ -1283,7 +1258,7 @@ void CreateImageAndAddToList(OBJ *a,int x256,int y256,int readyatbegin)
 	    break;
     }
     groundair = IsOnSkyOBJ(a);
-    img = OBJCreateImage(a,x256,y256,initscriptnr,groundair,constr_id);
+    img = OBJCreateImage(a,x256,y256,initscriptnr,groundair,constr_id,imagelo_id);
     mainimageslist.AddElem(img);
     a->mainimage = img;
     if (IsBuild(a->SC_Unit))
@@ -1320,7 +1295,7 @@ void ChangeUnitAndImagesAssociated(OBJ *a,int SC_NewUnit)
     a->mainimage->DeleteMainImgAndChilds();
     a->mainimage = NULL;
     a->SC_Unit = SC_NewUnit;
-    CreateImageAndAddToList(a,x256,y256,2);
+    CreateImageAndAddToList(a,x256,y256,2,NOLOIMAGE);
 }
 //==================================
 void ReleaseResource(OBJ *a)
@@ -1403,7 +1378,7 @@ int moveobj_buildmode(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int
 	    a->mainimage->DeleteMainImgAndChilds();
 
 	    ChangeSC_Unit(a,a->playernr,obj_id,CHANGESC_UNIT_CONSTR);
-	    CreateImageAndAddToList(a,x256,y256,0);
+	    CreateImageAndAddToList(a,x256,y256,0,NOLOIMAGE);
 	    SetUnitPercentLife(a,100);
 	    SetUnitPercentShield(a,100);
 	    ChangeResourcePlayer(a->playernr,MINUSFACTOR,mcost,gcost);
@@ -1975,7 +1950,7 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
 	    {
 	        return(MOVEOBJ_NOACT);
 	    }
-	    if (a->mainimage->side != TANKSIEGESIDE)
+	    if (a->mainimage->side != TANKSIEGESIDE || a->subunit->mainimage->side != TANKSIEGESIDE)
 	    {
 		SetOrder(a,1,&SIGOrder_Tank_EndRotationBeforeChangeMode);
 		a->mainimage->UnitNeededDirection256(TANKSIEGESIDE);

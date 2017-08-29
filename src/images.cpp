@@ -280,8 +280,9 @@ OVERLAY_IMG::OVERLAY_IMG(MAIN_IMG *parent,unsigned short image_id,unsigned short
     flags = unitflags;
     if (parent != this)
 	parent->AddImageToParent(this);
-    if (GetLoadedImage(imagelo_tbl,(void **)&lo) < 0)
-	DEBUGMESSCR("lo.cant load images_tbl=%d\n",imagelo_tbl);
+    if (imagelo_tbl)
+	if (GetLoadedImage(imagelo_tbl,(void **)&lo) < 0)
+	    DEBUGMESSCR("lo.cant load images_tbl=%d\n",imagelo_tbl);
     if (usescriptnr != ISCRIPTNR_UNKNOWN)
 	SetIScriptNr(usescriptnr);
 //    else
@@ -301,7 +302,7 @@ MAIN_IMG::MAIN_IMG( unsigned short image_id,int x,int y,int elevation,
     imageusercolor = plcolor;
     xpos = x;
     ypos = y;
-    flags = unitflags;
+//    flags = unitflags;
     whocreate = SC_IMAGE_UNKNOWN_CREATOR;
     newgrpmethod = NORMAL;
 }
@@ -389,21 +390,37 @@ void OVERLAY_IMG::DrawImage(void)
 //============================================
 void OVERLAY_IMG::DrawImageXY(int x,int y)
 {
-    int warpstatus;
+    int warpstatus,side,side2,mainside,subunit=0;
     unsigned char oneside,mirror,drawedcolor,fogvalue,loside;
     signed char newydelta;
     char format;
     signed char *adrxyoffs,xlo,ylo;
+    OBJ *a;
     totalimgs++;
-    //draw circles and health bar if needed
-    if ((flags & SC_IMAGE_FLAG_IMGOBJMAIN) 				&& 
-	!(flags & (SC_IMAGE_FLAG_IMGOVER | SC_IMAGE_FLAG_IMGUNDER))	&& 
-	parentimg->whocreate == SC_IMAGE_OBJ_CREATOR)
-    {
-	ShowCircleAndBar(parentimg->creator.objcreator.obj);
-    }
     if (flags & (SC_IMAGE_FLAG_DISABLEDRAW | SC_IMAGE_FLAG_MARKFORDELETE))
 	return;
+    side = parentimg->side;
+    mirror = flags & SC_IMAGE_FLAG_MIRRORIMAGE;
+
+    //draw circles and health bar if needed
+    if (parentimg->whocreate == SC_IMAGE_OBJ_CREATOR)
+    {
+	a = parentimg->creator.objcreator.obj;
+	if (IsSubUnit(a->SC_Unit))
+	{
+	    subunit = 1;
+	    mainside = a->subunit->mainimage->side;
+	    mirror = a->subunit->mainimage->flags & SC_IMAGE_FLAG_MIRRORIMAGE;
+	}
+	else
+	{
+	    if ((flags & SC_IMAGE_FLAG_IMGOBJMAIN) 				&& 
+		!(flags & (SC_IMAGE_FLAG_IMGOVER | SC_IMAGE_FLAG_IMGUNDER)))
+	    {
+		ShowCircleAndBar(a);
+	    }
+	}
+    }
     if (parentimg->newgrpmethod != NORMAL)
     {
 	//if unit is burrowed and grp method is not normal - dont show the overlay
@@ -415,22 +432,83 @@ void OVERLAY_IMG::DrawImageXY(int x,int y)
     }
     else
         newydelta = ydelta;
-    mirror = flags & SC_IMAGE_FLAG_MIRRORIMAGE;
-    if (alldattbl.images_dat->Graphic_Turns[imageid])
+    if (!subunit)
     {
-	if (parentimg->side & 0x80)
+	if (alldattbl.images_dat->Graphic_Turns[imageid])
 	{
-	    mirror = SC_IMAGE_FLAG_MIRRORIMAGE;
-	    oneside = (256-parentimg->side) / 8;
+	    if (side & 0x80)
+	    {
+		oneside = (256 - side) / 8;
+		mirror = SC_IMAGE_FLAG_MIRRORIMAGE;
+	    }
+	    else
+		oneside =  side / 8;
 	}
 	else
 	{
-	    oneside = parentimg->side/8;
+	    oneside=0;
+	}
+	if (lo)
+	{
+	    //we have lo offsets
+	    adrxyoffs = GetLoXY(lo,framenr + oneside,0);
+	    //	if (flags & SC_IMAGE_FLAG_MIRRORIMAGE)
+	    if (mirror)
+		xlo = -adrxyoffs[0];
+	    else
+		xlo = adrxyoffs[0];
+	    ylo = adrxyoffs[1];
+	}
+	else
+	{
+	    xlo = 0;
+	    ylo = 0;
 	}
     }
     else
     {
-	oneside=0;
+	if (alldattbl.images_dat->Graphic_Turns[imageid])
+	{
+	    if (mainside & 0x80)
+	    {
+		side2 = (256 - mainside) / 8;
+	    }
+	    else
+	    {
+		side2 = mainside / 8;
+	    }
+	    if (side & 0x80)
+	    {
+		mirror = SC_IMAGE_FLAG_MIRRORIMAGE;
+		oneside = (256 - side) / 8;
+	    }
+	    else
+	    {
+		mirror = 0;
+		oneside =  side / 8;
+	    }
+	}
+	else
+	{
+	    oneside=0;
+	    side2=0;
+	}
+	if (lo)
+	{
+	    //we have lo offsets
+	    adrxyoffs = GetLoXY(lo,framenr + side2,0);
+	    if (mainside & 0x80)
+		xlo = -adrxyoffs[0];
+	    else
+		xlo = adrxyoffs[0];
+	    ylo = adrxyoffs[1];
+	}
+	else
+	{
+	    xlo = 0;
+	    ylo = 0;
+	}
+    
     }
     if (remaptable == BLACKTABLE)
     {
@@ -440,31 +518,6 @@ void OVERLAY_IMG::DrawImageXY(int x,int y)
     else
     {
 	drawedcolor = parentimg->invisiblecolors;
-    }
-    if (lo)
-    {
-	//we have lo offsets
-	adrxyoffs = GetLoXY(lo,framenr+oneside,0);
-
-/*	if (flags & SC_IMAGE_FLAG_MIRRORIMAGE)
-		xlo = -adrxyoffs[0];
-	else
-	    xlo = adrxyoffs[0];
-	ylo = adrxyoffs[1];
-*/
-	if (mirror)
-	    if (alldattbl.images_dat->Graphic_Turns[parentimg->imageid])
-		xlo = -adrxyoffs[0];
-	    else
-		xlo = adrxyoffs[0];
-	else
-	    xlo = adrxyoffs[0];
-	ylo = adrxyoffs[1];
-    }
-    else
-    {
-	xlo = 0;
-	ylo = 0;
     }
     if (flags & SC_IMAGE_FLAG_NOCHECKFORFOG)
 	fogvalue = 2;
@@ -489,7 +542,7 @@ void OVERLAY_IMG::DrawImageXY(int x,int y)
 				drawedcolor,
 				parentimg->imageusercolor,
 				remaptable,
-				framenr+oneside,
+				framenr + oneside,
 				flags|mirror,
 				protossbuildwhite);
 	    if (alldattbl.images_dat->Clickable[imageid])
@@ -676,6 +729,7 @@ void MAIN_IMG::SetDeltaCoords(OBJ *a,int deltax256,int deltay256)
 //============================================
 int MAIN_IMG::Rotation(unsigned char rotationfactor)
 {
+    OBJ *a;
     unsigned char delta;
     signed char rot,sign;
     if (side == neededside)
@@ -695,13 +749,31 @@ int MAIN_IMG::Rotation(unsigned char rotationfactor)
     }
     if (delta <= rotationfactor)
     {
-	side = neededside;
 	flags &= ~SC_IMAGE_FLAG_NEEDROTATIONTODIRECTION;
-	return(1);
+	side = neededside;
+	delta = 1;
     }
     else
+    {
 	side += rot;
-    return(0);
+	delta = 0;
+    }
+    if (whocreate == SC_IMAGE_OBJ_CREATOR)
+    {
+	a = creator.objcreator.obj;
+	if (a->subunit)
+	{
+	    if (IsSubUnit(a->SC_Unit))
+	    {
+		ChangeSubUnitCoords(a,a->subunit);
+	    }
+	    else
+	    {
+		ChangeSubUnitCoords(a->subunit,a);
+	    }
+	}
+    }
+    return(delta);
 }
 //============================================
 void MAIN_IMG::MoveInUnitDirection(OBJ *a,unsigned char side,int speed)
@@ -724,11 +796,11 @@ void SetOBJxy256(OBJ *a,int xpos256,int ypos256)
     a->mainimage->ypos = ypos256;
 }
 //============================================
-MAIN_IMG *OBJCreateImage(OBJ *a,int x256,int y256,unsigned char useiscriptnr,int groundair,unsigned short constr_id)
+MAIN_IMG *OBJCreateImage(OBJ *a,int x256,int y256,unsigned char useiscriptnr,int groundair,unsigned short constr_id,unsigned short imagelo_id)
 {
     MAIN_IMG *img;
-    unsigned short flags,flingy_id,sprites_id,images_id,iscript_id,imagelo_id;
-    unsigned char side,subunit,elevationlevel;
+    unsigned short flags,flingy_id,sprites_id,images_id,iscript_id;
+    unsigned char side,subunitnr,elevationlevel;
     if (a->SC_Unit == SC_MAPREVEALEROBJ )
 	flags = SC_IMAGE_FLAG_DISABLEDRAW;
     else
@@ -748,6 +820,8 @@ MAIN_IMG *OBJCreateImage(OBJ *a,int x256,int y256,unsigned char useiscriptnr,int
 	images_id = constr_id;
     }    
     elevationlevel = GetUnitElevationLevel(a->SC_Unit);
+    if (imagelo_id)
+	elevationlevel++;
     if ((IsBuild(a->SC_Unit)||IsDoodadState(a->SC_Unit)))
 	flags |= SC_IMAGE_FLAG_SAVEINFOGTABLE;
     if (groundair)
@@ -758,10 +832,12 @@ MAIN_IMG *OBJCreateImage(OBJ *a,int x256,int y256,unsigned char useiscriptnr,int
     side = alldattbl.units_dat->UnitDirection[a->SC_Unit];
     if (side == MAXFACEDIRECTIONS)
 	side = myrand(MAXFACEDIRECTIONS);
-    img = new MAIN_IMG(images_id,x256,y256,elevationlevel,0,0,side * 8,a->color,flags,useiscriptnr);
-    subunit = alldattbl.units_dat->Subunit1[a->SC_Unit];
-    if (subunit<MAX_UNITS_ELEM)
+//    img = new MAIN_IMG(images_id,x256,y256,elevationlevel,0,0,side * 8,a->color,flags,useiscriptnr);
+    img = new MAIN_IMG(images_id,x256,y256,elevationlevel,imagelo_id,side * 8,a->color,flags,useiscriptnr);
+    subunitnr = alldattbl.units_dat->Subunit1[a->SC_Unit];
+    if (subunitnr<MAX_UNITS_ELEM)
     {
+	img->flags |= SC_IMAGE_FLAG_NEEDTOCREATESUBUNIT;
 	img->SetIScriptNr(ISCRIPTNR_INITTURRET);
 	switch(a->SC_Unit)
 	{

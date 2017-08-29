@@ -222,8 +222,8 @@ struct OBJ
 	int		currentspeed;	//for unit move by flingy control
 	short		deltavertpos;
 	
-        OBJ		*whoatack;        //cto atacuet?||hostobj(rocket)
-	OBJ		*carryobj;	  //kakoi obj nesiom
+        OBJ		*whoatack;        	//cto atacuet?||hostobj(rocket)
+	OBJ		*carryobj;	  	//kakoi obj nesiom
 	OBJ		*replaceobj;		//obj who not work (under me)
 	OBJ		*addonobj;		//addon obj)
 	

@@ -72,6 +72,7 @@
 #define MAXPLAYERS		12
 #define PLAYEDPLAYERS		8
 
+#define NOLOIMAGE		0
 //========================================
 #define MAXCONSTRUCTINBUILD	5
 //==========================================

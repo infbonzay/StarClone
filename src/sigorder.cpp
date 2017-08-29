@@ -122,7 +122,7 @@ int  SIGOrder_ProtossBuildShowTexture(OBJ *a)
     y256 = img->ypos;
     img->DeleteMainImgAndChilds();
     //here a->image was deleted and created another one
-    CreateImageAndAddToList(a,x256,y256,3);
+    CreateImageAndAddToList(a,x256,y256,3,NOLOIMAGE);
     img = a->mainimage;
     img->iscriptid = alldattbl.images_dat->Iscript_ID[IMAGEID_TEXTURE];
     img->offsetcmdinbuf = 0;
@@ -185,6 +185,7 @@ int SIGOrder_Tank_EndRotationBeforeChangeMode(OBJ *a)
 int  SIGOrder_Tank_AfterSiegeCmd(OBJ *a)
 {
     a->modemove = MODESTOP;
+//    a->subunit->modemove = MODESTOP;
     SetOrder(a,0,NULL);
     return(0);
 }
@@ -193,13 +194,21 @@ int  SIGOrder_Tank_AfterNormalCmd(OBJ *a)
 {
     unsigned char inv = a->mainimage->invisiblecolors;
     if (a->SC_Unit == SC_TANKSIEGEOBJ)
+    {
 	ChangeUnitAndImagesAssociated(a,SC_TANKNORMALOBJ);
+//	ChangeUnitAndImagesAssociated(a->subunit,SC_TANKNORMALTURRETOBJ);
+    }
     else
 	if (a->SC_Unit == SC_HERO_EDMUNDDUKESMOBJ)
+	{
 	    ChangeUnitAndImagesAssociated(a,SC_HERO_EDMUNDDUKETMOBJ);
+//	    ChangeUnitAndImagesAssociated(a->subunit,SC_HERO_EDMUNDDUKETMTURRETOBJ);
+	}
     a->modemove = MODESTOP;
+//    a->subunit->modemove = MODESTOP;
     SetOrder(a,0,NULL);
     a->mainimage->invisiblecolors = inv;
+//    a->subunit->mainimage->invisiblecolors = inv;
     return(1);
 }
 //==================================
@@ -305,7 +314,7 @@ int  SIGOrder_ZergEggBirth(OBJ *a)
     y256 = GetOBJy256(a);
     a->mainimage->DeleteMainImgAndChilds();
     a->SC_Unit = a->SC_ConstrUnit;
-    CreateImageAndAddToList(a,x256,y256,0);
+    CreateImageAndAddToList(a,x256,y256,0,NOLOIMAGE);
     SetUnitPercentLife(a,100);
     SetUnitPercentShield(a,100);
     SetOrder(a,4,&SIGOrder_ZergUnitBirth);
@@ -354,7 +363,7 @@ int  SIGOrder_ZergUnitBirth(OBJ *a)
 	}
     }
     a->mainimage->DeleteMainImgAndChilds();
-    CreateImageAndAddToList(a,x<<8,y<<8,4);
+    CreateImageAndAddToList(a,x<<8,y<<8,4,NOLOIMAGE);
     a->prop |= VARREADY;
     return(0);
 }
@@ -370,7 +379,7 @@ int  SIGOrder_CancelMorthFromHydralisk(OBJ *a)
     a->prop |= VARREADY;
     a->mainimage->DeleteMainImgAndChilds();
     a->SC_Unit = a->SC_FromUnit;
-    CreateImageAndAddToList(a,x256,y256,2);
+    CreateImageAndAddToList(a,x256,y256,2,NOLOIMAGE);
     return(1);
 }
 //==================================
@@ -394,7 +403,7 @@ int  SIGOrder_CancelMorthFromDrone(OBJ *a)
 
     a->mainimage->DeleteMainImgAndChilds();
     a->prop |= VARREADY;
-    CreateImageAndAddToList(a,x256,y256,2);
+    CreateImageAndAddToList(a,x256,y256,2,NOLOIMAGE);
     iscriptinfo.ExecuteScript(a->mainimage);	//execute almostbuild
     a->SC_ConstrUnit = a->SC_FromUnit;
     a->SC_FromUnit = a->SC_Unit;
@@ -403,7 +412,7 @@ int  SIGOrder_CancelMorthFromDrone(OBJ *a)
     a->prop |= VARREADY;
     a->mainimage->DeleteChilds(SC_IMAGE_FLAG_IMGUNDER);
     a->mainimage->DeleteMainImg();
-    CreateImageAndAddToList(a,x256,y256,2);//a->mainimage remain in mainimageslist 
+    CreateImageAndAddToList(a,x256,y256,2,NOLOIMAGE);//a->mainimage remain in mainimageslist 
 
     a->life = a->templife;
     a->shield = a->tempshield;
@@ -433,13 +442,13 @@ int  SIGOrder_CancelMorthFromBuild(OBJ *a)
 
     a->mainimage->DeleteMainImgAndChilds();
     ChangeSC_Unit(a,a->playernr,a->SC_Unit,CHANGESC_UNIT_READY);
-    CreateImageAndAddToList(a,x256,y256,2);
+    CreateImageAndAddToList(a,x256,y256,2,NOLOIMAGE);
     iscriptinfo.ExecuteScript(a->mainimage);	//execute almostbuild
 
     ChangeSC_Unit(a,a->playernr,a->SC_FromUnit,CHANGESC_UNIT_READY);
     a->mainimage->DeleteChilds(SC_IMAGE_FLAG_IMGUNDER);
     a->mainimage->DeleteMainImg();
-    CreateImageAndAddToList(a,x256,y256,2);
+    CreateImageAndAddToList(a,x256,y256,2,NOLOIMAGE);
 
     a->life = a->templife;
     a->shield = a->tempshield;
@@ -465,7 +474,7 @@ int  SIGOrder_CancelMorthFromMutalisk(OBJ *a)
     a->prop |= VARREADY;
     a->mainimage->DeleteMainImgAndChilds();
     a->SC_Unit = a->SC_FromUnit;
-    CreateImageAndAddToList(a,x256,y256,2);
+    CreateImageAndAddToList(a,x256,y256,2,NOLOIMAGE);
 
     return(1);
 }

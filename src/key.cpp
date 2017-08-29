@@ -182,16 +182,16 @@ void keyhandler(void)
     {
 	if (fordeselect[0])
 	{
-	    fordeselect[0]->mainimage->side += 8;
-	    fordeselect[0]->mainimage->neededside += 8;
+	    fordeselect[0]->mainimage->neededside = 20*8;
+	    fordeselect[0]->mainimage->Rotation(128);
 	}
     }
     if (curentreadkey==F8)
     {
 	if (fordeselect[0])
 	{
-	    fordeselect[0]->mainimage->side += 128;
-	    fordeselect[0]->mainimage->neededside += 128;
+	    fordeselect[0]->mainimage->neededside = 12*8;
+	    fordeselect[0]->mainimage->Rotation(128);
 	}
     }
 #endif
