@@ -230,7 +230,7 @@ OVERLAY_IMG::OVERLAY_IMG(MAIN_IMG *parent,unsigned short image_id,signed char xo
     elevationlevel = elevation;
 
     SetGrpFunc(image_id);
-//    lo = NULL;
+    lo = NULL;
     framenr = 0;
     waitticks = 0;
     xdelta = xoffs;
@@ -272,7 +272,7 @@ OVERLAY_IMG::OVERLAY_IMG(MAIN_IMG *parent,unsigned short image_id,unsigned short
     elevationlevel = elevation;
 
     SetGrpFunc(image_id);
-//    lo = NULL;
+    lo = NULL;
     framenr = 0;
     waitticks = 0;
     xdelta = 0;
@@ -316,7 +316,7 @@ OVERLAY_IMG::OVERLAY_IMG(MAIN_IMG *parent,GRPFILE *grpimg,unsigned short unitfla
     parentimg = parent;
     elevationlevel = 255;
 
-//    lo = NULL;
+    lo = NULL;
 
     imageid = 0;
     iscriptid = useiscriptid;

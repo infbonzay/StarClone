@@ -1279,25 +1279,31 @@ void CreateImageAndAddToList(OBJ *a,int x256,int y256,int readyatbegin,unsigned 
 //==================================
 void ChangeUnitSubUnitAndImagesAssociated(OBJ *a,int SC_NewUnit)
 {
-    OBJ *b;
-    unsigned char subunitnr;    
     int x256,y256;
     x256 = GetOBJx256(a);
     y256 = GetOBJy256(a);
 
-    subunitnr = alldattbl.units_dat->Subunit1[a->SC_Unit];
-    b = a->subunit;
+    a->subunit->subunit = NULL;
+
+    dieobj_silently(a->subunit);
+
+    a->subunit = NULL;
 
     a->mainimage->DeleteMainImgAndChilds();
     a->mainimage = NULL;
     a->SC_Unit = SC_NewUnit;
-    CreateImageAndAddToList(a,x256,y256,2,NOLOIMAGE);//??tank to siegetank (lo changes)
+    CreateImageAndAddToList(a,x256,y256,2,NOLOIMAGE);
 
-    b->mainimage->DeleteMainImgAndChilds();
-    b->mainimage = NULL;
-    b->SC_Unit = subunitnr;
-    CreateImageAndAddToList(b,x256,y256,2,NOLOIMAGE);
-    
+    a->mainimage->flags |= SC_IMAGE_FLAG_NEEDTOCREATESUBUNIT;
+    a->mainimage->SetIScriptNr(ISCRIPTNR_INITTURRET);
+    switch(SC_NewUnit)
+    {
+        case SC_TANKSIEGEOBJ:
+        case SC_HERO_EDMUNDDUKESMOBJ:
+    	    a->modemove = MODETANKSIEGE;
+	    SetOrder(a,1,&SIGOrder_Tank_AfterSiegeCmd);
+	    break;
+    }
 }
 //==================================
 void ChangeUnitAndImagesAssociated(OBJ *a,int SC_NewUnit)
