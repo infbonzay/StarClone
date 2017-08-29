@@ -829,8 +829,8 @@ MAIN_IMG *OBJCreateImage(OBJ *a,int x256,int y256,unsigned char useiscriptnr,int
 	images_id = constr_id;
     }    
     elevationlevel = GetUnitElevationLevel(a->SC_Unit);
-    if (imagelo_id)
-	elevationlevel++;
+//    if (imagelo_id)
+//	elevationlevel++;
     if ((IsBuild(a->SC_Unit)||IsDoodadState(a->SC_Unit)))
 	flags |= SC_IMAGE_FLAG_SAVEINFOGTABLE;
     if (groundair)

@@ -79,6 +79,7 @@ int IScriptCmd_imgol(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
 	a->subunit = subunit;
 	subunit->subunit = a;
 	subunit->modemove=a->modemove;
+	subunit->mainimage->elevationlevel++;
     }
     else
     {
@@ -164,6 +165,7 @@ int IScriptCmd_imgoluselo(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
 	subunit->mainimage->neededside = TANKSIEGESIDE;
 	a->subunit = subunit;
 	subunit->subunit = a;
+	subunit->mainimage->elevationlevel++;
     }
     else
     {

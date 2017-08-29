@@ -2004,6 +2004,8 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
 	    {
 	        return(MOVEOBJ_NOACT);
 	    }
+	    if (a->modemove == MODETANKSIEGE || a->modemove == MODETANKNORMAL)
+	        return(MOVEOBJ_NOACT);
 	    if (a->subunit->mainimage->side != TANKNORMALSIDE)
 	    {
 		SetOrder(a->subunit,1,&SIGOrder_Tank_EndRotationBeforeTankMode);
@@ -2012,8 +2014,6 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
 		AddModeMove(a,NULL,mode,x,y,NOSHOWERROR);
 		break;
 	    }
-	    if (a->modemove == MODETANKSIEGE || a->modemove == MODETANKNORMAL)
-	        return(MOVEOBJ_NOACT);
 	    SetModeMove(a,mode);
 	    SetModeMove(a->subunit,mode);
 	    SetOrder(a,1,&SIGOrder_Tank_AfterNormalCmd);
