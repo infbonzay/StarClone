@@ -161,6 +161,7 @@ int IScriptCmd_imgoluselo(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
 	subunitnr = alldattbl.units_dat->Subunit1[a->SC_Unit];
 	subunit = createobjlowlevel(NULL,img->parentimg->xpos>>8,img->parentimg->ypos>>8,subunitnr,a->playernr,3,100,100,100,imagelo_id);
 	subunit->mainimage->side = TANKSIEGESIDE;
+	subunit->mainimage->neededside = TANKSIEGESIDE;
 	a->subunit = subunit;
 	subunit->subunit = a;
     }

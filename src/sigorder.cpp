@@ -192,8 +192,8 @@ int SIGOrder_Tank_EndRotationBeforeSiegeMode(OBJ *a)
 int SIGOrder_Tank_EndRotationBeforeTankMode(OBJ *a)
 {
     SetOrder(a,0,NULL);
-    //base and turret rotated to special position
-    if (a->mainimage->side == TANKNORMALSIDE && a->subunit->mainimage->side == TANKNORMALSIDE)
+    //turret rotated to special position
+    if (a->mainimage->side == TANKNORMALSIDE)
     {
 	if (IsSubUnit(a->SC_Unit))
 	    ApplyNextModeMove(a->subunit);

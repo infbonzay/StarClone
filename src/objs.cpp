@@ -1295,7 +1295,7 @@ void ChangeUnitSubUnitAndImagesAssociated(OBJ *a,int SC_NewUnit)
     CreateImageAndAddToList(a,x256,y256,2,NOLOIMAGE);
 
     a->mainimage->flags |= SC_IMAGE_FLAG_NEEDTOCREATESUBUNIT;
-    a->mainimage->SetIScriptNr(ISCRIPTNR_INITTURRET);
+    SetOBJIScriptNr(a,ISCRIPTNR_INITTURRET,ISCRIPTNR_EXECUTE);
     switch(SC_NewUnit)
     {
         case SC_TANKSIEGEOBJ:
@@ -1303,6 +1303,11 @@ void ChangeUnitSubUnitAndImagesAssociated(OBJ *a,int SC_NewUnit)
     	    a->modemove = MODETANKSIEGE;
 	    SetOrder(a,1,&SIGOrder_Tank_AfterSiegeCmd);
 	    break;
+        case SC_TANKNORMALOBJ:
+        case SC_HERO_EDMUNDDUKETMOBJ:
+    	    a->subunit->mainimage->side = TANKNORMALSIDE;
+    	    a->subunit->mainimage->neededside = TANKNORMALSIDE;
+    	    break;
     }
 }
 //==================================
@@ -1999,19 +2004,17 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
 	    {
 	        return(MOVEOBJ_NOACT);
 	    }
-	    if (a->mainimage->side != TANKNORMALSIDE || a->subunit->mainimage->side != TANKNORMALSIDE)
+	    if (a->subunit->mainimage->side != TANKNORMALSIDE)
 	    {
-		SetOrder(a,1,&SIGOrder_Tank_EndRotationBeforeTankMode);
 		SetOrder(a->subunit,1,&SIGOrder_Tank_EndRotationBeforeTankMode);
-		a->mainimage->UnitNeededDirection256(TANKNORMALSIDE);
 		a->subunit->mainimage->UnitNeededDirection256(TANKNORMALSIDE);
-		SetOBJIScriptNr(a,ISCRIPTNR_SPECIALSTATE1,ISCRIPTNR_SETONLY);
 		SetOBJIScriptNr(a->subunit,ISCRIPTNR_SPECIALSTATE1,ISCRIPTNR_SETONLY);
 		AddModeMove(a,NULL,mode,x,y,NOSHOWERROR);
 		break;
 	    }
 	    if (a->modemove == MODETANKSIEGE || a->modemove == MODETANKNORMAL)
 	        return(MOVEOBJ_NOACT);
+	    SetModeMove(a,mode);
 	    SetModeMove(a->subunit,mode);
 	    SetOrder(a,1,&SIGOrder_Tank_AfterNormalCmd);
 	    SetOBJIScriptNr(a,ISCRIPTNR_SPECIALSTATE2,ISCRIPTNR_SETONLY);
