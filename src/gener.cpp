@@ -1029,8 +1029,8 @@ int gogame(struct mapinfo *info)
 			    
 			    if (mousedestimg)
 				iscriptinfo.ExecuteScript(mousedestimg);
-        		    if (TRIG_inittriggers)
-        			SearchForAtacks();	//search unit to atack unit if triggers activated
+//        		    if (TRIG_inittriggers)
+//        			SearchForAtacks();	//search unit to atack unit if triggers activated
 
 			    allobjdecrmtimemage();
 

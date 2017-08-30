@@ -894,18 +894,28 @@ int AtackCoolDownEnds(OBJ *a,OBJ *destobj,int continueatack,int showerrorflag)
 		    a->atackcooldowntime = 1;
 		return(MOVEOBJ_WAITUNTIL);
 	    case CREATEDWEAPONSTATUS_DESTOUTOFRANGE://out of range
-		if (!accesstomove(a,loadobj(a->SC_Unit),MODEMOVE,a->playernr) || a->in_transport)
+		//if sub unit - tell to base to move inthat direction
+		if (IsSubUnit(a->SC_Unit))
 		{
-		    if (showerrorflag)
-		    {
-		        //invalid target
-		        Play_sfxdata_id(NULL,TARGETERROR[GetUnitRace(a->SC_Unit)],3,0);
-		        showadvisortext(errmes);
-		    }
-		    return(MOVEOBJ_NOACT);
+		    if (a->subunit->modemove != MODESTOP)
+			return(MOVEOBJ_NOACT);
+		    a->subunit->modemove = MODEATACK;
+		    a->atackcooldowntime = 0;
+		    initmoveaction(a->subunit,destobj,MODEATACK,a->usedweapon_id,0,GetOBJx(destobj),GetOBJy(destobj));
+		    AddModeMove(a->subunit,destobj,MODEATACKREADY,0,0,NOSHOWERROR);
 		}
 		else
 		{
+		    if (!accesstomove(a,loadobj(a->SC_Unit),MODEMOVE,a->playernr) || a->in_transport)
+		    {
+			if (showerrorflag)
+			{
+		    	    //invalid target
+		    	    Play_sfxdata_id(NULL,TARGETERROR[GetUnitRace(a->SC_Unit)],3,0);
+		    	    showadvisortext(errmes);
+			}
+			return(MOVEOBJ_NOACT);
+		    }
 		    a->modemove = MODEATACK;
 		    a->atackcooldowntime = 0;
 		    initmoveaction(a,destobj,MODEATACK,a->usedweapon_id,0,GetOBJx(destobj),GetOBJy(destobj));
@@ -960,8 +970,6 @@ void SpecialAtackAction(OBJ *a,OBJ *destobj,int iscriptstate)
 void AtackAction(OBJ *a,OBJ *destobj,int continueatack)
 {
     a->mainimage->ForceSetIScript(255);
-    if (a->subunit)
-	a = a->subunit;
     if (continueatack)
     {
 	if (a->prop & VARATACKAIROBJ)
@@ -989,8 +997,6 @@ void AtackAction(OBJ *a,OBJ *destobj,int continueatack)
 void EndAtackAction(OBJ *a)
 {
     a->mainimage->ForceSetIScript(255);
-    if (a->subunit)
-	a = a->subunit;
     if (a->prop & VARATACKAIROBJ)
     {
         SetOBJIScriptNr(a,ISCRIPTNR_AIRATTKTOIDLE,ISCRIPTNR_SETONLY);

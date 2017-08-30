@@ -160,7 +160,19 @@ int IfCanCreateWeapon(OBJ *atacker,OBJ *destobj,int *errmes,unsigned char *weapo
 		return(CREATEDWEAPONSTATUS_CANTATACKTHISUNIT);
 	    }
 	    else
-		rangebad = CheckWeaponRange(atacker,destobj,usedweapon_id,atacker->playernr,16);
+	    {
+		if (Subunit1<MAX_UNITS_ELEM)	
+		{
+		    //subunit atack
+		    if (weapon_id)
+			*weapon_id = usedweapon_id;
+		    return(CREATEDWEAPONSTATUS_DESTOUTOFRANGE);
+		}
+		else
+		{
+		    rangebad = CheckWeaponRange(atacker,destobj,usedweapon_id,atacker->playernr,16);
+		}
+	    }
 	}
 	if (weapon_id)
 	    *weapon_id = usedweapon_id;

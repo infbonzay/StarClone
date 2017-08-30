@@ -519,7 +519,6 @@ void OVERLAY_IMG::DrawImageXY(int x,int y)
 	    xlo = 0;
 	    ylo = 0;
 	}
-    
     }
     if (remaptable == BLACKTABLE)
     {
@@ -864,6 +863,7 @@ MAIN_IMG *OBJCreateImage(OBJ *a,int x256,int y256,unsigned char useiscriptnr,int
 	iscriptinfo.ExecuteScript(img);	//executing on creation
 //    else
 //	printf("iscriptnr4=255\n");
+    ForceKartChanges(a);
     return(img);
 }
 //============================================

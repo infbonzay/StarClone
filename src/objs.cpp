@@ -390,7 +390,7 @@ struct OBJ *createobjlowlevel(OBJ *workerobj,int x,int y,int SC_Unit,int playern
 	}
 	CreateImageAndAddToList(a,x<<8,y<<8,readyatbegin,imagelo_id);
     }
-    ForceKartChanges(a);
+//    ForceKartChanges(a);
     if (a->xkart>=MAXXMAP||a->ykart>=MAXYMAP)
     {
 	sprintf(forexit,"coords error UNIT=%d (mapx,mapy)=(%d,%d)\n",SC_Unit,a->xkart,a->ykart);
@@ -2392,6 +2392,11 @@ escapeconstrslots:
 		ApplyNextModeMove(a);
 	    break;
 	case MODEATACK:
+	    if (alldattbl.units_dat->Subunit1[a->SC_Unit] < MAX_UNITS_ELEM)
+	    {
+		moveobj(a->subunit,destobj,mode,x,y,showerrorflag,0);
+		return(MOVEOBJ_DONE);
+	    }
 	    if (destobj)
 	    {
 		if (!(showerrorflag & ATACKMOVEBIT))
@@ -2401,8 +2406,6 @@ escapeconstrslots:
 		{
 //		    initmoveaction(a,destobj,MODEATACK,0,0,x,y);
 		    a->modemove = MODEATACK;
-		    if (a->subunit)
-			a->subunit->modemove = MODEATACK;
 		    a->finalOBJ = destobj;
 		    SetAtackType(a,destobj);
 		    AtackAction(a,destobj,0);
@@ -2417,8 +2420,6 @@ escapeconstrslots:
 		    a->prop |= VARMOVEINATACKMODE;
 		    a->searchforatack_tick = 0;//fast search
 		    a->modemove = MODEATACK;
-		    if (a->subunit)
-			a->subunit->modemove = MODEATACK;
 		    a->finalxatack = x;
 		    a->finalyatack = y;
 		    initmoveaction(a,NULL,MODEATACK,0,0,x,y);
@@ -4165,7 +4166,7 @@ void trapprepareforatack(OBJ *a,OBJ *a2)
 	}
     }
 }
-//#define DONOTATACKBACKTEST
+#define DONOTATACKBACKTEST
 //=================================
 void atackback(OBJ *firstatacker,OBJ *destobj,int directiondamage)
 {
