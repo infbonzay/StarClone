@@ -504,20 +504,37 @@ void OVERLAY_IMG::DrawImageXY(int x,int y)
 	    mirror = 0;
 	    oneside=0;
 	}
-	if (lo)
+	xlo = 0;
+	ylo = 0;
+	if (parentimg->lo)	//offset of subunit
 	{
 	    //we have lo offsets
-	    adrxyoffs = GetLoXY(lo,framenr + side2,0);
+	    adrxyoffs = GetLoXY(parentimg->lo,framenr + side2,0);
 	    if (mainside & 0x80)
-		xlo = -adrxyoffs[0];
+		xlo += -adrxyoffs[0];
 	    else
-		xlo = adrxyoffs[0];
-	    ylo = adrxyoffs[1];
+		xlo += adrxyoffs[0];
+	    ylo += adrxyoffs[1];
 	}
-	else
+	if (this != parentimg)	//offset of fire of subunit
 	{
-	    xlo = 0;
-	    ylo = 0;
+	    if (lo)
+	    {
+		if (side & 0x80)
+		{
+		    side2 = (256 - side) / 8;
+		}
+		else
+		{
+		    side2 =  side / 8;
+		}
+		adrxyoffs = GetLoXY(lo,parentimg->framenr + side2,0);
+		if (parentimg->side & 0x80)
+		    xlo += -adrxyoffs[0];
+		else
+		    xlo += adrxyoffs[0];
+		ylo += adrxyoffs[1];
+	    }
 	}
     }
     if (remaptable == BLACKTABLE)
