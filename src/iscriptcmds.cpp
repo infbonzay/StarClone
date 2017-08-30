@@ -74,12 +74,8 @@ int IScriptCmd_imgol(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
     {
 	img->flags &= ~SC_IMAGE_FLAG_NEEDTOCREATESUBUNIT;
 	a = img->parentimg->creator.objcreator.obj;
-	subunitnr = alldattbl.units_dat->Subunit1[a->SC_Unit];
-	subunit = createobjlowlevel(NULL,img->parentimg->xpos>>8,img->parentimg->ypos>>8,subunitnr,a->playernr,3,100,100,100,NOLOIMAGE);
-	a->subunit = subunit;
-	subunit->subunit = a;
-	subunit->modemove=a->modemove;
-	subunit->mainimage->elevationlevel++;
+	CreateImageAndAddToList(a->subunit,GetOBJx256(a),GetOBJy256(a),3,NOLOIMAGE);
+	a->subunit->mainimage->elevationlevel++;
     }
     else
     {
@@ -155,17 +151,14 @@ int IScriptCmd_imgoluselo(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
     unsigned char subunitnr;
     image_id = *((unsigned short *)&buf[0]);
     imagelo_id = GetIDFromOverlayLayer(img->imageid,buf[2]);
-    if (img->flags & SC_IMAGE_FLAG_NEEDTOCREATESUBUNIT)		//need to create subunit
+    if (img->flags & SC_IMAGE_FLAG_NEEDTOCREATESUBUNIT)		//need to create image for subunit
     {
 	img->flags &= ~SC_IMAGE_FLAG_NEEDTOCREATESUBUNIT;
 	a = img->parentimg->creator.objcreator.obj;
-	subunitnr = alldattbl.units_dat->Subunit1[a->SC_Unit];
-	subunit = createobjlowlevel(NULL,img->parentimg->xpos>>8,img->parentimg->ypos>>8,subunitnr,a->playernr,3,100,100,100,imagelo_id);
-	subunit->mainimage->side = TANKSIEGESIDE;
-	subunit->mainimage->neededside = TANKSIEGESIDE;
-	a->subunit = subunit;
-	subunit->subunit = a;
-	subunit->mainimage->elevationlevel++;
+	CreateImageAndAddToList(a->subunit,GetOBJx256(a),GetOBJy256(a),3,imagelo_id);
+	a->subunit->mainimage->side = TANKSIEGESIDE;
+	a->subunit->mainimage->neededside = TANKSIEGESIDE;
+	a->subunit->mainimage->elevationlevel++;
     }
     else
     {

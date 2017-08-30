@@ -841,8 +841,8 @@ MAIN_IMG *OBJCreateImage(OBJ *a,int x256,int y256,unsigned char useiscriptnr,int
     side = alldattbl.units_dat->UnitDirection[a->SC_Unit];
     if (side == MAXFACEDIRECTIONS)
 	side = myrand(MAXFACEDIRECTIONS);
-//    img = new MAIN_IMG(images_id,x256,y256,elevationlevel,0,0,side * 8,a->color,flags,useiscriptnr);
     img = new MAIN_IMG(images_id,x256,y256,elevationlevel,imagelo_id,side * 8,a->color,flags,useiscriptnr);
+    a->mainimage = img;
     subunitnr = alldattbl.units_dat->Subunit1[a->SC_Unit];
     if (subunitnr<MAX_UNITS_ELEM)
     {

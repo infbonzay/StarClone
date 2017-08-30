@@ -260,6 +260,7 @@ struct OBJ *createobjlowlevel(OBJ *workerobj,int x,int y,int SC_Unit,int playern
     OBJ *a;
     OBJ *a2=NULL;
     OBJstruct *b;
+    unsigned char subunitnr;
     if (SC_Unit==SC_ASSIMILATOROBJ || SC_Unit==SC_EXTRACTOROBJ || SC_Unit==SC_REFINERYOBJ)
     {
 	a2=GetGEYSERfromMAP(x/SIZESPRLANSHX,y/SIZESPRLANSHY);
@@ -350,27 +351,8 @@ struct OBJ *createobjlowlevel(OBJ *workerobj,int x,int y,int SC_Unit,int playern
 	workerobj->carryobj = a;
 	a->carryobj = workerobj;
     }
-    if (IsDoodadState(a->SC_Unit))
-    {
-	CreateImageAndAddToList(a,x<<8,y<<8,5,NOLOIMAGE);//5 is for doodadunit and no execute scripts
-//	iscriptinfo.ExecuteScript(a->image);
-    }
-    else
-    {
-	CreateImageAndAddToList(a,x<<8,y<<8,readyatbegin,imagelo_id);
-//	iscriptinfo.ExecuteScript(a->image);
-    }
-    a->color=PLAYER[playernr].colorRACE;
-    ForceKartChanges(a);
-    if (a->xkart>=MAXXMAP||a->ykart>=MAXYMAP)
-    {
-	sprintf(forexit,"coords error UNIT=%d (mapx,mapy)=(%d,%d)\n",SC_Unit,a->xkart,a->ykart);
-	gameend(forexit);
-    }
-    calcfullinvandseeobj(a);
-    if (!IsOnSkyOBJ(a))
-	SetObjWalk8(&map,a,SETWALK);
     a->createcycle=gamecycle;
+    a->color=PLAYER[playernr].colorRACE;
     if (IsPermanentCloak(a->SC_Unit))
 	SetMageAtr(&a->atrobj,ATRINVISIBLE,ATRMAGEINFINITE);
     if (IsDetector(a->SC_Unit))
@@ -388,6 +370,32 @@ struct OBJ *createobjlowlevel(OBJ *workerobj,int x,int y,int SC_Unit,int playern
     SetAtackTick(a);
     add_unit_stat(&map,UNITSTAT_PRODUCING,a->playernr,a->SC_Unit);
     SetModeMove(a,MODESTOP);
+    if (IsDoodadState(a->SC_Unit))
+    {
+	CreateImageAndAddToList(a,x<<8,y<<8,5,NOLOIMAGE);//5 is for doodadunit and no execute scripts
+    }
+    else
+    {
+	subunitnr = alldattbl.units_dat->Subunit1[SC_Unit];
+	if (subunitnr < MAX_UNITS_ELEM)
+	{
+	    a->subunit = createobjlowlevel(NULL,x,y,subunitnr,playernr,3,100,100,100,NOLOIMAGE);
+	    a->subunit->subunit = a;
+	}
+	//if subunit skip creation image (this is will do at base from initturret script)
+	if (IsSubUnit(SC_Unit))
+	    return(a);
+	CreateImageAndAddToList(a,x<<8,y<<8,readyatbegin,imagelo_id);
+    }
+    ForceKartChanges(a);
+    if (a->xkart>=MAXXMAP||a->ykart>=MAXYMAP)
+    {
+	sprintf(forexit,"coords error UNIT=%d (mapx,mapy)=(%d,%d)\n",SC_Unit,a->xkart,a->ykart);
+	gameend(forexit);
+    }
+    calcfullinvandseeobj(a);
+    if (!IsOnSkyOBJ(a))
+	SetObjWalk8(&map,a,SETWALK);
     if (IsPickupUnit(a->SC_Unit) && !a->carryobj)
     {
 	//try to attach to near worker if any
@@ -1250,7 +1258,6 @@ void CreateImageAndAddToList(OBJ *a,int x256,int y256,int readyatbegin,unsigned 
     groundair = IsOnSkyOBJ(a);
     img = OBJCreateImage(a,x256,y256,initscriptnr,groundair,constr_id,imagelo_id);
     mainimageslist.AddElem(img);
-    a->mainimage = img;
     if (IsBuild(a->SC_Unit))
     {
         switch(readyatbegin)
@@ -1283,32 +1290,16 @@ void ChangeUnitSubUnitAndImagesAssociated(OBJ *a,int SC_NewUnit)
     x256 = GetOBJx256(a);
     y256 = GetOBJy256(a);
 
-    a->subunit->subunit = NULL;
-
-    dieobj_silently(a->subunit);
-
-    a->subunit = NULL;
-
     a->mainimage->DeleteMainImgAndChilds();
     a->mainimage = NULL;
     a->SC_Unit = SC_NewUnit;
+
+    a->subunit->mainimage->DeleteMainImgAndChilds();
+    a->subunit->mainimage = NULL;
+    a->subunit->SC_Unit = alldattbl.units_dat->Subunit1[SC_NewUnit];
+
     CreateImageAndAddToList(a,x256,y256,2,NOLOIMAGE);
 
-    a->mainimage->flags |= SC_IMAGE_FLAG_NEEDTOCREATESUBUNIT;
-    SetOBJIScriptNr(a,ISCRIPTNR_INITTURRET,ISCRIPTNR_EXECUTE);
-    switch(SC_NewUnit)
-    {
-        case SC_TANKSIEGEOBJ:
-        case SC_HERO_EDMUNDDUKESMOBJ:
-    	    a->modemove = MODETANKSIEGE;
-	    SetOrder(a,1,&SIGOrder_Tank_AfterSiegeCmd);
-	    break;
-        case SC_TANKNORMALOBJ:
-        case SC_HERO_EDMUNDDUKETMOBJ:
-    	    a->subunit->mainimage->side = TANKNORMALSIDE;
-    	    a->subunit->mainimage->neededside = TANKNORMALSIDE;
-    	    break;
-    }
 }
 //==================================
 void ChangeUnitAndImagesAssociated(OBJ *a,int SC_NewUnit)
