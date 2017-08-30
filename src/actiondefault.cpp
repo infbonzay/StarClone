@@ -24,7 +24,7 @@ int NoneActionUnit(struct OBJ *a,MAIN_IMG *img)
 //=================================
 int GoliathTAction(struct OBJ *a,MAIN_IMG *img)
 {
-    if (a->subunit->modemove == MODEMOVE)
+//    if (a->subunit->modemove == MODEMOVE)
     {
 	ChangeSubUnitCoords(a,a->subunit);
     }
@@ -40,10 +40,10 @@ int GoliathTAction(struct OBJ *a,MAIN_IMG *img)
 //=================================
 int TankTAction(struct OBJ *a,MAIN_IMG *img)
 {
-    if (a->subunit->modemove == MODEMOVE)
-    {
+//    if (a->subunit->modemove == MODEMOVE || )
+//    {
 	ChangeSubUnitCoords(a,a->subunit);
-    }
+//    }
     if (a->modemove==MODEATACK || a->modemove==MODETANKSIEGE || a->modemove==MODETANKNORMAL)
 	return(0);
 //    SetDestRotatePos(a,GetDestRotatePos(a->subunit));
@@ -960,6 +960,8 @@ void SpecialAtackAction(OBJ *a,OBJ *destobj,int iscriptstate)
 void AtackAction(OBJ *a,OBJ *destobj,int continueatack)
 {
     a->mainimage->ForceSetIScript(255);
+    if (a->subunit)
+	a = a->subunit;
     if (continueatack)
     {
 	if (a->prop & VARATACKAIROBJ)
@@ -987,6 +989,8 @@ void AtackAction(OBJ *a,OBJ *destobj,int continueatack)
 void EndAtackAction(OBJ *a)
 {
     a->mainimage->ForceSetIScript(255);
+    if (a->subunit)
+	a = a->subunit;
     if (a->prop & VARATACKAIROBJ)
     {
         SetOBJIScriptNr(a,ISCRIPTNR_AIRATTKTOIDLE,ISCRIPTNR_SETONLY);

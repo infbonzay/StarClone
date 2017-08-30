@@ -384,7 +384,10 @@ struct OBJ *createobjlowlevel(OBJ *workerobj,int x,int y,int SC_Unit,int playern
 	}
 	//if subunit skip creation image (this is will do at base from initturret script)
 	if (IsSubUnit(SC_Unit))
+	{
+	    a->prop |= VARNOTHERE;
 	    return(a);
+	}
 	CreateImageAndAddToList(a,x<<8,y<<8,readyatbegin,imagelo_id);
     }
     ForceKartChanges(a);
@@ -2398,6 +2401,8 @@ escapeconstrslots:
 		{
 //		    initmoveaction(a,destobj,MODEATACK,0,0,x,y);
 		    a->modemove = MODEATACK;
+		    if (a->subunit)
+			a->subunit->modemove = MODEATACK;
 		    a->finalOBJ = destobj;
 		    SetAtackType(a,destobj);
 		    AtackAction(a,destobj,0);
@@ -2412,6 +2417,8 @@ escapeconstrslots:
 		    a->prop |= VARMOVEINATACKMODE;
 		    a->searchforatack_tick = 0;//fast search
 		    a->modemove = MODEATACK;
+		    if (a->subunit)
+			a->subunit->modemove = MODEATACK;
 		    a->finalxatack = x;
 		    a->finalyatack = y;
 		    initmoveaction(a,NULL,MODEATACK,0,0,x,y);
