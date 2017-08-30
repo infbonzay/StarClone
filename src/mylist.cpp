@@ -557,8 +557,7 @@ void mylistsimple::DeleteOneElem(int elemnr)
 	elements[elemnr] = elements[lastelem];
 	deletemarked[elemnr] = deletemarked[lastelem];
     }
-    else
-	deletemarked[elemnr] = 0;
+    deletemarked[lastelem] = 0;
     totalelem--;
     lastelem--;
 }
@@ -579,8 +578,7 @@ void mylistsimple::DeleteMarked(void)
 		elements[i] = elements[lastelem];
 		deletemarked[i] = deletemarked[lastelem];
 	    }
-	    else
-		deletemarked[i] = 0;
+	    deletemarked[lastelem] = 0;
 	    totalelem--;
 	    lastelem--;
 	}
@@ -637,8 +635,7 @@ void mylistsimple::DelElem(void *elem)
 		elements[i] = elements[lastelem];
 		deletemarked[i] = deletemarked[lastelem];
 	    }
-	    else
-	    	deletemarked[i] = 0;
+	    deletemarked[lastelem] = 0;
 	    totalelem--;
 	    return;
 	}
