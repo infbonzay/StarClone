@@ -196,7 +196,10 @@ int IfCanCreateWeapon(OBJ *atacker,OBJ *destobj,int *errmes,unsigned char *weapo
 			//need to rotate before createweapon
 			atacker->mainimage->UnitNeededDirection256(neededside);
 			if (!atacker->atackcooldowntime)
+			{
 			    atacker->atackcooldowntime = 2;	//to come here again from additionalunitproceed
+			    atacker->mainimage->waitticks = 1;
+			}    
 			return(CREATEDWEAPONSTATUS_ATACKSUCCESSWITHROTATION);
 		    }
 		    atacker->mainimage->AllUnitDirection256(neededside);

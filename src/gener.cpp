@@ -925,7 +925,7 @@ int gogame(struct mapinfo *info)
     resettimerforplayers=1<<16;
     activatedwaittimer=0;
     gamestatus=NOGAMESTATUS;
-    gameconf.speedconf.gamespeed=SPEED6X;
+//    gameconf.speedconf.gamespeed=SPEED6X;
     clearopenseeKarta();
     clearopenseeKarta();
 
@@ -1492,8 +1492,6 @@ void showiconramka(void)
     putstasprite8(DELTASCREENX,DELTASCREENY,packedconsoleover);
 }
 //==========================
-long long genxx=0,countofadd=0;
-//==========================
 void wscreenonmem(int nrregions,SCREEN_REGION regions[])
 {
     static int frames,fps,prevsec,clc;
@@ -1571,6 +1569,9 @@ void wscreenonmem(int nrregions,SCREEN_REGION regions[])
 	strcat(s," modemove:");
 	itoa(fordeselect[0]->modemove,ss,10);
 	strcat(s,ss);
+	strcat(s,"/");
+	itoa(fordeselect[0]->atackcooldowntime,ss,10);
+	strcat(s,ss);
     }
 /*    if (fordeselect[0])
     {
@@ -1625,8 +1626,6 @@ void gameend(char *mes)
     settextmode();
     QuitGrpLib();
     uninstallvectors();
-    if (countofadd)
-        printf("average cps=%d\n",(int)(genxx/countofadd));
     UnLoadAllMpqs();
     unloadcfg();
     exit(0);

@@ -849,7 +849,7 @@ int AdditionalUnitProceed(OBJ *a,MAIN_IMG *img)
 			    a->finalOBJ=NULL;
 			}
 			return(0);
-		    case MOVEOBJ_WAITUNTIL:
+		    case MOVEOBJ_WAITUNTIL:	//under disruption
 			a->atackcooldowntime = GetAtackCoolDown(a,a->usedweapon_id);
 			break;
 		}
@@ -945,8 +945,11 @@ int AtackCoolDownEnds(OBJ *a,OBJ *destobj,int continueatack,int showerrorflag)
 		a->finalx = GetOBJx256(destobj);
 		a->finaly = GetOBJy256(destobj);
 		SetAtackType(a,destobj);
-//		return(MOVEOBJ_NOACT);
-		return(MOVEOBJ_DONE);
+		if (!a->atackcooldowntime)
+		{
+		    return(MOVEOBJ_DONE);
+		}
+		return(MOVEOBJ_CONTINUEJOB);
 	    default:
 		DEBUGMESSCR("error resval from ifcreateweapon\n");
 		return(MOVEOBJ_NOACT);

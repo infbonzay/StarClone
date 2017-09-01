@@ -2402,13 +2402,18 @@ escapeconstrslots:
 		if (!(showerrorflag & ATACKMOVEBIT))
 		    a->prop &= ~VARMOVEINATACKMODE;
 		ret = AtackCoolDownEnds(a,destobj,0,showerrorflag);
-		if (ret == MOVEOBJ_DONE)
+		switch(ret)
 		{
-//		    initmoveaction(a,destobj,MODEATACK,0,0,x,y);
-		    a->modemove = MODEATACK;
-		    a->finalOBJ = destobj;
-		    SetAtackType(a,destobj);
-		    AtackAction(a,destobj,0);
+		    case MOVEOBJ_DONE:
+//			initmoveaction(a,destobj,MODEATACK,0,0,x,y);
+			a->modemove = MODEATACK;
+			a->finalOBJ = destobj;
+			SetAtackType(a,destobj);
+			AtackAction(a,destobj,0);
+			break;
+		    case MOVEOBJ_CONTINUEJOB:
+			a->modemove = MODEATACK;
+			break;
 		}
 	    }
 	    else
