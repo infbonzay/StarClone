@@ -350,6 +350,10 @@ int  SIGOrder_ZergUnitBirth(OBJ *a)
     signed char *adrxyoffs;
     x = GetOBJx(a);
     y = GetOBJy(a);
+    if (GetSupplyProvided(a->SC_Unit)>0)
+    {
+	ChangeMaxSupply(a->playernr,a->SC_Unit,PLUSFACTOR);
+    }
     if (GetInEgg(a->SC_Unit))
     {
 	//change first unit position
