@@ -1576,7 +1576,7 @@ void showgoods(void)
 	    drawrace[racepos]=race;
 	    racepos++;
 	}
-	if (showgoods_drawpsi[race]>showgoods_drawmaxpsi[race]&&!CODEFORPSIUNLIMIT)
+	if (showgoods_drawpsi[race]/2 > showgoods_drawmaxpsi[race]/2 && !CODEFORPSIUNLIMIT)
 	    drawcolor[race]=GREDCOLORFONT;
 	else
 	    drawcolor[race]=GGREENCOLORFONT;
@@ -1587,7 +1587,8 @@ void showgoods(void)
     {
 	if (showgoods_drawmaxpsi[i])//+showgoods_drawpsi[i])
 	{
-	    sprintf(psi+offspsi,"%c%c%c%d\x07/%d ",COMMANDSYMB,PSISYMBZ+drawrace[i],drawcolor[i],showgoods_drawpsi[i]/2,showgoods_drawmaxpsi[i]/2);
+//	    sprintf(psi+offspsi,"%c%c%c%d\x07/%d ",COMMANDSYMB,PSISYMBZ+drawrace[i],drawcolor[i],showgoods_drawpsi[i]/2,showgoods_drawmaxpsi[i]/2);
+	    sprintf(psi+offspsi,"%c%c%c%d\x07/%d ",COMMANDSYMB,PSISYMBZ+drawrace[i],drawcolor[i],showgoods_drawpsi[i],showgoods_drawmaxpsi[i]);
 	    decrxcoord-=60;
 	}
     }
