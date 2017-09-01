@@ -331,7 +331,8 @@ int  SIGOrder_ZergEggBirth(OBJ *a)
     x256 = GetOBJx256(a);
     y256 = GetOBJy256(a);
     a->mainimage->DeleteMainImgAndChilds();
-    a->SC_Unit = a->SC_ConstrUnit;
+//    a->SC_Unit = a->SC_ConstrUnit;
+    ChangeSC_Unit(a,a->playernr,a->SC_ConstrUnit,CHANGESC_UNIT_READY);
     CreateImageAndAddToList(a,x256,y256,0,NOLOIMAGE);
     SetUnitPercentLife(a,100);
     SetUnitPercentShield(a,100);
@@ -350,10 +351,10 @@ int  SIGOrder_ZergUnitBirth(OBJ *a)
     signed char *adrxyoffs;
     x = GetOBJx(a);
     y = GetOBJy(a);
-    if (GetSupplyProvided(a->SC_Unit)>0)
-    {
-	ChangeMaxSupply(a->playernr,a->SC_Unit,PLUSFACTOR);
-    }
+//    if (GetSupplyProvided(a->SC_Unit)>0)
+//    {
+//	ChangeMaxSupply(a->playernr,a->SC_Unit,PLUSFACTOR);
+//    }
     if (GetInEgg(a->SC_Unit))
     {
 	//change first unit position
