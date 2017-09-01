@@ -1496,38 +1496,13 @@ long long genxx=0,countofadd=0;
 //==========================
 void wscreenonmem(int nrregions,SCREEN_REGION regions[])
 {
-    static int prevtime,frames,fps,prevsec,clc;
+    static int frames,fps,prevsec,clc;
     static long prevgamecycle;
-    int curtime,delta,cursec;
+    int cursec;
     char s[300];
     char ss[50];
     s[0]=0;
 
-/*    strcat(s,"FPS:");
-    curtime = mytimer.GetCurrentGameTime();
-    delta=curtime-prevtime;
-    if (delta>0)
-    {
-	prevtime=curtime;
-	fps=frames/delta;
-	frames=0;
-    }
-
-    frames++;
-    itoa(fps,ss,10);
-    strcat(s,ss);
-    
-    strcat(s," CYCLES:");
-    cursec = mytimer.GetTimeParced();
-    itoa(clc,ss,10);
-    strcat(s,ss);
-    if (cursec != prevsec)
-    {
-	prevsec = cursec;
-	clc = gamecycle-prevgamecycle;
-	prevgamecycle = gamecycle;
-    }
-*/
     frames++;
     cursec = mytimer.GetTimeParced();
     if (cursec != prevsec)
