@@ -4171,7 +4171,7 @@ void trapprepareforatack(OBJ *a,OBJ *a2)
 	}
     }
 }
-#define DONOTATACKBACKTEST
+//#define DONOTATACKBACKTEST
 //=================================
 void atackback(OBJ *firstatacker,OBJ *destobj,int directiondamage)
 {

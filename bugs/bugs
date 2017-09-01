@@ -335,16 +335,16 @@
 *99 psi disruptor not attached to scv zerg2map
 *100 delete unused queueaction
 *101 move to battery need to recharge unit in battery
-    totalmarked -1,-2 ....
-    before siege need to rotation tank and turret
+*102 totalmarked -1,-2 ....
+*103 before siege need to rotation tank and turret
+    select larvae
+    map xzerg2 color/playernr of units ????
     zerg2map marines not enter in transport
     battle cruiser need to disrupt casting if do moveobj
     save/load mem under selectation box
     goliath turret move than move to destobj
     consume on non zerg units
     goliath img failure (add top of scince vessel)
-    tank not correct sprites at rotation
-    tank seage not correct fireing
     then ensnared unit, at decceleration speed big than maxslowedspeed
     stimpack both for marine and firebat not showed
         
