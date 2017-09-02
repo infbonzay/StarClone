@@ -1277,16 +1277,12 @@ creationwithoutproperties:
 				//done by previous trigger
 				SetTriggeredUnitState(objects[j],0);
 				//order unburrow if needed, after then move,atack,...
-/*				if (locnr != ANYWHERELOCATIONNR )//anywhere location
-				{
-				    deltax = GetOBJx(objects[j]) - xobj;
-				    deltay = GetOBJy(objects[j]) - yobj;
-				}
-*/
 				if (locnr != searchloc )
 				{
-				    deltax = GetOBJx(objects[j]) - xobj;
-				    deltay = GetOBJy(objects[j]) - yobj;
+				    deltax=0;
+				    deltay=0;
+//				    deltax = GetOBJx(objects[j]) - xobj;
+//				    deltay = GetOBJy(objects[j]) - yobj;
 				}
 				else
 				{

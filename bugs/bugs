@@ -339,13 +339,14 @@
 *103 before siege need to rotation tank and turret
 *104 supply for zerg units complete    
 *105 select larvae
-*106 map xzerg2 color/playernr of units ????
+*106 map xzerg2 color/playernr of units
+    goliath do not atack air units then atack ground unit?
+    goliath img failure (add top of science vessel)
     zerg2map marines not enter in transport
     battle cruiser need to disrupt casting if do moveobj
     save/load mem under selectation box
     goliath turret move than move to destobj
     consume on non zerg units
-    goliath img failure (add top of scince vessel)
     then ensnared unit, at decceleration speed big than maxslowedspeed
     stimpack both for marine and firebat not showed
         
