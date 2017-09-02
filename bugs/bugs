@@ -337,6 +337,7 @@
 *101 move to battery need to recharge unit in battery
 *102 totalmarked -1,-2 ....
 *103 before siege need to rotation tank and turret
+*104 supply for zerg units complete    
     select larvae
     map xzerg2 color/playernr of units ????
     zerg2map marines not enter in transport

@@ -331,8 +331,8 @@ int  SIGOrder_ZergEggBirth(OBJ *a)
     x256 = GetOBJx256(a);
     y256 = GetOBJy256(a);
     a->mainimage->DeleteMainImgAndChilds();
-//    a->SC_Unit = a->SC_ConstrUnit;
-    ChangeSC_Unit(a,a->playernr,a->SC_ConstrUnit,CHANGESC_UNIT_READY);
+    a->SC_Unit = a->SC_ConstrUnit;
+    ChangeMaxSupply(a->playernr,a->SC_ConstrUnit,PLUSFACTOR);
     CreateImageAndAddToList(a,x256,y256,0,NOLOIMAGE);
     SetUnitPercentLife(a,100);
     SetUnitPercentShield(a,100);
@@ -357,7 +357,7 @@ int  SIGOrder_ZergUnitBirth(OBJ *a)
 	birth_id = alldattbl.units_dat->ConstructionAnimation[a->SC_Unit];
 	GetLoadedImage( alldattbl.images_dat->Landing_Dust_Overlay[birth_id],(void **)&lo);
 	adrxyoffs = GetLoXY(lo,a->mainimage->framenr,0);
-	a2 = createobjfulllife(x+adrxyoffs[2],y+adrxyoffs[3],a->SC_Unit,a->playernr);
+	a2 = createobjmanwithlife(x+adrxyoffs[2],y+adrxyoffs[3],a->SC_Unit,a->playernr,100,100,100,0);//no supply added
 	if (a->SC_Unit == SC_ZERGLINGOBJ)
 	    a2->mainimage->side += 8 * 8;
 	else//here scourge

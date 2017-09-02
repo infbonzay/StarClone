@@ -142,12 +142,12 @@ OBJ *CreateArchon(OBJ *a,OBJ *a2)
 //==========================================
 struct OBJ *createobjfulllife(int x,int y,int SC_Unit,int player)
 {
-    return(createobjmanwithlife(x,y,SC_Unit,player,100,100,100));
+    return(createobjmanwithlife(x,y,SC_Unit,player,100,100,100,1));
 }
 //==========================================
 //sozdati OBJECT
 struct OBJ *createobjmanwithlife(int x,int y,int SC_Unit,int Pl,
-				 int persshield,int perslife,int persenergy)
+				 int persshield,int perslife,int persenergy,int supplyflag)
 {
     OBJ *a;
     OBJ *a2=NULL;
@@ -205,8 +205,11 @@ struct OBJ *createobjmanwithlife(int x,int y,int SC_Unit,int Pl,
     {
     	FillWithCreepNow(a,b,MAXCREEPTABLE);
     }
-    ChangeSupply(a->playernr,SC_Unit,PLUSFACTOR);
-    ChangeMaxSupply(a->playernr,SC_Unit,PLUSFACTOR);
+    if (supplyflag)
+    {
+	ChangeSupply(a->playernr,SC_Unit,PLUSFACTOR);
+	ChangeMaxSupply(a->playernr,SC_Unit,PLUSFACTOR);
+    }
     if (SC_Unit==SC_PYLONOBJ)
 	AddPylonArea(&map,a,a->playernr);
     else
@@ -3213,11 +3216,23 @@ void dieobj(struct OBJ *a)
 	    }
 	    if (changesupply)
 	    {
-	        inegg = GetInEgg(a->SC_ConstrUnit);
-		for (i=0;i<=inegg;i++)
+		switch(a->SC_Unit)
 		{
-	    	    ChangeSupply(a->playernr,SC_Unit,MINUSFACTOR);
-		    ChangeMaxSupply(a->playernr,SC_Unit,MINUSFACTOR);
+		    case SC_EGGOBJ:
+	    		if (!GetSupplyProvided(SC_Unit))		//except for overlord & yggdrasill
+	    		{
+	    		    inegg = GetInEgg(SC_Unit);
+			    for (i=0;i<=inegg;i++)
+			    {
+	    			ChangeSupply(a->playernr,SC_Unit,MINUSFACTOR);
+				ChangeMaxSupply(a->playernr,SC_Unit,MINUSFACTOR);
+			    }
+			}
+			break;
+		    default:
+	    		ChangeSupply(a->playernr,SC_Unit,MINUSFACTOR);
+			ChangeMaxSupply(a->playernr,SC_Unit,MINUSFACTOR);
+			break;		    
 		}
 	    }
 	}
@@ -3712,7 +3727,7 @@ struct OBJ *createunitwithproperties(int xpos,int ypos,int unit_id,int playernr,
 	ep_perc = 100;
     if (resnr)	//geyser or mineralfield
 	ep_perc = resnr << 8;
-    a = createobjmanwithlife(xpos,ypos,unit_id,playernr,sp_perc,hp_perc,ep_perc);
+    a = createobjmanwithlife(xpos,ypos,unit_id,playernr,sp_perc,hp_perc,ep_perc,1);
     setpropertiestounit(a,special_prop,state_flags);
     return(a);
 }

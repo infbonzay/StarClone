@@ -50,7 +50,7 @@ void destroyobj(struct OBJ *a);
 OBJ *CreateArchon(OBJ *a,OBJ *a2);
 struct OBJ *createobjfulllife(int x,int y,int nobj,int Pl);
 struct OBJ *createobjmanwithlife(int x,int y,int nobj,int Pl,
-				 int persshield,int perslife,int energypers);
+				 int persshield,int perslife,int energypers,int supplyflag);
 struct OBJ *createobjman(int x,int y,int nobj,int Pl,int typemoveatbegin,int pers_shield,int pers_life,int pers_enercy);
 struct OBJ *createobjman(int x,int y,int nobj,int Pl,int typemoveatbegin);
 struct OBJ *createobjman(int x,int y,int nobj,int Pl);
