@@ -338,8 +338,8 @@
 *102 totalmarked -1,-2 ....
 *103 before siege need to rotation tank and turret
 *104 supply for zerg units complete    
-    select larvae
-    map xzerg2 color/playernr of units ????
+*105 select larvae
+*106 map xzerg2 color/playernr of units ????
     zerg2map marines not enter in transport
     battle cruiser need to disrupt casting if do moveobj
     save/load mem under selectation box

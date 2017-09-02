@@ -106,6 +106,7 @@
 
 //special modes
 #define MODECARRYME		31
+#define MODESELECTLARVAE	35
 #define MODEWARPBUILD         	134
 #define MODEADVWARPBUILD      	135
 

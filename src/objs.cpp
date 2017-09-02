@@ -1533,7 +1533,7 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
     OBJ *newobj;
     unsigned char flingy_id,SC_res_type,inv,useweapon_id;
     int needmana,type_id,obj_id,ret,slotnr,deltaz,constrerror,resval;
-    int i,tempvar,errmes,state,openstate;
+    int i,j,tempvar,errmes,state,openstate;
     int (*comparefunc)(int *,int );					//for doodad
     
     //prevent to move if is uninterrupted mode
@@ -2461,6 +2461,18 @@ escapeconstrslots:
     	    }
     	    (*comparefunc)(&state,-1);
 	    DoodadChangeState(a,state);
+	    break;
+	case MODESELECTLARVAE:
+	    j = getchilds(a);
+	    if (j)
+	    {
+		deselectallobj(a->playernr);
+		for (i=0;i<MAXCHILDS;i++)
+		{
+		    if (a->childs->parentof[i])
+			selectobj(a->childs->parentof[i]);		    
+		}
+	    }
 	    break;
 	default:
 	    DEBUGMESSCR("mode=%d(%s)not developed\n",mode,mageprop[mode].namemage);
