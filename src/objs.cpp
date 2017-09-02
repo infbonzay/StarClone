@@ -3746,7 +3746,7 @@ struct OBJ *createunitwithproperties(int xpos,int ypos,int unit_id,int playernr,
 //==================================
 int SearchObjInArea(struct OBJ *a,struct XY *area)
 {
-    if (GetOBJx(a) < area->x1 || GetOBJx(a) > area->x2 || GetOBJy(a) < area->y1 || GetOBJy(a) > area->y2 )
+    if (GetOBJx(a) <= area->x1 || GetOBJx(a) >= area->x2 || GetOBJy(a) <= area->y1 || GetOBJy(a) >= area->y2 )
 	return(0);
     return(1);
 }

@@ -204,6 +204,8 @@ struct LEADERBOARD
 };
 
 int CheckForUnit(int (*ConditionFunction)(int *, int),
+		 int actiononplayers,int unitid,int cntunits,OBJ **retfirst,struct XY *searcharea,int modemove);
+int CheckForUnit(int (*ConditionFunction)(int *, int),
 		 int actiononplayers,int unitid,int cntunits,OBJ **retfirst,struct XY *searcharea);
 
 int  Triggers_GetPause(void);

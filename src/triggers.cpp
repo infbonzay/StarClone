@@ -25,7 +25,7 @@
 
 int		TRIG_pause;
 int		*ALLTRIG_pause;
-char		TRIG_debug=0;
+char		TRIG_debug=1;
 char 		TRIG_ChangeStat;
 char 		TRIG_preserve;
 char 		TRIG_leaderboardcomputerplayers;
@@ -256,6 +256,12 @@ int (*CheckUnit[5])(int )=
 int CheckForUnit(int (*ConditionFunction)(int *, int),
 		 int actiononplayers,int unitid,int cntunits,OBJ **retlast,struct XY *searcharea)
 {
+    return(CheckForUnit(ConditionFunction,actiononplayers,unitid,cntunits,retlast,searcharea,0));
+}
+//=================================================
+int CheckForUnit(int (*ConditionFunction)(int *, int),
+		 int actiononplayers,int unitid,int cntunits,OBJ **retlast,struct XY *searcharea,int modemove)
+{
     int i,nrofunits=0,checkready=0;
     int (*UnitTypeFunc) (int);
     struct OBJ *last=NULL;
@@ -272,6 +278,9 @@ int CheckForUnit(int (*ConditionFunction)(int *, int),
     }
     for (i=0;i<MaxObjects;i++)
     {
+	if (modemove)
+	    if (objects[i]->modemove != modemove)
+		continue;
 	if (actiononplayers & (1<<objects[i]->playernr))
 	{
 		if (checkready && !IsReadyOBJ(objects[i]))
@@ -514,7 +523,7 @@ int Condition_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int trig_nr,int playernr,
 		    nrofunits=temptrg->condition[i].seconds;
 		    locnr=temptrg->condition[i].locationnr-1;
 //		    txtstr=getmapSTR(info,info->gamelocations[locnr].stringID-1);
-		    applycond=CheckForUnit(comparefunc,ownactiononplayers,unitnr,nrofunits,NULL,&info->gamelocations[locnr].coords);
+		    applycond = CheckForUnit(comparefunc,ownactiononplayers,unitnr,nrofunits,NULL,&info->gamelocations[locnr].coords);
 		    break;
 		case TRG_CONDITIONTYPE_ACCUMULATE://4
 		    ownactiononplayers=OneGroup_Prepare(info,temptrg->condition[i].actiononplayers,playernrmask);
@@ -658,7 +667,7 @@ int Action_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int trig_nr,int playernr,int
 	    if (temptrg->action[i].actiontype==TRG_ACTIONTYPE_COMMENT)
 	    {
 	        TRIG_commentstr=getmapSTR(info,temptrg->action[i].stringID-1);
-//		DEBUGMESSCR("COMMENT[%s]\n",TRIG_commentstr);
+		DEBUGMESSCR("COMMENT[%s]\n",TRIG_commentstr);
 		break;
 	    }
 	
@@ -1267,7 +1276,7 @@ creationwithoutproperties:
 			    break;
 		    }
 		    newobj=NULL;
-		    nrofunits=CheckForUnit(NULL,ownedactiononplayers,unitnr,nrofunits,&newobj,&info->gamelocations[locnr].coords);
+		    nrofunits = CheckForUnit(NULL,ownedactiononplayers,unitnr,nrofunits,&newobj,&info->gamelocations[locnr].coords,MODESTOP);
 		    if (nrofunits)
 		    {
 			for (j=0;j<MaxObjects;j++)
