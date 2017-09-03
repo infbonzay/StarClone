@@ -908,7 +908,7 @@ int AtackCoolDownEnds(OBJ *a,OBJ *destobj,int continueatack,int showerrorflag)
 		{
 		    if (!accesstomove(a,loadobj(a->SC_Unit),MODEMOVE,a->playernr) || a->in_transport)
 		    {
-			if (showerrorflag)
+			if (showerrorflag & SHOWERRORTEXT)
 			{
 		    	    //invalid target
 		    	    Play_sfxdata_id(NULL,TARGETERROR[GetUnitRace(a->SC_Unit)],3,0);
@@ -924,7 +924,7 @@ int AtackCoolDownEnds(OBJ *a,OBJ *destobj,int continueatack,int showerrorflag)
 		return(MOVEOBJ_CONTINUEJOB);
 	    case CREATEDWEAPONSTATUS_DESTTOCLOSE://to close
 	    case CREATEDWEAPONSTATUS_CANTATACKTHISUNIT:
-		if (showerrorflag)
+		if (showerrorflag & SHOWERRORTEXT)
 		{
 		    //invalid target
 		    Play_sfxdata_id(NULL,TARGETERROR[GetUnitRace(a->SC_Unit)],3,0);

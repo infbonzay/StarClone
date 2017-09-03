@@ -1449,7 +1449,7 @@ int moveobj_buildmode(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int
 	    if (!CheckIfCanBuild(a,obj_id,x,y,&constrerror))
 	    {
 		moveobj(a,NULL,MODESTOP,0,0,NOSHOWERROR,0);
-		if (a->playernr == NUMBGAMER && showerrorflag)
+		if (a->playernr == NUMBGAMER && (showerrorflag & SHOWERRORTEXT) )
 	    	{
 		    activatesound(a,MODESOUNDERROR,2,NOSTOPCURRENTSOUNDS);
 		    putbuildplacemessage(-constrerror);
@@ -2085,7 +2085,7 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
 		if (!CheckIfCanLand(a,x,y,&constrerror))
 		{
 		    moveobj(a,NULL,MODESTOP,0,0,NOSHOWERROR,0);
-		    if (a->playernr == NUMBGAMER && showerrorflag)
+		    if (a->playernr == NUMBGAMER && (showerrorflag & SHOWERRORTEXT)) 
 	    	    {
 			Play_sfxdata_id(fordeselect[0],PUTLIFTDOWNERROR,2,0);
 			putbuildplacemessage(-constrerror);
