@@ -23,9 +23,9 @@
 #include "weapons.h"
 #include "triggers.h"
 
+//#define		TRIG_DEBUG
 int		TRIG_pause;
 int		*ALLTRIG_pause;
-char		TRIG_debug=1;
 char 		TRIG_ChangeStat;
 char 		TRIG_preserve;
 char 		TRIG_leaderboardcomputerplayers;
@@ -265,6 +265,7 @@ int CheckForUnit(int (*ConditionFunction)(int *, int),
     int i,nrofunits=0,checkready=0;
     int (*UnitTypeFunc) (int);
     struct OBJ *last=NULL;
+//    mylistsimple *objlist = new mylistsimple(MaxObjects);
     if (unitid>=MAX_UNITS_ELEM)					
     {								
 	UnitTypeFunc=CheckUnit[unitid-MAX_UNITS_ELEM];		//>228 (0xe5-0xe8)
@@ -294,7 +295,8 @@ int CheckForUnit(int (*ConditionFunction)(int *, int),
 		    if (retlast)
 		    {
 			SetTriggeredUnitState(objects[i],1);
-			last=objects[i];
+//			objlist->AddElem(objects[i]);
+			last = objects[i];
 			if (--cntunits==0)
 			    break;
 		    }
@@ -659,7 +661,8 @@ int Action_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int trig_nr,int playernr,int
     OBJstruct *b;
     err=0;
     triggcnt=0;
-    if (TRIG_debug)//show comment trigger first
+#ifdef TRIG_DEBUG	
+	//show comment trigger first
 	for (i=0;i<TRIG_MAX_ACTIONS;i++)
 	{
 	    if (temptrg->action[i].actiontype==TRG_ACTIONTYPE_NONE)
@@ -672,6 +675,7 @@ int Action_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int trig_nr,int playernr,int
 	    }
 	
 	}
+#endif
     for (i=0;i<TRIG_MAX_ACTIONS;i++)
     {
 	    triggset=0;
@@ -898,7 +902,7 @@ int Action_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int trig_nr,int playernr,int
 		    unitnr=temptrg->action[i].unitorrestype;
 		    ownedactiononplayers=OneGroup_Prepare(info,temptrg->action[i].actiononplayers,playernrmask);
 		    newobj=NULL;
-		    nrofunits=CheckForUnit(NULL,ownedactiononplayers,unitnr,nrofunits,&newobj,NULL);
+		    nrofunits = CheckForUnit(NULL,ownedactiononplayers,unitnr,nrofunits,&newobj,NULL);
 		    if (nrofunits)
 		    {
 			for (j=0;j<MaxObjects;j++)
@@ -1286,18 +1290,21 @@ creationwithoutproperties:
 				//done by previous trigger
 				SetTriggeredUnitState(objects[j],0);
 				//order unburrow if needed, after then move,atack,...
-				if (locnr != searchloc )
+/*				if (locnr != searchloc )
 				{
-				    deltax=0;
-				    deltay=0;
-//				    deltax = GetOBJx(objects[j]) - xobj;
-//				    deltay = GetOBJy(objects[j]) - yobj;
+				    deltax = GetOBJx(objects[j]) - xobj;
+				    deltay = GetOBJy(objects[j]) - yobj;
 				}
 				else
 				{
 				    deltax=0;
 				    deltay=0;
 				}
+*/
+				deltax=0;
+				deltay=0;
+				if (IsAirUnit(objects[j]->SC_Unit))
+				    deltay += 16;
 				switch(objects[j]->SC_Unit)
 				{
 				    case SC_TANKSIEGEOBJ:

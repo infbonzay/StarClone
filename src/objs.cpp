@@ -4798,7 +4798,6 @@ int CalcDestVars(OBJ *a,OBJ *destobj,int initx,int inity,int destx,int desty,uns
     else
     {
 	haltdistance = sqr(topspeed)/(2 * alldattbl.flingy_dat->Acceleration[flingy_id]);
-//	haltdistance = CalcTotalDistance(topspeed,0,alldattbl.flingy_dat->Acceleration[flingy_id]);
 	if (destobj)
 	    deltaz = GetDistanceTo256(destobj,initx,inity)/2;
 	else

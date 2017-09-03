@@ -1523,6 +1523,11 @@ void wscreenonmem(int nrregions,SCREEN_REGION regions[])
     strcat(s,ss);
     if (fordeselect[0])
     {
+	sprintf(ss," %d,%d %d,%d",GetOBJx(fordeselect[0]),GetOBJy(fordeselect[0]),fordeselect[0]->finalx>>8,fordeselect[0]->finaly>>8);
+	strcat(s,ss);
+    }
+/*    if (fordeselect[0])
+    {
 	sprintf(ss," 0x%x",(int)fordeselect[0]);
 	strcat(s,ss);
     }
@@ -1531,39 +1536,18 @@ void wscreenonmem(int nrregions,SCREEN_REGION regions[])
 	sprintf(ss," %d",fordeselect[0]->mainimage->side);
 	strcat(s,ss);
     }
-/*    if (fordeselect[0])
-    {
-	strcat(s," spores:");
-	itoa(GetMageAtr(&fordeselect[0]->atrobj,ATRCORROSIVEACID)>>8,ss,10);
-	strcat(s,ss);
-    }
-    strcat(s," QueueElem:");
-    itoa(QueueGame.GetQueueElements(),ss,10);
-    strcat(s,ss);
-*/    
+
     strcat(s," hot:");
     itoa(mousehotpos,ss,10);
     strcat(s,ss);
-/*    strcat(s," mx:");
-    itoa(mouse_x,ss,10);
-    strcat(s,ss);
-    strcat(s," my:");
-    itoa(mouse_y,ss,10);
-    strcat(s,ss);
-    if (fordeselect[0])
-    {
-	strcat(s," inv:");
-	itoa(fordeselect[0]->invisiblecolors,ss,10);
-	strcat(s,ss);
-    }
-*/
+
     strcat(s," pl:");
     itoa(NUMBGAMER,ss,10);
     strcat(s,ss);
     strcat(s,"/");
     itoa(PLAYEDPLAYERS,ss,10);
     strcat(s,ss);
-
+*/
     if (fordeselect[0])
     {
 	strcat(s," modemove:");
