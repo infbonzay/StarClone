@@ -800,8 +800,9 @@ void calcfullinvandseeobj(OBJ *a)
     	    a->select[i] |= VARNOTDETECT;
     	else
     	    a->select[i] &= ~VARNOTDETECT;
-        if (player_aliance(i,a->playernr)==ALLIANCEOBJ	||
-    	    player_aliance(i,a->playernr)==MYOBJ	||
+        if (map.pl_vision[i][a->playernr]			||
+    	    player_aliance(i,a->playernr) == ALLIANCEOBJ	||
+//    	    player_aliance(i,a->playernr) == MYOBJ		||
     	    existparasitebit(a,i))
         {
 	    a->select[i] |= (VARINVSEE | VARSEE);

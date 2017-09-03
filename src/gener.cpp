@@ -1521,11 +1521,12 @@ void wscreenonmem(int nrregions,SCREEN_REGION regions[])
     strcat(s," maxobjs:");
     itoa(MaxObjects,ss,10);
     strcat(s,ss);
-    if (fordeselect[0])
+/*    if (fordeselect[0])
     {
 	sprintf(ss," %d,%d %d,%d",GetOBJx(fordeselect[0]),GetOBJy(fordeselect[0]),fordeselect[0]->finalx>>8,fordeselect[0]->finaly>>8);
 	strcat(s,ss);
     }
+*/
 /*    if (fordeselect[0])
     {
 	sprintf(ss," 0x%x",(int)fordeselect[0]);
@@ -1536,7 +1537,7 @@ void wscreenonmem(int nrregions,SCREEN_REGION regions[])
 	sprintf(ss," %d",fordeselect[0]->mainimage->side);
 	strcat(s,ss);
     }
-
+*/
     strcat(s," hot:");
     itoa(mousehotpos,ss,10);
     strcat(s,ss);
@@ -1547,15 +1548,15 @@ void wscreenonmem(int nrregions,SCREEN_REGION regions[])
     strcat(s,"/");
     itoa(PLAYEDPLAYERS,ss,10);
     strcat(s,ss);
-*/
+
     if (fordeselect[0])
     {
 	strcat(s," modemove:");
 	itoa(fordeselect[0]->modemove,ss,10);
 	strcat(s,ss);
-	strcat(s,"/");
-	itoa(fordeselect[0]->atackcooldowntime,ss,10);
-	strcat(s,ss);
+//	strcat(s,"/");
+//	itoa(fordeselect[0]->atackcooldowntime,ss,10);
+//	strcat(s,ss);
     }
 /*    if (fordeselect[0])
     {
