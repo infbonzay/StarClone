@@ -3793,13 +3793,14 @@ void SetAtackTick(OBJ *a)
 	atacktick = 0;
 }
 //=================================
-#define UNITATACKFUNCTYPE_EVERYUNITS		0
-#define UNITATACKFUNCTYPE_DOODADS		1
-#define UNITATACKFUNCTYPE_BUNKERS		2
-#define UNITATACKFUNCTYPE_REAVERS		3
-#define UNITATACKFUNCTYPE_CARRIERS		4
-#define UNITATACKFUNCTYPE_VULTUREMINES		5
-#define UNITATACKFUNCTYPE_UNITWITHSUBUNIT	6
+#define UNITATACKFUNCTYPE_NONE			0
+#define UNITATACKFUNCTYPE_EVERYUNITS		1
+#define UNITATACKFUNCTYPE_DOODADS		2
+#define UNITATACKFUNCTYPE_BUNKERS		3
+#define UNITATACKFUNCTYPE_REAVERS		4
+#define UNITATACKFUNCTYPE_CARRIERS		5
+#define UNITATACKFUNCTYPE_VULTUREMINES		6
+#define UNITATACKFUNCTYPE_UNITWITHSUBUNIT	7
 //=================================
 int GetOBJAtackWithoutWeapons(int SC_Unit)
 {
@@ -3822,6 +3823,13 @@ int GetOBJAtackWithoutWeapons(int SC_Unit)
 	case SC_HERO_EDMUNDDUKESMOBJ:
 	case SC_HERO_ALANSCHEZAROBJ:
 	    return(UNITATACKFUNCTYPE_UNITWITHSUBUNIT);
+	case SC_TANKNORMALTURRETOBJ:
+	case SC_TANKSIEGETURRETOBJ:
+	case SC_GOLIATHTURRETOBJ:
+	case SC_HERO_EDMUNDDUKETMTURRETOBJ:
+	case SC_HERO_EDMUNDDUKESMTURRETOBJ:
+	case SC_HERO_ALANSCHEZARTURRETOBJ:
+	    return(UNITATACKFUNCTYPE_NONE);
 	default:
 	    if (IsDoodadState(SC_Unit)&&!IsInvincibleUnit(SC_Unit))
 	    {
@@ -3912,8 +3920,9 @@ struct OBJ* UnitWithSubUnitAtackFunc(OBJ *a,OBJstruct *b,unsigned char weaponmas
     return(a2);
 }
 //=================================
-struct OBJ* (*Atack_IDFunc[7])(OBJ *a,OBJstruct *b,unsigned char weaponmask,unsigned char groundweapon,unsigned char airweapon)=
+struct OBJ* (*Atack_IDFunc[8])(OBJ *a,OBJstruct *b,unsigned char weaponmask,unsigned char groundweapon,unsigned char airweapon)=
 			{
+			    NULL,
 			    &EveryUnitAtackFunc,
 			    &DoodadTrapAtackFunc,
 			    &BunkerAtackFunc,
@@ -3954,6 +3963,8 @@ struct OBJ* OneUnitSearchGoal(OBJ *a,OBJstruct *b,int ignoremodes)
 		    case UNITATACKFUNCTYPE_REAVERS://reaver
 		    case UNITATACKFUNCTYPE_CARRIERS://carrier
 			break;
+		    case UNITATACKFUNCTYPE_NONE:	//base/turret
+			return(NULL);
 		}
 		return ((*Atack_IDFunc[unitatack_id])(a,b,weaponmask,groundweapon,airweapon));
 	    }
@@ -4025,7 +4036,8 @@ OBJ *FindObjForAtack(OBJ *a,OBJstruct *b,
 		    {
 			//this is enemy, need to check detect vision radius
 			minrange = 0;
-		        maxrange = GetTargetAcquisitionRange(a->SC_Unit);
+		        maxrange = alldattbl.units_dat->SightRange[a->SC_Unit];
+//		        maxrange = GetTargetAcquisitionRange(a->SC_Unit);
 			if (!maxrange)
 			{
 		    	    minrange=alldattbl.weapons_dat->MinimumRange[weapon_id];

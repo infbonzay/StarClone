@@ -76,7 +76,7 @@ int GetSpeed(OBJ *a,int speed)
 //====================================
 int GetUnitSightRange(OBJ *a,OBJstruct *b)
 {
-    char seerange=alldattbl.units_dat->SightRange[a->SC_Unit];
+    char seerange = alldattbl.units_dat->SightRange[a->SC_Unit];
     if (GetMageAtr(&a->atrobj,ATRBLIND)>0)
 	return(MINSEERANGE);
     if (b->sightupgnr!=-1)
