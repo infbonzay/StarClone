@@ -790,7 +790,7 @@ void calcfullinvandseeobj(OBJ *a)
     int i,decloaked,cloaked;
     unsigned char visbits;
     decloaked = existatrdecloak(a);
-    if (IsCloaked(a)||IsOBJBurrowed(a))
+    if (IsCloaked(a) || IsOBJBurrowed(a))
 	cloaked=1;
     else
 	cloaked=0;
@@ -802,7 +802,6 @@ void calcfullinvandseeobj(OBJ *a)
     	    a->select[i] &= ~VARNOTDETECT;
         if (map.pl_vision[i][a->playernr]			||
     	    player_aliance(i,a->playernr) == ALLIANCEOBJ	||
-//    	    player_aliance(i,a->playernr) == MYOBJ		||
     	    existparasitebit(a,i))
         {
 	    a->select[i] |= (VARINVSEE | VARSEE);

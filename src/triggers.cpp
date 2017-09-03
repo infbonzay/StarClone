@@ -21,11 +21,14 @@
 #include "market.h"
 #include "images.h"
 #include "weapons.h"
+#include "music.h"
 #include "triggers.h"
 
 //#define		TRIG_DEBUG
 int		TRIG_pause;
+int		TRIG_MusicQuieter;
 int		*ALLTRIG_pause;
+char		TRIG_MusicVolume;
 char 		TRIG_ChangeStat;
 char 		TRIG_preserve;
 char 		TRIG_leaderboardcomputerplayers;
@@ -54,6 +57,7 @@ void Remove_Triggers(mapinfo *info)
     }
     TRIG_stopalltriggers = 1;
     TRIG_inittriggers = 0;
+    TRIG_MusicQuieter = 0;
 }
 //=================================================
 int AllGroups_Prepare(mapinfo *info,MAP_TRIGS *temptrg)
@@ -400,8 +404,26 @@ int (*AddResFunctions[3])(int (*ConditionFunction)(int *, int), int, int)=
 //=================================================
 //=================================================
 //=================================================
+int Triggers_SetMusicVolume(int volume)
+{
+    int currentmusicvolume = gameconf.audioconf.musicvolume;
+    if (audiostream)
+    {
+	if (volume == -1)
+	{
+    	    audiostream->ChangeMusicVolume(gameconf.audioconf.musicvolume/3);
+    	}
+    	else
+    	{
+    	    audiostream->ChangeMusicVolume(volume);
+    	}
+    }
+    return(currentmusicvolume);
+}
+//=================================================
 void Init_Triggers_Variables(int cnttrg)
 {
+    TRIG_MusicQuieter = 0;
     TRIG_stopalltriggers = 0;
     TRIG_active=0;
     TRIG_snd=0;
@@ -439,6 +461,16 @@ void Triggers_Parce(mapinfo *info,int cnttrg,MAP_TRIGS *trigs,int deltatick)
     MAP_TRIGS	(*alltrigs)[]=(MAP_TRIGS (*)[]) trigs;
     TRIG_active=1;
     TRIG_inittriggers = 1;
+
+    if (TRIG_MusicQuieter)
+    {
+	TRIG_MusicQuieter -= deltatick;
+	if (TRIG_MusicQuieter <= 0)
+	{
+	    TRIG_MusicQuieter = 0;
+	    Triggers_SetMusicVolume(TRIG_MusicVolume);
+	}
+    }
     for (i=0;i<cnttrg;i++)
     {
 	temptrg=&(*alltrigs)[i];
@@ -756,10 +788,16 @@ int Action_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int trig_nr,int playernr,int
 		    soundid = loadandplaywav(info->mpqid,NULL,FULLFILENAME,1,0);
 //		    DEBUGMESSCR("sountid=%d\n",soundid);
 //		    waittime=getchannelplaylength(soundid);
-		    TRIG_pause=temptrg->action[i].pauseatime;
+		    TRIG_pause = temptrg->action[i].pauseatime;
 		    (*comparefunc)(&TRIG_pause,deltapaused);
-		    TRIG_pause=TRIG_pause*timewaitticks[gameconf.speedconf.gamespeed]/MAXGAMECYCLESPERSECOND;
+		    TRIG_pause = TRIG_pause*timewaitticks[gameconf.speedconf.gamespeed]/MAXGAMECYCLESPERSECOND;
 		    waittime=TRIG_pause;
+		    if (!TRIG_MusicQuieter)
+		    {
+			TRIG_MusicVolume = Triggers_SetMusicVolume(-1);
+		    }
+		    TRIG_MusicQuieter += TRIG_pause;
+
 		    if (waittime<TRIGGER_DISPLAYMESSAGETIME)
 			waittime=TRIGGER_DISPLAYMESSAGETIME;
 		    unitnr=temptrg->action[i].unitorrestype;
