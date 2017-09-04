@@ -4338,7 +4338,7 @@ int tryaiaction(OBJ *a,OBJ *atacker,int directiondamage)
 		    }
 		    else
 		    {
-			moveobj(a,atacker,MODEATACK,0,0,NOSHOWERROR,0);
+//			moveobj(a,atacker,MODEATACK,0,0,NOSHOWERROR,0);
 		    }
 		    return(1);
 	    }
@@ -4376,7 +4376,7 @@ int tryunitaction(OBJ *a,OBJ *atacker)
     {
 	case SC_VULTUREMINEOBJ:
 	    return(1);
-	case SC_LURKEROBJ:
+/*	case SC_LURKEROBJ:
 	    if (IsOBJBurrowed(a))
 	    {
 //		moveobj(a,NULL,MODEUNBURROW,0,0,NOSHOWERROR,0);
@@ -4386,10 +4386,12 @@ int tryunitaction(OBJ *a,OBJ *atacker)
 		moveobj(a,NULL,MODEBURROW2,0,0,NOSHOWERROR,0);
 	    }
 	    return(0);
+*/
     }
     if (IsOBJBurrowed(a))
     {
 	moveobj(a,NULL,MODEUNBURROW,0,0,NOSHOWERROR,0);
+	AddModeMove(a,atacker,MODEATACK,0,0,NOSHOWERROR);
 	return(0);
     }
     return(1);
@@ -4439,13 +4441,17 @@ void TellOtherUnitsAboutAtacking(OBJ *a,OBJ *atacker)
 		if (controldistanceunit(GetOBJx(a),GetOBJy(a),GetOBJx(a2),GetOBJy(a2),MINREACTIONDISTANCEFORATACKING))
 		{
 		    //tell other unit to atack my atacker
-		    if (IsOBJBurrowed(a2) && a2->SC_Unit != SC_LURKEROBJ)
+		    if (IsOBJBurrowed(a2))
 		    {
-			moveobj(a2,NULL,MODEUNBURROW,0,0,NOSHOWERROR,0);
+			if (a2->SC_Unit != SC_LURKEROBJ)
+			{
+			    moveobj(a2,NULL,MODEUNBURROW,0,0,NOSHOWERROR,0);
+			}
 		    }
 		    else
 		    {
-			moveobj(a2,atacker,MODEATACK,0,0,NOSHOWERROR,0);
+			if (a2->SC_Unit != SC_LURKEROBJ)
+			    moveobj(a2,atacker,MODEATACK,0,0,NOSHOWERROR,0);
 		    }
 		}
 	    }
