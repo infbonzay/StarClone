@@ -2395,6 +2395,10 @@ escapeconstrslots:
 		ApplyNextModeMove(a);
 	    break;
 	case MODEATACK:
+//	    if (!MageDepend(a,a->playernr,mode))
+//	    {
+//	        return(MOVEOBJ_NOACT);
+//	    }
 	    if (alldattbl.units_dat->Subunit1[a->SC_Unit] < MAX_UNITS_ELEM)
 	    {
 		moveobj(a->subunit,destobj,mode,x,y,showerrorflag,0);
@@ -4376,8 +4380,9 @@ int tryunitaction(OBJ *a,OBJ *atacker)
     {
 	case SC_VULTUREMINEOBJ:
 	    return(1);
-/*	case SC_LURKEROBJ:
-	    if (IsOBJBurrowed(a))
+	case SC_LURKEROBJ:
+	    return(0);
+/*	    if (IsOBJBurrowed(a))
 	    {
 //		moveobj(a,NULL,MODEUNBURROW,0,0,NOSHOWERROR,0);
 	    }
@@ -4385,7 +4390,6 @@ int tryunitaction(OBJ *a,OBJ *atacker)
 	    {
 		moveobj(a,NULL,MODEBURROW2,0,0,NOSHOWERROR,0);
 	    }
-	    return(0);
 */
     }
     if (IsOBJBurrowed(a))
