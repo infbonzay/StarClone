@@ -1,10 +1,10 @@
 
-[NEWOBJECT]     = 0 Terran_Marine TERRAN SMALL LIFE
+[NEWOBJECT] = 0 Terran_Marine
 PROPERTIES      = 2     0   0   0   0   0   0   0   0   0
 			256 257 333   258 267 0   315 0   0
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 1 Terran_Ghost TERRAN SMALL LIFE
+[NEWOBJECT] = 1 Terran_Ghost
 SIGHTUPG	 = 20
 MANAUPG          = 21
 TIMELEFT         = 0
@@ -20,40 +20,40 @@ PROPERTIES       = 8    0   0   0   0   0   0   0   0   0
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 2 Terran_Vulture TERRAN MEDIUM TECHNIC
+[NEWOBJECT] = 2 Terran_Vulture
 SPEEDUPG 	 = 17 50
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 			256 257 333   258 267 0   367 0   0
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 3 Terran_Goliath TERRAN MEDIUM TECHNIC
+[NEWOBJECT] = 3 Terran_Goliath
 TIMELEFT         = 0
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 			256 257 333   258 267 0   0   0   0
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 4 Terran_Goliath_Turret TERRAN MEDIUM TECHNIC
+[NEWOBJECT] = 4 Terran_Goliath_Turret
 
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 			0   0   333   0   0   0   0   0   0
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 5 Terran_Tank TERRAN MEDIUM TECHNIC
+[NEWOBJECT] = 5 Terran_Tank
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 			256 257 333   258 267 0   368 0   0
 
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 6 Terran_Tank_Turret TERRAN MEDIUM TECHNIC
+[NEWOBJECT] = 6 Terran_Tank_Turret
 
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 			0   257 333 0   0   0   368 0   0
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 7 Terran_SCV TERRAN SMALL TECHNIC
+[NEWOBJECT] = 7 Terran_SCV
 PROPERTIES       = 7    0   0   0   0   0   0   0   0   272
 			256 257 333   270 298 301 138 139 0
 		        0   0   0   0   0   0   0   0   0
@@ -66,7 +66,7 @@ PROPERTIES       = 7    0   0   0   0   0   0   0   0   272
 ENDOBJ           = 1
 
 
-[NEWOBJECT]      = 8 Terran_Wraith TERRAN MEDIUM TECHNIC
+[NEWOBJECT] = 8 Terran_Wraith
 MANAUPG          = 22
 PROPERTIES       = 3    0   0   0   0   0   0   0   0   0
 			256 257 333   258 267 0   376 0   0
@@ -75,53 +75,53 @@ PROPERTIES       = 3    0   0   0   0   0   0   0   0   0
 ENDOBJ           = 1
 
 
-[NEWOBJECT]      = 9 Terran_Science_Vessel TERRAN MEDIUM TECHNIC
+[NEWOBJECT] = 9 Terran_Science_Vessel
 MANAUPG          = 19
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 			256 257 0   258 267 0   283 284 285
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 10 Gui_Montag TERRAN SMALL LIFE
+[NEWOBJECT] = 10 Gui_Montag
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 			256 257 333   258 267 0   316 0   0
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 11 Terran_Drop_Ship TERRAN MEDIUM TECHNIC
+[NEWOBJECT] = 11 Terran_Drop_Ship
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 			256 257 0   258 267 310 0   0   311
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 12 Terran_Battle_Cruiser TERRAN LARGE TECHNIC
+[NEWOBJECT] = 12 Terran_Battle_Cruiser
 MANAUPG          = 23
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 			256 257 333   258 267 0  286  0   0
 
 ENDOBJ		= 1
 
-[NEWOBJECT]      = 13 Terran_Spider_Mine TERRAN SMALL OTHER
+[NEWOBJECT] = 13 Terran_Spider_Mine
 PROPERTIES       = 3     0   0   0   0   0   0   0   0   0
 			 256 257 333 258 267 0   0   0   371
 			 0   0   0   0   0   0   0   0   372
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 14 Nuclear_Missile NEUTRAL SMALL TECHNIC
+[NEWOBJECT] = 14 Nuclear_Missile
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 			256 0   0   0   0   0   0   0   0
 
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 15 Civilian TERRAN SMALL LIFE
+[NEWOBJECT] = 15 Civilian
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 			256 257 0   0   267 0   0   0   0
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 16 Sarah_Kerrigan TERRAN SMALL LIFE
+[NEWOBJECT] = 16 Sarah_Kerrigan
 PROPERTIES       = 3    0   0   0   0   0   0   0   0   0
 			256 257 333   258 267 0  377  281 0
 			256 257 333   258 267 0  378  281 0
@@ -129,27 +129,27 @@ PROPERTIES       = 3    0   0   0   0   0   0   0   0   0
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 17 Alan_Schezar TERRAN MEDIUM TECHNIC
+[NEWOBJECT] = 17 Alan_Schezar
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 			256 257 333   258 267 0   0   0   0
 	
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 18 Alan_Schezar_Turret TERRAN MEDIUM TECHNIC
+[NEWOBJECT] = 18 Alan_Schezar_Turret
 
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 			0   0   333   0   0   0   0   0   0
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 19 Jim_Raynor_Vulture TERRAN MEDIUM TECHNIC
+[NEWOBJECT] = 19 Jim_Raynor_Vulture
 SPEEDUPG 	 = 17 50
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 			256 257 333   258 267 0   367 0   0
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 20 Jim_Raynor_Marine TERRAN SMALL LIFE
+[NEWOBJECT] = 20 Jim_Raynor_Marine
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 			256 257 333   258 267 0   315 0   0
 
@@ -157,7 +157,7 @@ PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 21 Tom_Kazansky TERRAN MEDIUM TECHNIC
+[NEWOBJECT] = 21 Tom_Kazansky
 MANAUPG          = 22
 PROPERTIES       = 3    0   0   0   0   0   0   0   0   0
 			256 257 333   258 267 0   376  0   0
@@ -165,33 +165,33 @@ PROPERTIES       = 3    0   0   0   0   0   0   0   0   0
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 22 Magellan TERRAN MEDIUM TECHNIC
+[NEWOBJECT] = 22 Magellan
 MANAUPG          = 19
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 			256 257 0   258 267 0   283 284 285
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 23 Edmund_Duke_Tank_Mode TERRAN MEDIUM TECHNIC
+[NEWOBJECT] = 23 Edmund_Duke_Tank_Mode
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 			256 257 333   258 267 0   368 0   0
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 24 Edmund_Duke_Tank_Turret TERRAN MEDIUM TECHNIC
+[NEWOBJECT] = 24 Edmund_Duke_Tank_Turret
 
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 			0   257 333 0   0   0  368  0   0
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 25 Edmund_Duke_Siege_Mode TERRAN MEDIUM TECHNIC
+[NEWOBJECT] = 25 Edmund_Duke_Siege_Mode
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 			0   257 333   0   0   0   369 0   0
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 26 Edmund_Duke_Siege_Turret TERRAN MEDIUM TECHNIC
+[NEWOBJECT] = 26 Edmund_Duke_Siege_Turret
 
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 			0   257 333 0   0   0  369  0   0
@@ -199,47 +199,47 @@ PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 ENDOBJ           = 1
 
 
-[NEWOBJECT]      = 27 Arcturus_Mengsk TERRAN LARGE TECHNIC
+[NEWOBJECT] = 27 Arcturus_Mengsk
 MANAUPG          = 23
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 			256 257 333   258 267 0  286  0   0
 
 ENDOBJ		= 1
 
-[NEWOBJECT]      = 28 Hyperion TERRAN LARGE TECHNIC
+[NEWOBJECT] = 28 Hyperion
 MANAUPG          = 23
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 			256 257 333   258 267 0  286  0   0
 
 ENDOBJ		= 1
 
-[NEWOBJECT]      = 29 Norad2 TERRAN LARGE TECHNIC
+[NEWOBJECT] = 29 Norad2
 MANAUPG          = 23
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 			256 257 333   258 267 0  286  0   0
 
 ENDOBJ		= 1
 
-[NEWOBJECT]      = 30 Terran_Siege_Tank TERRAN MEDIUM TECHNIC
+[NEWOBJECT] = 30 Terran_Siege_Tank
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 			0 257   333 0   0   0  369  0   0
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 31 Terran_Siege_Tank_Turret TERRAN MEDIUM TECHNIC
+[NEWOBJECT] = 31 Terran_Siege_Tank_Turret
 
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 			0 257 333   0   0   0  369  0   0
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 32 Terran_Firebat TERRAN SMALL LIFE
+[NEWOBJECT] = 32 Terran_Firebat
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 			256 257 333   258 267 0   316 0   0
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 33 scanner_sweep TERRAN SMALL TECHNIC
+[NEWOBJECT] = 33 scanner_sweep
 TIMELEFT         = 150
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 			0   0   0   0   0   0   0   0   0
@@ -249,28 +249,28 @@ PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 ENDOBJ           = 1
 
 
-[NEWOBJECT]      = 34 Terran_Medic TERRAN SMALL LIFE
+[NEWOBJECT] = 34 Terran_Medic
 MANAUPG          = 51
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 			256 257 333   258 267 0   288 290 289
 
 ENDOBJ           = 1
 
-[NEWOBJECT]    	= 35 Zerg_Larvae ZERG SMALL OTHER
+[NEWOBJECT] = 35 Zerg_Larvae
 PROPERTIES      = 3     0   0   0   0   0   0   0   0   0
 			41  37  42  38  47  43  45  39  46
 		        256 257 0   0   0   0   0   0   0
 
 ENDOBJ		= 1
 
-[NEWOBJECT]      = 36 Zerg_Egg ZERG SMALL OTHER
+[NEWOBJECT] = 36 Zerg_Egg
 NOADDSTATSATCONSTR = 1
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   384
 			0   0   0   0   0   0   0   0   384
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 37 Zerg_Zergling ZERG SMALL LIFE
+[NEWOBJECT] = 37 Zerg_Zergling
 SPEEDUPG 	 = 27 50
 ATACKSPEEDUPG	 = 28
 PROPERTIES       = 3	0   0   0   0   0   0   0   0   0
@@ -280,7 +280,7 @@ PROPERTIES       = 3	0   0   0   0   0   0   0   0   0
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 38 Zerg_Hydralisk ZERG MEDIUM LIFE
+[NEWOBJECT] = 38 Zerg_Hydralisk
 SPEEDUPG 	 = 29 50
 PROPERTIES       = 3	0   0   0   0   0   0   0   0   0
 			256 257 333   258 267 0  320  0   370
@@ -288,7 +288,7 @@ PROPERTIES       = 3	0   0   0   0   0   0   0   0   0
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 39 Zerg_Ultralisk ZERG LARGE LIFE
+[NEWOBJECT] = 39 Zerg_Ultralisk
 SPEEDUPG 	 = 53 50
 ULTRALISKSECONDARMOR = 52
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
@@ -296,7 +296,7 @@ PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 40 Zerg_Broodling ZERG SMALL LIFE
+[NEWOBJECT] = 40 Zerg_Broodling
 TIMELEFT         = 2700
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 			256 257 333   258 267 0   0   0   0
@@ -304,7 +304,7 @@ PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 41 Zerg_Drone ZERG SMALL LIFE
+[NEWOBJECT] = 41 Zerg_Drone
 PROPERTIES       = 7	0   0   0   0   0   0   0   0   0
 		        256 257 333   0   298 301 136 137 370
 			0   0   0   0   0   0   0   0   372
@@ -316,7 +316,7 @@ PROPERTIES       = 7	0   0   0   0   0   0   0   0   0
     
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 42 Zerg_Overlord ZERG MEDIUM LIFE
+[NEWOBJECT] = 42 Zerg_Overlord
 SPEEDUPG 	 = 26 300
 SIGHTUPG	 = 25
 PROPERTIES       = 2	0   0   0   0   0   0   0   0   0
@@ -325,7 +325,7 @@ PROPERTIES       = 2	0   0   0   0   0   0   0   0   0
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 43 Zerg_Mutalisk ZERG SMALL LIFE
+[NEWOBJECT] = 43 Zerg_Mutalisk
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 			256 257 333   258 267 0   44  62  0
 
@@ -333,7 +333,7 @@ PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 44 Zerg_Guardian ZERG LARGE LIFE
+[NEWOBJECT] = 44 Zerg_Guardian
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 			256 257 333   258 267 0   0   0   0
 
@@ -342,7 +342,7 @@ PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 45 Zerg_Queen ZERG MEDIUM LIFE
+[NEWOBJECT] = 45 Zerg_Queen
 MANAUPG          = 31
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 			256 257 0   258 267 313 263 264 265
@@ -350,7 +350,7 @@ PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 46 Zerg_Defiler ZERG MEDIUM LIFE
+[NEWOBJECT] = 46 Zerg_Defiler
 MANAUPG          = 32
 PROPERTIES       = 3    0   0   0   0   0   0   0   0   0
 			256 257 0   258 267 259 261 262 370
@@ -358,13 +358,13 @@ PROPERTIES       = 3    0   0   0   0   0   0   0   0   0
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 47 Zerg_Scourge ZERG SMALL LIFE
+[NEWOBJECT] = 47 Zerg_Scourge
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 			256 257 333   258 0   0   0   0   0
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 48 Torasque_Ultralisk ZERG LARGE LIFE
+[NEWOBJECT] = 48 Torasque_Ultralisk
 SPEEDUPG 	 = 53 50
 ULTRALISKSECONDARMOR = 52
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
@@ -372,7 +372,7 @@ PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 49 Matriarch_Queen ZERG MEDIUM LIFE
+[NEWOBJECT] = 49 Matriarch_Queen
 MANAUPG          = 31
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 			256 257 0   258 267 313 263 264 265
@@ -380,21 +380,21 @@ PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 50 Zerg_Infested_Terran ZERG SMALL LIFE
+[NEWOBJECT] = 50 Zerg_Infested_Terran
 PROPERTIES       = 3    0   0   0   0   0   0   0   0   0
 			256 257 333   258 267 0   0   0   370
 			0   0   0   0   0   0   0   0   372
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 51 Infested_Sarah_Kerrigan ZERG SMALL LIFE
+[NEWOBJECT] = 51 Infested_Sarah_Kerrigan
 PROPERTIES       = 3    0   0   0   0   0   0   0   0   0
 			256 257 333   258 267 260 377  264 275
 			256 257 333   258 267 260 378  264 275
 
 
 ENDOBJ           = 1
-[NEWOBJECT]      = 52 Uncleaned_One_Defiler ZERG MEDIUM LIFE
+[NEWOBJECT] = 52 Uncleaned_One_Defiler
 MANAUPG          = 32
 PROPERTIES       = 3    0   0   0   0   0   0   0   0   0
 			256 257 0   258 267 259 261 262 371
@@ -403,7 +403,7 @@ PROPERTIES       = 3    0   0   0   0   0   0   0   0   0
     
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 53 Hunter_Killer_Hydralisk ZERG MEDIUM LIFE
+[NEWOBJECT] = 53 Hunter_Killer_Hydralisk
 SPEEDUPG 	 = 29 50
 
 PROPERTIES       = 3	0   0   0   0   0   0   0   0   0
@@ -412,7 +412,7 @@ PROPERTIES       = 3	0   0   0   0   0   0   0   0   0
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 54 Unclean_One_Zergling ZERG SMALL LIFE
+[NEWOBJECT] = 54 Unclean_One_Zergling
 SPEEDUPG 	 = 27 50
 ATACKSPEEDUPG	 = 28
 PROPERTIES       = 3	0   0   0   0   0   0   0   0   0
@@ -421,7 +421,7 @@ PROPERTIES       = 3	0   0   0   0   0   0   0   0   0
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 55 Kukulza_Mutalisk ZERG SMALL LIFE
+[NEWOBJECT] = 55 Kukulza_Mutalisk
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 			256 257 333   258 267 0   0   0   0
 
@@ -429,13 +429,13 @@ PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 56 Kukulza_Guardian ZERG LARGE LIFE
+[NEWOBJECT] = 56 Kukulza_Guardian
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 			256 257 333   258 267 0   0   0   0
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 57 Yggdrasill_Overlord ZERG MEDIUM LIFE
+[NEWOBJECT] = 57 Yggdrasill_Overlord
 SPEEDUPG 	 = 26 300
 SIGHTUPG	 = 25
 PROPERTIES       = 2	0   0   0   0   0   0   0   0   0
@@ -443,48 +443,48 @@ PROPERTIES       = 2	0   0   0   0   0   0   0   0   0
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 58 Terran_Valkyrie TERRAN MEDIUM TECHNIC
+[NEWOBJECT] = 58 Terran_Valkyrie
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 			256 257 333   258 267 0   0   0   0
 
 ENDOBJ           = 1
 
 
-[NEWOBJECT]      = 59 Mutalisk_Cocoon ZERG MEDIUM OTHER
+[NEWOBJECT] = 59 Mutalisk_Cocoon
 NOADDSTATSATCONSTR = 1
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   384
 			0   0   0   0   0   0   0   0   384
 ENDOBJ           = 1
 
 
-[NEWOBJECT]      = 60 Protoss_Corsair PROTOSS MEDIUM CYBORG
+[NEWOBJECT] = 60 Protoss_Corsair
 MANAUPG          = 47
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 			256 257 333   258 267 0   287 0   0
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 61 Protoss_Dark_Templar PROTOSS MEDIUM LIFE
+[NEWOBJECT] = 61 Protoss_Dark_Templar
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 			256 257 333   258 267 0   0   0   318
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 62 Zerg_Devourer ZERG LARGE LIFE
+[NEWOBJECT] = 62 Zerg_Devourer
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 			256 257 333   258 267 0   0   0   0
 
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 63 Protoss_Dark_Archon PROTOSS LARGE MYSTERY
+[NEWOBJECT] = 63 Protoss_Dark_Archon
 MANAUPG          = 49
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 			256 257 0   0   267 0   292 294 293
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 64 Protoss_Probe PROTOSS SMALL CYBORG
+[NEWOBJECT] = 64 Protoss_Probe
 PROPERTIES       = 7    0   0   0   0   0   0   0   0   0
 			256 257 333   0   298 301 134 135 0
 			0   0   0   0   0   0   0   0   0
@@ -495,21 +495,21 @@ PROPERTIES       = 7    0   0   0   0   0   0   0   0   0
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 65 Protoss_Zealot PROTOSS MEDIUM LIFE
+[NEWOBJECT] = 65 Protoss_Zealot
 SPEEDUPG 	 = 34 50
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 			256 257 333   258 267 0   0   0   0
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 66 Protoss_Dragoon PROTOSS LARGE TECHNIC
+[NEWOBJECT] = 66 Protoss_Dragoon
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 			256 257 333   258 267 0   0   0   0
 
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 67 Protoss_High_Templar PROTOSS MEDIUM LIFE
+[NEWOBJECT] = 67 Protoss_High_Templar
 MANAUPG          = 40
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 			256 257 0   258 267 0   275 277 317
@@ -517,21 +517,21 @@ PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 ENDOBJ           = 1
 
 
-[NEWOBJECT]      = 68 Protoss_Archon PROTOSS LARGE MYSTERY
+[NEWOBJECT] = 68 Protoss_Archon
 NOADDSTATSATCONSTR = 1
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 			256 257 333   258 267 0   0   0   0
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 69 Protoss_Shuttle PROTOSS MEDIUM CYBORG
+[NEWOBJECT] = 69 Protoss_Shuttle
 SPEEDUPG 	 = 37 50
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 			256 257 0   0   267 310 0   0   311
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 70 Protoss_Scout PROTOSS MEDIUM CYBORG
+[NEWOBJECT] = 70 Protoss_Scout
 SPEEDUPG 	 = 42 33.3
 SIGHTUPG	 = 41
 TIMELEFT         = 0
@@ -540,7 +540,7 @@ PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 71 Protoss_Arbiter PROTOSS MEDIUM CYBORG
+[NEWOBJECT] = 71 Protoss_Arbiter
 CLOAKRANGE	 = 5
 MANAUPG          = 44
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
@@ -548,7 +548,7 @@ PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 72 Protoss_Carrier PROTOSS LARGE CYBORG
+[NEWOBJECT] = 72 Protoss_Carrier
 HAVECHILD	 = YES
 PROPERTIES       = 4    0   0   0   0   0   0   0   0   0
 			256 257 333   258 267 0   73  0   0
@@ -557,7 +557,7 @@ PROPERTIES       = 4    0   0   0   0   0   0   0   0   0
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 73 Protoss_Interceptor PROTOSS SMALL CYBORG
+[NEWOBJECT] = 73 Protoss_Interceptor
 RECHARGE	 = 2 50 200
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 			256 257 333   399 0   0   0   0   0
@@ -565,39 +565,39 @@ PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 74 Dark_Templar_Hero(Raszagal) PROTOSS MEDIUM LIFE
+[NEWOBJECT] = 74 Dark_Templar_Hero(Raszagal)
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 			256 257 333   258 267 0   0   0   0
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 75 Zeratul PROTOSS MEDIUM LIFE
+[NEWOBJECT] = 75 Zeratul
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 			256 257 333   258 267 0   0   0   0
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 76 Tassadar_Zeratul_Archon PROTOSS LARGE MYSTERY
+[NEWOBJECT] = 76 Tassadar_Zeratul_Archon
 NOADDSTATSATCONSTR = 1
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 			256 257 333   258 267 0   0   0   0
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 77 Fenix_Zealot PROTOSS MEDIUM LIFE
+[NEWOBJECT] = 77 Fenix_Zealot
 SPEEDUPG 	 = 34 50
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 			256 257 333   258 267 0   0   0   0
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 78 Fenix_Dragoon PROTOSS LARGE TECHNIC
+[NEWOBJECT] = 78 Fenix_Dragoon
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 			256 257 333   258 267 0   0   0   0
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 79 Tassadar_High_Templar PROTOSS MEDIUM LIFE
+[NEWOBJECT] = 79 Tassadar_High_Templar
 MANAUPG          = 40
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 			256 257 333   258 267 0   275 277 0
@@ -605,7 +605,7 @@ PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 80 Mojo_Scout PROTOSS MEDIUM CYBORG
+[NEWOBJECT] = 80 Mojo_Scout
 SPEEDUPG 	 = 42 33.3
 SIGHTUPG	 = 41
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
@@ -613,7 +613,7 @@ PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 81 Warbringer_Reaver PROTOSS LARGE CYBORG
+[NEWOBJECT] = 81 Warbringer_Reaver
 HAVECHILD	 = YES
 PROPERTIES       = 4    0   0   0   0   0   0   0   0   0
 			256 257 333   258 267 0   85  0   0
@@ -622,7 +622,7 @@ PROPERTIES       = 4    0   0   0   0   0   0   0   0   0
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 82 Gantrintor_Carrier PROTOSS LARGE CYBORG
+[NEWOBJECT] = 82 Gantrintor_Carrier
 HAVECHILD	 = YES
 PROPERTIES       = 4    0   0   0   0   0   0   0   0   0
 			256 257 333   258 267 0   73  0   0
@@ -631,7 +631,7 @@ PROPERTIES       = 4    0   0   0   0   0   0   0   0   0
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 83 Protoss_Reaver PROTOSS LARGE CYBORG
+[NEWOBJECT] = 83 Protoss_Reaver
 HAVECHILD	 = YES
 PROPERTIES       = 4    0   0   0   0   0   0   0   0   0
 			256 257 333 258 267 0   85  0   0
@@ -641,7 +641,7 @@ PROPERTIES       = 4    0   0   0   0   0   0   0   0   0
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 84 Protoss_Observer PROTOSS SMALL CYBORG
+[NEWOBJECT] = 84 Protoss_Observer
 SPEEDUPG 	 = 39 50
 SIGHTUPG	 = 38
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
@@ -649,13 +649,13 @@ PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 85 Protoss_Reaver_Scarab PROTOSS SMALL OTHER
+[NEWOBJECT] = 85 Protoss_Reaver_Scarab
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0  
 			256 257 333   0   0   0   0   0   0
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 86 Danimoth_Arbiter PROTOSS MEDIUM CYBORG
+[NEWOBJECT] = 86 Danimoth_Arbiter
 CLOAKRANGE	 = 5
 MANAUPG          = 44
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
@@ -663,7 +663,7 @@ PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 87 Aldaris_High_Templar PROTOSS MEDIUM LIFE
+[NEWOBJECT] = 87 Aldaris_High_Templar
 MANAUPG          = 40
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 			256 257 333   258 267 0   275 277 0
@@ -671,7 +671,7 @@ PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 88 Artanis_Scout PROTOSS MEDIUM CYBORG
+[NEWOBJECT] = 88 Artanis_Scout
 SPEEDUPG         = 42 33.3
 SIGHTUPG	 = 41
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
@@ -680,18 +680,18 @@ PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 ENDOBJ           = 1
 
 
-[NEWOBJECT]      = 89 Rhynadon NEUTRAL MEDIUM LIFE
+[NEWOBJECT] = 89 Rhynadon
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 			256 257 0   258 0   0   0   0   0
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 90 Bengalaas NEUTRAL SMALL LIFE
+[NEWOBJECT] = 90 Bengalaas
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 			256 257 0   258 0   0   0   0   0
 ENDOBJ           = 1
 
 
-[NEWOBJECT]      = 93 Scantid NEUTRAL SMALL LIFE
+[NEWOBJECT] = 93 Scantid
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 			256 257 0   258 0   0   0   0   0
 
@@ -699,27 +699,27 @@ PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 ENDOBJ           = 1
 
 
-[NEWOBJECT]      = 94 Kakaru NEUTRAL SMALL LIFE
-PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
-			256 257 0   258 0   0   0   0   0
-
-ENDOBJ           = 1
-
-
-[NEWOBJECT]      = 95 Ragnasaur NEUTRAL SMALL LIFE
+[NEWOBJECT] = 94 Kakaru
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 			256 257 0   258 0   0   0   0   0
 
 ENDOBJ           = 1
 
 
-[NEWOBJECT]      = 96 Ursadon NEUTRAL MEDIUM LIFE
+[NEWOBJECT] = 95 Ragnasaur
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 			256 257 0   258 0   0   0   0   0
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 97 Zerg_Lurker_Egg ZERG SMALL OTHER
+
+[NEWOBJECT] = 96 Ursadon
+PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
+			256 257 0   258 0   0   0   0   0
+
+ENDOBJ           = 1
+
+[NEWOBJECT] = 97 Zerg_Lurker_Egg
 NOADDSTATSATCONSTR = 1
 PROPERTIES       = 3    0   0   0   0   0   0   0   0   384
 			0   0   0   0   0   0   0   0   384
@@ -727,13 +727,13 @@ PROPERTIES       = 3    0   0   0   0   0   0   0   0   384
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 98 Raszagal_Corsair PROTOSS MEDIUM CYBORG
+[NEWOBJECT] = 98 Raszagal_Corsair
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 			256 257 333   258 267 0   0   0   0
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 99 Samir_Duran_Ghost TERRAN SMALL LIFE
+[NEWOBJECT] = 99 Samir_Duran_Ghost
 SIGHTUPG	 = 20
 MANAUPG          = 21
 PROPERTIES       = 3    0   0   0   0   0   0   0   0   0
@@ -743,7 +743,7 @@ PROPERTIES       = 3    0   0   0   0   0   0   0   0   0
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 100 Alexei_Stukov_Ghost TERRAN SMALL LIFE
+[NEWOBJECT] = 100 Alexei_Stukov_Ghost
 SIGHTUPG	 = 20
 MANAUPG          = 21
 PROPERTIES       = 3    0   0   0   0   0   0   0   0   0
@@ -753,13 +753,13 @@ PROPERTIES       = 3    0   0   0   0   0   0   0   0   0
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 101 MapRevealer RESOURCE SMALL TECHNIC
+[NEWOBJECT] = 101 MapRevealer
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 			0   0   0   0   0   0   0   0   0
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 102 Gerard_DuGalle TERRAN LARGE TECHNIC
+[NEWOBJECT] = 102 Gerard_DuGalle
 MANAUPG          = 23
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 			256 257 333   258 267 0  286  0   0
@@ -767,7 +767,7 @@ PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 ENDOBJ		= 1
 
 
-[NEWOBJECT]      = 103 Zerg_Lurker ZERG LARGE LIFE
+[NEWOBJECT] = 103 Zerg_Lurker
 SPEEDUPG         = 254 50
 PROPERTIES       = 3    0   0   0   0   0   0   0   0   0
 			256 257 0   0   0   0   0   0   371
@@ -775,7 +775,7 @@ PROPERTIES       = 3    0   0   0   0   0   0   0   0   0
 		    
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 104 Infested_Samir_Duran_Ghost TERRAN SMALL LIFE
+[NEWOBJECT] = 104 Infested_Samir_Duran_Ghost
 SIGHTUPG	 = 20
 MANAUPG          = 21
 PROPERTIES       = 3    0   0   0   0   0   0   0   0   0
@@ -784,10 +784,10 @@ PROPERTIES       = 3    0   0   0   0   0   0   0   0   0
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 105 Disruption_Web NEUTRAL SMALL OTHER
+[NEWOBJECT] = 105 Disruption_Web
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 106 Terran_Command_Center TERRAN LARGE BUILD
+[NEWOBJECT] = 106 Terran_Command_Center
 PROPERTIES       = 5    0   0   0   0   0   0   0   0   384
 			354 0   0   0   0   297 107 108 374
                         0   0   0   0   0   0   0   0   0
@@ -797,13 +797,13 @@ PROPERTIES       = 5    0   0   0   0   0   0   0   0   384
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 107 Terran_Comsat_Station TERRANADV SMALL BUILD
+[NEWOBJECT] = 107 Terran_Comsat_Station
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   384
 			295 0   0   0   0   0   0   0   0
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 108 Terran_Nuclear_Silo TERRANADV SMALL BUILD
+[NEWOBJECT] = 108 Terran_Nuclear_Silo
 HAVECHILD	 = YES
 PROPERTIES       = 4    0   0   0   0   0   0   0   0   384
 			472 0   0   0   0   0   0   0   0
@@ -813,13 +813,13 @@ PROPERTIES       = 4    0   0   0   0   0   0   0   0   384
 ENDOBJ           = 1
 
 
-[NEWOBJECT]      = 109 Terran_Supply_Depot TERRAN MEDIUM BUILD
+[NEWOBJECT] = 109 Terran_Supply_Depot
 PROPERTIES       = 2   0   0   0   0   0   0   0   0   384
                        0   0   0   0   0   0   0   0   0
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 110 Terran_Refinery TERRAN LARGE BUILD
+[NEWOBJECT] = 110 Terran_Refinery
 ADDITIONALTEXT	 = 796
 OFFOTHEROBJ	 = YES
 PROPERTIES       = 2   0   0   0   0   0   0   0   0   384
@@ -827,7 +827,7 @@ PROPERTIES       = 2   0   0   0   0   0   0   0   0   384
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 111 Terran_Barracks TERRAN LARGE BUILD
+[NEWOBJECT] = 111 Terran_Barracks
 PROPERTIES       = 5    0   0   0   0   0   0   0   0   384
 			350 351 352 364 0  297  0   0   374
                         0   0   0   0   0   0   0   0   0
@@ -837,7 +837,7 @@ PROPERTIES       = 5    0   0   0   0   0   0   0   0   384
 ENDOBJ           = 1
 
 
-[NEWOBJECT]      = 112 Terran_Academy TERRAN LARGE BUILD
+[NEWOBJECT] = 112 Terran_Academy
 PROPERTIES       = 4   0   0   0   0   0   0   0   0   384
                        447 460 0   461 462 448 0   0   0
                        0   0   0   0   0   0   0   0   0
@@ -846,7 +846,7 @@ PROPERTIES       = 4   0   0   0   0   0   0   0   0   384
 ENDOBJ           = 1
 
 
-[NEWOBJECT]      = 113 Terran_Factory TERRAN MEDIUM BUILD
+[NEWOBJECT] = 113 Terran_Factory
 PROPERTIES       = 5    0   0   0   0   0   0   0   0   384
 			355 356 358 0   0  297  120 0   374
                         0   0   0   0   0   0   0   0   0
@@ -857,7 +857,7 @@ PROPERTIES       = 5    0   0   0   0   0   0   0   0   384
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 114 Terran_Starport TERRAN LARGE BUILD
+[NEWOBJECT] = 114 Terran_Starport
 PROPERTIES       = 5    0   0   0   0   0   0   0   0   384
 			359 360 361 362 365 297 115 0   374
                         0   0   0   0   0   0   0   0   0
@@ -868,7 +868,7 @@ PROPERTIES       = 5    0   0   0   0   0   0   0   0   384
 ENDOBJ           = 1
 
 
-[NEWOBJECT]      = 115 Terran_Control_Tower TERRANADV SMALL BUILD
+[NEWOBJECT] = 115 Terran_Control_Tower
 PROPERTIES       = 4    0   0   0   0   0   0   0   0   384
 			465 451 0   0   0   0   0   0   0
 			0   0   0   0   0   0   0   0   0
@@ -877,7 +877,7 @@ PROPERTIES       = 4    0   0   0   0   0   0   0   0   384
 ENDOBJ           = 1
 
 
-[NEWOBJECT]      = 116 Terran_Science_Facility TERRAN LARGE BUILD
+[NEWOBJECT] = 116 Terran_Science_Facility
 PROPERTIES       = 5    0   0   0   0   0   0   0   0   384
 			466 467 456 0   0   0   117 118 374
                         0   0   0   0   0   0   0   0   0
@@ -888,7 +888,7 @@ PROPERTIES       = 5    0   0   0   0   0   0   0   0   384
 ENDOBJ           = 1
 
 
-[NEWOBJECT]      = 117 Terran_Covert_Ops TERRANADV SMALL BUILD
+[NEWOBJECT] = 117 Terran_Covert_Ops
 PROPERTIES       = 4    0   0   0   0   0   0   0   0   384
 			470 469 0   458 459 0   0   0   0
 			0   0   0   0   0   0   0   0   0
@@ -896,7 +896,7 @@ PROPERTIES       = 4    0   0   0   0   0   0   0   0   384
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 118 Terran_Physics_Lab TERRANADV SMALL BUILD
+[NEWOBJECT] = 118 Terran_Physics_Lab
 PROPERTIES       = 4    0   0   0   0   0   0   0   0   384
 			468 457 0   0   0   0   0   0   0
 			0   0   0   0   0   0   0   0   0
@@ -904,7 +904,7 @@ PROPERTIES       = 4    0   0   0   0   0   0   0   0   384
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 120 Terran_Machine_Shop TERRANADV MEDIUM BUILD
+[NEWOBJECT] = 120 Terran_Machine_Shop
 PROPERTIES       = 4    0   0   0   0   0   0   0   0   384
 			449 463 464 450 0   0   0   0   0
 			0   0   0   0   0   0   0   0   0
@@ -912,7 +912,7 @@ PROPERTIES       = 4    0   0   0   0   0   0   0   0   384
 ENDOBJ           = 1
 
 
-[NEWOBJECT]      = 122 Terran_Engenering_Bay TERRAN MEDIUM BUILD
+[NEWOBJECT] = 122 Terran_Engenering_Bay
 PROPERTIES       = 5    0   0   0   0   0   0   0   0   384
 			445 446 0   0   0   0   0   0   374
                         0   0   0   0   0   0   0   0   0
@@ -922,7 +922,7 @@ PROPERTIES       = 5    0   0   0   0   0   0   0   0   384
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 123 Terran_Armory TERRAN MEDIUM BUILD
+[NEWOBJECT] = 123 Terran_Armory
 PROPERTIES       = 4    0   0   0   0   0   0   0   0   384
                         452 453 0 454  455  0   0   0   0
                         0   0   0   0   0   0   0   0   0
@@ -931,45 +931,45 @@ PROPERTIES       = 4    0   0   0   0   0   0   0   0   384
 ENDOBJ           = 1
 
 
-[NEWOBJECT]      = 124 Terran_Missile_Turret TERRAN SMALL BUILD
+[NEWOBJECT] = 124 Terran_Missile_Turret
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   384
 			0 257   333   0   0   0   0   0   0
 			
 ENDOBJ           = 1
 
 
-[NEWOBJECT]      = 125 Terran_Bunker TERRAN SMALL BUILD
+[NEWOBJECT] = 125 Terran_Bunker
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   384
                         0   0   0   0   0   0   0   0   312
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 126 NoradII_Crashed TERRAN SMALL BUILD
+[NEWOBJECT] = 126 NoradII_Crashed
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
                         0   0   0   0   0   0   0   0   0
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 127 Ion_Cannon TERRAN MEDUIM BUILD
+[NEWOBJECT] = 127 Ion_Cannon
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
                         0   0   0   0   0   0   0   0   0
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 128 Uraj_Cristal NEUTRAL SMALL OTHER
+[NEWOBJECT] = 128 Uraj_Cristal
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
                         0   0   0   0   0   0   0   0   0
 
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 129 Khalis_Cristal NEUTRAL SMALL OTHER
+[NEWOBJECT] = 129 Khalis_Cristal
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
                         0   0   0   0   0   0   0   0   0
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 130 Infested_Command_Center ZERG LARGE BUILD
+[NEWOBJECT] = 130 Infested_Command_Center
 PROPERTIES       = 5    0   0   0   0   0   0   0   0   384
 			353 0   0   0   0   297 0   0   374
                         0   0   0   0   0   0   0   0   0
@@ -978,7 +978,7 @@ PROPERTIES       = 5    0   0   0   0   0   0   0   0   384
 ENDOBJ           = 1
 
 
-[NEWOBJECT]      = 131 Zerg_Hatchery ZERG MEDIUM BUILD
+[NEWOBJECT] = 131 Zerg_Hatchery
 CREATEFROMUNIT	 = 41
 READYDECONSTR    = YES
 CREEP		 = 0
@@ -991,7 +991,7 @@ PROPERTIES       = 4    0   0   0   0   0   0   0   0   384
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 132 Zerg_Lair ZERG LARGE BUILD
+[NEWOBJECT] = 132 Zerg_Lair
 NOADDSTATSATCONSTR = 1
 CREATEFROMUNIT	 = 131
 READYDECONSTR    = YES
@@ -1005,7 +1005,7 @@ PROPERTIES       = 4    35  0   0   0   0   0   0   0   384
 ENDOBJ           = 1
 
 
-[NEWOBJECT]      = 133 Zerg_Hive ZERG LARGE BUILD
+[NEWOBJECT] = 133 Zerg_Hive
 NOADDSTATSATCONSTR = 1
 CREATEFROMUNIT	 = 132
 READYDECONSTR    = YES
@@ -1017,7 +1017,7 @@ PROPERTIES       = 4    35  0   0   0   0   0   0   0   384
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 134 Zerg_Nydus_Canal ZERG LARGE BUILD
+[NEWOBJECT] = 134 Zerg_Nydus_Canal
 CREATEFROMUNIT	 = 41
 READYDECONSTR    = YES
 CREEP		 = 2
@@ -1034,7 +1034,7 @@ PROPERTIES       = 9    0   0   0   0   0   0   0   0   384
 ENDOBJ           = 1
 
 
-[NEWOBJECT]      = 135 Zerg_Hydralisk_Den ZERG LARGE BUILD
+[NEWOBJECT] = 135 Zerg_Hydralisk_Den
 CREATEFROMUNIT	 = 41
 READYDECONSTR    = YES
 CREEP		 = 2
@@ -1046,7 +1046,7 @@ PROPERTIES       = 4    0   0   0   0   0   0   0   0   384
 ENDOBJ           = 1
 
 
-[NEWOBJECT]      = 136 Zerg_Defiler_Mount ZERG LARGE BUILD
+[NEWOBJECT] = 136 Zerg_Defiler_Mount
 CREATEFROMUNIT	 = 41
 READYDECONSTR    = YES
 CREEP		 = 2
@@ -1058,7 +1058,7 @@ PROPERTIES       = 4    0   0   0   0   0   0   0   0   384
 ENDOBJ           = 1
 
 
-[NEWOBJECT]      = 137 Zerg_Greater_Spire ZERG LARGE BUILD
+[NEWOBJECT] = 137 Zerg_Greater_Spire
 NOADDSTATSATCONSTR = 1
 CREATEFROMUNIT	 = 141
 READYDECONSTR    = YES
@@ -1073,7 +1073,7 @@ PROPERTIES       = 4    0   0   0   0   0   0   0   0   384
 ENDOBJ           = 1
 
 
-[NEWOBJECT]      = 138 Zerg_Queens_Nest ZERG LARGE BUILD
+[NEWOBJECT] = 138 Zerg_Queens_Nest
 CREATEFROMUNIT	 = 41
 READYDECONSTR    = YES
 CREEP		 = 2
@@ -1085,7 +1085,7 @@ PROPERTIES       = 4    0   0   0   0   0   0   0   0   384
 ENDOBJ           = 1
 
 
-[NEWOBJECT]      = 139 Zerg_Evolution_Chamber ZERG LARGE BUILD
+[NEWOBJECT] = 139 Zerg_Evolution_Chamber
 CREATEFROMUNIT	 = 41
 READYDECONSTR    = YES
 CREEP		 = 2
@@ -1097,7 +1097,7 @@ PROPERTIES       = 4    0   0   0   0   0   0   0   0   384
 ENDOBJ           = 1
 
 
-[NEWOBJECT]      = 140 Zerg_Ultralisk_Cavern ZERG LARGE BUILD
+[NEWOBJECT] = 140 Zerg_Ultralisk_Cavern
 CREATEFROMUNIT	 = 41
 READYDECONSTR    = YES
 CREEP		 = 2
@@ -1109,7 +1109,7 @@ PROPERTIES       = 4    0   0   0   0   0   0   0   0   384
 ENDOBJ           = 1
 
 
-[NEWOBJECT]      = 141 Zerg_Spire ZERG LARGE BUILD
+[NEWOBJECT] = 141 Zerg_Spire
 CREATEFROMUNIT	 = 41
 READYDECONSTR    = YES
 CREEP		 = 2
@@ -1121,7 +1121,7 @@ PROPERTIES       = 4    0   0   0   0   0   0   0   0   384
 ENDOBJ           = 1
 
 
-[NEWOBJECT]      = 142 Zerg_Spawning_Pool ZERG LARGE BUILD
+[NEWOBJECT] = 142 Zerg_Spawning_Pool
 CREATEFROMUNIT	 = 41
 READYDECONSTR    = YES
 CREEP		 = 2
@@ -1132,7 +1132,7 @@ PROPERTIES       = 4    0   0   0   0   0   0   0   0   384
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 143 Zerg_Creep_Colony ZERG LARGE BUILD
+[NEWOBJECT] = 143 Zerg_Creep_Colony
 CREATEFROMUNIT	 = 41
 READYDECONSTR    = YES
 CREEP		 = 1
@@ -1144,7 +1144,7 @@ PROPERTIES       = 4   	0   0   0   0   0   0   0   0   384
 ENDOBJ           = 1
 
 
-[NEWOBJECT]      = 144 Zerg_Spore_Colony ZERG LARGE BUILD
+[NEWOBJECT] = 144 Zerg_Spore_Colony
 NOADDSTATSATCONSTR = 1
 CREATEFROMUNIT	 = 143
 READYDECONSTR    = YES
@@ -1155,7 +1155,7 @@ PROPERTIES       = 2    0   0   0   0   0   0   0   0   384
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 146 Zerg_Sunken_Colony ZERG LARGE BUILD
+[NEWOBJECT] = 146 Zerg_Sunken_Colony
 NOADDSTATSATCONSTR = 1
 CREATEFROMUNIT	 = 143
 READYDECONSTR    = YES
@@ -1165,15 +1165,15 @@ PROPERTIES       = 2    0   0   0   0   0   0   0   0   384
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 147 Overmind_with_shell ZERG LARGE BUILD
+[NEWOBJECT] = 147 Overmind_with_shell
 CREEP		 = 2
 
-[NEWOBJECT]      = 148 Overmind ZERG LARGE BUILD
+[NEWOBJECT] = 148 Overmind
 CREEP		 = 2
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 149 Zerg_Extractor ZERG LARGE BUILD
+[NEWOBJECT] = 149 Zerg_Extractor
 CREATEFROMUNIT	 = 41
 ADDITIONALTEXT	 = 796
 OFFOTHEROBJ	 = YES
@@ -1185,10 +1185,10 @@ PROPERTIES       = 2   	0   0   0   0   0   0   0   0   384
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 150 Mature_Crisalis ZERG SMALL LIFE
+[NEWOBJECT] = 150 Mature_Crisalis
 CREEP = 2
 
-[NEWOBJECT]      = 151 Zerg_Cerebrate ZERG LARGE BUILD
+[NEWOBJECT] = 151 Zerg_Cerebrate
 READYDECONSTR    = YES
 CREEP		 = 2
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   384
@@ -1196,7 +1196,7 @@ PROPERTIES       = 2    0   0   0   0   0   0   0   0   384
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 152 Zerg_Cerebrate_Daggoth ZERG LARGE BUILD
+[NEWOBJECT] = 152 Zerg_Cerebrate_Daggoth
 READYDECONSTR    = YES
 CREEP		 = 2
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   384
@@ -1204,7 +1204,7 @@ PROPERTIES       = 2    0   0   0   0   0   0   0   0   384
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 154 Protoss_Nexus PROTOSS LARGE BUILD
+[NEWOBJECT] = 154 Protoss_Nexus
 PROPERTIES       = 4    0   0   0   0   0   0   0   0   384
 			64  0   0   0   0   297 0   0   0
                         0   0   0   0   0   0   0   0   0
@@ -1214,7 +1214,7 @@ PROPERTIES       = 4    0   0   0   0   0   0   0   0   384
 ENDOBJ           = 1
 
 
-[NEWOBJECT]      = 155 Protoss_Robotics_Facility PROTOSS LARGE BUILD
+[NEWOBJECT] = 155 Protoss_Robotics_Facility
 PROPERTIES       = 4    0    0   0   0   0   0   0   0   384
 			69  81  84   0   0   297 0   0   0
                         0   0   0    0   0   0   0   0   0
@@ -1224,13 +1224,13 @@ PROPERTIES       = 4    0    0   0   0   0   0   0   0   384
 ENDOBJ           = 1
 
 
-[NEWOBJECT]      = 156 Protoss_Pylon PROTOSS MEDIUM BUILD
+[NEWOBJECT] = 156 Protoss_Pylon
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   384
                         0   0   0   0   0   0   0   0   0
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 157 Protoss_Assimilator PROTOSS LARGE BUILD
+[NEWOBJECT] = 157 Protoss_Assimilator
 ADDITIONALTEXT	 = 796
 OFFOTHEROBJ	 = YES
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   384
@@ -1239,7 +1239,7 @@ PROPERTIES       = 2    0   0   0   0   0   0   0   0   384
 ENDOBJ           = 1
 
 
-[NEWOBJECT]      = 159 Protoss_Robotics_Observatory PROTOSS LARGE BUILD
+[NEWOBJECT] = 159 Protoss_Robotics_Observatory
 PROPERTIES       = 4   0   0   0   0   0   0   0   0   384
                        434 435 0   0   0   0   0   0   0
                        0   0   0   0   0   0   0   0   0
@@ -1250,7 +1250,7 @@ PROPERTIES       = 4   0   0   0   0   0   0   0   0   384
 ENDOBJ           = 1
 
 
-[NEWOBJECT]      = 160 Protoss_Gateway PROTOSS LARGE BUILD
+[NEWOBJECT] = 160 Protoss_Gateway
 PROPERTIES       = 4    0   0   0   0   0   0   0   0   384
 			65  66  67  74  0   297 0   0   0
                         0   0   0   0   0   0   0   0   0
@@ -1259,14 +1259,14 @@ PROPERTIES       = 4    0   0   0   0   0   0   0   0   384
 ENDOBJ           = 1
 
 
-[NEWOBJECT]      = 162 Protoss_Photon_Cannon PROTOSS LARGE BUILD
+[NEWOBJECT] = 162 Protoss_Photon_Cannon
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   384
 			0 257   333   0   0   0   0   0   0
 
 ENDOBJ           = 1
 
 
-[NEWOBJECT]      = 163 Protoss_Citadel_Of_Adun PROTOSS LARGE BUILD
+[NEWOBJECT] = 163 Protoss_Citadel_Of_Adun
 PROPERTIES       = 4   0   0   0   0   0   0   0   0   384
                        426 0   0   0   0   0   0   0   0
 		       0   0   0   0   0   0   0   0   0
@@ -1275,7 +1275,7 @@ PROPERTIES       = 4   0   0   0   0   0   0   0   0   384
 ENDOBJ           = 1
 
 
-[NEWOBJECT]      = 164 Protoss_Cybernetic_Core PROTOSS LARGE BUILD
+[NEWOBJECT] = 164 Protoss_Cybernetic_Core
 PROPERTIES       = 4   0     0   0   0   0   0   0   0   384
                        423 424 425   0   0   0   0   0   0
                        0     0   0   0   0   0   0   0   0
@@ -1285,7 +1285,7 @@ PROPERTIES       = 4   0     0   0   0   0   0   0   0   384
 ENDOBJ           = 1
 
 
-[NEWOBJECT]      = 165 Protoss_Templar_Archives PROTOSS LARGE BUILD
+[NEWOBJECT] = 165 Protoss_Templar_Archives
 PROPERTIES       = 4   0   0   0   0   0   0   0   0   384
                        438 439 433 444 443 437 0   0   0
                        0   0   0   0   0   0   0   0   0
@@ -1295,7 +1295,7 @@ PROPERTIES       = 4   0   0   0   0   0   0   0   0   384
 ENDOBJ           = 1
 
 
-[NEWOBJECT]      = 166 Protoss_Forge PROTOSS LARGE BUILD
+[NEWOBJECT] = 166 Protoss_Forge
 PROPERTIES       = 4   0   0   0   0   0   0   0   0   384
                        420 421 422 0   0   0   0   0   0
                        0   0   0   0   0   0   0   0   0
@@ -1305,7 +1305,7 @@ PROPERTIES       = 4   0   0   0   0   0   0   0   0   384
 ENDOBJ           = 1
 
 
-[NEWOBJECT]      = 167 Protoss_Stargate PROTOSS LARGE BUILD
+[NEWOBJECT] = 167 Protoss_Stargate
 PROPERTIES       = 4    0   0   0   0   0   0   0   0   384
 			70  72  71  86  0   297 0   0   0
                         0   0   0   0   0   0   0   0   0
@@ -1314,13 +1314,13 @@ PROPERTIES       = 4    0   0   0   0   0   0   0   0   384
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 168 Stasis_Cell/Stasis_Prison PROTOSS LARGE BUILD
+[NEWOBJECT] = 168 Stasis_Cell/Stasis_Prison
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   384
 			0   0   0   0   0   0   0   0   0
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 169 Protoss_Fleet_Beacon PROTOSS LARGE BUILD
+[NEWOBJECT] = 169 Protoss_Fleet_Beacon
 PROPERTIES       = 4   0   0   0   0   0   0   0   0   384
                        429 430 431 442 432 0   0   0   0
                        0   0   0   0   0   0   0   0   0
@@ -1329,7 +1329,7 @@ PROPERTIES       = 4   0   0   0   0   0   0   0   0   384
 ENDOBJ           = 1
 
 
-[NEWOBJECT]      = 170 Protoss_Arbiter_Tribunal PROTOSS LARGE BUILD
+[NEWOBJECT] = 170 Protoss_Arbiter_Tribunal
 PROPERTIES       = 4   0   0   0   0   0   0   0   0   384
                        441 440 436 0   0   0   0   0   0
                        0   0   0   0   0   0   0   0   0
@@ -1338,7 +1338,7 @@ PROPERTIES       = 4   0   0   0   0   0   0   0   0   384
 ENDOBJ           = 1
 
 
-[NEWOBJECT]      = 171 Protoss_Robotics_Support_Bay PROTOSS LARGE BUILD
+[NEWOBJECT] = 171 Protoss_Robotics_Support_Bay
 PROPERTIES       = 4    0   0   0   0   0   0   0   0   384
 			428 427 471 0   0   0   0   0   0
                         0   0   0   0   0   0   0   0   0
@@ -1347,13 +1347,13 @@ PROPERTIES       = 4    0   0   0   0   0   0   0   0   384
 ENDOBJ           = 1
 
 
-[NEWOBJECT]      = 172 Protoss_Shield_Battery PROTOSS LARGE BUILD
+[NEWOBJECT] = 172 Protoss_Shield_Battery
 PROPERTIES       = 2   0   0   0   0   0   0   0   0   384
                        296 0   0   0   0   0   0   0   0
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 173 Khaydarin_Crystal_Formation NEUTRAL LARGE BUILD
+[NEWOBJECT] = 173 Khaydarin_Crystal_Formation
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   384
 			0   0   0   0   0   0   0   0   0
 
@@ -1361,7 +1361,7 @@ PROPERTIES       = 2    0   0   0   0   0   0   0   0   384
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 174 Protoss_Temple NEUTRAL LARGE BUILD
+[NEWOBJECT] = 174 Protoss_Temple
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   384
 			0   0   0   0   0   0   0   0   0
 
@@ -1370,7 +1370,7 @@ PROPERTIES       = 2    0   0   0   0   0   0   0   0   384
 ENDOBJ           = 1
 
 
-[NEWOBJECT]      = 175 Xel'Naga_Temple NEUTRAL LARGE BUILD
+[NEWOBJECT] = 175 Xel'Naga_Temple
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   384
 			0   0   0   0   0   0   0   0   0
 
@@ -1378,13 +1378,13 @@ PROPERTIES       = 2    0   0   0   0   0   0   0   0   384
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 176 Minerals RESOURCE MEDIUM OTHER
+[NEWOBJECT] = 176 Minerals
 ADDITIONALTEXT	 = 795
 
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 177 Minerals RESOURCE MEDIUM OTHER
+[NEWOBJECT] = 177 Minerals
 ADDITIONALTEXT	 = 795
 
 
@@ -1392,46 +1392,46 @@ ADDITIONALTEXT	 = 795
 ENDOBJ           = 1
 
 
-[NEWOBJECT]      = 178 Minerals RESOURCE MEDIUM OTHER
+[NEWOBJECT] = 178 Minerals
 ADDITIONALTEXT	 = 795
 
 
 ENDOBJ           = 1
 
 
-[NEWOBJECT]      = 188 Vespene_Geyser RESOURCE MEDIUM OTHER
+[NEWOBJECT] = 188 Vespene_Geyser
 ADDITIONALTEXT	 = 796
 
 
 ENDOBJ		= 1
 
-[NEWOBJECT]      = 189 Warp_Gate NEUTRAL LARGE BUILD
+[NEWOBJECT] = 189 Warp_Gate
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   384
 			0   0   0   0   0   0   0   0   0
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 190 Psi_Disruptor NEUTRAL SMALL OTHER
+[NEWOBJECT] = 190 Psi_Disruptor
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 194 Zerg_Beacon RESOURCE MEDIUM OTHER
+[NEWOBJECT] = 194 Zerg_Beacon
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 195 Terran_Beacon RESOURCE MEDIUM OTHER
+[NEWOBJECT] = 195 Terran_Beacon
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 196 Protoss_Beacon RESOURCE MEDIUM OTHER
+[NEWOBJECT] = 196 Protoss_Beacon
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 197 Zerg_Flag_Beacon RESOURCE MEDIUM OTHER
+[NEWOBJECT] = 197 Zerg_Flag_Beacon
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 198 Terran_Flag_Beacon RESOURCE MEDIUM OTHER
+[NEWOBJECT] = 198 Terran_Flag_Beacon
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 199 Protoss_Flag_Beacon RESOURCE MEDIUM OTHER
+[NEWOBJECT] = 199 Protoss_Flag_Beacon
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 200 Power_Generator NEUTRAL LARGE BUILD
+[NEWOBJECT] = 200 Power_Generator
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   384
 			0   0   0   0   0   0   0   0   0
 
@@ -1439,105 +1439,105 @@ PROPERTIES       = 2    0   0   0   0   0   0   0   0   384
 
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 201 Overmind_Cocoon ZERG LARGE BUILD
+[NEWOBJECT] = 201 Overmind_Cocoon
 CREEP		 = 2
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 202 Dark_Swarm NEUTRAL SMALL OTHER
+[NEWOBJECT] = 202 Dark_Swarm
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 203 Floor_Missile_Trap NEUTRAL SMALL TECHNIC
+[NEWOBJECT] = 203 Floor_Missile_Trap
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   384
 			0 257 333   0   0   0   0   0   0
 ENDOBJ           = 1
 
 
-[NEWOBJECT]      = 204 Floor_Hatch NEUTRAL LARGE TECHNIC
+[NEWOBJECT] = 204 Floor_Hatch
 PROPERTIES       = 1    0   0   0   0   0   0   0   0   384
 ENDOBJ           = 1
                                                                     
 
-[NEWOBJECT]      = 205 Left_Upper_Level_Door NEUTRAL SMALL TECHNIC
+[NEWOBJECT] = 205 Left_Upper_Level_Door
 PROPERTIES       = 1    0   0   0   0   0   0   0   0   384
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 206 Right_Upper_Level_Door NEUTRAL SMALL TECHNIC
+[NEWOBJECT] = 206 Right_Upper_Level_Door
 PROPERTIES       = 1    0   0   0   0   0   0   0   0   384
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 207 Left_Pit_Door NEUTRAL SMALL TECHNIC
+[NEWOBJECT] = 207 Left_Pit_Door
 PROPERTIES       = 1    0   0   0   0   0   0   0   0   384
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 208 Right_Pit_Door NEUTRAL SMALL TECHNIC
+[NEWOBJECT] = 208 Right_Pit_Door
 PROPERTIES       = 1    0   0   0   0   0   0   0   0   384
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 209 Floor_Gun_Trap NEUTRAL SMALL TECHNIC
+[NEWOBJECT] = 209 Floor_Gun_Trap
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   384
 			0 257 333   0   0   0   0   0   0
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 210 Left_Wall_Missle_Trap NEUTRAL SMALL TECHNIC
+[NEWOBJECT] = 210 Left_Wall_Missle_Trap
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   384
 			0 257   333   0   0   0   0   0   0
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 211 Left_Wall_Flame_Trap NEUTRAL SMALL TECHNIC
+[NEWOBJECT] = 211 Left_Wall_Flame_Trap
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   384
 			0 257   333   0   0   0   0   0   0
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 212 Right_Wall_Missle_Trap NEUTRAL SMALL TECHNIC
+[NEWOBJECT] = 212 Right_Wall_Missle_Trap
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   384
 			0 257   333   0   0   0   0   0   0
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 213 Right_Wall_Flame_Trap NEUTRAL SMALL TECHNIC
+[NEWOBJECT] = 213 Right_Wall_Flame_Trap
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   384
 			0 257 333   0   0   0   0   0   0
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 214 Start_Location RESOURCE MEDIUM OTHER
+[NEWOBJECT] = 214 Start_Location
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 215 Flag NEUTRAL SMALL OTHER
+[NEWOBJECT] = 215 Flag
 ENDOBJ           = 1
 
 
-[NEWOBJECT]      = 216 Young_Crisalis NEUTRAL SMALL LIFE
+[NEWOBJECT] = 216 Young_Crisalis
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 217 Psi_Emitter NEUTRAL SMALL OTHER
+[NEWOBJECT] = 217 Psi_Emitter
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 218 Data_Disc NEUTRAL SMALL OTHER
+[NEWOBJECT] = 218 Data_Disc
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 219 Khaydarin_Crystal NEUTRAL SMALL OTHER
+[NEWOBJECT] = 219 Khaydarin_Crystal
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 220 Mineral_Cluster_Type1 NEUTRAL SMALL OTHER
+[NEWOBJECT] = 220 Mineral_Cluster_Type1
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 221 Mineral_Cluster_Type2 NEUTRAL SMALL OTHER
+[NEWOBJECT] = 221 Mineral_Cluster_Type2
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 222 Protoss_Gas_Orb1 NEUTRAL SMALL OTHER
+[NEWOBJECT] = 222 Protoss_Gas_Orb1
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 223 Protoss_Gas_Orb2 NEUTRAL SMALL OTHER
+[NEWOBJECT] = 223 Protoss_Gas_Orb2
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 224 Zerg_Gas_Orb1 NEUTRAL SMALL OTHER
+[NEWOBJECT] = 224 Zerg_Gas_Orb1
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 225 Zerg_Gas_Orb2 NEUTRAL SMALL OTHER
+[NEWOBJECT] = 225 Zerg_Gas_Orb2
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 226 Terran_Gas_Orb1 NEUTRAL SMALL OTHER
+[NEWOBJECT] = 226 Terran_Gas_Orb1
 ENDOBJ           = 1
 
-[NEWOBJECT]      = 227 Terran_Gas_Orb2 NEUTRAL SMALL OTHER
+[NEWOBJECT] = 227 Terran_Gas_Orb2
 ENDOBJ           = 1
 

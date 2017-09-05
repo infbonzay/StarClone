@@ -371,7 +371,7 @@ while(1)
                 }
                 //**************read name*************
                 fscanf(f,"%s \n",strvalue);
-                fscanf(f,"%s \n",strvalue);
+/*                fscanf(f,"%s \n",strvalue);
 		if (!strcmp(strvalue,"ZERG"))
 		{
             	    adr->race=ZERGRACE;
@@ -406,7 +406,8 @@ while(1)
                     //**************read type object*************
                     fscanf(f,"%s \n",strvalue);
                     strupr(strvalue);
-                    if (!strcmp(strvalue,"CYBORG"))
+*/
+/*                    if (!strcmp(strvalue,"CYBORG"))
                      adr->UNITprop|=CYBORG;
                     else
             	    if (!strcmp(strvalue,"TECHNIC"))
@@ -426,7 +427,7 @@ while(1)
                         sprintf(forexit,"Error! [%s] in %d ",strvalue,adr->SC_Unit);
                         gameend(forexit);
                     }
-		    
+*/		    
 		    break;
              case 1: //endobj
 		return(0);
