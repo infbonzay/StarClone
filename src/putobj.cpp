@@ -363,7 +363,7 @@ void putobjsonminimap(void)
     	    {
     		if (!(a->prop&(VARINBASE|VARNOTHERE|VARINTRANSPORT)))
 //    		if (!GetUnitProp(a,NUMBGAMER,VARNOTDETECT))
-		if (OBJ_VAR_CHK(a,obj_notdetect,NUMBGAMER))
+		if (!OBJ_VAR_CHK(a,obj_notdetect,NUMBGAMER))
 		{
 			if (mapSEE(a->xkart,a->ykart)>=1)
 			{

@@ -618,7 +618,7 @@ int foundonetypeobj(struct OBJ *a,struct OBJstruct *b)
         c1=loadobj(c->SC_Unit);
         if  ((b==c1) && (c->playernr==a->playernr))
 //            if (!GetUnitProp(c,NUMBGAMER,VARNOTDETECT))
-	    if (OBJ_VAR_CHK(c,obj_notdetect,NUMBGAMER))
+	    if (!OBJ_VAR_CHK(c,obj_notdetect,NUMBGAMER))
 	    {
 		doselectedOBJbit(c,NUMBGAMER,1);
         	u++;

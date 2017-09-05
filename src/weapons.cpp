@@ -154,7 +154,7 @@ int IfCanCreateWeapon(OBJ *atacker,OBJ *destobj,int *errmes,unsigned char *weapo
 //		  (!GetUnitProp(destobj,atacker->playernr,VARSEE) ))) //&& (!(flags & CREATEWEAPON_IGNOREVISION)))) )
 	    if ( destobj &&
 		 ( OBJ_VAR_CHK(destobj,obj_notdetect,atacker->playernr) ||
-		   OBJ_VAR_CHK(destobj,obj_see,atacker->playernr)))
+		   (!OBJ_VAR_CHK(destobj,obj_see,atacker->playernr) )))
 	    {
 		if (errmes)
 		    *errmes=875;//invalid target

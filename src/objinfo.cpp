@@ -556,7 +556,7 @@ OBJ *SearchNewBounceOBJ(int x,int y,int playernr,OBJ *obj1,OBJ *obj2,int maxdist
         if (player_aliance(playernr,a->playernr)==ENEMYOBJ)
         {
 //	    if (!GetUnitProp(a,playernr,VARNOTDETECT))
-	    if (OBJ_VAR_CHK(a,obj_notdetect,playernr))
+	    if (!OBJ_VAR_CHK(a,obj_notdetect,playernr))
     	    if (IsActiveUnit(a))
 	    {
 		if (a==obj1||a==obj2)
