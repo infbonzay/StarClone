@@ -24,6 +24,8 @@
 #define MAXMAPFILESIZE			(5*1024*1024)		//5MB
 //==================================
 #define sqr(a) ((a)*(a))
+#define min(a,b)	(((a)<(b)) ? (a) : (b) )
+#define max(a,b)	(((a)>(b)) ? (a) : (b) )
 
 char *filename2dos(char *fn);
 char *filename2unix(char *fn);
@@ -31,8 +33,6 @@ char *filename2temp(char *fn);
 
 void witoa(int var1,char *adr,int simb);
 char *witoa(int var,char *adr);
-int  mymin(int a,int b);
-int  mymax(int a,int b);
 void swap(int *a,int *b);
 //==================================
 void swapw(short *a,short *b);

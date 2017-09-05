@@ -3940,7 +3940,7 @@ struct OBJ* OneUnitSearchGoal(OBJ *a,OBJstruct *b,int ignoremodes)
 {
     unsigned char weaponmask,groundweapon,airweapon,SC_Unit,Subunit1,unitatack_id;
     //neutral units cannot automatic atack
-    if (IsAtackerActiveUnit(a)&& map.pl_owner[a->playernr] == OWNER_HUMAN || map.pl_owner[a->playernr] == OWNER_COMPUTER)
+    if (IsAtackerActiveUnit(a) && ( map.pl_owner[a->playernr] == OWNER_HUMAN || map.pl_owner[a->playernr] == OWNER_COMPUTER))
     {
 	if (ignoremodes || a->modemove == MODESTOP || a->modemove == MODEHOLDPOS || a->modemove == MODEPATROL || (a->prop & VARMOVEINATACKMODE)||
 	    (IsDoodadState(a->SC_Unit)&&!IsInvincibleUnit(a->SC_Unit)&&(GetDoodadMoveDirection(a) != DOODAD_MOVE_NONE)))
@@ -4009,6 +4009,7 @@ OBJ *FindObjForAtack(OBJ *a,OBJstruct *b,
 		     int (*checkspecialfunc)(int))
 {
     int deltaz,i,j,minrange,maxrange,finddistance,mindeltaz[3],weapon_id,wmask;
+    int addsiegerange = 0;
     OBJ *a2,*findobj[3];
     findobj[NOATACKER]=NULL;			//no atacker
     mindeltaz[NOATACKER] = 256*256*256;
@@ -4018,6 +4019,13 @@ OBJ *FindObjForAtack(OBJ *a,OBJstruct *b,
 
     findobj[AIRATACKER]=NULL;			//airatacker
     mindeltaz[AIRATACKER] = 256*256*256;
+    if (map.pl_owner[a->playernr] == OWNER_COMPUTER)
+    {
+	if (a->SC_Unit == SC_TANKNORMALOBJ || a->SC_Unit == SC_HERO_EDMUNDDUKETMOBJ)
+	{
+	    addsiegerange = 5*32;
+	}
+    }
     for (i=0;i<MaxObjects;i++)
     {
 	a2 = objects[i];
@@ -4040,15 +4048,15 @@ OBJ *FindObjForAtack(OBJ *a,OBJstruct *b,
 		    {
 			//this is enemy, need to check detect vision radius
 			minrange = 0;
-		        maxrange = alldattbl.units_dat->SightRange[a->SC_Unit];
-//		        maxrange = GetTargetAcquisitionRange(a->SC_Unit);
+		        maxrange = GetTargetAcquisitionRange(a->SC_Unit);
 			if (!maxrange)
 			{
-		    	    minrange=alldattbl.weapons_dat->MinimumRange[weapon_id];
+		    	    minrange = alldattbl.weapons_dat->MinimumRange[weapon_id];
 			    maxrange = GetRangeWeaponInPixels(a,weapon_id,a->playernr);
 			}
 			else
-			    maxrange*=SIZESPRLANSHX;
+			    maxrange *= SIZESPRLANSHX;
+			maxrange += addsiegerange;
 			deltaz = GetDistanceBetweenUnits256(a,a2)/256;
 			wmask = UnitWeaponMask(a2->SC_Unit);
 			for (j=0;wmask;j++,wmask>>=1)

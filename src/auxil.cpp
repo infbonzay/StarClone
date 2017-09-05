@@ -121,23 +121,6 @@ char *witoa(int var,char *adr)
     return(adr);
 }
 //=============================
-
-int mymin(int a,int b)
-{
-    if (a<b)
-	return(a);
-    else
-	return(b);
-}
-//==================================
-int mymax(int a,int b)
-{
-    if (a>b)
-	return(a);
-    else
-	return(b);
-}
-//==================================
 void swap(int *a,int *b)
 {
      int c,d;
