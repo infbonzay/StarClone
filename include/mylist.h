@@ -103,7 +103,7 @@ public:
     char *deletemarked;
     mylistsimple(int neededelem);
     ~mylistsimple();
-    inline void AddElem(void *elem) { if (totalelem<allocatedelem) elements[totalelem++] = elem; else DEBUGMESSCR("mylistsimle:max elems exceeded\n"); };
+    inline void AddElem(void *elem) { if (totalelem<allocatedelem) elements[totalelem++] = elem; else DEBUGMESSCR("mylistsimple:max elems exceeded\n"); };
     inline void MarkForDelElem(int elemnr) { if (!deletemarked[elemnr]) { totalmarked++; deletemarked[elemnr] = 1; } };
     inline int GetMaxElements(void) { return (totalelem); };
     inline void EnumListInit(void) { curenumelemnr = 0; };

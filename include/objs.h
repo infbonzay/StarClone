@@ -1,6 +1,8 @@
 #if !defined(_OBJS_W)
 #define _OBJS_W
 
+#include "mytime.h"
+
 #define TANKSIEGESIDE		(12*8)
 #define TANKNORMALSIDE		(28*8)
 #define WAITTOHARVEST		15
@@ -39,6 +41,8 @@
 #define CHANGESC_UNIT_CONSTR			0
 #define CHANGESC_UNIT_READY			1
 #define CHANGESC_UNIT_READYWITHOUTMOVECHANGE	2
+
+#define MAXWAIT_SEARCHATACK_TICK	(MAXGAMECYCLESPERSECOND*1)
 
 
 extern	struct OBJ *ObjsRevealMap[];
@@ -135,14 +139,14 @@ void makeallblinking(void);
 void MakeCoordsOfRes(struct OBJ *a,struct OBJstruct *b,int *resposx,int *resposy);
 
 void SetAtackTick(OBJ *a);
-OBJ *FindObjForAtack(OBJ *a,OBJstruct *b,unsigned char weaponmask,
+OBJ *FindObjForAtack(OBJ *a,unsigned char weaponmask,
 		    			unsigned char groundweapon,
 					unsigned char airweapon,
 					int (*specialcheckfunc)(int));
 int  UnitIgnoreInvisibles(int SC_Unit);
 void unitprepareforatack(OBJ *a,OBJ *a2);
 void trapprepareforatack(OBJ *a,OBJ *a2);
-struct OBJ* OneUnitSearchGoal(OBJ *a,OBJstruct *b,int ignoremodes);
+struct OBJ* OneUnitSearchGoal(OBJ *a,int ignoremodes);
 void SearchForAtacks(void);
 
 void atackback(OBJ *firstatacker,OBJ *destobj,int directiondamage);

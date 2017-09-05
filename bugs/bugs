@@ -341,8 +341,10 @@
 *105 select larvae
 *106 map xzerg2 color/playernr of units
 *107 music need to lower in transmission message
-    burrowed zergling not have burrowed at creation map
-    lurker atacks in terrain mode
+*108 burrowed zergling not have burrowed at creation map (now burrowed if not researched)
+*109 lurker atacks in terrain mode
+    after kill unit the atacker find next goal, not wait some time
+    move to unit becomed invisible continue move/atack/etc..
     goliath do not atack air units then atack ground unit?
     goliath img failure (add top of science vessel)
     battle cruiser need to disrupt casting if do moveobj

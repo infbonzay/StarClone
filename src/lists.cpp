@@ -783,9 +783,9 @@ int IsCloaked(OBJ *a)
 int SetCloakedFlag(OBJ *a,int flag)
 {
     if (flag)
-	a->prop|=UNITPROP_PREVCLOAK;
+	a->prop |= UNITPROP_PREVCLOAK;
     else
-	a->prop&=~UNITPROP_PREVCLOAK;
+	a->prop &= ~UNITPROP_PREVCLOAK;
 }
 //==================================
 int IsOBJUnderConstruct(OBJ *a)

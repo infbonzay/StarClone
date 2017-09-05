@@ -214,12 +214,14 @@ void MAIN_IMG::AddImageToParent(OVERLAY_IMG *img)
     if (!childlists)
     {
         childlists = new OVERLAYIMGLIST(MAXOVERCHILDS);
-//        childlists = new mylistsimple(MAXOVERCHILDS);
     }
-    childlists->AddElem(img);
-    if (!(img->flags & SC_IMAGE_FLAG_IGNORPARENTSAVEINFOGTABLE))
-        if (flags & SC_IMAGE_FLAG_SAVEINFOGTABLE)
-	    img->flags |= SC_IMAGE_FLAG_SAVEINFOGTABLE;
+    if (childlists->GetFreeElements())
+    {
+	childlists->AddElem(img);
+	if (!(img->flags & SC_IMAGE_FLAG_IGNORPARENTSAVEINFOGTABLE))
+    	    if (flags & SC_IMAGE_FLAG_SAVEINFOGTABLE)
+		img->flags |= SC_IMAGE_FLAG_SAVEINFOGTABLE;
+    }
 }
 //============================================
 OVERLAY_IMG::OVERLAY_IMG(MAIN_IMG *parent,unsigned short image_id,signed char xoffs,signed char yoffs,

@@ -828,10 +828,16 @@ int AdditionalUnitProceed(OBJ *a,MAIN_IMG *img)
 		    }
 		    else
 		    {
-			EndAtackAction(a);
-//			a->modemove = MODESTOP;
-			SetModeMove(a,MODESTOP);
-			a->finalOBJ=NULL;
+			if (OneUnitSearchGoal(a,1))
+			{
+			    a->searchforatack_tick = MAXWAIT_SEARCHATACK_TICK;
+			}
+			else
+			{
+			    EndAtackAction(a);
+			    SetModeMove(a,MODESTOP);
+			    a->finalOBJ=NULL;
+			}
 		    }
 		    return 0;
 		}

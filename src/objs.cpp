@@ -1927,6 +1927,11 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
 		//engines off
 		if (a->modemove == MODEATACK)
 		{
+		    if (OneUnitSearchGoal(a,1))
+		    {
+			a->searchforatack_tick = MAXWAIT_SEARCHATACK_TICK;
+			break;
+		    }
 		    EndAtackAction(a);
 	    	}
 		else
@@ -3679,7 +3684,7 @@ void setpropertiestounit(struct OBJ *a,int special_props,int state_flags)
     if (state_flags&UNITONMAP_STATEFLAGS_BURROW)
 	if (special_props&UNITONMAP_STATEFLAGS_BURROW)
 	{
-	    //check if burrow is evolved
+/*	    //check if burrow is evolved
 	    mask=0;
 	    if (IsHeroUnit(a->SC_Unit))
 		mask=1;
@@ -3688,6 +3693,8 @@ void setpropertiestounit(struct OBJ *a,int special_props,int state_flags)
 		    mask=1;
 	        else
 		    mask = GetTechTree(&map,a->playernr,TECHDATA_DAT_BURROWINGTECH);
+*/
+	    mask=1;
 	    if (mask && ChangeTypeOfProp(a,b,PROPNORMAL2)!=-1)
 	    {
 		SetBurrowFlag(a,1);
@@ -3787,8 +3794,6 @@ void MakeCoordsOfRes(struct OBJ *a,struct OBJstruct *b,int *resposx,int *resposy
 */
 }
 //=================================
-#define MAXWAIT_SEARCHATACK_TICK	(MAXGAMECYCLESPERSECOND*1)
-//=================================
 void SetAtackTick(OBJ *a)
 {
     static unsigned char atacktick = 0;
@@ -3844,22 +3849,21 @@ int GetOBJAtackWithoutWeapons(int SC_Unit)
     }
 }
 //=================================
-struct OBJ* EveryUnitAtackFunc(OBJ *a,OBJstruct *b,unsigned char weaponmask,unsigned char groundweapon,unsigned char airweapon)
+struct OBJ* EveryUnitAtackFunc(OBJ *a,unsigned char weaponmask,unsigned char groundweapon,unsigned char airweapon)
 {
     OBJ *a2;
     if (weaponmask)
     {
-        a2 = FindObjForAtack(a,b,weaponmask,groundweapon,airweapon,NULL);
+        a2 = FindObjForAtack(a,weaponmask,groundweapon,airweapon,NULL);
 	unitprepareforatack(a,a2);
     }
     return(a2);
 }
 //=================================
-struct OBJ* BunkerAtackFunc(OBJ *aa,OBJstruct *bb,unsigned char wm,unsigned char gw,unsigned char aw)
+struct OBJ* BunkerAtackFunc(OBJ *aa,unsigned char wm,unsigned char gw,unsigned char aw)
 {
 	unsigned char weaponmask,groundweapon,airweapon,SC_Unit;
 	OBJ *a,*a2;
-	OBJstruct *b;
 	if (aa->loaded)
 	{
 	    for (int i=0;i<aa->loaded->nrofloadedunits;i++)
@@ -3868,7 +3872,6 @@ struct OBJ* BunkerAtackFunc(OBJ *aa,OBJstruct *bb,unsigned char wm,unsigned char
     		if (!a)
     		    continue;
     		SC_Unit = a->SC_Unit;
-		b = loadobj(SC_Unit);
 		weaponmask=0;
 		groundweapon = alldattbl.units_dat->GroundWeapon[SC_Unit];
 		if (groundweapon<MAX_WEAPONS_ELEM)
@@ -3878,7 +3881,7 @@ struct OBJ* BunkerAtackFunc(OBJ *aa,OBJstruct *bb,unsigned char wm,unsigned char
 		    weaponmask |= 2;
 		if (weaponmask)
 		{
-		    a2 = FindObjForAtack(a,b,weaponmask,groundweapon,airweapon,NULL);
+		    a2 = FindObjForAtack(a,weaponmask,groundweapon,airweapon,NULL);
 		    unitprepareforatack(a,a2);
 		}
 	    }
@@ -3891,40 +3894,40 @@ int CheckMineSpecialUnit(int SC_Unit)
     return(IsBuild(SC_Unit));
 }
 //=================================
-struct OBJ* VultureMineUnitAtackFunc(OBJ *a,OBJstruct *b,unsigned char weaponmask,unsigned char groundweapon,unsigned char airweapon)
+struct OBJ* VultureMineUnitAtackFunc(OBJ *a,unsigned char weaponmask,unsigned char groundweapon,unsigned char airweapon)
 {
     OBJ *a2;
     if (weaponmask)
     {
-        a2 = FindObjForAtack(a,b,weaponmask,groundweapon,airweapon,&CheckMineSpecialUnit);
+        a2 = FindObjForAtack(a,weaponmask,groundweapon,airweapon,&CheckMineSpecialUnit);
 	unitprepareforatack(a,a2);
     }
     return(a2);
 }
 //=================================
-struct OBJ* DoodadTrapAtackFunc(OBJ *a,OBJstruct *b,unsigned char weaponmask,unsigned char groundweapon,unsigned char airweapon)
+struct OBJ* DoodadTrapAtackFunc(OBJ *a,unsigned char weaponmask,unsigned char groundweapon,unsigned char airweapon)
 {
     OBJ *a2;
     if ((a->prop & VARAUTOMATICDOODAD) || GetDoodadState(a) == DOODAD_TOP_STATE)
-	a2 = FindObjForAtack(a,b,weaponmask,groundweapon,airweapon,NULL);
+	a2 = FindObjForAtack(a,weaponmask,groundweapon,airweapon,NULL);
     else
 	a2 = NULL;
     trapprepareforatack(a,a2);
     return(a2);
 }
 //=================================
-struct OBJ* UnitWithSubUnitAtackFunc(OBJ *a,OBJstruct *b,unsigned char weaponmask,unsigned char groundweapon,unsigned char airweapon)
+struct OBJ* UnitWithSubUnitAtackFunc(OBJ *a,unsigned char weaponmask,unsigned char groundweapon,unsigned char airweapon)
 {
     OBJ *a2;
     if (weaponmask)
     {
-        a2 = FindObjForAtack(a,b,weaponmask,groundweapon,airweapon,NULL);
+        a2 = FindObjForAtack(a,weaponmask,groundweapon,airweapon,NULL);
 	unitprepareforatack(a,a2);
     }
     return(a2);
 }
 //=================================
-struct OBJ* (*Atack_IDFunc[8])(OBJ *a,OBJstruct *b,unsigned char weaponmask,unsigned char groundweapon,unsigned char airweapon)=
+struct OBJ* (*Atack_IDFunc[8])(OBJ *a,unsigned char weaponmask,unsigned char groundweapon,unsigned char airweapon)=
 			{
 			    NULL,
 			    &EveryUnitAtackFunc,
@@ -3936,7 +3939,7 @@ struct OBJ* (*Atack_IDFunc[8])(OBJ *a,OBJstruct *b,unsigned char weaponmask,unsi
 			    &UnitWithSubUnitAtackFunc
 			};
 //=================================
-struct OBJ* OneUnitSearchGoal(OBJ *a,OBJstruct *b,int ignoremodes)
+struct OBJ* OneUnitSearchGoal(OBJ *a,int ignoremodes)
 {
     unsigned char weaponmask,groundweapon,airweapon,SC_Unit,Subunit1,unitatack_id;
     //neutral units cannot automatic atack
@@ -3970,7 +3973,7 @@ struct OBJ* OneUnitSearchGoal(OBJ *a,OBJstruct *b,int ignoremodes)
 		    case UNITATACKFUNCTYPE_NONE:	//base/turret
 			return(NULL);
 		}
-		return ((*Atack_IDFunc[unitatack_id])(a,b,weaponmask,groundweapon,airweapon));
+		return ((*Atack_IDFunc[unitatack_id])(a,weaponmask,groundweapon,airweapon));
 	    }
     }
     return(NULL);
@@ -3980,16 +3983,14 @@ void SearchForAtacks(void)
 {
     int i;
     OBJ *a;
-    OBJstruct *b;
     for (i=0;i<MaxObjects;i++)
     {
 	a = objects[i];
-        b = loadobj(a->SC_Unit);
 	if (!a->finalOBJ)
 	    if (a->searchforatack_tick--==0)
 	    {
 		a->searchforatack_tick = MAXWAIT_SEARCHATACK_TICK;
-		OneUnitSearchGoal(a,b,0);
+		OneUnitSearchGoal(a,0);
 	    } 
     }
 }
@@ -4002,7 +4003,7 @@ int UnitIgnoreInvisibles(int SC_Unit)
 	return(0);
 }
 //=================================
-OBJ *FindObjForAtack(OBJ *a,OBJstruct *b,
+OBJ *FindObjForAtack(OBJ *a,
 		     unsigned char weaponmask,
 		     unsigned char groundweapon,
 		     unsigned char airweapon,

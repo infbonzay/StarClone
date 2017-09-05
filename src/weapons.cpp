@@ -347,8 +347,8 @@ int CreateWeaponID(OBJ *a,OBJ *destobj,int xdest256,int ydest256,unsigned char w
     	    case WB_GOTO_MAX_RANGE:				//9
 		CalcMaxRangeCoordsXY(xdest256 - GetOBJx256(a),ydest256 - GetOBJy256(a),&maxrangex,&maxrangey,weapon_id,flingy_id);
 	    
-		xdest256 = GetOBJx256(a) + maxrangex;
-		ydest256 = GetOBJy256(a) + maxrangey;
+		xdest256 = GetOBJx256(a) + maxrangex;// + 32*256;
+		ydest256 = GetOBJy256(a) + maxrangey;// + 32*256;
 
 		flingy = CreateFlingyID(a,NULL,GetOBJx256(a),GetOBJy256(a),xdest256,ydest256,weapon_id,flingy_id,elevationdelta);
 		flingy->destobj = destobj;
