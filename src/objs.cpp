@@ -130,8 +130,6 @@ OBJ *CreateArchon(OBJ *a,OBJ *a2)
 	    printf("error occured obj is not templars\n");
 	    break;
     }
-//    if (a->select[a->playernr]&VARSELECT||a2->select[a->playernr]&VARSELECT)
-//	selectobj(newobj);
     dieobj_silently(a);
     dieobj_silently(a2);
     SetOBJIScriptNr(newobj,ISCRIPTNR_SPECIALSTATE1,ISCRIPTNR_EXECUTE);	//set warping archon
@@ -314,7 +312,7 @@ struct OBJ *createobjlowlevel(OBJ *workerobj,int x,int y,int SC_Unit,int playern
     if (MaxObjects%MAPREGENERATION)
         MinObjRegen++;
     for (i=0;i<PLAYEDPLAYERS;i++)
-        a->select[i]=b->UNITprop&(VARINVSEE|VARSEE|VAR_DX|VAR2UPDOWN);
+        a->select[i] = b->UNITprop & (VARINVSEE|VARSEE);
     
     if (IsInvincibleUnit(a->SC_Unit))
 	SetInvincibleOBJ(a,1);

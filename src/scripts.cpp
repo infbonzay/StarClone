@@ -342,11 +342,8 @@ while(1)
                     gameend(forexit);
 		}     
 		adr=creatememforobjstruct(intvalue);
-//                adratr=&adr->atrobj;
 		adr->additionaltext=-1;
 		adr->creeptype=NOCREEPBUILD;
-		adr->UNITprop  |= VARSELECT; //need to be selected
-//                adr->timelife=gametime;
                 SC_Unit=intvalue;
                 adr->SC_Unit=intvalue;
 		adr->portraits=FillSMKInfo(SC_Unit);
@@ -544,7 +541,6 @@ while(1)
 		  }
 */		  break;
 	    case 29: //need recharge on base RECHARGE = N timerecharging
-//		    adr->UNITprop  &= ~VARSELECT; //cannot be selected
 		    adr->UNITprop |= VARNEEDRECHARGE;
                     fscanf(f,"%s \n",strvalue);
 		    adr->timerechargeonbase = atoi(strvalue);

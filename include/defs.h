@@ -206,14 +206,14 @@
 #define SHADOWS      		0x80
 
 //select[]
-#define VARSELECT    		0x01
-#define VARINERTION  		0x02
-#define VARROTATION  		0x04
+//#define VARSELECT    		0x01
+//#define VARINERTION  		0x02
+//#define VARROTATION  		0x04
 #define VARINVSEE      		0x08
 #define VARSEE       		0x10
 #define VARNOTDETECT		0x20
-#define VAR_DX       		0x40
-#define VAR2UPDOWN   		0x80
+//#define VAR_DX       		0x40
+//#define VAR2UPDOWN   		0x80
 
 //prop
 #define VARNOTWORK  	  	0x00000001
@@ -250,8 +250,6 @@
 #define VARMOVEOBJACT		0x40000000
 #define VARPATROLFLAG		0x80000000
 
-//=============================
-#define ADDQUEUEBACKEFFECT	1000
 //=============================
 #define MOVEOBJ_NOACT		0
 #define MOVEOBJ_DONE		1
@@ -305,16 +303,7 @@
 
 #define BEGINCONSTRDELTA	20
 
-//!!!!!!!!!!!!!!!!!OBJSTRUCT
-//OBJstruct UNITprop
-//#define VARSELECT    		0x00000001
-//#define VARINERTION  		0x00000002
-//#define VARROTATION  		0x00000004
-//#define VARINV       		0x00000008
-//#define VARSEE       		0x00000010
-//#define VARFLYTERRA  		0x00000020
-//#define VAR_DX       		0x00000040
-//#define VAR2UPDOWN   		0x00000080
+//OBJstruct
 
 #define CYBORG          	0x00000100
 #define LIFE            	0x00000200

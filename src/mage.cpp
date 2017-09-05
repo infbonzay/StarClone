@@ -54,7 +54,7 @@ void mageattributedothings(OBJ *a,OBJstruct *b)
 	    switch(i)
 	    {
 		case ATRPLAGUE:
-		    if (ifcanworkatr_onme(a,b,i,typemage))
+		    if (ifcanworkatr_onme(a,i,typemage))
 		    {
 			LowLevelDamage(NULL,a,loadobj(a->SC_Unit),WEAPONID_PLAGUE,DAMAGE_IGNOREARMOR,plaguedamagepertick,0,0);
 		    }
@@ -63,7 +63,7 @@ void mageattributedothings(OBJ *a,OBJstruct *b)
 		    //decrement life arround units if not burrowed
 		    x256 = GetOBJx256(a);
 		    y256 = GetOBJy256(a);
-		    if (ifcanworkatr_onothers(a,b,i,typemage))
+		    if (ifcanworkatr_onothers(a,i,typemage))
 		    {
 			if (a->in_transport)
 			{
@@ -100,7 +100,7 @@ void mageattributedothings(OBJ *a,OBJstruct *b)
 			}
 		    }
 		    //decrementlife
-		    if (ifcanworkatr_onme(a,b,i,typemage))
+		    if (ifcanworkatr_onme(a,i,typemage))
 			LowLevelDamage(NULL,a,loadobj(a->SC_Unit),WEAPONID_IRRADIATE,DAMAGE_IGNOREARMOR,irradiatedamagepertick,0,0);
 		    break;
 	    }
@@ -468,7 +468,7 @@ void MakeMindControl(OBJ *a,int playernr,int ncolor)
 //==============================================
 //return 1 if atribute can work on me
 //==============================================
-int ifcanworkatr_onothers(OBJ *a,OBJstruct *b,int atr,int typemage)
+int ifcanworkatr_onothers(OBJ *a,int atr,int typemage)
 {
     //if stasis do not do atribute things
     if (GetMageAtr(&a->atrobj,ATRSTASIS)>0)
@@ -483,7 +483,7 @@ int ifcanworkatr_onothers(OBJ *a,OBJstruct *b,int atr,int typemage)
     return(1);
 }
 //==============================================
-int ifcanworkatr_onme(OBJ *a,OBJstruct *b,int atr,int typemage)
+int ifcanworkatr_onme(OBJ *a,int atr,int typemage)
 {
     //if stasis do not damage the unit
     switch(atr)
@@ -493,7 +493,7 @@ int ifcanworkatr_onme(OBJ *a,OBJstruct *b,int atr,int typemage)
 		return(0);
 	    break;
 	case ATRIRRADIATE:
-	    if (!(b->UNITprop&LIFE)||(b->UNITprop&CYBORG))
+	    if (!IsOrganic(a->SC_Unit))
 		return(0);
 	    if (GetMageAtr(&a->atrobj,ATRSTASIS)>0)
 	        return(0);
