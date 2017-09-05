@@ -260,19 +260,22 @@ struct OBJ
 	unsigned short	whatbuildconstr;
 	signed short	timeflybeforerecharge;	//time left before need to recharge on base
 	unsigned char	curentatacknr;		//curent atack number ,if ==0 and maxbullets!=0 need recharge on base
-	unsigned char	select[8];
-    			               //(0-bit)-select
-                                       //(1-bit)-inertion
-                                       //(2-bit)-rotation
-                                       //(3-bit)-fullinv
-                                       //(4-bit)-see
-                                       //(5-bit)-flyterra           x
-                                       //(6-bit)-_dx
-                                       //(7-bit) up/down
 
+	unsigned char	obj_see;			//8-bit for each players
+	unsigned char	obj_invsee;			//8-bit for each players
+	unsigned char	obj_notdetect;			//8-bit for each players
+	
         unsigned int	prop;          //see man.h
 
 };
+//=======================================
+#define OBJ_VAR_MASK_SET(a,TYPEPARAM,mask) ((a->TYPEPARAM) | (mask) )
+#define OBJ_VAR_MASK_CLR(a,TYPEPARAM,mask) ((a->TYPEPARAM) & (~(mask)) )
+#define OBJ_VAR_MASK_CHK(a,TYPEPARAM,mask) ((a->TYPEPARAM) && (mask) )
+
+#define OBJ_VAR_SET(a,TYPEPARAM,playernr) OBJ_VAR_MASK_SET(a,TYPEPARAM,(1<<playernr))
+#define OBJ_VAR_CLR(a,TYPEPARAM,playernr) OBJ_VAR_MASK_CLR(a,TYPEPARAM,(1<<playernr))
+#define OBJ_VAR_CHK(a,TYPEPARAM,playernr) OBJ_VAR_MASK_CHK(a,TYPEPARAM,(1<<playernr))
 //=======================================
 struct ONEMODEMOVE
 {

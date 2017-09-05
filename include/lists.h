@@ -44,7 +44,6 @@ int  IsGroundUnit(int SC_Unit);
 int  IsAirUnit(int SC_Unit);
 int  IsHeroUnit(int SC_Unit);
 
-int  GetUnitProp(OBJ *a,int playernr,int checkbits);
 int  IsOnSkyOBJ(OBJ *a);
 void SetOnSkyOBJ(OBJ *a,int flag);
 

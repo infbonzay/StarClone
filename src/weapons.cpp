@@ -149,11 +149,12 @@ int IfCanCreateWeapon(OBJ *atacker,OBJ *destobj,int *errmes,unsigned char *weapo
 	if (destobj || atacker)
 	{
 	    //check visibility
-//	    if (destobj && GetUnitProp(destobj,atacker->playernr,VARNOTDETECT))
-	    if (  destobj && 
-		  (GetUnitProp(destobj,atacker->playernr,VARNOTDETECT) || 
-		  (!GetUnitProp(destobj,atacker->playernr,VARSEE) ))) //&& (!(flags & CREATEWEAPON_IGNOREVISION)))) )
-
+//	    if (  destobj && 
+//		  (GetUnitProp(destobj,atacker->playernr,VARNOTDETECT) || 
+//		  (!GetUnitProp(destobj,atacker->playernr,VARSEE) ))) //&& (!(flags & CREATEWEAPON_IGNOREVISION)))) )
+	    if ( destobj &&
+		 ( OBJ_VAR_CHK(destobj,obj_notdetect,atacker->playernr) ||
+		   OBJ_VAR_CHK(destobj,obj_see,atacker->playernr)))
 	    {
 		if (errmes)
 		    *errmes=875;//invalid target
@@ -186,7 +187,8 @@ int IfCanCreateWeapon(OBJ *atacker,OBJ *destobj,int *errmes,unsigned char *weapo
 //		    	if (!atacker->atackcooldowntime)
 //		    	    atacker->atackcooldowntime = 1;
 		    }
-		if (UnitIgnoreInvisibles(SC_Unit) || !GetUnitProp(destobj,atacker->playernr,VARNOTDETECT))
+//		if (UnitIgnoreInvisibles(SC_Unit) || !GetUnitProp(destobj,atacker->playernr,VARNOTDETECT))
+		if (UnitIgnoreInvisibles(SC_Unit) || !OBJ_VAR_CHK(destobj,obj_notdetect,atacker->playernr))
     		{
 		    neededside = CalcDirection1(GetOBJx256(atacker),GetOBJy256(atacker),GetOBJx256(destobj),GetOBJy256(destobj));
 		    deltaside = neededside - atacker->mainimage->side;

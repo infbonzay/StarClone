@@ -209,9 +209,9 @@
 //#define VARSELECT    		0x01
 //#define VARINERTION  		0x02
 //#define VARROTATION  		0x04
-#define VARINVSEE      		0x08
-#define VARSEE       		0x10
-#define VARNOTDETECT		0x20
+//#define VARINVSEE      	0x08
+//#define VARSEE       		0x10
+//#define VARNOTDETECT		0x20
 //#define VAR_DX       		0x40
 //#define VAR2UPDOWN   		0x80
 

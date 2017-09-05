@@ -846,11 +846,6 @@ int GetBirthDirection(int SC_Unit)
     return(birthdir);
 }
 //==================================
-int GetUnitProp(OBJ *a,int playernr,int checkbits)
-{
-    return(a->select[playernr] & checkbits);
-}
-//==================================
 int IsOBJBurrowed(OBJ *a)
 {
     return(a->prop & VARBURROW);

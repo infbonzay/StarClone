@@ -311,8 +311,10 @@ struct OBJ *createobjlowlevel(OBJ *workerobj,int x,int y,int SC_Unit,int playern
     MinObjRegen=MaxObjects/MAPREGENERATION;
     if (MaxObjects%MAPREGENERATION)
         MinObjRegen++;
-    for (i=0;i<PLAYEDPLAYERS;i++)
-        a->select[i] = b->UNITprop & (VARINVSEE|VARSEE);
+//    for (i=0;i<PLAYEDPLAYERS;i++)
+//        a->select[i] = b->UNITprop & (VARINVSEE|VARSEE);
+    OBJ_VAR_MASK_SET(a,obj_invsee,0xff);
+    OBJ_VAR_MASK_SET(a,obj_see,0xff);
     
     if (IsInvincibleUnit(a->SC_Unit))
 	SetInvincibleOBJ(a,1);
@@ -614,9 +616,10 @@ int foundonetypeobj(struct OBJ *a,struct OBJstruct *b)
     {
         c=objects[i];
         c1=loadobj(c->SC_Unit);
-        if ((b==c1)&&(c->playernr==a->playernr))
-            if (!GetUnitProp(c,NUMBGAMER,VARNOTDETECT))
-            {
+        if  ((b==c1) && (c->playernr==a->playernr))
+//            if (!GetUnitProp(c,NUMBGAMER,VARNOTDETECT))
+	    if (OBJ_VAR_CHK(c,obj_notdetect,NUMBGAMER))
+	    {
 		doselectedOBJbit(c,NUMBGAMER,1);
         	u++;
             }
@@ -704,14 +707,17 @@ void ifselectTRANSPORTS(struct OBJ *a)
 //=====================================
 int IfUnitIsSelectable(OBJ *a)
 {
-    if (GetUnitProp(a,NUMBGAMER,VARNOTDETECT))
+//    if (GetUnitProp(a,NUMBGAMER,VARNOTDETECT))
+    if (OBJ_VAR_CHK(a,obj_notdetect,NUMBGAMER))
     {
-	if (GetUnitProp(a,NUMBGAMER,VARINVSEE))
+//	if (GetUnitProp(a,NUMBGAMER,VARINVSEE))
+	if (OBJ_VAR_CHK(a,obj_invsee,NUMBGAMER))
 	    return(1);
     }
     else
     {
-	if (GetUnitProp(a,NUMBGAMER,VARSEE))
+//	if (GetUnitProp(a,NUMBGAMER,VARSEE))
+	if (OBJ_VAR_CHK(a,obj_see,NUMBGAMER))
 	    return(1);
     }
     return(0);
@@ -1183,7 +1189,8 @@ void invisiblestick(void)
         {
     	    if (makeinvisibles(a))
     	    {
-		if (GetUnitProp(a,NUMBGAMER,VARINVSEE))
+//		if (GetUnitProp(a,NUMBGAMER,VARINVSEE))
+	        if (OBJ_VAR_CHK(a,obj_invsee,NUMBGAMER))
 		{
 		    //invisible detected
 		    if (IsOBJBurrowed(a))
@@ -4031,10 +4038,12 @@ OBJ *FindObjForAtack(OBJ *a,
 	if (checkspecialfunc)
 	    if (checkspecialfunc(a2->SC_Unit))
 		continue;
-	if (UnitIgnoreInvisibles(a->SC_Unit) || !GetUnitProp(a2,a->playernr,VARNOTDETECT))
+//	if (UnitIgnoreInvisibles(a->SC_Unit) || !GetUnitProp(a2,a->playernr,VARNOTDETECT))
+	if (UnitIgnoreInvisibles(a->SC_Unit) || !OBJ_VAR_CHK(a2,obj_notdetect,a->playernr))
 	{
 	    //we see this object
-	    if (player_aliance(a->playernr,a2->playernr)==ENEMYOBJ && GetUnitProp(a2,a->playernr,VARSEE))
+//	    if (player_aliance(a->playernr,a2->playernr)==ENEMYOBJ && GetUnitProp(a2,a->playernr,VARSEE))
+	    if (player_aliance(a->playernr,a2->playernr)==ENEMYOBJ && OBJ_VAR_CHK(a2,obj_see,a->playernr))
 	    {
 		weapon_id = MAX_WEAPONS_ELEM;
 		if ( (weaponmask & 1) && !IsOnSkyOBJ(a2) )
@@ -4243,7 +4252,8 @@ void atackback(OBJ *firstatacker,OBJ *destobj,int directiondamage)
     }
     if (aiactionfailed && (destobj->modemove==MODESTOP || destobj->modemove==MODEHOLDPOS ))
     {
-	notdetect = GetUnitProp(firstatacker,destobj->playernr,VARNOTDETECT);
+//	notdetect = GetUnitProp(firstatacker,destobj->playernr,VARNOTDETECT);
+	notdetect = OBJ_VAR_CHK(firstatacker,obj_notdetect,destobj->playernr);
 	if (!aiaction)
 	{
 	    actionfailed = tryunitaction(destobj,firstatacker);
