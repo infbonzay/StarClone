@@ -6,11 +6,10 @@
 class myfifo
 {
 public:
-    int  	totalelem;
-    int  	curelem;
-    int  	poselem;
-    void 	**elements;
-//    int  	*usebytes;
+    int  	totalelem;	
+    int  	curelem;	
+    int  	poselem;	
+    void 	**elements;	
     
     myfifo(int maxelems);
     ~myfifo();
@@ -18,6 +17,7 @@ public:
     void	EmptyElemFifo();
     void 	DelElem(int elemnr);
     void 	*AddElem(int len);
+    void 	*InsertElem(int len);
     void 	*GetCurElem();
     void 	DelCurElem();
     int  	GetFreeElem();

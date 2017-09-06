@@ -443,6 +443,7 @@ int AirBuildings(struct OBJ *a,MAIN_IMG *img)
 		a->modemove = MODESTOP;
 		AttachNearestAddon(a);
 		AddDustImages(a,IMAGE_OVERLAY_LANDDUST);
+		a->prop &= ~VARDONOTAPPLYNEXTMOVE;
 		ApplyNextModeMove(a);
     	    }
     }
@@ -464,6 +465,7 @@ int AirBuildings(struct OBJ *a,MAIN_IMG *img)
 	    if (--a->deltavertpos == 0)
 	    {
 		a->modemove = MODESTOP;
+		a->prop &= ~VARDONOTAPPLYNEXTMOVE;
 		ApplyNextModeMove(a);
 	    }
     }

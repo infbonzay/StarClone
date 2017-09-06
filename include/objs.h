@@ -192,6 +192,7 @@ void SetModeMove(OBJ *a,int mode);
 int  ApplyNextModeMove(OBJ *a);
 int  IfHaveNextModeMove(OBJ *a);
 
+void InsertModeMove(OBJ *a,OBJ *destobj,int mode,int x,int y,int showmesflag);
 void AddModeMove(OBJ *a,OBJ *destobj,int mode,int x,int y,int showmesflag);
 void DelAllModeMoves(struct OBJ *a);
 void DelOBJFromModeList(struct OBJ *a,struct OBJ *searchobj);

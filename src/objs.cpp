@@ -2119,11 +2119,12 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
 		SetOBJIScriptNr(a,ISCRIPTNR_LANDING,ISCRIPTNR_EXECUTE);
 		a->finalx = 0;//erase rallypoint
 		a->finaly = 0;
+		a->prop |= VARDONOTAPPLYNEXTMOVE;
 	    }
 	    else
 	    {
 		moveobj(a,NULL,MODEMOVE,x,y-AIRUNITS_START_YPOS,NOSHOWERROR,0);
-		AddModeMove(a,NULL,mode,x,y,showerrorflag);
+		InsertModeMove(a,NULL,mode,x,y,showerrorflag);
 	    }
 	    break;
 	case MODELIFTOFF:
@@ -2133,6 +2134,7 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
 	    SetOBJIScriptNr(a,ISCRIPTNR_LIFTOFF,ISCRIPTNR_SETONLY);
 	    DettachAddon(a);
 	    a->deltavertpos = AIRUNITS_START_YPOS;
+	    a->prop |= VARDONOTAPPLYNEXTMOVE;
 	    break;
         case MODECLOAKFIELD:
         case MODEPERSONNELCLOAK:
@@ -5007,6 +5009,8 @@ void AllFlingyControlOBJMoving(void)
 	    {
 		if (!a->currentspeed)
 		{
+		    if (a->prop & VARDONOTAPPLYNEXTMOVE)
+			continue;
 		    if (a->movelist && a->movelist->GetUsedElem())
 			ApplyNextModeMove(a);
 		    if (a->finalOBJ && IsPickupUnit(a->finalOBJ->SC_Unit) && IsWorkerUnit(a->SC_Unit) &&  !a->carryobj )
@@ -5072,6 +5076,31 @@ void SetModeMove(OBJ *a,int mode)
     a->modemove = mode;
     if (a->movelist)
 	a->movelist->EmptyElemFifo();
+}
+//==================================
+void InsertModeMove(OBJ *a,OBJ *destobj,int mode,int x,int y,int showmesflag)
+{
+    ONEMODEMOVE *onemodemove;
+    if (!a->movelist)
+    {
+	a->movelist = new myfifo(5);
+    }
+    if (!a->movelist->GetFreeElem())
+    {
+	DEBUGMESSCR("list of mode moves is full\n");
+	return;
+    }
+    onemodemove = (ONEMODEMOVE *) a->movelist->InsertElem(sizeof(ONEMODEMOVE));
+    if (!onemodemove)
+    {
+	DEBUGMESSCR("cannot add to list of mode moves :( \n");
+	return;
+    }
+    onemodemove->destobj = destobj;
+    onemodemove->modemove = mode;
+    onemodemove->destx = x;
+    onemodemove->desty = y;
+    onemodemove->showerrflag = NOSHOWERROR;//showmesflag;
 }
 //==================================
 void AddModeMove(OBJ *a,OBJ *destobj,int mode,int x,int y,int showmesflag)

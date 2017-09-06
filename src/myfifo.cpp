@@ -24,8 +24,6 @@ myfifo::myfifo(int elems)
     poselem=0;
     elements = (void **) __myalloc (elems * sizeof (void *));
     memset(elements,0,elems * sizeof( void *) );
-//    usebytes = (int *) __myalloc (elems * sizeof (int));
-//    memset(usebytes,0,elems * sizeof( int) );
 }
 //=========================================
 //=========================================
@@ -63,10 +61,22 @@ void *myfifo::AddElem(int len)
     if (elements[curelem])
 	return(NULL);
     a = elements[curelem] = __myalloc(len);
-//    usebytes[curelem] = len;
     curelem++;
     if (curelem>=totalelem)
 	curelem=0; 
+    return(a);
+}
+//=========================================
+void *myfifo::InsertElem(int len)
+{
+    void *a;
+    int newelem = poselem - 1;
+    if (newelem<0)
+	newelem = totalelem - 1;
+    if (elements[newelem])
+	return(NULL);
+    poselem = newelem;
+    a = elements[poselem] = __myalloc(len);
     return(a);
 }
 //=========================================

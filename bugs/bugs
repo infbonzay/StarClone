@@ -350,7 +350,8 @@
 *114 SCV auto repair contructing build
 *115 SCV can repair contructing build
 *116 SCV contruct - can move in other part without disturb constructing :(
-    liftoff with attach not work
+*117 liftoff with attach not work
+    can cancel second nydus canal
     move to unit becomed invisible continue move/atack/etc..
     goliath do not atack air units then atack ground unit?
     goliath img failure (add top of science vessel)
