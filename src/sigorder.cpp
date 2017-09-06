@@ -364,6 +364,9 @@ int  SIGOrder_ZergUnitBirth(OBJ *a)
 	    a2->mainimage->side += 3 * 8;
         x += adrxyoffs[0];
         y += adrxyoffs[1];
+	//here go to the rally point
+	if (a->finalx && a->finaly)
+	    moveobj(a2,NULL,MODEMOVE,a->finalx,a->finaly,NOSHOWERROR,0);
     }
     else
     {
@@ -384,6 +387,9 @@ int  SIGOrder_ZergUnitBirth(OBJ *a)
     a->mainimage->DeleteMainImgAndChilds();
     CreateImageAndAddToList(a,x<<8,y<<8,4,NOLOIMAGE);
     a->prop |= VARREADY;
+    //here go to the rally point
+    if (a->finalx && a->finaly)
+	moveobj(a,NULL,MODEMOVE,a->finalx,a->finaly,NOSHOWERROR,0);
     return(0);
 }
 //==================================
@@ -532,6 +538,9 @@ int  SIGOrder_UnitInitComplete(OBJ *a)
     ChangeTypeOfProp(a,PROPNORMAL1);
     a->prop |= VARREADY;
     activatesound(a,MODESOUNDREADY,2,NOSTOPCURRENTSOUNDS);
+    //here go to the rally point
+    if (a->finalx && a->finaly)
+	moveobj(a,NULL,MODEMOVE,a->finalx,a->finaly,NOSHOWERROR,0);
     return(0);
 }
 //==================================

@@ -240,6 +240,8 @@ void UnitConstrUnit(OBJ *a,int SC_Unit,int icon_nr,int stattxt_nr)
 		case SC_LARVAEOBJ:
 		    if (a->myparent)
 		    {
+			a->finalx = a->myparent->finalx;
+			a->finaly = a->myparent->finaly;
 			delchild(a->myparent,a);
 		    }
 		    a->SC_ConstrUnit = SC_Unit;			//construct unit

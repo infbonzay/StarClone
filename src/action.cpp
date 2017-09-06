@@ -75,6 +75,8 @@ void QueueAction(void *IDQueueAction,int DestroyQueue)
 		getcoordofnewunit(actobj,SC_LARVAEOBJ,&x,&y);
 		temp = createobjfulllife(x,y,SC_LARVAEOBJ,actobj->playernr);
 		addchild(actobj,temp);
+		temp->finalx = actobj->finalx;
+		temp->finaly = actobj->finaly;
 		actobj->prop &= ~VARLARVAEONCONSTRUCT;
 	    }
 	    break;

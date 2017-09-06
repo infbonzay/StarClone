@@ -4438,14 +4438,25 @@ void TryToScanArea(OBJ *a,OBJ *scanobjarea)
 	    return;
 	}
     }
-    a2 = SearchUnit(a->playernr,SC_OVERLORDOBJ,-1,-1,-1);
+//???? need to search nearest unit!!! or scan area
+    a2 = SearchUnit(a->playernr,SC_COMSATSTATIONOBJ,-1,-1,50);
     if (!a2)
-	a2 = SearchUnit(a->playernr,SC_SCIENCEVESSELOBJ,-1,-1,-1);
+    {
+	a2 = SearchUnit(a->playernr,SC_OVERLORDOBJ,-1,-1,-1);	
 	if (!a2)
-	    a2 = SearchUnit(a->playernr,SC_OBSERVEROBJ,-1,-1,-1);
-    if (a2)
-	//send observer obj to the area
-	moveobj(a2,NULL,MODEMOVE,GetOBJx(scanobjarea),GetOBJy(scanobjarea),NOSHOWERROR,0);
+	{
+	    a2 = SearchUnit(a->playernr,SC_SCIENCEVESSELOBJ,-1,-1,-1);
+	    if (!a2)
+	    {
+		a2 = SearchUnit(a->playernr,SC_OBSERVEROBJ,-1,-1,-1);
+	    }
+	}
+	if (a2)		//send observer obj to the area
+	    moveobj(a2,NULL,MODEMOVE,GetOBJx(scanobjarea),GetOBJy(scanobjarea),NOSHOWERROR,0);
+    }
+    else		//scan area
+	moveobj(a2,NULL,MODESCANREGION,GetOBJx(scanobjarea),GetOBJy(scanobjarea),NOSHOWERROR,0);
+	
 }
 //=================================
 void TellOtherUnitsAboutAtacking(OBJ *a,OBJ *atacker)

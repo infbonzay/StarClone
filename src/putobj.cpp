@@ -279,6 +279,8 @@ OBJ *CreateUnitInUnit(struct OBJ *a,int obj_id,int playsound,int first_xpos,int 
     }
     else
     {
+	temp->finalx = a->finalx;
+	temp->finaly = a->finaly;
 	SIGOrder_UnitInitComplete(temp);
 /*
 	temp->prop |= VARREADY;
@@ -1588,8 +1590,8 @@ void showgoods(void)
     {
 	if (showgoods_drawmaxpsi[i])//+showgoods_drawpsi[i])
 	{
-//	    sprintf(psi+offspsi,"%c%c%c%d\x07/%d ",COMMANDSYMB,PSISYMBZ+drawrace[i],drawcolor[i],showgoods_drawpsi[i]/2,showgoods_drawmaxpsi[i]/2);
-	    sprintf(psi+offspsi,"%c%c%c%d\x07/%d ",COMMANDSYMB,PSISYMBZ+drawrace[i],drawcolor[i],showgoods_drawpsi[i],showgoods_drawmaxpsi[i]);
+	    sprintf(psi+offspsi,"%c%c%c%d\x07/%d ",COMMANDSYMB,PSISYMBZ+drawrace[i],drawcolor[i],showgoods_drawpsi[i]/2,showgoods_drawmaxpsi[i]/2);
+//	    sprintf(psi+offspsi,"%c%c%c%d\x07/%d ",COMMANDSYMB,PSISYMBZ+drawrace[i],drawcolor[i],showgoods_drawpsi[i],showgoods_drawmaxpsi[i]);
 	    decrxcoord-=60;
 	}
     }
