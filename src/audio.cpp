@@ -590,8 +590,8 @@ void playinfoadvisorsound(int playernr,int race,int typeofsong,int textsound)
 void playadvisorsound(int playernr,int race,int typeofsong,int song)
 {
     char filename[200];
-    if (race==TERRANADVRACE)
-	race=TERRANRACE;
+//    if (race==TERRANADVRACE)
+//	race=TERRANRACE;
     if (typeofsong == ADVNUCLEARDETECT || player_aliance(NUMBGAMER,playernr)==MYOBJ)
     {
 	if (gameconf.audioconf.advisorsounds)

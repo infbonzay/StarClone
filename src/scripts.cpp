@@ -308,7 +308,7 @@ int grpfirstnr,fileformat,nrofhits;
 int lonr,typemode,speed,acceleration,images_id,images_tbl;
 ATROBJ *adratr;
 struct OBJstruct *adr,*fromotherobj,*tempobj;
-MOVESTRUCT *allmove;
+//MOVESTRUCT *allmove;
 
 int temptrigger_atspritenr;
 //EFFECTELEM tempeffect[MAXEFFECT];
@@ -523,18 +523,18 @@ while(1)
              case 25: //notused
                 break;
              case 26: //READYDECONSTR
-                  if (!strcmp(strvalue,"YES"))
+/*                  if (!strcmp(strvalue,"YES"))
                   {
                      adr->UNITprop|=VARREADYDECONSTR;
                   }
-                  break;
+*/                  break;
              case 27: //ATACKSIDES
                   break;
              case 28: 
-                  if (!strcmp(strvalue,"YES"))
+/*                  if (!strcmp(strvalue,"YES"))
 	              adr->UNITprop |= VARMAYHAVECHILD;
 //                  fscanf(f,"%s \n",strvalue);
-/*		  adr->maxparalelmodes = atoi(strvalue);
+		  adr->maxparalelmodes = atoi(strvalue);
 		  for (i=0;i<adr->maxparalelmodes;i++)
 		  {
                     fscanf(f,"%s \n",strvalue);
@@ -564,8 +564,8 @@ while(1)
 		adr->creeptype = intvalue;
 	        break;
              case 37:	//OFFOTHERBUILD
-		if (!strcmp(strvalue,"YES"))
-	    	    adr->UNITprop |= VARNEEDNOTWORK;
+//		if (!strcmp(strvalue,"YES"))
+//	    	    adr->UNITprop |= VARNEEDNOTWORK;
 	        break;
 	     case 38:	//BACKEFFECTS notused
 	        break;

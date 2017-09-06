@@ -1559,14 +1559,14 @@ void showgoods(void)
     sprintf(gas,"%c%c %d",COMMANDSYMB,GASSYMB,showgoods_drawgas>>8);
 
     race=gameconf.pl_race[NUMBGAMER];
-    if (race >= MAXRACE)
+    if (race >= MAXRACES)
 	race=0;
     showgoods_drawmaxpsi[0]=PLAYER[NUMBGAMER].maxcurentpsi[race];
     if (showgoods_drawmaxpsi[0]>MAXPSI)
         showgoods_drawmaxpsi[0]=MAXPSI;    
     showgoods_drawpsi[0]=PLAYER[NUMBGAMER].curentpsi[race];
     drawrace[0]=race;
-    for (race=0;race<MAXRACE;race++)
+    for (race=0;race<MAXRACES;race++)
     {
 	if (race!=gameconf.pl_race[NUMBGAMER])
 	{

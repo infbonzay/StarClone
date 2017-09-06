@@ -549,7 +549,6 @@ PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 ENDOBJ           = 1
 
 [NEWOBJECT] = 72 Protoss_Carrier
-HAVECHILD	 = YES
 PROPERTIES       = 4    0   0   0   0   0   0   0   0   0
 			256 257 333   258 267 0   73  0   0
 			0   0   0   0   0   0   0   0   0
@@ -614,7 +613,6 @@ PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 ENDOBJ           = 1
 
 [NEWOBJECT] = 81 Warbringer_Reaver
-HAVECHILD	 = YES
 PROPERTIES       = 4    0   0   0   0   0   0   0   0   0
 			256 257 333   258 267 0   85  0   0
 			0   0   0   0   0   0   0   0   0
@@ -623,7 +621,6 @@ PROPERTIES       = 4    0   0   0   0   0   0   0   0   0
 ENDOBJ           = 1
 
 [NEWOBJECT] = 82 Gantrintor_Carrier
-HAVECHILD	 = YES
 PROPERTIES       = 4    0   0   0   0   0   0   0   0   0
 			256 257 333   258 267 0   73  0   0
 			0   0   0   0   0   0   0   0   0
@@ -632,7 +629,6 @@ PROPERTIES       = 4    0   0   0   0   0   0   0   0   0
 ENDOBJ           = 1
 
 [NEWOBJECT] = 83 Protoss_Reaver
-HAVECHILD	 = YES
 PROPERTIES       = 4    0   0   0   0   0   0   0   0   0
 			256 257 333 258 267 0   85  0   0
 			0   0   0   0   0   0   0   0   0
@@ -804,7 +800,6 @@ PROPERTIES       = 2    0   0   0   0   0   0   0   0   384
 ENDOBJ           = 1
 
 [NEWOBJECT] = 108 Terran_Nuclear_Silo
-HAVECHILD	 = YES
 PROPERTIES       = 4    0   0   0   0   0   0   0   0   384
 			472 0   0   0   0   0   0   0   0
 			0   0   0   0   0   0   0   0   0

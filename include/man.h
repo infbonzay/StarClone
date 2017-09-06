@@ -36,7 +36,7 @@ struct SFXPLAY
 	short		int sfxto[MAXTYPESOFSOUND];
 };
 */
-struct	ROCKETINFO
+/*struct	ROCKETINFO
 {
 	int 		info;		//bit 0	- 0-maker,1-destination
 	int 		nrmage;
@@ -44,6 +44,7 @@ struct	ROCKETINFO
 	unsigned	char 	nrrockets;
 	signed 	char 	deltastoronasveta[SPRITE_SIDES];
 };
+*/
 struct CHILDS
 {
 	signed	char	nrofchildunits;			//nr of childs
@@ -78,7 +79,7 @@ struct 	LOINF
 		char		status;
 };
 //=======================================
-struct MOVESTRUCT
+/*struct MOVESTRUCT
 {
     struct 	LOINF	loinf;
     struct	GRPFILE *grp;
@@ -90,6 +91,7 @@ struct MOVESTRUCT
 				    //bit 8 - is inversion picture
 		char    anim[MAXSTEP];
 };
+*/
 //=======================================
 struct APPEARORDER
 {
@@ -363,48 +365,9 @@ struct OBJstruct
 	unsigned char	race;
 //	unsigned char	maxbullets;			//max atacks before recharge on base
 
-	unsigned int	UNITprop; 
-    				    //(0-bit)-select
-                                    //(1-bit)-build/man ()
-                                    //(2-bit)-(build from build(zerg's build))
-                                    //(3-bit)-fullinv
-                                    
-                                    //(4-bit)-see
-                                    //(5-bit)-flyterra
-                                    //(6-bit)-fireup
-                                    //(7-bit)-firedown
-
-                                    //8-(CYBORG)
-                                    //9-(LIFE)
-                                    //10-(OTHER)-(li4inka,mina,minerals,gas...)
-                                    //11-bit)-KA4IANIE
-                                    
-                                    //12-bit)-ACCELER
-                                    //13-afteratackendatack
-                                    //14-none1
-                                    //15-none2
-
-    				    //16-bit - externshadow
-                                    //17-bit - non die unit (minerals,gaz,...)
-                                    //18-bit - notdesen
-                                    //19-bit - rocketunit
-                                    
-                                    //20-bit - readydeconstr (dron srazu poiavleaetsea)
-                                    //21-bit) - {1-not inertion}
-                                    //22-bit) - if 1 - use doneteleportbuild    
-                                    //23-bit) - rotation BUILD
-
-    				    //24-bit - VARSELECT4NOTSEEPROP (ne mogu videti properties unita)
-				    //25-bit - may have a child
-				    //26-bit - limit of charges(need return to base)(like interceptors)
-				    //27-bit - if build on other obj that obj is not worked before build not desapperied
-
-				    //28-bit - after rotation the speed don't decrease
-				    //29-bit - damage on die
-				    //30-bit - noused
-				    //31-bit - the mage object
+	unsigned char	UNITprop; 
 				    
-	unsigned char      range[SIZERANGEFORBUILD];
+	unsigned char   range[SIZERANGEFORBUILD];
 };
 //=======================================
 //=======================================

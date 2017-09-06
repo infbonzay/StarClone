@@ -145,32 +145,19 @@
 #define NUKE_MAXAIR_YPOS 300
 #define INITIAL_NUKE_YPOS 16
 
-#define HIESTOBJNOFLY  5
-#define SIZEOBJFORTAKE 20
 
 #define MAXIMSIZEMINIMAP 128
 
-#define FIREOBJ 5
-#define MAXNAM 8
-#define MAXSTEP 48
-#define MAXTIMEWAIT 18*10
-#define MAXTIMEFORSLIDE 60
-#define TIMESLIDE 8
-
-
-#define DAMAGEMEDIUM    2
-#define DAMAGEGIGANTIC  4
-#define MINDAMAGE       1
-
 #define SIZESPRLANSHX 32
 #define SIZESPRLANSHY 32
-#define UNITBORDERSIZE 8	//for L,R,U,D    value 1 is 8 pixels
-#define MAXBUILDSPRSIZE 8	//=8*sizesprlashx pixels
 
+#define MAXBUILDSPRSIZE 8	//=8*sizesprlashx pixels
 #define WIDTHRAMKA 2
-#define NUMBRSPRLANSH 500 //max type of lanshaft parts
-#define ROCKETUNITS   500
-#define NUMBRSPROBJ   800 //max type of objects
+//#define NUMBRSPRLANSH 500 //max type of lanshaft parts
+//#define ROCKETUNITS   500
+
+#define NUMBRSPROBJ   230
+
 #define MAXPASW    70
 #define CLEARKEY   1
 #define NOCLEARKEY 0
@@ -252,8 +239,6 @@
 #define ONLYTERRA  2
 #define DEFAULT    0
 //=======================
-#define MAXMAGEMOVE  4
-
 #define ORDER_RIGHTWAY			0x01
 #define ORDER_IGNOREREQ			0x02
 #define ORDER_CANBEQUEUED		0x04
@@ -262,11 +247,6 @@
 #define ORDER_ONTERRAIN			0x20
 #define ORDER_IGNOREUNITDESTINATION	0x40
 //=======================
-#define FIREUP       0x40
-#define FIREDOWN     0x80
-//=======================
-//=======================
-
 #define ENEMYOBJ     	0
 #define NEUTRALOBJ   	1
 #define ALLIANCEOBJ   	2
@@ -276,10 +256,8 @@
 #define PLAYER_VISION	1
 
 //============================= required for file obj.h ==============
-
 #define SIZEXKUBIK	3
 #define SIZEYKUBIK	4
-
 
 #define CIRCLE1                253-1
 #define COLOREMYOBJ            GREENLIFE
@@ -294,33 +272,9 @@
 #define BEGINCONSTRDELTA	20
 
 //OBJstruct
-
-#define CYBORG          	0x00000100
-#define LIFE            	0x00000200
-#define OTHER           	0x00000400
-#define TECHNIC         	(CYBORG|LIFE)
-#define NOADDSTATSATCONSTR	0x00000800
-#define ACCELER			0x00001000
-#define AFTERATACKENDATACK	0x00002000
-#define NONE1			0x00004000
-#define NONE2			0x00008000
-#define VAREXTERNSHADOW		0x00010000
-//????				0x00020000
-//????				0x00040000
-//????				0x00080000       //1-rocketunit
-#define VARREADYDECONSTR	0x00100000
-#define VARNOTINERTION		0x00200000
-#define VARDONETELEPORT		0x00400000
-#define VARROTATIONBUILD	0x00800000
-#define VARSELECT4NOTSEEPROP	0x01000000
-#define VARMAYHAVECHILD      	0x02000000
-#define VARNEEDRECHARGE      	0x04000000
-#define VARNEEDNOTWORK      	0x08000000
-#define VARNODECRSPEEDIFROTATE	0x10000000
-#define VARDAMAGEONDIE		0x20000000
-
-#define VARMAGEUNIT		0x80000000
-#define VARROCKETMAGEUNIT	(VARROCKETUNIT|VARMAGEUNIT)
+#define NOADDSTATSATCONSTR	0x01
+#define VARSELECT4NOTSEEPROP	0x02
+#define VARNEEDRECHARGE      	0x04
 
 
 
@@ -332,29 +286,18 @@
 //===========================================
 #define MAXPSI    (200*2)
 //===========================================
-#define NOCLEARPOSINPOS -2
-#define CLEARPOSINPOS   -1
-#define BEGINPOS (0)
+//#define NOCLEARPOSINPOS -2
+//#define CLEARPOSINPOS   -1
+//#define BEGINPOS (0)
 //===========================================
 #define MAXFACEDIRECTIONS	32
-#define FIRSTMIRRORSIDE		(MAXFACEDIRECTIONS/2+1)
-#define SPRITE_SIDES		FIRSTMIRRORSIDE
 //===========================================
-//#define NORACE		-1
 #define ZERGRACE	0
 #define TERRANRACE	1
 #define PROTOSSRACE	2
-#define MAXRACE		3
-#define TERRANADVRACE	3
-#define UPGRADERACE	4
-#define TECHNRACE	5
+#define MAXRACES	3
 #define NEUTRALRACE	6
-#define RESOURCE	7
-#define MAGEOBJECT	8
 //===========================================
-//          from man.h
-#define MAXDESEN4PICT 8			//skoliko risunkov v odnom sprite(objecte)
-//=======================================
 #define ATRPARASITEFROM 	0
 #define ATRHALLUCINATION 	1
 #define ATRCORROSIVEACID 	2
