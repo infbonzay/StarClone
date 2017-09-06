@@ -1020,8 +1020,9 @@ int gogame(struct mapinfo *info)
 
 			    AllFlingyControlOBJMoving();
 
-			    AllImages_ExecuteIScript();
 			    AdditionalUnitsProceed();
+
+			    AllImages_ExecuteIScript();
 			    
 			    			    
 			    invisiblestick();

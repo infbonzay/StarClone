@@ -499,6 +499,8 @@ int IsActiveUnitForAtack(OBJ *a)
 {
     if (a->modemove == MODEDIE)
 	return(0);
+    if (!IsReadyOBJ(a))
+	return(0);
     if (IsGroupNeutralFlag(a->SC_Unit))
 	return(0);
     if ((a->prop & (VARINTRANSPORT|VARNOTHERE|VARINVINCIBILITY)) || GetMageAtr(&a->atrobj,ATRSTASIS))
@@ -510,6 +512,8 @@ int IsActiveUnit(OBJ *a)
 {
     int intransport=0;
     if (a->modemove == MODEDIE)
+	return(0);
+    if (!IsReadyOBJ(a))
 	return(0);
     if (a->prop & VARINTRANSPORT)
     {

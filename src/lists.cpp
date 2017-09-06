@@ -149,7 +149,7 @@ struct OBJ *SearchUnitFunc(int playernr,int (*funccheckunit)(int SC_Unit),int ne
 	    {
 		if ((*funccheckunit)(a->SC_Unit))
 		{
-		    if (IsActiveUnit(a))
+		    if (IsActiveUnit(a) && !a->carryobj)
 		    {
 			return(a);
 	    	    }
@@ -224,7 +224,7 @@ struct OBJ *SearchOBJforOBJ(struct OBJ *a,int modemage)
 			if (GetDistanceBetweenUnits256(a,destobj) < mindistance)
 			    findobj=1;
 		case MODEREPAIR:
-		    if (IsBuild(destobj->SC_Unit)&&GetUnitRace(destobj->SC_Unit)==TERRANRACE)
+		    if (IsBuild(destobj->SC_Unit) && GetUnitRace(destobj->SC_Unit)==TERRANRACE && IsReadyOBJ(destobj))
 		    {
 			if (destobj->life != GetUnitMaxLife(destobj->SC_Unit))
 			    if (GetDistanceBetweenUnits256(a,destobj) < (48<<8))
@@ -233,10 +233,6 @@ struct OBJ *SearchOBJforOBJ(struct OBJ *a,int modemage)
 			    }
 		    }
 		    break;
-//		case MODEPICKUP:
-//		    if (IsBuild(destobj->SC_Unit)&&GetUnitRace(destobj->SC_Unit)==TERRANRACE)
-//		    int IsNonNeutralFlag(int SC_Unit)
-//		    break;
 		default:
 		    DEBUGMESSCR("searchobj: %d mode not developed\n",modemage);
 		    break;

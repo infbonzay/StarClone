@@ -1514,13 +1514,16 @@ int moveobj_unitmode(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int 
 	    if (MageDepend(a,a->playernr,mode))
 	    {
 		needmana = GetTechEnergyCost(mageprop[mode].depend.obj_id[0]);
-		DecrMana(a,needmana);
-		newobj = createobjfulllife(x,y,obj_id,a->playernr);
-		makeoneobjseeopen(newobj,loadobj(newobj->SC_Unit));
-	        //if scaner apear on closed area we don not hear 'music from sweepscan' so we need to
-		//activate it again and prevent to hear it doubled if not
-		activatesound(newobj,MODESOUNDREADY,1,NOSTOPCURRENTSOUNDS);
-		SetOrder(a,1,&SIGOrder_ScannerSweepEnd);
+		if (CheckForMana(a,needmana) == CHECKRES_OK)
+		{
+		    DecrMana(a,needmana);
+		    newobj = createobjfulllife(x,y,obj_id,a->playernr);
+		    makeoneobjseeopen(newobj,loadobj(newobj->SC_Unit));
+	    	    //if scaner apear on closed area we don not hear 'music from sweepscan' so we need to
+		    //activate it again and prevent to hear it doubled if not
+		    activatesound(newobj,MODESOUNDREADY,1,NOSTOPCURRENTSOUNDS);
+		    SetOrder(a,1,&SIGOrder_ScannerSweepEnd);
+		}
 	    }
 	    break;
 	case SC_LURKEROBJ:
@@ -1855,7 +1858,10 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
 		if (IsOBJUnderConstruct(destobj))
 		{
 		    moveobj(a,NULL,MODEMOVE,GetOBJx(destobj),GetOBJy(destobj),NOSHOWERROR,0);
-		    AddModeMove(a,destobj,MODECONSTRUCT,0,0,NOSHOWERROR);
+		    if (!destobj->constrobj)
+		    {
+			AddModeMove(a,destobj,MODECONSTRUCT,0,0,NOSHOWERROR);
+		    }
 		}
 		else
 		{
@@ -2742,8 +2748,16 @@ int selectedobjmove(struct OBJ *destobj,int locx,int locy,int mode,int player,in
     	        deltay = GetOBJy(moveobjects[i]) - midy;
     	    }
 	    moveobjects[i]->prop &= ~VARAUTOMATRESOURCERET;
-	    if (rightclick && destobj)
-		mode = GetDefaultModeForRightClick(moveobjects[i],destobj,player);
+	    
+	    if (rightclick)
+	    {
+		if (moveobjects[i]->SC_Unit == SC_SCVOBJ && moveobjects[i]->constrobj)
+		{
+		    continue;
+		}
+		if (destobj)
+		    mode = GetDefaultModeForRightClick(moveobjects[i],destobj,player);
+	    }
 	    if (mode != MODENON)
 		k |= makemove(moveobjects[i],destobj,locx+deltax,locy+deltay,mode,player,flags);
         }
@@ -2755,7 +2769,7 @@ int selectedobjmove(struct OBJ *destobj,int locx,int locy,int mode,int player,in
 //=================================
 int GetDefaultModeForRightClick(OBJ *a,OBJ *destobj,int playernr)
 {
-	int isenemy,modemove;
+	int isenemy=0,modemove;
 	isenemy = player_aliance(playernr,destobj->playernr);
 	switch(alldattbl.units_dat->RightClickAction[a->SC_Unit])
 	{
@@ -4439,7 +4453,7 @@ void TryToScanArea(OBJ *a,OBJ *scanobjarea)
 	}
     }
 //???? need to search nearest unit!!! or scan area
-    a2 = SearchUnit(a->playernr,SC_COMSATSTATIONOBJ,-1,-1,50);
+    a2 = SearchUnit(a->playernr,SC_COMSATSTATIONOBJ,-1,-1,50<<8);
     if (!a2)
     {
 	a2 = SearchUnit(a->playernr,SC_OVERLORDOBJ,-1,-1,-1);	

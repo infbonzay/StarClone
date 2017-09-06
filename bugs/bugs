@@ -346,7 +346,11 @@
 *110 after kill unit the atacker find next goal, not wait some time
 *111 see burrowed zergling
 *112 after creation unit need to go to the relay point
-    if SCV is repairing cannot be killed????
+*113 if SCV is repairing cannot be killed????
+*114 SCV auto repair contructing build
+*115 SCV can repair contructing build
+*116 SCV contruct - can move in other part without disturb constructing :(
+    liftoff with attach not work
     move to unit becomed invisible continue move/atack/etc..
     goliath do not atack air units then atack ground unit?
     goliath img failure (add top of science vessel)
