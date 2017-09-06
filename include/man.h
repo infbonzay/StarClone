@@ -270,8 +270,8 @@ struct OBJ
 };
 //=======================================
 #define OBJ_VAR_MASK_SET(a,TYPEPARAM,mask) ((a->TYPEPARAM) |= (mask) )
-#define OBJ_VAR_MASK_CLR(a,TYPEPARAM,mask) ((a->TYPEPARAM) &= (~(mask)) )
-#define OBJ_VAR_MASK_CHK(a,TYPEPARAM,mask) ((a->TYPEPARAM) && (mask) )
+#define OBJ_VAR_MASK_CLR(a,TYPEPARAM,mask) ((a->TYPEPARAM) &= ~(mask) )
+#define OBJ_VAR_MASK_CHK(a,TYPEPARAM,mask) ((a->TYPEPARAM) & (mask) )
 
 #define OBJ_VAR_SET(a,TYPEPARAM,playernr) OBJ_VAR_MASK_SET(a,TYPEPARAM,(1<<playernr))
 #define OBJ_VAR_CLR(a,TYPEPARAM,playernr) OBJ_VAR_MASK_CLR(a,TYPEPARAM,(1<<playernr))

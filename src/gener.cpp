@@ -1624,7 +1624,27 @@ void logend(void)
     int i,j,ii,jj,k;
     unsigned short kk;
     FILE *f;
-
+/*    f=fopen("seedetector.txt","wb");
+    for (i=0;i<MAXYMAP;i++)
+    {
+	for (j=0;j<MAXXMAP;j++)
+	{
+	    fprintf(f,"%03d ",map.mapbits.seedetector[i*MAXXMAP+j]);
+	}
+	fprintf(f,"\n");
+    }	    
+    fclose(f);
+    f=fopen("whitefog.txt","wb");
+    for (i=0;i<MAXYMAP;i++)
+    {
+	for (j=0;j<MAXXMAP;j++)
+	{
+	    fprintf(f,"%03d ",map.mapbits.whitefog[1][i*MAXXMAP+j]);
+	}
+	fprintf(f,"\n");
+    }	    
+    fclose(f);
+*/
 /*    f=fopen("whitefog.txt","wb");
     for (i=0;i<MAXYMAP;i++)
     {

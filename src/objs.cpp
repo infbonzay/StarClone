@@ -313,8 +313,9 @@ struct OBJ *createobjlowlevel(OBJ *workerobj,int x,int y,int SC_Unit,int playern
         MinObjRegen++;
 //    for (i=0;i<PLAYEDPLAYERS;i++)
 //        a->select[i] = b->UNITprop & (VARINVSEE|VARSEE);
-    OBJ_VAR_MASK_SET(a,obj_invsee,0xff);
-    OBJ_VAR_MASK_SET(a,obj_see,0xff);
+
+//    OBJ_VAR_MASK_SET(a,obj_invsee,0xff);
+//    OBJ_VAR_MASK_SET(a,obj_see,0xff);
     
     if (IsInvincibleUnit(a->SC_Unit))
 	SetInvincibleOBJ(a,1);
@@ -711,7 +712,8 @@ int IfUnitIsSelectable(OBJ *a)
     if (OBJ_VAR_CHK(a,obj_notdetect,NUMBGAMER))
     {
 //	if (GetUnitProp(a,NUMBGAMER,VARINVSEE))
-	if (OBJ_VAR_CHK(a,obj_invsee,NUMBGAMER))
+//	if (OBJ_VAR_CHK(a,obj_invsee,NUMBGAMER))
+	if (a->obj_invsee & (1<<NUMBGAMER))
 	    return(1);
     }
     else
