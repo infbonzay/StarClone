@@ -351,7 +351,10 @@
 *115 SCV can repair contructing build
 *116 SCV contruct - can move in other part without disturb constructing :(
 *117 liftoff with attach not work
-    can cancel second nydus canal
+*118 can cancel second nydus canal
+    dust moves with unit
+    not move throught nydus canal
+    at morth hatchery need to wait first larva some time
     move to unit becomed invisible continue move/atack/etc..
     goliath do not atack air units then atack ground unit?
     goliath img failure (add top of science vessel)

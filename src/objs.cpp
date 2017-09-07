@@ -1393,6 +1393,7 @@ int moveobj_buildmode(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int
 	    ChangeTypeOfProp(a,PROPEMPTY);
 	    a->doubleunit = newobj;
 	    newobj->doubleunit = a;
+	    newobj->SC_FromUnit = a->SC_Unit;
         }
         else
         {
@@ -2203,7 +2204,6 @@ escapeconstrslots:
 		switch(GetUnitRace(a->SC_Unit))
 		{
 		    case ZERGRACE:
-			ReturnResources(a->SC_Unit,a->playernr,100);
 		        switch(a->SC_FromUnit)
 		        {
 			    case SC_DRONEOBJ:
@@ -2226,7 +2226,12 @@ escapeconstrslots:
 			    case SC_CREEPCOLONYOBJ:
 				SIGOrder_CancelMorthFromBuild(a);
 				break;
+			    case SC_NYDUSCANALOBJ:
+				if (a->doubleunit)
+				    return(MOVEOBJ_NOACT);
+				break;
 			}
+			ReturnResources(a->SC_Unit,a->playernr,100);
 			break;
 		    case TERRANRACE:
 			ReturnResources(a->SC_Unit,a->playernr,a->selfconstruct.timeremained * 100 / a->selfconstruct.timemax);
@@ -2677,10 +2682,7 @@ int makemove(struct OBJ *a,struct OBJ *destobj,int locx,int locy,int mode,int pl
     }
     if (a->movelist)
 	a->movelist->EmptyElemFifo();
-    if ((IsOnSkyOBJ(a))||(mode==MODEESCAPE))
-	moveobj(a,destobj,mode,locx,locy,showerrorflag,0);//airobj
-    else
-	moveobj(a,destobj,mode,locx,locy,showerrorflag,0);//terraobj
+    moveobj(a,destobj,mode,locx,locy,showerrorflag,0);
     return(1);
 }
 //==================================
