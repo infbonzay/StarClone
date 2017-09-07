@@ -218,7 +218,7 @@ void MAIN_IMG::AddImageToParent(OVERLAY_IMG *img)
     if (childlists->GetFreeElements())
     {
 	childlists->AddElem(img);
-	if (!(img->flags & SC_IMAGE_FLAG_IGNORPARENTSAVEINFOGTABLE))
+	if (!(img->flags & SC_IMAGE_FLAG_IGNOREPARENTSAVEINFOGTABLE))
     	    if (flags & SC_IMAGE_FLAG_SAVEINFOGTABLE)
 		img->flags |= SC_IMAGE_FLAG_SAVEINFOGTABLE;
     }
@@ -400,6 +400,7 @@ void OVERLAY_IMG::DrawImageXY(int x,int y)
     char format;
     signed char *adrxyoffs,xlo,ylo;
     OBJ *a;
+//    return;
     totalimgs++;
     if (flags & (SC_IMAGE_FLAG_DISABLEDRAW | SC_IMAGE_FLAG_MARKFORDELETE))
 	return;
@@ -967,7 +968,8 @@ void saveandputimage(int x,int y,int xdelta,int ydelta,GRPFILE *grppict,int form
     }
     if (flags & SC_IMAGE_FLAG_SAVEINFOGTABLE)
     {
-	saveinfogtable(x,y,POSINMAP,grppict,format,colortable,maxcolor,grcolor,nrpicture,flags);
+	if (grcolor)
+	    saveinfogtable(x,y,POSINMAP,grppict,format,colortable,maxcolor,grcolor,nrpicture,flags);
     }
 }
 //==================================
@@ -1168,15 +1170,15 @@ void AddDustImages(struct OBJ *a,int overlaylayer)
     MAIN_IMG *img;
     OVERLAY_IMG *newimg;
     int i;
-    unsigned short imagelo_id,flags,imageid;
+    unsigned short imagelo_id,imageid,flags;
     signed char *adrxyoffs,xlo,ylo;
     img = a->mainimage;
     imagelo_id = GetIDFromOverlayLayer(img->imageid,overlaylayer);
+    flags = SC_IMAGE_FLAG_IMGOVER | SC_IMAGE_FLAG_IGNOREPARENTSAVEINFOGTABLE;
     if (!imagelo_id)
 	return;
     if (GetLoadedImage(imagelo_id,(void **)&lo) < 0)
         DEBUGMESSCR("lo.cant load image_id=%d\n",imagelo_id);
-    flags = SC_IMAGE_FLAG_IMGOVER;
     for (i=0;i<MAXDUSTOVERLAYS;i++)
     {
 	adrxyoffs = GetLoXY(lo,0,i);
@@ -1209,7 +1211,7 @@ void AddShieldImage(struct OBJ *a,int directiondamage)
 	    if (CheckForSpecificChildsImageID(a->mainimage,IMAGEID_SHIELDOVERLAY,IMAGEID_SHIELDOVERLAY))
 		return;
 	}
-	newimg = new OVERLAY_IMG(img,IMAGEID_SHIELDOVERLAY,imagelo_id,a->mainimage->elevationlevel+1,SC_IMAGE_FLAG_IMGOVER,ISCRIPTNR_INIT);
+	newimg = new OVERLAY_IMG(img,IMAGEID_SHIELDOVERLAY,imagelo_id,a->mainimage->elevationlevel+1,SC_IMAGE_FLAG_IMGOVER | SC_IMAGE_FLAG_IGNOREPARENTSAVEINFOGTABLE,ISCRIPTNR_INIT);
 	iscriptinfo.ExecuteScript(newimg);
     }
 }
@@ -1228,7 +1230,7 @@ void CreatePylonSelectArea(void)
 	    {
 		a->prop |= VARPYLONAREAACTIVE;
 		newimg = new OVERLAY_IMG(a->mainimage,IMAGEID_PYLONSELECTAREA1,0,0,a->mainimage->elevationlevel-2,
-					    SC_IMAGE_FLAG_IMGUNDER|SC_IMAGE_FLAG_IGNORPARENTSAVEINFOGTABLE,ISCRIPTNR_INIT);
+					    SC_IMAGE_FLAG_IMGUNDER|SC_IMAGE_FLAG_IGNOREPARENTSAVEINFOGTABLE,ISCRIPTNR_INIT);
 		iscriptinfo.ExecuteScript(newimg);
 		drawpylonareaactive=1;
 	    }

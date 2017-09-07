@@ -443,7 +443,7 @@ int TickUnderConstruct(OBJ *a)
 		if (!a->selfconstruct.timeremained)
 		{
 		    a->selfconstruct.currentconstrstep = CONSTR_STEP_ALLBUILDSEXACT100;
-		    a->prop |= VARREADY;
+//		    a->prop |= VARREADY;
 		    SetOrder(a,1,&SIGOrder_ZergBuildFinishConstruct);
 		    SetOBJIScriptNr(a,ISCRIPTNR_ALMOSTBUILT,ISCRIPTNR_EXECUTE);
 		}

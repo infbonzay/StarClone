@@ -33,6 +33,7 @@ public:
     int  AddToQueue(void *IDqueue,int waitgameticks);
     int  QueueMain(int addticks);
     void DelQueue(int from,int count);
+    void ShowAllQueue(void);
 
     //========================
     inline int GetPlayTicks(void)

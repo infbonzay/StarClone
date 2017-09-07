@@ -184,7 +184,7 @@ struct OBJ *createobjmanwithlife(int x,int y,int SC_Unit,int Pl,
 	a2->mainimage->HideImgFlag();
     }
     b = loadobj(a->SC_Unit);
-    AdditionalProperties(a,b);
+    AdditionalProperties(a);
     a->prop |= VARREADY;
     if (b)
     {

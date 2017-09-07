@@ -46,11 +46,12 @@ void SetOrder(OBJ *a,int signal,int (*func)(OBJ *a))
 int  SIGOrder_ZergBuildFinishConstruct(OBJ *a)
 {
     a->prop |= VARREADY;
+    AdditionalProperties(a);
     ChangeTypeOfProp(a,PROPNORMAL1);
     ChangeUnitAndImagesAssociated(a,a->SC_Unit);
     SetOrder(a,0,NULL);
     Play_sfxdata(GetOBJx(a),GetOBJy(a),SFXDATA_ZERGBUILDWARPEND,2);
-    if (a->SC_FromUnit==SC_DRONEOBJ||(a->doubleunit&&a->doubleunit->SC_Unit==SC_NYDUSCANALOBJ))
+    if (a->SC_FromUnit==SC_DRONEOBJ || ( a->doubleunit && a->doubleunit->SC_Unit==SC_NYDUSCANALOBJ))
     {
 	FillWithCreepNow(a,loadobj(a->SC_Unit),BEGINCREEPTABLE);
     }

@@ -37,7 +37,7 @@ int GetMaxChildUnits(OBJ *a)
     }
 }
 //====================================
-void AdditionalProperties(OBJ *a,OBJstruct *b)
+void AdditionalProperties(OBJ *a)
 {
     int i,randd;
     switch(a->SC_Unit)

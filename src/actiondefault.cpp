@@ -524,7 +524,7 @@ int HiveAction(struct OBJ *a,MAIN_IMG *img)
     if (a->SC_Unit == SC_HATCHERYOBJ && IsOBJUnderConstruct(a))
 	return(0);
     nrchilds = getchilds(a);
-    if (nrchilds!=MAXLARVAEPRODUCE&&!(a->prop&VARLARVAEONCONSTRUCT))
+    if ( nrchilds!=MAXLARVAEPRODUCE && !(a->prop&VARLARVAEONCONSTRUCT))
     {
         a->prop |= VARLARVAEONCONSTRUCT;
 	MakeQueueAction(CREATELARVAEACTION,a,NULL,0,0,0,LARVAEREFRESHTIME);
@@ -887,7 +887,9 @@ int AdditionalUnitProceed(OBJ *a,MAIN_IMG *img)
 	    a->prop &= ~VARWAITDISTANCE;
 	}
     }
-    return ((*UnitActionDefaults[a->SC_Unit])(a,img));
+//    if (IsReadyOBJ(a))		// i gorgot abount lair,hive,greater spire than underconstruction but can do additionaproperties
+	return ((*UnitActionDefaults[a->SC_Unit])(a,img));
+//    return(0);
 }
 //=================================
 int AtackCoolDownEnds(OBJ *a,OBJ *destobj,int continueatack,int showerrorflag)

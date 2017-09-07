@@ -8,7 +8,7 @@
 #define ATACKUP		0
 #define ATACKDOWN	1
 int  GetMaxChildUnits(OBJ *a);
-void AdditionalProperties(OBJ *a,OBJstruct *b);
+void AdditionalProperties(OBJ *a);
 int  GetSpeed(OBJ *a,int speed);
 int  GetDistances(int x,int y,int x2,int y2);
 int  GetDistanceBetweenUnits256(OBJ *a,OBJ *a2);

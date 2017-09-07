@@ -72,6 +72,7 @@ int Queue::QueueMain(int addticks)
 	    for (i=1;i<QueueElements;i++)
 		if (PlayTicks<Elements[i].timetoexecute)
 		    break;
+//	    ShowAllQueue();
 	    //now i = number of queue elements to proceed
 	    tempqueue = (struct QUEUEELEMENT  *)wmalloc(i*sizeof(struct QUEUEELEMENT));
 	    memmove(tempqueue,&Elements[0],i*sizeof(struct QUEUEELEMENT));
@@ -82,6 +83,7 @@ int Queue::QueueMain(int addticks)
 		tempqueue[j].ID=NULL;
 	    }
 	    wfree(tempqueue);
+//	    ShowAllQueue();
 	    return 1;
 	}
     }
@@ -132,5 +134,17 @@ int Queue::InsertInQueue(int absolutegameticks)
         return (pos+1);
     else
         return 0;
+}
+//==========================================
+void Queue::ShowAllQueue(void)
+{
+    QUEUEACTION *act;
+    int i;
+    for (i=0;i<QueueElements;i++)
+    {
+	act = (QUEUEACTION *) Elements[i].ID;
+	printf("%d:  type=%d\n",i,act->actiontype);
+    }
+    printf("\n");
 }
 //==========================================

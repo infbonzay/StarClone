@@ -85,8 +85,8 @@ void QueueAction(void *IDQueueAction,int DestroyQueue)
 	    actdestobj=(OBJ*)act->destobj;
 	    ApplyNextModeMove(actobj);
 	    break;
-	case SOMENEEDEDACTION:
-	    MakeQueueAction(SOMENEEDEDACTION,actobj,actdestobj,act->param0,act->param1,act->param2,act->param0);
+	case SELFCREATEACTION:
+	    MakeQueueAction(SELFCREATEACTION,actobj,actdestobj,act->param0,act->param1,act->param2,act->param0);
 	    regen=(int *)actdestobj;
 	    *regen=1;
 	    break;
@@ -115,7 +115,7 @@ void MakeQueueAction(int actiontype,void *a,void *destobj,
     {
 	case NONDETECTEDACTION:
 	case MAGETIMEDACTION:
-	case SOMENEEDEDACTION:
+	case SELFCREATEACTIONION:
 	case TIMETOWAITNUKE:
 	default:
 	    break;
