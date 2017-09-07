@@ -47,6 +47,8 @@ int  SIGOrder_ZergBuildFinishConstruct(OBJ *a)
 {
     a->prop |= VARREADY;
     AdditionalProperties(a);
+    a->finalx = 0;
+    a->finaly = 0;
     ChangeTypeOfProp(a,PROPNORMAL1);
     ChangeUnitAndImagesAssociated(a,a->SC_Unit);
     SetOrder(a,0,NULL);
