@@ -1933,6 +1933,10 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
 	    break;
 	case MODESTOP:
 //	    a->finalOBJ=NULL;
+	    if (alldattbl.units_dat->Subunit1[a->SC_Unit] < MAX_UNITS_ELEM)
+	    {
+		moveobj(a->subunit,destobj,mode,x,y,NOSHOWERROR,0);
+	    }
 	    if (a->movelist)
 		a->movelist->EmptyElemFifo();
 	    if (a->modemove != mode)
@@ -1957,6 +1961,10 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
 	    break;
 	case MODEPATROL:
 	    SetModeMove(a,mode);
+	    if (alldattbl.units_dat->Subunit1[a->SC_Unit] < MAX_UNITS_ELEM)
+	    {
+		moveobj(a->subunit,NULL,MODESTOP,x,y,NOSHOWERROR,0);
+	    }
 	    initmoveaction(a,destobj,mode,0,0,x,y);
 	    break;
 	case MODEACTIVATE:
@@ -1968,6 +1976,10 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
 	    break;
 	case MODEMOVE:
 	    a->modemove = mode;
+	    if (alldattbl.units_dat->Subunit1[a->SC_Unit] < MAX_UNITS_ELEM)
+	    {
+		moveobj(a->subunit,NULL,MODESTOP,x,y,NOSHOWERROR,0);
+	    }
 	    if (destobj)
 	    {
 		CheckIfGotoTransport(a,destobj);
@@ -4737,6 +4749,9 @@ int PathFinding_MovePortionType1(OBJ *a,MAIN_IMG *img,int deltamove)
 	widthsumm = GetWidthSummOfUnits(a->SC_Unit,a->finalOBJ->SC_Unit,deltax,deltay);
 	if (deltaz - widthsumm - a->modemoveminusdistance <= deltamove)
 	{
+	    if (a->finalOBJ->SC_Unit == SC_NYDUSCANALOBJ)
+		if (TryToEnterNydus(a,a->finalOBJ))
+		    return(2);
 	    if (ApplyNextModeMove(a))
 	        return(2);
 //	    return(0);
@@ -5033,6 +5048,9 @@ void AllFlingyControlOBJMoving(void)
 		{
 			//stop move
 			a->currentspeed = 0;
+			if (a->finalOBJ && a->finalOBJ->SC_Unit == SC_NYDUSCANALOBJ)
+			    if (TryToEnterNydus(a,a->finalOBJ))
+				continue;
 			if (a->prop & VARPATROLFLAG)
 			{
 			    initmoveaction(a,NULL,MODEPATROL,a->finalx>>8,a->finaly>>8,a->startx,a->starty);
@@ -5060,6 +5078,23 @@ void AllFlingyControlOBJMoving(void)
 //	    printf("speed=%d ensnaired=%d\n",a->currentspeed,curspeed);
 	}
     }
+}
+//=================================
+int TryToEnterNydus(OBJ *a,OBJ *nydus)
+{
+    int x,y;
+    if (nydus->doubleunit && GetUnitRace(a->SC_Unit) == ZERGRACE)
+    {
+//	activatesound(a->destobj,MODESOUNDMAGE5,0,STOPCURRENTSOUNDS);
+	Play_sfxdata_id(nydus,SFXDATA_INTONYDUS,3,0);
+	getcoordofnewunit(nydus->doubleunit,a->SC_Unit,&x,&y);
+	ChangeObjXY(a,x,y);
+	ForceKartChanges(a);
+	moveobj(a,NULL,MODESTOP,x,y,NOSHOWERROR,0);
+	a->finalOBJ = NULL;
+	return(1);
+    }
+    return(0);
 }
 //=================================
 int IfHaveDistanceForMove(OBJ *a,MAIN_IMG *img,OBJ *destobj,int mindistance)

@@ -354,13 +354,14 @@
 *118 can cancel second nydus canal
 *119 black point on minimap on remnaints builds
 *120 at morth hatchery need to wait first larva some time
-    
+*121    not move throught nydus canal
+*122 if stop tank stop and turret too
+    if atack tank to far distance obj, tank move to destination and stops.
+    bug turret move wtih tank some pixels .....    
     base tank no need to rotation
-    if stop tank stop and turret too
     rotation turret to base if not have goal
     
     ?dust moves with unit
-    not move throught nydus canal
     move to unit becomed invisible continue move/atack/etc..
     goliath do not atack air units then atack ground unit?
     goliath img failure (add top of science vessel)

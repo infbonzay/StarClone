@@ -370,6 +370,7 @@ int decrresourceobj(struct OBJ *a,int minus)
 		//then message appear at first time reach to 0
 		if (a->data.resource.resource_count != 0)
 		{
+		    Play_sfxdata_id(a,SFXDATA_GASDEPLETED,2,0);
 	    	    infobar.addbarmessage(alldattbl.stattxt_tbl->get_TBL_STR(STATTXT_TBL_GEYSERDEPLETEDMES),
 	    			    IDFONT10,GWHITECOLORFONT,INFO_DEFAULTTIME,BF_MALIGN);
 		}

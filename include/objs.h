@@ -200,6 +200,7 @@ int  GetOBJNrInTransport(OBJ *c,OBJ *a);
 void FreeOBJFromTransport(OBJ *c,OBJ *a,int objnr);
 int  GetDestUnitHalfSize(unsigned char SC_Unit,int deltax,int deltay);
 void ChangeSubUnitCoords(OBJ *turret,OBJ *base);
+int TryToEnterNydus(OBJ *a,OBJ *nydus);
 
 
 #define UnitDoAiAction(playernr) (map.pl_owner[playernr] == OWNER_COMPUTER)// || map.pl_owner[playernr] == OWNER_HUMAN)
