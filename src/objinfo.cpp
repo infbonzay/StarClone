@@ -142,17 +142,24 @@ int GetRangeWeaponInPixels(OBJ *atacker,int weapon_id,int playernr)
 //====================================
 int CheckWeaponRange(OBJ *atacker,OBJ *destobj,int weapon_id,int playernr,int minusdelta)
 {
-    int deltaz,maxdist,mindist;
+    int deltaz,maxrange,minrange;
     OBJ *base;
-    if (GetSubUnitType(atacker)==SUBUNITTURRET)
+    if (GetSubUnitType(atacker) == SUBUNITTURRET)
 	base = atacker->subunit;
     else
 	base = atacker;
     deltaz = GetDistanceBetweenUnits256(base,destobj)>>8;
-    mindist = alldattbl.weapons_dat->MinimumRange[weapon_id];
-    maxdist = GetRangeWeaponInPixels(base,weapon_id,playernr);
-    if (deltaz <= maxdist + minusdelta)
-	if (deltaz >= mindist)
+    minrange = alldattbl.weapons_dat->MinimumRange[weapon_id];
+    maxrange = GetTargetAcquisitionRange(base->SC_Unit);
+    if (!maxrange)
+    {
+        maxrange = GetRangeWeaponInPixels(base,weapon_id,atacker->playernr);
+    }
+    else
+        maxrange *= SIZESPRLANSHX;
+//    maxrange = GetRangeWeaponInPixels(base,weapon_id,playernr);
+    if (deltaz <= maxrange + minusdelta)
+	if (deltaz >= minrange)
 	    return(0);//in atack range;
 	else
 	    return(2);//to close
@@ -559,7 +566,6 @@ OBJ *SearchNewBounceOBJ(int x,int y,int playernr,OBJ *obj1,OBJ *obj2,int maxdist
 	a=objects[i];
         if (player_aliance(playernr,a->playernr)==ENEMYOBJ)
         {
-//	    if (!GetUnitProp(a,playernr,VARNOTDETECT))
 	    if (!OBJ_VAR_CHK(a,obj_notdetect,playernr))
     	    if (IsActiveUnit(a))
 	    {

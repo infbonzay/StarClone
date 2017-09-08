@@ -618,7 +618,6 @@ int foundonetypeobj(struct OBJ *a,struct OBJstruct *b)
         c=objects[i];
         c1=loadobj(c->SC_Unit);
         if  ((b==c1) && (c->playernr==a->playernr))
-//            if (!GetUnitProp(c,NUMBGAMER,VARNOTDETECT))
 	    if (!OBJ_VAR_CHK(c,obj_notdetect,NUMBGAMER))
 	    {
 		doselectedOBJbit(c,NUMBGAMER,1);
@@ -708,17 +707,13 @@ void ifselectTRANSPORTS(struct OBJ *a)
 //=====================================
 int IfUnitIsSelectable(OBJ *a)
 {
-//    if (GetUnitProp(a,NUMBGAMER,VARNOTDETECT))
     if (OBJ_VAR_CHK(a,obj_notdetect,NUMBGAMER))
     {
-//	if (GetUnitProp(a,NUMBGAMER,VARINVSEE))
-//	if (OBJ_VAR_CHK(a,obj_invsee,NUMBGAMER))
-	if (a->obj_invsee & (1<<NUMBGAMER))
+	if (OBJ_VAR_CHK(a,obj_invsee,NUMBGAMER))
 	    return(1);
     }
     else
     {
-//	if (GetUnitProp(a,NUMBGAMER,VARSEE))
 	if (OBJ_VAR_CHK(a,obj_see,NUMBGAMER))
 	    return(1);
     }
@@ -1191,7 +1186,6 @@ void invisiblestick(void)
         {
     	    if (makeinvisibles(a))
     	    {
-//		if (GetUnitProp(a,NUMBGAMER,VARINVSEE))
 	        if (OBJ_VAR_CHK(a,obj_invsee,NUMBGAMER))
 		{
 		    //invisible detected
@@ -2426,7 +2420,6 @@ escapeconstrslots:
 		{
 		    case MOVEOBJ_CONTINUEJOB:
 			return(MOVEOBJ_WAITUNTIL);
-			
 		}
 		a->finalOBJ = destobj;
 		SetAtackType(a,destobj);
@@ -2451,7 +2444,7 @@ escapeconstrslots:
 		if (alldattbl.units_dat->Subunit1[a->SC_Unit] < MAX_UNITS_ELEM)
 		{
 		    moveobj(a->subunit,destobj,mode,x,y,showerrorflag,0);
-//		    return(MOVEOBJ_DONE);
+		    return(MOVEOBJ_DONE);
 		}
 		if (!(showerrorflag & ATACKMOVEBIT))
 		    a->prop &= ~VARMOVEINATACKMODE;
@@ -2465,18 +2458,22 @@ escapeconstrslots:
 			AtackAction(a,destobj,0);
 			if (IsSubUnit(a->SC_Unit))
 			{
-			    a->subunit->prop &= ~(VARMOVEACT | VARMOVEOBJACT | VARACCELERATIONBIT | VARPATROLFLAG);
 			    SetModeMove(a->subunit,MODESTOP);
-			    SetOBJIScriptNr(a->subunit,ISCRIPTNR_WALKINGTOIDLE,ISCRIPTNR_EXECUTE);
+			    InitStopAfterMove(a->subunit);
+//			    a->subunit->prop &= ~(VARMOVEACT | VARMOVEOBJACT | VARACCELERATIONBIT | VARPATROLFLAG);
+//			    SetModeMove(a->subunit,MODESTOP);
+//			    SetOBJIScriptNr(a->subunit,ISCRIPTNR_WALKINGTOIDLE,ISCRIPTNR_EXECUTE);
 			}
 			break;
 		    case MOVEOBJ_CONTINUEJOB:
 			a->modemove = MODEATACK;
 			if (IsSubUnit(a->SC_Unit))
 			{
-			    a->subunit->prop &= ~(VARMOVEACT | VARMOVEOBJACT | VARACCELERATIONBIT | VARPATROLFLAG);
 			    SetModeMove(a->subunit,MODESTOP);
-			    SetOBJIScriptNr(a->subunit,ISCRIPTNR_WALKINGTOIDLE,ISCRIPTNR_EXECUTE);
+			    InitStopAfterMove(a->subunit);
+//			    a->subunit->prop &= ~(VARMOVEACT | VARMOVEOBJACT | VARACCELERATIONBIT | VARPATROLFLAG);
+//			    SetModeMove(a->subunit,MODESTOP);
+//			    SetOBJIScriptNr(a->subunit,ISCRIPTNR_WALKINGTOIDLE,ISCRIPTNR_EXECUTE);
 			}
 			break;
 		}
@@ -4091,11 +4088,9 @@ OBJ *FindObjForAtack(OBJ *a,
 	if (checkspecialfunc)
 	    if (checkspecialfunc(a2->SC_Unit))
 		continue;
-//	if (UnitIgnoreInvisibles(a->SC_Unit) || !GetUnitProp(a2,a->playernr,VARNOTDETECT))
 	if (UnitIgnoreInvisibles(a->SC_Unit) || !OBJ_VAR_CHK(a2,obj_notdetect,a->playernr))
 	{
 	    //we see this object
-//	    if (player_aliance(a->playernr,a2->playernr)==ENEMYOBJ && GetUnitProp(a2,a->playernr,VARSEE))
 	    if (player_aliance(a->playernr,a2->playernr)==ENEMYOBJ && OBJ_VAR_CHK(a2,obj_see,a->playernr))
 	    {
 		weapon_id = MAX_WEAPONS_ELEM;
@@ -4305,7 +4300,6 @@ void atackback(OBJ *firstatacker,OBJ *destobj,int directiondamage)
     }
     if (aiactionfailed && (destobj->modemove==MODESTOP || destobj->modemove==MODEHOLDPOS ))
     {
-//	notdetect = GetUnitProp(firstatacker,destobj->playernr,VARNOTDETECT);
 	notdetect = OBJ_VAR_CHK(firstatacker,obj_notdetect,destobj->playernr);
 	if (!aiaction)
 	{
@@ -5111,8 +5105,7 @@ int TryToEnterNydus(OBJ *a,OBJ *nydus)
     int x,y;
     if (nydus->doubleunit && GetUnitRace(a->SC_Unit) == ZERGRACE)
     {
-//	activatesound(a->destobj,MODESOUNDMAGE5,0,STOPCURRENTSOUNDS);
-	Play_sfxdata_id(nydus,SFXDATA_INTONYDUS,3,0);
+	Play_sfxdata_id(nydus,SFXDATA_INTONYDUS,4,0);
 	getcoordofnewunit(nydus->doubleunit,a->SC_Unit,&x,&y);
 	ChangeObjXY(a,x,y);
 	ForceKartChanges(a);

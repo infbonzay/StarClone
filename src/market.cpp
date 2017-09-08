@@ -462,7 +462,6 @@ int LowLevelDamage(OBJ *atacker,OBJ *a,OBJstruct *b,int weapon_id,int typedamage
 		}
 	}
     if (atacker && a)
-//	atacker->select[a->playernr] |= VARSEE;
 	OBJ_VAR_SET(atacker,obj_see,a->playernr);
     atackback(atacker,a,directiondamage);
     if (atacker)
@@ -548,7 +547,6 @@ int LowLevelDamage(OBJ *atacker,OBJ *a,OBJstruct *b,int weapon_id,int typedamage
 	else
     	    a->lifedamage+=totaldamage-(armor<<8);
     }
-//    if (atacker && (!GetUnitProp(atacker,a->playernr,VARNOTDETECT)))
     if (atacker && (!OBJ_VAR_CHK(atacker,obj_notdetect,a->playernr)))
     {
 	opentempmap(a->playernr,atacker->xkart,atacker->ykart,3,3);

@@ -75,7 +75,6 @@ void minimap_showobj(OBJ *a,OBJstruct *b)
     int sx,sy;
     if (a->SC_Unit == SC_MAPREVEALEROBJ)
 	return;
-//    if (!GetUnitProp(a,NUMBGAMER,VARNOTDETECT) || (IsDoodadState(a->SC_Unit) && GetDoodadState(a) == DOODAD_TOP_STATE))
     if (!OBJ_VAR_CHK(a,obj_notdetect,NUMBGAMER) || (IsDoodadState(a->SC_Unit) && GetDoodadState(a) == DOODAD_TOP_STATE))
     {
 	sx=GetUnitBoxWidth(a->SC_Unit);
@@ -798,43 +797,33 @@ void calcfullinvandseeobj(OBJ *a)
     for (i=0,plmask=1;i<PLAYEDPLAYERS;i++,plmask<<=1)
     {
 	if (cloaked)
-//    	    a->select[i] |= VARNOTDETECT;
     	    OBJ_VAR_MASK_SET(a,obj_notdetect,plmask);
     	else
-//    	    a->select[i] &= ~VARNOTDETECT;
     	    OBJ_VAR_MASK_CLR(a,obj_notdetect,plmask);
         if (map.pl_vision[i][a->playernr]			||
     	    player_aliance(i,a->playernr) == ALLIANCEOBJ	||
     	    existparasitebit(a,i))
         {
-//	    a->select[i] |= (VARINVSEE | VARSEE);
-//	    a->select[i] &= ~VARNOTDETECT;
     	    OBJ_VAR_MASK_SET(a,obj_invsee,plmask);
     	    OBJ_VAR_MASK_SET(a,obj_see,plmask);
     	    OBJ_VAR_MASK_CLR(a,obj_notdetect,plmask);
         }
         else
         {
-//    	    a->select[i] &= ~(VARINVSEE|VARSEE);
     	    OBJ_VAR_MASK_CLR(a,obj_invsee,plmask);
     	    OBJ_VAR_MASK_CLR(a,obj_see,plmask);
 	    if (mapSEE(a->xkart,a->ykart,i)>1)
-//        	a->select[i] |= VARSEE;
     		OBJ_VAR_MASK_SET(a,obj_see,plmask);
 	    visbits = GetVisionBitsPlayer(i);
     	    if (map.mapbits.seedetector[a->ykart*MAXXMAP+a->xkart] & visbits)
     	    {//esli vidim detectorom
-//                a->select[i] |= VARINVSEE;
-//    		a->select[i] &= ~VARNOTDETECT;
     		OBJ_VAR_MASK_SET(a,obj_invsee,plmask);
     		OBJ_VAR_MASK_CLR(a,obj_notdetect,plmask);
     	    }
 	}
-//        if (a->select[i] & VARNOTDETECT)
     	if (OBJ_VAR_MASK_CHK(a,obj_notdetect,plmask))
         {
 	    if (decloaked)
-//    		a->select[i] &= ~VARNOTDETECT;
     		OBJ_VAR_MASK_CLR(a,obj_notdetect,plmask);
     	}
     }//for
