@@ -4912,7 +4912,10 @@ int moveaction(MAIN_IMG *img,int deltamove)
 	return(0);
     }
     a = img->creator.objcreator.obj;
-    return(PathFinding_MovePortionType1(a,img,GetSpeed(a,deltamove)));
+    status = PathFinding_MovePortionType1(a,img,GetSpeed(a,deltamove));
+    if (a->subunit)
+	ChangeSubUnitCoords(a->subunit,a);
+    return(status);
 }
 //=================================
 void ForceKartChanges(OBJ *a)

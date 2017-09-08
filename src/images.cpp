@@ -396,7 +396,7 @@ void OVERLAY_IMG::DrawImageXY(int x,int y)
 {
     int warpstatus,side,side2,mainside,subunit=0;
     unsigned char oneside,mirror,drawedcolor,fogvalue,loside;
-    signed char newydelta;
+    signed char newydelta,mainimageturn;
     char format;
     signed char *adrxyoffs,xlo,ylo;
     OBJ *a;
@@ -484,12 +484,13 @@ void OVERLAY_IMG::DrawImageXY(int x,int y)
 	    {
 		side2 = mainside / 8;
 	    }
-	
+	    mainimageturn = 1;
 	}
 	else
 	{
 	    mirror = 0;
 	    side2=0;
+	    mainimageturn = 0;
 	}
 	if (alldattbl.images_dat->Graphic_Turns[imageid])
 	{
@@ -515,7 +516,7 @@ void OVERLAY_IMG::DrawImageXY(int x,int y)
 	{
 	    //we have lo offsets
 	    adrxyoffs = GetLoXY(parentimg->lo,framenr + side2,0);
-	    if (mainside & 0x80)
+	    if (mainside & 0x80 && mainimageturn)
 		xlo += -adrxyoffs[0];
 	    else
 		xlo += adrxyoffs[0];

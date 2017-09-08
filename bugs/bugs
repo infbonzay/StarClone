@@ -354,11 +354,11 @@
 *118 can cancel second nydus canal
 *119 black point on minimap on remnaints builds
 *120 at morth hatchery need to wait first larva some time
-*121    not move throught nydus canal
+*121 not move throught nydus canal
 *122 if stop tank stop and turret too
+*123 bug turret move wtih tank some pixels .....    
+*124 base tank no need to rotation
     if atack tank to far distance obj, tank move to destination and stops.
-    bug turret move wtih tank some pixels .....    
-    base tank no need to rotation
     rotation turret to base if not have goal
     
     ?dust moves with unit
