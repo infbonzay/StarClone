@@ -907,8 +907,9 @@ int AtackCoolDownEnds(OBJ *a,OBJ *destobj,int continueatack,int showerrorflag)
 		//if sub unit - tell to base to move inthat direction
 		if (IsSubUnit(a->SC_Unit))
 		{
-		    if (a->subunit->modemove != MODESTOP)
-			return(MOVEOBJ_NOACT);
+//		    if (a->subunit->modemove != MODESTOP)
+//		    if (a->subunit->modemove == MODEATACK)
+//			return(MOVEOBJ_NOACT);
 		    a->subunit->modemove = MODEATACK;
 		    a->atackcooldowntime = 0;
 		    initmoveaction(a->subunit,destobj,MODEATACK,a->usedweapon_id,0,GetOBJx(destobj),GetOBJy(destobj));

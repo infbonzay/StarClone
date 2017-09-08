@@ -1564,6 +1564,8 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
 	    return(MOVEOBJ_DONE);
 	}
     }
+    if (a->prop & VARNOTWORK)
+        return(MOVEOBJ_NOACT);
     //release any resource field
     if (mode != MODEDIE)
 	ReleaseResource(a);
@@ -2412,8 +2414,20 @@ escapeconstrslots:
 	    }
 	    break;
 	case MODEATACKREADY:
+	    if (alldattbl.units_dat->Subunit1[a->SC_Unit] < MAX_UNITS_ELEM)
+	    {
+		moveobj(a->subunit,destobj,mode,x,y,showerrorflag,0);
+		return(MOVEOBJ_DONE);
+	    }
 	    if (destobj)
 	    {
+		ret = AtackCoolDownEnds(a,destobj,0,showerrorflag);
+		switch(ret)
+		{
+		    case MOVEOBJ_CONTINUEJOB:
+			return(MOVEOBJ_WAITUNTIL);
+			
+		}
 		a->finalOBJ = destobj;
 		SetAtackType(a,destobj);
 		switch(a->SC_Unit)
@@ -2432,31 +2446,38 @@ escapeconstrslots:
 		ApplyNextModeMove(a);
 	    break;
 	case MODEATACK:
-//	    if (!MageDepend(a,a->playernr,mode))
-//	    {
-//	        return(MOVEOBJ_NOACT);
-//	    }
-	    if (alldattbl.units_dat->Subunit1[a->SC_Unit] < MAX_UNITS_ELEM)
-	    {
-		moveobj(a->subunit,destobj,mode,x,y,showerrorflag,0);
-		return(MOVEOBJ_DONE);
-	    }
 	    if (destobj)
 	    {
+		if (alldattbl.units_dat->Subunit1[a->SC_Unit] < MAX_UNITS_ELEM)
+		{
+		    moveobj(a->subunit,destobj,mode,x,y,showerrorflag,0);
+//		    return(MOVEOBJ_DONE);
+		}
 		if (!(showerrorflag & ATACKMOVEBIT))
 		    a->prop &= ~VARMOVEINATACKMODE;
 		ret = AtackCoolDownEnds(a,destobj,0,showerrorflag);
 		switch(ret)
 		{
 		    case MOVEOBJ_DONE:
-//			initmoveaction(a,destobj,MODEATACK,0,0,x,y);
 			a->modemove = MODEATACK;
 			a->finalOBJ = destobj;
 			SetAtackType(a,destobj);
 			AtackAction(a,destobj,0);
+			if (IsSubUnit(a->SC_Unit))
+			{
+			    a->subunit->prop &= ~(VARMOVEACT | VARMOVEOBJACT | VARACCELERATIONBIT | VARPATROLFLAG);
+			    SetModeMove(a->subunit,MODESTOP);
+			    SetOBJIScriptNr(a->subunit,ISCRIPTNR_WALKINGTOIDLE,ISCRIPTNR_EXECUTE);
+			}
 			break;
 		    case MOVEOBJ_CONTINUEJOB:
 			a->modemove = MODEATACK;
+			if (IsSubUnit(a->SC_Unit))
+			{
+			    a->subunit->prop &= ~(VARMOVEACT | VARMOVEOBJACT | VARACCELERATIONBIT | VARPATROLFLAG);
+			    SetModeMove(a->subunit,MODESTOP);
+			    SetOBJIScriptNr(a->subunit,ISCRIPTNR_WALKINGTOIDLE,ISCRIPTNR_EXECUTE);
+			}
 			break;
 		}
 	    }
@@ -4749,9 +4770,11 @@ int PathFinding_MovePortionType1(OBJ *a,MAIN_IMG *img,int deltamove)
 	widthsumm = GetWidthSummOfUnits(a->SC_Unit,a->finalOBJ->SC_Unit,deltax,deltay);
 	if (deltaz - widthsumm - a->modemoveminusdistance <= deltamove)
 	{
-	    if (a->finalOBJ->SC_Unit == SC_NYDUSCANALOBJ)
+	    if (a->finalOBJ->SC_Unit == SC_NYDUSCANALOBJ && a->finalOBJ->playernr == a->playernr)
+	    {
 		if (TryToEnterNydus(a,a->finalOBJ))
 		    return(2);
+	    }
 	    if (ApplyNextModeMove(a))
 	        return(2);
 //	    return(0);
