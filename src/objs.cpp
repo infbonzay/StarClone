@@ -4099,13 +4099,10 @@ OBJ *FindObjForAtack(OBJ *a,
 		    if (IsActiveUnitForAtack(a2))
 		    {
 			//this is enemy, need to check detect vision radius
-			minrange = 0;
+		    	minrange = alldattbl.weapons_dat->MinimumRange[weapon_id];
 		        maxrange = GetTargetAcquisitionRange(a->SC_Unit);
 			if (!maxrange)
-			{
-		    	    minrange = alldattbl.weapons_dat->MinimumRange[weapon_id];
 			    maxrange = GetRangeWeaponInPixels(a,weapon_id,a->playernr);
-			}
 			else
 			    maxrange *= SIZESPRLANSHX;
 			maxrange += addsiegerange;
@@ -4758,7 +4755,7 @@ int PathFinding_MovePortionType1(OBJ *a,MAIN_IMG *img,int deltamove)
 	deltaz = GetDistanceMinusSizes(a->SC_Unit,a->finalOBJ->SC_Unit,deltax,deltay);
 	if (deltaz < a->modemoveminusdistance)
 	{
-//	    printf("deltaz=%d modemoveminusdistance=%d deltamove=%d mindist=%d\n",deltaz/256,a->modemoveminusdistance/256,deltamove/256,(deltaz - a->modemoveminusdistance)/256);
+	    printf("deltaz=%d modemoveminusdistance=%d deltamove=%d mindist=%d\n",deltaz/256,a->modemoveminusdistance/256,deltamove/256,(deltaz - a->modemoveminusdistance)/256);
 	    if (a->finalOBJ->SC_Unit == SC_NYDUSCANALOBJ && a->finalOBJ->playernr == a->playernr)
 	    {
 		if (TryToEnterNydus(a,a->finalOBJ))

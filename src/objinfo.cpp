@@ -155,14 +155,8 @@ int CheckWeaponRange(OBJ *atacker,OBJ *destobj,int weapon_id,int playernr,int mi
 
     deltaz = GetDistanceBetweenUnits256(base,destobj)>>8;
     minrange = alldattbl.weapons_dat->MinimumRange[weapon_id];
-    maxrange = GetTargetAcquisitionRange(base->SC_Unit);
-    if (!maxrange)
-    {
-        maxrange = GetRangeWeaponInPixels(base,weapon_id,atacker->playernr);
-    }
-    else
-        maxrange *= SIZESPRLANSHX;
-//    printf("deltaz=%d maxrange=%d\n",deltaz,maxrange);
+    maxrange = GetRangeWeaponInPixels(base,weapon_id,atacker->playernr);
+    printf("deltaz=%d maxrange=%d\n",deltaz,maxrange);
     if (deltaz <= maxrange + minusdelta)
 	if (deltaz >= minrange)
 	    return(0);//in atack range;
