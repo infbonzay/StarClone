@@ -358,16 +358,14 @@
 *122 if stop tank stop and turret too
 *123 bug turret move wtih tank some pixels .....    
 *124 base tank no need to rotation
-    if atack tank to far distance obj, tank move to destination and stops.
-    rotation turret to base if not have goal
+*125 if atack tank to far distance obj, tank move to destination and stops.
+*126 goliath img failure (add top of science vessel)
+    need rotation turret to base if not have goal
     
     ?dust moves with unit
     move to unit becomed invisible continue move/atack/etc..
-    goliath do not atack air units then atack ground unit?
-    goliath img failure (add top of science vessel)
     battle cruiser need to disrupt casting if do moveobj
     save/load mem under selectation box
-    goliath turret move than move to destobj
     consume on non zerg units
     then ensnared unit, at decceleration speed big than maxslowedspeed
     stimpack both for marine and firebat not showed

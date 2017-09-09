@@ -4755,11 +4755,10 @@ int PathFinding_MovePortionType1(OBJ *a,MAIN_IMG *img,int deltamove)
 
 	deltax = destx - img->xpos;
 	deltay = desty - img->ypos;
-	deltaz = (int) hypot(deltax,deltay);
-	
-	widthsumm = GetWidthSummOfUnits(a->SC_Unit,a->finalOBJ->SC_Unit,deltax,deltay);
-	if (deltaz - widthsumm - a->modemoveminusdistance <= deltamove)
+	deltaz = GetDistanceMinusSizes(a->SC_Unit,a->finalOBJ->SC_Unit,deltax,deltay);
+	if (deltaz < a->modemoveminusdistance)
 	{
+//	    printf("deltaz=%d modemoveminusdistance=%d deltamove=%d mindist=%d\n",deltaz/256,a->modemoveminusdistance/256,deltamove/256,(deltaz - a->modemoveminusdistance)/256);
 	    if (a->finalOBJ->SC_Unit == SC_NYDUSCANALOBJ && a->finalOBJ->playernr == a->playernr)
 	    {
 		if (TryToEnterNydus(a,a->finalOBJ))
@@ -4781,7 +4780,7 @@ int PathFinding_MovePortionType1(OBJ *a,MAIN_IMG *img,int deltamove)
 	deltay = a->finaly - img->ypos;
 	deltaz = (int)hypot(deltax,deltay);
 
-	if (deltaz - a->modemoveminusdistance <= deltamove)
+	if (deltaz - a->modemoveminusdistance < deltamove)
 	{
 	    //we need to stop action
 	    if (a->prop & VARPATROLFLAG)
@@ -4849,10 +4848,8 @@ int PathFinding_MovePortionType2(OBJ *a,MAIN_IMG *img,unsigned char flingy_id,in
 	}
 	deltax = destx - img->xpos;
 	deltay = desty - img->ypos;
-	deltaz = (int) hypot(deltax,deltay);
-	
-	widthsumm = GetWidthSummOfUnits(a->SC_Unit,a->finalOBJ->SC_Unit,deltax,deltay);
-	if (deltaz - widthsumm - a->modemoveminusdistance <= a->haltdistance)
+	deltaz = GetDistanceMinusSizes(a->SC_Unit,a->finalOBJ->SC_Unit,deltax,deltay);
+	if (deltaz - a->modemoveminusdistance <= a->haltdistance)
 	{
 	    InitStopAfterMove(a);
 	    a->prop |= VARWAITDISTANCE;
@@ -5115,12 +5112,12 @@ int TryToEnterNydus(OBJ *a,OBJ *nydus)
 int IfHaveDistanceForMove(OBJ *a,MAIN_IMG *img,OBJ *destobj,int mindistance)
 {
     unsigned char flingy_id;
-    int deltax,deltay,deltaz,widthsumm;
+    int deltax,deltay,deltaz;
     deltax = GetOBJx256(destobj) - img->xpos;
     deltay = GetOBJy256(destobj) - img->ypos;
-    deltaz = (int) hypot(deltax,deltay);
-    widthsumm = GetWidthSummOfUnits(a->SC_Unit,destobj->SC_Unit,deltax,deltay);
-    return ( (deltaz - widthsumm ) > mindistance);
+
+    deltaz = GetDistanceMinusSizes(a->SC_Unit,destobj->SC_Unit,deltax,deltay);
+    return ( deltaz > mindistance);
 }
 //==================================
 void SetModeMove(OBJ *a,int mode)

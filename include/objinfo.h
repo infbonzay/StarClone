@@ -11,6 +11,7 @@ int  GetMaxChildUnits(OBJ *a);
 void AdditionalProperties(OBJ *a);
 int  GetSpeed(OBJ *a,int speed);
 int  GetDistances(int x,int y,int x2,int y2);
+int  GetDistanceMinusSizes(int unit1,int unit2,int deltax,int deltay);
 int  GetDistanceBetweenUnits256(OBJ *a,OBJ *a2);
 int  GetDistanceTo256(OBJ *a,int x,int y);
 int  GetDistanceTo(OBJ *a,int x256,int y256);

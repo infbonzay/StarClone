@@ -89,15 +89,18 @@ int GetDistances(int x,int y,int x2,int y2)
     return(hypot(x2-x,y2-y));
 }
 //====================================
-int GetDistanceBetweenUnits256(OBJ *a,OBJ *a2)
+int GetDistanceMinusSizes(int unit1,int unit2,int deltax,int deltay)
 {
-    int deltaz,deltax,deltay;
-    deltax = GetOBJx256(a2) - GetOBJx256(a);
-    deltay = GetOBJy256(a2) - GetOBJy256(a);
-    deltaz = ((int)hypot(deltax,deltay)) - GetWidthSummOfUnits(a->SC_Unit,a2->SC_Unit,deltax,deltay);
+    int deltaz;
+    deltaz = ((int)hypot(deltax,deltay)) - GetWidthSummOfUnits(unit1,unit2,deltax,deltay);
     if (deltaz < 0)
 	deltaz = 0;
     return(deltaz);
+}
+//====================================
+int GetDistanceBetweenUnits256(OBJ *a,OBJ *a2)
+{
+    return(GetDistanceMinusSizes(a->SC_Unit,a2->SC_Unit,GetOBJx256(a2) - GetOBJx256(a),GetOBJy256(a2) - GetOBJy256(a)));
 }
 //====================================
 int GetDistanceTo256(OBJ *a,int x256,int y256)
@@ -143,11 +146,13 @@ int GetRangeWeaponInPixels(OBJ *atacker,int weapon_id,int playernr)
 int CheckWeaponRange(OBJ *atacker,OBJ *destobj,int weapon_id,int playernr,int minusdelta)
 {
     int deltaz,maxrange,minrange;
+//    OBJ *base = atacker;
     OBJ *base;
     if (GetSubUnitType(atacker) == SUBUNITTURRET)
 	base = atacker->subunit;
     else
 	base = atacker;
+
     deltaz = GetDistanceBetweenUnits256(base,destobj)>>8;
     minrange = alldattbl.weapons_dat->MinimumRange[weapon_id];
     maxrange = GetTargetAcquisitionRange(base->SC_Unit);
@@ -157,7 +162,7 @@ int CheckWeaponRange(OBJ *atacker,OBJ *destobj,int weapon_id,int playernr,int mi
     }
     else
         maxrange *= SIZESPRLANSHX;
-//    maxrange = GetRangeWeaponInPixels(base,weapon_id,playernr);
+//    printf("deltaz=%d maxrange=%d\n",deltaz,maxrange);
     if (deltaz <= maxrange + minusdelta)
 	if (deltaz >= minrange)
 	    return(0);//in atack range;
