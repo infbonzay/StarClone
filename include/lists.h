@@ -96,6 +96,7 @@ int  IsGroupMenFlag(int SC_Unit);
 int  IsGroupFactoryFlag(int SC_Unit);
 int  IsGroupNeutralFlag(int SC_Unit);
 int  IsSubUnit(int SC_Unit);
+int  IfHaveSubUnit(int SC_Unit);
 
 int  GetUnitSublabel(int SC_Unit);
 

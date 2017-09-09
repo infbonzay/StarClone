@@ -2460,9 +2460,6 @@ escapeconstrslots:
 			{
 			    SetModeMove(a->subunit,MODESTOP);
 			    InitStopAfterMove(a->subunit);
-//			    a->subunit->prop &= ~(VARMOVEACT | VARMOVEOBJACT | VARACCELERATIONBIT | VARPATROLFLAG);
-//			    SetModeMove(a->subunit,MODESTOP);
-//			    SetOBJIScriptNr(a->subunit,ISCRIPTNR_WALKINGTOIDLE,ISCRIPTNR_EXECUTE);
 			}
 			break;
 		    case MOVEOBJ_CONTINUEJOB:
@@ -2471,9 +2468,6 @@ escapeconstrslots:
 			{
 			    SetModeMove(a->subunit,MODESTOP);
 			    InitStopAfterMove(a->subunit);
-//			    a->subunit->prop &= ~(VARMOVEACT | VARMOVEOBJACT | VARACCELERATIONBIT | VARPATROLFLAG);
-//			    SetModeMove(a->subunit,MODESTOP);
-//			    SetOBJIScriptNr(a->subunit,ISCRIPTNR_WALKINGTOIDLE,ISCRIPTNR_EXECUTE);
 			}
 			break;
 		}
@@ -2483,13 +2477,14 @@ escapeconstrslots:
 		//atack to ground, check if object can move
 		if (accesstomove(a,loadobj(a->SC_Unit),MODEMOVE,a->playernr))
 		{
-//		    DEBUGMESSCR("atack to ground is under develop\n");
 		    a->prop |= VARMOVEINATACKMODE;
 		    a->searchforatack_tick = 0;//fast search
 		    a->modemove = MODEATACK;
 		    a->finalxatack = x;
 		    a->finalyatack = y;
 		    initmoveaction(a,NULL,MODEATACK,0,0,x,y);
+		    if (a->subunit)
+			a->subunit->prop |= VARMOVEINATACKMODE;
 		}
 		else
 		    return(MOVEOBJ_NOACT);

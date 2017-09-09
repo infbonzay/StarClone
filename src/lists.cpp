@@ -618,6 +618,11 @@ int  IsSubUnit(int SC_Unit)
     return((alldattbl.units_dat->SpecialAbilityFlags[SC_Unit]&SPECIAL_SUBUNIT)!=0);
 }
 //=================================
+int IfHaveSubUnit(int SC_Unit)
+{
+    return(alldattbl.units_dat->Subunit1[SC_Unit] < MAX_UNITS_ELEM);
+}
+//=================================
 int GetUnitSoundID(unsigned char SC_Unit,unsigned char sndtype)
 {
     switch(sndtype)

@@ -826,7 +826,10 @@ int AdditionalUnitProceed(OBJ *a,MAIN_IMG *img)
 		{
 		    if (a->prop & VARMOVEINATACKMODE)
 		    {
-    			moveobj(a,NULL,MODEATACK,a->finalxatack,a->finalyatack,NOSHOWERROR|ATACKMOVEBIT,0);
+    			if (IsSubUnit(a->SC_Unit))
+    			    moveobj(a->subunit,NULL,MODEATACK,a->subunit->finalxatack,a->subunit->finalyatack,NOSHOWERROR|ATACKMOVEBIT,0);
+    			else    
+    			    moveobj(a,NULL,MODEATACK,a->finalxatack,a->finalyatack,NOSHOWERROR|ATACKMOVEBIT,0);
 		    }
 		    else
 		    {
