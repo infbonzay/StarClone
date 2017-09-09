@@ -208,21 +208,8 @@ int main(int c,char **parm,char **env)
     }
     loadlang();
     fflush(stdout);
-//    printf("loading overlay GRP's...\n");
-//    LoadOverlaysGRP();
-//    int er=readmageproperties();
-//    if (er<0)
-//    {
-//      printf("mage:Error in file nr:%d\n",er);
-//      exit(-1);
-//    }
-//    printf("%d type orders loaded\n",er);
     printf("parce units table ...\n");
     printf("      %d units parced\n",createmantable());
-//    printf("loading all objects...\n");
-//    loadallobj();
-//    printf("loading fog,white,... tables...\n");
-
     err = loadweapons();
     if (err<0)
     {

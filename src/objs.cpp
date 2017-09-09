@@ -2462,13 +2462,14 @@ escapeconstrslots:
 			    InitStopAfterMove(a->subunit);
 			}
 			break;
-		    case MOVEOBJ_CONTINUEJOB:
-			a->modemove = MODEATACK;
+		    case MOVEOBJ_STOPANDCONTINUEJOB:
 			if (IsSubUnit(a->SC_Unit))
 			{
 			    SetModeMove(a->subunit,MODESTOP);
 			    InitStopAfterMove(a->subunit);
 			}
+		    case MOVEOBJ_CONTINUEJOB:
+			a->modemove = MODEATACK;
 			break;
 		}
 	    }

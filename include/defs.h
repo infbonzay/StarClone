@@ -228,10 +228,11 @@
 #define VARPATROLFLAG		0x80000000
 
 //=============================
-#define MOVEOBJ_NOACT		0
-#define MOVEOBJ_DONE		1
-#define MOVEOBJ_CONTINUEJOB	2
-#define MOVEOBJ_WAITUNTIL	3
+#define MOVEOBJ_NOACT			0
+#define MOVEOBJ_DONE			1
+#define MOVEOBJ_CONTINUEJOB		2
+#define MOVEOBJ_STOPANDCONTINUEJOB	3
+#define MOVEOBJ_WAITUNTIL		4
 //=============================
 #define MINNOMOVE             	1
 #define MINDISTFORMOVE        	16

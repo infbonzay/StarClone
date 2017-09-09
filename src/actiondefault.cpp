@@ -963,7 +963,7 @@ int AtackCoolDownEnds(OBJ *a,OBJ *destobj,int continueatack,int showerrorflag)
 		{
 		    return(MOVEOBJ_DONE);
 		}
-		return(MOVEOBJ_CONTINUEJOB);
+		return(MOVEOBJ_STOPANDCONTINUEJOB);
 	    default:
 		DEBUGMESSCR("error resval from ifcreateweapon\n");
 		return(MOVEOBJ_NOACT);
