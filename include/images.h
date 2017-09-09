@@ -74,8 +74,8 @@ public:
     LOFILE		*lo;
 
     unsigned short 	imageid;	//ref to image.dat
-    unsigned short 	iscriptid;	
-    unsigned char	iscriptnr;	
+    unsigned short 	iscriptid;	//scriptnr fot image (last is 411)
+    unsigned char	iscriptnr;	//type of script (init,death,walking,specialstate1,....)
 
     char		grpmethod;
     char		remaptable;

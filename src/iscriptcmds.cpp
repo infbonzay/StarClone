@@ -1,34 +1,34 @@
 //============================================
 //============================================
-int IScriptCmd_playfram(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
+int IScriptCmd_playfram(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)	//0
 {
     img->framenr = *((unsigned short *)&buf[0]);
     img->offsetcmdinbuf += cmdsize;
     return(0);
 }
 //============================================
-int IScriptCmd_playframtile(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
+int IScriptCmd_playframtile(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)	//1
 {
     img->framenr = *((unsigned short *)&buf[0]) + map.terrain;
     img->offsetcmdinbuf += cmdsize;
     return(0);
 }
 //============================================
-int IScriptCmd_sethorpos(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
+int IScriptCmd_sethorpos(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)	//2
 {
     img->xdelta = (signed char )buf[0];
     img->offsetcmdinbuf += cmdsize;
     return(0);
 }
 //============================================
-int IScriptCmd_setvertpos(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
+int IScriptCmd_setvertpos(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)	//3
 {
     img->ydelta = (signed char )buf[0];
     img->offsetcmdinbuf += cmdsize;
     return(0);
 }
 //============================================
-int IScriptCmd_setpos(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
+int IScriptCmd_setpos(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)		//4
 {
     img->xdelta = (signed char )buf[0];
     img->ydelta = (signed char )buf[1];
@@ -36,14 +36,14 @@ int IScriptCmd_setpos(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
     return(0);
 }
 //============================================
-int IScriptCmd_wait(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
+int IScriptCmd_wait(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)		//5
 {
     img->waitticks = buf[0];
     img->offsetcmdinbuf += cmdsize;
     return(1);
 }
 //============================================
-int IScriptCmd_waitrand(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
+int IScriptCmd_waitrand(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)	//6
 {
     if (!myrand(2))
         img->waitticks = buf[0];
@@ -53,7 +53,7 @@ int IScriptCmd_waitrand(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
     return(1);
 }
 //============================================
-int IScriptCmd_goto(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
+int IScriptCmd_goto(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)		//7
 {
     img->offsetcmdinbuf = *((unsigned short *)&buf[0]);
     return(0);
@@ -61,7 +61,7 @@ int IScriptCmd_goto(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
 //============================================
 unsigned char BUNKERFIRELO[16]={0,1,1,2,2,3,3,4,4,4,5,5,6,6,7,7};
 //============================================
-int IScriptCmd_imgol(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
+int IScriptCmd_imgol(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)		//8
 {
     OBJ *a,*tr,*subunit;
     OVERLAY_IMG *newimg;
@@ -101,7 +101,7 @@ int IScriptCmd_imgol(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
     return(0);
 }
 //============================================
-int IScriptCmd_imgul(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
+int IScriptCmd_imgul(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)		//9
 {
     OVERLAY_IMG *newimg;
     unsigned short image_id,flags;
@@ -115,7 +115,7 @@ int IScriptCmd_imgul(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
     return(0);
 }
 //============================================
-int IScriptCmd_imgolorig(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
+int IScriptCmd_imgolorig(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)	//0a
 {
     LOFILE *lo;
     signed char *adrxyoffs,xlo,ylo;
@@ -144,7 +144,7 @@ int IScriptCmd_imgolorig(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
     return(0);
 }
 //============================================
-int IScriptCmd_imgoluselo(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
+int IScriptCmd_imgoluselo(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)	//0d
 {
     OBJ *a,*subunit;
     unsigned short image_id,imagelo_id;
@@ -171,7 +171,7 @@ int IScriptCmd_imgoluselo(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
     return(0);
 }
 //============================================
-int IScriptCmd_sprol(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
+int IScriptCmd_sprol(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)		//0x0f
 {
     MAIN_IMG *newimg;
 
@@ -195,7 +195,7 @@ int IScriptCmd_sprol(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
     return(0);
 }
 //============================================
-int IScriptCmd_lowsprul(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
+int IScriptCmd_lowsprul(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)	//0x11
 {
     MAIN_IMG *newimg;
     unsigned short image_id,sprite_id;
@@ -214,7 +214,7 @@ int IScriptCmd_lowsprul(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
     return(0);
 }
 //============================================
-int IScriptCmd_spruluselo(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
+int IScriptCmd_spruluselo(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)	//14
 {
     unsigned short image_id,sprite_id;
     unsigned short flags = SC_IMAGE_FLAG_IMGOBJMAIN;
@@ -233,7 +233,7 @@ int IScriptCmd_spruluselo(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
     return(0);
 }
 //============================================
-int IScriptCmd_sproluselo(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
+int IScriptCmd_sproluselo(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)	//15
 {
     LOFILE *lo;
     unsigned short image_id,sprite_id;
@@ -268,7 +268,7 @@ int IScriptCmd_sproluselo(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
     return(0);
 }
 //============================================
-int IScriptCmd_end(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
+int IScriptCmd_end(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)		//16
 {
     if (img->parentimg == img)
     {
@@ -646,11 +646,16 @@ int IScriptCmd_useweapon(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
 //============================================
 int IScriptCmd_move(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
 {
+    unsigned char previscriptnr;
     int status;
+//    printf("deltamove=%d\n",buf[0]);
+    previscriptnr = img->iscriptnr;
     status = moveaction(img->parentimg,buf[0]<<8);
     switch(status)
     {
-        case 2://changes iscripts
+        case 2://if changes iscripts
+    	    if (previscriptnr == img->iscriptnr)
+		img->offsetcmdinbuf += cmdsize;
     	    return(1);
 	case 0:
 	    //if no moveaction(path finding tell us about no path or rotation needed) we do not go to the next script command
