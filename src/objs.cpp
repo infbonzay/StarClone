@@ -4846,10 +4846,14 @@ int PathFinding_MovePortionType2(OBJ *a,MAIN_IMG *img,unsigned char flingy_id,in
 	deltax = destx - img->xpos;
 	deltay = desty - img->ypos;
 	deltaz = GetDistanceMinusSizes(a->SC_Unit,a->finalOBJ->SC_Unit,deltax,deltay);
-	if (deltaz - a->modemoveminusdistance <= a->haltdistance)
+	if (deltaz - a->modemoveminusdistance < 0)
+//	if (deltaz - a->distancewalked - a->modemoveminusdistance < a->haltdistance)
 	{
+	    printf("deltaz=%d modemoveminusdistance=%d haltdist=%d deltaz-modemovedist=%d\n",
+		deltaz/256,a->modemoveminusdistance/256,a->haltdistance/256,(deltaz-a->modemoveminusdistance)/256);
 	    InitStopAfterMove(a);
 	    a->prop |= VARWAITDISTANCE;
+	    ApplyNextModeMove(a);
 	}
     }
     else
@@ -4860,9 +4864,12 @@ int PathFinding_MovePortionType2(OBJ *a,MAIN_IMG *img,unsigned char flingy_id,in
 	deltaz = (int)hypot(deltax,deltay);
 	if (a->prop & VARACCELERATIONBIT)
 	{
+		printf("deltaz=%d modemoveminusdistance=%d haltdist=%d deltaz-modemovedist=%d\n",
+		    deltaz/256,a->modemoveminusdistance/256,a->haltdistance/256,(deltaz-a->modemoveminusdistance)/256);
 	    if (deltaz - a->modemoveminusdistance <= a->haltdistance)
 	    {
 		InitStopAfterMove(a);
+		ApplyNextModeMove(a);
 	    }
 	}
 	else
@@ -5075,10 +5082,10 @@ void AllFlingyControlOBJMoving(void)
 				    ApplyNextModeMove(a);
 				}
 			    }
-			    else
-			    {
-				ApplyNextModeMove(a);
-			    }
+//			    else
+//			    {
+//				ApplyNextModeMove(a);
+//			    }
 			}
 			continue;
 		}
