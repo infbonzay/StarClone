@@ -1541,6 +1541,14 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
     int (*comparefunc)(int *,int );					//for doodad
     
     //prevent to move if is uninterrupted mode
+    if (x < 16)
+	x = 16;
+    if (y < 16)
+	y = 16;
+    if (x >= MAXXMAP*32-16)
+	x = MAXXMAP*32-16;
+    if (y >= MAXYMAP*32-16)
+	y = MAXYMAP*32-16;
     if (a->modemove == MODEDIE)
     {
 	DEBUGMESSCR("moveobj <%s> than died\n",mageprop[mode].namemage);
