@@ -4816,6 +4816,8 @@ int PathFinding_MovePortionType2(OBJ *a,MAIN_IMG *img,unsigned char flingy_id,in
 	    a->prop |= VARWAITDISTANCE;
 	    ApplyNextModeMove(a);
 	}
+	if (deltaz <= 2*256)		//prevent div 0
+	    return(1);
     }
     else
     {
@@ -4830,7 +4832,8 @@ int PathFinding_MovePortionType2(OBJ *a,MAIN_IMG *img,unsigned char flingy_id,in
 	    if (deltaz - a->modemoveminusdistance <= a->haltdistance)
 	    {
 		InitStopAfterMove(a);
-		ApplyNextModeMove(a);
+		if (a->finalOBJ)
+		    ApplyNextModeMove(a);	//if have goal do not wait completly stop
 	    }
 	}
 	else
@@ -4839,9 +4842,9 @@ int PathFinding_MovePortionType2(OBJ *a,MAIN_IMG *img,unsigned char flingy_id,in
 	    img->MoveInUnitDirection(a,img->side,a->currentspeed);//NOTE: used a->currentspeed (no used 'deltamove' for correct inertion)
 	    return(1);
 	}
+	if (deltaz < 256)		//prevent div 0
+	    return(1);
     }
-    if (deltaz <= 2*256)		//prevent div 0
-    	return(1);
     deltax = (long long)deltamove*deltax/deltaz;
     deltay = (long long)deltamove*deltay/deltaz;
     img->SetDeltaCoords(a,deltax,deltay);
@@ -4988,10 +4991,10 @@ void AllFlingyControlOBJMoving(void)
 	    }
 	    else
 	    {
+		if (a->prop & VARDONOTAPPLYNEXTMOVE)
+		    continue;
 		if (!a->currentspeed)
 		{
-		    if (a->prop & VARDONOTAPPLYNEXTMOVE)
-			continue;
 		    if (a->movelist && a->movelist->GetUsedElem())
 			ApplyNextModeMove(a);
 		    if (a->finalOBJ && IsPickupUnit(a->finalOBJ->SC_Unit) && IsWorkerUnit(a->SC_Unit) &&  !a->carryobj )

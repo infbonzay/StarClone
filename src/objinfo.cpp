@@ -246,13 +246,13 @@ int GetNrSomeObjects(OBJ *a,int *newunit,char **iconmes)
     {
 	case SC_VULTUREOBJ:
 	case SC_HERO_JIMRAYNORVOBJ:
+	    if (a->mines == 0)
+	        return(-1);
 	    *newunit=SC_VULTUREMINEOBJ;
 	    weapon_id=alldattbl.units_dat->GroundWeapon[SC_VULTUREMINEOBJ];
 	    tech_id=alldattbl.weapons_dat->Technology_id[weapon_id];
-	    if (GetTechTree(&map,a->playernr,tech_id))
+	    if (GetTechTree(&map,a->playernr,tech_id) || IsHeroUnit(a->SC_Unit))
 	    {
-		if (a->mines == 0)
-		    return(-1);
 		*iconmes=alldattbl.stattxt_tbl->get_TBL_STR(STATTXT_TBL_MINESTEXT);
 		return(a->mines);
 	    }

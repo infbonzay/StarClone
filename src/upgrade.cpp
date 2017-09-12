@@ -56,6 +56,8 @@ int  GetTempTechTree(mapinfo *loadedmap,int playernr,int tech_id)
 //get current tech level
 int GetTechTree(mapinfo *loadedmap,int playernr,int tech_id)
 {
+    if (CODEFORWITHOUTTECHTREE)
+	return(1);
     //if unused is set, this technology researched by default.(eg.defencivematric,parasite,...)
     if (alldattbl.techdata_dat->Unused[tech_id])
 	return(1);

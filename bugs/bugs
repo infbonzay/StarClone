@@ -360,6 +360,10 @@
 *124 base tank no need to rotation
 *125 if atack tank to far distance obj, tank move to destination and stops.
 *126 goliath img failure (add top of science vessel)
+*127 land error
+*128 jim raynor mines not see if not upgrades for vultures
+    infested terran not atack
+    scarab not atack
     need rotation turret to base if not have goal
     
     ?dust moves with unit

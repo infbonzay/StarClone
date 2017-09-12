@@ -567,7 +567,7 @@ int CreateUnitProperties(struct OBJ *a,struct OBJstruct *b,int *prop,int playern
 	    if (!a->loaded)
 	        prop[i]=MODENON;
 	}
-	else if ((a->SC_Unit==SC_VULTUREOBJ||a->SC_Unit==SC_HERO_JIMRAYNORVOBJ)&&prop[i]==MODERELEASEMINE&&!a->mines)
+	else if ((a->SC_Unit==SC_VULTUREOBJ||a->SC_Unit==SC_HERO_JIMRAYNORVOBJ) && prop[i]==MODERELEASEMINE && !a->mines)
 	    {
 		prop[i]=MODENON;
     	    }
