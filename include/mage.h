@@ -28,7 +28,7 @@ int  decrresourceobj(struct OBJ *a,int minus);
 int  existparasitebit(struct OBJ *a,int playernr);
 int  existatrdecloak(struct OBJ *a);
 void MageAtributeEnded(struct OBJ *a,int i);
-void mageattributedothings(OBJ *a,OBJstruct *b);
+void mageattributedothings(OBJ *a);
 int  GetMageAtr(ATROBJ *a,int atrnr);
 void SetMageAtr(ATROBJ *a,int atrnr,int value);
 int  DeltaMageAtr(ATROBJ *a,int atrnr,int value);

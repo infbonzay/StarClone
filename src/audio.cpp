@@ -282,8 +282,6 @@ int activatesound(struct OBJ *a,int soundmode,int addfactor,int stopprevsound)
     short sndfrom,sndto;
     int repeatedsongs=3,needsong=1,distance,musnr,maxmusnr,musplay,needadd=0;
     int err,smktype,aliance;
-    struct OBJstruct *b;
-    b = loadobj(a->SC_Unit);
     if (a->prop & VARNOTWORK)
 	return -1;
     if (a)
@@ -306,7 +304,7 @@ int activatesound(struct OBJ *a,int soundmode,int addfactor,int stopprevsound)
     aliance=player_aliance(NUMBGAMER,a->playernr);
     if (aliance==ENEMYOBJ||aliance==NEUTRALOBJ||aliance==ALLIANCEOBJ)
     {
-	needsong=canplaysound(a,b,soundmode,aliance);
+	needsong=canplaysound(a,soundmode,aliance);
 	if (soundmode==MODESOUNDSELECT)
 	{
 	    SetPortrait(a->SC_Unit,SMKNORMAL,NOSOUNDFILENR,-1);
@@ -626,7 +624,7 @@ char playenemysoundobj[MAXTYPESOFSOUND]={
 					    1,1,1,1,1,1
 					};
 //====================================================
-int canplaysound(OBJ *a,OBJstruct *b,int soundmode,int statuspl)
+int canplaysound(OBJ *a,int soundmode,int statuspl)
 {
     int isbuildobj;
     if (statuspl==ENEMYOBJ)

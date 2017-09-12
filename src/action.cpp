@@ -63,7 +63,7 @@ void QueueAction(void *IDQueueAction,int DestroyQueue)
 		if ((temp->prop&VARNOTHERE)||(temp->prop&VARNOTWORK) || GetMageAtr(&temp->atrobj,ATRSTASIS)>0)
 			;
 		else
-		    WakeUpChild(actobj);
+		    WakeUpChild(actobj,temp->finalOBJ);
 	    }
 	    b = loadobj(actobj->SC_Unit);
 	    actobj->timeflybeforerecharge=b->timeflybeforerecharge;

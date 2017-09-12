@@ -159,7 +159,7 @@ int GetRangeWeaponInPixels(OBJ *atacker,int weapon_id,int playernr)
     return(maxdist);
 }
 //====================================
-int CheckWeaponRange(OBJ *atacker,OBJ *destobj,int weapon_id,int playernr,int minusdelta)
+int CheckWeaponRange(OBJ *atacker,OBJ *destobj,int weapon_id,int playernr)
 {
     int deltaz,maxrange,minrange;
 //    OBJ *base = atacker;
@@ -173,7 +173,7 @@ int CheckWeaponRange(OBJ *atacker,OBJ *destobj,int weapon_id,int playernr,int mi
     minrange = alldattbl.weapons_dat->MinimumRange[weapon_id];
     maxrange = GetRangeWeaponInPixels(base,weapon_id,atacker->playernr);
 //    printf("deltaz=%d maxrange=%d\n",deltaz,maxrange);
-    if (deltaz <= maxrange + minusdelta)
+    if (deltaz <= maxrange)
 	if (deltaz >= minrange)
 	    return(0);//in atack range;
 	else

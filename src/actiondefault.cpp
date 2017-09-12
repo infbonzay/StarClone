@@ -24,29 +24,21 @@ int NoneActionUnit(struct OBJ *a,MAIN_IMG *img)
 //=================================
 int GoliathTAction(struct OBJ *a,MAIN_IMG *img)
 {
-//    if (a->subunit->modemove == MODEMOVE)
-//    {
-//	ChangeSubUnitCoords(a,a->subunit);
-//    }
-    if (a->modemove==MODEATACK)
-	return(0);
-//    SetDestRotatePos(a,GetDestRotatePos(a->subunit));
+    if (!a->finalOBJ)
+    {
+	SetDestRotatePos(a,GetDestRotatePos(a->subunit));
+    }
     return(0);
-//    if (!(a->prop & VARHAVEGOAL) && !(a->select[0] & VARROTATION))
-//    {
-//    }
-//    return(0);
 }
 //=================================
 int TankTAction(struct OBJ *a,MAIN_IMG *img)
 {
-//    if (a->subunit->modemove == MODEMOVE || )
-//    {
-//	ChangeSubUnitCoords(a,a->subunit);
-//    }
-    if (a->modemove==MODEATACK || a->modemove==MODETANKSIEGE || a->modemove==MODETANKNORMAL)
+    if (a->modemove == MODETANKSIEGE || a->modemove == MODETANKNORMAL)
 	return(0);
-//    SetDestRotatePos(a,GetDestRotatePos(a->subunit));
+    if (!a->finalOBJ)
+    {
+	SetDestRotatePos(a,GetDestRotatePos(a->subunit));
+    }
     return(0);
 }
 //=================================
@@ -54,17 +46,18 @@ int CarrierAction(struct OBJ *a,MAIN_IMG *img)
 {
     OBJstruct *b = loadobj(a->SC_Unit);
 //    if (needactionatack(a,b))	//if need creation make it
+//    if (a->finalOBJ)
     if (0)
     {
-	WakeUpAllChilds(a,b);
+	WakeUpAllChilds(a,NULL);
     }
     return 0;
 }
 //=================================
 int InterceptorsAction(struct OBJ *a,MAIN_IMG *img)
 {
-/*    OBJstruct *b = loadobj(a->SC_Unit);
-    if (a->prop&VARINBASE)
+    OBJstruct *b = loadobj(a->SC_Unit);
+/*    if (a->prop&VARINBASE)
 	return 0;
     if (a->modemove!=MODERECHARGE)
     {
@@ -964,6 +957,9 @@ int AtackCoolDownEnds(OBJ *a,OBJ *destobj,int continueatack,int showerrorflag)
 		    return(MOVEOBJ_DONE);
 		}
 		return(MOVEOBJ_STOPANDCONTINUEJOB);
+	    case CREATEDWEAPONSTATUS_LAUNCHINTERCEPTORS:
+		WakeUpAllChilds(a,destobj);
+		return(MOVEOBJ_DONE);
 	    default:
 		DEBUGMESSCR("error resval from ifcreateweapon\n");
 		return(MOVEOBJ_NOACT);

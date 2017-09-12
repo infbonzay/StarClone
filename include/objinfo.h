@@ -17,7 +17,7 @@ int  GetDistanceTo256(OBJ *a,int x,int y);
 int  GetDistanceTo(OBJ *a,int x256,int y256);
 
 int  GetRangeWeaponInPixels(OBJ *atacker,int weapon_id,int playernr);
-int  CheckWeaponRange(OBJ *atacker,OBJ *destobj,int weapon_id,int nplayer,int minusdelta);
+int  CheckWeaponRange(OBJ *atacker,OBJ *destobj,int weapon_id,int nplayer);
 int  GetUnitSightRange(OBJ *a,OBJstruct *b);
 int  GetAddManaFactor(int SC_Unit,int playernr);
 int  GetWidthSummOfUnits(unsigned char SC_Unit1,unsigned char SC_Unit2,int deltax,int deltay);

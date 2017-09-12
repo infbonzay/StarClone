@@ -82,7 +82,7 @@ void ChangeAllVolume(void);
 void playadvisorsound(int nplayer,int race,int typeofsong,int song);
 void playinfoadvisorsound(int nplayer,int race,int typeofsong,int textsound);
 void FreeChannelWithObj(struct OBJ *a);
-int  canplaysound(struct OBJ *a,struct OBJstruct *b,int soundmode,int statuspl);
+int  canplaysound(struct OBJ *a,int soundmode,int statuspl);
 int  DistanceForAudio(int x,int y);
 int  GetTimeWaveLength(WAVHEADER *wavbuf);
 int  getchannelplaylength(int channel);

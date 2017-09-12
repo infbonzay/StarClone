@@ -104,9 +104,8 @@ int RazvorotNa180(struct OBJ *a,struct OBJstruct *b);
 int RazvorotNa180NOW(struct OBJ *a,struct OBJstruct *b);
 int RazvorotNaOBJ(struct OBJ *a,struct OBJ *a2);
 
-void LoadObjInObj(struct OBJ *a,struct OBJstruct *b,struct OBJ *c,
-		 int maxweighttoenter,int maxweight);
-void UnLoadObjInObj(struct OBJ *c,int nrofunloadobj,int typeofnewxycoords,int x,int y,int silentlyflag);
+void LoadObjInObj(OBJ *a,OBJ *c, int maxweighttoenter,int maxweight);
+void UnLoadObjInObj(OBJ *c,int nrofunloadobj,int typeofnewxycoords,int x,int y,int silentlyflag);
 void delADVobj(struct OBJ *a);
 void dieobj_silently(OBJ *a);
 void dieobj(struct OBJ *a);
@@ -120,8 +119,8 @@ void ChangeObjXY(struct OBJ *a,int x,int y);
 void ChangeObjXYDelta(struct OBJ *a,int xdelta,int ydelta);
 void DeleteOldObjPointers(struct OBJ *a);
 int  QueueDelObj(struct OBJ *obj);
-void WakeUpChild(struct OBJ *a);
-void WakeUpAllChilds(struct OBJ *a,struct OBJstruct *b);
+void WakeUpChild(OBJ *a,OBJ *destobj);
+void WakeUpAllChilds(OBJ *a,OBJ *destobj);
 
 void sortselectedunits(struct OBJ *a[],int maxcount);
 void RemoveFromDestination(OBJ *a);

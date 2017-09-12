@@ -97,12 +97,17 @@ readnext:
     return(0);
 }
 //===========================================
+#define WEAPON_UNIT_ANY		0
+#define WEAPON_UNIT_CARRIER	1
+#define WEAPON_UNIT_REAVER	2
+int unitweapon_retstatus[3]={CREATEDWEAPONSTATUS_ATACKSUCCESS,CREATEDWEAPONSTATUS_LAUNCHINTERCEPTORS,CREATEDWEAPONSTATUS_LAUNCHSCARAB};
+//===========================================
 int IfCanCreateWeapon(OBJ *atacker,OBJ *destobj,int *errmes,unsigned char *weapon_id,int flags)
 {
     OBJstruct *batack;
     unsigned char SC_Unit=atacker->SC_Unit;
     unsigned char Subunit1;
-    int rangebad=0;
+    int rangebad=0,weaponunitid,specialatack;
     signed char deltaside;
     unsigned char groundweapon_id,airweapon_id,usedweapon_id,atackangle,neededside;
     if (destobj)
@@ -118,59 +123,91 @@ int IfCanCreateWeapon(OBJ *atacker,OBJ *destobj,int *errmes,unsigned char *weapo
 	    SC_Unit = Subunit1;
 	groundweapon_id=alldattbl.units_dat->GroundWeapon[SC_Unit];
 	airweapon_id=alldattbl.units_dat->AirWeapon[SC_Unit];
-	if (!IsOnSkyOBJ(destobj))
+	switch(atacker->SC_Unit)
 	{
-	    if (groundweapon_id<MAX_WEAPONS_ELEM)
-	    {
-	        usedweapon_id = groundweapon_id;
-	    }
-	    else
-	    {
-		if (errmes)
-//		    *errmes=alldattbl.weapons_dat->TargetErrorMessage[groundweapon_id];
-		    *errmes=875;
-		return(CREATEDWEAPONSTATUS_CANTATACKTHISUNIT);
-	    }
-	}
-    	else
-    	if (IsOnSkyOBJ(destobj))
-	{
-	    if (airweapon_id<MAX_WEAPONS_ELEM)
-	    {
-		usedweapon_id = airweapon_id;
-	    }
-	    else
-	    {
-		if (errmes)
-		    *errmes=875;
-		return(CREATEDWEAPONSTATUS_CANTATACKTHISUNIT);
-	    }
-	}
-	if (destobj || atacker)
-	{
-	    //check visibility
-	    if ( destobj &&
-		 ( OBJ_VAR_CHK(destobj,obj_notdetect,atacker->playernr) ||
-		   (!OBJ_VAR_CHK(destobj,obj_see,atacker->playernr) )))
-	    {
-		if (errmes)
-		    *errmes=875;//invalid target
-		return(CREATEDWEAPONSTATUS_CANTATACKTHISUNIT);
-	    }
-	    else
-	    {
-		if (Subunit1<MAX_UNITS_ELEM)	
-		{
-		    //subunit atack
-		    if (weapon_id)
-			*weapon_id = usedweapon_id;
-		    return(CREATEDWEAPONSTATUS_DESTOUTOFRANGE);
-		}
+	    case SC_REAVEROBJ:
+	    case SC_HERO_WARBRINGEROBJ:
+	        if ( GetDistanceBetweenUnits256(atacker,destobj) <= (GetTargetAcquisitionRange(atacker->SC_Unit) << 13 ))	//256 * 32 (<<13)
+	    	    rangebad = 0;
 		else
+		    rangebad = 1;
+		weaponunitid = WEAPON_UNIT_REAVER;
+		usedweapon_id = groundweapon_id;
+		atackangle = 255;
+		specialatack = 1;
+		break;
+	    case SC_CARRIEROBJ:
+	    case SC_HERO_GANTRITHOROBJ:
+	        if ( GetDistanceBetweenUnits256(atacker,destobj) <= (GetTargetAcquisitionRange(atacker->SC_Unit) << 13) )
+	    	    rangebad = 0;
+		else
+		    rangebad = 1;
+		weaponunitid = WEAPON_UNIT_CARRIER;
+		usedweapon_id = airweapon_id;
+		atackangle = 255;
+		specialatack = 1;
+		break;
+	    default:
+		if (!IsOnSkyOBJ(destobj))
 		{
-		    rangebad = CheckWeaponRange(atacker,destobj,usedweapon_id,atacker->playernr,0);
+		    if (groundweapon_id<MAX_WEAPONS_ELEM)
+		    {
+		        usedweapon_id = groundweapon_id;
+		    }
+		    else
+		    {
+			if (errmes)
+//			    *errmes=alldattbl.weapons_dat->TargetErrorMessage[groundweapon_id];
+			    *errmes=875;
+			return(CREATEDWEAPONSTATUS_CANTATACKTHISUNIT);
+		    }
 		}
-	    }
+    	    	else
+    	    	{
+    	    	    if (IsOnSkyOBJ(destobj))
+		    {
+			if (airweapon_id<MAX_WEAPONS_ELEM)
+			{
+			    usedweapon_id = airweapon_id;
+			}
+			else
+			{
+			    if (errmes)
+				*errmes=875;
+			    return(CREATEDWEAPONSTATUS_CANTATACKTHISUNIT);
+			}
+		    }
+		}
+		if (destobj || atacker)
+		{
+		    //check visibility
+		    if ( destobj &&
+			 ( OBJ_VAR_CHK(destobj,obj_notdetect,atacker->playernr) ||
+			   (!OBJ_VAR_CHK(destobj,obj_see,atacker->playernr) )))
+		    {
+			if (errmes)
+			    *errmes=875;//invalid target
+			return(CREATEDWEAPONSTATUS_CANTATACKTHISUNIT);
+		    }
+		    else
+		    {
+			if (Subunit1<MAX_UNITS_ELEM)	
+			{
+			    //subunit atack
+			    if (weapon_id)
+				*weapon_id = usedweapon_id;
+			    return(CREATEDWEAPONSTATUS_DESTOUTOFRANGE);
+			}
+			else
+			{
+			    rangebad = CheckWeaponRange(atacker,destobj,usedweapon_id,atacker->playernr);
+			}
+		    }
+		}
+		weaponunitid = WEAPON_UNIT_ANY;
+		atackangle = alldattbl.weapons_dat->AttackAngle[usedweapon_id];
+		specialatack = 0;
+		break;
 	}
 	if (weapon_id)
 	    *weapon_id = usedweapon_id;
@@ -186,7 +223,6 @@ int IfCanCreateWeapon(OBJ *atacker,OBJ *destobj,int *errmes,unsigned char *weapo
     		{
 		    neededside = CalcDirection(GetOBJx256(atacker),GetOBJy256(atacker),GetOBJx256(destobj),GetOBJy256(destobj));
 		    deltaside = neededside - atacker->mainimage->side;
-		    atackangle = alldattbl.weapons_dat->AttackAngle[usedweapon_id];
 		    if (abs(deltaside) > atackangle)
 		    {
 			//need to rotate before createweapon
@@ -198,8 +234,10 @@ int IfCanCreateWeapon(OBJ *atacker,OBJ *destobj,int *errmes,unsigned char *weapo
 			}    
 			return(CREATEDWEAPONSTATUS_ATACKSUCCESSWITHROTATION);
 		    }
-		    atacker->mainimage->AllUnitDirection256(neededside);
-	    	    return(CREATEDWEAPONSTATUS_ATACKSUCCESS);
+		    if (!specialatack)
+			atacker->mainimage->AllUnitDirection256(neededside);
+//	    	    return(CREATEDWEAPONSTATUS_ATACKSUCCESS);
+	    	    return(unitweapon_retstatus[weaponunitid]);
 		}
 		break;
 	    case 1:

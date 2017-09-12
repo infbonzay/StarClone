@@ -41,7 +41,7 @@ int DeltaMageAtr(ATROBJ *a,int atrnr,int value)
     return(a->mageatribute[atrnr]);
 }
 //==============================================
-void mageattributedothings(OBJ *a,OBJstruct *b)
+void mageattributedothings(OBJ *a)
 {
     OBJ *a2;
     int x256,y256;
@@ -99,7 +99,7 @@ void mageattributedothings(OBJ *a,OBJstruct *b)
 			    }
 			}
 		    }
-		    //decrementlife need direction damage too ????
+		    //decrementlife
 		    if (ifcanworkatr_onme(a,i,typemage))
 			LowLevelDamage(NULL,a,WEAPONID_IRRADIATE,DAMAGE_IGNOREARMOR,irradiatedamagepertick,0,0);
 		    break;

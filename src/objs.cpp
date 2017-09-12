@@ -84,7 +84,6 @@ void destroyobj(struct OBJ *a)
 	    a->childs = NULL;
 	}
 //delete me from my parent list of childs
-	struct OBJstruct *b=loadobj(a->SC_Unit);
 	if (a->myparent)
 	{
 	    delchild(a->myparent,a);
@@ -526,13 +525,11 @@ struct OBJ *getfirstselectedobj(struct OBJ *a[])
 void controlbu(int typeunits,int typeb_or_u,int mode)
 {
     struct OBJ *a;
-    struct OBJstruct *b;
     int nrobj;
     nrobj=0;
     for (int i=0;i<MaxObjects;i++)
     {
        a=objects[i];
-       b=loadobj(a->SC_Unit);
        if (ifselectedOBJbit(a,NUMBGAMER))
        {
              if ((player_aliance(NUMBGAMER,a->playernr)==typeunits)
@@ -608,16 +605,14 @@ void grupingobj(int mode)
                 		controlbu(NEUTRALOBJ,1,mode);
 }
 //=====================================
-int foundonetypeobj(struct OBJ *a,struct OBJstruct *b)
+int foundonetypeobj(struct OBJ *a)
 {
     int i,u=0;
     struct OBJ *c;
-    struct OBJstruct *c1;
     for (i=0;i<MaxObjects;i++)
     {
         c=objects[i];
-        c1=loadobj(c->SC_Unit);
-        if  ((b==c1) && (c->playernr==a->playernr))
+        if  (c->playernr==a->playernr)
 	    if (!OBJ_VAR_CHK(c,obj_notdetect,NUMBGAMER))
 	    {
 		doselectedOBJbit(c,NUMBGAMER,1);
@@ -725,7 +720,6 @@ void selectMAN(int x1,int y1,int x2,int y2,int mode)
 {
     int i,yn1,yn2,u=0,oldu,nodoodad,x,y;
     struct OBJ *a,*firstobj=NULL,*speakOBJ;
-    struct OBJstruct *b;
     deselectvars();
     if (!mode)
     {
@@ -751,8 +745,7 @@ void selectMAN(int x1,int y1,int x2,int y2,int mode)
     	    if (IfCanClickOBJ(a->SC_Unit))
         	if (ctrl)
         	{
-    		    b = loadobj(a->SC_Unit);
-            	    u = foundonetypeobj(a,b);
+            	    u = foundonetypeobj(a);
         	}
         	else
         	{
@@ -999,7 +992,7 @@ int RegenerateLife(OBJ *a)
     return(change);
 }
 //========================================
-int DecrementLifeMage(struct OBJ *a,struct OBJstruct *b)
+int DecrementLifeMage(struct OBJ *a)
 {
     int x,y,sx,sy,nrmage;
     if (a->timeleft>0)
@@ -1017,11 +1010,9 @@ void allobjdecrmtimemage(void)
 {
     int i;
     struct OBJ *a;
-    struct OBJstruct *b;
     for (i=0;i<MaxObjects;i++)
     {
     	a = objects[i];
-    	b = loadobj(a->SC_Unit);
 	DecrementOBJAtr(a);
     }
 }
@@ -1081,17 +1072,15 @@ void allobj_dieheal(void)
 {
     int i,lifechange;
     struct OBJ *a;
-    struct OBJstruct *b;
     for (i=0;i<MaxObjects;i++)
     {
         a = objects[i];
         if (a->modemove == MODEDIE)
     	    continue;
-	b = loadobj(a->SC_Unit);
 	lifechange = ApplyDamageToUnit(a);
         if (a->modemove == MODEDIE)
     	    continue;
-	mageattributedothings(a,b);
+	mageattributedothings(a);
 	if (IsShieldEnable(a->SC_Unit))
     	    if (!a->shielddamage)
 		lifechange += RegenerateShield(a);
@@ -1099,7 +1088,7 @@ void allobj_dieheal(void)
     	{
 	    if (!a->lifedamage)
 		lifechange += RegenerateLife(a);
-	    DecrementLifeMage(a,b);
+	    DecrementLifeMage(a);
 	}
 	if (lifechange)
 	{
@@ -1112,11 +1101,9 @@ void allobjconstr(void)
 {
     int i;
     struct OBJ *a;
-    struct OBJstruct *b;
     for (i=0;i<MaxObjects;i++)
     {
 	a=objects[i];
-        b=loadobj(a->SC_Unit);
 	TickUnderConstruct(a);	//perform construct build
     	if (!(a->prop&VARNOTWORK))
     	    workingbuilds(a);
@@ -2307,9 +2294,9 @@ escapeconstrslots:
 		    if (a->playernr == destobj->playernr)
 		    {
 			if (destobj->SC_Unit == SC_BUNKEROBJ)
-		    	    LoadObjInObj(a,b,destobj,1,4);
+		    	    LoadObjInObj(a,destobj,1,4);
 			else
-			    LoadObjInObj(a,b,destobj,4,8);
+			    LoadObjInObj(a,destobj,4,8);
 		    }
 		}
 		else
@@ -2991,7 +2978,7 @@ int unloadcoordxy[4][2]={
 			    { 15, 20}
 			};
 //=================================
-void LoadObjInObj(struct OBJ *a,struct OBJstruct *b,struct OBJ *c,
+void LoadObjInObj(struct OBJ *a,struct OBJ *c,
 		 int maxweighttoenter,int maxweight)
 {
     int weightobj;
@@ -3393,7 +3380,7 @@ void dieobj(struct OBJ *a)
 
 }
 //=================================
-void WakeUpChild(struct OBJ *a)
+void WakeUpChild(OBJ *a,OBJ *destobj)
 {
     if (a)
     {
@@ -3401,18 +3388,22 @@ void WakeUpChild(struct OBJ *a)
 	SetModeMove(a,MODESTOP);
 	a->finalOBJ = NULL;
 	a->prop &= ~VARINBASE;
+	if (destobj)
+	{
+	    moveobj(a,destobj,MODEATACK,0,0,NOSHOWERROR,0);
+	}
     }
 }
 //=================================
-void WakeUpAllChilds(struct OBJ *a,struct OBJstruct *b)
+void WakeUpAllChilds(OBJ *a,OBJ *destobj)
 {
     //set childs to be unlocked for fly,atack,etc.
     if (a->childs)
 	for (int i=0;i<MAXCHILDS;i++)
 	    if (a->childs->parentof[i])
-		if (a->childs->parentof[i]->prop&VARINBASE)
-		    if (a->childs->parentof[i]->playernr==a->playernr)
-			WakeUpChild(a->childs->parentof[i]);
+		if (a->childs->parentof[i]->prop & VARINBASE)
+		    if (a->childs->parentof[i]->playernr == a->playernr)
+			WakeUpChild(a->childs->parentof[i],destobj);
 		    else
 			dieobj_silently(a->childs->parentof[i]);
 }
@@ -3505,7 +3496,6 @@ void DeleteOldObjPointers(struct OBJ *a)
 {
     int i;
     struct OBJ *b,*b2;
-    struct OBJstruct *astr=loadobj(a->SC_Unit);
 //    struct MAGEARRAY *c;
     //find pointers in all objects
     for (i=0;i<MaxObjects;i++)
@@ -4191,7 +4181,7 @@ void unitprepareforatack(OBJ *a,OBJ *a2)
 			    groundweapon_id = GetNewWeaponType(a,a2,NEWSC_Unit);
 			    if (groundweapon_id < MAX_WEAPONS_ELEM)
 			    {
-				status = CheckWeaponRange(a,a2,groundweapon_id,a->playernr,0);
+				status = CheckWeaponRange(a,a2,groundweapon_id,a->playernr);
 				if (status==0)	//siege weapon in range, we can go siege
 				    moveobj(a,NULL,MODETANKSIEGE,0,0,NOSHOWERROR,0);
 				else
