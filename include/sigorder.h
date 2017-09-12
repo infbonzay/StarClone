@@ -34,6 +34,7 @@ int  SIGOrder_UnitInitComplete(OBJ *a);
 int  SIGOrder_AfterCastMage(OBJ *a);
 int  SIGOrder_NukeLanding(OBJ *a);
 int  SIGOrder_AfterCastHeal(OBJ *a);
+int  SIGOrder_UnitDies(OBJ *a);
 
 
 void AfterConstruct(OBJ *a);

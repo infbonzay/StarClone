@@ -797,15 +797,19 @@ int IScriptCmd_return(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
 //============================================
 int IScriptCmd_setflspeed(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
 {
+    unsigned char previscriptnr;
     int status;
     unsigned short distance;
     distance = *((unsigned short *)&buf[0]);
     if (distance)
     {
+	previscriptnr = img->iscriptnr;
         status = moveaction(img->parentimg,distance);
         switch(status)
         {
             case 2://changes iscripts
+    		if (previscriptnr == img->iscriptnr)
+		    img->offsetcmdinbuf += cmdsize;
 	        return(1);
 	    case 0:
 		//if no moveaction(path finding tell us about no path or rotation needed) we do not go to the next script command

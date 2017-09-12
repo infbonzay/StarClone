@@ -124,6 +124,16 @@ int IfCanCreateWeapon(OBJ *atacker,OBJ *destobj,int *errmes,unsigned char *weapo
 	airweapon_id=alldattbl.units_dat->AirWeapon[SC_Unit];
 	switch(atacker->SC_Unit)
 	{
+	    case SC_SCARABOBJ:
+		if (GetDistanceBetweenUnits256(atacker,destobj) <= 24*256)
+	    	    rangebad = 0;
+		else
+	    	    rangebad = 1;
+		usedweapon_id = groundweapon_id;
+		atackangle = 255;
+		specialatack = 1;
+		weaponunitid = WEAPON_UNIT_ANY;
+		break;
 	    case SC_REAVEROBJ:
 	    case SC_HERO_WARBRINGEROBJ:
 	        if ( GetDistanceBetweenUnits256(atacker,destobj) <= (GetTargetAcquisitionRange(atacker->SC_Unit) << 13 ))	//256 * 32 (<<13)

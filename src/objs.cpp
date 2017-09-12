@@ -2419,8 +2419,10 @@ escapeconstrslots:
 		SetAtackType(a,destobj);
 		switch(a->SC_Unit)
 		{
+		    case SC_SCARABOBJ:
 		    case SC_VULTUREMINEOBJ:
-			SetOrder(a,1,&SIGOrder_NULL);
+		    case SC_BUGGUYOBJ:
+			SetOrder(a,1,&SIGOrder_UnitDies);
 			a->castmagenr = MODEMINEEXPLODE;
     			SpecialAtackAction(a,destobj,ISCRIPTNR_SPECIALSTATE1);
 			break;

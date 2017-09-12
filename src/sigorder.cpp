@@ -624,3 +624,8 @@ int  SIGOrder_AfterCastHeal(OBJ *a)
     return(0);
 }
 //==================================
+int  SIGOrder_UnitDies(OBJ *a)
+{
+    dieobj(a);
+}
+//==================================
