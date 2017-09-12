@@ -20,6 +20,9 @@ int  GetRangeWeaponInPixels(OBJ *atacker,int weapon_id,int playernr);
 int  CheckWeaponRange(OBJ *atacker,OBJ *destobj,int weapon_id,int nplayer,int minusdelta);
 int  GetUnitSightRange(OBJ *a,OBJstruct *b);
 int  GetAddManaFactor(int SC_Unit,int playernr);
+int  GetWidthSummOfUnits(unsigned char SC_Unit1,unsigned char SC_Unit2,int deltax,int deltay);
+int  GetDestUnitHalfSize(unsigned char SC_Unit,int deltax,int deltay);
+
 
 int  IsRangeWeapon(int weapon_id);
 int  UniqueWeapon(int weapon_id);

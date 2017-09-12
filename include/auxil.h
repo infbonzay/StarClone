@@ -51,15 +51,10 @@ int  rmdirrec(const char *dirname);
 long long FILElength(FILE *descriptor);
 long long FILElength(char *fn);
 int  CalcGradus(int x1,int y1,int x2,int y2);
-
-signed char GetNeededRotation(OBJ *a,int x1,int y1,int x2,int y2);
 unsigned char CalcDirection1(int x1,int y1,int x2,int y2);
 //=================================
-int  Direction2Gradus(int direction,int maxdirections);
-
 void calcinert(void);
 void calcsintables(void);
-void CalcRangeCoordsXY(int deltax,int deltay,int *destx,int *desty,int maxdist);
 
 int  savebuff(const char *fn,void *adress,int bufsize);
 unsigned int mkchecksumm(char *filename);
@@ -72,7 +67,6 @@ int  check_ifhavewget(void);
 
 
 //=================================
-extern float inertion[MAXFACEDIRECTIONS][2];//vse storoni
 extern int   inertion256[256][2];
 extern float sintable[360];
 extern float costable[360];

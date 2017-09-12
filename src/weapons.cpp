@@ -601,7 +601,7 @@ void WeaponDoDamage(OBJ *atacker,OBJ *destobj,int x256,int y256,unsigned char SC
 			continue;
 		    if (GetUnitMaxHitPoints(a->SC_Unit)*2/3 > realdamage)		//damage or 2/3 of unit's life+shield, depend who bigger
 			realdamage = GetUnitMaxLife(a->SC_Unit)*2/3;
-		    LowLevelDamage( atacker,a,loadobj(a->SC_Unit),weapon_id,
+		    LowLevelDamage( atacker,a,weapon_id,
 				    alldattbl.weapons_dat->WeaponType[weapon_id],
 				    realdamage,0,0);
 		}
@@ -621,7 +621,7 @@ void WeaponDoDamage(OBJ *atacker,OBJ *destobj,int x256,int y256,unsigned char SC
 			break;
 		    }
     		    if (WeaponCanApplyOnUnit(destobj,playernr,weapon_id))
-			LowLevelDamage( atacker,destobj,loadobj(destobj->SC_Unit),
+			LowLevelDamage( atacker,destobj,
 					weapon_id,
 					alldattbl.weapons_dat->WeaponType[weapon_id],
 					GetWeaponDamage(SC_Unit,playernr,weapon_id)<<8,
@@ -760,7 +760,7 @@ void WeaponDoDamage(OBJ *atacker,OBJ *destobj,int x256,int y256,unsigned char SC
 		    return;
 		realdamage = GetWeaponDamage(SC_Unit,playernr,weapon_id) << 8;
 		realdamage = realdamage * BounceDamage[targetnr] / 256;
-		LowLevelDamage( atacker,destobj,loadobj(destobj->SC_Unit),weapon_id,
+		LowLevelDamage( atacker,destobj,weapon_id,
 				alldattbl.weapons_dat->WeaponType[weapon_id],
 				realdamage,0,0);
 	    }
@@ -797,7 +797,7 @@ void WeaponDoDamage(OBJ *atacker,OBJ *destobj,int x256,int y256,unsigned char SC
 			    continue;
 			listdamaged->AddList(a);
 		    }
-		    LowLevelDamage( atacker,a,loadobj(a->SC_Unit),weapon_id,
+		    LowLevelDamage( atacker,a,weapon_id,
 				    alldattbl.weapons_dat->WeaponType[weapon_id],
 				    realdamage,0,0);
 		}
@@ -834,7 +834,7 @@ void WeaponDoDamage(OBJ *atacker,OBJ *destobj,int x256,int y256,unsigned char SC
 			    continue;
 			listdamaged->AddList(a);
 		    }
-		    LowLevelDamage( atacker,a,loadobj(a->SC_Unit),weapon_id,
+		    LowLevelDamage( atacker,a,weapon_id,
 				    alldattbl.weapons_dat->WeaponType[weapon_id],
 				    realdamage,0,0);
 		}
@@ -845,7 +845,7 @@ void WeaponDoDamage(OBJ *atacker,OBJ *destobj,int x256,int y256,unsigned char SC
 		break;
 	    realdamage = GetWeaponDamage(SC_Unit,playernr,weapon_id) << 8;
 	    realdamage = realdamage * BounceDamage[targetnr] / 256;
-	    LowLevelDamage( atacker,destobj,loadobj(destobj->SC_Unit),weapon_id,
+	    LowLevelDamage( atacker,destobj,weapon_id,
 			    alldattbl.weapons_dat->WeaponType[weapon_id],
 			    realdamage,0,0);
 	    for (i=0;i<MaxObjects;i++)

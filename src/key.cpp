@@ -175,7 +175,7 @@ void keyhandler(void)
 	if (fordeselect[0])
 	{
 	    OBJstruct *b=loadobj(fordeselect[0]->SC_Unit);
-	    LowLevelDamage(NULL,fordeselect[0],b,WEAPONID_NUCLEARMISSILE,DAMAGE_INDEPENDENT,25<<8,0,0);
+	    LowLevelDamage(NULL,fordeselect[0],WEAPONID_NUCLEARMISSILE,DAMAGE_INDEPENDENT,25<<8,0,0);
 	}
     }
     if (curentreadkey==F7)

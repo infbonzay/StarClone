@@ -56,7 +56,7 @@ void mageattributedothings(OBJ *a,OBJstruct *b)
 		case ATRPLAGUE:
 		    if (ifcanworkatr_onme(a,i,typemage))
 		    {
-			LowLevelDamage(NULL,a,loadobj(a->SC_Unit),WEAPONID_PLAGUE,DAMAGE_IGNOREARMOR,plaguedamagepertick,0,0);
+			LowLevelDamage(NULL,a,WEAPONID_PLAGUE,DAMAGE_IGNOREARMOR,plaguedamagepertick,0,0);
 		    }
 		    break;
 		case ATRIRRADIATE:
@@ -74,7 +74,7 @@ void mageattributedothings(OBJ *a,OBJstruct *b)
 				if (a!=a2)
 				{
 				    if (IsOrganic(a2->SC_Unit))
-					LowLevelDamage(NULL,a2,loadobj(a2->SC_Unit),WEAPONID_IRRADIATE,DAMAGE_IGNOREARMOR,irradiatedamagepertick,0,0);
+					LowLevelDamage(NULL,a2,WEAPONID_IRRADIATE,DAMAGE_IGNOREARMOR,irradiatedamagepertick,0,0);
 				}
 			    }
 			}    
@@ -91,7 +91,7 @@ void mageattributedothings(OBJ *a,OBJstruct *b)
 					{
 					    if (GetDistanceTo256(a2,x256,y256) <= mageprop[typemage].diapazone)
 					    {
-						LowLevelDamage(NULL,a2,loadobj(a2->SC_Unit),WEAPONID_IRRADIATE,DAMAGE_IGNOREARMOR,irradiatedamagepertick,0,0);
+						LowLevelDamage(NULL,a2,WEAPONID_IRRADIATE,DAMAGE_IGNOREARMOR,irradiatedamagepertick,0,0);
 					    }
 					}
 				    }
@@ -101,7 +101,7 @@ void mageattributedothings(OBJ *a,OBJstruct *b)
 		    }
 		    //decrementlife
 		    if (ifcanworkatr_onme(a,i,typemage))
-			LowLevelDamage(NULL,a,loadobj(a->SC_Unit),WEAPONID_IRRADIATE,DAMAGE_IGNOREARMOR,irradiatedamagepertick,0,0);
+			LowLevelDamage(NULL,a,WEAPONID_IRRADIATE,DAMAGE_IGNOREARMOR,irradiatedamagepertick,0,0);
 		    break;
 	    }
 	}
@@ -592,7 +592,7 @@ void CastSpellWithOutWeaponnr(OBJ *casterobj,int castmagenr)
 		    }
     		    if (!IsSpellCaster(destobj->SC_Unit))
     			break;
-		    LowLevelDamage(casterobj,destobj,loadobj(destobj->SC_Unit),WEAPONID_NUCLEARMISSILE,DAMAGE_INDEPENDENT,destobj->mana,0,0);
+		    LowLevelDamage(casterobj,destobj,WEAPONID_NUCLEARMISSILE,DAMAGE_INDEPENDENT,destobj->mana,0,0);
 		    SetUnitMana(destobj,0);
 		    AddOverlayAtrImages(destobj,castmagenr,IMAGEOVERLAY_NOTDEPENDONMAINIMG);
 		}

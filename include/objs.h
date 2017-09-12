@@ -176,7 +176,6 @@ int  moveaction(MAIN_IMG *img,int deltamove);
 void ForceKartChanges(OBJ *a);
 void ForceKartChanges(OBJ *a,int xpos,int ypos);
 void CheckForKartChanges(OBJ *a,int xpos,int ypos);
-int  GetWidthSummOfUnits(unsigned char SC_Unit1,unsigned char SC_Unit2,int deltax,int deltay);
 void InitStopAfterMove(OBJ *a);
 
 void PathFinding_InitType1(OBJ *a,int initx,int inity,int destx,int desty);
@@ -198,9 +197,10 @@ void DelAllModeMoves(struct OBJ *a);
 void DelOBJFromModeList(struct OBJ *a,struct OBJ *searchobj);
 int  GetOBJNrInTransport(OBJ *c,OBJ *a);
 void FreeOBJFromTransport(OBJ *c,OBJ *a,int objnr);
-int  GetDestUnitHalfSize(unsigned char SC_Unit,int deltax,int deltay);
 void ChangeSubUnitCoords(OBJ *turret,OBJ *base);
 int TryToEnterNydus(OBJ *a,OBJ *nydus);
+int RegenerateShield(OBJ *a);
+int RegenerateLife(OBJ *a);
 
 
 #define UnitDoAiAction(playernr) (map.pl_owner[playernr] == OWNER_COMPUTER)// || map.pl_owner[playernr] == OWNER_HUMAN)

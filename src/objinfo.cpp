@@ -83,6 +83,22 @@ int GetUnitSightRange(OBJ *a,OBJstruct *b)
 	seerange += GetUpgradeTree(&map,a->playernr,b->sightupgnr)*2;//each upgrade add +2 to sight range 
     return(seerange);
 }
+//=================================
+int GetWidthSummOfUnits(unsigned char SC_Unit1,unsigned char SC_Unit2,int deltax,int deltay)
+{
+    if (abs(deltax) > abs(deltay))
+        return ((GetUnitWidthAndHeight(SC_Unit1,UNITDIM_WIDTH)/2 + GetUnitWidthAndHeight(SC_Unit2,UNITDIM_WIDTH)/2)<<8);
+    else
+	return ((GetUnitWidthAndHeight(SC_Unit1,UNITDIM_HEIGHT)/2 + GetUnitWidthAndHeight(SC_Unit2,UNITDIM_HEIGHT)/2)<<8);
+}
+//=================================
+int GetDestUnitHalfSize(unsigned char SC_Unit,int deltax,int deltay)
+{
+    if (abs(deltax) > abs(deltay))
+        return (GetUnitWidthAndHeight(SC_Unit,UNITDIM_WIDTH)/2);
+    else
+	return (GetUnitWidthAndHeight(SC_Unit,UNITDIM_HEIGHT)/2);
+}
 //====================================
 int GetDistances(int x,int y,int x2,int y2)
 {

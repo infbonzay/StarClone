@@ -41,8 +41,6 @@
 #endif
 
 //=============================================
-//unsigned int Sinertion[MAXSPEED];
-//=============================================
 #define POSX(x) ((x+SIZESPRLANSHX-1)/SIZESPRLANSHX)
 #define POSY(y) ((y+SIZESPRLANSHY-1)/SIZESPRLANSHY)
 //=============================================

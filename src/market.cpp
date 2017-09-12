@@ -433,8 +433,9 @@ int damages[UNITSIZE_TYPES][DAMAGE_TYPES]=
     {  0,100, 25,100,100}
 };
 //=======================================
-int LowLevelDamage(OBJ *atacker,OBJ *a,OBJstruct *b,int weapon_id,int typedamage,int totaldamage,int directiondamage,int directorsplash)
+int LowLevelDamage(OBJ *atacker,OBJ *a,int weapon_id,int typedamage,int totaldamage,int directiondamage,int directorsplash)
 {
+    OBJstruct *b;
     int remaindamage,armor,upgnr,upgarmor,shieldarmor;
     if (atacker && IsHallucination(atacker))
 	return(0);
@@ -524,6 +525,7 @@ int LowLevelDamage(OBJ *atacker,OBJ *a,OBJstruct *b,int weapon_id,int typedamage
 	    remaindamage=remaindamage*damages[unitsize][typedamage]/100;
     	    if (typedamage!=DAMAGE_IGNOREARMOR)
     	    {
+		b = loadobj(a->SC_Unit);
 		armor=GetArmor(a,b->armorupgnr,&upgnr,&upgarmor);
 		armor+=upgarmor;
 	    }

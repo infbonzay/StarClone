@@ -259,34 +259,15 @@ int CalcGradus(int x1,int y1,int x2,int y2)
     return(alfa);
 }
 //=======================================
-int Direction2Gradus(int direction,int maxdirections)
-{
-    return(direction*360/maxdirections);
-}
-//=================================
 unsigned char CalcDirection1(int x1,int y1,int x2,int y2)
 {
     return((256*CalcGradus(x1,y1,x2,y2)+179)/360);
-}
-//=================================
-signed char GetNeededRotation(OBJ *a,int x1,int y1,int x2,int y2)
-{
-    return(CalcDirection1(x1,y1,x2,y2) - a->mainimage->side);
 }
 //=================================
 void calcinert(void)
 {
     int i,sni,csi;
     float j,cs,sn;
-/*    for (i=0;i<MAXFACEDIRECTIONS;i++)
-    {
-      j=i*(360/MAXFACEDIRECTIONS)*PI/180.;
-      cs=cos(j);
-      sn=sin(j);
-      inertion[i][0]=sn;
-      inertion[i][1]=-cs;
-    }
-*/
     for (i=0;i<256;i++)
     {
       j = i*360*PI/180/256;
@@ -308,14 +289,6 @@ void calcsintables(void)
     }
 }
 //===========================================
-void CalcRangeCoordsXY(int deltax,int deltay,int *destx,int *desty,int maxdist)
-{
-    int deltaz;
-    deltaz=(int)hypot(deltax,deltay);
-    *destx=maxdist*deltax/deltaz;
-    *desty=maxdist*deltay/deltaz;
-}
-//=================================
 int savebuff(const char *fn,void *address,int bufsize)
 {
     FILE *f;

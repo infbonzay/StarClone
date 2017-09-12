@@ -69,7 +69,7 @@ void SetUnitShield(struct OBJ *a,int shield);
 void SetUnitPercentShield(OBJ *a,int persmana);
 unsigned char GetUnitElevationLevel(int SC_Unit);
 
-int  LowLevelDamage(OBJ *atacker,OBJ *a,OBJstruct *b,int weapon_id,int typedamage,int totaldamage,int directiondamage,int directorsplash);
+int  LowLevelDamage(OBJ *atacker,OBJ *a,int weapon_id,int typedamage,int totaldamage,int directiondamage,int directorsplash);
 
 //int  DoDamage(OBJ *atacker,OBJ *a,int xshot,int yshot,int weapon_id,int totaldamage,int directiondamage,mylist *dobjs,int damageby);
 //int  CheckWeaponOnUnitType(OBJ *atacker,OBJ *a2,unsigned short t_flags);

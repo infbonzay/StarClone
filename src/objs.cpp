@@ -960,12 +960,21 @@ void createobjregen(void)
 #define DEREGENERATETEMPLIFE   	15
 //#define DELTAMANAONCYCLE	7	//add mana in 1 cycle	in mage.h
 
-int RegenerateLife(struct OBJ *a,struct OBJstruct *b,int regenshield,int regenlife)
+//========================================
+int RegenerateShield(OBJ *a)
 {
-    int upgradevalue,lifechange=0;
-    if (IsOBJUnderConstruct(a))
-	return(0);
-    if (IsRegenerate(a->SC_Unit)&&regenlife)
+    int change=0;
+    if (a->shield < GetUnitMaxShield(a->SC_Unit))
+    {
+        AddUnitShield(a,REGENERATESHIELD);
+    }
+    return(change);
+}
+//========================================
+int RegenerateLife(OBJ *a)
+{
+    int change=0;
+    if (IsRegenerate(a->SC_Unit))
     {
 	if (a->life<GetUnitMaxLife(a->SC_Unit))
 	{
@@ -973,31 +982,21 @@ int RegenerateLife(struct OBJ *a,struct OBJstruct *b,int regenshield,int regenli
 		AddUnitLife(a,REGENERATELIFE+1);
 	    else
 		AddUnitLife(a,REGENERATELIFE);
-	    lifechange=1;
+	    change=1;
 	}
     }
     else
     {
-	if (IsShieldEnable(a->SC_Unit) && regenshield)
-	{
-	    if (a->shield<GetUnitMaxShield(a->SC_Unit))
+	if (IsBuild(a->SC_Unit) && GetUnitRace(a->SC_Unit)==TERRANRACE)
+	    if (a->life*3<(GetUnitMaxLife(a->SC_Unit)))
 	    {
-		AddUnitShield(a,REGENERATESHIELD);
+	        a->life -= DEREGENERATELIFE;
+	        change=1;
+	        if (a->life <= 0)
+	            dieobj(a);
 	    }
-	}
-	else
-	{
-	    if (IsBuild(a->SC_Unit)&&GetUnitRace(a->SC_Unit)==TERRANRACE)
-		if (a->life*3<(GetUnitMaxLife(a->SC_Unit)))
-		{
-		    a->life-=DEREGENERATELIFE;
-		    lifechange=1;
-		    if (a->life<=0)
-		        dieobj(a);
-		}
-	}
     }
-    return(lifechange);
+    return(change);
 }
 //========================================
 int DecrementLifeMage(struct OBJ *a,struct OBJstruct *b)
@@ -1027,7 +1026,7 @@ void allobjdecrmtimemage(void)
     }
 }
 //========================================
-int ApplyDamageToUnit(struct OBJ *a,struct OBJstruct *b)
+int ApplyDamageToUnit(struct OBJ *a)
 {
     unsigned short image_id,imgflags;
     int lifechange;
@@ -1042,7 +1041,7 @@ int ApplyDamageToUnit(struct OBJ *a,struct OBJstruct *b)
 	    dieobj(a);
 	    return(0);
 	}
-	LowLevelDamage(NULL,a,b,WEAPONID_PSISTORM,DAMAGE_IGNOREARMOR,a->psistormdamage,0,DAMAGE_SPLASH|DAMAGE_NOSHOWHIT);
+	LowLevelDamage(NULL,a,WEAPONID_PSISTORM,DAMAGE_IGNOREARMOR,a->psistormdamage,0,DAMAGE_SPLASH|DAMAGE_NOSHOWHIT);
 	a->psistormdamage=0;
     }
     if (a->dmatrixdamage)
@@ -1080,7 +1079,7 @@ int ApplyDamageToUnit(struct OBJ *a,struct OBJstruct *b)
 //========================================
 void allobj_dieheal(void)
 {
-    int i,regenshield,regenlife,lifechange;
+    int i,lifechange;
     struct OBJ *a;
     struct OBJstruct *b;
     for (i=0;i<MaxObjects;i++)
@@ -1089,21 +1088,21 @@ void allobj_dieheal(void)
         if (a->modemove == MODEDIE)
     	    continue;
 	b = loadobj(a->SC_Unit);
-	regenshield=(a->shielddamage==0);
-	regenlife=(a->lifedamage==0);
-	lifechange = ApplyDamageToUnit(a,b);
+	lifechange = ApplyDamageToUnit(a);
         if (a->modemove == MODEDIE)
     	    continue;
 	mageattributedothings(a,b);
+	if (IsShieldEnable(a->SC_Unit))
+    	    if (!a->shielddamage)
+		lifechange += RegenerateShield(a);
     	if (!IsOBJUnderConstruct(a))
     	{
-	    //regenerate life/shield if not ignore shield/life
-	    lifechange += RegenerateLife(a,b,regenshield,regenlife);
+	    if (!a->lifedamage)
+		lifechange += RegenerateLife(a);
 	    DecrementLifeMage(a,b);
 	}
 	if (lifechange)
 	{
-//	    a->lastdamageoverlays = -1;
 	    AddRemoveBloodFlameOverlays(a);
 	}
     }
@@ -4346,17 +4345,15 @@ void atackback(OBJ *firstatacker,OBJ *destobj,int directiondamage)
 //=================================
 void moveaway(OBJ *a,int directiondamage,int modeofmove,int addtoqueue)
 {
-/*    int dx,dy;
-    int side = directiondamage + MAXFACEDIRECTIONS/2;
-    if (side>=MAXFACEDIRECTIONS)
-	side-=MAXFACEDIRECTIONS;
-    dx = inertion[side][0]*SIZESPRLANSHX*5;
-    dy = inertion[side][1]*SIZESPRLANSHY*5;
+    int dx,dy;
+    unsigned char side = directiondamage + 128;
+    dx = (inertion256[side][0]*SIZESPRLANSHX*5)>>16;
+    dy = (inertion256[side][1]*SIZESPRLANSHY*5)>>16;
     if (addtoqueue)
-	AddNextModeMove(a,NULL,modeofmove,a->sourcex+dx,a->sourcey+dy);
+	AddModeMove(a,NULL,modeofmove,GetOBJx(a)+dx,GetOBJy(a)+dy,NOSHOWERROR);
     else
 	moveobj(a,NULL,modeofmove,GetOBJx(a)+dx,GetOBJy(a)+dy,NOSHOWERROR,0);
-*/
+
 }
 //=================================
 int tryaiaction(OBJ *a,OBJ *atacker,int directiondamage)
@@ -4752,8 +4749,9 @@ int PathFinding_MovePortionType1(OBJ *a,MAIN_IMG *img,int deltamove)
 
 	deltax = destx - img->xpos;
 	deltay = desty - img->ypos;
-	deltaz = GetDistanceMinusSizes(a->SC_Unit,a->finalOBJ->SC_Unit,deltax,deltay);
-	if (deltaz < a->modemoveminusdistance)
+	deltaz = (int)hypot(deltax,deltay);
+	widthsumm = GetWidthSummOfUnits(a->SC_Unit,a->finalOBJ->SC_Unit,deltax,deltay);
+	if (deltaz - widthsumm <= a->modemoveminusdistance)
 	{
 	    printf("deltaz=%d modemoveminusdistance=%d deltamove=%d mindist=%d\n",deltaz/256,a->modemoveminusdistance/256,deltamove/256,(deltaz - a->modemoveminusdistance)/256);
 	    if (a->finalOBJ->SC_Unit == SC_NYDUSCANALOBJ && a->finalOBJ->playernr == a->playernr)
@@ -4845,9 +4843,9 @@ int PathFinding_MovePortionType2(OBJ *a,MAIN_IMG *img,unsigned char flingy_id,in
 	}
 	deltax = destx - img->xpos;
 	deltay = desty - img->ypos;
-	deltaz = GetDistanceMinusSizes(a->SC_Unit,a->finalOBJ->SC_Unit,deltax,deltay);
-	if (deltaz - a->modemoveminusdistance < 0)
-//	if (deltaz - a->distancewalked - a->modemoveminusdistance < a->haltdistance)
+	deltaz = (int)hypot(deltax,deltay);
+	widthsumm = GetWidthSummOfUnits(a->SC_Unit,a->finalOBJ->SC_Unit,deltax,deltay);
+	if (deltaz - widthsumm - a->modemoveminusdistance <= 2*256)
 	{
 	    printf("deltaz=%d modemoveminusdistance=%d haltdist=%d deltaz-modemovedist=%d\n",
 		deltaz/256,a->modemoveminusdistance/256,a->haltdistance/256,(deltaz-a->modemoveminusdistance)/256);
@@ -4879,6 +4877,8 @@ int PathFinding_MovePortionType2(OBJ *a,MAIN_IMG *img,unsigned char flingy_id,in
 	    return(1);
 	}
     }
+    if (deltaz <= 2*256)		//prevent div 0
+    	return(1);
     deltax = (long long)deltamove*deltax/deltaz;
     deltay = (long long)deltamove*deltay/deltaz;
     img->SetDeltaCoords(a,deltax,deltay);
@@ -4964,22 +4964,6 @@ void CheckForKartChanges(OBJ *a,int xpos,int ypos)
 }
 //=================================
 //deltax,deltay - delta between movedunit & destination unit
-int GetWidthSummOfUnits(unsigned char SC_Unit1,unsigned char SC_Unit2,int deltax,int deltay)
-{
-    if (abs(deltax) > abs(deltay))
-        return ((GetUnitWidthAndHeight(SC_Unit1,UNITDIM_WIDTH)/2 + GetUnitWidthAndHeight(SC_Unit2,UNITDIM_WIDTH)/2)<<8);
-    else
-	return ((GetUnitWidthAndHeight(SC_Unit1,UNITDIM_HEIGHT)/2 + GetUnitWidthAndHeight(SC_Unit2,UNITDIM_HEIGHT)/2)<<8);
-}
-//=================================
-int GetDestUnitHalfSize(unsigned char SC_Unit,int deltax,int deltay)
-{
-    if (abs(deltax) > abs(deltay))
-        return (GetUnitWidthAndHeight(SC_Unit,UNITDIM_WIDTH)/2);
-    else
-	return (GetUnitWidthAndHeight(SC_Unit,UNITDIM_HEIGHT)/2);
-}
-//=================================
 void AdditionalUnitsProceed(void)
 {
     int i;
