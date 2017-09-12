@@ -562,7 +562,7 @@ int IScriptCmd_attackwith(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
 		tr = a->in_transport;
 		if (a->SC_Unit == SC_MARINEOBJ && tr)
 		{
-		    unsigned char side = CalcDirection1(GetOBJx256(tr),GetOBJy256(tr),GetOBJx256(a->finalOBJ),GetOBJy256(a->finalOBJ));
+		    unsigned char side = CalcDirection(GetOBJx256(tr),GetOBJy256(tr),GetOBJx256(a->finalOBJ),GetOBJy256(a->finalOBJ));
 		    tr->mainimage->AllUnitDirection256(side);
 		    
 		    GetLoadedImage( alldattbl.images_dat->Attack_Overlay[tr->mainimage->imageid],(void **)&lo);
@@ -904,7 +904,7 @@ int IScriptCmd_trgtarccondjmp(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
 	    destobj = a->finalOBJ;
     	    if (a && destobj)
     	    {
-		if (CalcDirection1(GetOBJx256(a),GetOBJy256(a),GetOBJx256(destobj),GetOBJy256(destobj)) <= buf[0] )
+		if (CalcDirection(GetOBJx256(a),GetOBJy256(a),GetOBJx256(destobj),GetOBJy256(destobj)) <= buf[0] )
 		{
 		    img->offsetcmdinbuf = *((unsigned short *)&buf[2]);
 		    return(0);

@@ -150,7 +150,7 @@ struct OBJ* OneUnitSearchGoal(OBJ *a,int ignoremodes);
 void SearchForAtacks(void);
 
 void atackback(OBJ *firstatacker,OBJ *destobj,int directiondamage);
-void moveaway(OBJ *a,int directiondamage,int modeofmove,int addtoqueue);
+void moveaway(OBJ *atacker,OBJ *a,int directiondamage,int modeofmove,int addtoqueue);
 int  tryaiaction(OBJ *a,OBJ *atacker,int directiondamage);
 int  tryunitaction(OBJ *a,OBJ *atacker);
 void TryToScanArea(OBJ *a,OBJ *scanobjarea);

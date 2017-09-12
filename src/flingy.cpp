@@ -143,7 +143,7 @@ int SC_FLINGY::DieFlingy(void)
 	    destobj = newdestobj;
     	    xdest256 = GetOBJx256(destobj);
     	    ydest256 = GetOBJy256(destobj);
-    	    img->AllUnitDirection256(CalcDirection1(img->xpos,img->ypos,xdest256,ydest256));
+    	    img->AllUnitDirection256(CalcDirection(img->xpos,img->ypos,xdest256,ydest256));
 	}
     }
     return(0);
@@ -216,7 +216,7 @@ void SC_FLINGY::MoveFlingy(void)
         }
 	if (alldattbl.images_dat->Graphic_Turns[img->imageid])
     	{
-    	    img->UnitNeededDirection256(CalcDirection1(img->xpos,img->ypos,xdest256,ydest256));
+    	    img->UnitNeededDirection256(CalcDirection(img->xpos,img->ypos,xdest256,ydest256));
     	    rot = img->Rotation(alldattbl.flingy_dat->TurnRadius[flingy_id]);
 //    	    if (!rot)
 //    		if (flags & FLINGY_FLAG_REACHMAXSPEED)
@@ -224,7 +224,7 @@ void SC_FLINGY::MoveFlingy(void)
     	}
     	else
     	{
-    	    img->AllUnitDirection256(CalcDirection1(img->xpos,img->ypos,xdest256,ydest256));
+    	    img->AllUnitDirection256(CalcDirection(img->xpos,img->ypos,xdest256,ydest256));
     	}
     }
     //check if flingy come to destination

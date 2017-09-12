@@ -51,7 +51,7 @@ int  rmdirrec(const char *dirname);
 long long FILElength(FILE *descriptor);
 long long FILElength(char *fn);
 int  CalcGradus(int x1,int y1,int x2,int y2);
-unsigned char CalcDirection1(int x1,int y1,int x2,int y2);
+unsigned char CalcDirection(int x1,int y1,int x2,int y2);
 //=================================
 void calcinert(void);
 void calcsintables(void);

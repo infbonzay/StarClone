@@ -99,7 +99,7 @@ void mageattributedothings(OBJ *a,OBJstruct *b)
 			    }
 			}
 		    }
-		    //decrementlife
+		    //decrementlife need direction damage too ????
 		    if (ifcanworkatr_onme(a,i,typemage))
 			LowLevelDamage(NULL,a,WEAPONID_IRRADIATE,DAMAGE_IGNOREARMOR,irradiatedamagepertick,0,0);
 		    break;

@@ -1060,20 +1060,20 @@ int ApplyDamageToUnit(struct OBJ *a)
 //	    iscriptinfo.ExecuteScript(newimg);
 	}
     }
-    if (a->shielddamage>0)
+    if (a->shielddamage > 0)
     {
-	a->shield-=a->shielddamage;
+	a->shield -= a->shielddamage;
     }
-    if (a->lifedamage>0)
+    if (a->lifedamage > 0)
     {
 	a->life -= a->lifedamage;
-	lifechange=1;
-	if (a->life<=0)
+	lifechange = 1;
+	if (a->life <= 0)
 	    dieobj(a);
     }
-    a->lifedamage=0;
-    a->shielddamage=0;
-    a->dmatrixdamage=0;
+    a->lifedamage = 0;
+    a->shielddamage = 0;
+    a->dmatrixdamage = 0;
     return(lifechange);
 }
 //========================================
@@ -1558,7 +1558,8 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
 	}
     }
     if (a->prop & VARNOTWORK)
-        return(MOVEOBJ_NOACT);
+        if (mode != MODEDIE)
+    	    return(MOVEOBJ_NOACT);
     //release any resource field
     if (mode != MODEDIE)
 	ReleaseResource(a);
@@ -4310,7 +4311,7 @@ void atackback(OBJ *firstatacker,OBJ *destobj,int directiondamage)
 		//cannot atackback
 		if (accesstomove(destobj,loadobj(destobj->SC_Unit),MODEMOVE,destobj->playernr))
 		    if (destobj->modemove!=MODEHOLDPOS)
-			moveaway(destobj,directiondamage,MODEATACK,0);
+			moveaway(firstatacker,destobj,directiondamage,MODEATACK,0);
 	    }
 	    else
 	    {
@@ -4343,10 +4344,12 @@ void atackback(OBJ *firstatacker,OBJ *destobj,int directiondamage)
     TellOtherUnitsAboutAtacking(destobj,firstatacker);
 }
 //=================================
-void moveaway(OBJ *a,int directiondamage,int modeofmove,int addtoqueue)
+void moveaway(OBJ *atacker,OBJ *a,int directiondamage,int modeofmove,int addtoqueue)
 {
     int dx,dy;
-    unsigned char side = directiondamage + 128;
+    unsigned char side = CalcDirection(GetOBJx256(atacker),GetOBJy256(atacker),GetOBJx256(a),GetOBJy256(a));
+
+//    unsigned char side = directiondamage + 128;
     dx = (inertion256[side][0]*SIZESPRLANSHX*5)>>16;
     dy = (inertion256[side][1]*SIZESPRLANSHY*5)>>16;
     if (addtoqueue)
@@ -4379,7 +4382,7 @@ int tryaiaction(OBJ *a,OBJ *atacker,int directiondamage)
 		    {
 			//if cannot atack -> unburrow & get out of here
 			moveobj(a,NULL,MODEUNBURROW,0,0,NOSHOWERROR,0);
-			moveaway(a,directiondamage,MODEMOVE,1);//add this command to queue
+			moveaway(atacker,a,directiondamage,MODEMOVE,1);//add this command to queue
 		    }
 		    return(0);
 		case CREATEDWEAPONSTATUS_ATACKSUCCESS:
@@ -4721,7 +4724,7 @@ void InitStopAfterMove(OBJ *a)
 //for iscriptbin version
 void PathFinding_InitType1(OBJ *a,int initx,int inity,int destx,int desty)
 {
-    a->mainimage->UnitNeededDirection256(CalcDirection1(initx,inity,destx,desty));
+    a->mainimage->UnitNeededDirection256(CalcDirection(initx,inity,destx,desty));
 }
 //=================================
 int PathFinding_MovePortionType1(OBJ *a,MAIN_IMG *img,int deltamove)
@@ -4745,7 +4748,7 @@ int PathFinding_MovePortionType1(OBJ *a,MAIN_IMG *img,int deltamove)
 	}
 	destx = GetOBJx256(a->finalOBJ);
 	desty = GetOBJy256(a->finalOBJ);
-	img->UnitNeededDirection256(CalcDirection1(img->xpos,img->ypos,destx,desty));
+	img->UnitNeededDirection256(CalcDirection(img->xpos,img->ypos,destx,desty));
 
 	deltax = destx - img->xpos;
 	deltay = desty - img->ypos;
@@ -4753,7 +4756,7 @@ int PathFinding_MovePortionType1(OBJ *a,MAIN_IMG *img,int deltamove)
 	widthsumm = GetWidthSummOfUnits(a->SC_Unit,a->finalOBJ->SC_Unit,deltax,deltay);
 	if (deltaz - widthsumm <= a->modemoveminusdistance)
 	{
-	    printf("deltaz=%d modemoveminusdistance=%d deltamove=%d mindist=%d\n",deltaz/256,a->modemoveminusdistance/256,deltamove/256,(deltaz - a->modemoveminusdistance)/256);
+//	    printf("deltaz=%d modemoveminusdistance=%d deltamove=%d mindist=%d\n",deltaz/256,a->modemoveminusdistance/256,deltamove/256,(deltaz - a->modemoveminusdistance)/256);
 	    if (a->finalOBJ->SC_Unit == SC_NYDUSCANALOBJ && a->finalOBJ->playernr == a->playernr)
 	    {
 		if (TryToEnterNydus(a,a->finalOBJ))
@@ -4832,7 +4835,7 @@ int PathFinding_MovePortionType2(OBJ *a,MAIN_IMG *img,unsigned char flingy_id,in
 	desty = GetOBJy256(a->finalOBJ);
 	if (a->prop &  VARACCELERATIONBIT)
 	{
-	    img->UnitNeededDirection256(CalcDirection1(img->xpos,img->ypos,destx,desty));
+	    img->UnitNeededDirection256(CalcDirection(img->xpos,img->ypos,destx,desty));
 	    a->finalx = destx;
 	    a->finaly = desty;
 	}
@@ -4847,8 +4850,8 @@ int PathFinding_MovePortionType2(OBJ *a,MAIN_IMG *img,unsigned char flingy_id,in
 	widthsumm = GetWidthSummOfUnits(a->SC_Unit,a->finalOBJ->SC_Unit,deltax,deltay);
 	if (deltaz - widthsumm - a->modemoveminusdistance <= 2*256)
 	{
-	    printf("deltaz=%d modemoveminusdistance=%d haltdist=%d deltaz-modemovedist=%d\n",
-		deltaz/256,a->modemoveminusdistance/256,a->haltdistance/256,(deltaz-a->modemoveminusdistance)/256);
+//	    printf("deltaz=%d modemoveminusdistance=%d haltdist=%d deltaz-modemovedist=%d\n",
+//		deltaz/256,a->modemoveminusdistance/256,a->haltdistance/256,(deltaz-a->modemoveminusdistance)/256);
 	    InitStopAfterMove(a);
 	    a->prop |= VARWAITDISTANCE;
 	    ApplyNextModeMove(a);
@@ -4862,8 +4865,8 @@ int PathFinding_MovePortionType2(OBJ *a,MAIN_IMG *img,unsigned char flingy_id,in
 	deltaz = (int)hypot(deltax,deltay);
 	if (a->prop & VARACCELERATIONBIT)
 	{
-		printf("deltaz=%d modemoveminusdistance=%d haltdist=%d deltaz-modemovedist=%d\n",
-		    deltaz/256,a->modemoveminusdistance/256,a->haltdistance/256,(deltaz-a->modemoveminusdistance)/256);
+//		printf("deltaz=%d modemoveminusdistance=%d haltdist=%d deltaz-modemovedist=%d\n",
+//		    deltaz/256,a->modemoveminusdistance/256,a->haltdistance/256,(deltaz-a->modemoveminusdistance)/256);
 	    if (deltaz - a->modemoveminusdistance <= a->haltdistance)
 	    {
 		InitStopAfterMove(a);
@@ -4995,7 +4998,7 @@ void AllFlingyControlOBJMoving(void)
 		if (!rot)
 		{
 	    	    img->MoveInUnitDirection(a,side1,GetSpeed(a,a->currentspeed));
-		    img->UnitNeededDirection256(CalcDirection1(GetOBJx256(a),GetOBJy256(a),a->finalx,a->finaly));
+		    img->UnitNeededDirection256(CalcDirection(GetOBJx256(a),GetOBJy256(a),a->finalx,a->finaly));
 		    continue;
 		}
 		if (a->modemove == MODETURN180)

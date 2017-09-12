@@ -602,7 +602,7 @@ int  SIGOrder_AfterCastHeal(OBJ *a)
 	}
 	if (GetDistanceBetweenUnits256(a,a->finalOBJ) <= mageprop[a->castmagenr].mindistance+(10<<8) )
 	{
-	    a->mainimage->UnitNeededDirection256(CalcDirection1(GetOBJx256(a),GetOBJy256(a),GetOBJx256(a->finalOBJ),GetOBJy256(a->finalOBJ)));
+	    a->mainimage->UnitNeededDirection256(CalcDirection(GetOBJx256(a),GetOBJy256(a),GetOBJx256(a->finalOBJ),GetOBJy256(a->finalOBJ)));
 	    //check if need rotation
 	    if (a->mainimage->flags & SC_IMAGE_FLAG_NEEDROTATIONTODIRECTION)
 	    {

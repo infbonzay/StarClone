@@ -184,7 +184,7 @@ int IfCanCreateWeapon(OBJ *atacker,OBJ *destobj,int *errmes,unsigned char *weapo
 		    }
 		if (UnitIgnoreInvisibles(SC_Unit) || !OBJ_VAR_CHK(destobj,obj_notdetect,atacker->playernr))
     		{
-		    neededside = CalcDirection1(GetOBJx256(atacker),GetOBJy256(atacker),GetOBJx256(destobj),GetOBJy256(destobj));
+		    neededside = CalcDirection(GetOBJx256(atacker),GetOBJy256(atacker),GetOBJx256(destobj),GetOBJy256(destobj));
 		    deltaside = neededside - atacker->mainimage->side;
 		    atackangle = alldattbl.weapons_dat->AttackAngle[usedweapon_id];
 		    if (abs(deltaside) > atackangle)
