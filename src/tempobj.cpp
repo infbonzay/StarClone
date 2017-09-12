@@ -81,10 +81,8 @@ OBJ *CreateMineralsOnMap(int x,int y,int SC_Unit,int playernr,int count,int maxc
 {
     int xp,yp,sx,sy;
     struct OBJ *a;
-    struct OBJstruct *b;
     a = createobjfulllife(x,y,SC_Unit,playernr);
 
-    b = loadobj(SC_Unit);
     xp = (GetOBJx(a) - GetUnitWidthAndHeight(SC_Unit,UNITDIM_WIDTH)/2)/SIZESPRLANSHX-3;
     yp = (GetOBJy(a) - GetUnitWidthAndHeight(SC_Unit,UNITDIM_HEIGHT)/2)/SIZESPRLANSHY-3;
     sx=8;
@@ -110,15 +108,12 @@ OBJ *CreateGeyserOnMap(int x,int y,int SC_Unit,int playernr,int count,int maxcou
 {
     int xp,yp,sx,sy;
     struct OBJ *a;
-    struct OBJstruct *b;
-    b = loadobj(SC_Unit);
     a = createobjfulllife(x,y,SC_Unit,playernr);
     xp = ( GetOBJx(a) - GetUnitWidthAndHeight(SC_Unit,UNITDIM_WIDTH)/2 ) / SIZESPRLANSHX - 3;
     yp = ( GetOBJy(a) - GetUnitWidthAndHeight(SC_Unit,UNITDIM_HEIGHT)/2 ) / SIZESPRLANSHY - 3;
-    sx=10;//b->sizex/SIZESPRLANSHX;
-    sy=8;//b->sizey/SIZESPRLANSHY;
+    sx=10;
+    sy=8;
     AddMarkOn32(xp,yp,sx,sy,loadedmap->constrmap);
-//    SetObjWalk8(&map,a,b,SETWALK); 
     if (count>maxcount)
     {
 	a->data.resource.resource_count = count;
@@ -149,7 +144,6 @@ OBJ *CreateUnitsFromMAP(struct unit_on_map *unit,struct mapinfo *loadedmap)
 {
     int xp,yp,sx,sy;
     struct OBJ *a,*aa,*a2,*a3=NULL;
-    struct OBJstruct *b;
     int i,playernr,xobj,yobj,race,owner;
     int hp,sp,ep;
     unsigned char SC_Unit;
@@ -192,7 +186,6 @@ OBJ *CreateUnitsFromMAP(struct unit_on_map *unit,struct mapinfo *loadedmap)
 			SC_Unit = GetFirstUnitBuild(race,FIRSTBUILD);
 			if (SC_Unit!=SC_NOUNITNR)
 			{
-			    b = loadobj(SC_Unit);
 			    a = createobjfulllife(unit->xpos,unit->ypos,SC_Unit,playernr);
 			    if (playernr==NUMBGAMER)
 			    {

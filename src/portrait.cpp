@@ -137,7 +137,6 @@ unsigned char playbuffer[SMKSIZEPORTRAITX*SMKSIZEPORTRAITY];
 void showportrait(void)
 {
     static int merged=0;
-    OBJstruct *b;
     //check if configuration enables portrait
     if (gameconf.videoconf.portraits==CONF_VIDEO_PORTRAITS_DISABLED)
 	return;

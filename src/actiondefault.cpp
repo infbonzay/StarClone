@@ -44,7 +44,7 @@ int TankTAction(struct OBJ *a,MAIN_IMG *img)
 //=================================
 int CarrierAction(struct OBJ *a,MAIN_IMG *img)
 {
-    OBJstruct *b = loadobj(a->SC_Unit);
+//    OBJstruct *b = loadobj(a->SC_Unit);
 //    if (needactionatack(a,b))	//if need creation make it
 //    if (a->finalOBJ)
     if (0)
@@ -56,7 +56,7 @@ int CarrierAction(struct OBJ *a,MAIN_IMG *img)
 //=================================
 int InterceptorsAction(struct OBJ *a,MAIN_IMG *img)
 {
-    OBJstruct *b = loadobj(a->SC_Unit);
+//    OBJstruct *b = loadobj(a->SC_Unit);
 /*    if (a->prop&VARINBASE)
 	return 0;
     if (a->modemove!=MODERECHARGE)
@@ -120,7 +120,6 @@ int InterceptorsAction(struct OBJ *a,MAIN_IMG *img)
 int CritterAction(struct OBJ *a,MAIN_IMG *img)
 {
     int sx,sy;
-    OBJstruct *b = loadobj(a->SC_Unit);
     if (GetUnitRace(a->SC_Unit)==NEUTRALRACE&&IsGroupMenFlag(a->SC_Unit))
     {
 	if (a->modemove==MODESTOP||a->modemove==MODEHOLDPOS)
@@ -663,7 +662,6 @@ int QueenAction(struct OBJ *a,MAIN_IMG *img)
 //=================================
 int TransportAction(struct OBJ *a,MAIN_IMG *img)
 {
-    OBJstruct *b = loadobj(a->SC_Unit);
     if (a && a->loaded)
     {
 	if (--a->loaded->waittickstounload <= 0)

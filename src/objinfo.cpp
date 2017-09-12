@@ -407,7 +407,7 @@ int GetArmor(OBJ *a,int armorupgnr,int *upgradenr,int *upgarmor)
 //armor - simple armor without upgrades
 //*upgradenr - upgrade number they have
 //so totalarmor=armor+*upgradenr
-int GetShieldArmor(OBJ *a,OBJstruct *b,int *upgradenr)
+int GetShieldArmor(OBJ *a,int *upgradenr)
 {
     int sharmor;
     sharmor=GetUpgradeTree(&map,a->playernr,UPGRADES_DAT_PLASMASHIELDICON);

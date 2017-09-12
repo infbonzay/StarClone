@@ -104,7 +104,6 @@ int unitweapon_retstatus[3]={CREATEDWEAPONSTATUS_ATACKSUCCESS,CREATEDWEAPONSTATU
 //===========================================
 int IfCanCreateWeapon(OBJ *atacker,OBJ *destobj,int *errmes,unsigned char *weapon_id,int flags)
 {
-    OBJstruct *batack;
     unsigned char SC_Unit=atacker->SC_Unit;
     unsigned char Subunit1;
     int rangebad=0,weaponunitid,specialatack;

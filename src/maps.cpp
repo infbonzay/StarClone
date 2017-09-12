@@ -70,7 +70,7 @@ void GetMiniMapCoord(int x32,int y32,
     *sizeyinpixels=(int)(sizey*factory+0.5);
 }
 //==============================
-void minimap_showobj(OBJ *a,OBJstruct *b)
+void minimap_showobj(OBJ *a)
 {
     int sx,sy;
     if (a->SC_Unit == SC_MAPREVEALEROBJ)
@@ -507,7 +507,6 @@ void AddObjsRevealMap(void)
         a=ObjsRevealMap[i];
     	b=loadobj(a->SC_Unit);
     	makeoneobjseeopen(a,b);		//open map
-//	arbitermakewarpfield(a,b);
     }
     MaxObjsRevealMap=0;
 }
@@ -534,7 +533,6 @@ void makeopenseeKarta(int beginobj,int endobj)
     for (i=beginobj;i<=endobj;i++)
     {
 	a=objects[i];
-    	b=loadobj(a->SC_Unit);
 //	if (IsPermanentCloak(a->SC_Unit))
 //	    continue;
         if (!IsBuild(a->SC_Unit))

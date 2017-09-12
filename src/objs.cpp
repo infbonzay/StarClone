@@ -61,7 +61,6 @@ void destroyobj(struct OBJ *a)
 {
     struct OBJ *temp1,*temp2;
     struct OBJ *newobj;
-    struct OBJstruct *newobjstr;
     if (a)
     {
 	deselectobj(a);
@@ -3121,7 +3120,7 @@ void dieobj_silently(OBJ *a)
 void dieobj(struct OBJ *a)
 {
     unsigned char SC_Unit;
-    struct OBJstruct *b,*b1;
+    struct OBJstruct *b;
     int i,needtodestroyonexit,inegg,damage,oldsnd,changesupply=0;
     struct OBJ *a1,*newobj;
 
@@ -3408,21 +3407,19 @@ void WakeUpAllChilds(OBJ *a,OBJ *destobj)
 			dieobj_silently(a->childs->parentof[i]);
 }
 //=================================
-void ReturnedToBase(struct OBJ *a,struct OBJstruct *b)//after moved to base
+void ReturnedToBase(struct OBJ *a)//after moved to base
 {
+    OBJstruct *b;
     if (a->myparent->childs)
     {
 	//object now in base need wait factor
 	a->prop |= VARNOTHERE;
+	b = loadobj(a->SC_Unit);
 	MakeQueueAction(NONDETECTEDACTION,a,NULL,
 			0,0,0,b->timerechargeonbase);
     }
     else
 	savelog("return non-child unit to base",0);
-}
-//=================================
-void coordcalc(struct OBJ *a,struct OBJstruct *b,int destx,int desty)
-{
 }
 //=================================
 void makeallblinking(void)
@@ -3666,13 +3663,11 @@ void applyrescuableunits(void)
 {
     int i,haverescued=0;
     OBJ *a,*c;
-    OBJstruct *b;
     if (NEEDTOREPAIRREFRESHBIT)
     {
     	for (i=0;i<MaxObjects;i++)
 	{
     	    a=objects[i];
-    	    b=loadobj(a->SC_Unit);
 	    //if rescuable unit/player need to apply to seeit player
 	    if (map.pl_iowner[a->playernr]==OWNER_RESCUABLE)
 	    {
@@ -3706,7 +3701,6 @@ void setpropertiestounit(struct OBJ *a,int special_props,int state_flags)
 {
     int mask,mode;
     OVERLAY_IMG *tempimg;
-    OBJstruct *b=loadobj(a->SC_Unit);
     if (state_flags&UNITONMAP_STATEFLAGS_CLOAK)
 	if (special_props&UNITONMAP_STATEFLAGS_CLOAK)
 	{
@@ -3744,7 +3738,7 @@ void setpropertiestounit(struct OBJ *a,int special_props,int state_flags)
 		    mask = GetTechTree(&map,a->playernr,TECHDATA_DAT_BURROWINGTECH);
 */
 	    mask=1;
-	    if (mask && ChangeTypeOfProp(a,b,PROPNORMAL2)!=-1)
+	    if (mask && ChangeTypeOfProp(a,PROPNORMAL2)!=-1)
 	    {
 		SetBurrowFlag(a,1);
 		SetMageAtr(&a->atrobj,ATRINVISIBLE,WRAITHEPODARBITEROM);
@@ -3811,38 +3805,6 @@ int SearchObjInArea(struct OBJ *a,struct XY *area)
     return(1);
 }
 //==================================
-void MakeCoordsOfRes(struct OBJ *a,struct OBJstruct *b,int *resposx,int *resposy)
-{
-/*    int storonasv;
-    signed char xoffs,yoffs;
-    signed char *adrxyoffs;
-
-    if (a->mirror[0])
-	storonasv = (b->maxsides-1)*2 - GetRotatePos(a);
-    else
-        storonasv = GetRotatePos(a);
-    adrxyoffs = GetLoXY(
-	    		b->allmove[TYPEMODEGATHERMINERALS][1].loinf.lo,
-			storonasv+b->allmove[TYPEMODEGATHERMINERALS][1].loinf.fromloline,
-			b->allmove[TYPEMODEGATHERMINERALS][1].loinf.fromlooffset);
-    if (adrxyoffs)
-    {
-	if (a->mirror[0])
-    	    xoffs = -adrxyoffs[0];
-    	else
-    	    xoffs = adrxyoffs[0];
-        yoffs = adrxyoffs[1];
-    }	
-    else
-    {
-        xoffs = 0;
-        yoffs = 0;  
-    }
-    *resposx=a->sourcex+xoffs;
-    *resposy=a->sourcey+yoffs;
-*/
-}
-//=================================
 void SetAtackTick(OBJ *a)
 {
     static unsigned char atacktick = 0;

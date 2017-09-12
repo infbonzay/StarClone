@@ -341,12 +341,10 @@ void minimap_showobjs(void)
 {
     int i,max;
     OBJ *a;
-    OBJstruct *b;
     minimap_showedobjs.EnumListInit();
     while(a=(OBJ *)minimap_showedobjs.GetNextListElem())
     {
-	b=loadobj(a->SC_Unit);
-	minimap_showobj(a,b);
+	minimap_showobj(a);
     }
     minimap_showedobjs.FlushList();		//clear all obj drawed on minimap for prepare a new one
 }
@@ -467,7 +465,7 @@ void ShowUpgradesInBar(int XWINPOS,int YWINPOS,OBJ *a,OBJstruct *b)
     }
     if (alldattbl.units_dat->ShieldEnable[SC_Unit])
     {
-	sharmor=GetShieldArmor(a,b,&upgradenr);
+	sharmor=GetShieldArmor(a,&upgradenr);
 	icon=alldattbl.upgrades_dat->Icon[UPGRADES_DAT_PLASMASHIELDICON];
 	putgrpspr(xpos+2,ypos+2,znakgrp,NORMAL,255,FORBLUE,NULL,icon);
 	putgrp(xpos,ypos,grpicons,12);

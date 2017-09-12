@@ -102,7 +102,6 @@ void MakeQueueAction(int actiontype,void *a,void *destobj,
 		    int param1,int param2,int afterexpiriedticks)
 {
     OBJ *actobj=NULL,*actdestobj=NULL;
-    OBJstruct *b;
     struct QUEUEACTION *act = (struct QUEUEACTION *)wmalloc(sizeof(struct QUEUEACTION ));
     memset(act,0,sizeof(struct QUEUEACTION ));
     act->actiontype = actiontype;
@@ -368,16 +367,6 @@ int MageDepend(OBJ *a,int playernr,int modemovetype)
     return(1);
 }
 //=================================
-/*void MakeCoolDown(OBJ *a,OBJstruct *b,int cooldowntime)
-{
-    if (cooldowntime)
-    {
-	MakeQueueAction(COOLDOWNACTION,a,NULL,0,0,0,cooldowntime);
-	SetAtackCoolDown(a);
-    }
-}
-*/
-//=================================
 AROUNDBUILD unitaroundbuild[MAXAROUNDARRAY];
 //=================================
 int GetUnitConstrMinXY(int pos,int *x,int *y)
@@ -408,9 +397,7 @@ int methoddecrxy[4][2]={{1,0},{0,-1},{-1,0},{0,1}};
 void getcoordofnewunit(struct OBJ *a,int nrunit,int *x,int *y)
 {
     int xbeg,ybeg,i,xx,yy,beginpos,deltax,deltay,method,x8pos,y8pos;
-    struct OBJstruct *b,*b2;
     int fromoffset=0;
-    b2=loadobj(nrunit);
     if (IsAirUnit(nrunit))
     {
 	*x = GetOBJx(a);
@@ -418,7 +405,6 @@ void getcoordofnewunit(struct OBJ *a,int nrunit,int *x,int *y)
     }    
     else
     {
-	b=loadobj(a->SC_Unit);
 	xbeg = GetOBJx(a)/8;
 	ybeg = GetOBJy(a)/8;
 	if (IsBuild(a->SC_Unit))

@@ -135,8 +135,6 @@ struct OBJ *createunitwithproperties(int xpos,int ypos,int unit_id,int playernr,
 
 int  SearchObjInArea(struct OBJ *a,struct XY *area);
 void makeallblinking(void);
-void MakeCoordsOfRes(struct OBJ *a,struct OBJstruct *b,int *resposx,int *resposy);
-
 void SetAtackTick(OBJ *a);
 OBJ *FindObjForAtack(OBJ *a,unsigned char weaponmask,
 		    			unsigned char groundweapon,

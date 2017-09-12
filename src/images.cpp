@@ -897,7 +897,6 @@ void loadandputimage(int POSINMAP)
 //    unsigned char SC_Unit;
     GRPFILE *grppict;
     char colortable;
-    OBJstruct *b;
     xk=map.MAPXGLOBAL;
     yk=map.MAPYGLOBAL;
     int player=NUMBGAMER;

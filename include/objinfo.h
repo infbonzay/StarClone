@@ -32,9 +32,8 @@ int  GetInfoWeapon(int SC_Unit,int nplayer,int nrofhits,int updown,int *upgraden
 int  GetAtackDamage(int SC_Unit,int nplayer,int nrofhits,int updown,int *upgradenr,int *upgdamage);
 int  GetWeaponDamage(int SC_Unit,int playernr,int weapon_id);
 
-int  GetShieldArmor(OBJ *a,OBJstruct *b,int updown,int *upgradenr);
 int  GetArmor(OBJ *a,int armorupgnr,int *upgradenr,int *upgarmor);
-int  GetShieldArmor(OBJ *a,OBJstruct *b,int *upgradenr);
+int  GetShieldArmor(OBJ *a,int *upgradenr);
 int  GetRotatePos(OBJ *a);
 int  GetDestRotatePos(OBJ *a);
 void SetRotatePos(OBJ *a,float storonasveta);

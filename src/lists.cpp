@@ -115,7 +115,6 @@ int isrechargebleobj(struct OBJ *a)
 //==========================================
 int ishealingobj(struct OBJ *a)
 {
-    struct OBJstruct *b = loadobj(a->SC_Unit);
     if (IsOrganic(a->SC_Unit)&&!(a->prop&VARNOTHERE)&&!IsOBJUnderConstruct(a)&&
 	    GetMageAtr(&a->atrobj,ATRSTASIS)==0&&a->life<GetUnitMaxLife(a->SC_Unit))
 	if (!IsOnSkyOBJ(a))
@@ -125,7 +124,6 @@ int ishealingobj(struct OBJ *a)
 //==========================================
 int isobjtobeinfest(struct OBJ *a)
 {
-    struct OBJstruct *b = loadobj(a->SC_Unit);
     if (a->SC_Unit==SC_COMMCENTEROBJ && (a->life<GetUnitMaxLife(a->SC_Unit)/2) && !IsOBJUnderConstruct(a))
 	    return 1;
     return 0;
@@ -140,7 +138,6 @@ struct OBJ *SearchUnitFunc(int playernr,int (*funccheckunit)(int SC_Unit),int ne
 {
     int i,allstat;
     OBJ *a;
-    OBJstruct *b;
     for (i=0;i<MaxObjects;i++)
     {
 	a = objects[i];
@@ -164,7 +161,6 @@ struct OBJ *SearchUnit(int playernr,int SC_Unit,int shieldp,int lifep,int energy
 {
     int i,allstat;
     OBJ *a;
-    OBJstruct *b;
     for (i=0;i<MaxObjects;i++)
     {
 	a = objects[i];

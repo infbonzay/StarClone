@@ -63,7 +63,6 @@ int constrbuild(int nb)
 int probeconstruct(int nb)
 {
     int k;
-    struct OBJstruct *b;
     //for probe
     if (nb == MODEWARPBUILD ||
         nb == MODEMUTATEBUILD ||
@@ -115,7 +114,6 @@ void desenproperties(int *localprop,char *selectableicons)
     char iconstr[150];
     char addstr[15];
     struct OBJ *a,*obj,*obj2=NULL;
-    struct OBJstruct *b;
     for (i=0;i<3;i++)
 	for (j=0;j<3;j++)
             if (localprop[i*3+j])
@@ -375,7 +373,6 @@ selectedicon:
 		retstatus=CHECKRES_OK;
 	    else
 		retstatus=CheckForResource_typeid(fordeselect[0],NUMBGAMER,mp->type_id,mp->obj_id);
-	    b=loadobj(fordeselect[0]->SC_Unit);
 	    if (retstatus != CHECKRES_OK)
 	    {
 		playadvisorerr(NUMBGAMER,race,retstatus);

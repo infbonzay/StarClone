@@ -4,7 +4,7 @@
 #include "starmap.h"
 
 void CreateMiniMapPixels(struct mapinfo *map);
-void minimap_showobj(struct OBJ *a,struct OBJstruct *b);
+void minimap_showobj(struct OBJ *a);
 void ObjOnMiniMap(int x,int y,int sizex,int sizey,char color,char *minimapadr);
 void getminimapcoord(struct mapinfo *info,int x,int y,int *xm,int *ym);
 void drawMINIMAP(void);
