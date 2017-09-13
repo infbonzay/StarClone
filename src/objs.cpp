@@ -3388,7 +3388,7 @@ void dieobj(struct OBJ *a)
 
 }
 //=================================
-void WakeUpChild(OBJ *myparent,OBJ *a,OBJ *destobj)
+void WakeUpChild(OBJ *myparent,OBJ *a,OBJ *destobj,int deltax,int deltay)
 {
     if (a)
     {
@@ -3401,7 +3401,7 @@ void WakeUpChild(OBJ *myparent,OBJ *a,OBJ *destobj)
         a->mainimage->ShowChildsImgFlag();
         a->mainimage->ShowImgFlag();
         ChangeTypeOfProp(a,PROPNORMAL1);
-        SetOBJxy256(a,GetOBJx256(myparent),GetOBJy256(myparent));
+        SetOBJxy256(a,GetOBJx256(myparent)+deltax,GetOBJy256(myparent)+deltay);
 
 	if (destobj)
 	{
@@ -3410,9 +3410,9 @@ void WakeUpChild(OBJ *myparent,OBJ *a,OBJ *destobj)
     }
 }
 //=================================
-void WakeUpChild(OBJ *a,OBJ *destobj)
+void WakeUpChild(OBJ *a,OBJ *destobj,int deltax,int deltay)
 {
-    WakeUpChild(a->myparent,a,destobj);
+    WakeUpChild(a->myparent,a,destobj,deltax,deltay);
 }
 //=================================
 void WakeUpAllChilds(OBJ *a,OBJ *destobj)
@@ -3423,7 +3423,7 @@ void WakeUpAllChilds(OBJ *a,OBJ *destobj)
 	    if (a->childs->parentof[i])
 		if (a->childs->parentof[i]->prop & VARINBASE)
 		    if (a->childs->parentof[i]->playernr == a->playernr)
-			WakeUpChild(a,a->childs->parentof[i],destobj);
+			WakeUpChild(a,a->childs->parentof[i],destobj,0,0);
 		    else
 			dieobj_silently(a->childs->parentof[i]);
 }
@@ -5230,6 +5230,7 @@ void DelAllModeMoves(struct OBJ *a)
 int LaunchScarab(OBJ *reaver,OBJ *destobj)
 {
     OBJ *a;
+    signed char deltax,deltay;
     reaver->usedweapon_id = WEAPONID_SCARAB;
     if (destobj)
     {
@@ -5239,7 +5240,8 @@ int LaunchScarab(OBJ *reaver,OBJ *destobj)
 		if (a = reaver->childs->parentof[i])
 		{
 		    delchild(reaver,a);
-		    WakeUpChild(reaver,a,destobj);
+		    CalcXYOffsets(reaver->mainimage->parentimg->side,GetUnitDimensions(reaver->SC_Unit,UNITDIM_DOWN),0,&deltax,&deltay);
+		    WakeUpChild(reaver,a,destobj,deltax,deltay);
 		    return(1);
 		}
 	    }

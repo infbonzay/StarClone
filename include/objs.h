@@ -111,8 +111,8 @@ void ChangeObjXY(struct OBJ *a,int x,int y);
 void ChangeObjXYDelta(struct OBJ *a,int xdelta,int ydelta);
 void DeleteOldObjPointers(struct OBJ *a);
 int  QueueDelObj(struct OBJ *obj);
-void WakeUpChild(OBJ *myparent,OBJ *a,OBJ *destobj);
-void WakeUpChild(OBJ *a,OBJ *destobj);
+void WakeUpChild(OBJ *myparent,OBJ *a,OBJ *destobj,int deltax,int deltay);
+void WakeUpChild(OBJ *a,OBJ *destobj,int deltax,int deltay);
 void WakeUpAllChilds(OBJ *a,OBJ *destobj);
 
 void sortselectedunits(struct OBJ *a[],int maxcount);
