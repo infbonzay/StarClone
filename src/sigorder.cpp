@@ -209,6 +209,7 @@ int  SIGOrder_Tank_AfterSiegeCmd(OBJ *a)
 {
     a->modemove = MODESTOP;
     a->subunit->modemove = MODESTOP;
+    a->prop &= ~VARSPECIALWAIT;
     SetOrder(a,0,NULL);
     return(0);
 }
@@ -227,6 +228,7 @@ int  SIGOrder_Tank_AfterNormalCmd(OBJ *a)
 	}
     a->modemove = MODESTOP;
     a->subunit->modemove = MODESTOP;
+    a->prop &= ~VARSPECIALWAIT;
     SetOrder(a,0,NULL);
     a->mainimage->invisiblecolors = inv;
     a->subunit->mainimage->invisiblecolors = inv;

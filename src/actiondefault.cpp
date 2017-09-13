@@ -24,7 +24,7 @@ int NoneActionUnit(struct OBJ *a,MAIN_IMG *img)
 //=================================
 int GoliathTAction(struct OBJ *a,MAIN_IMG *img)
 {
-    if (!a->finalOBJ)
+    if (!a->finalOBJ )
     {
 	img->UnitNeededDirection256(a->subunit->mainimage->side);
     }
@@ -33,7 +33,7 @@ int GoliathTAction(struct OBJ *a,MAIN_IMG *img)
 //=================================
 int TankTAction(struct OBJ *a,MAIN_IMG *img)
 {
-    if (a->modemove == MODETANKSIEGE || a->modemove == MODETANKNORMAL || a->OrderFunc)
+    if (a->prop & VARSPECIALWAIT)
 	return(0);
     if (!a->finalOBJ)
     {

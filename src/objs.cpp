@@ -1992,8 +1992,9 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
 	    {
 	        return(MOVEOBJ_NOACT);
 	    }
-	    if (a->modemove == MODETANKSIEGE || a->modemove == MODETANKNORMAL)
+	    if (a->prop & VARSPECIALWAIT)
 	        return(MOVEOBJ_NOACT);
+	    a->prop |= VARSPECIALWAIT;
 	    if (a->mainimage->side != TANKSIEGESIDE || a->subunit->mainimage->side != TANKSIEGESIDE)
 	    {
 		SetOrder(a,1,&SIGOrder_Tank_EndRotationBeforeSiegeMode);
@@ -2022,8 +2023,9 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
 	    {
 	        return(MOVEOBJ_NOACT);
 	    }
-	    if (a->modemove == MODETANKSIEGE || a->modemove == MODETANKNORMAL)
+	    if (a->prop & VARSPECIALWAIT)
 	        return(MOVEOBJ_NOACT);
+	    a->prop |= VARSPECIALWAIT;
 	    if (a->subunit->mainimage->side != TANKNORMALSIDE)
 	    {
 		SetOrder(a->subunit,1,&SIGOrder_Tank_EndRotationBeforeTankMode);
