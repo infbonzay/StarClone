@@ -637,7 +637,7 @@ PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 ENDOBJ           = 1
 
 [NEWOBJECT] = 85 Protoss_Reaver_Scarab
-TIMELEFT         = 150
+TIMELEFT         = 60
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0  
 			256 257 333   0   0   0   0   0   0
 

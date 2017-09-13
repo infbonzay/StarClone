@@ -26,16 +26,18 @@ int GoliathTAction(struct OBJ *a,MAIN_IMG *img)
 {
     if (!a->finalOBJ)
     {
+	img->UnitNeededDirection256(a->subunit->mainimage->side);
     }
     return(0);
 }
 //=================================
 int TankTAction(struct OBJ *a,MAIN_IMG *img)
 {
-    if (a->modemove == MODETANKSIEGE || a->modemove == MODETANKNORMAL)
+    if (a->modemove == MODETANKSIEGE || a->modemove == MODETANKNORMAL || a->OrderFunc)
 	return(0);
     if (!a->finalOBJ)
     {
+	img->UnitNeededDirection256(a->subunit->mainimage->side);
     }
     return(0);
 }

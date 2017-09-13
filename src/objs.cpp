@@ -3999,7 +3999,11 @@ struct OBJ* OneUnitSearchGoal(OBJ *a,int ignoremodes)
 			    weaponmask |= 2;
 			break;
 		    case UNITATACKFUNCTYPE_BUNKERS://bunker
+			break;
 		    case UNITATACKFUNCTYPE_REAVERS://reaver
+			groundweapon = WEAPONID_SCARAB;
+			weaponmask = 1;
+			break;
 		    case UNITATACKFUNCTYPE_CARRIERS://carrier
 			break;
 		    case UNITATACKFUNCTYPE_NONE:	//base/turret
@@ -5239,6 +5243,7 @@ int LaunchScarab(OBJ *reaver,OBJ *destobj)
 	    {
 		if (a = reaver->childs->parentof[i])
 		{
+		    a->prop |= VARREADY;
 		    delchild(reaver,a);
 		    CalcXYOffsets(reaver->mainimage->parentimg->side,GetUnitDimensions(reaver->SC_Unit,UNITDIM_DOWN),0,&deltax,&deltay);
 		    WakeUpChild(reaver,a,destobj,deltax,deltay);
@@ -5249,5 +5254,3 @@ int LaunchScarab(OBJ *reaver,OBJ *destobj)
     return(0);
 }
 //=================================
-
-

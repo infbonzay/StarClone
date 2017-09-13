@@ -366,7 +366,9 @@
 *130 scarab not atack
 *131 reaver not move in atackmove
 *132 scarab need to be launched from mouth of reaver
-    
+*133 reaver autoatack    
+    tank rotation turret & siege not compatible
+    scarab need to continue move if lost finalOBJ
     need rotation turret to base if not have goal
     
     ?dust moves with unit
