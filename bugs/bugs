@@ -362,8 +362,10 @@
 *126 goliath img failure (add top of science vessel)
 *127 land error
 *128 jim raynor mines not see if not upgrades for vultures
-    infested terran not atack
-    scarab not atack
+*129 infested terran not atack
+*130 scarab not atack
+    reaver not move in atackmove
+    
     need rotation turret to base if not have goal
     
     ?dust moves with unit

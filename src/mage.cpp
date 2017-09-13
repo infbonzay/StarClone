@@ -412,6 +412,7 @@ int existatrdecloak(struct OBJ *a)
 //==============================================
 void MakeMindControl(OBJ *a,int playernr,int ncolor)
 {
+    OBJ *a2;
     if (a->SC_Unit==SC_PYLONOBJ)
 	DelPylonArea(&map,a,a->playernr);
     else
@@ -427,16 +428,26 @@ void MakeMindControl(OBJ *a,int playernr,int ncolor)
     {
 	for (int i=0;i<a->childs->nrofchildunits;i++)
 	{
-	    if (a->childs->parentof[i])
+	    a2 = a->childs->parentof[i];
+	    if (a2)
 	    {
-		if (a->childs->parentof[i]->SC_Unit==SC_NUKEOBJ)
-		    PLAYER[a->childs->parentof[i]->playernr].nukes--;
-		ChangeSupply(a->playernr,a->childs->parentof[i]->SC_Unit,MINUSFACTOR);
-		a->childs->parentof[i]->playernr = playernr;
-	        a->childs->parentof[i]->color = ncolor;
-		ChangeSupply(a->playernr,a->childs->parentof[i]->SC_Unit,PLUSFACTOR);
-		if (a->childs->parentof[i]->SC_Unit==SC_NUKEOBJ)
-		    PLAYER[a->childs->parentof[i]->playernr].nukes++;
+		//remove interceptor from parent if it is in base
+		if (a2->SC_Unit == SC_INTERCEPTOROBJ && !(a2->prop & VARINBASE))
+		{
+		    delchild(a,a2);		
+		}
+		else
+		{
+		    if (a2->SC_Unit == SC_NUKEOBJ)
+			PLAYER[a2->playernr].nukes--;
+		    ChangeSupply(a->playernr,a2->SC_Unit,MINUSFACTOR);
+		    a2->playernr = playernr;
+	    	    a2->color = ncolor;
+		    a2->mainimage->imageusercolor = ncolor;
+		    ChangeSupply(a->playernr,a2->SC_Unit,PLUSFACTOR);
+		    if (a2->SC_Unit == SC_NUKEOBJ)
+			PLAYER[a2->playernr].nukes++;
+		}
 	    }
 	}
     }

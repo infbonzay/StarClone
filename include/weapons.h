@@ -74,12 +74,6 @@ int  loadweapons(void);
 
 #define CREATEWEAPON_IGNOREVISION				0x01
 
-#define BEFOREGROUNDOBJ		0	//3	the elevationlevel
-#define AFTERGROUNDOBJ		1	//11	
-#define BEFOREAIROBJ		2	//12	
-#define AFTERAIROBJ		3	//18	
-#define AFTERALLOBJ		4	//19	
-
 extern WEAPONS_UNIT weapons[];
 
 extern short TARGETERROR[3];

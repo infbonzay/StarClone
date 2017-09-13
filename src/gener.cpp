@@ -202,6 +202,7 @@ int main(int c,char **parm,char **env)
     {
 //        gameend("Problem with loading dat,tbl files");
     }
+    LoadPatchTbl();
     if (loadznak())
     {
 //	exit(-1);

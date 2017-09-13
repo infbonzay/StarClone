@@ -57,25 +57,17 @@ int CarrierAction(struct OBJ *a,MAIN_IMG *img)
 int InterceptorsAction(struct OBJ *a,MAIN_IMG *img)
 {
 //    OBJstruct *b = loadobj(a->SC_Unit);
-/*    if (a->prop&VARINBASE)
+    if (a->prop & VARINBASE)
 	return 0;
-    if (a->modemove!=MODERECHARGE)
+    if (a->modemove != MODERECHARGE)
     {
-	if (b->timeflybeforerecharge)    //if exist timeflybeforerecharge
+	if (a->timeflybeforerecharge--)    //if exist timeflybeforerecharge
 	{
-	    a->timeflybeforerecharge--;
-	    if (a->timeflybeforerecharge<=0)
-	    {
-		moveobj(a,a->myparent,MODERECHARGE,0,0,NOSHOWERROR,0);
-		return 1;
-	    }
-	}
-	if (!a->curentatacknr)
-	{
-            moveobj(a,a->myparent,MODERECHARGE,0,0,NOSHOWERROR,0);
+	    a->timeflybeforerecharge = 0;
+	    moveobj(a,a->myparent,MODERECHARGE,0,0,NOSHOWERROR,0);
 	    return 1;
 	}
-	if (a->modemove == MODESTOP)
+/*	if (a->modemove == MODESTOP)
 	{
 	    int sx,sy,sxsource,sysource;
 	    if (a->myparent)
@@ -98,23 +90,22 @@ int InterceptorsAction(struct OBJ *a,MAIN_IMG *img)
 	    moveobj(a,NULL,MODEMOVE,sx,sy,NOSHOWERROR,0);
 	    return 1;
 	}
+*/
     }
     else
     {
-	if (!a->myparent||a->myparent->playernr!=a->playernr)
+	if (!a->myparent)
 	{
 	    dieobj(a);
-	    return 1;
 	}
-	else 
+	else    //check if interceptor is near carrier to enter inside
 	    if (controldistancemode(GetOBJx(a),GetOBJy(a),GetOBJx(a->myparent),GetOBJy(a->myparent),a->modemove))
 	    {
-		ReturnedToBase(a,b);//after moved to base
+		ReturnedToBase(a);//after moved to base
 		return 1;
 	    }
     }
     return 0;
-*/
 }
 //=================================
 int CritterAction(struct OBJ *a,MAIN_IMG *img)
@@ -955,11 +946,13 @@ int AtackCoolDownEnds(OBJ *a,OBJ *destobj,int continueatack,int showerrorflag)
 		    return(MOVEOBJ_DONE);
 		}
 		return(MOVEOBJ_STOPANDCONTINUEJOB);
-	    case CREATEDWEAPONSTATUS_LAUNCHINTERCEPTORS:
-		WakeUpAllChilds(a,destobj);
-		return(MOVEOBJ_DONE);
+//	    case CREATEDWEAPONSTATUS_LAUNCHINTERCEPTORS:
+//		WakeUpAllChilds(a,destobj);
+//		return(MOVEOBJ_DONE);
+//	    case CREATEDWEAPONSTATUS_LAUNCHSCARAB:
+//		return(MOVEOBJ_DONE);
 	    default:
-		DEBUGMESSCR("error resval from ifcreateweapon\n");
+		DEBUGMESSCR("error resval from ifcancreateweapon\n");
 		return(MOVEOBJ_NOACT);
 	}
 }

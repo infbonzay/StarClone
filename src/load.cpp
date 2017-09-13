@@ -994,23 +994,14 @@ void UnloadDatTblFiles(DATTBLSTRUCT *dattbl)
     }
 }
 //============================================
-void *imagesreftogrpdata[MAX_IMAGES_ELEM];
-/*mylist SC_Images_List;
-//===========================================
-struct SC_IMAGES_LIST
+void LoadPatchTbl(void)
 {
-    short	images_tbl;
-    void	*images_data;
-};
-//===========================================
-void FreeImagesListData(void *mem)
-{
-    SC_IMAGES_LIST *elem;
-    elem=(SC_IMAGES_LIST *)mem;
-    if (elem->images_data)
-	wfree(elem->images_data);
+//    printf("maxrange=%d\n",alldattbl.weapons_dat->MaximumRange[64]);	//is 15
+//    printf("maxrange=%d\n",alldattbl.weapons_dat->MaximumRange[82]);	//is 128
+    alldattbl.weapons_dat->MaximumRange[82] = 15;	//scarab need to be melee atack
 }
-*/
+//============================================
+void *imagesreftogrpdata[MAX_IMAGES_ELEM];
 //===========================================
 void Unload_SC_Images_List(void)
 {
@@ -1023,31 +1014,9 @@ void Unload_SC_Images_List(void)
     }
 }
 //===========================================
-/*int add2loadedimageslist(short images_tbl,void *images_data)
-{
-    SC_IMAGES_LIST *newelem=(SC_IMAGES_LIST *)wmalloc(sizeof(SC_IMAGES_LIST));
-    newelem->images_tbl=images_tbl;
-    newelem->images_data=images_data;
-    return(SC_Images_List.AddList(newelem));
-}
-//===========================================
-void *FindLoadedInList(short images_tbl)
-{
-    SC_IMAGES_LIST *elem;
-    SC_Images_List.EnumListInit();
-    while(elem=(SC_IMAGES_LIST *)SC_Images_List.GetNextListElem())
-    {
-	if (elem->images_tbl==images_tbl)
-	    return(elem->images_data);
-    }
-    return(NULL);
-}
-*/
-//===========================================
 int GetLoadedImage(int mpqfilenr,int images_tbl,void **loadeddata)
 {
     int err=0;
-//    void *tempdata = FindLoadedInList(images_tbl);
     void *tempdata = imagesreftogrpdata[images_tbl];
     if (tempdata==NULL)
     {
@@ -1060,7 +1029,6 @@ int GetLoadedImage(int mpqfilenr,int images_tbl,void **loadeddata)
 	    }
 	    else
 	    {
-//		err=add2loadedimageslist(images_tbl,tempdata);
 		imagesreftogrpdata[images_tbl]=tempdata;
 	    }
 	}
@@ -1077,7 +1045,6 @@ int GetLoadedImage(int mpqfilenr,int images_tbl,void **loadeddata)
 int GetLoadedImage(int images_tbl,void **loadeddata)
 {
     int err=0;
-//    void *tempdata = FindLoadedInList(images_tbl);
     void *tempdata = imagesreftogrpdata[images_tbl];
     if (tempdata==NULL)
     {
@@ -1090,7 +1057,6 @@ int GetLoadedImage(int images_tbl,void **loadeddata)
 	    }
 	    else
 	    {
-//		err = add2loadedimageslist(images_tbl,tempdata);
 		imagesreftogrpdata[images_tbl]=tempdata;
 	    }
 	}
@@ -1150,7 +1116,6 @@ int loadbeforestarmap(int race)
 	images_tbl=alldattbl.images_dat->images_tbl[images_id];
 	GetLoadedImage(images_tbl,(void **)&grpmingas[i]);
     }
-//    LoadOverlaysGRP();
     int err=readmageproperties();
     if (err<0)
     {
@@ -1191,7 +1156,6 @@ void unloadafterstarmap(void)
     DialogBin_FreeItemCoords(statbtnmenu);
     DialogBin_FreeItemCoords(f10menu);
     DialogBin_FreeItemCoords(minimapmenu);
-//    UnloadAllOverlaysGRP();
     unloadcircles();
     unloadtexturegrp();
     Unload_SC_Images_List();
@@ -1203,7 +1167,6 @@ void unloadafterstarmap(void)
 //==========================
 #define MAXCAMPAIGNS	7
 unsigned char mapdatatbl_raceoffset[MAXCAMPAIGNS]={1,12,22,32,40,49,255};
-//unsigned char campaigns_races[MAXCAMPAIGNS]={TERRANRACE,ZERGRACE,PROTOSSRACE,PROTOSSRACE,TERRANRACE,ZERGRACE,-1};
 //==========================
 int missionid2missiontbl(int campaignnr,int selected_id)
 {

@@ -2525,6 +2525,15 @@ escapeconstrslots:
 		}
 	    }
 	    break;
+	case MODERECHARGE:		//recharge interceptor in carrier
+	    if (!a->myparent || !destobj)
+	    {
+		dieobj(a);
+		return(MOVEOBJ_NOACT);
+	    }
+	    initmoveaction(a,destobj,mode,0,0,x,y);
+	    a->modemove = mode;
+	    break;
 	default:
 	    DEBUGMESSCR("mode=%d(%s)not developed\n",mode,mageprop[mode].namemage);
 	    break;

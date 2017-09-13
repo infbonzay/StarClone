@@ -55,6 +55,8 @@ int  LoadDatTblFiles(DATTBLSTRUCT *dattbl);
 void UnloadDatTblFiles(DATTBLSTRUCT *dattbl);
 void loadallobj(void);
 void UnloadAllOBJSTRUCT(void);
+void LoadPatchTbl(void);
+
 
 void Unload_SC_Images_List(void);
 void *FindLoadedInList(short images_tbl);
