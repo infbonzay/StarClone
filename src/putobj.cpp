@@ -268,6 +268,7 @@ OBJ *CreateUnitInUnit(struct OBJ *a,int obj_id,int playsound,int first_xpos,int 
 	temp->mainimage->DisableExecScript();
         temp->mainimage->HideChildsImgFlag();
         temp->mainimage->HideImgFlag();
+	temp->mainimage->elevationlevel = a->mainimage->elevationlevel-1;
 
 	if (obj_id==SC_NUKEOBJ)
 	{

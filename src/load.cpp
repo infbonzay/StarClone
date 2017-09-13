@@ -998,7 +998,8 @@ void LoadPatchTbl(void)
 {
 //    printf("maxrange=%d\n",alldattbl.weapons_dat->MaximumRange[64]);	//is 15
 //    printf("maxrange=%d\n",alldattbl.weapons_dat->MaximumRange[82]);	//is 128
-    alldattbl.weapons_dat->MaximumRange[82] = 15;	//scarab need to be melee atack
+    alldattbl.weapons_dat->MaximumRange[WEAPONID_SCARAB] = 15;		//scarab need to be melee atack
+    alldattbl.weapons_dat->WeaponCooldown[WEAPONID_SCARAB] = 60;	//reaver cooldown
 }
 //============================================
 void *imagesreftogrpdata[MAX_IMAGES_ELEM];

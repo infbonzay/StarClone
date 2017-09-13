@@ -80,7 +80,10 @@ int GetUnitSightRange(OBJ *a,OBJstruct *b)
     if (GetMageAtr(&a->atrobj,ATRBLIND)>0)
 	return(MINSEERANGE);
     if (b->sightupgnr!=-1)
-	seerange += GetUpgradeTree(&map,a->playernr,b->sightupgnr)*2;//each upgrade add +2 to sight range 
+	if (IsHeroUnit(a->SC_Unit))
+	    seerange += 2;
+	else
+	    seerange += GetUpgradeTree(&map,a->playernr,b->sightupgnr)*2;//each upgrade add +2 to sight range 
     return(seerange);
 }
 //=================================
@@ -416,59 +419,6 @@ int GetShieldArmor(OBJ *a,int *upgradenr)
     return(sharmor);
 }
 //====================================
-int GetRotatePos(OBJ *a)
-{
-//    return((int)a->storonasveta);
-}
-//====================================
-int GetDestRotatePos(OBJ *a)
-{
-//    return(a->deststoronasveta);
-}
-//====================================
-void SetRotatePos(OBJ *a,float storonasveta)
-{
-//    a->storonasveta=storonasveta;
-}
-//====================================
-void SetDestRotatePos(OBJ *a,int deststoronasveta)
-{
-//    a->deststoronasveta=deststoronasveta;
-}
-//====================================
-//return 1 if after rotation storonasveta==deststoronasveta
-int ModifyRotatePos(OBJ *a,int maxsides,float factor,int deststoronasveta)
-{
-/*    int factor2,factor3;
-    if (factor>0)
-        factor3=1;
-    else
-        factor3=-1;
-    factor2=(int)(factor);
-    factor=factor-factor2;
-    factor2=abs(factor2);
-    for (int i=0;i<factor2;i++)
-    {
-        a->storonasveta+=factor3;
-        if (a->storonasveta>=(maxsides-1)*2)
-    	    a->storonasveta-=(maxsides-1)*2;
-        if (a->storonasveta<0)
-    	    a->storonasveta+=(maxsides-1)*2;
-	if ((int)a->storonasveta==deststoronasveta)
-	    return(1);
-    }
-    a->storonasveta+=factor;
-    if (a->storonasveta>=(maxsides-1)*2)
-        a->storonasveta-=(maxsides-1)*2;
-    if (a->storonasveta<0)
-        a->storonasveta+=(maxsides-1)*2;
-    if ((int)a->storonasveta==deststoronasveta)
-        return(1);
-    else
-	return(0);
-*/
-}
-//====================================
 char *getOBJname(unsigned char SC_Unit)
 {
     if (SC_Unit!=SC_NOUNITNR)
@@ -509,12 +459,6 @@ void DestroyMarked(void)
 	    destroyobj(a);
 	}
     }
-}
-//=================================
-char kvd[32]={0,0,0,0,0,0,0,0, 3,3,3,3,3,3,3,3, 2,2,2,2,2,2,2,2, 1,1,1,1,1,1,1,1};
-int GetKvadrant(int storonasveta)
-{
-    return(kvd[storonasveta]);
 }
 //=================================
 int IsActiveUnitForAtack(OBJ *a)
@@ -690,15 +634,6 @@ void swapOBJ(struct OBJ **a,struct OBJ **b)
      *b = c;
 }
 //==================================
-int GetDeltaDirection(OBJ *a)
-{
-    int deltadir;
-    deltadir=abs(GetDestRotatePos(a)-GetRotatePos(a));
-    if (deltadir>16)
-	deltadir=32-deltadir;
-    return(deltadir);
-}
-//=================================
 void AlignMAPXYCoordLU(int *l,int *u)
 {
     if (*u<0) 

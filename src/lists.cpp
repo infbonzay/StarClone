@@ -864,21 +864,6 @@ int SetBurrowFlag(OBJ *a,int flag)
     }
 }
 //==================================
-int IfAtackCoolDown(OBJ *a)
-{
-    return(a->prop&VARCOOLDOWN);
-}
-//==================================
-void SetAtackCoolDown(OBJ *a)
-{
-    a->prop|=VARCOOLDOWN;
-}
-//==================================
-void ClearAtackCoolDown(OBJ *a)
-{
-    a->prop&=~VARCOOLDOWN;
-}
-//==================================
 char *getmapSTR(struct mapinfo *testmap,int nrofstr)
 {
     char *str,*buf;

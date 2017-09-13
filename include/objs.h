@@ -111,6 +111,7 @@ void ChangeObjXY(struct OBJ *a,int x,int y);
 void ChangeObjXYDelta(struct OBJ *a,int xdelta,int ydelta);
 void DeleteOldObjPointers(struct OBJ *a);
 int  QueueDelObj(struct OBJ *obj);
+void WakeUpChild(OBJ *myparent,OBJ *a,OBJ *destobj);
 void WakeUpChild(OBJ *a,OBJ *destobj);
 void WakeUpAllChilds(OBJ *a,OBJ *destobj);
 
@@ -187,9 +188,10 @@ void DelOBJFromModeList(struct OBJ *a,struct OBJ *searchobj);
 int  GetOBJNrInTransport(OBJ *c,OBJ *a);
 void FreeOBJFromTransport(OBJ *c,OBJ *a,int objnr);
 void ChangeSubUnitCoords(OBJ *turret,OBJ *base);
-int TryToEnterNydus(OBJ *a,OBJ *nydus);
-int RegenerateShield(OBJ *a);
-int RegenerateLife(OBJ *a);
+int  TryToEnterNydus(OBJ *a,OBJ *nydus);
+int  RegenerateShield(OBJ *a);
+int  RegenerateLife(OBJ *a);
+int  LaunchScarab(OBJ *reaver,OBJ *destobj);
 
 
 #define UnitDoAiAction(playernr) (map.pl_owner[playernr] == OWNER_COMPUTER)// || map.pl_owner[playernr] == OWNER_HUMAN)

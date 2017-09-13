@@ -237,6 +237,10 @@ inline int  GetOBJy(OBJ *a) { return(a->mainimage->ypos>>8); };
 inline int  GetOBJx256(OBJ *a) { return(a->mainimage->xpos); };
 inline int  GetOBJy256(OBJ *a) { return(a->mainimage->ypos); };
 
+inline void SetOBJxy256(OBJ *a,int x256,int y256) { a->mainimage->xpos = x256; a->mainimage->ypos = y256; };
+//============================================
+
+
 extern MAINIMGLIST imageslist_minimap;
 extern MAINIMGLIST imageslist_doodads;
 extern MAINIMGLIST mainimageslist;

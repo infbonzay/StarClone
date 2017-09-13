@@ -99,14 +99,13 @@ readnext:
 //===========================================
 #define WEAPON_UNIT_ANY		0
 #define WEAPON_UNIT_CARRIER	1
-#define WEAPON_UNIT_REAVER	2
-int unitweapon_retstatus[3]={CREATEDWEAPONSTATUS_ATACKSUCCESS,CREATEDWEAPONSTATUS_LAUNCHINTERCEPTORS,CREATEDWEAPONSTATUS_LAUNCHSCARAB};
+int unitweapon_retstatus[3]={CREATEDWEAPONSTATUS_ATACKSUCCESS,CREATEDWEAPONSTATUS_LAUNCHINTERCEPTORS};
 //===========================================
 int IfCanCreateWeapon(OBJ *atacker,OBJ *destobj,int *errmes,unsigned char *weapon_id,int flags)
 {
     unsigned char SC_Unit=atacker->SC_Unit;
     unsigned char Subunit1;
-    int rangebad=0,weaponunitid,specialatack;
+    int rangebad=0,weaponunitid;
     signed char deltaside;
     unsigned char groundweapon_id,airweapon_id,usedweapon_id,atackangle,neededside;
     if (destobj)
@@ -120,8 +119,8 @@ int IfCanCreateWeapon(OBJ *atacker,OBJ *destobj,int *errmes,unsigned char *weapo
 	Subunit1 = alldattbl.units_dat->Subunit1[atacker->SC_Unit];
 	if (Subunit1<MAX_UNITS_ELEM)	
 	    SC_Unit = Subunit1;
-	groundweapon_id=alldattbl.units_dat->GroundWeapon[SC_Unit];
-	airweapon_id=alldattbl.units_dat->AirWeapon[SC_Unit];
+	groundweapon_id = alldattbl.units_dat->GroundWeapon[SC_Unit];
+	airweapon_id = alldattbl.units_dat->AirWeapon[SC_Unit];
 	switch(atacker->SC_Unit)
 	{
 	    case SC_REAVEROBJ:
@@ -132,14 +131,16 @@ int IfCanCreateWeapon(OBJ *atacker,OBJ *destobj,int *errmes,unsigned char *weapo
 			*errmes=875;
 		    return(CREATEDWEAPONSTATUS_CANTATACKTHISUNIT);
 		}
+	        if (!getchilds(atacker))
+	    	    return(CREATEDWEAPONSTATUS_NOTAMMO);
 	        if ( GetDistanceBetweenUnits256(atacker,destobj) <= (GetTargetAcquisitionRange(atacker->SC_Unit) << 13 ))	//256 * 32 (<<13)
 	    	    rangebad = 0;
 		else
 		    rangebad = 1;
-		weaponunitid = WEAPON_UNIT_REAVER;
+		weaponunitid = WEAPON_UNIT_ANY;
 		usedweapon_id = groundweapon_id;
-		atackangle = 255;
-		specialatack = 1;
+		weapon_id = NULL;
+		atackangle = alldattbl.weapons_dat->AttackAngle[WEAPONID_SCARAB];
 		break;
 	    case SC_CARRIEROBJ:
 	    case SC_HERO_GANTRITHOROBJ:
@@ -150,7 +151,6 @@ int IfCanCreateWeapon(OBJ *atacker,OBJ *destobj,int *errmes,unsigned char *weapo
 		weaponunitid = WEAPON_UNIT_CARRIER;
 		usedweapon_id = airweapon_id;
 		atackangle = 255;
-		specialatack = 1;
 		break;
 	    default:
 		if (!IsOnSkyOBJ(destobj))
@@ -211,7 +211,6 @@ int IfCanCreateWeapon(OBJ *atacker,OBJ *destobj,int *errmes,unsigned char *weapo
 		}
 		weaponunitid = WEAPON_UNIT_ANY;
 		atackangle = alldattbl.weapons_dat->AttackAngle[usedweapon_id];
-		specialatack = 0;
 		break;
 	}
 	if (weapon_id)
@@ -239,9 +238,8 @@ int IfCanCreateWeapon(OBJ *atacker,OBJ *destobj,int *errmes,unsigned char *weapo
 			}    
 			return(CREATEDWEAPONSTATUS_ATACKSUCCESSWITHROTATION);
 		    }
-		    if (!specialatack)
+		    if (atackangle != 255)
 			atacker->mainimage->AllUnitDirection256(neededside);
-//	    	    return(CREATEDWEAPONSTATUS_ATACKSUCCESS);
 	    	    return(unitweapon_retstatus[weaponunitid]);
 		}
 		break;

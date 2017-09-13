@@ -7,7 +7,6 @@ ENDOBJ           = 1
 [NEWOBJECT] = 1 Terran_Ghost
 SIGHTUPG	 = 20
 MANAUPG          = 21
-TIMELEFT         = 0
 PROPERTIES       = 8    0   0   0   0   0   0   0   0   0
 			256 257 333   258 267 0  377  281 282
 			256 257 333   258 267 0  378  281 282
@@ -27,7 +26,6 @@ PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 ENDOBJ           = 1
 
 [NEWOBJECT] = 3 Terran_Goliath
-TIMELEFT         = 0
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 			256 257 333   258 267 0   0   0   0
 ENDOBJ           = 1
@@ -122,6 +120,7 @@ PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 ENDOBJ           = 1
 
 [NEWOBJECT] = 16 Sarah_Kerrigan
+SIGHTUPG	 = 20
 PROPERTIES       = 3    0   0   0   0   0   0   0   0   0
 			256 257 333   258 267 0  377  281 0
 			256 257 333   258 267 0  378  281 0
@@ -158,7 +157,6 @@ PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 ENDOBJ           = 1
 
 [NEWOBJECT] = 21 Tom_Kazansky
-MANAUPG          = 22
 PROPERTIES       = 3    0   0   0   0   0   0   0   0   0
 			256 257 333   258 267 0   376  0   0
 			256 257 333   258 267 0   378  0   0
@@ -166,7 +164,6 @@ PROPERTIES       = 3    0   0   0   0   0   0   0   0   0
 ENDOBJ           = 1
 
 [NEWOBJECT] = 22 Magellan
-MANAUPG          = 19
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 			256 257 0   258 267 0   283 284 285
 
@@ -200,21 +197,18 @@ ENDOBJ           = 1
 
 
 [NEWOBJECT] = 27 Arcturus_Mengsk
-MANAUPG          = 23
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 			256 257 333   258 267 0  286  0   0
 
 ENDOBJ		= 1
 
 [NEWOBJECT] = 28 Hyperion
-MANAUPG          = 23
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 			256 257 333   258 267 0  286  0   0
 
 ENDOBJ		= 1
 
 [NEWOBJECT] = 29 Norad2
-MANAUPG          = 23
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 			256 257 333   258 267 0  286  0   0
 
@@ -373,7 +367,6 @@ PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 ENDOBJ           = 1
 
 [NEWOBJECT] = 49 Matriarch_Queen
-MANAUPG          = 31
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 			256 257 0   258 267 313 263 264 265
 
@@ -395,7 +388,6 @@ PROPERTIES       = 3    0   0   0   0   0   0   0   0   0
 
 ENDOBJ           = 1
 [NEWOBJECT] = 52 Uncleaned_One_Defiler
-MANAUPG          = 32
 PROPERTIES       = 3    0   0   0   0   0   0   0   0   0
 			256 257 0   258 267 259 261 262 371
 			0   0   0   0   0   0   0   0   372
@@ -534,7 +526,6 @@ ENDOBJ           = 1
 [NEWOBJECT] = 70 Protoss_Scout
 SPEEDUPG 	 = 42 33.3
 SIGHTUPG	 = 41
-TIMELEFT         = 0
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 			256 257 333   258 267 0   0   0   0
 
@@ -646,6 +637,7 @@ PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 ENDOBJ           = 1
 
 [NEWOBJECT] = 85 Protoss_Reaver_Scarab
+TIMELEFT         = 150
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0  
 			256 257 333   0   0   0   0   0   0
 
@@ -653,14 +645,12 @@ ENDOBJ           = 1
 
 [NEWOBJECT] = 86 Danimoth_Arbiter
 CLOAKRANGE	 = 5
-MANAUPG          = 44
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 			256 257 333   258 267 0   280 278 0
 
 ENDOBJ           = 1
 
 [NEWOBJECT] = 87 Aldaris_High_Templar
-MANAUPG          = 40
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 			256 257 333   258 267 0   275 277 0
 
@@ -731,7 +721,6 @@ ENDOBJ           = 1
 
 [NEWOBJECT] = 99 Samir_Duran_Ghost
 SIGHTUPG	 = 20
-MANAUPG          = 21
 PROPERTIES       = 3    0   0   0   0   0   0   0   0   0
 			256 257 333   258 267 0   377  281 0
 			256 257 333   258 267 0   378  281 0
@@ -741,7 +730,6 @@ ENDOBJ           = 1
 
 [NEWOBJECT] = 100 Alexei_Stukov_Ghost
 SIGHTUPG	 = 20
-MANAUPG          = 21
 PROPERTIES       = 3    0   0   0   0   0   0   0   0   0
 			256 257 333   258 267 0   377  281 0
 			256 257 333   258 267 0   378  281 0
@@ -756,7 +744,6 @@ PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 ENDOBJ           = 1
 
 [NEWOBJECT] = 102 Gerard_DuGalle
-MANAUPG          = 23
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
 			256 257 333   258 267 0  286  0   0
 
@@ -773,7 +760,6 @@ ENDOBJ           = 1
 
 [NEWOBJECT] = 104 Infested_Samir_Duran_Ghost
 SIGHTUPG	 = 20
-MANAUPG          = 21
 PROPERTIES       = 3    0   0   0   0   0   0   0   0   0
 			256 257 333   258 267 0  377  281 260
 			256 257 333   258 267 0  378  281 260

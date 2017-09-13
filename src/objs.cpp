@@ -2315,8 +2315,6 @@ escapeconstrslots:
 		//move to destination
 		initmoveaction(a,destobj,mode,0,0,x,y);
 		AddModeMove(a,destobj,MODEWARPINIT,x,y,showerrorflag);//cast mage after
-//		a->prop |= VARMOVETHROWUNITS|VARSUICIDE;
-//		destobj->prop |= VARMOVETHROWUNITS|VARSUICIDE;
 	    }
 	    return(MOVEOBJ_DONE);
 	case MODEUNLOADALLUNITS:
@@ -3390,7 +3388,7 @@ void dieobj(struct OBJ *a)
 
 }
 //=================================
-void WakeUpChild(OBJ *a,OBJ *destobj)
+void WakeUpChild(OBJ *myparent,OBJ *a,OBJ *destobj)
 {
     if (a)
     {
@@ -3398,11 +3396,23 @@ void WakeUpChild(OBJ *a,OBJ *destobj)
 	SetModeMove(a,MODESTOP);
 	a->finalOBJ = NULL;
 	a->prop &= ~VARINBASE;
+
+	a->mainimage->EnableExecScript();
+        a->mainimage->ShowChildsImgFlag();
+        a->mainimage->ShowImgFlag();
+        ChangeTypeOfProp(a,PROPNORMAL1);
+        SetOBJxy256(a,GetOBJx256(myparent),GetOBJy256(myparent));
+
 	if (destobj)
 	{
 	    moveobj(a,destobj,MODEATACK,0,0,NOSHOWERROR,0);
 	}
     }
+}
+//=================================
+void WakeUpChild(OBJ *a,OBJ *destobj)
+{
+    WakeUpChild(a->myparent,a,destobj);
 }
 //=================================
 void WakeUpAllChilds(OBJ *a,OBJ *destobj)
@@ -3413,7 +3423,7 @@ void WakeUpAllChilds(OBJ *a,OBJ *destobj)
 	    if (a->childs->parentof[i])
 		if (a->childs->parentof[i]->prop & VARINBASE)
 		    if (a->childs->parentof[i]->playernr == a->playernr)
-			WakeUpChild(a->childs->parentof[i],destobj);
+			WakeUpChild(a,a->childs->parentof[i],destobj);
 		    else
 			dieobj_silently(a->childs->parentof[i]);
 }
@@ -4609,7 +4619,14 @@ void initmoveaction(OBJ *a,OBJ *destobj,int mode,int startx,int starty,int x,int
 	{
 	    case MODEATACK:
 		if (destobj)
-		    a->modemoveminusdistance = GetRangeWeaponInPixels(a,startx,a->playernr)<<8;	//move minus range of weapos
+		{
+		    if (a->SC_Unit == SC_REAVEROBJ || a->SC_Unit == SC_HERO_WARBRINGEROBJ)
+		    {
+			a->modemoveminusdistance = 256<<8;
+		    }
+		    else    
+			a->modemoveminusdistance = GetRangeWeaponInPixels(a,startx,a->playernr)<<8;	//move minus range of weapos
+		}
 		else
 		    a->modemoveminusdistance = 0;						//move in atackmode to dest on ground
 		break;
@@ -5210,5 +5227,25 @@ void DelAllModeMoves(struct OBJ *a)
     }
 }
 //==============================================
+int LaunchScarab(OBJ *reaver,OBJ *destobj)
+{
+    OBJ *a;
+    reaver->usedweapon_id = WEAPONID_SCARAB;
+    if (destobj)
+    {
+	if (reaver->childs)
+	    for (int i=0;i<MAXCHILDS;i++)
+	    {
+		if (a = reaver->childs->parentof[i])
+		{
+		    delchild(reaver,a);
+		    WakeUpChild(reaver,a,destobj);
+		    return(1);
+		}
+	    }
+    }
+    return(0);
+}
+//=================================
 
 

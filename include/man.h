@@ -292,19 +292,14 @@ struct ONEMODEMOVE
 //=======================================
 struct OBJstruct
 {
-//	unsigned short	iscriptid;
 	unsigned char	SC_Unit;
 	unsigned char	SC_CreateFromUnit;
-//	struct	ATROBJ	atrobj;
 	unsigned int	timelife;		//vremea zagruzki structuri
 
 	unsigned short	addobj;
 	signed   short  additionaltext;		//point to stat_txt.tbl
 
 	signed char	creeptype;		//creeptype have have 0 ,sunken&creep have 1
-
-//	signed char	movebeforecooldown;
-//	signed char 	movecooldowntime;
 
 	signed char     armorupgnr;	//special armor ultralisk-only
 	signed char 	sightupgnr;	//special sight
@@ -317,34 +312,14 @@ struct OBJstruct
 	int		repairgas;	//need gas      for 1-tick repair
 	int		repairlife;	//add  life	for 1-tick repair
 		
-//	float		speed;
-
-//	int		acceleration;
-
-//        unsigned	char	objdamageup;           	//kakim objectom streleaet(Nr)
-//	unsigned	char	objdamagedown;         	//kakim objectom streleaet(Nr)
-
 	unsigned	char	maxlineprop;		//see down
-	//MAXLINEPROPERTIESx9 sposobnostei(moves,build,advbuild)
 	unsigned	short	modemove[MAXLINESPROPERTIES][9];
-//	unsigned	char	maxsides;
-//	unsigned	char	atacksides;
-//	unsigned	short	maxdamageradius,fullradius;
 
 
 	
         signed	char	nrupgrade;
 
-//        int 		grpfirstnr;
-//	int 		applicablelofirstline;
-
-//	unsigned char	atackhitticks[MAXATACKHITS];
-//	unsigned char	maxatackhits;
-
-//	SFXUNIT		sfx;
-
 	SMKPORTRAITS	*portraits;
-//	ROCKETINFO	*rocketinfo;
 
 	struct	LOFILE	*subunit_lo;
 	
@@ -352,18 +327,9 @@ struct OBJstruct
 
 	unsigned short 	maxtimeleft;
 	
-//	unsigned short	sizex;
-//	unsigned short	sizey;
-
 	unsigned short	timerechargeonbase;		//if select4,bit2 is set
 	signed	 short	timeflybeforerecharge;		//time left before need to recharge on base
-//	unsigned short	maxparalelmodes;
-//	unsigned short	paralelmodes[8];
-//	unsigned char	accelT;
-//	unsigned char	incrementspeed;
-//	unsigned char	factorzav;
-	unsigned char	race;
-//	unsigned char	maxbullets;			//max atacks before recharge on base
+//	unsigned char	race;
 
 	unsigned char	UNITprop; 
 				    

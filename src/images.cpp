@@ -823,12 +823,6 @@ void MAIN_IMG::MoveInUnitDirection(OBJ *a,unsigned char side,int speed)
 //============================================
 //============================================
 */
-void SetOBJxy256(OBJ *a,int xpos256,int ypos256)
-{
-    a->mainimage->xpos = xpos256;
-    a->mainimage->ypos = ypos256;
-}
-//============================================
 MAIN_IMG *OBJCreateImage(OBJ *a,int x256,int y256,unsigned char useiscriptnr,int groundair,unsigned short constr_id,unsigned short imagelo_id)
 {
     MAIN_IMG *img;

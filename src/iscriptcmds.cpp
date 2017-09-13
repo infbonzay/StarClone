@@ -547,13 +547,36 @@ int IScriptCmd_attackwith(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
 	    {
 		case 1:
 		    weapon_id = alldattbl.units_dat->GroundWeapon[a->SC_Unit];
+		    if (weapon_id >= MAX_WEAPONS_ELEM)
+		    {
+			if (a->SC_Unit == SC_REAVEROBJ || a->SC_Unit == SC_HERO_WARBRINGEROBJ)
+			{
+			    LaunchScarab(a,a->finalOBJ);
+			    goto atackwith_end;
+			}
+			else
+			{
+			    DEBUGMESSCR("SC_Unit=%d iscriptcmd: attackwith %d with no ground weapon\n",a->SC_Unit,buf[0]);
+			}
+		    }
 		    break;
 		case 2:
 		    weapon_id = alldattbl.units_dat->AirWeapon[a->SC_Unit];
+		    if (weapon_id >= MAX_WEAPONS_ELEM)
+		    {
+//			if (a->SC_Unit ==  || a->SC_Unit == )
+//			{
+//			
+//			}
+//			else
+//			{
+			    DEBUGMESSCR("SC_Unit=%d iscriptcmd: attackwith %d with no air weapon\n",a->SC_Unit,buf[0]);
+//			}
+		    }
 		    break;
 		default:
 		    weapon_id = 0;
-		    DEBUGMESSCR("SC_Unit = %d attack with != 1 or 2 \n",a->SC_Unit);
+		    DEBUGMESSCR("SC_Unit = %d attack with %d != 1 or 2 \n",a->SC_Unit,buf[0]);
 		    break;
 	    }
 	    if (a->finalOBJ)
@@ -582,7 +605,7 @@ int IScriptCmd_attackwith(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
 	    }
 	}
     }
-
+atackwith_end:
     img->offsetcmdinbuf += cmdsize;
     return(0);
 }

@@ -26,7 +26,6 @@ int GoliathTAction(struct OBJ *a,MAIN_IMG *img)
 {
     if (!a->finalOBJ)
     {
-	SetDestRotatePos(a,GetDestRotatePos(a->subunit));
     }
     return(0);
 }
@@ -37,7 +36,6 @@ int TankTAction(struct OBJ *a,MAIN_IMG *img)
 	return(0);
     if (!a->finalOBJ)
     {
-	SetDestRotatePos(a,GetDestRotatePos(a->subunit));
     }
     return(0);
 }
@@ -697,6 +695,15 @@ int SpiderMineAction(OBJ *a,MAIN_IMG *img)
     return(0);
 }
 //=================================
+int ScarabActionUnit(OBJ *a,MAIN_IMG *img)
+{
+    return(0);
+//    if (!a->finalOBJ)
+//    {
+//	
+//    }
+}
+//=================================
 int ResActionUnit(OBJ *a,MAIN_IMG *img)
 {
     signed char xlo,ylo;
@@ -763,7 +770,7 @@ int (*UnitActionDefaults[MAX_UNITS_ELEM])(struct OBJ *a,MAIN_IMG *img)=
     &NoneActionUnit,&NoneActionUnit,&CarrierAction, &InterceptorsAction,&NoneActionUnit,//070-074
     &NoneActionUnit,&NoneActionUnit,&NoneActionUnit,&NoneActionUnit,&NoneActionUnit,	//075-079
     &NoneActionUnit,&NoneActionUnit,&CarrierAction, &NoneActionUnit,&NoneActionUnit,	//080-084
-    &NoneActionUnit,&NoneActionUnit,&NoneActionUnit,&NoneActionUnit,&CritterAction,	//085-089
+    &ScarabActionUnit,&NoneActionUnit,&NoneActionUnit,&NoneActionUnit,&CritterAction,	//085-089
     &CritterAction, &NoneActionUnit,&NoneActionUnit,&CritterAction, &CritterAction,	//090-094
     &CritterAction, &CritterAction ,&NoneActionUnit,&NoneActionUnit,&NoneActionUnit,	//095-099
 
@@ -884,6 +891,7 @@ int AtackCoolDownEnds(OBJ *a,OBJ *destobj,int continueatack,int showerrorflag)
 	resval = IfCanCreateWeapon(a,destobj,&errmes,&a->usedweapon_id,CREATEWEAPON_IGNOREVISION);
 	switch(resval)
 	{
+	    case CREATEDWEAPONSTATUS_NOTAMMO:
 	    case CREATEDWEAPONSTATUS_UNDERDISRUPTION://atacker in disruption can't atack and no message to appear
 		if (!a->atackcooldowntime)
 		    a->atackcooldowntime = 1;
@@ -950,6 +958,7 @@ int AtackCoolDownEnds(OBJ *a,OBJ *destobj,int continueatack,int showerrorflag)
 //		WakeUpAllChilds(a,destobj);
 //		return(MOVEOBJ_DONE);
 //	    case CREATEDWEAPONSTATUS_LAUNCHSCARAB:
+//		LaunchScarab(a,destobj);
 //		return(MOVEOBJ_DONE);
 	    default:
 		DEBUGMESSCR("error resval from ifcancreateweapon\n");
@@ -1013,5 +1022,4 @@ void EndAtackAction(OBJ *a)
 //    	moveobj(a,NULL,MODEATACK,a->finalxatack,a->finalyatack,NOSHOWERROR,0);
 }
 //=================================
-
 
