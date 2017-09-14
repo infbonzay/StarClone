@@ -186,9 +186,15 @@ int SIGOrder_Tank_EndRotationBeforeSiegeMode(OBJ *a)
     if (a->mainimage->side == TANKSIEGESIDE && a->subunit->mainimage->side == TANKSIEGESIDE)
     {
 	if (IsSubUnit(a->SC_Unit))
+	{
+	    a->subunit->prop &= ~VARSPECIALWAIT;
 	    ApplyNextModeMove(a->subunit);
+	}
 	else
+	{
+	    a->prop &= ~VARSPECIALWAIT;
 	    ApplyNextModeMove(a);
+	}
     }
 }
 //==================================
@@ -199,9 +205,15 @@ int SIGOrder_Tank_EndRotationBeforeTankMode(OBJ *a)
     if (a->mainimage->side == TANKNORMALSIDE)
     {
 	if (IsSubUnit(a->SC_Unit))
+	{
+	    a->subunit->prop &= ~VARSPECIALWAIT;
 	    ApplyNextModeMove(a->subunit);
+	}
 	else
+	{
+	    a->prop &= ~VARSPECIALWAIT;
 	    ApplyNextModeMove(a);
+	}
     }
 }
 //==================================

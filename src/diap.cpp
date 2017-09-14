@@ -284,7 +284,7 @@ selectedicon:
 			    }
 			    if (k==3)
 			    {
-				simbrace=mp->race;
+				simbrace = mp->race;
 				sprintf(addstr,"%c%c%d ",COMMANDSYMB,PSISYMBZ+simbrace,need[k]);
 			    }
 			    else

@@ -33,11 +33,11 @@ int GoliathTAction(struct OBJ *a,MAIN_IMG *img)
 //=================================
 int TankTAction(struct OBJ *a,MAIN_IMG *img)
 {
-    if (a->prop & VARSPECIALWAIT)
+    if (a->subunit->prop & VARSPECIALWAIT)
 	return(0);
-    if (!a->finalOBJ)
+    if (!a->subunit->finalOBJ)
     {
-	img->UnitNeededDirection256(a->subunit->mainimage->side);
+//	img->UnitNeededDirection256(a->subunit->mainimage->side);
     }
     return(0);
 }

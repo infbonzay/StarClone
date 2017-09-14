@@ -96,7 +96,7 @@ void freeMAGEstructs(void)
 	    pointerlists.AddUniqueElem(mageprop[i].appear);
 	    mageprop[i].appear=NULL;
 	}
-	mageprop[i].namemage[0]=0;
+//	mageprop[i].namemage[0]=0;
     }
     for (i=0;i<MAXMAGEATR;i++)
 	magenrfrommageatr[i]=0;

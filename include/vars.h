@@ -156,10 +156,9 @@ extern short    int xpoint1l,xpoint2l,wmaxcol,wmaxrow;
 extern short    int maxway;
 
 extern char	*cmpgn_cmd[12];
-extern char	*rezu[45];
-extern char	*soundtypes[MAXTYPESOFSOUND];
+extern char	*rezu[15];
 extern char	*rezo[23];
-extern char    	*rezmp[27];
+extern char    	*rezmp[16];
 extern char	*rezwp[2];
 
 extern char	*rezl[];

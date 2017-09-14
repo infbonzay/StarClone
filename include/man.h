@@ -30,26 +30,9 @@ struct SFXPLAY
 	unsigned char	nrselectplayed;			//nr select play need for pss play
 };
 
-/*struct SFXUNIT
-{
-	short		int sfxfrom[MAXTYPESOFSOUND];
-	short		int sfxto[MAXTYPESOFSOUND];
-};
-*/
-/*struct	ROCKETINFO
-{
-	int 		info;		//bit 0	- 0-maker,1-destination
-	int 		nrmage;
-	signed 	char 	mageatroffset;
-	unsigned	char 	nrrockets;
-	signed 	char 	deltastoronasveta[SPRITE_SIDES];
-};
-*/
 struct CHILDS
 {
 	signed	char	nrofchildunits;			//nr of childs
-//	unsigned short	childids[MAXCHILDS];		//if 0 child was flying
-//	unsigned short	timerechargeonbase[MAXCHILDS];	//if !=0 child on base and recharging & childids is !0
 	struct	OBJ	*parentof[MAXCHILDS];		//parent of MAXCHILDS units
 };
 //=======================================
@@ -79,20 +62,6 @@ struct 	LOINF
 		char		status;
 };
 //=======================================
-/*struct MOVESTRUCT
-{
-    struct 	LOINF	loinf;
-    struct	GRPFILE *grp;
-      
-    unsigned	short   offsfirstpict;
-    unsigned	char    maxsides;
-      
-    unsigned	char    tabltransp; //0 - none;1-redtable,2-greentable,3-bluetable,4-whitetable,5-blacktable
-				    //bit 8 - is inversion picture
-		char    anim[MAXSTEP];
-};
-*/
-//=======================================
 struct APPEARORDER
 {
     GRPFILE *grp;
@@ -101,20 +70,6 @@ struct APPEARORDER
     char  grptable;
 };
 
-//=======================================
-/*struct MOVESTRUCTMAGE
-{
-    struct	GRPFILE *grp[3];
-      
-    unsigned	short   offsfirstpict;
-    signed	char    step;
-    unsigned	char    maxsides;
-      
-    signed	short   time;      //
-    unsigned	char    tabltransp;//0 - none;1-redtable,2-greentable,3-bluetable,4-whitetable,5-blacktable,6-distortion
-		char    anim[MAXSTEP];
-};
-*/
 //=======================================
 #define	MAXDAMAGEBLOODFLAMEOVERLAYS	3
 //=======================================
@@ -225,7 +180,6 @@ struct OBJ
 	
         unsigned char	curentmode;
         unsigned char	mines;
-//	unsigned char	corrosiveacidsprnr;
 
         unsigned char	color;               //tsvet unita
         unsigned char	whenregen;
@@ -288,8 +242,6 @@ struct ONEMODEMOVE
     unsigned char showerrflag;
 };
 //=======================================
-#define MAXEFFECT	6
-//=======================================
 struct OBJstruct
 {
 	unsigned char	SC_Unit;
@@ -317,11 +269,11 @@ struct OBJstruct
 
 
 	
-        signed	char	nrupgrade;
+//        signed	char	nrupgrade;
 
 	SMKPORTRAITS	*portraits;
 
-	struct	LOFILE	*subunit_lo;
+//	struct	LOFILE	*subunit_lo;
 	
 	unsigned char	cloakrange;            	//only arbiter
 
@@ -347,14 +299,7 @@ struct DEPENDONTYPE
 //=======================================
 struct MAGEP
 {
-//	unsigned char		*feedbackvar[MAXPLAYERS];
-//	MOVESTRUCTMAGE 		moves[5][2];
-        signed   char		timewait[5];
-        unsigned short		nsprite;            //nomer tipa
         int			mindistance;
-        int			damage;
-        signed	 short  	modemoveafter;
-        unsigned short  	beginwait;
         signed   short  	icon_id;		//cmdicons.grp
 	unsigned short		dependtechnology;
 	unsigned char		order_id;		//point to orders.dat
@@ -366,7 +311,6 @@ struct MAGEP
         signed	 char		soundmode;
         int 			diapazone;
         unsigned char   	keyfororder;
-	unsigned short		rechargebuttontime;
         unsigned char  		atr;	
                                     //0-bit - rightway
 				    //1-bit - ignore mineral,gas,mana,psi requirements
@@ -385,7 +329,7 @@ struct MAGEP
 	unsigned char   weapon_elevation;	//elevation nr
 
 	DEPENDONTYPE	depend;
-    	char		namemage[50];
+//    	char		namemage[50];
 };
 
 //extern struct MAGEARRAY *firstmage;

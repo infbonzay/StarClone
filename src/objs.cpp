@@ -1537,7 +1537,7 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
 	y = MAXYMAP*32-16;
     if (a->modemove == MODEDIE)
     {
-	DEBUGMESSCR("moveobj <%s> than died\n",mageprop[mode].namemage);
+	DEBUGMESSCR("moveobj <mode=%d> than died\n",mode);
         return(MOVEOBJ_NOACT);
     }
     if (mageprop[a->modemove].atr & ORDER_CANNOTBEINTERRUPTED)
@@ -2535,7 +2535,7 @@ escapeconstrslots:
 	    a->modemove = mode;
 	    break;
 	default:
-	    DEBUGMESSCR("mode=%d(%s)not developed\n",mode,mageprop[mode].namemage);
+	    DEBUGMESSCR("mode=%d not developed\n",mode);
 	    break;
     }
     return(MOVEOBJ_DONE);
@@ -3407,7 +3407,7 @@ void WakeUpChild(OBJ *myparent,OBJ *a,OBJ *destobj,int deltax,int deltay)
 
 	if (destobj)
 	{
-	    moveobj(a,destobj,MODEATACK,0,0,NOSHOWERROR,0);
+	    moveobj(a,destobj,MODEATACK,GetOBJx(destobj),GetOBJy(destobj),NOSHOWERROR,0);
 	}
     }
 }
@@ -4730,8 +4730,10 @@ int PathFinding_MovePortionType1(OBJ *a,MAIN_IMG *img,int deltamove)
 	// if move to a object
 	if (!a->finalOBJ)	//destobj did not exist(died?)
 	{
-	    InitStopAfterMove(a);
 	    a->prop &= ~VARMOVEOBJACT;
+	    if (a->prop & VARIFDIEDESTTOTERRAIN)
+		goto movelikeatoterrain1;
+	    InitStopAfterMove(a);
 	    //apply next mode from list
 	    if (!(a->prop & VARHOLDPOSBIT))
 	    {
@@ -4767,6 +4769,7 @@ int PathFinding_MovePortionType1(OBJ *a,MAIN_IMG *img,int deltamove)
     }
     else
     {
+movelikeatoterrain1:
 	//if move to a terrain
 	deltax = a->finalx - img->xpos;
 	deltay = a->finaly - img->ypos;
@@ -4821,8 +4824,10 @@ int PathFinding_MovePortionType2(OBJ *a,MAIN_IMG *img,unsigned char flingy_id,in
     {
 	if (!a->finalOBJ)	//destobj did not exist(died?)
 	{
-	    InitStopAfterMove(a);
 	    a->prop &= ~VARMOVEOBJACT;
+	    if (a->prop & VARIFDIEDESTTOTERRAIN)
+		goto movelikeatoterrain2;
+	    InitStopAfterMove(a);
 	    return(2);		//change iscriptnr
 	}
 	destx = GetOBJx256(a->finalOBJ);
@@ -4855,6 +4860,7 @@ int PathFinding_MovePortionType2(OBJ *a,MAIN_IMG *img,unsigned char flingy_id,in
     }
     else
     {
+movelikeatoterrain2:
 	//if move to a terrain
 	deltax = a->finalx - img->xpos;
 	deltay = a->finaly - img->ypos;
@@ -5245,7 +5251,7 @@ int LaunchScarab(OBJ *reaver,OBJ *destobj)
 	    {
 		if (a = reaver->childs->parentof[i])
 		{
-		    a->prop |= VARREADY;
+		    a->prop |= VARREADY | VARIFDIEDESTTOTERRAIN | VARCANTSELECT;
 		    delchild(reaver,a);
 		    CalcXYOffsets(reaver->mainimage->parentimg->side,GetUnitDimensions(reaver->SC_Unit,UNITDIM_DOWN),0,&deltax,&deltay);
 		    WakeUpChild(reaver,a,destobj,deltax,deltay);
