@@ -255,39 +255,39 @@ OBJ *CreateUnitInUnit(struct OBJ *a,int obj_id,int playsound,int first_xpos,int 
     {
 	NewUnitPlace(a,obj_id,&first_xpos,&first_ypos);
     }
-    temp = createobjman(first_xpos,first_ypos,obj_id,a->playernr);
-    if (obj_id==SC_SCARABOBJ||obj_id==SC_INTERCEPTOROBJ||obj_id==SC_NUKEOBJ)
+    switch(obj_id)
     {
-        addchild(a,temp);
-	temp->prop |= VARNOTHERE;
-	temp->modemove = MODESTOP;
-	temp->finalOBJ = NULL;
-	temp->prop |= VARINBASE;
-	temp->modemove = MODERECHARGE;
+	case SC_SCARABOBJ:
+//	    a->mines++;
+	case SC_INTERCEPTOROBJ:
+	case SC_NUKEOBJ:
+	    temp = createobjman(first_xpos,first_ypos,obj_id,a->playernr);
+    	    addchild(a,temp);
+	    temp->prop |= VARNOTHERE;
+	    temp->modemove = MODESTOP;
+	    temp->finalOBJ = NULL;
+	    temp->prop |= VARINBASE;
+	    temp->modemove = MODERECHARGE;
 	
-	temp->mainimage->DisableExecScript();
-        temp->mainimage->HideChildsImgFlag();
-        temp->mainimage->HideImgFlag();
-	temp->mainimage->elevationlevel = a->mainimage->elevationlevel-1;
+	    temp->mainimage->DisableExecScript();
+    	    temp->mainimage->HideChildsImgFlag();
+	    temp->mainimage->HideImgFlag();
+	    temp->mainimage->elevationlevel = a->mainimage->elevationlevel-1;
 
-	if (obj_id==SC_NUKEOBJ)
-	{
-	    PLAYER[a->playernr].nukes++;
-	    temp->prop |= VARREADY;
-	    if (playsound)
-		playinfoadvisorsound(a->playernr,TERRANRACE,ADVNUCLREADY,PLAYADVISOR_TEXTANDSOUND);
-	}
-    }
-    else
-    {
-	temp->finalx = a->finalx;
-	temp->finaly = a->finaly;
-	SIGOrder_UnitInitComplete(temp);
-/*
-	temp->prop |= VARREADY;
-	ChangeTypeOfProp(temp,PROPNORMAL1);
-	activatesound(temp,MODESOUNDREADY,2,NOSTOPCURRENTSOUNDS);
-*/
+	    if (obj_id==SC_NUKEOBJ)
+	    {
+		PLAYER[a->playernr].nukes++;
+		temp->prop |= VARREADY;
+		if (playsound)
+		    playinfoadvisorsound(a->playernr,TERRANRACE,ADVNUCLREADY,PLAYADVISOR_TEXTANDSOUND);
+	    }
+	    break;
+	default:
+	    temp = createobjman(first_xpos,first_ypos,obj_id,a->playernr);
+	    temp->finalx = a->finalx;
+	    temp->finaly = a->finaly;
+	    SIGOrder_UnitInitComplete(temp);
+	    break;
     }
     return(temp);
 }

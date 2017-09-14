@@ -8,7 +8,7 @@
 #include "loadlo.h"
 
 //===============================================
-LOFILE *loadlo(char *filename)
+/*LOFILE *loadlo(char *filename)
 {
     LOFILE *temp=NULL;
 //    GetLoadedImages(images_tbl,(void **)&temp);
@@ -21,6 +21,7 @@ void unloadlo(LOFILE *temp)
     if (temp)
 	wfree(temp);
 }
+*/
 //===============================================
 void GetLoXY(LOFILE *temp,int nr_side,int nr_pos,signed char *xdelta,signed char *ydelta)
 {
@@ -58,7 +59,7 @@ signed char *GetLoXY(LOFILE *temp,int nr_side,int nr_pos)
     }
 }
 //===============================================
-void SetLoXY(LOFILE *temp,int nr_side,int count,int deltax,int deltay)
+/*void SetLoXY(LOFILE *temp,int nr_side,int count,int deltax,int deltay)
 {
     signed char *temp2;
     if (!temp)
@@ -89,7 +90,7 @@ LOFILE *createlo(int count,int deltax,int deltay)
 //===============================================
 void GetXYFromLO(OBJstruct *b,int mode,int line,int *x,int *y)
 {
-/*    int xoffs,xo,yoffs;
+    int xoffs,xo,yoffs;
     signed char *adrxyoffs;
     adrxyoffs = GetLoXY(b->allmove[mode][line].loinf.lo,
 				b->allmove[mode][line].loinf.fromloline,
@@ -115,6 +116,7 @@ void GetXYFromLO(OBJstruct *b,int mode,int line,int *x,int *y)
     }
     *x=xo;
     *y=yoffs;
-*/
+
 }
+*/
 //===============================================
