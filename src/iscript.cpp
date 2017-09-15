@@ -552,8 +552,10 @@ int ISCRIPT::ExecuteScript(MAIN_IMG *img)
 	{
 	    if (img->flags & SC_IMAGE_FLAG_ISCRIPTROTATION)
 	    {
-		if (!img->Rotation(8*3))
+		if (!img->Rotation(img->TurnRadius))
 		    return(0);
+//		if (!img->Rotation(8*3))
+//		    return(0);
 	    }
 	}
 	do{

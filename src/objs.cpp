@@ -4980,6 +4980,28 @@ void AdditionalUnitsProceed(void)
     }
 }
 //=================================
+/*void AllIScriptControlOBJMoving(void)
+{
+    int i;
+    OBJ *a;
+    MAIN_IMG *img;
+    unsigned char flingy_id;
+    return;
+    for (i=0;i<MaxObjects;i++)
+    {
+	a = objects[i];
+	img = a->mainimage;
+	flingy_id = alldattbl.units_dat->flingy_id[a->SC_Unit];
+	if (alldattbl.flingy_dat->MoveControl[flingy_id] == FLINGYMOVECONTROL_ISCRIPT)
+	{
+	    if (img->movefactor)
+		moveaction(img,img->movefactor);
+	}
+    }
+
+}
+*/
+//=================================
 void AllFlingyControlOBJMoving(void)
 {
     int i,rot,deltax,deltay,deltaz,widthsumm,curspeed;
@@ -4997,7 +5019,8 @@ void AllFlingyControlOBJMoving(void)
 	    if (!(img->flags & SC_IMAGE_FLAG_ISCRIPTROTATION))
 	    {
 		side1 = img->side;
-		rot = img->Rotation(alldattbl.flingy_dat->TurnRadius[flingy_id]);
+		rot = img->Rotation(img->TurnRadius);
+//		rot = img->Rotation(alldattbl.flingy_dat->TurnRadius[flingy_id]);
 		if (!rot)
 		{
 	    	    img->MoveInUnitDirection(a,side1,GetSpeed(a,a->currentspeed));

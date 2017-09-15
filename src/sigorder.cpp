@@ -620,7 +620,8 @@ int  SIGOrder_AfterCastHeal(OBJ *a)
 	    //check if need rotation
 	    if (a->mainimage->flags & SC_IMAGE_FLAG_NEEDROTATIONTODIRECTION)
 	    {
-		a->mainimage->Rotation(alldattbl.flingy_dat->TurnRadius[alldattbl.units_dat->flingy_id[a->SC_Unit]]);
+//		a->mainimage->Rotation(alldattbl.flingy_dat->TurnRadius[alldattbl.units_dat->flingy_id[a->SC_Unit]]);
+		a->mainimage->Rotation(a->mainimage->TurnRadius);
 	    }
 	}
 	else

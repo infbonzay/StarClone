@@ -175,6 +175,7 @@ void PathFinding_InitType2(OBJ *a,int initx,int inity,int destx,int desty,unsign
 int  PathFinding_MovePortionType2(OBJ *a,MAIN_IMG *img,unsigned char flingy_id,int deltamove);
 
 void AdditionalUnitsProceed(void);
+void AllIScriptControlOBJMoving(void);
 void AllFlingyControlOBJMoving(void);
 int  IfHaveDistanceForMove(OBJ *a,MAIN_IMG *img,OBJ *destobj,int mindistance);
 void SetModeMove(OBJ *a,int mode);

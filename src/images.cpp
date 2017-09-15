@@ -876,6 +876,7 @@ MAIN_IMG *OBJCreateImage(OBJ *a,int x256,int y256,unsigned char useiscriptnr,int
     img->whocreate = SC_IMAGE_OBJ_CREATOR;
     img->creator.objcreator.obj = a;
     img->flags |= SC_IMAGE_FLAG_IMGOBJMAIN;
+    img->TurnRadius = alldattbl.flingy_dat->TurnRadius[flingy_id];
     if (useiscriptnr != ISCRIPTNR_UNKNOWN)
 	iscriptinfo.ExecuteScript(img);	//executing on creation
 //    else

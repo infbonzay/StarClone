@@ -76,7 +76,8 @@ public:
     unsigned short 	imageid;	//ref to image.dat
     unsigned short 	iscriptid;	//scriptnr fot image (last is 411)
     unsigned char	iscriptnr;	//type of script (init,death,walking,specialstate1,....)
-
+    unsigned char	TurnRadius;	//turn radius from associated flingy 
+    
     char		grpmethod;
     char		remaptable;
 
