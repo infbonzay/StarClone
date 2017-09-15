@@ -1006,13 +1006,13 @@ int gogame(struct mapinfo *info)
 			    
 			    weaponflingy.MoveAllWeaponFlingy();
 
-			    AllFlingyControlOBJMoving();
-			    AllIScriptControlOBJMoving();
+//			    AllOBJMoving();
 
 			    AdditionalUnitsProceed();
 
 			    AllImages_ExecuteIScript();
 
+			    AllOBJMoving();
 			    
 			    			    
 			    invisiblestick();

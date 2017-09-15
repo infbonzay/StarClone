@@ -369,6 +369,7 @@
 *133 reaver autoatack    
 *134 scarab need to continue move if lost finalOBJ
 *135 tank rotation turret & siege not compatible
+    valkirie rockets freeze around if atack destination is near him
     need rotation turret to base if not have goal
     iscript move appart from iscriptscmds.cpp
     

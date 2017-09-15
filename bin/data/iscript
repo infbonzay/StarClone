@@ -13355,7 +13355,7 @@ YamatoGunInit:
 	wait           	1
 YamatoGunGndAttkInit:
 	wait           	3
-	sprul          	351 0 0	# Unknown542 (bullet\eycBull.grp)
+#	sprul          	351 0 0	# Unknown542 (bullet\eycBull.grp)
 	goto           	YamatoGunGndAttkInit
 
 YamatoGunDeath:

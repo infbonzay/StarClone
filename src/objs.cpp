@@ -4922,16 +4922,9 @@ int CalcDestVars(OBJ *a,OBJ *destobj,int initx,int inity,int destx,int desty,uns
     return (haltdistance<=256);
 }
 //=================================
-int moveaction(MAIN_IMG *img,int deltamove)
+int moveaction(OBJ *a,MAIN_IMG *img,int deltamove)
 {
     int status;
-    OBJ *a;
-    if (img->whocreate != SC_IMAGE_OBJ_CREATOR)
-    {
-//	DEBUGMESSCR("something wrong with this img, no OBJ asociated\n");	//goliath turret
-	return(0);
-    }
-    a = img->creator.objcreator.obj;
     status = PathFinding_MovePortionType1(a,img,GetSpeed(a,deltamove));
     if (a->subunit)
 	ChangeSubUnitCoords(a->subunit,a);
@@ -4980,29 +4973,7 @@ void AdditionalUnitsProceed(void)
     }
 }
 //=================================
-void AllIScriptControlOBJMoving(void)
-{
-    int i;
-    OBJ *a;
-    MAIN_IMG *img;
-    unsigned char flingy_id;
-    for (i=0;i<MaxObjects;i++)
-    {
-	a = objects[i];
-	img = a->mainimage;
-	if (img->movefactor)
-	{
-	    flingy_id = alldattbl.units_dat->flingy_id[a->SC_Unit];
-	    if (alldattbl.flingy_dat->MoveControl[flingy_id] == FLINGYMOVECONTROL_ISCRIPT)
-	    {
-		moveaction(img,img->movefactor);
-		img->movefactor = 0;
-	    }
-	}
-    }
-}
-//=================================
-void AllFlingyControlOBJMoving(void)
+void AllOBJMoving(void)
 {
     int i,rot,deltax,deltay,deltaz,widthsumm,curspeed;
     signed char incfactor;
@@ -5014,69 +4985,73 @@ void AllFlingyControlOBJMoving(void)
 	a = objects[i];
 	img = a->mainimage;
 	flingy_id = alldattbl.units_dat->flingy_id[a->SC_Unit];
-	if (img->flags & SC_IMAGE_FLAG_NEEDROTATIONTODIRECTION)
+	switch(alldattbl.flingy_dat->MoveControl[flingy_id])
 	{
-	    if (!(img->flags & SC_IMAGE_FLAG_ISCRIPTROTATION))
-	    {
-		side1 = img->side;
-		rot = img->Rotation(img->TurnRadius);
-//		rot = img->Rotation(alldattbl.flingy_dat->TurnRadius[flingy_id]);
-		if (!rot)
+	    case FLINGYMOVECONTROL_ISCRIPT:
+		if (img->movefactor)
 		{
-	    	    img->MoveInUnitDirection(a,side1,GetSpeed(a,a->currentspeed));
-		    img->UnitNeededDirection256(CalcDirection(GetOBJx256(a),GetOBJy256(a),a->finalx,a->finaly));
-		    continue;
+		    moveaction(a,img,img->movefactor);
+		    img->movefactor = 0;
 		}
-		if (a->modemove == MODETURN180)
+		break;
+	    case FLINGYMOVECONTROL_FLINGY:
+	    case FLINGYMOVECONTROL_WEAPON:
+		if (img->flags & SC_IMAGE_FLAG_NEEDROTATIONTODIRECTION)
 		{
-		    ApplyNextModeMove(a);
-		    continue;
-		}
-		if (CalcDestVars(a,a->finalOBJ,GetOBJx256(a),GetOBJy256(a),a->finalx,a->finaly,flingy_id))
-		{
-		    //need to stop engines    
-		    InitStopAfterMove(a);
-		}
-	    }
-	}
-	if (alldattbl.flingy_dat->MoveControl[flingy_id] == FLINGYMOVECONTROL_FLINGY  ||
-	    alldattbl.flingy_dat->MoveControl[flingy_id] == FLINGYMOVECONTROL_WEAPON   )
-	{
-	    if (a->prop &  VARACCELERATIONBIT)
-	    {
-		//accelerate speed
-		a->currentspeed += alldattbl.flingy_dat->Acceleration[flingy_id];
-		if (a->currentspeed > a->topspeed)
-		{
-		    //reach topspeed
-		    a->currentspeed = a->topspeed;
-		}
-	    }
-	    else
-	    {
-		if (a->prop & VARDONOTAPPLYNEXTMOVE)
-		    continue;
-		if (!a->currentspeed)
-		{
-		    if (a->movelist && a->movelist->GetUsedElem())
-			ApplyNextModeMove(a);
-		    if (a->finalOBJ && IsPickupUnit(a->finalOBJ->SC_Unit) && IsWorkerUnit(a->SC_Unit) &&  !a->carryobj )
+		    side1 = img->side;
+		    rot = img->Rotation(img->TurnRadius);
+		    if (!rot)
 		    {
-			PickupObj(a,a->finalOBJ);
+	    		img->MoveInUnitDirection(a,side1,GetSpeed(a,a->currentspeed));
+			img->UnitNeededDirection256(CalcDirection(GetOBJx256(a),GetOBJy256(a),a->finalx,a->finaly));
+			continue;
 		    }
-		    continue;
+		    if (a->modemove == MODETURN180)
+		    {
+			ApplyNextModeMove(a);
+			continue;
+		    }
+		    if (CalcDestVars(a,a->finalOBJ,GetOBJx256(a),GetOBJy256(a),a->finalx,a->finaly,flingy_id))
+		    {
+			//need to stop engines    
+			InitStopAfterMove(a);
+		    }
 		}
-		if (alldattbl.flingy_dat->MoveControl[flingy_id] == FLINGYMOVECONTROL_WEAPON)
+		if (a->prop &  VARACCELERATIONBIT)
 		{
-		    a->currentspeed = a->currentspeed / 2;
+		    //accelerate speed
+		    a->currentspeed += alldattbl.flingy_dat->Acceleration[flingy_id];
+		    if (a->currentspeed > a->topspeed)
+		    {
+			//reach topspeed
+			a->currentspeed = a->topspeed;
+		    }
 		}
 		else
 		{
-		    a->currentspeed -= a->deacceleration;
-		}
-		if (a->currentspeed <= 0)
-		{
-			//stop move
+		    if (a->prop & VARDONOTAPPLYNEXTMOVE)
+			continue;
+		    if (!a->currentspeed)
+		    {
+			if (a->movelist && a->movelist->GetUsedElem())
+			    ApplyNextModeMove(a);
+			if (a->finalOBJ && IsPickupUnit(a->finalOBJ->SC_Unit) && IsWorkerUnit(a->SC_Unit) &&  !a->carryobj )
+			{
+			    PickupObj(a,a->finalOBJ);
+			}
+			continue;
+		    }
+		    if (alldattbl.flingy_dat->MoveControl[flingy_id] == FLINGYMOVECONTROL_WEAPON)
+		    {
+			a->currentspeed = a->currentspeed / 2;
+		    }
+		    else
+		    {
+		        a->currentspeed -= a->deacceleration;
+		    }
+		    if (a->currentspeed <= 0)
+		    {
+				//stop move
 			a->currentspeed = 0;
 			if (a->finalOBJ && a->finalOBJ->SC_Unit == SC_NYDUSCANALOBJ)
 			    if (TryToEnterNydus(a,a->finalOBJ))
@@ -5101,12 +5076,13 @@ void AllFlingyControlOBJMoving(void)
 //			    }
 			}
 			continue;
+		    }
 		}
-	    }
-	    curspeed = GetSpeed(a,a->currentspeed);
-	    PathFinding_MovePortionType2(a,img,flingy_id,GetSpeed(a,a->currentspeed));
-//	    printf("speed=%d ensnaired=%d\n",a->currentspeed,curspeed);
-	}
+		curspeed = GetSpeed(a,a->currentspeed);
+		PathFinding_MovePortionType2(a,img,flingy_id,GetSpeed(a,a->currentspeed));
+//	    	printf("speed=%d ensnaired=%d\n",a->currentspeed,curspeed);
+		break;
+	}//switch
     }
 }
 //=================================
