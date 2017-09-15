@@ -490,7 +490,7 @@ void playadvisorerr(int playernr,int race,int retreserror)
 //=============================================
 int CreateUnitProperties(struct OBJ *a,struct OBJstruct *b,int *prop,int playernr)
 {
-    int i,childs,underc,upgradenr,maxupgradenr,constraddon;
+    int i,unitnr,underc,upgradenr,maxupgradenr,constraddon;
     OBJstruct *proper;
     for (i=0;i<MAXUNITPROPERTIES;i++)
     {
@@ -516,10 +516,10 @@ int CreateUnitProperties(struct OBJ *a,struct OBJstruct *b,int *prop,int playern
 	    if (prop[i] != MODEESCAPE)
 		prop[i] = MODENON;
 	}
-	else if (mageprop[prop[i]].type_id==ORDERS_UNIT)
+	else if (mageprop[prop[i]].type_id == ORDERS_UNIT)
 	{
-		childs = getchilds(a);
-		if (childs+underc>=GetMaxChildUnits(a))
+		unitnr = INBAY_GetCreatedUnits(a);
+		if (unitnr+underc >= INBAY_GetMaxUnitsToBeCreated(a))
             	    prop[i]=MODENON;
 		if (underc==MAXCONSTRUCTINBUILD)
             	    prop[i]=MODENON;
@@ -567,14 +567,14 @@ int CreateUnitProperties(struct OBJ *a,struct OBJstruct *b,int *prop,int playern
 	    if (!a->loaded)
 	        prop[i]=MODENON;
 	}
-	else if ((a->SC_Unit==SC_VULTUREOBJ||a->SC_Unit==SC_HERO_JIMRAYNORVOBJ) && prop[i]==MODERELEASEMINE && !a->mines)
+	else if ((a->SC_Unit==SC_VULTUREOBJ||a->SC_Unit==SC_HERO_JIMRAYNORVOBJ) && prop[i]==MODERELEASEMINE && !a->ammo)
 	    {
 		prop[i]=MODENON;
     	    }
 	    else
 		if (prop[i]==MODEMAKENUKEBOMB)
 		{
-		    if (a->mines)
+		    if (a->ammo)
 	    		prop[i]=MODENON;
     		}
 		else

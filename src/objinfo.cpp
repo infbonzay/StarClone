@@ -17,18 +17,32 @@
 #define MINCARRIERCAPACITY	4
 #define MINREAVERCAPACITY	5
 //====================================
-int GetMaxChildUnits(OBJ *a)
+int INBAY_GetCreatedUnits(OBJ *a)
+{
+    switch(a->SC_Unit)
+    {
+        case SC_CARRIEROBJ:
+        case SC_HERO_GANTRITHOROBJ:
+        case SC_NUCLEARSILOOBJ:
+	    return(getchilds(a));
+        case SC_REAVEROBJ:
+        case SC_HERO_WARBRINGEROBJ:
+	    return(a->ammo);
+    }
+}
+//====================================
+int INBAY_GetMaxUnitsToBeCreated(OBJ *a)
 {
     int upgradenr;
     switch(a->SC_Unit)
     {
         case SC_CARRIEROBJ:
         case SC_HERO_GANTRITHOROBJ:
-	    upgradenr=GetUpgradeTree(&map,a->playernr,TECHDATA_DAT_CARRIERCAPACITYTECH);
+	    upgradenr = GetUpgradeTree(&map,a->playernr,TECHDATA_DAT_CARRIERCAPACITYTECH);
 	    return(MINCARRIERCAPACITY*(upgradenr+1));
         case SC_REAVEROBJ:
         case SC_HERO_WARBRINGEROBJ:
-	    upgradenr=GetUpgradeTree(&map,a->playernr,TECHDATA_DAT_REAVERCAPACITYTECH);
+	    upgradenr = GetUpgradeTree(&map,a->playernr,TECHDATA_DAT_REAVERCAPACITYTECH);
 	    return(MINREAVERCAPACITY*(upgradenr+1));
         case SC_NUCLEARSILOOBJ:
     	    return(1);
@@ -44,7 +58,7 @@ void AdditionalProperties(OBJ *a)
     {
 	case SC_HERO_JIMRAYNORVOBJ:
 	case SC_VULTUREOBJ:
-	    a->mines = 3;
+	    a->ammo = 3;
 	    break;
 	case SC_HATCHERYOBJ:
 	    HiveActionFirst(a,a->mainimage);
@@ -249,7 +263,7 @@ int GetNrSomeObjects(OBJ *a,int *newunit,char **iconmes)
     {
 	case SC_VULTUREOBJ:
 	case SC_HERO_JIMRAYNORVOBJ:
-	    if (a->mines == 0)
+	    if (a->ammo == 0)
 	        return(-1);
 	    *newunit=SC_VULTUREMINEOBJ;
 	    weapon_id=alldattbl.units_dat->GroundWeapon[SC_VULTUREMINEOBJ];
@@ -257,7 +271,7 @@ int GetNrSomeObjects(OBJ *a,int *newunit,char **iconmes)
 	    if (GetTechTree(&map,a->playernr,tech_id) || IsHeroUnit(a->SC_Unit))
 	    {
 		*iconmes=alldattbl.stattxt_tbl->get_TBL_STR(STATTXT_TBL_MINESTEXT);
-		return(a->mines);
+		return(a->ammo);
 	    }
 	    return -1;
 	case SC_NUCLEARSILOOBJ:
@@ -268,7 +282,7 @@ int GetNrSomeObjects(OBJ *a,int *newunit,char **iconmes)
 	case SC_HERO_WARBRINGEROBJ:
 	    *iconmes=alldattbl.stattxt_tbl->get_TBL_STR(STATTXT_TBL_SCARABSTEXT);
 	    *newunit=SC_SCARABOBJ;
-	    return(getchilds(a));
+	    return(a->ammo);
 	case SC_CARRIEROBJ:
 	case SC_HERO_GANTRITHOROBJ:
 	    *iconmes=alldattbl.stattxt_tbl->get_TBL_STR(STATTXT_TBL_INTERCEPTORSTEXT);

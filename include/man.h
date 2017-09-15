@@ -179,7 +179,7 @@ struct OBJ
 	unsigned char	usedweapon_id;
 	
         unsigned char	curentmode;
-        unsigned char	mines;
+        unsigned char	ammo;
 
         unsigned char	color;               //tsvet unita
         unsigned char	whenregen;

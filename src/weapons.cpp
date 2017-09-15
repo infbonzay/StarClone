@@ -131,7 +131,7 @@ int IfCanCreateWeapon(OBJ *atacker,OBJ *destobj,int *errmes,unsigned char *weapo
 			*errmes=875;
 		    return(CREATEDWEAPONSTATUS_CANTATACKTHISUNIT);
 		}
-	        if (!getchilds(atacker))
+	        if (!atacker->ammo)
 	    	    return(CREATEDWEAPONSTATUS_NOTAMMO);
 	        if ( GetDistanceBetweenUnits256(atacker,destobj) <= (GetTargetAcquisitionRange(atacker->SC_Unit) << 13 ))	//256 * 32 (<<13)
 	    	    rangebad = 0;

@@ -2488,7 +2488,7 @@ escapeconstrslots:
 	    }
 	    break;
 	case MODERELEASEMINENOW:
-	    if (a->mines--)
+	    if (a->ammo--)
 		createobjfulllife(x,y,SC_VULTUREMINEOBJ,a->playernr);
 	    ApplyNextModeMove(a);
 	    break;
@@ -5239,25 +5239,26 @@ void DelAllModeMoves(struct OBJ *a)
     }
 }
 //==============================================
-int LaunchScarab(OBJ *reaver,OBJ *destobj)
+int LaunchScarab(OBJ *a,OBJ *destobj)
 {
-    OBJ *a;
+    OBJ *temp;
     signed char deltax,deltay;
-    reaver->usedweapon_id = WEAPONID_SCARAB;
+    a->usedweapon_id = WEAPONID_SCARAB;
     if (destobj)
     {
-	if (reaver->childs)
-	    for (int i=0;i<MAXCHILDS;i++)
-	    {
-		if (a = reaver->childs->parentof[i])
-		{
-		    a->prop |= VARREADY | VARIFDIEDESTTOTERRAIN | VARCANTSELECT;
-		    delchild(reaver,a);
-		    CalcXYOffsets(reaver->mainimage->parentimg->side,GetUnitDimensions(reaver->SC_Unit,UNITDIM_DOWN),0,&deltax,&deltay);
-		    WakeUpChild(reaver,a,destobj,deltax,deltay);
-		    return(1);
-		}
-	    }
+	if (a->ammo)
+	{
+	    a->ammo--;
+	    CalcXYOffsets(a->mainimage->parentimg->side,GetUnitDimensions(a->SC_Unit,UNITDIM_DOWN),0,&deltax,&deltay);
+	    temp = createobjman(GetOBJx(a)+deltax,GetOBJy(a)+deltay,SC_SCARABOBJ,a->playernr);
+    	    ChangeTypeOfProp(temp,PROPNORMAL1);
+	    temp->mainimage->elevationlevel = a->mainimage->elevationlevel-1;
+	    temp->prop |= VARREADY | VARIFDIEDESTTOTERRAIN | VARCANTSELECT;
+	    SetModeMove(temp,MODESTOP);
+	    temp->finalOBJ = NULL;
+	    moveobj(temp,destobj,MODEATACK,GetOBJx(destobj),GetOBJy(destobj),NOSHOWERROR,0);
+	    return(1);
+	}
     }
     return(0);
 }

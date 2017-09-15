@@ -7,7 +7,6 @@
 
 #define ATACKUP		0
 #define ATACKDOWN	1
-int  GetMaxChildUnits(OBJ *a);
 void AdditionalProperties(OBJ *a);
 int  GetSpeed(OBJ *a,int speed);
 int  GetDistances(int x,int y,int x2,int y2);
@@ -52,6 +51,9 @@ int  GetKvadrant(int storonasveta);
 int  IsActiveUnit(OBJ *a);
 int  IsAtackerActiveUnit(OBJ *a);
 int  IsActiveUnitForAtack(OBJ *a);
+
+int  INBAY_GetCreatedUnits(OBJ *a);
+int  INBAY_GetMaxUnitsToBeCreated(OBJ *a);
 
 #define NOATACKER	0
 #define GROUNDATACKER	1

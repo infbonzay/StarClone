@@ -258,7 +258,8 @@ OBJ *CreateUnitInUnit(struct OBJ *a,int obj_id,int playsound,int first_xpos,int 
     switch(obj_id)
     {
 	case SC_SCARABOBJ:
-//	    a->mines++;
+	    a->ammo++;
+	    break;
 	case SC_INTERCEPTOROBJ:
 	case SC_NUKEOBJ:
 	    temp = createobjman(first_xpos,first_ypos,obj_id,a->playernr);
