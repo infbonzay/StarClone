@@ -264,6 +264,8 @@ MAIN_IMG::MAIN_IMG( unsigned short image_id,int x,int y,int elevation,
     ypos = y;
     whocreate = SC_IMAGE_UNKNOWN_CREATOR;
     newgrpmethod = NORMAL;
+    movefactor = 0;
+    TurnRadius = 0;
 }
 //============================================
 OVERLAY_IMG::OVERLAY_IMG(MAIN_IMG *parent,unsigned short image_id,unsigned short imagelo_tbl,
@@ -309,6 +311,8 @@ MAIN_IMG::MAIN_IMG( unsigned short image_id,int x,int y,int elevation,
 //    flags = unitflags;
     whocreate = SC_IMAGE_UNKNOWN_CREATOR;
     newgrpmethod = NORMAL;
+    movefactor = 0;
+    TurnRadius = 0;
 }
 //============================================
 OVERLAY_IMG::OVERLAY_IMG(MAIN_IMG *parent,GRPFILE *grpimg,unsigned short unitflags,unsigned short useiscriptid,
@@ -356,6 +360,8 @@ MAIN_IMG::MAIN_IMG( GRPFILE *grpimg, int x,int y,
     flags = unitflags;
     whocreate = SC_IMAGE_UNKNOWN_CREATOR;
     newgrpmethod = NORMAL;
+    movefactor = 0;
+    TurnRadius = 0;
 }
 //============================================
 MAIN_IMG::~MAIN_IMG()

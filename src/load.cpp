@@ -1000,6 +1000,8 @@ void LoadPatchTbl(void)
 //    printf("maxrange=%d\n",alldattbl.weapons_dat->MaximumRange[82]);	//is 128
     alldattbl.weapons_dat->MaximumRange[WEAPONID_SCARAB] = 15;		//scarab need to be melee atack
     alldattbl.weapons_dat->WeaponCooldown[WEAPONID_SCARAB] = 60;	//reaver cooldown
+    alldattbl.units_dat->ElevationLevel[SC_REAVEROBJ] += 1;	//reaver elevation
+    alldattbl.units_dat->ElevationLevel[SC_HERO_WARBRINGEROBJ] += 1;	//warbringer elevation
 }
 //============================================
 void *imagesreftogrpdata[MAX_IMAGES_ELEM];

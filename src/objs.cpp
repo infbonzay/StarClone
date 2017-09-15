@@ -4980,27 +4980,27 @@ void AdditionalUnitsProceed(void)
     }
 }
 //=================================
-/*void AllIScriptControlOBJMoving(void)
+void AllIScriptControlOBJMoving(void)
 {
     int i;
     OBJ *a;
     MAIN_IMG *img;
     unsigned char flingy_id;
-    return;
     for (i=0;i<MaxObjects;i++)
     {
 	a = objects[i];
 	img = a->mainimage;
-	flingy_id = alldattbl.units_dat->flingy_id[a->SC_Unit];
-	if (alldattbl.flingy_dat->MoveControl[flingy_id] == FLINGYMOVECONTROL_ISCRIPT)
+	if (img->movefactor)
 	{
-	    if (img->movefactor)
+	    flingy_id = alldattbl.units_dat->flingy_id[a->SC_Unit];
+	    if (alldattbl.flingy_dat->MoveControl[flingy_id] == FLINGYMOVECONTROL_ISCRIPT)
+	    {
 		moveaction(img,img->movefactor);
+		img->movefactor = 0;
+	    }
 	}
     }
-
 }
-*/
 //=================================
 void AllFlingyControlOBJMoving(void)
 {
@@ -5275,7 +5275,7 @@ int LaunchScarab(OBJ *a,OBJ *destobj)
 	    CalcXYOffsets(a->mainimage->parentimg->side,GetUnitDimensions(a->SC_Unit,UNITDIM_DOWN),0,&deltax,&deltay);
 	    temp = createobjman(GetOBJx(a)+deltax,GetOBJy(a)+deltay,SC_SCARABOBJ,a->playernr);
     	    ChangeTypeOfProp(temp,PROPNORMAL1);
-	    temp->mainimage->elevationlevel = a->mainimage->elevationlevel-1;
+	    temp->mainimage->elevationlevel = a->mainimage->elevationlevel - 2;
 	    temp->prop |= VARREADY | VARIFDIEDESTTOTERRAIN | VARCANTSELECT;
 	    SetModeMove(temp,MODESTOP);
 	    temp->finalOBJ = NULL;

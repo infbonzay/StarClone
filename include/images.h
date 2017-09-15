@@ -76,7 +76,6 @@ public:
     unsigned short 	imageid;	//ref to image.dat
     unsigned short 	iscriptid;	//scriptnr fot image (last is 411)
     unsigned char	iscriptnr;	//type of script (init,death,walking,specialstate1,....)
-    unsigned char	TurnRadius;	//turn radius from associated flingy 
     
     char		grpmethod;
     char		remaptable;
@@ -120,7 +119,8 @@ public:
 //    mylistsimple	*childlists;
     OVERLAYIMGLIST	*childlists;
 
-    short int 		imglist_elemnr;
+    signed   short	imglist_elemnr;
+    unsigned short	movefactor;		//set this variable from iscript_move & iscript_setflspeed
 
     int 		xpos;
     int			ypos;
@@ -129,6 +129,7 @@ public:
     unsigned char	imageusercolor;	//0-15	playernrcolor,16-tored,17-togreen,18-toblue,19-tomono
     unsigned char	side;		//0-255		div to 8 to see actual side
     unsigned char	neededside;	
+    unsigned char	TurnRadius;		//turn radius from associated flingy 
     char		whocreate;		//unknown,obj,flingy,...(see defines creators)
     IMAGECREATOR	creator;    
     

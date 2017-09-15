@@ -669,7 +669,7 @@ int IScriptCmd_useweapon(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
 //============================================
 int IScriptCmd_move(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
 {
-    unsigned char previscriptnr;
+/*    unsigned char previscriptnr;
     int status;
 //    printf("deltamove=%d\n",buf[0]);
     previscriptnr = img->iscriptnr;
@@ -687,6 +687,8 @@ int IScriptCmd_move(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
 	    return(1);
     }
     //here we moved correctly
+*/
+    img->parentimg->movefactor += (buf[0]<<8);
     img->offsetcmdinbuf += cmdsize;
     return(0);
 }
@@ -820,7 +822,7 @@ int IScriptCmd_return(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
 //============================================
 int IScriptCmd_setflspeed(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
 {
-    unsigned char previscriptnr;
+/*    unsigned char previscriptnr;
     int status;
     unsigned short distance;
     distance = *((unsigned short *)&buf[0]);
@@ -842,6 +844,8 @@ int IScriptCmd_setflspeed(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
 	}
     }
     //here we moved correctly
+*/
+    img->parentimg->movefactor = *((unsigned short *)&buf[0]);
     img->offsetcmdinbuf += cmdsize;
     return(0);
 }
