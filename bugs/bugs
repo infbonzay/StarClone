@@ -373,8 +373,9 @@
 *137 iscript move appart from iscriptscmds.cpp
 *138 no units to create at builds (after change getchild for reaver)
 *139 valkirie rockets freeze around if atack destination is near him
-    scv after contruct not change typeofprop
-    atack scan sweep
+*140 scv after contruct not change typeofprop
+*141 atack scan sweep
+    tank after auto atack cant siege mode
     need rotation turret to base if not have goal
     
     

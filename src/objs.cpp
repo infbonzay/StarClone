@@ -3665,10 +3665,13 @@ void FinishMainUnitConstruct(OBJ *a)
 	a->constrobj->prop &= ~VARMOVETHROWUNITS;
 	if (a->constrobj->movelist)
 	    a->constrobj->movelist->EmptyElemFifo();
-	if (!ApplyNextModeMove(a->constrobj))
+	ApplyNextModeMove(a->constrobj);
+	ChangeTypeOfProp(a->constrobj,PROPNORMAL1);
+/*	if (!ApplyNextModeMove(a->constrobj))
 	{
 	    ChangeTypeOfProp(a->constrobj,PROPNORMAL1);
 	}
+*/
     }
     a->constrobj->constrobj = NULL;
     a->constrobj = NULL;

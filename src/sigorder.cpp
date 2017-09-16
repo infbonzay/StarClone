@@ -88,7 +88,6 @@ int  SIGOrder_TerranBuildFinishConstruct(OBJ *a)
     if (IsAddon(a->SC_Unit))
     {
 	AttachAddonToBuild(a);				//send landing cmd(attach connect)
-//	SetOBJIScriptNr(a,ISCRIPTNR_BUILT);		//send build complete
     }
     else
     {
@@ -105,7 +104,6 @@ int  SIGOrder_TerranBuildFinishConstruct(OBJ *a)
 	    Play_sfxdata(GetOBJx(a),GetOBJy(a),SFXDATA_TERRANBUILDWARPEND,2);
 	}
     }
-//    a->lastdamageoverlays = -1;
     AddRemoveBloodFlameOverlays(a);
     AfterConstruct(a);
     return(0);
