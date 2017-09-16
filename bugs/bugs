@@ -369,9 +369,12 @@
 *133 reaver autoatack    
 *134 scarab need to continue move if lost finalOBJ
 *135 tank rotation turret & siege not compatible
+*136 goliath atack is not begin if 180 grad to destatack
+*137 iscript move appart from iscriptscmds.cpp
+*138 no units to create at builds (after change getchild for reaver)
     valkirie rockets freeze around if atack destination is near him
     need rotation turret to base if not have goal
-    iscript move appart from iscriptscmds.cpp
+    
     
     ?dust moves with unit
     move to unit becomed invisible continue move/atack/etc..

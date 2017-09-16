@@ -951,17 +951,11 @@ int AtackCoolDownEnds(OBJ *a,OBJ *destobj,int continueatack,int showerrorflag)
 		a->finalx = GetOBJx256(destobj);
 		a->finaly = GetOBJy256(destobj);
 		SetAtackType(a,destobj);
-		if (!a->atackcooldowntime)
-		{
-		    return(MOVEOBJ_DONE);
-		}
+//		if (!a->atackcooldowntime)
+//		{
+//		    return(MOVEOBJ_DONE);
+//		}
 		return(MOVEOBJ_STOPANDCONTINUEJOB);
-//	    case CREATEDWEAPONSTATUS_LAUNCHINTERCEPTORS:
-//		WakeUpAllChilds(a,destobj);
-//		return(MOVEOBJ_DONE);
-//	    case CREATEDWEAPONSTATUS_LAUNCHSCARAB:
-//		LaunchScarab(a,destobj);
-//		return(MOVEOBJ_DONE);
 	    default:
 		DEBUGMESSCR("error resval from ifcancreateweapon\n");
 		return(MOVEOBJ_NOACT);

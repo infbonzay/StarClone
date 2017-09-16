@@ -1922,10 +1922,11 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
 	    }
 	    break;
 	case MODESTOP:
-//	    a->finalOBJ=NULL;
+	    a->finalOBJ=NULL;
 	    if (alldattbl.units_dat->Subunit1[a->SC_Unit] < MAX_UNITS_ELEM)
 	    {
 		moveobj(a->subunit,destobj,mode,x,y,NOSHOWERROR,0);
+//		a->subunit->finalOBJ=NULL;
 	    }
 	    if (a->movelist)
 		a->movelist->EmptyElemFifo();
@@ -2449,21 +2450,20 @@ escapeconstrslots:
 		{
 		    case MOVEOBJ_DONE:
 			a->modemove = MODEATACK;
-			a->finalOBJ = destobj;
-			SetAtackType(a,destobj);
-			AtackAction(a,destobj,0);
+			if (IsSubUnit(a->SC_Unit))
+			{
+			    SetModeMove(a->subunit,MODESTOP);	//stop base of unit
+			    InitStopAfterMove(a->subunit);	//stop iscript for base
+			}
+			break;
+		    case MOVEOBJ_STOPANDCONTINUEJOB:
+			a->modemove = MODEATACK;
 			if (IsSubUnit(a->SC_Unit))
 			{
 			    SetModeMove(a->subunit,MODESTOP);
 			    InitStopAfterMove(a->subunit);
 			}
 			break;
-		    case MOVEOBJ_STOPANDCONTINUEJOB:
-			if (IsSubUnit(a->SC_Unit))
-			{
-			    SetModeMove(a->subunit,MODESTOP);
-			    InitStopAfterMove(a->subunit);
-			}
 		    case MOVEOBJ_CONTINUEJOB:
 			a->modemove = MODEATACK;
 			break;

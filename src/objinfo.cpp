@@ -29,6 +29,7 @@ int INBAY_GetCreatedUnits(OBJ *a)
         case SC_HERO_WARBRINGEROBJ:
 	    return(a->ammo);
     }
+    return(0);
 }
 //====================================
 int INBAY_GetMaxUnitsToBeCreated(OBJ *a)

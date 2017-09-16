@@ -554,8 +554,6 @@ int ISCRIPT::ExecuteScript(MAIN_IMG *img)
 	    {
 		if (!img->Rotation(img->TurnRadius))
 		    return(0);
-//		if (!img->Rotation(8*3))
-//		    return(0);
 	    }
 	}
 	do{
