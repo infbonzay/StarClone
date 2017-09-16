@@ -521,14 +521,14 @@ int ifcanworkatr_onme(OBJ *a,int atr,int typemage)
 void CastSpell(OBJ *casterobj)
 {
     int needmana,finalx,finaly;
-    needmana = getusemanaformodemove(casterobj->castmagenr);
+/*    needmana = getusemanaformodemove(casterobj->castmagenr);
     if (CheckForMana(casterobj,needmana)!=CHECKRES_OK)
     {
 	playinfoadvisorsound(casterobj->playernr,GetUnitRace(casterobj->SC_Unit),ADVENERGY,PLAYADVISOR_TEXTANDSOUND);
 	return;
     }
     DecrMana(casterobj,needmana);
-    if (mageprop[casterobj->castmagenr].createweapon == 255)
+*/    if (mageprop[casterobj->castmagenr].createweapon == 255)
     {
 	CastSpellWithOutWeaponnr(casterobj,casterobj->castmagenr);
     }
@@ -538,8 +538,6 @@ void CastSpell(OBJ *casterobj)
 	    Play_sfxdata(GetOBJx(casterobj),GetOBJy(casterobj),mageprop[casterobj->castmagenr].sound_id[SOUNDONCAST],2);
 	CreateWeaponID(casterobj,casterobj->finalOBJ,casterobj->finalx,casterobj->finaly,mageprop[casterobj->castmagenr].createweapon,1);
     }
-//    casterobj->finalOBJ = NULL;
-//    casterobj->prop &= ~VARMOVEOBJACT;
 }
 //=======================================
 void CastSpellWithOutWeaponnr(OBJ *casterobj,int castmagenr)

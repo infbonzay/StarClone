@@ -448,7 +448,7 @@ int  SIGOrder_CancelMorthFromDrone(OBJ *a)
     
     ChangeSC_Unit(a,a->playernr,a->SC_ConstrUnit,CHANGESC_UNIT_CONSTR);
     a->prop |= VARREADY;
-    a->mainimage->DeleteChilds(SC_IMAGE_FLAG_IMGUNDER);
+    a->mainimage->DeleteChilds(SC_IMAGE_FLAG_IMGUNDER|SC_IMAGE_FLAG_IMGOVER);
     a->mainimage->DeleteMainImg();
     CreateImageAndAddToList(a,x256,y256,2,NOLOIMAGE);//a->mainimage remain in mainimageslist 
 
@@ -484,7 +484,7 @@ int  SIGOrder_CancelMorthFromBuild(OBJ *a)
     iscriptinfo.ExecuteScript(a->mainimage);	//execute almostbuild
 
     ChangeSC_Unit(a,a->playernr,a->SC_FromUnit,CHANGESC_UNIT_READY);
-    a->mainimage->DeleteChilds(SC_IMAGE_FLAG_IMGUNDER);
+    a->mainimage->DeleteChilds(SC_IMAGE_FLAG_IMGUNDER|SC_IMAGE_FLAG_IMGOVER);
     a->mainimage->DeleteMainImg();
     CreateImageAndAddToList(a,x256,y256,2,NOLOIMAGE);
 
@@ -561,6 +561,7 @@ int  SIGOrder_AfterCastMage(OBJ *a)
 {
     SetOrder(a,0,NULL);
     a->finalOBJ = NULL;
+    a->castmagenr = 0;
     if (ApplyNextModeMove(a))
 	return(1);
     return(0);

@@ -1539,7 +1539,8 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
     int needmana,type_id,obj_id,ret,slotnr,deltaz,constrerror,resval;
     int i,j,tempvar,errmes,state,openstate;
     int (*comparefunc)(int *,int );					//for doodad
-    
+//    if (a == destobj)
+//	return(MOVEOBJ_NOACT);    
     //prevent to move if is uninterrupted mode
     if (x < 16)
 	x = 16;
@@ -1579,11 +1580,17 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
     if (a->mainimage->flags & SC_IMAGE_FLAG_CANTBREAKCODE)
 	if (mode != MODEDIE)
 	{
-	    AddModeMove(a,destobj,mode,x,y,NOSHOWERROR);							//create addon after
+	    //memorize next move in time of casting spell
+	    AddModeMove(a,destobj,mode,x,y,NOSHOWERROR);
 	    return(MOVEOBJ_DONE);
 	}    
-//    if (a->mainimage->flags & SC_IMAGE_FLAG_CANTBREAKCODE && mode != MODEDIE)
-//        return(MOVEOBJ_NOACT);
+    if (mode != MODECASTSPELL && a->castmagenr == MODEYAMATOGUN)
+    {
+	//stop cast spell
+	//remove all over images
+	a->mainimage->DeleteChilds(SC_IMAGE_FLAG_IMGOVER);
+	a->castmagenr = 0;
+    }
     if (!(showerrorflag & ATACKMOVEBIT))
         a->prop &= ~VARMOVEINATACKMODE;
     if (mageprop[mode].type_id==ORDERS_UNIT)
@@ -1666,6 +1673,13 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
 	    }
 	    break;	
 	case MODECASTSPELL:
+	    needmana = getusemanaformodemove(a->castmagenr);
+	    if (CheckForMana(a,needmana)!=CHECKRES_OK)
+	    {
+		playinfoadvisorsound(a->playernr,GetUnitRace(a->SC_Unit),ADVENERGY,PLAYADVISOR_TEXTANDSOUND);
+		return(MOVEOBJ_NOACT);
+	    }
+	    DecrMana(a,needmana);
 	    SetOrder(a,1,&SIGOrder_AfterCastMage);
 	    SetOBJIScriptNr(a,ISCRIPTNR_CASTSPELL,ISCRIPTNR_EXECUTE);
 	    break;

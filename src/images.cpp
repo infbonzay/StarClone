@@ -663,8 +663,11 @@ void MAIN_IMG::DeleteChilds(int flags)
         childlists->EnumListInit();
         while(tempimg = (OVERLAY_IMG *) childlists->GetNextListElem(&elemnr))
         {
-    	    tempimg->flags |= SC_IMAGE_FLAG_MARKFORDELETE;
-	    childlists->MarkForDelElem(elemnr);
+    	    if (tempimg->flags & flags)
+    	    {
+    		tempimg->flags |= SC_IMAGE_FLAG_MARKFORDELETE;
+		childlists->MarkForDelElem(elemnr);
+	    }
 	}
     }
 }
