@@ -170,10 +170,14 @@ int  SIGOrder_ProtossBuildFinishConstruct(OBJ *a)
 //    a->lastdamageoverlays = -1;
     AddRemoveBloodFlameOverlays(a);
     AfterConstruct(a);
-    if (a->SC_Unit==SC_PYLONOBJ)
+    if (a->SC_Unit == SC_PYLONOBJ)
+    {
     	AddPylonArea(&map,a,a->playernr);
+    }
     else
+    {
 	CheckBuildForPower(&map,a,a->playernr);
+    }
     return(0);
 }
 //==================================

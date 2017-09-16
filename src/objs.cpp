@@ -210,10 +210,14 @@ struct OBJ *createobjmanwithlife(int x,int y,int SC_Unit,int Pl,
 	ChangeSupply(a->playernr,SC_Unit,PLUSFACTOR);
 	ChangeMaxSupply(a->playernr,SC_Unit,PLUSFACTOR);
     }
-    if (SC_Unit==SC_PYLONOBJ)
+    if (SC_Unit == SC_PYLONOBJ)
+    {
 	AddPylonArea(&map,a,a->playernr);
+    }
     else
+    {
 	CheckBuildForPower(&map,a,a->playernr);
+    }
     //if addon - need to atach mother build
     if (IsAddon(SC_Unit))
     {
@@ -615,7 +619,9 @@ int foundonetypeobj(struct OBJ *a)
     for (i=0;i<MaxObjects;i++)
     {
         c=objects[i];
-        if  (c->playernr==a->playernr)
+    	if (IsInvincibleUnit(c->SC_Unit))
+	    continue;
+        if  (c->playernr == a->playernr && a->SC_Unit == c->SC_Unit)
 	    if (!OBJ_VAR_CHK(c,obj_notdetect,NUMBGAMER))
 	    {
 		doselectedOBJbit(c,NUMBGAMER,1);
@@ -635,6 +641,8 @@ int yn,distx,disty,mindist=0x7fffffff;
         a=objects[i];
     	if (a->mainimage->flags & SC_IMAGE_FLAG_DISABLEDRAW)
     	    continue;
+//	if (IsSubUnit(a->SC_Unit))
+//	    continue;
         yn=y1;
 	nodoodad=1;
     	if (IsDoodadState(a->SC_Unit)&&(IsInvincibleUnit(a->SC_Unit) || GetDoodadState(a)==DOODAD_BOTTOM_STATE))
@@ -763,6 +771,8 @@ void selectMAN(int x1,int y1,int x2,int y2,int mode)
             a=objects[i];
     	    if (a->mainimage->flags & SC_IMAGE_FLAG_DISABLEDRAW)
     		continue;
+//	    if (IsSubUnit(a->SC_Unit))
+//		continue;
 	    nodoodad=1;
     	    if (IsDoodadState(a->SC_Unit) && (IsInvincibleUnit(a->SC_Unit)||GetDoodadState(a)==DOODAD_BOTTOM_STATE))
     		nodoodad=0;
@@ -1555,9 +1565,12 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
 	    return(MOVEOBJ_DONE);
 	}
     }
-    if (a->prop & VARNOTWORK)
-        if (mode != MODEDIE)
-    	    return(MOVEOBJ_NOACT);
+    if ((a->prop & VARPOWEROFF) && mode == MODEPOWERON)
+	;
+    else
+	if (a->prop & VARNOTWORK)
+    	    if (mode != MODEDIE)
+    	        return(MOVEOBJ_NOACT);
     //release any resource field
     if (mode != MODEDIE)
 	ReleaseResource(a);
@@ -5251,7 +5264,8 @@ int LaunchScarab(OBJ *a,OBJ *destobj)
 	if (a->ammo)
 	{
 	    a->ammo--;
-	    CalcXYOffsets(a->mainimage->parentimg->side,GetUnitDimensions(a->SC_Unit,UNITDIM_DOWN),0,&deltax,&deltay);
+//	    CalcXYOffsets(a->mainimage->parentimg->side,GetUnitDimensions(a->SC_Unit,UNITDIM_DOWN),0,&deltax,&deltay);
+	    CalcXYOffsets(a->mainimage->parentimg->side,32,0,&deltax,&deltay);
 	    temp = createobjman(GetOBJx(a)+deltax,GetOBJy(a)+deltay,SC_SCARABOBJ,a->playernr);
     	    ChangeTypeOfProp(temp,PROPNORMAL1);
 	    temp->mainimage->elevationlevel = a->mainimage->elevationlevel - 2;

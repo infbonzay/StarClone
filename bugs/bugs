@@ -377,7 +377,8 @@
 *141 atack scan sweep
 *142 tank after auto atack cant siege mode
 *143 need rotation turret to base if not have goal
-    
+*144    pylon power was failed for bulds palced before pylon on map
+*145    set rally point on mutating lair and hive not exist    
     
     ?dust moves with unit
     move to unit becomed invisible continue move/atack/etc..

@@ -71,7 +71,7 @@ void AddPylonArea(struct mapinfo *mymap,OBJ *a,int playernr)
 		continue;
 	    if (x>=MAXXMAP)
 		break;
-	    parea[offset+x]+=PylonTable[i][j];
+	    parea[offset+x] += PylonTable[i][j];
 	}
     }
     AddBuildsInPower(parea,playernr);
@@ -113,7 +113,7 @@ void AddBuildsInPower(unsigned char *pylonarea,int playernr)
     for (k=0;k<MaxObjects;k++)
     {
 	a=objects[k];
-	if (a->playernr!=playernr)
+	if (a->playernr != playernr)
 	    continue;
 	if (a->prop & VARPOWEROFF)
 	{
@@ -148,7 +148,6 @@ void DelBuildsFromPower(unsigned char *pylonarea,int playernr)
 	    continue;
 	if (!(a->prop & VARPOWEROFF))
 	{
-//	    if (GetUnitRace(a->SC_Unit)==PROTOSSRACE&&IsBuild(a->SC_Unit)&&!IsOBJUnderConstruct(a))
 	    if (!IsOBJUnderConstruct(a))
 		if (RequiresPylonEnergy(a->SC_Unit))
 		{
@@ -178,7 +177,6 @@ void CheckBuildForPower(struct mapinfo *mymap,OBJ *a,int playernr)
     unsigned char *parea=mymap->pylonarea[playernr];
     if (!parea)
 	parea=CreatePylonAreaArray(mymap,playernr);
-//    if (GetUnitRace(a->SC_Unit)==PROTOSSRACE&&IsBuild(a->SC_Unit)&&IsReadyOBJ(a))
     if (IsReadyOBJ(a))
 	if (RequiresPylonEnergy(a->SC_Unit))
 	{

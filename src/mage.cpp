@@ -468,7 +468,7 @@ void MakeMindControl(OBJ *a,int playernr,int ncolor)
     }
     ChangeSupply(a->playernr,a->SC_Unit,PLUSFACTOR);
     ChangeMaxSupply(a->playernr,a->SC_Unit,PLUSFACTOR);
-    if (a->SC_Unit==SC_PYLONOBJ)
+    if (a->SC_Unit == SC_PYLONOBJ)
 	AddPylonArea(&map,a,a->playernr);
     else
     	CheckBuildForPower(&map,a,a->playernr);

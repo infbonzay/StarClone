@@ -33,7 +33,7 @@ ENDOBJ           = 1
 [NEWOBJECT] = 4 Terran_Goliath_Turret
 
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
-			0   0   333   0   0   0   0   0   0
+			0   257 333   0   0   0   0   0   0
 
 ENDOBJ           = 1
 
@@ -137,7 +137,7 @@ ENDOBJ           = 1
 [NEWOBJECT] = 18 Alan_Schezar_Turret
 
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
-			0   0   333   0   0   0   0   0   0
+			0   257 333   0   0   0   0   0   0
 
 ENDOBJ           = 1
 
@@ -974,8 +974,8 @@ ENDOBJ           = 1
 NOADDSTATSATCONSTR = 1
 CREATEFROMUNIT	 = 131
 CREEP		 = 0
-PROPERTIES       = 4    35  0   0   0   0   0   0   0   384
-			35  0   297 482 483 484 133   0   491
+PROPERTIES       = 4    35  0   297 0   0   0   0   0   384
+			35  0   297 482 483 484 133 0   491
 			0   0   0   0   0   0   0   0   0
 			35  0   297 0   0   0   0   0   384
 
@@ -987,8 +987,8 @@ ENDOBJ           = 1
 NOADDSTATSATCONSTR = 1
 CREATEFROMUNIT	 = 132
 CREEP		 = 0
-PROPERTIES       = 4    35  0   0   0   0   0   0   0   384
-			35  0   297 482 483 484 0   0 491
+PROPERTIES       = 4    35  0   297 0   0   0   0   0   384
+			35  0   297 482 483 484 0   0   491
 			0   0   0   0   0   0   0   0   0
 			35  0   297 0   0   0   0   0   384
 
