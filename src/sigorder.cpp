@@ -185,12 +185,10 @@ int SIGOrder_Tank_EndRotationBeforeSiegeMode(OBJ *a)
     {
 	if (IsSubUnit(a->SC_Unit))
 	{
-	    a->subunit->prop &= ~VARSPECIALWAIT;
 	    ApplyNextModeMove(a->subunit);
 	}
 	else
 	{
-	    a->prop &= ~VARSPECIALWAIT;
 	    ApplyNextModeMove(a);
 	}
     }
@@ -204,12 +202,10 @@ int SIGOrder_Tank_EndRotationBeforeTankMode(OBJ *a)
     {
 	if (IsSubUnit(a->SC_Unit))
 	{
-	    a->subunit->prop &= ~VARSPECIALWAIT;
 	    ApplyNextModeMove(a->subunit);
 	}
 	else
 	{
-	    a->prop &= ~VARSPECIALWAIT;
 	    ApplyNextModeMove(a);
 	}
     }
@@ -219,7 +215,6 @@ int  SIGOrder_Tank_AfterSiegeCmd(OBJ *a)
 {
     a->modemove = MODESTOP;
     a->subunit->modemove = MODESTOP;
-    a->prop &= ~VARSPECIALWAIT;
     SetOrder(a,0,NULL);
     return(0);
 }
@@ -238,7 +233,6 @@ int  SIGOrder_Tank_AfterNormalCmd(OBJ *a)
 	}
     a->modemove = MODESTOP;
     a->subunit->modemove = MODESTOP;
-    a->prop &= ~VARSPECIALWAIT;
     SetOrder(a,0,NULL);
     a->mainimage->invisiblecolors = inv;
     a->subunit->mainimage->invisiblecolors = inv;

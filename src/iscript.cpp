@@ -545,9 +545,6 @@ int ISCRIPT::ExecuteScript(MAIN_IMG *img)
     int offset,status,rot;
     if (img->flags & (SC_IMAGE_FLAG_DISABLEEXECSCRIPT | SC_IMAGE_FLAG_MARKFORDELETE))
 	return(0);
-    if (img->waitticks<=1)
-    {
-	img->waitticks = 0;
 	if (img->flags & SC_IMAGE_FLAG_NEEDROTATIONTODIRECTION)
 	{
 	    if (img->flags & SC_IMAGE_FLAG_ISCRIPTROTATION)
@@ -556,6 +553,9 @@ int ISCRIPT::ExecuteScript(MAIN_IMG *img)
 		    return(0);
 	    }
 	}
+    if (img->waitticks<=1)
+    {
+	img->waitticks = 0;
 	do{
 	    iscriptcmd = compilediscripts[img->offsetcmdinbuf++];
 	    iscriptcmdsize = iscriptcmdsizeparam[iscriptcmd][0];

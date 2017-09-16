@@ -375,8 +375,8 @@
 *139 valkirie rockets freeze around if atack destination is near him
 *140 scv after contruct not change typeofprop
 *141 atack scan sweep
-    tank after auto atack cant siege mode
-    need rotation turret to base if not have goal
+*142 tank after auto atack cant siege mode
+*143 need rotation turret to base if not have goal
     
     
     ?dust moves with unit
