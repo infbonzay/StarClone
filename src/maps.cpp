@@ -619,6 +619,8 @@ void makeoneobjseeopen(OBJ *a,OBJstruct *b)
     int nosave,indextile32;
     signed char creepnr;
 
+    if (IsSubUnit(a->SC_Unit))
+	return;
     if (a->prop & VARNOTHERE)
 	return;
     if (a->prop&VARKARTCHANGES)

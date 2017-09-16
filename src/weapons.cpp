@@ -820,13 +820,13 @@ void WeaponDoDamage(OBJ *atacker,OBJ *destobj,int x256,int y256,unsigned char SC
     		if (IsActiveUnit(a) && (player_aliance(playernr,a->playernr) == ENEMYOBJ || a == destobj))
     		{
 		    distance256 = GetDistanceTo256(a,x256,y256);
-		    if ( distance256 < mindist[0] )
+		    if ( distance256 <= mindist[0] )
 			realdamage = damage;
 		    else
-			if ( distance256 < mindist[1] )
+			if ( distance256 <= mindist[1] )
 			    realdamage = damage / 2;
 			else
-			    if ( distance256 < mindist[2] )
+			    if ( distance256 <= mindist[2] )
 				realdamage = damage / 4;
 			    else
 				continue;//out of damage range

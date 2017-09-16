@@ -96,7 +96,11 @@ void destroyobj(struct OBJ *a)
 	weaponflingy.RemoveOBJFromFlingyobj(a);
 
 	DeleteOldObjPointers(a);
-
+	if (a->subunit)
+	{
+	    a->subunit->subunit = NULL;	//????
+	    a->subunit = NULL;
+	}
 	delobjlist(a);
 	MinObjRegen=MaxObjects/MAPREGENERATION;
 	if (MaxObjects%MAPREGENERATION)
@@ -3540,8 +3544,6 @@ void DeleteOldObjPointers(struct OBJ *a)
 		    b->childs->parentof[j] = NULL;
 	    }
 	}
-	if (b->subunit == a)
-	    b->subunit = NULL;
 	if (b->resourceobj == a)
 	    b->resourceobj = NULL;
 	if (b->prevresourceobj == a)

@@ -1542,7 +1542,10 @@ void wscreenonmem(int nrregions,SCREEN_REGION regions[])
 
     if (fordeselect[0])
     {
-	strcat(s," modemove:");
+	strcat(s," pl:");
+	itoa(fordeselect[0]->playernr,ss,10);
+	strcat(s,ss);
+	strcat(s," move:");
 	itoa(fordeselect[0]->modemove,ss,10);
 	strcat(s,ss);
 //	strcat(s,"/");

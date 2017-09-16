@@ -413,6 +413,8 @@ int existatrdecloak(struct OBJ *a)
 void MakeMindControl(OBJ *a,int playernr,int ncolor)
 {
     OBJ *a2;
+    if (IfHaveSubUnit(a->SC_Unit))
+	MakeMindControl(a->subunit,playernr,ncolor);
     if (a->SC_Unit==SC_PYLONOBJ)
 	DelPylonArea(&map,a,a->playernr);
     else
@@ -475,6 +477,8 @@ void MakeMindControl(OBJ *a,int playernr,int ncolor)
 	if (a->doubleunit->playernr!=playernr)
 	    MakeMindControl(a->doubleunit,playernr,ncolor);
     }
+//    makeoneobjseeopen(a,loadobj(a->SC_Unit));
+
 //    moveobj(a,NULL,MODESTOP,0,0,NOSHOWERROR);
 }
 //==============================================
