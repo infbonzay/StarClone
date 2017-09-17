@@ -1576,7 +1576,9 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
     if (mode != MODEDIE)
 	ReleaseResource(a);
     OBJstruct *b = loadobj(a->SC_Unit);
-    a->prop &= ~( VARPATROLFLAG | VARHOLDPOSBIT );
+    a->prop &= ~VARPATROLFLAG;
+    if (mode != MODEATACK)
+	a->prop &= ~VARHOLDPOSBIT;
     if (a->mainimage->flags & SC_IMAGE_FLAG_CANTBREAKCODE)
 	if (mode != MODEDIE)
 	{
@@ -2413,6 +2415,11 @@ escapeconstrslots:
 		}
 	    }
 	    break;
+	case MODELOADUNITS:
+	    a->modemove = mode;
+	    initmoveaction(a,destobj,mode,0,0,x,y);
+	    moveobj(destobj,a,MODEMOVE,0,0,NOSHOWERROR,0);
+	    break;
 	case MODEUNLOADUNITS:
 	    if (destobj)
 	    {
@@ -2851,7 +2858,13 @@ int GetDefaultModeForRightClick(OBJ *a,OBJ *destobj,int playernr)
 		    modemove = MODEMOVE;
 		break;
 	    case UNIT_AIACTION_RIGHTCLICK_NORMALMOVE_NOATACK:		//2
-		modemove = MODEMOVE;
+		if (GetSpaceProvided(a->SC_Unit))
+		    if (GetSpaceRequired(destobj->SC_Unit)>0)
+		    {
+			modemove = MODELOADUNITS;
+			break;
+	    	    }
+	        modemove = MODEMOVE;
 		break;
 	    case UNIT_AIACTION_RIGHTCLICK_HARVEST:			//4
 		if (isenemy == ENEMYOBJ)
@@ -4164,7 +4177,7 @@ void unitprepareforatack(OBJ *a,OBJ *a2)
     unsigned char groundweapon_id,NEWSC_Unit;
     OBJstruct *b;
     if (UnitDoAiAction(a->playernr) || a->SC_Unit == SC_VULTUREMINEOBJ)
-	aiaction=1;
+        aiaction=1;
     if (a2)//have unit to atack
     {
 	switch(a->SC_Unit)
@@ -4325,7 +4338,7 @@ void atackback(OBJ *firstatacker,OBJ *destobj,int directiondamage)
 		err = IfCanCreateWeapon(destobj,firstatacker,NULL,NULL,CREATEWEAPON_IGNOREVISION);
 	    if (notdetect || err == CREATEDWEAPONSTATUS_CANTATACKTHISUNIT)
 	    {
-		//cannot atackback
+		//cannot atackback -> moveaway
 		if (accesstomove(destobj,loadobj(destobj->SC_Unit),MODEMOVE,destobj->playernr))
 		    if (destobj->modemove!=MODEHOLDPOS)
 			moveaway(firstatacker,destobj,directiondamage,MODEATACK,0);

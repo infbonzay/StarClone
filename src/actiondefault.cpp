@@ -56,7 +56,7 @@ int CarrierAction(struct OBJ *a,MAIN_IMG *img)
 //=================================
 int InterceptorsAction(struct OBJ *a,MAIN_IMG *img)
 {
-//    OBJstruct *b = loadobj(a->SC_Unit);
+    //???? HERE NEED TO SCRIPT MOVEING AROUND DESTOBJ
     if (a->prop & VARINBASE)
 	return 0;
     if (a->modemove != MODERECHARGE)
@@ -899,12 +899,11 @@ int AtackCoolDownEnds(OBJ *a,OBJ *destobj,int continueatack,int showerrorflag)
 		    a->atackcooldowntime = 1;
 		return(MOVEOBJ_WAITUNTIL);
 	    case CREATEDWEAPONSTATUS_DESTOUTOFRANGE://out of range
-		//if sub unit - tell to base to move inthat direction
+		//if sub unit - tell to base to move in that direction
+		if (a->prop & VARHOLDPOSBIT)
+			return(MOVEOBJ_NOACT);
 		if (IsSubUnit(a->SC_Unit))
 		{
-//		    if (a->subunit->modemove != MODESTOP)
-//		    if (a->subunit->modemove == MODEATACK)
-//			return(MOVEOBJ_NOACT);
 		    a->subunit->modemove = MODEATACK;
 		    a->atackcooldowntime = 0;
 		    initmoveaction(a->subunit,destobj,MODEATACK,a->usedweapon_id,0,GetOBJx(destobj),GetOBJy(destobj));

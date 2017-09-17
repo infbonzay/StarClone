@@ -377,12 +377,18 @@
 *141 atack scan sweep
 *142 tank after auto atack cant siege mode
 *143 need rotation turret to base if not have goal
-*144    pylon power was failed for bulds palced before pylon on map
-*145    set rally point on mutating lair and hive not exist    
+*144 pylon power was failed for bulds palced before pylon on map
+*145 set rally point on mutating lair and hive not exist    
+*146 battle cruiser need to disrupt casting if do moveobj
+*147 holdposition not work
+*148 transport move to obj is need to transport him
+    
+    interceptor atack script
+    check transport add base/turret objects
+    lockdown and other mages on base/turret units????
     
     ?dust moves with unit
     move to unit becomed invisible continue move/atack/etc..
-    battle cruiser need to disrupt casting if do moveobj
     save/load mem under selectation box
     consume on non zerg units
     then ensnared unit, at decceleration speed big than maxslowedspeed

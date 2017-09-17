@@ -155,7 +155,7 @@ unsigned short StarEditPlacementBoxWidthAndHeight[MAX_UNITS_ELEM][2];
 	char  StarEditGroupFlags[MAX_UNITS_ELEM];
 	unsigned char SupplyProvided[MAX_UNITS_ELEM];
 	unsigned char SupplyRequired[MAX_UNITS_ELEM];
-	unsigned char SpaceRequired[MAX_UNITS_ELEM];
+	signed char SpaceRequired[MAX_UNITS_ELEM];
 	unsigned char SpaceProvided[MAX_UNITS_ELEM];
 	short BuildScore[MAX_UNITS_ELEM];
 	short DestroyScore[MAX_UNITS_ELEM];
