@@ -787,7 +787,7 @@ void calcfullinvandsee(void)
 //=================================
 void calcfullinvandseeobj(OBJ *a)
 {
-    int i,decloaked,cloaked;
+    int i,decloaked,cloaked,notdetect=0;
     unsigned char visbits,plmask;
     decloaked = existatrdecloak(a);
     if (IsCloaked(a) || IsOBJBurrowed(a))
@@ -827,6 +827,23 @@ void calcfullinvandseeobj(OBJ *a)
     		OBJ_VAR_MASK_CLR(a,obj_notdetect,plmask);
     	}
     }//for
+    if (cloaked)
+	ClearFinalOBJ(a);
+}
+//==================================
+void ClearFinalOBJ(OBJ *a0)
+{
+    OBJ *a;
+    int i=0;
+    for (i=0;i<MaxObjects;i++)
+    {
+	a = objects[i];
+	if (a0 == a->finalOBJ)
+	{
+    	    if (OBJ_VAR_CHK(a0,obj_notdetect,a->playernr))
+		moveobj(a,NULL,MODESTOP,0,0,NOSHOWERROR,0);
+	}
+    }
 }
 //==================================
 void _putcells(void)

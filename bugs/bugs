@@ -386,11 +386,12 @@
 *150 ifested terrain do damage on ground
 *151 lockdown and other mages on base/turret units????
 *152 move on me
+*153 move to unit becomed invisible continue move/atack/etc..
+    need to smouth map moving then MoveVisualMapPosition
     workers do not deaccelerate then return resources
     interceptor atack script
     
     ?dust moves with unit
-    move to unit becomed invisible continue move/atack/etc..
     save/load mem under selectation box
     consume on non zerg units
     then ensnared unit, at decceleration speed big than maxslowedspeed
