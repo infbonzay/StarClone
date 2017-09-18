@@ -162,7 +162,6 @@ void SlotReturnResources(OBJ *a,int playernr,int slotnr);
 void ReturnResources(unsigned char SC_Unit,int playernr,int factorreturn);
 void initmoveaction(OBJ *a,OBJ *destobj,int mode,int startx,int starty,int x,int y);
 int  CalcDestVars(OBJ *a,OBJ *destobj,int x1,int y1,int x2,int y2,unsigned char flingy_id);
-int  moveaction(OBJ *a,MAIN_IMG *img,int deltamove);
 void ForceKartChanges(OBJ *a);
 void ForceKartChanges(OBJ *a,int xpos,int ypos);
 void CheckForKartChanges(OBJ *a,int xpos,int ypos);
@@ -171,7 +170,7 @@ void InitStopAfterMove(OBJ *a);
 void PathFinding_InitType1(OBJ *a,int initx,int inity,int destx,int desty);
 int  PathFinding_MovePortionType1(OBJ *a,MAIN_IMG *img,int deltamove);
 
-void PathFinding_InitType2(OBJ *a,int initx,int inity,int destx,int desty,unsigned char flingy_id);
+int  PathFinding_InitType2(OBJ *a,int initx,int inity,int destx,int desty,unsigned char flingy_id);
 int  PathFinding_MovePortionType2(OBJ *a,MAIN_IMG *img,unsigned char flingy_id,int deltamove);
 
 void AdditionalUnitsProceed(void);

@@ -1427,7 +1427,6 @@ int moveobj_buildmode(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int
 	    if (destobj)
 		a->data.geyserdest.obj = destobj;
 	    AddModeMove(a,NULL,mode,x,y,showerrorflag);//create build after
-	    
 	}
 	else
 	{
@@ -4702,7 +4701,7 @@ void SetHallucinationOBJ(OBJ *a)
 //=================================
 void initmoveaction(OBJ *a,OBJ *destobj,int mode,int startx,int starty,int x,int y)
 {
-    int deltax,deltay,deltaz;
+    int deltax,deltay,deltaz,pathreterror;
     unsigned char flingy_id;
     flingy_id = alldattbl.units_dat->flingy_id[a->SC_Unit];
     if (mageprop[mode].createweapon != 255)
@@ -4792,8 +4791,11 @@ void initmoveaction(OBJ *a,OBJ *destobj,int mode,int startx,int starty,int x,int
 		a->finalx   = x<<8;
 		a->finaly   = y<<8;
 	    }	
-	    PathFinding_InitType2(a,GetOBJx256(a),GetOBJy256(a),a->finalx,a->finaly,flingy_id);
-	    SetOBJIScriptNr(a,ISCRIPTNR_WALKING,ISCRIPTNR_EXECUTE);
+	    pathreterror = PathFinding_InitType2(a,GetOBJx256(a),GetOBJy256(a),a->finalx,a->finaly,flingy_id);
+//	    if (pathreterror)
+//		SetModeMove(a,MODESTOP);
+//	    else
+		SetOBJIScriptNr(a,ISCRIPTNR_WALKING,ISCRIPTNR_EXECUTE);
 	    break;
     }
 }
@@ -4894,16 +4896,24 @@ movelikeatoterrain1:
 }
 //=================================
 //for flingy movecontrol version
-void PathFinding_InitType2(OBJ *a,int initx,int inity,int destx,int desty,unsigned char flingy_id)
+int PathFinding_InitType2(OBJ *a,int initx,int inity,int destx,int desty,unsigned char flingy_id)
 {
-    int deltaz;
-    float newhdist;
+    int retcalc=0;
     PathFinding_InitType1(a,initx,inity,destx,desty);
     if (a->mainimage->side == a->mainimage->neededside)
     {
 	//if the same direction, calculate move vars
-	CalcDestVars(a,a->finalOBJ,initx,inity,destx,desty,flingy_id);
+	retcalc = CalcDestVars(a,a->finalOBJ,initx,inity,destx,desty,flingy_id);
+	if (retcalc)
+	{
+	    a->currentspeed=1;	//need to stop if dest is near
+	    a->prop &= ~VARACCELERATIONBIT;
+	    a->prop &= ~VARMOVEACT;
+	    a->finalOBJ = NULL;
+	    a->prop &= ~VARMOVEOBJACT;
+	}
     }
+    return(retcalc);
 }
 //=================================
 int PathFinding_MovePortionType2(OBJ *a,MAIN_IMG *img,unsigned char flingy_id,int deltamove)
@@ -4997,7 +5007,7 @@ int CalcDestVars(OBJ *a,OBJ *destobj,int initx,int inity,int destx,int desty,uns
 	    deltaz = GetDistanceTo256(destobj,initx,inity)/2;
 	else
 	    deltaz = hypot(destx-initx,desty-inity)/2;
-	if (deltaz < haltdistance)
+	if (deltaz <= haltdistance)
 	{
 //	    haltdistance = CalcTotalDistance(topspeed-a->currentspeed,0,alldattbl.flingy_dat->Acceleration[flingy_id]);
 //	    if (deltaz >= haltdistance)
@@ -5010,15 +5020,6 @@ int CalcDestVars(OBJ *a,OBJ *destobj,int initx,int inity,int destx,int desty,uns
     a->topspeed = topspeed;
     a->haltdistance = haltdistance;
     return (haltdistance<=256);
-}
-//=================================
-int moveaction(OBJ *a,MAIN_IMG *img,int deltamove)
-{
-    int status;
-    status = PathFinding_MovePortionType1(a,img,GetSpeed(a,deltamove));
-    if (a->subunit)
-	ChangeSubUnitCoords(a->subunit,a);
-    return(status);
 }
 //=================================
 void ForceKartChanges(OBJ *a)
@@ -5080,7 +5081,9 @@ void AllOBJMoving(void)
 	    case FLINGYMOVECONTROL_ISCRIPT:
 		if (img->movefactor)
 		{
-		    moveaction(a,img,img->movefactor);
+		    PathFinding_MovePortionType1(a,img,GetSpeed(a,img->movefactor));
+		    if (a->subunit)
+			ChangeSubUnitCoords(a->subunit,a);
 		    img->movefactor = 0;
 		}
 		break;
@@ -5170,6 +5173,9 @@ void AllOBJMoving(void)
 		}
 		curspeed = GetSpeed(a,a->currentspeed);
 		PathFinding_MovePortionType2(a,img,flingy_id,GetSpeed(a,a->currentspeed));
+//		if (a->subunit)
+//		    ChangeSubUnitCoords(a->subunit,a);
+
 //	    	printf("speed=%d ensnaired=%d\n",a->currentspeed,curspeed);
 		break;
 	}//switch

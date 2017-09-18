@@ -384,8 +384,10 @@
 *148 transport move to obj is need to transport him
 *149 check transport add base/turret objects
 *150 ifested terrain do damage on ground
+*151 lockdown and other mages on base/turret units????
+*152 move on me
+    workers do not deaccelerate then return resources
     interceptor atack script
-    lockdown and other mages on base/turret units????
     
     ?dust moves with unit
     move to unit becomed invisible continue move/atack/etc..

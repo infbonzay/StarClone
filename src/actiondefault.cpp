@@ -158,7 +158,7 @@ void SCVConstructAction(OBJ *a,MAIN_IMG *img)
 //	    }while(a->xkart == x && a->ykart == y);	//the same coordinates is bad idea, change it
 		
 	    initmoveaction(a,NULL,MODECONSTRUCTMOVE,0,0,x*32,y*32);//move to construct point build
-	    SetOBJIScriptNr(a,ISCRIPTNR_WALKING,ISCRIPTNR_EXECUTE);			//set the same script to all obj images and subimages
+//	    SetOBJIScriptNr(a,ISCRIPTNR_WALKING,ISCRIPTNR_EXECUTE);			//set the same script to all obj images and subimages
 	    a->modemove = MODECONSTRUCTMOVE;
 	    AddModeMove(a,NULL,MODETURN180,0,0,0);//contibue construction
 	    AddModeMove(a,NULL,MODECONSTRUCT,x,y,0);//continue construction
