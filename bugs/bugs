@@ -382,9 +382,9 @@
 *146 battle cruiser need to disrupt casting if do moveobj
 *147 holdposition not work
 *148 transport move to obj is need to transport him
+*149 check transport add base/turret objects
     
     interceptor atack script
-    check transport add base/turret objects
     lockdown and other mages on base/turret units????
     
     ?dust moves with unit

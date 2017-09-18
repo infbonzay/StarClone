@@ -1542,7 +1542,8 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
 //    if (a == destobj)
 //	return(MOVEOBJ_NOACT);    
     //prevent to move if is uninterrupted mode
-    if (x < 16)
+
+/*    if (x < 16)				x & y is not only coordinates 
 	x = 16;
     if (y < 16)
 	y = 16;
@@ -1550,6 +1551,7 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
 	x = MAXXMAP*32-16;
     if (y >= MAXYMAP*32-16)
 	y = MAXYMAP*32-16;
+*/
     if (a->modemove == MODEDIE)
     {
 	DEBUGMESSCR("moveobj <mode=%d> than died\n",mode);
@@ -2327,9 +2329,16 @@ escapeconstrslots:
 		    if (a->playernr == destobj->playernr)
 		    {
 			if (destobj->SC_Unit == SC_BUNKEROBJ)
-		    	    LoadObjInObj(a,destobj,1,4);
+			{
+		    	    if (IsOrganic(a->SC_Unit) && GetUnitRace(a->SC_Unit) == TERRANRACE)
+		    	    {
+		    		LoadObjInObj(a,destobj);
+		    	    }
+			}
 			else
-			    LoadObjInObj(a,destobj,4,8);
+			{
+			    LoadObjInObj(a,destobj);
+			}
 		    }
 		}
 		else
@@ -3030,10 +3039,9 @@ int unloadcoordxy[4][2]={
 			    { 15, 20}
 			};
 //=================================
-void LoadObjInObj(struct OBJ *a,struct OBJ *c,
-		 int maxweighttoenter,int maxweight)
+void LoadObjInObj(struct OBJ *a,struct OBJ *c)
 {
-    int weightobj;
+    signed char weightobj,maxweight;
     if (!c->loaded)
     {
 	c->loaded = (struct LOADED *) wmalloc(sizeof(struct LOADED));
@@ -3041,8 +3049,10 @@ void LoadObjInObj(struct OBJ *a,struct OBJ *c,
 	c->loaded->nrunittounload = -1;
     }
     weightobj = GetSpaceRequired(a->SC_Unit);
-    if (weightobj<=maxweighttoenter&&
-	c->loaded->weight+weightobj<=maxweight)
+    if (weightobj <= 0)
+	return;
+    maxweight = GetSpaceProvided(c->SC_Unit);
+    if (c->loaded->weight + weightobj <= maxweight)
     {
 	c->loaded->weight += weightobj;
 	c->loaded->loadedunits[c->loaded->nrofloadedunits] = a;
@@ -3059,9 +3069,14 @@ void LoadObjInObj(struct OBJ *a,struct OBJ *c,
 	Play_sfxdata(GetOBJx(c),GetOBJy(c),SFXDATA_ZINTRANSPORT+GetUnitRace(c->SC_Unit),2);
 	//disable drawing in transport unit
 	a->prop |= (VARINTRANSPORT | VARCANTSELECT | VARNOTHERE);
-        
         a->mainimage->HideChildsImgFlag();
         a->mainimage->HideImgFlag();
+	if (a->subunit)
+	{
+	    a->subunit->prop |= (VARINTRANSPORT | VARCANTSELECT | VARNOTHERE);
+    	    a->subunit->mainimage->HideChildsImgFlag();
+    	    a->subunit->mainimage->HideImgFlag();
+	}
 	
 	sortselectedunits(c->loaded->loadedunits,8);
 	transportanalizeobj(c);
@@ -3140,18 +3155,24 @@ void UnLoadObjInObj(struct OBJ *c,int nrofunloadobj,int typeofnewxycoords,int de
 		break;
 	}
 	FreeOBJFromTransport(c,a,nrofunloadobj);
-	a->prop &= ~(VARINTRANSPORT | VARCANTSELECT | VARNOTHERE);
-        
-        a->mainimage->ShowChildsImgFlag();
-        a->mainimage->ShowImgFlag();
-
-	moveobj(a,NULL,MODESTOP,0,0,NOSHOWERROR,0);
 
 	if (typeofnewxycoords == NEWXYCOORDS)
 	{
 	    ChangeObjXY(a,x,y);
 	    ForceKartChanges(a);
 	}
+	a->prop &= ~(VARINTRANSPORT | VARCANTSELECT | VARNOTHERE);
+        a->mainimage->ShowChildsImgFlag();
+        a->mainimage->ShowImgFlag();
+	if (a->subunit)
+	{
+	    a->subunit->prop &= ~(VARINTRANSPORT | VARCANTSELECT | VARNOTHERE);
+    	    a->subunit->mainimage->ShowChildsImgFlag();
+    	    a->subunit->mainimage->ShowImgFlag();
+    	    ChangeSubUnitCoords(a->subunit,a);
+	    ForceKartChanges(a->subunit);
+	}
+	moveobj(a,NULL,MODESTOP,0,0,NOSHOWERROR,0);
 	if (!silentlyflag)
 	    Play_sfxdata(GetOBJx(c),GetOBJy(c),SFXDATA_ZOUTTRANSPORT+GetUnitRace(c->SC_Unit),2);
 

@@ -98,7 +98,7 @@ int RazvorotNa180(struct OBJ *a,struct OBJstruct *b);
 int RazvorotNa180NOW(struct OBJ *a,struct OBJstruct *b);
 int RazvorotNaOBJ(struct OBJ *a,struct OBJ *a2);
 
-void LoadObjInObj(OBJ *a,OBJ *c, int maxweighttoenter,int maxweight);
+void LoadObjInObj(OBJ *a,OBJ *c);
 void UnLoadObjInObj(OBJ *c,int nrofunloadobj,int typeofnewxycoords,int x,int y,int silentlyflag);
 void delADVobj(struct OBJ *a);
 void dieobj_silently(OBJ *a);
