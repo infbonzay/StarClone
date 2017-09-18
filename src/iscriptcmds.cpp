@@ -533,7 +533,6 @@ int IScriptCmd_attackwith(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
 {
     unsigned char subunit;
     signed char *adrxyoffs;
-    int retval;
     OBJ *a,*tr;
     LOFILE *lo;
     MAIN_IMG *newimg;
@@ -599,9 +598,11 @@ int IScriptCmd_attackwith(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
 		    mainimageslist.AddElem(newimg);
 
 		}
-		retval = CreateWeaponID( a,a->finalOBJ,GetOBJx256(a->finalOBJ),GetOBJy256(a->finalOBJ),weapon_id,1);
-		if (retval)
-		    return(1);
+		CreateWeaponID( a,a->finalOBJ,GetOBJx256(a->finalOBJ),GetOBJy256(a->finalOBJ),weapon_id,1);
+	    }
+	    else	//atack on ground
+	    {
+		CreateWeaponID( a,NULL,GetOBJx256(a),GetOBJy256(a),weapon_id,1);
 	    }
 	}
     }
@@ -612,7 +613,6 @@ atackwith_end:
 //============================================
 int IScriptCmd_attack(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
 {
-    int retval;
     OBJ *a;
     unsigned char weapon_id;
     if (img->parentimg->whocreate == SC_IMAGE_OBJ_CREATOR)
@@ -624,9 +624,7 @@ int IScriptCmd_attack(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
 		weapon_id = alldattbl.units_dat->GroundWeapon[a->SC_Unit];
 	    else
 		weapon_id = alldattbl.units_dat->AirWeapon[a->SC_Unit];
-	    retval = CreateWeaponID( a,a->finalOBJ,GetOBJx256(a->finalOBJ),GetOBJy256(a->finalOBJ),weapon_id,1);
-	    if (retval)
-	        return(1);
+	    CreateWeaponID( a,a->finalOBJ,GetOBJx256(a->finalOBJ),GetOBJy256(a->finalOBJ),weapon_id,1);
 	}
     }
 

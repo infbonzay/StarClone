@@ -969,7 +969,7 @@ void SetAtackType(OBJ *a,OBJ *destobj)
         a->prop &= ~VARATACKAIROBJ;
 }
 //=================================
-void SpecialAtackAction(OBJ *a,OBJ *destobj,int iscriptstate)
+void SpecialAtackAction(OBJ *a,int iscriptstate)
 {
     a->mainimage->ForceSetIScript(255);
     SetOBJIScriptNr(a,iscriptstate,ISCRIPTNR_SETONLY);

@@ -1571,9 +1571,21 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
     if ((a->prop & VARPOWEROFF) && mode == MODEPOWERON)
 	;
     else
-	if (a->prop & VARNOTWORK)
-    	    if (mode != MODEDIE)
-    	        return(MOVEOBJ_NOACT);
+    {
+    	if (mode != MODEDIE)
+    	{
+	    if (IsSubUnit(a->SC_Unit))
+	    {
+		if (a->subunit->prop & VARNOTWORK)
+    	    	    return(MOVEOBJ_NOACT);
+	    }
+	}
+	else
+	{
+	    if (a->prop & VARNOTWORK)
+    		return(MOVEOBJ_NOACT);
+    	}
+    }
     //release any resource field
     if (mode != MODEDIE)
 	ReleaseResource(a);
@@ -1588,6 +1600,11 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
 	    AddModeMove(a,destobj,mode,x,y,NOSHOWERROR);
 	    return(MOVEOBJ_DONE);
 	}    
+    if (a->SC_Unit == SC_BUGGUYOBJ && mode == MODEATACK && !destobj)
+    {
+	//infested terrain atack to ground
+	mode = MODESUICIDEATACK;
+    }
     if (mode != MODECASTSPELL && a->castmagenr == MODEYAMATOGUN)
     {
 	//stop cast spell
@@ -2427,7 +2444,7 @@ escapeconstrslots:
 	case MODELOADUNITS:
 	    a->modemove = mode;
 	    initmoveaction(a,destobj,mode,0,0,x,y);
-	    moveobj(destobj,a,MODEMOVE,0,0,NOSHOWERROR,0);
+	    moveobj(destobj,a,MODEENTERTRANSPORT,0,0,NOSHOWERROR,0);
 	    break;
 	case MODEUNLOADUNITS:
 	    if (destobj)
@@ -2468,9 +2485,10 @@ escapeconstrslots:
 		    case SC_SCARABOBJ:
 		    case SC_VULTUREMINEOBJ:
 		    case SC_BUGGUYOBJ:
+bugguyexplode:
 			SetOrder(a,1,&SIGOrder_UnitDies);
 			a->castmagenr = MODEMINEEXPLODE;
-    			SpecialAtackAction(a,destobj,ISCRIPTNR_SPECIALSTATE1);
+    			SpecialAtackAction(a,ISCRIPTNR_SPECIALSTATE1);
 			break;
 		    default:
 			AtackAction(a,destobj,0);
@@ -2478,7 +2496,11 @@ escapeconstrslots:
 		}
 	    }
 	    else
+	    {
+		if (a->SC_Unit == SC_BUGGUYOBJ)
+		    goto bugguyexplode;
 		ApplyNextModeMove(a);
+	    }
 	    break;
 	case MODEATACK:
 	    if (destobj)
@@ -2578,6 +2600,10 @@ escapeconstrslots:
 	    }
 	    initmoveaction(a,destobj,mode,0,0,x,y);
 	    a->modemove = mode;
+	    break;
+	case MODESUICIDEATACK:
+	    initmoveaction(a,NULL,mode,0,0,x,y);
+	    AddModeMove(a,NULL,MODEATACKREADY,x,y,NOSHOWERROR);
 	    break;
 	default:
 	    DEBUGMESSCR("mode=%d not developed\n",mode);
