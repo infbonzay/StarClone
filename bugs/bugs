@@ -387,8 +387,8 @@
 *151 lockdown and other mages on base/turret units????
 *152 move on me
 *153 move to unit becomed invisible continue move/atack/etc..
+*154 workers do not deaccelerate then return resources
     need to smouth map moving then MoveVisualMapPosition
-    workers do not deaccelerate then return resources
     interceptor atack script
     
     ?dust moves with unit
