@@ -4953,7 +4953,8 @@ int PathFinding_MovePortionType2(OBJ *a,MAIN_IMG *img,unsigned char flingy_id,in
 //		deltaz/256,a->modemoveminusdistance/256,a->haltdistance/256,(deltaz-a->modemoveminusdistance)/256);
 	    InitStopAfterMove(a);
 	    a->prop |= VARWAITDISTANCE;
-	    ApplyNextModeMove(a);
+	    if (a->modemove == MODEATACK)
+	        ApplyNextModeMove(a);
 	}
 	if (deltaz <= 2*256)		//prevent div 0
 	    return(1);
@@ -5163,10 +5164,11 @@ void AllOBJMoving(void)
 				    ApplyNextModeMove(a);
 				}
 			    }
-//			    else
-//			    {
-//				ApplyNextModeMove(a);
-//			    }
+			    else
+			    {
+				if (a->modemove!=MODEATACK)
+				    ApplyNextModeMove(a);
+			    }
 			}
 			continue;
 		    }
