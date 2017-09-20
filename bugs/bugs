@@ -388,6 +388,7 @@
 *152 move on me
 *153 move to unit becomed invisible continue move/atack/etc..
 *154 workers do not deaccelerate then return resources
+    pxmap3,txmap3 not see creep in fog zerg colony
     need to smouth map moving then MoveVisualMapPosition
     interceptor atack script
     

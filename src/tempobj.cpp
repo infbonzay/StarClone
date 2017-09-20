@@ -169,7 +169,7 @@ OBJ *CreateUnitsFromMAP(struct unit_on_map *unit,struct mapinfo *loadedmap)
 	    {
 		if (unit->player==NUMBGAMER)
 		{
-			SetVisualMapPositionCenter(unit->xpos,unit->ypos);
+		    SetVisualMapPositionCenter(unit->xpos,unit->ypos);
 		}
 		return(NULL);
 	    }

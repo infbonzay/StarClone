@@ -1224,10 +1224,10 @@ int load_starmap( const char *mapfile,char *fname, struct mapinfo *info,GAMECONF
     unsigned char firstlevel,level;
     unsigned short tile;
 
-    _RACE=0;
-    MAPDEF=TERRAIN|UNITS;
-    MaxObjects=0;
-    
+    _RACE = ZERGRACE;
+    MAPDEF = TERRAIN|UNITS;
+    MaxObjects = 0;
+    info->flags &= ~STARMAP_FLAG_IGNOREMAPMOVE;
     if (fname)
     {
 	strcpy(tempfn,fname);

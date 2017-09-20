@@ -369,9 +369,37 @@ void drawMAP(int ignorefirstwaiting)
 */
 }
 //==================================
-int SetVisualMapPosition(int x,int y)//x,y-0..MAX?MAP*32
+void AutoMoveMap(void)
 {
-    int retval=0;
+    int mapdeltax,mapdeltay,deltas=0;
+    mapdeltax = map.newMAPX - map.MAPX;
+    mapdeltay = map.newMAPY - map.MAPY;
+    if (mapdeltax < 0)
+	map.MAPX--;
+    else 
+	if (mapdeltax > 0)
+	    map.MAPX++;
+	else
+	    deltas++;
+    if (mapdeltay < 0)
+	map.MAPY--;
+    else 
+	if (mapdeltay > 0)
+	    map.MAPY++;
+	else
+	    deltas++;
+    if (!deltas)
+	map.flags &= ~STARMAP_FLAG_IGNOREMAPMOVE;
+    else
+    {
+	map.MAPXYmove=1;
+	map.MAPXGLOBAL = map.MAPX*SIZESPRLANSHX;
+	map.MAPYGLOBAL = map.MAPY*SIZESPRLANSHY;
+    }
+}
+//==================================
+void MoveVisualMapPosition(int x,int y)
+{
     if (x<0) 
 	x=0;
     if (y<0) 
@@ -380,15 +408,40 @@ int SetVisualMapPosition(int x,int y)//x,y-0..MAX?MAP*32
         x=SIZESPRLANSHX*(MAXXMAP-widthkart);
     if (y>SIZESPRLANSHY*(MAXYMAP-hightkart))
         y=SIZESPRLANSHY*(MAXYMAP-hightkart);
-    map.MAPXGLOBAL=x;
-    map.MAPYGLOBAL=y;
+    map.newMAPX = x/SIZESPRLANSHX;
+    map.newMAPY = y/SIZESPRLANSHY;
+    map.flags |= STARMAP_FLAG_IGNOREMAPMOVE;
+}
+//==================================
+void MoveVisualMapPositionCenter(int x,int y)
+{
+    MoveVisualMapPosition(x-widthkart*SIZESPRLANSHX/2,y-hightkart*SIZESPRLANSHY/2-SIZESPRLANSHY);
+}
+//==================================
+int SetVisualMapPosition(int x,int y)//x,y-0..MAX?MAP*32
+{
+    int retval=0;
+    if (map.flags & STARMAP_FLAG_IGNOREMAPMOVE)
+	return(0);
+    if (x<0) 
+	x=0;
+    if (y<0) 
+        y=0;
+    if (x>SIZESPRLANSHX*(MAXXMAP-widthkart))
+        x=SIZESPRLANSHX*(MAXXMAP-widthkart);
+    if (y>SIZESPRLANSHY*(MAXYMAP-hightkart))
+        y=SIZESPRLANSHY*(MAXYMAP-hightkart);
+    map.MAPXGLOBAL = x;
+    map.MAPYGLOBAL = y;
     if (map.MAPX != x/SIZESPRLANSHX || map.MAPY != y/SIZESPRLANSHX)
     {
 	map.MAPXYmove=1;
 	retval=1;
+	map.MAPX = x/SIZESPRLANSHX;
+	map.MAPY = y/SIZESPRLANSHY;
+	map.newMAPX = map.MAPX;
+	map.newMAPY = map.MAPY;
     }
-    map.MAPX=x/SIZESPRLANSHX;
-    map.MAPY=y/SIZESPRLANSHY;
     map.MAPXYmove=1;
     return(retval);
 }
@@ -396,12 +449,6 @@ int SetVisualMapPosition(int x,int y)//x,y-0..MAX?MAP*32
 void SetVisualMapPositionCenter(int x,int y)
 {
     SetVisualMapPosition(x-widthkart*SIZESPRLANSHX/2,y-hightkart*SIZESPRLANSHY/2-SIZESPRLANSHY);
-}
-//==================================
-void MoveVisualMapPosition(int deltax,int deltay)
-{
-    SetVisualMapPosition(map.MAPXGLOBAL+deltax,map.MAPYGLOBAL+deltay);
-    scrnew=1;
 }
 //==================================
 void putfullcreep(int xglob,int yglob,int x,int y,int creepnrspr)

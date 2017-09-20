@@ -791,14 +791,6 @@ void mouseonkartaarea(void)
         	}
     	}
     }
-/*    if (!(mouse_b&WMRIGHTKEY))
-    {
-	    buton2=0;
-    	    MoveVisualMapPosition(addscrx,addscry);
-    	    if (addscrx||addscry)
-		needredesen = 1;
-    }
-*/
     if (!(mouse_b&WMRIGHTKEY))
     {
 	buton2=0;
@@ -1074,6 +1066,7 @@ int gogame(struct mapinfo *info)
 	    {
 		curentREGIM=MOUSEMODE2;
 	    }
+	    AutoMoveMap();
 	    if (!PAUSEGAME)
 	    {
 		calculatefog(bitsplayer);			//calculate all fog

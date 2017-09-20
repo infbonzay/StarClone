@@ -19,6 +19,7 @@
 #define STARMAP_FLAG_WINGAME		0x02
 #define STARMAP_FLAG_HAVECOUNTDOWN	0x04
 #define STARMAP_FLAG_COUNTSTOPED	0x08
+#define STARMAP_FLAG_IGNOREMAPMOVE	0x10
 
 
 #define DSWARMEFFECT		0
@@ -468,6 +469,8 @@ struct mapinfo
     
     int		MAPX;
     int		MAPY;
+    int		newMAPX;
+    int		newMAPY;
     int		MAPXGLOBAL;
     int		MAPYGLOBAL;
     int		MAPXYmove;				//set if user move map

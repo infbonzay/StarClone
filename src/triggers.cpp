@@ -847,7 +847,8 @@ int Action_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int trig_nr,int playernr,int
 		case TRG_ACTIONTYPE_CENTERVIEW://10
 		    locnr=temptrg->action[i].locationnr-1;
 		    CenterXYArea(&info->gamelocations[locnr].coords,&sx,&sy);
-		    SetVisualMapPositionCenter(sx,sy);
+//		    SetVisualMapPositionCenter(sx,sy);
+		    MoveVisualMapPositionCenter(sx,sy);
 		    triggset=1;
 		    break;
 		case TRG_ACTIONTYPE_CREATEUNITWITHPROPERTIES://11
