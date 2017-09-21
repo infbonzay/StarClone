@@ -1954,6 +1954,7 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
 	    SetOBJIScriptNr(a,ISCRIPTNR_ALMOSTBUILT,ISCRIPTNR_EXECUTE);
 	    break;
 	case MODEHOLDPOS:
+	    a->finalOBJ=NULL;
 	    if (a->movelist)
 		a->movelist->EmptyElemFifo();
 	    a->prop |= VARHOLDPOSBIT;
@@ -1977,7 +1978,6 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
 	    if (alldattbl.units_dat->Subunit1[a->SC_Unit] < MAX_UNITS_ELEM)
 	    {
 		moveobj(a->subunit,destobj,mode,x,y,NOSHOWERROR,0);
-//		a->subunit->finalOBJ=NULL;
 	    }
 	    if (a->movelist)
 		a->movelist->EmptyElemFifo();
