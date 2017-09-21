@@ -303,7 +303,6 @@ void ApplyFogMask(struct mapinfo *info,int playernr)
 	    info->mapbits.whitefog2[playernr][i] = 4;
 	}
     }
-    saveoldtileandcreep();
 }
 //=================================================
 

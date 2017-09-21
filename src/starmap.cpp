@@ -1385,6 +1385,7 @@ int load_starmap( const char *mapfile,char *fname, struct mapinfo *info,GAMECONF
 	if (IfPlayerHaveStartLocation(info,i) != -1)
 	    ApplyFogMask(info,i);
     }
+    saveoldtileandcreep();
 
     if (info->FogMask)
     {

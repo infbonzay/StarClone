@@ -3804,7 +3804,7 @@ void applyrescuableunits(void)
 //==================================
 void SetInvisibleUnit(struct OBJ *a)
 {
-    a->mainimage->invisiblecolors = 255;
+    OBJSetInvisibleColors(a,MAXINVISIBLECOLOR);
     SetMageAtr(&a->atrobj,ATRINVISIBLE,ATRMAGEINFINITE);
     SetCloakedFlag(a,1);
 }
@@ -3822,19 +3822,20 @@ void setpropertiestounit(struct OBJ *a,int special_props,int state_flags)
 		mask=1;
 	    else
 	    {
-		if (a->SC_Unit == SC_GHOSTOBJ)
+		SetInvisibleUnit(a);
+		a->mainimage->newgrpmethod = DISTORTION;
+/*		if (a->SC_Unit == SC_GHOSTOBJ)
 		    mode = MODEPERSONNELCLOAK;
 		else
 		    if (a->SC_Unit == SC_WRAITHOBJ)
 			mode = MODECLOAKFIELD;
 		    else
 		    {
-			SetInvisibleUnit(a);
 			mode = MODENON;
 		    }
 		if (mode != MODENON)
 		    moveobj(a,NULL,mode,0,0,NOSHOWERROR|ATACKMOVEBIT,0);
-	    }
+*/	    }
 	}
     if (state_flags&UNITONMAP_STATEFLAGS_BURROW)
 	if (special_props&UNITONMAP_STATEFLAGS_BURROW)
@@ -4386,7 +4387,7 @@ void atackback(OBJ *firstatacker,OBJ *destobj,int directiondamage)
 	    {
 		//cannot atackback -> moveaway
 		if (accesstomove(destobj,loadobj(destobj->SC_Unit),MODEMOVE,destobj->playernr))
-		    if (destobj->modemove!=MODEHOLDPOS)
+		    if (destobj->modemove == MODESTOP)
 			moveaway(firstatacker,destobj,directiondamage,MODEATACK,0);
 	    }
 	    else

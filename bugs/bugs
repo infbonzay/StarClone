@@ -389,7 +389,8 @@
 *153 move to unit becomed invisible continue move/atack/etc..
 *154 workers do not deaccelerate then return resources
 *155 pxmap3 not see creep at location with no fog on map doing creation
-    txmap3 not see creep in fog zerg colony (left-up corner)
+*156 txmap3 not see creep in fog zerg colony (left-up corner)
+*157 cloacked unit created from triggers have (cant see it)
     need to smouth map moving then MoveVisualMapPosition
     interceptor atack script
     

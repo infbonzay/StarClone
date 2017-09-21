@@ -972,7 +972,7 @@ void saveandputimage(int x,int y,int xdelta,int ydelta,GRPFILE *grppict,int form
     }
     if (flags & SC_IMAGE_FLAG_SAVEINFOGTABLE)
     {
-	if (grcolor)
+//	if (grcolor)		//if uncomment player 0 not save build under fog 
 	    saveinfogtable(x,y,POSINMAP,grppict,format,colortable,maxcolor,grcolor,nrpicture,flags);
     }
 }
