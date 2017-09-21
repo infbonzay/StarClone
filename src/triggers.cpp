@@ -268,7 +268,7 @@ int CheckForUnit(int (*ConditionFunction)(int *, int),
 {
     int i,nrofunits=0,checkready=0;
     int (*UnitTypeFunc) (int);
-    struct OBJ *last=NULL;
+    struct OBJ *a,*last=NULL;
 //    mylistsimple *objlist = new mylistsimple(MaxObjects);
     if (unitid>=MAX_UNITS_ELEM)					
     {								
@@ -283,24 +283,26 @@ int CheckForUnit(int (*ConditionFunction)(int *, int),
     }
     for (i=0;i<MaxObjects;i++)
     {
+	a = objects[i];
 	if (modemove)
-	    if (objects[i]->modemove != modemove)
+//	    if (a->modemove != modemove)
+	    if ( a->prop & VARACCELERATIONBIT)
 		continue;
-	if (actiononplayers & (1<<objects[i]->playernr))
+	if (actiononplayers & (1<<a->playernr))
 	{
-		if (checkready && !IsReadyOBJ(objects[i]))
+		if (checkready && !IsReadyOBJ(a))
 		    continue;
-		else if ( (*UnitTypeFunc)(objects[i]->SC_Unit))
+		else if ( (*UnitTypeFunc)(a->SC_Unit))
 		{
 		    if (searcharea)
-			if (!SearchObjInArea(objects[i],searcharea))
+			if (!SearchObjInArea(a,searcharea))
 			    continue;
 		    nrofunits++;
 		    if (retlast)
 		    {
-			SetTriggeredUnitState(objects[i],1);
-//			objlist->AddElem(objects[i]);
-			last = objects[i];
+			SetTriggeredUnitState(a,1);
+//			objlist->AddElem(a);
+			last = a;
 			if (--cntunits==0)
 			    break;
 		    }
@@ -1319,8 +1321,8 @@ creationwithoutproperties:
 			    break;
 		    }
 		    newobj=NULL;
-		    nrofunits = CheckForUnit(NULL,ownedactiononplayers,unitnr,nrofunits,&newobj,&info->gamelocations[locnr].coords);
-//		    nrofunits = CheckForUnit(NULL,ownedactiononplayers,unitnr,nrofunits,&newobj,&info->gamelocations[locnr].coords,MODESTOP);
+//		    nrofunits = CheckForUnit(NULL,ownedactiononplayers,unitnr,nrofunits,&newobj,&info->gamelocations[locnr].coords);
+		    nrofunits = CheckForUnit(NULL,ownedactiononplayers,unitnr,nrofunits,&newobj,&info->gamelocations[locnr].coords,MODESTOP);
 		    if (nrofunits)
 		    {
 			for (j=0;j<MaxObjects;j++)

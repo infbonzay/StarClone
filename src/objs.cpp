@@ -4804,6 +4804,7 @@ void initmoveaction(OBJ *a,OBJ *destobj,int mode,int startx,int starty,int x,int
 void InitStopAfterMove(OBJ *a)
 {
     //engines off
+//    a->modemove = MODESTOP;
     a->prop &= ~(VARACCELERATIONBIT | VARMOVEACT);
     SetOBJIScriptNr(a,ISCRIPTNR_WALKINGTOIDLE,ISCRIPTNR_EXECUTE);
 }
@@ -4942,6 +4943,7 @@ int PathFinding_MovePortionType2(OBJ *a,MAIN_IMG *img,unsigned char flingy_id,in
 	else
 	{
 	    img->MoveInUnitDirection(a,img->side,deltamove);
+//	    a->modemove = MODESTOP;
 	    return(1);
 	}
 	deltax = destx - img->xpos;
@@ -4982,6 +4984,7 @@ movelikeatoterrain2:
 	{
 	    //do inertion move
 	    img->MoveInUnitDirection(a,img->side,a->currentspeed);//NOTE: used a->currentspeed (no used 'deltamove' for correct inertion)
+//	    a->modemove = MODESTOP;
 	    return(1);
 	}
 	if (deltaz < 256)		//prevent div 0
