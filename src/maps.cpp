@@ -153,7 +153,7 @@ int checkaroundtile(int x,int y)
 #define SHADOWFOROPENEDCELLMAP		0x10
 #define SHADOWFORCLOSEDCELLMAP		0x08	//work only if visiblemap is set
 //==================================
-//==================================
+
 void saveoldtileandcreep(void)
 {
     int i,j,nosave,indextile32;
@@ -437,11 +437,11 @@ int SetVisualMapPosition(int x,int y)//x,y-0..MAX?MAP*32
     {
 	map.MAPXYmove=1;
 	retval=1;
+    }
 	map.MAPX = x/SIZESPRLANSHX;
 	map.MAPY = y/SIZESPRLANSHY;
 	map.newMAPX = map.MAPX;
 	map.newMAPY = map.MAPY;
-    }
     map.MAPXYmove=1;
     return(retval);
 }
