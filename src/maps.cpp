@@ -435,13 +435,13 @@ int SetVisualMapPosition(int x,int y)//x,y-0..MAX?MAP*32
     map.MAPYGLOBAL = y;
     if (map.MAPX != x/SIZESPRLANSHX || map.MAPY != y/SIZESPRLANSHX)
     {
-	map.MAPXYmove=1;
+//	map.MAPXYmove=1;
 	retval=1;
-    }
 	map.MAPX = x/SIZESPRLANSHX;
 	map.MAPY = y/SIZESPRLANSHY;
 	map.newMAPX = map.MAPX;
 	map.newMAPY = map.MAPY;
+    }
     map.MAPXYmove=1;
     return(retval);
 }

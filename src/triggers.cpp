@@ -847,8 +847,8 @@ int Action_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int trig_nr,int playernr,int
 		case TRG_ACTIONTYPE_CENTERVIEW://10
 		    locnr=temptrg->action[i].locationnr-1;
 		    CenterXYArea(&info->gamelocations[locnr].coords,&sx,&sy);
-		    SetVisualMapPositionCenter(sx,sy);
-//		    MoveVisualMapPositionCenter(sx,sy);
+//		    SetVisualMapPositionCenter(sx,sy);
+		    MoveVisualMapPositionCenter(sx,sy);
 		    triggset=1;
 		    break;
 		case TRG_ACTIONTYPE_CREATEUNITWITHPROPERTIES://11
@@ -1319,7 +1319,8 @@ creationwithoutproperties:
 			    break;
 		    }
 		    newobj=NULL;
-		    nrofunits = CheckForUnit(NULL,ownedactiononplayers,unitnr,nrofunits,&newobj,&info->gamelocations[locnr].coords,MODESTOP);
+		    nrofunits = CheckForUnit(NULL,ownedactiononplayers,unitnr,nrofunits,&newobj,&info->gamelocations[locnr].coords);
+//		    nrofunits = CheckForUnit(NULL,ownedactiononplayers,unitnr,nrofunits,&newobj,&info->gamelocations[locnr].coords,MODESTOP);
 		    if (nrofunits)
 		    {
 			for (j=0;j<MaxObjects;j++)
@@ -1329,17 +1330,6 @@ creationwithoutproperties:
 				//done by previous trigger
 				SetTriggeredUnitState(objects[j],0);
 				//order unburrow if needed, after then move,atack,...
-/*				if (locnr != searchloc )
-				{
-				    deltax = GetOBJx(objects[j]) - xobj;
-				    deltay = GetOBJy(objects[j]) - yobj;
-				}
-				else
-				{
-				    deltax=0;
-				    deltay=0;
-				}
-*/
 				deltax=0;
 				deltay=0;
 				if (IsAirUnit(objects[j]->SC_Unit))
