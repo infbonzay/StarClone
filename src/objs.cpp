@@ -4537,13 +4537,13 @@ void TryToScanArea(OBJ *a,OBJ *scanobjarea)
     a2 = SearchUnit(a->playernr,SC_COMSATSTATIONOBJ,-1,-1,50<<8);
     if (!a2)
     {
-	a2 = SearchUnit(a->playernr,SC_OVERLORDOBJ,-1,-1,-1);	
+	a2 = SearchUnit(a->playernr,SC_OBSERVEROBJ,-1,-1,-1);
 	if (!a2)
 	{
 	    a2 = SearchUnit(a->playernr,SC_SCIENCEVESSELOBJ,-1,-1,-1);
 	    if (!a2)
 	    {
-		a2 = SearchUnit(a->playernr,SC_OBSERVEROBJ,-1,-1,-1);
+		a2 = SearchUnit(a->playernr,SC_OVERLORDOBJ,-1,-1,-1);	
 	    }
 	}
 	if (a2)		//send observer obj to the area
