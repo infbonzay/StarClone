@@ -520,7 +520,6 @@ int IScriptCmd_sigorder(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
 	    break;
 	case SC_IMAGE_FLINGY_CREATOR:
 	    //DEBUGMESSCR("sigorder from flingy under developing\n");
-	    //????
 	    break;
 	default:
 	    DEBUGMESSCR("sigorder from non OBJ or flingy\n");

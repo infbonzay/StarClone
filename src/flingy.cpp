@@ -337,7 +337,6 @@ SC_FLINGY *CreateWeaponFlingy(OBJ *a,OBJ *destobj,int xstart256,int ystart256,in
         flags |= SC_IMAGE_FLAG_DISABLEDRAW;
     images_id = alldattbl.sprites_dat->images_id[sprites_id];
     alldattbl.weapons_dat->WeaponBehavior[weapon_id];
-    //???? check here if flingy near destobj to make destroy
     CalcXYOffsets(launchside,alldattbl.weapons_dat->ForwardOffset[weapon_id],alldattbl.weapons_dat->UpwardOffset[weapon_id],&weaponxoffs,&weaponyoffs);
     if (destobj)
     {

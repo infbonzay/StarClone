@@ -183,36 +183,36 @@ int  SIGOrder_ProtossBuildFinishConstruct(OBJ *a)
 //==================================
 int SIGOrder_Tank_EndRotationBeforeSiegeMode(OBJ *a)
 {
-    SetOrder(a,0,NULL);
+    unsigned char inv;
     //base and turret rotated to special position
     if (a->mainimage->side == TANKSIEGESIDE && a->subunit->mainimage->side == TANKSIEGESIDE)
     {
 	if (IsSubUnit(a->SC_Unit))
-	{
-	    ApplyNextModeMove(a->subunit);
-	}
+	    a = a->subunit;		//need to act with base unit
+	inv = a->mainimage->invisiblecolors;
+	if (a->SC_Unit == SC_TANKNORMALOBJ)
+	    ChangeUnitSubUnitAndImagesAssociated(a,SC_TANKSIEGEOBJ);
 	else
-	{
-	    ApplyNextModeMove(a);
-	}
+	    if (a->SC_Unit == SC_HERO_EDMUNDDUKETMOBJ)
+	        ChangeUnitSubUnitAndImagesAssociated(a,SC_HERO_EDMUNDDUKESMOBJ);
+	SetOrder(a->subunit,0,NULL);
+	a->mainimage->invisiblecolors = inv;
+	a->subunit->mainimage->invisiblecolors = inv;
+	return(1);
     }
+    return(0);
 }
 //==================================
 int SIGOrder_Tank_EndRotationBeforeTankMode(OBJ *a)
 {
-    SetOrder(a,0,NULL);
     //turret rotated to special position
     if (a->mainimage->side == TANKNORMALSIDE)
     {
-	if (IsSubUnit(a->SC_Unit))
-	{
-	    ApplyNextModeMove(a->subunit);
-	}
-	else
-	{
-	    ApplyNextModeMove(a);
-	}
+	SetOrder(a->subunit,1,&SIGOrder_Tank_AfterNormalCmd);
+	SetOBJIScriptNr(a,ISCRIPTNR_SPECIALSTATE2,ISCRIPTNR_SETONLY);
+	SetOBJIScriptNr(a->subunit,ISCRIPTNR_SPECIALSTATE2,ISCRIPTNR_SETONLY);
     }
+    return(0);
 }
 //==================================
 int  SIGOrder_Tank_AfterSiegeCmd(OBJ *a)
@@ -220,6 +220,7 @@ int  SIGOrder_Tank_AfterSiegeCmd(OBJ *a)
     a->modemove = MODESTOP;
     a->subunit->modemove = MODESTOP;
     SetOrder(a,0,NULL);
+    a->prop &= ~VARSPECIALWAIT;
     return(0);
 }
 //==================================
@@ -238,8 +239,10 @@ int  SIGOrder_Tank_AfterNormalCmd(OBJ *a)
     a->modemove = MODESTOP;
     a->subunit->modemove = MODESTOP;
     SetOrder(a,0,NULL);
+    SetOrder(a->subunit,0,NULL);
     a->mainimage->invisiblecolors = inv;
     a->subunit->mainimage->invisiblecolors = inv;
+    a->prop &= ~VARSPECIALWAIT;
     return(1);
 }
 //==================================

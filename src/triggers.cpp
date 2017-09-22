@@ -797,6 +797,8 @@ int Action_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int trig_nr,int playernr,int
 		    if (!TRIG_MusicQuieter)
 		    {
 			TRIG_MusicVolume = Triggers_SetMusicVolume(-1);
+			//???? need to save current portrait
+			//to restore after end transmission
 		    }
 		    TRIG_MusicQuieter += TRIG_pause;
 
