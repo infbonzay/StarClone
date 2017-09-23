@@ -225,7 +225,8 @@ int main(int c,char **parm,char **env)
 //    setseed(mytimer.GetCurrentTimerTick());
     setseed(0);
 
-    iscriptinfo.CompileIScripts("data/iscript");
+    if (iscriptinfo.CompileIScripts("data/iscript"))
+	return(-1);
 
     cleartitle(title);
 

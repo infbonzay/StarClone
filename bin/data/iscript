@@ -5660,7 +5660,7 @@ AirAttkToIdle  	[NONE]
 Unused2        	[NONE]
 Walking        	SiegeTank_Tank_BaseWalking
 WalkingToIdle  	SiegeTank_Tank_BaseWalkingToIdle
-SpecialState1  	SiegeTank_Tank_Rotation
+SpecialState1  	SiegeTank_Rotation
 SpecialState2  	[NONE]
 AlmostBuilt    	[NONE]
 Built          	[NONE]
@@ -5703,7 +5703,7 @@ SiegeTank_Tank_BaseWalking:
 	playfram       	0x22	# frame set 2
 	goto           	SiegeTank_Tank_BaseWalking
 
-SiegeTank_Tank_Rotation:
+SiegeTank_Rotation:
 	sigorder	1
 	goto           	common_waitforever
 	
@@ -5726,7 +5726,7 @@ AirAttkToIdle  	[NONE]
 Unused2        	[NONE]
 Walking        	common_waitforever
 WalkingToIdle  	common_waitforever
-SpecialState1  	SiegeTank_Tank_Rotation
+SpecialState1  	SiegeTank_Rotation
 .headerend
 # ----------------------------------------------------------------------------- #
 
@@ -5766,7 +5766,7 @@ AirAttkToIdle  	[NONE]
 Unused2        	[NONE]
 Walking        	[NONE]
 WalkingToIdle  	[NONE]
-SpecialState1  	SiegeTank_Tank_Rotation
+SpecialState1  	SiegeTank_Rotation
 SpecialState2  	SiegeTank_Siege_BaseSpecialState2
 AlmostBuilt    	[NONE]
 Built          	[NONE]
@@ -5844,7 +5844,7 @@ AirAttkToIdle  	[NONE]
 Unused2        	[NONE]
 Walking        	[NONE]
 WalkingToIdle  	common_waitforever
-SpecialState1  	SiegeTank_Tank_Rotation
+SpecialState1  	SiegeTank_Rotation
 SpecialState2  	SiegeTank_Siege_TurretSpecialState2
 AlmostBuilt    	[NONE]
 .headerend

@@ -81,7 +81,7 @@ public:
 
     ISCRIPT(void);
     ~ISCRIPT();
-    void  	CompileIScripts(char *iscriptfile);
+    int  	CompileIScripts(char *iscriptfile);
     void 	AddCompiledCode(int iscriptid,int iscriptnr,char *cmdbuf,int bufsize);
     void	SaveCmdToBuff(char *buf,int offs,int sizedata,int data);
     int		ExecuteScript(MAIN_IMG *img);

@@ -389,7 +389,7 @@ int ISCRIPT::CompilePass2(FILE *f)
 	    cmd = comparestrings(strid,iscriptnrstr,ISCRIPTNR_MAXVALUE+2);
 	    if (cmd == -1)
 	    {
-		printf("[%s] iscriptnr invalid\n",strid);
+		printf("ERROR:[%s] iscriptnr invalid\n",strid);
     		retstatus=-1;
     		goto endcompilepass2x;
 	    }
@@ -425,7 +425,7 @@ int ISCRIPT::CompilePass2(FILE *f)
 		}
 		if (!findlabel)
 		{
-		    printf("[%s] label not found\n",strid);
+		    printf("ERROR:[%s] label not found\n",strid);
     		    retstatus=-2;
     		    goto endcompilepass2x;
 		}
@@ -453,7 +453,7 @@ endcompilepass2:
 	}
 	if (!findlabel)
 	{
-	    printf("[%s] label not found\n",strid);
+	    printf("ERROR:[%s] label not found\n",strid);
     	    retstatus=-2;
     	    goto endcompilepass2x;
 	}
@@ -467,28 +467,36 @@ ISCRIPT::ISCRIPT(void)
     memset(iscriptsid,0,sizeof(iscriptsid));
 }
 //============================================
-void ISCRIPT::CompileIScripts(char *filename)
+int ISCRIPT::CompileIScripts(char *filename)
 {
     int i,j;
     FILE *f = fopen(filename,"r");
-    if (f)
+    if (!f)
     {
-	if (CompilePass1(f))
-	{
-	    printf("cannot complete pass 1\n");
-	}
-	else
-	{
-	    printf("compile iscript pass 1\n");
+        printf("file %s not found\n",filename);
+	return(-3);
+    }
+    printf("compile iscript pass 1 ... ");
+    if (CompilePass1(f))
+    {
+        printf("cannot complete pass 1\n");
+        return(-1);
+    }
+    else
+    {
 //	    printf("totallabels=%d, labelreferiences=%d\n",labels.GetMaxElements(),nameoflabels.GetMaxElements());
+	    printf("DONE\ncompile iscript pass 2 ... ");
 	    if (CompilePass2(f))
 	    {
 		printf("cannot complete pass 2\n");
+		return(-1);
 	    }
 	    else
-		printf("compile iscript pass 2\n");
-	}
-	fclose(f);
+	    {
+		printf("DONE\n");
+	    }
+    }
+    fclose(f);
 //        savebuff("iscript.bin",compilediscripts,compilediscriptssize);
 	//remove all label & offset lists
 /*	for (i=0;i<labels.GetMaxElements();i++)
@@ -503,11 +511,11 @@ void ISCRIPT::CompileIScripts(char *filename)
 	    }
 	}
 */
-	needtoaddoffs.FlushList();
-	nameoflabels.DeallocList();
-	labeloffsets.FlushList();
-	labels.DeallocList();
-    }
+    needtoaddoffs.FlushList();
+    nameoflabels.DeallocList();
+    labeloffsets.FlushList();
+    labels.DeallocList();
+    return(0);
 }
 //============================================
 //============================================
