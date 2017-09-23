@@ -7,6 +7,8 @@
 #include "mpq.h"
 #include "smacker/smacker.h"
 
+#define HOLDPORTRAIT		0x01
+
 #define NOSOUNDFILENR		-1
 
 #define SMKSIZEPORTRAITX	60
@@ -43,8 +45,9 @@ struct SMKPLAY
     unsigned char 	smkscroll;
 };
 //===================================
-struct PORTRAIT
+class PORTRAIT
 {
+public:
     unsigned char	SC_Unit;
     struct OBJ 		*obj;
     char		whichuse;		//0-no use mixing,1-specialin,2-specialout
@@ -58,6 +61,10 @@ struct PORTRAIT
     unsigned char	nextplaynormal2;
     unsigned char 	*mergepixels;
     unsigned char 	*mixbuff;		//mixing buffer
+    unsigned char	flags;
+    inline SCUNIT GetShowedPortrait(void){ return(SC_Unit); };
+    inline void HoldPortrait(void){ flags |= HOLDPORTRAIT; };
+    inline void UnHoldPortrait(void){ flags &= ~HOLDPORTRAIT; };
 };
 //===================================
 void GetINOUTsmk(void);
@@ -84,6 +91,5 @@ extern PORTRAIT staticport;
 extern unsigned char playbuffer[];
 extern MPQIDS	smkin,smkout;
 
-inline SCUNIT GetShowedPortrait(void){ return(staticport.SC_Unit); };
 
 #endif

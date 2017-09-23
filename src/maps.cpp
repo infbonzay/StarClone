@@ -369,33 +369,23 @@ void drawMAP(int ignorefirstwaiting)
 */
 }
 //==================================
+#define MAPDELTAMOVE	5
 void AutoMoveMap(void)
 {
     return;
-    int mapdeltax,mapdeltay,deltas=0;
-    mapdeltax = map.newMAPX - map.MAPX;
-    mapdeltay = map.newMAPY - map.MAPY;
-    if (mapdeltax < 0)
-	map.MAPX--;
-    else 
-	if (mapdeltax > 0)
-	    map.MAPX++;
-	else
-	    deltas++;
-    if (mapdeltay < 0)
-	map.MAPY--;
-    else 
-	if (mapdeltay > 0)
-	    map.MAPY++;
-	else
-	    deltas++;
-    if (!deltas)
+    int deltax,deltay,mapdeltax,mapdeltay,deltas=0;
+    mapdeltax = map.newx - map.MAPXGLOBAL;
+    mapdeltay = map.newy - map.MAPYGLOBAL;
+
+
+
+    if (deltas == 2)
+    {
 	map.flags &= ~STARMAP_FLAG_IGNOREMAPMOVE;
+    }
     else
     {
-	map.MAPXYmove=1;
-	map.MAPXGLOBAL = map.MAPX*SIZESPRLANSHX;
-	map.MAPYGLOBAL = map.MAPY*SIZESPRLANSHY;
+	map.flags |= STARMAP_FLAG_MAPMOVE;
     }
 }
 //==================================
@@ -409,8 +399,8 @@ void MoveVisualMapPosition(int x,int y)
         x=SIZESPRLANSHX*(MAXXMAP-widthkart);
     if (y>SIZESPRLANSHY*(MAXYMAP-hightkart))
         y=SIZESPRLANSHY*(MAXYMAP-hightkart);
-    map.newMAPX = x/SIZESPRLANSHX;
-    map.newMAPY = y/SIZESPRLANSHY;
+    map.newx = x;
+    map.newy = y;
     map.flags |= STARMAP_FLAG_IGNOREMAPMOVE;
 }
 //==================================
@@ -436,14 +426,14 @@ int SetVisualMapPosition(int x,int y)//x,y-0..MAX?MAP*32
     map.MAPYGLOBAL = y;
     if (map.MAPX != x/SIZESPRLANSHX || map.MAPY != y/SIZESPRLANSHX)
     {
-//	map.MAPXYmove=1;
+	map.flags |= STARMAP_FLAG_MAPMOVE;
 	retval=1;
 	map.MAPX = x/SIZESPRLANSHX;
 	map.MAPY = y/SIZESPRLANSHY;
-	map.newMAPX = map.MAPX;
-	map.newMAPY = map.MAPY;
+	map.newx = x;
+	map.newy = y;
     }
-    map.MAPXYmove=1;
+//    map.flags |= STARMAP_FLAG_MAPMOVE;
     return(retval);
 }
 //==================================

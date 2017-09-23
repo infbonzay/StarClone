@@ -286,8 +286,7 @@ int CheckForUnit(int (*ConditionFunction)(int *, int),
     for (i=0;i<MaxObjects;i++)
     {
 	a = objects[i];
-	if (modemove)
-//	    if (a->prop & VARACCELERATIONBIT)
+	if (modemove)// && a->modemove != MODEDIE)
 	    if (a->modemove != modemove)
 		continue;
 	if (actiononplayers & (1<<a->playernr))
@@ -413,14 +412,7 @@ int Triggers_SetMusicVolume(int volume)
     int currentmusicvolume = gameconf.audioconf.musicvolume;
     if (audiostream)
     {
-	if (volume == -1)
-	{
-    	    audiostream->ChangeMusicVolume(gameconf.audioconf.musicvolume/3);
-    	}
-    	else
-    	{
-    	    audiostream->ChangeMusicVolume(volume);
-    	}
+    	audiostream->ChangeMusicVolume(volume);
     }
     return(currentmusicvolume);
 }
@@ -476,7 +468,8 @@ void Triggers_Parce(mapinfo *info,int cnttrg,MAP_TRIGS *trigs,int deltatick)
 	    TRIG_MusicQuieter = 0;
 	    Triggers_SetMusicVolume(TRIG_MusicVolume);
 	    //check if the same portrait -> show main portrait
-	    if (GetShowedPortrait() == TRIG_Portrait)
+	    staticport.UnHoldPortrait();
+	    if (staticport.GetShowedPortrait() == TRIG_Portrait)
 	    {
 		//show main portrait
 		ShowAdvisorPortrait();
@@ -804,12 +797,6 @@ int Action_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int trig_nr,int playernr,int
 		    (*comparefunc)(&TRIG_pause,deltapaused);
 		    TRIG_pause = TRIG_pause*timewaitticks[gameconf.speedconf.gamespeed]/MAXGAMECYCLESPERSECOND;
 		    waittime=TRIG_pause;
-		    if (!TRIG_MusicQuieter)
-		    {
-			TRIG_MusicVolume = Triggers_SetMusicVolume(-1);
-			//???? need to restore previous portrait after end transmission
-		    }
-		    TRIG_MusicQuieter += TRIG_pause;
 
 		    if (waittime<TRIGGER_DISPLAYMESSAGETIME)
 			waittime=TRIGGER_DISPLAYMESSAGETIME;
@@ -818,6 +805,12 @@ int Action_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int trig_nr,int playernr,int
 		    //show transmission smk portrait
 		    TRIG_Portrait = unitnr;
 		    SetPortrait(unitnr,SMKTALK,NOSOUNDFILENR,TRIG_pause);
+		    if (!TRIG_MusicQuieter)
+		    {
+			TRIG_MusicVolume = Triggers_SetMusicVolume(gameconf.audioconf.musicvolume/3);
+			staticport.HoldPortrait();
+		    }
+		    TRIG_MusicQuieter += TRIG_pause;
 		    //blink transmission unit
 		    ownedactiononplayers=OneGroup_Prepare(info,temptrg->action[i].actiononplayers,playernrmask);
 		    newobj=NULL;
@@ -861,8 +854,8 @@ int Action_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int trig_nr,int playernr,int
 		case TRG_ACTIONTYPE_CENTERVIEW://10
 		    locnr=temptrg->action[i].locationnr-1;
 		    CenterXYArea(&info->gamelocations[locnr].coords,&sx,&sy);
-		    SetVisualMapPositionCenter(sx,sy);
-//		    MoveVisualMapPositionCenter(sx,sy);
+//		    SetVisualMapPositionCenter(sx,sy);
+		    MoveVisualMapPositionCenter(sx,sy);
 		    triggset=1;
 		    break;
 		case TRG_ACTIONTYPE_CREATEUNITWITHPROPERTIES://11

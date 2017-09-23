@@ -74,6 +74,7 @@ int loadstaticsmk(void)
     smk_t *tempsmk;
     int mpqfilenr;
 
+    staticport.flags = 0;
     staticport.smkplay.smkfile.hmpq=NULL;
     staticport.smkplay.smkfile.mpqfilenr=-1;
     staticport.smkplay.smkscroll=0;
@@ -104,7 +105,9 @@ int loadstaticsmk(void)
 void changeunitportrait(HANDLE hmpq,int smknr,int SC_Unit,int smkscroll)
 {
     int newunit;
-    if (SC_Unit!=staticport.SC_Unit)
+    if (staticport.flags & HOLDPORTRAIT )
+	return;
+    if (SC_Unit != staticport.SC_Unit)
 	newunit=1;
     else
 	newunit=0;

@@ -162,11 +162,11 @@ void calculatefog(int bitplayers)
 	    copywhitefogtoblackfog(i);
 	}
     }
-    if (!map.MAPXYmove&&!map.clearfog[NUMBGAMER])
+    if (!(map.flags & STARMAP_FLAG_MAPMOVE) && !map.clearfog[NUMBGAMER])
 	return;
     memset(screenfog,0x08,SCRFOGX*SCRFOGY);
-    map.MAPXYmove=0;
-    bitplayers&=0xff;
+    map.flags &= STARMAP_FLAG_MAPMOVE;
+    bitplayers &= 0xff;
     bh=map.MAPY-1;
     eh=bh+SCRFOGY;
     if (eh > MAXYMAP)

@@ -20,6 +20,7 @@
 #define STARMAP_FLAG_HAVECOUNTDOWN	0x04
 #define STARMAP_FLAG_COUNTSTOPED	0x08
 #define STARMAP_FLAG_IGNOREMAPMOVE	0x10
+#define STARMAP_FLAG_MAPMOVE		0x20
 
 
 #define DSWARMEFFECT		0
@@ -469,11 +470,10 @@ struct mapinfo
     
     int		MAPX;
     int		MAPY;
-    int		newMAPX;
-    int		newMAPY;
+    int		newx;
+    int		newy;
     int		MAPXGLOBAL;
     int		MAPYGLOBAL;
-    int		MAPXYmove;				//set if user move map
     char	clearfog[PLAYEDPLAYERS];		//set if we need to change white&blackfog in calfog
     char	screenfogchange;			//set if fog change on screen (I move kart some object move) and I see that
     int 	tilecount;
