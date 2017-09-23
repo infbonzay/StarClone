@@ -113,7 +113,7 @@ int CritterAction(struct OBJ *a,MAIN_IMG *img)
     int sx,sy;
     if (GetUnitRace(a->SC_Unit)==NEUTRALRACE&&IsGroupMenFlag(a->SC_Unit))
     {
-	if (a->modemove==MODESTOP||a->modemove==MODEHOLDPOS)
+	if (a->modemove==MODESTOP)
 	{
 	    if (a->whatbuildconstr==0)
 	    {
@@ -520,6 +520,8 @@ int MedicAction(struct OBJ *a,MAIN_IMG *img)
     struct OBJ *c;
     if (NEEDTOHEALBIT)
     {
+	if (a->prop & VARHOLDPOSBIT)
+	    return(1);
 	switch(a->modemove)
 	{
 	    case MODESTOP:
@@ -535,8 +537,6 @@ int MedicAction(struct OBJ *a,MAIN_IMG *img)
 		}
 		return(0);
 	    case MODEHEAL:
-		return(1);
-	    case MODEHOLDPOS:
 		return(1);
 	}
     }
@@ -632,6 +632,8 @@ int QueenAction(struct OBJ *a,MAIN_IMG *img)
     }
     if (NEEDTOINFESTBIT)
     {
+	if (a->prop & VARHOLDPOSBIT)
+	    return(0);
 	switch(a->modemove)
 	{
 	    case MODESTOP:
@@ -643,8 +645,6 @@ int QueenAction(struct OBJ *a,MAIN_IMG *img)
 		}
 		return(0);
 	    case MODEINFEST:
-		return(0);
-	    case MODEHOLDPOS:
 		return(0);
 	}
     }

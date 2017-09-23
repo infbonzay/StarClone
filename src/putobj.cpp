@@ -1017,11 +1017,9 @@ void printobjparam(void)
 //find from modemove what line need to be desened
 void FindLineOfProp(struct OBJ *a,struct OBJstruct *b)
 {
-    switch(a->modemove)
+    if (a->modemove == MODESTOP || a->prop & VARHOLDPOSBIT)
     {
-	case MODESTOP:
-	case MODEHOLDPOS:
-	    if (a->prop&VARREADY)
+	    if (a->prop & VARREADY)
 	    {
 		if ( IsOnSkyOBJ(a) && (IsBuild(a->SC_Unit)) )
 		    ChangeTypeOfProp(a,b,PROPONAIR);
@@ -1037,7 +1035,6 @@ void FindLineOfProp(struct OBJ *a,struct OBJstruct *b)
 	    }
 	    else
 		ChangeTypeOfProp(a,b,PROPDECONSTRUCT);
-	    break;
     }
 }
 //=====================================

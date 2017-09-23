@@ -1590,8 +1590,8 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
 	ReleaseResource(a);
     OBJstruct *b = loadobj(a->SC_Unit);
     a->prop &= ~VARPATROLFLAG;
-    if (mode != MODEATACK)
-	a->prop &= ~VARHOLDPOSBIT;
+//    if (mode != MODEATACK)
+//	a->prop &= ~VARHOLDPOSBIT;
     if (a->mainimage->flags & SC_IMAGE_FLAG_CANTBREAKCODE)
 	if (mode != MODEDIE)
 	{
@@ -1957,9 +1957,9 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
 	    a->finalOBJ=NULL;
 	    if (a->movelist)
 		a->movelist->EmptyElemFifo();
-	    a->prop |= VARHOLDPOSBIT;
-	    if (a->modemove != mode)
+	    if (!(a->prop & VARHOLDPOSBIT))
 	    {
+		a->prop |= VARHOLDPOSBIT;
 		//engines off
 		a->prop &= ~(VARMOVEACT | VARMOVEOBJACT | VARACCELERATIONBIT | VARPATROLFLAG);
 		if (a->modemove == MODEATACK)
@@ -1970,7 +1970,7 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
 		{
 		    SetOBJIScriptNr(a,ISCRIPTNR_WALKINGTOIDLE,ISCRIPTNR_EXECUTE);
 		}
-		SetModeMove(a,mode);
+//		SetModeMove(a,mode);
 	    }
 	    break;
 	case MODESTOP:
@@ -2763,6 +2763,8 @@ int makemove(struct OBJ *a,struct OBJ *destobj,int locx,int locy,int mode,int pl
     }
     if (a->movelist)
 	a->movelist->EmptyElemFifo();
+    if (mode != MODEHOLDPOS)
+	a->prop &= ~VARHOLDPOSBIT;
     moveobj(a,destobj,mode,locx,locy,showerrorflag,0);
     return(1);
 }
@@ -4049,7 +4051,7 @@ struct OBJ* OneUnitSearchGoal(OBJ *a,int ignoremodes)
     //neutral units cannot automatic atack
     if (IsAtackerActiveUnit(a) && ( map.pl_owner[a->playernr] == OWNER_HUMAN || map.pl_owner[a->playernr] == OWNER_COMPUTER))
     {
-	if (ignoremodes || a->modemove == MODESTOP || a->modemove == MODEHOLDPOS || a->modemove == MODEPATROL || (a->prop & VARMOVEINATACKMODE)||
+	if (ignoremodes || a->modemove == MODESTOP || a->prop & VARHOLDPOSBIT || a->modemove == MODEPATROL || (a->prop & VARMOVEINATACKMODE)||
 	    (IsDoodadState(a->SC_Unit)&&!IsInvincibleUnit(a->SC_Unit)&&(GetDoodadMoveDirection(a) != DOODAD_MOVE_NONE)))
 	    {
 		//zero if usual unit,     bunker,reaver,carrie have a special unitatack_id
@@ -4348,7 +4350,7 @@ void atackback(OBJ *firstatacker,OBJ *destobj,int directiondamage)
     {
 	aiactionfailed = tryaiaction(destobj,firstatacker,directiondamage);
     }
-    if (aiactionfailed && (destobj->modemove==MODESTOP || destobj->modemove==MODEHOLDPOS ))
+    if (aiactionfailed && (destobj->modemove==MODESTOP || destobj->prop & VARHOLDPOSBIT ))
     {
 	notdetect = OBJ_VAR_CHK(firstatacker,obj_notdetect,destobj->playernr);
 	if (!aiaction)

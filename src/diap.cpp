@@ -720,7 +720,7 @@ int CreateMenuProperties(int *prop,char *selectableicons,
 	}
 	for (i=0;i<MAXUNITPROPERTIES;i++)
 	{
-	    if (selectedobjects[0]&&prop[i]!=MODENON)
+	    if (selectedobjects[0] && prop[i] != MODENON)
 	    {
 		if (!MageDepend(selectedobjects[0],player,prop[i]))
 		{
@@ -744,10 +744,20 @@ int CreateMenuProperties(int *prop,char *selectableicons,
 				selectableicons[i]=FORYELLOW;
 			    break;
 			default:
-			    if (mageprop[prop[i]].icon_id == curenticon)
-        			selectableicons[i]=FORWHITE;
-        		    else
-        			selectableicons[i]=FORYELLOW;
+			    if (selectedobjects[0]->prop & VARHOLDPOSBIT)
+			    {
+				if (prop[i] == MODEHOLDPOS)
+        			    selectableicons[i]=FORWHITE;
+				else
+        			    selectableicons[i]=FORYELLOW;
+			    }
+			    else
+			    {
+				if (mageprop[prop[i]].icon_id == curenticon)
+        			    selectableicons[i]=FORWHITE;
+        			else
+        			    selectableicons[i]=FORYELLOW;
+			    }
 			    break;
 		    }
 		}
