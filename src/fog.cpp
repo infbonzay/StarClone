@@ -165,7 +165,7 @@ void calculatefog(int bitplayers)
     if (!(map.flags & STARMAP_FLAG_MAPMOVE) && !map.clearfog[NUMBGAMER])
 	return;
     memset(screenfog,0x08,SCRFOGX*SCRFOGY);
-    map.flags &= STARMAP_FLAG_MAPMOVE;
+    map.flags &= ~STARMAP_FLAG_MAPMOVE;
     bitplayers &= 0xff;
     bh=map.MAPY-1;
     eh=bh+SCRFOGY;

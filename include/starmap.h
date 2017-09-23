@@ -19,7 +19,7 @@
 #define STARMAP_FLAG_WINGAME		0x02
 #define STARMAP_FLAG_HAVECOUNTDOWN	0x04
 #define STARMAP_FLAG_COUNTSTOPED	0x08
-#define STARMAP_FLAG_IGNOREMAPMOVE	0x10
+#define STARMAP_FLAG_AUTOMOVE		0x10
 #define STARMAP_FLAG_MAPMOVE		0x20
 
 
@@ -468,6 +468,10 @@ struct mapinfo
 
     unsigned short		*vf4mem;			//all used tile32 properites
     
+    int		totaldeltax;
+    int		totaldeltay;
+    int		deltax;
+    int 	deltay;
     int		MAPX;
     int		MAPY;
     int		newx;
@@ -482,6 +486,8 @@ struct mapinfo
 							//bit 1 - win scenario
     							//bit 2 - countdown exist
     							//bit 3 - countdown stoped 
+    							//bit 4 - bit indicates to automove map (ignore move from player)
+    							//bit 5 - map moved so need to recalc fog
 
     char	minimap[MINIMAPW*MINIMAPW];
     int  	minimap_startx, minimap_starty;

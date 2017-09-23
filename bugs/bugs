@@ -395,7 +395,7 @@
 *159 triggers with order not correct
 *160 portrait continue to to show but transmission message was terminated
 *161 holdposition now is a bit, auto-atack,auto-move,etc -> do not change this bit
-    need to smouth map moving then MoveVisualMapPosition
+*162 need to smouth map moving then MoveVisualMapPosition
     interceptor atack script
     
     ?dust moves with unit

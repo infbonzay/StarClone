@@ -369,29 +369,62 @@ void drawMAP(int ignorefirstwaiting)
 */
 }
 //==================================
-#define MAPDELTAMOVE	5
+#define MAPMOVETIMES		4
 void AutoMoveMap(void)
 {
-    return;
-    int deltax,deltay,mapdeltax,mapdeltay,deltas=0;
-    mapdeltax = map.newx - map.MAPXGLOBAL;
-    mapdeltay = map.newy - map.MAPYGLOBAL;
-
-
-
-    if (deltas == 2)
+    if (map.flags & STARMAP_FLAG_AUTOMOVE)
     {
-	map.flags &= ~STARMAP_FLAG_IGNOREMAPMOVE;
-    }
-    else
-    {
+	int mapmovedone=0;
 	map.flags |= STARMAP_FLAG_MAPMOVE;
+	map.totaldeltax -= map.deltax;
+	map.totaldeltay -= map.deltay;
+//	if (!mapmovedone)
+	    if (map.deltax < 0)
+	    {
+		if (map.totaldeltax >= 0)
+		    mapmovedone = 1;
+	    }
+	    else 
+		if (map.deltax > 0)
+		{
+		    if (map.totaldeltax <= 0)
+			mapmovedone = 1;
+		}
+	if (!mapmovedone)
+	    if (map.deltay < 0)
+	    {
+		if (map.totaldeltay >= 0)
+		    mapmovedone = 1;
+	    }
+	    else 
+		if (map.deltay > 0)
+		{
+		    if (map.totaldeltay <= 0)
+			mapmovedone = 1;
+		}
+	if (mapmovedone)
+	{
+	    //finish automove
+	    map.flags &= ~STARMAP_FLAG_AUTOMOVE;
+	    map.MAPX = map.newx / SIZESPRLANSHX;
+	    map.MAPY = map.newy / SIZESPRLANSHY;
+	    map.MAPXGLOBAL = map.MAPX * SIZESPRLANSHX;
+	    map.MAPYGLOBAL = map.MAPY * SIZESPRLANSHY;
+	}
+	else
+	{
+	    map.MAPXGLOBAL += map.deltax;
+	    map.MAPYGLOBAL += map.deltay;
+	    map.MAPX = map.MAPXGLOBAL / SIZESPRLANSHX;
+	    map.MAPY = map.MAPYGLOBAL / SIZESPRLANSHY;
+	}
     }
 }
 //==================================
 void MoveVisualMapPosition(int x,int y)
 {
-    if (x<0) 
+    int deltax,deltay;
+    if (x<0)
 	x=0;
     if (y<0) 
         y=0;
@@ -401,7 +434,14 @@ void MoveVisualMapPosition(int x,int y)
         y=SIZESPRLANSHY*(MAXYMAP-hightkart);
     map.newx = x;
     map.newy = y;
-    map.flags |= STARMAP_FLAG_IGNOREMAPMOVE;
+    map.totaldeltax = x - map.MAPXGLOBAL;
+    map.totaldeltay = y - map.MAPYGLOBAL;
+    map.deltax = map.totaldeltax / MAPMOVETIMES;
+    map.deltay = map.totaldeltay / MAPMOVETIMES;
+    if (map.totaldeltax || map.totaldeltay)
+    {
+	map.flags |= STARMAP_FLAG_AUTOMOVE;
+    }
 }
 //==================================
 void MoveVisualMapPositionCenter(int x,int y)
@@ -412,7 +452,7 @@ void MoveVisualMapPositionCenter(int x,int y)
 int SetVisualMapPosition(int x,int y)//x,y-0..MAX?MAP*32
 {
     int retval=0;
-    if (map.flags & STARMAP_FLAG_IGNOREMAPMOVE)
+    if (map.flags & STARMAP_FLAG_AUTOMOVE)
 	return(0);
     if (x<0) 
 	x=0;
@@ -433,7 +473,6 @@ int SetVisualMapPosition(int x,int y)//x,y-0..MAX?MAP*32
 	map.newx = x;
 	map.newy = y;
     }
-//    map.flags |= STARMAP_FLAG_MAPMOVE;
     return(retval);
 }
 //==================================

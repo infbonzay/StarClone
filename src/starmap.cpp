@@ -643,7 +643,7 @@ checkmpq2:
 		if( !strcmp( name, "TYPE" ) )
 		{
 		    if (!strncmp(buf,"RAWB",4))
-		        info->flags|=STARMAP_FLAG_EXPANSION;
+		        info->flags |= STARMAP_FLAG_EXPANSION;
 		    else	
 			if (strncmp(buf,"RAWS",4))
 			    return(-1);
@@ -705,7 +705,7 @@ checkmpq2:
 			    memcpy( info->prod_restrictions.use_defaults,
 					buf+13*MAX_UNITS_ELEM, MAXPLAYERS*MAX_UNITS_ELEM );
 			    //need to block construct expansion units in noexpansion game
-			    if (!(info->flags&STARMAP_FLAG_EXPANSION))
+			    if (!(info->flags & STARMAP_FLAG_EXPANSION))
 			    {
 				for (i=0;i<MAX_UNITS_ELEM;i++)
 				    if (IsExpansionUnit(i))
@@ -1227,7 +1227,7 @@ int load_starmap( const char *mapfile,char *fname, struct mapinfo *info,GAMECONF
     _RACE = ZERGRACE;
     MAPDEF = TERRAIN|UNITS;
     MaxObjects = 0;
-    info->flags &= ~STARMAP_FLAG_IGNOREMAPMOVE;
+    info->flags &= ~(STARMAP_FLAG_AUTOMOVE | STARMAP_FLAG_MAPMOVE);
     if (fname)
     {
 	strcpy(tempfn,fname);
@@ -2186,7 +2186,7 @@ void ShowCountDownTimer(struct mapinfo *info,int x,int y)
 {
     char timer[10];
     int i,rowsize,fontnr;
-    if (info->flags&STARMAP_FLAG_HAVECOUNTDOWN)
+    if (info->flags & STARMAP_FLAG_HAVECOUNTDOWN)
     {
 	fontnr=IDFONT16;
 	getmaxsymbolsize(fontnr,NULL,&rowsize);

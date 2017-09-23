@@ -1496,7 +1496,7 @@ void glu_score(struct mapinfo *info)
     race=info->pl_race[info->played_as_nr];
     if (race==RACE_OBSERVER)
 	race=RACE_TERRAN;
-    losewin=(map.flags&STARMAP_FLAG_WINGAME)!=0;
+    losewin=(map.flags & STARMAP_FLAG_WINGAME)!=0;
     
     StopMusic(MUSIC_STOPWITHFADE);
     sprintf(FULLFILENAME,"music\\%c%s.wav",RACE_CHAR[race],DEFEAT_VICTORY[losewin]);

@@ -666,7 +666,7 @@ int letsplaygame(int race,char *mypath)
 	    calcsomespellinfo();
 
 	    printf("loaded %s\n",SELECTMAP);
-	    if (map.flags&STARMAP_FLAG_EXPANSION)
+	    if (map.flags & STARMAP_FLAG_EXPANSION)
 		printf("(EXPANSION MAP)\n",SELECTMAP);
 	    map.played_as_nr=NUMBGAMER;
 	    
@@ -1780,15 +1780,15 @@ int IfTimeForTrigger(struct mapinfo *info,int *prevgameticks)
 	if (gameticks-*prevgameticks>=MAXGAMECYCLESPERSECOND/2)
 	{
 		*prevgameticks=gameticks;
-		if (info->flags&STARMAP_FLAG_HAVECOUNTDOWN)
+		if (info->flags & STARMAP_FLAG_HAVECOUNTDOWN)
 		{
-		    if (!(info->flags&STARMAP_FLAG_COUNTSTOPED))
+		    if (!(info->flags & STARMAP_FLAG_COUNTSTOPED))
 		    {
 			map.CountDownTimer-=MAXGAMECYCLESPERSECOND/2;
 			if (map.CountDownTimer<=0)
 			{
 			    map.CountDownTimer=0;
-			    info->flags&=~STARMAP_FLAG_HAVECOUNTDOWN;
+			    info->flags &= ~STARMAP_FLAG_HAVECOUNTDOWN;
 			}
 		    }
 		}

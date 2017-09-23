@@ -764,7 +764,7 @@ int Action_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int trig_nr,int playernr,int
 		case TRG_ACTIONTYPE_PAUSEGAME://5
 		    if (!NETWORKGAME)
 		    {
-			info->flags|=STARMAP_FLAG_COUNTSTOPED;
+			info->flags |= STARMAP_FLAG_COUNTSTOPED;
 			PAUSEINTRIG=1;
 		    }
 		    triggset=1;
@@ -772,7 +772,7 @@ int Action_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int trig_nr,int playernr,int
 		case TRG_ACTIONTYPE_UNPAUSEGAME://6
 		    if (!NETWORKGAME)
 		    {
-			info->flags&=~STARMAP_FLAG_COUNTSTOPED;
+			info->flags &= ~STARMAP_FLAG_COUNTSTOPED;
 			PAUSEINTRIG=0;
 		    }
 		    triggset=1;
@@ -1506,11 +1506,11 @@ creationwithoutproperties:
     		    triggset=1;
 		    break;
 		case TRG_ACTIONTYPE_PAUSETIMER://54
-		    info->flags|=STARMAP_FLAG_COUNTSTOPED;
+		    info->flags |= STARMAP_FLAG_COUNTSTOPED;
 		    triggset=1;
 		    break;
 		case TRG_ACTIONTYPE_UNPAUSETIMER://55
-		    info->flags&=~STARMAP_FLAG_COUNTSTOPED;
+		    info->flags &= ~STARMAP_FLAG_COUNTSTOPED;
 		    triggset=1;
 		    break;
 		case TRG_ACTIONTYPE_SETALLIANCESTATUS://57
