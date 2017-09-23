@@ -35,9 +35,9 @@ int TankTAction(struct OBJ *a,MAIN_IMG *img)
 {
     if (a->subunit->prop & VARSPECIALWAIT)
 	return(0);
-    if (!a->subunit->finalOBJ)
+    if (!a->finalOBJ)
     {
-//	img->UnitNeededDirection256(a->subunit->mainimage->side);
+	img->UnitNeededDirection256(a->subunit->mainimage->side);
     }
     return(0);
 }
