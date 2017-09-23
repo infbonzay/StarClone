@@ -295,7 +295,8 @@ void drawMAP(int ignorefirstwaiting)
 			    minimapcolor = CREEPCOLOR;
         	    }
             	if (mapSEE(jj,ii)>1)
-            	    Minimap[i*MAXIMSIZEMINIMAP+j] = minimapcolor;
+            	    if (minimapcolor)
+            		Minimap[i*MAXIMSIZEMINIMAP+j] = minimapcolor;
             	else
             	    if (mapOPEN(jj,ii)>1)
             		Minimap[i*MAXIMSIZEMINIMAP+j] = _toblack_[minimapcolor+256*SHADOWFOROPENEDCELLMAP];

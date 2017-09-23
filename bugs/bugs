@@ -396,6 +396,7 @@
 *160 portrait continue to to show but transmission message was terminated
 *161 holdposition now is a bit, auto-atack,auto-move,etc -> do not change this bit
 *162 need to smouth map moving then MoveVisualMapPosition
+*163 black point on map then build is destroyed and rubble remain
     interceptor atack script
     
     ?dust moves with unit
