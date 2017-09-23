@@ -397,6 +397,7 @@
 *161 holdposition now is a bit, auto-atack,auto-move,etc -> do not change this bit
 *162 need to smouth map moving then MoveVisualMapPosition
 *163 black point on map then build is destroyed and rubble remain
+*164 cursor disappear then menu goes out    
     interceptor atack script
     
     ?dust moves with unit

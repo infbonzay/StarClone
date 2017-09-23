@@ -435,8 +435,8 @@ void MenuAppear(MENUSTR *allmenus,int flag,int elems,MENUFIRSTDATA *menudata,PCX
 	    }
 	    if (staticmenu)
 		checkanddrawmenu(staticmenu,ITEMNOONEACTIVE,ITEM_NOSAVELOADUNDER);
-//	    eventwindowloop();
-//	    putmouseonscreen();
+	    eventwindowloop();
+	    putmouseonscreen();
 	    wscreenon();
 	    usleep(WAITMENUAPPEAR);
 //	    mytimer.MyNanoSleep(100000000);
@@ -609,6 +609,8 @@ int campaignselect(void)
 		break;
 	}
     }while(repeat);
+
+    installmousemoveevent(&mymousemoveevent);
 
     MenuAppear(NULL,MENU_OUT,0,NULL,&backgnd,NULL);
 
@@ -790,6 +792,7 @@ int xcampaignselect(void)
 	}
     }while(repeat);
 
+    installmousemoveevent(&mymousemoveevent);
     MenuAppear(NULL,MENU_OUT,0,NULL,&backgnd,NULL);
 
     uninstallmousemoveevent();
@@ -913,6 +916,7 @@ int glu_loadgame(void)
 	saves.DeallocList();
     }while(repeat);
 
+    installmousemoveevent(&mymousemoveevent);
     MenuAppear(NULL,MENU_OUT,0,NULL,&backgnd,NULL);
 
     uninstallmousemoveevent();
@@ -1033,6 +1037,7 @@ int glu_loadreplay(void)
 	saves.DeallocList();
     }while(repeat);
 
+    installmousemoveevent(&mymousemoveevent);
     MenuAppear(NULL,MENU_OUT,0,NULL,&backgnd,NULL);
 
     uninstallmousemoveevent();
@@ -1340,6 +1345,7 @@ int glu_briefing(int race,int networksingle,struct mapinfo *info,char *prefix_ca
 
     StopMusic(MUSIC_STOPWITHFADE);
 
+    installmousemoveevent(&mymousemoveevent);
     MenuAppear(NULL,MENU_OUT,0,NULL,&backgnd,NULL);
 
     uninstallmousemoveevent();
@@ -1672,6 +1678,7 @@ void glu_score(struct mapinfo *info)
 
     StopMusic(MUSIC_STOPWITHFADE);
 
+    installmousemoveevent(&mymousemoveevent);
     MenuAppear(NULL,MENU_OUT,0,NULL,&backgnd,NULL);
 
     uninstallmousemoveevent();
@@ -1892,6 +1899,7 @@ int glu_conn(void)
     }while(repeat);
     saves.FlushList();
 
+    installmousemoveevent(&mymousemoveevent);
     MenuAppear(NULL,MENU_OUT,0,NULL,&backgnd,NULL);
 
     uninstallmousemoveevent();
@@ -2179,6 +2187,7 @@ int glu_join(FORCE_SLOTS *fslots)
 	EmptyAllGamesList();
     }
 
+    installmousemoveevent(&mymousemoveevent);
     MenuAppear(NULL,MENU_OUT,0,NULL,&backgnd,NULL);
 
     uninstallmousemoveevent();
@@ -2390,6 +2399,8 @@ int glu_login(void)
 	ulist.DeallocList();
     }while(repeat);
 
+
+    installmousemoveevent(&mymousemoveevent);
 
     MenuAppear(NULL,MENU_OUT,0,NULL,&backgnd,NULL);
 
@@ -3124,6 +3135,7 @@ int selectmapmenu(void)
 	    filelist.DeallocList();
     }while(repeat);
 
+    installmousemoveevent(&mymousemoveevent);
     MenuAppear(NULL,MENU_OUT,0,NULL,&backgnd,NULL);
 
     uninstallmousemoveevent();
@@ -3410,6 +3422,7 @@ int glu_creat(FORCE_SLOTS *fslots)
 	    filelist.DeallocList();
     }while(repeat);
 
+    installmousemoveevent(&mymousemoveevent);
     MenuAppear(NULL,MENU_OUT,0,NULL,&backgnd,NULL);
 
     uninstallmousemoveevent();
@@ -4017,6 +4030,7 @@ int glu_chat(int masterjoin,int playernr,FORCE_SLOTS *fslots)
     CallNetwork(NETWORK_CLOSENETWORK,&broadcast);
     CallNetwork(NETWORK_CLOSENETWORK,&waitconn);
 
+    installmousemoveevent(&mymousemoveevent);
     MenuAppear(NULL,MENU_OUT,0,NULL,&backgnd,NULL);
 
     uninstallmousemoveevent();
