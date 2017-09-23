@@ -371,6 +371,7 @@ void drawMAP(int ignorefirstwaiting)
 //==================================
 void AutoMoveMap(void)
 {
+    return;
     int mapdeltax,mapdeltay,deltas=0;
     mapdeltax = map.newMAPX - map.MAPX;
     mapdeltay = map.newMAPY - map.MAPY;

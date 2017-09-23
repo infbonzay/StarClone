@@ -28,6 +28,7 @@
 int		TRIG_pause;
 int		TRIG_MusicQuieter;
 int		*ALLTRIG_pause;
+SCUNIT		TRIG_Portrait;
 char		TRIG_MusicVolume;
 char 		TRIG_ChangeStat;
 char 		TRIG_preserve;
@@ -58,6 +59,7 @@ void Remove_Triggers(mapinfo *info)
     TRIG_stopalltriggers = 1;
     TRIG_inittriggers = 0;
     TRIG_MusicQuieter = 0;
+    TRIG_Portrait = SC_NOUNITNR;
 }
 //=================================================
 int AllGroups_Prepare(mapinfo *info,MAP_TRIGS *temptrg)
@@ -285,8 +287,8 @@ int CheckForUnit(int (*ConditionFunction)(int *, int),
     {
 	a = objects[i];
 	if (modemove)
-//	    if (a->modemove != modemove)
-	    if ( a->prop & VARACCELERATIONBIT)
+//	    if (a->prop & VARACCELERATIONBIT)
+	    if (a->modemove != modemove)
 		continue;
 	if (actiononplayers & (1<<a->playernr))
 	{
@@ -425,6 +427,7 @@ int Triggers_SetMusicVolume(int volume)
 //=================================================
 void Init_Triggers_Variables(int cnttrg)
 {
+    TRIG_Portrait = SC_NOUNITNR;
     TRIG_MusicQuieter = 0;
     TRIG_stopalltriggers = 0;
     TRIG_active=0;
@@ -469,8 +472,15 @@ void Triggers_Parce(mapinfo *info,int cnttrg,MAP_TRIGS *trigs,int deltatick)
 	TRIG_MusicQuieter -= deltatick;
 	if (TRIG_MusicQuieter <= 0)
 	{
+	    //restore music volume
 	    TRIG_MusicQuieter = 0;
 	    Triggers_SetMusicVolume(TRIG_MusicVolume);
+	    //check if the same portrait -> show main portrait
+	    if (GetShowedPortrait() == TRIG_Portrait)
+	    {
+		//show main portrait
+		ShowAdvisorPortrait();
+	    }
 	}
     }
     for (i=0;i<cnttrg;i++)
@@ -797,8 +807,7 @@ int Action_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int trig_nr,int playernr,int
 		    if (!TRIG_MusicQuieter)
 		    {
 			TRIG_MusicVolume = Triggers_SetMusicVolume(-1);
-			//???? need to save current portrait
-			//to restore after end transmission
+			//???? need to restore previous portrait after end transmission
 		    }
 		    TRIG_MusicQuieter += TRIG_pause;
 
@@ -807,6 +816,7 @@ int Action_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int trig_nr,int playernr,int
 		    unitnr=temptrg->action[i].unitorrestype;
 
 		    //show transmission smk portrait
+		    TRIG_Portrait = unitnr;
 		    SetPortrait(unitnr,SMKTALK,NOSOUNDFILENR,TRIG_pause);
 		    //blink transmission unit
 		    ownedactiononplayers=OneGroup_Prepare(info,temptrg->action[i].actiononplayers,playernrmask);
@@ -851,8 +861,8 @@ int Action_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int trig_nr,int playernr,int
 		case TRG_ACTIONTYPE_CENTERVIEW://10
 		    locnr=temptrg->action[i].locationnr-1;
 		    CenterXYArea(&info->gamelocations[locnr].coords,&sx,&sy);
-//		    SetVisualMapPositionCenter(sx,sy);
-		    MoveVisualMapPositionCenter(sx,sy);
+		    SetVisualMapPositionCenter(sx,sy);
+//		    MoveVisualMapPositionCenter(sx,sy);
 		    triggset=1;
 		    break;
 		case TRG_ACTIONTYPE_CREATEUNITWITHPROPERTIES://11
@@ -1323,8 +1333,8 @@ creationwithoutproperties:
 			    break;
 		    }
 		    newobj=NULL;
-//		    nrofunits = CheckForUnit(NULL,ownedactiononplayers,unitnr,nrofunits,&newobj,&info->gamelocations[locnr].coords);
-		    nrofunits = CheckForUnit(NULL,ownedactiononplayers,unitnr,nrofunits,&newobj,&info->gamelocations[locnr].coords,MODESTOP);
+		    nrofunits = CheckForUnit(NULL,ownedactiononplayers,unitnr,nrofunits,&newobj,&info->gamelocations[locnr].coords);
+//		    nrofunits = CheckForUnit(NULL,ownedactiononplayers,unitnr,nrofunits,&newobj,&info->gamelocations[locnr].coords,MODESTOP);
 		    if (nrofunits)
 		    {
 			for (j=0;j<MaxObjects;j++)

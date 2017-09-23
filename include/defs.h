@@ -9,6 +9,8 @@
         #include "dos/keydos.h"
 #endif
 
+typedef unsigned char SCUNIT;
+
 #include "wmem.h"
 
 #define STARCLONEEXT		".scu"

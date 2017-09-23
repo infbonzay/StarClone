@@ -71,7 +71,6 @@ void showportrait(void);
 void drawmainportrait(int x,int y,unsigned char *pixelsbuff);
 void mergepixels(int iteration,unsigned char *outbuf,unsigned char *buf,unsigned char *buf2);
 int  SetPortrait(int SC_Unit,int typeofport,int soundfilenr,int showedtime);
-
 int  SetPortraitFromSound(int SC_Unit,int soundmode,int soundfilenr);
 void ShowAdvisorPortrait(void);
 void SetPortraitOBJ(OBJ *a);
@@ -80,6 +79,11 @@ void SetPortraitShowedTime(int showedtime);
 
 //===================================
 extern char scrollportrait,mixportrait;
+extern PORTRAIT staticport;
+
 extern unsigned char playbuffer[];
 extern MPQIDS	smkin,smkout;
+
+inline SCUNIT GetShowedPortrait(void){ return(staticport.SC_Unit); };
+
 #endif

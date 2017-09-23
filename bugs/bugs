@@ -392,8 +392,8 @@
 *156 txmap3 not see creep in fog zerg colony (left-up corner)
 *157 cloacked unit created from triggers have (cant see it)
 *158 multiple click on siege/normal incorrect showing sprites
-    triggers with order not correct
-    portrait continue to to show but transmission message was terminated
+*159 triggers with order not correct
+*160 portrait continue to to show but transmission message was terminated
     need to smouth map moving then MoveVisualMapPosition
     interceptor atack script
     
