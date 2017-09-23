@@ -4925,7 +4925,6 @@ int PathFinding_MovePortionType2(OBJ *a,MAIN_IMG *img,unsigned char flingy_id,in
 	else
 	{
 	    img->MoveInUnitDirection(a,img->side,deltamove);
-//	    a->modemove = MODESTOP;
 	    return(1);
 	}
 	deltax = destx - img->xpos;
@@ -4965,8 +4964,8 @@ movelikeatoterrain2:
 	else
 	{
 	    //do inertion move
-	    img->MoveInUnitDirection(a,img->side,a->currentspeed);//NOTE: used a->currentspeed (no used 'deltamove' for correct inertion)
-//	    a->modemove = MODESTOP;
+	    img->MoveInUnitDirection(a,img->side,deltamove);//NOTE: used a->currentspeed (no used 'deltamove' for correct inertion)
+//	    img->MoveInUnitDirection(a,img->side,a->currentspeed);//NOTE: used a->currentspeed (no used 'deltamove' for correct inertion)
 	    return(1);
 	}
 	if (deltaz < 256)		//prevent div 0
@@ -5159,8 +5158,8 @@ void AllOBJMoving(void)
 			continue;
 		    }
 		}
-		curspeed = GetSpeed(a,a->currentspeed);
 		PathFinding_MovePortionType2(a,img,flingy_id,GetSpeed(a,a->currentspeed));
+//
 //		if (a->subunit)
 //		    ChangeSubUnitCoords(a->subunit,a);
 
