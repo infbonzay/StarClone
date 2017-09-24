@@ -2472,10 +2472,10 @@ bugguyexplode:
 			a->castmagenr = MODEMINEEXPLODE;
     			SpecialAtackAction(a,ISCRIPTNR_SPECIALSTATE1);
 			break;
-//		    case SC_INTERCEPTOROBJ:
-//			AddModeMove(a,destobj,MODEMOVEFORWARD,0,0,NOSHOWERROR);
-//			AtackAction(a,destobj,0);
-//			break;
+		    case SC_INTERCEPTOROBJ:
+			AtackAction(a,destobj,0);
+			AddModeMove(a,destobj,MODEMOVEFORWARD,0,0,NOSHOWERROR);
+			break;
 		    default:
 			AtackAction(a,destobj,0);
 			break;
@@ -2603,11 +2603,14 @@ bugguyexplode:
 	    AddModeMove(a,NULL,MODEATACKREADY,x,y,NOSHOWERROR);
 	    break;
 	case MODEMOVEFORWARD:
+	    a->modemove = mode;    
+	    a->mainimage->side += myrand(-32,32);
+//	    UnitNeededDeltaDirection256(unsigned char deltadirection)
 	    deltax = (inertion256[a->mainimage->side][0]*INTERCEPTORDESTMOVEAFTERATACK)>>16;
 	    deltay = (inertion256[a->mainimage->side][1]*INTERCEPTORDESTMOVEAFTERATACK)>>16;
 	    initmoveaction(a,NULL,mode,0,0,GetOBJx(a)+deltax,GetOBJy(a)+deltay);
+	    a->prop &= ~VARWAITDISTANCE;
 	    AddModeMove(a,destobj,MODEATACK,0,0,NOSHOWERROR);
-	    AddModeMove(a,destobj,MODEMOVEFORWARD,0,0,NOSHOWERROR);
 	    break;
 	default:
 	    DEBUGMESSCR("mode=%d not developed\n",mode);
@@ -5249,7 +5252,7 @@ void InsertModeMove(OBJ *a,OBJ *destobj,int mode,int x,int y,int showmesflag)
     onemodemove = (ONEMODEMOVE *) a->movelist->InsertElem(sizeof(ONEMODEMOVE));
     if (!onemodemove)
     {
-	DEBUGMESSCR("cannot add to list of mode moves :( \n");
+	DEBUGMESSCR("cannot insert to list of mode moves :( \n");
 	return;
     }
     onemodemove->destobj = destobj;

@@ -824,6 +824,7 @@ int (*UnitActionDefaults[MAX_UNITS_ELEM])(struct OBJ *a,MAIN_IMG *img)=
 int AdditionalUnitProceed(OBJ *a,MAIN_IMG *img)
 {
     if (a->atackcooldowntime)
+	if (a->SC_Unit != SC_INTERCEPTOROBJ)
 	if (--a->atackcooldowntime == 0)
 	{
 	    if (a->modemove == MODEATACK)
@@ -874,6 +875,7 @@ int AdditionalUnitProceed(OBJ *a,MAIN_IMG *img)
 	}
     if ((a->prop & (VARNOTWORK | VARPOWEROFF))||GetMageAtr(&a->atrobj,ATRSTASIS)>0)
 	return 0;
+    if (a->SC_Unit != SC_INTERCEPTOROBJ)
     if (a->prop & VARWAITDISTANCE)
     {
 	if (NEEDTOMOVE1BIT)
@@ -922,7 +924,8 @@ int AtackCoolDownEnds(OBJ *a,OBJ *destobj,int continueatack,int showerrorflag)
 		    a->subunit->modemove = MODEATACK;
 		    a->atackcooldowntime = 0;
 		    initmoveaction(a->subunit,destobj,MODEATACK,a->usedweapon_id,0,GetOBJx(destobj),GetOBJy(destobj));
-		    AddModeMove(a->subunit,destobj,MODEATACKREADY,0,0,NOSHOWERROR);
+//		    AddModeMove(a->subunit,destobj,MODEATACKREADY,0,0,NOSHOWERROR);
+		    InsertModeMove(a->subunit,destobj,MODEATACKREADY,0,0,NOSHOWERROR);
 		}
 		else
 		{
@@ -939,7 +942,8 @@ int AtackCoolDownEnds(OBJ *a,OBJ *destobj,int continueatack,int showerrorflag)
 		    a->modemove = MODEATACK;
 		    a->atackcooldowntime = 0;
 		    initmoveaction(a,destobj,MODEATACK,a->usedweapon_id,0,GetOBJx(destobj),GetOBJy(destobj));
-		    AddModeMove(a,destobj,MODEATACKREADY,0,0,NOSHOWERROR);
+//		    AddModeMove(a,destobj,MODEATACKREADY,0,0,NOSHOWERROR);
+		    InsertModeMove(a,destobj,MODEATACKREADY,0,0,NOSHOWERROR);
 		}
 		return(MOVEOBJ_CONTINUEJOB);
 	    case CREATEDWEAPONSTATUS_DESTTOCLOSE://to close
