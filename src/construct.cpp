@@ -248,7 +248,7 @@ void UnitConstrUnit(OBJ *a,int SC_Unit,int icon_nr,int stattxt_nr)
 		    a->SC_FromUnit = a->SC_Unit;		//save previous unit
 		    ChangeUnitAndImagesAssociated(a,SC_EGGOBJ);
 		    ChangeSC_Unit(a,a->playernr,SC_EGGOBJ,CHANGESC_UNIT_CONSTR);
-		    SetUnitPercentLife(a,100);
+		    SetUnitPercentHealth(a,100);
 		    SetUnitPercentShield(a,100);
 		    ChangeResourcePlayer(a->playernr,MINUSFACTOR,mcost,gcost);
 		    SetBeginSelfConstruct(a);
@@ -265,9 +265,9 @@ void UnitConstrUnit(OBJ *a,int SC_Unit,int icon_nr,int stattxt_nr)
 		    a->SC_FromUnit=a->SC_Unit;			//save previous unit
 		    ChangeUnitAndImagesAssociated(a,SC_LURKEREGGOBJ);
 		    ChangeSC_Unit(a,a->playernr,SC_LURKEREGGOBJ,CHANGESC_UNIT_CONSTR);
-		    a->templife = a->life;			//if cancel construct restore to those perameters
+		    a->temphealth = a->health;			//if cancel construct restore to those perameters
 		    a->tempshield = a->shield;
-		    SetUnitPercentLife(a,100);
+		    SetUnitPercentHealth(a,100);
 		    SetUnitPercentShield(a,100);
 		    ChangeResourcePlayer(a->playernr,MINUSFACTOR,mcost,gcost);
 		    SetBeginSelfConstruct(a);
@@ -278,9 +278,9 @@ void UnitConstrUnit(OBJ *a,int SC_Unit,int icon_nr,int stattxt_nr)
 		    a->SC_FromUnit=a->SC_Unit;			//save previous unit
 		    ChangeUnitAndImagesAssociated(a,SC_MUTALISKCOCOONOBJ);
 		    ChangeSC_Unit(a,a->playernr,SC_MUTALISKCOCOONOBJ,CHANGESC_UNIT_CONSTR);
-		    a->templife = a->life;
+		    a->temphealth = a->health;
 		    a->tempshield = a->shield;
-		    a->life = GetUnitMaxLife(a->SC_Unit);
+		    a->health = GetUnitMaxHealth(a->SC_Unit);
 		    a->shield = GetUnitMaxShield(a->SC_Unit);
 		    ChangeResourcePlayer(a->playernr,MINUSFACTOR,mcost,gcost);
 		    SetBeginSelfConstruct(a);
@@ -413,7 +413,7 @@ int TickUnderConstruct(OBJ *a)
 	    if (!(b->UNITprop & NOADDSTATSATCONSTR))
 	    {
 		AddUnitShield(a,a->selfconstruct.incrshield*decrparam);
-		AddUnitLife(a,a->selfconstruct.incrlife*decrparam);
+		AddUnitHealth(a,a->selfconstruct.incrlife*decrparam);
 	    }
 	}
 	switch(a->selfconstruct.currentconstrstep)
@@ -508,22 +508,14 @@ int SetBeginSelfConstruct(OBJ *a)
     {
 	SC_Unit = a->SC_ConstrUnit;
     }
-/*    if (a->SC_FromUnit != SC_NOUNITNR)
-    {
-	fromshield = GetUnitMaxShield(a->SC_FromUnit);
-	fromlife = GetUnitMaxLife(a->SC_FromUnit);
-    }
-    else
-*/    {
-	fromshield = STARTBUILDSHIELD;
-	fromlife = STARTBUILDLIFE;
-    }
+    fromshield = STARTBUILDSHIELD;
+    fromlife = STARTBUILDLIFE;
     a->selfconstruct.timeremained=alldattbl.units_dat->BuildTime[SC_Unit];
     a->selfconstruct.timemax = a->selfconstruct.timeremained;
     if (!(b->UNITprop & NOADDSTATSATCONSTR))
     {
 	a->selfconstruct.incrshield=(GetUnitMaxShield(SC_Unit)-fromshield+0x4ff)/a->selfconstruct.timemax;
-	a->selfconstruct.incrlife=(GetUnitMaxLife(SC_Unit)-fromlife+0x4ff)/a->selfconstruct.timemax;
+	a->selfconstruct.incrlife=(GetUnitMaxHealth(SC_Unit)-fromlife+0x4ff)/a->selfconstruct.timemax;
     }
 }
 //==================================

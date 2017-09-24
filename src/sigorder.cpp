@@ -350,7 +350,7 @@ int  SIGOrder_ZergEggBirth(OBJ *a)
     a->SC_Unit = a->SC_ConstrUnit;
     ChangeMaxSupply(a->playernr,a->SC_ConstrUnit,PLUSFACTOR);
     CreateImageAndAddToList(a,x256,y256,0,NOLOIMAGE);
-    SetUnitPercentLife(a,100);
+    SetUnitPercentHealth(a,100);
     SetUnitPercentShield(a,100);
     SetOrder(a,4,&SIGOrder_ZergUnitBirth);
     SetOBJIScriptNr(a,ISCRIPTNR_SPECIALSTATE1,ISCRIPTNR_EXECUTE);		//zerg birth script
@@ -415,7 +415,7 @@ int  SIGOrder_CancelMorthFromHydralisk(OBJ *a)
     x256 = GetOBJx256(a);
     y256 = GetOBJy256(a);
     SetOrder(a,0,NULL);
-    a->life = a->templife;
+    a->health = a->temphealth;
     a->shield = a->tempshield;
     a->prop |= VARREADY;
     a->mainimage->DeleteMainImgAndChilds();
@@ -455,7 +455,7 @@ int  SIGOrder_CancelMorthFromDrone(OBJ *a)
     a->mainimage->DeleteMainImg();
     CreateImageAndAddToList(a,x256,y256,2,NOLOIMAGE);//a->mainimage remain in mainimageslist 
 
-    a->life = a->templife;
+    a->health = a->temphealth;
     a->shield = a->tempshield;
     RemoveBloodFlameOverlays(a,0);
     SetOBJIScriptNr(a,ISCRIPTNR_LIFTOFF,ISCRIPTNR_EXECUTE);
@@ -491,7 +491,7 @@ int  SIGOrder_CancelMorthFromBuild(OBJ *a)
     a->mainimage->DeleteMainImg();
     CreateImageAndAddToList(a,x256,y256,2,NOLOIMAGE);
 
-    a->life = a->templife;
+    a->health = a->temphealth;
     a->shield = a->tempshield;
     a->lastdamageoverlays = -1;
     AddRemoveBloodFlameOverlays(a);
@@ -508,8 +508,8 @@ int  SIGOrder_CancelMorthFromMutalisk(OBJ *a)
 
     SetOrder(a,0,NULL);
 
-    if (a->life > GetUnitMaxLife(a->SC_FromUnit))
-	a->life = GetUnitMaxLife(a->SC_FromUnit);
+    if (a->health > GetUnitMaxHealth(a->SC_FromUnit))
+	a->health = GetUnitMaxHealth(a->SC_FromUnit);
     if (a->shield > a->tempshield)
 	a->shield = GetUnitMaxShield(a->SC_FromUnit);
     a->prop |= VARREADY;
@@ -600,10 +600,10 @@ int  SIGOrder_AfterCastHeal(OBJ *a)
 	//heal unit here
 	if (a->mana >= (1<<8))
 	{
-	    AddUnitLife(a->finalOBJ,MEDICHEALFACTOR);
+	    AddUnitHealth(a->finalOBJ,MEDICHEALFACTOR);
 	    DecrMana(a,1);
 	    //check if unitlife is max do search next to heal
-	    if (a->finalOBJ->life == GetUnitMaxLife(a->finalOBJ->SC_Unit))
+	    if (a->finalOBJ->health == GetUnitMaxHealth(a->finalOBJ->SC_Unit))
 	    {
 //		moveobj(a,NULL,MODESTOP,0,0,NOSHOWERROR,0);
 //		return(1);

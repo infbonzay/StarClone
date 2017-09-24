@@ -40,6 +40,7 @@ int  IsRegenerate(int SC_Unit);
 int  IsAddon(int SC_Unit);
 int  IsSpellCaster(int SC_Unit);
 int  IsOrganic(int SC_Unit);
+int  IsBattleReactions(int SC_Unit);
 int  IsGroundUnit(int SC_Unit);
 int  IsAirUnit(int SC_Unit);
 int  IsHeroUnit(int SC_Unit);

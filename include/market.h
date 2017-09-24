@@ -58,10 +58,10 @@ int  GetTechEnergyCost(int tech_id);
 int  GetTechResearchTime(int upgr_id);
 int  CheckForResource_typeid(OBJ *a,int nplayer,int type_id,int obj_id);
 
-unsigned int GetUnitMaxLife(int SC_Unit);
-void AddUnitLife(struct OBJ *a,int addlife);
-void SetUnitLife(struct OBJ *a,int life);
-void SetUnitPercentLife(OBJ *a,int persmana);
+unsigned int GetUnitMaxHealth(int SC_Unit);
+void AddUnitHealth(struct OBJ *a,int addhealth);
+void SetUnitHealth(struct OBJ *a,int health);
+void SetUnitPercentHealth(OBJ *a,int pershealth);
 int GetUnitMaxHitPoints(int SC_Unit);
 unsigned int GetUnitMaxShield(int SC_Unit);
 void AddUnitShield(struct OBJ *a,int addshield);

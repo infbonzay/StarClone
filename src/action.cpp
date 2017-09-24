@@ -66,8 +66,9 @@ void QueueAction(void *IDQueueAction,int DestroyQueue)
 		    WakeUpChild(actobj,temp->finalOBJ,0,0);
 	    }
 	    b = loadobj(actobj->SC_Unit);
-	    actobj->timeflybeforerecharge=b->timeflybeforerecharge;
+	    actobj->data.interceptor.refreshmyparent = INTERCEPTORREFRESHMYPARENT;
 	    actobj->shield = GetUnitMaxShield(actobj->SC_Unit);
+	    //????
 	    break;
 	case CREATELARVAEACTION:
 	    if (actobj)
@@ -619,18 +620,18 @@ void addremoveuniteffectfrommap(OBJ *a,int plusminus,mapinfo *testmap)
 int RepairUnit(int playernr,OBJ *scv,OBJ *a)
 {
     OBJstruct *b;
-    if (a->life < GetUnitMaxLife(a->SC_Unit))
+    if (a->health < GetUnitMaxHealth(a->SC_Unit))
     {
 	b=loadobj(a->SC_Unit);
 	if (CheckResourcePlayerBITS(playernr,b->repairmin * CODEFORQUICKMAKE,b->repairgas * CODEFORQUICKMAKE) == CHECKRES_OK)
 	{
-	    a->life += b->repairlife * CODEFORQUICKMAKE;
+	    a->health += b->repairlife * CODEFORQUICKMAKE;
 	    AddRemoveBloodFlameOverlays(a);
 	    
 	    ChangeResourcePlayerBITS(playernr,MINUSFACTOR,b->repairmin * CODEFORQUICKMAKE,b->repairgas * CODEFORQUICKMAKE);
-	    if (a->life < GetUnitMaxLife(a->SC_Unit))
+	    if (a->health < GetUnitMaxHealth(a->SC_Unit))
 		return(1);
-	    a->life = GetUnitMaxLife(a->SC_Unit);
+	    a->health = GetUnitMaxHealth(a->SC_Unit);
 	}
     }
     return(0);

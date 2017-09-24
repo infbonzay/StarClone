@@ -56,16 +56,36 @@ int CarrierAction(struct OBJ *a,MAIN_IMG *img)
 //=================================
 int InterceptorsAction(struct OBJ *a,MAIN_IMG *img)
 {
-    //???? HERE NEED TO SCRIPT MOVEING AROUND DESTOBJ
     if (a->prop & VARINBASE)
-	return 0;
-    if (a->modemove != MODERECHARGE)
     {
-	if (a->timeflybeforerecharge--)    //if exist timeflybeforerecharge
+	if (a->health >= INTERCEPTORLIFELAUNCH)
 	{
-	    a->timeflybeforerecharge = 0;
-	    moveobj(a,a->myparent,MODERECHARGE,0,0,NOSHOWERROR,0);
+	    if (a->myparent->finalOBJ)
+	    {
+		WakeUpChild(a,a->myparent->finalOBJ,0,0);
+		return(1);
+	    }
+	}
+	//regen interceptor health
+	AddUnitHealth(a,INTERCEPTORREGENHEALTH);
+	return 0;
+    }
+    if (a->modemove != MODEGOTORECHARGE)
+    {
+	if (a->data.interceptor.refreshmyparent-- == 0)
+	{
+	    a->data.interceptor.refreshmyparent = INTERCEPTORREFRESHMYPARENT;
+	    if (!a->myparent)
+	    {
+		dieobj(a);
+	    }
 	    return 1;
+	}
+	if (a->shield <= INTERCEPTORSHIELDRETURN)
+	{
+	    moveobj(a,a->myparent,MODEGOTORECHARGE,0,0,NOSHOWERROR,0);
+	    AddModeMove(a,NULL,MODERECHARGE,0,0,0);
+	    return(1);
 	}
 /*	if (a->modemove == MODESTOP)
 	{
@@ -98,12 +118,6 @@ int InterceptorsAction(struct OBJ *a,MAIN_IMG *img)
 	{
 	    dieobj(a);
 	}
-	else    //check if interceptor is near carrier to enter inside
-	    if (controldistancemode(GetOBJx(a),GetOBJy(a),GetOBJx(a->myparent),GetOBJy(a->myparent),a->modemove))
-	    {
-		ReturnedToBase(a);//after moved to base
-		return 1;
-	    }
     }
     return 0;
 }
@@ -238,13 +252,13 @@ int WorkersAction(struct OBJ *a,MAIN_IMG *img)
 		SetObjWalk8(&map,a,CLEARWALK);
 		a->modemove = MODESTOP;
             	a->SC_FromUnit = a->SC_Unit;			//save previous unit
-            	a->templife = a->life;
+            	a->temphealth = a->health;
             	a->tempshield = a->shield;
             	a->mainimage->DeleteMainImgAndChilds();
 
             	ChangeSC_Unit(a,a->playernr,a->SC_ConstrUnit,CHANGESC_UNIT_CONSTR);
             	CreateImageAndAddToList(a,a->finalx,a->finaly,0,NOLOIMAGE);
-            	SetUnitPercentLife(a,1);
+            	SetUnitPercentHealth(a,1);
             	SetUnitPercentShield(a,1);
             	SetBeginSelfConstruct(a);
             	a->selfconstruct.currentconstrstep = CONSTR_STEP_ZERGBUILDLESS33;
@@ -950,11 +964,11 @@ int AtackCoolDownEnds(OBJ *a,OBJ *destobj,int continueatack,int showerrorflag)
 		a->finalx = GetOBJx256(destobj);
 		a->finaly = GetOBJy256(destobj);
 		SetAtackType(a,destobj);
-//		if (!a->atackcooldowntime)
-//		{
-//		    return(MOVEOBJ_DONE);
-//		}
 		return(MOVEOBJ_STOPANDCONTINUEJOB);
+	    case CREATEDWEAPONSTATUS_LAUNCHINTERCEPTORS:
+		a->finalOBJ = destobj;
+		LaunchInterceptors(a,destobj);
+		return(MOVEOBJ_DONE);
 	    default:
 		DEBUGMESSCR("error resval from ifcancreateweapon\n");
 		return(MOVEOBJ_NOACT);

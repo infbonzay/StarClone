@@ -32,6 +32,12 @@ typedef unsigned char SCUNIT;
 #define AIROBJ			1
 //=============================
 
+#define INTERCEPTORREFRESHMYPARENT		200
+#define INTERCEPTORSHIELDRETURN			(10*256)
+#define INTERCEPTORLIFELAUNCH			(20*256)
+#define INTERCEPTORREGENHEALTH			128		//0.5 life per frame
+//=================================
+
 #define DEPLEATEDGETGAZ		2
 
 #define NORMALGETRESOURCES	8

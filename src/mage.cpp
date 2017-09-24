@@ -60,7 +60,7 @@ void mageattributedothings(OBJ *a)
 		    }
 		    break;
 		case ATRIRRADIATE:
-		    //decrement life arround units if not burrowed
+		    //decrement health arround units if not burrowed
 		    x256 = GetOBJx256(a);
 		    y256 = GetOBJy256(a);
 		    if (ifcanworkatr_onothers(a,i,typemage))

@@ -360,7 +360,7 @@ while(1)
 		{
 		    adr->repairmin=(mcost<<8)/3/GetUnitBuildTime(SC_Unit);
 		    adr->repairgas=(gcost<<8)/3/GetUnitBuildTime(SC_Unit);
-		    adr->repairlife=GetUnitMaxLife(SC_Unit)/GetUnitBuildTime(SC_Unit);
+		    adr->repairlife=GetUnitMaxHealth(SC_Unit)/GetUnitBuildTime(SC_Unit);
 		}
 		else
 		{
@@ -434,20 +434,13 @@ while(1)
             case 10://i ATACKSPEEDUPG
                 adr->atackspeedupgnr=intvalue;
                   break;
-	    case 11: //need recharge on base RECHARGE = N timerecharging
-		    adr->UNITprop |= VARNEEDRECHARGE;
-                    fscanf(f,"%s \n",strvalue);
-		    adr->timerechargeonbase = atoi(strvalue);
-                    fscanf(f,"%s \n",strvalue);
-		    adr->timeflybeforerecharge = atoi(strvalue);
-	    	  break;
-            case 12:	//CREEP
+            case 11:	//CREEP
 		adr->creeptype = intvalue;
 	        break;
-    	    case 13://I CLOAKRANGE
+    	    case 12://I CLOAKRANGE
 		adr->cloakrange = intvalue;
 		break;
-    	    case 14://I ADDITIONALTEXT
+    	    case 13://I ADDITIONALTEXT
 		adr->additionaltext=intvalue;
 		break;
 	    default:

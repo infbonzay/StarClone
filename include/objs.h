@@ -189,8 +189,9 @@ void FreeOBJFromTransport(OBJ *c,OBJ *a,int objnr);
 void ChangeSubUnitCoords(OBJ *turret,OBJ *base);
 int  TryToEnterNydus(OBJ *a,OBJ *nydus);
 int  RegenerateShield(OBJ *a);
-int  RegenerateLife(OBJ *a);
+int  RegenerateHealth(OBJ *a);
 int  LaunchScarab(OBJ *reaver,OBJ *destobj);
+void LaunchInterceptors(OBJ *a,OBJ *destobj);
 
 
 #define UnitDoAiAction(playernr) (map.pl_owner[playernr] == OWNER_COMPUTER)// || map.pl_owner[playernr] == OWNER_HUMAN)

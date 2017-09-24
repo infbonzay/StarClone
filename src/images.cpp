@@ -1101,7 +1101,7 @@ void AddRemoveBloodFlameOverlays(OBJ *a)
     signed char *adrxyoffs,xlo,ylo;
     if (IsReadyOBJ(a))//do not show bloodflame if constructing
     {	
-	maxdamageoverlays = DamageFactor(a->life,GetUnitMaxLife(a->SC_Unit));
+	maxdamageoverlays = DamageFactor(a->health,GetUnitMaxHealth(a->SC_Unit));
 	if (a->lastdamageoverlays == maxdamageoverlays)//no need to change anything
 	    return;
 	a->lastdamageoverlays = maxdamageoverlays;

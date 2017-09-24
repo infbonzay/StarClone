@@ -46,9 +46,9 @@
 //========================================
 void desenlife(int x,int y,
                int sizex,int statusplayer,
-               int life,int shield,
+               int health,int shield,
                int mage,int timelife,
-               int maxlife,int maxshield,
+               int maxhealth,int maxshield,
                int maxmage,int maxtimelife);
 //========================================
 void desenhealth(int x,int y,int kubik,int count,int max);

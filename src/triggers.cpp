@@ -1435,7 +1435,7 @@ creationwithoutproperties:
 			    {
 				//done by previous trigger
 				SetTriggeredUnitState(objects[j],0);
-				SetUnitPercentLife(objects[j],state);
+				SetUnitPercentHealth(objects[j],state);
 				//need to add fireblood images
 				AddRemoveBloodFlameOverlays(objects[j]);
 				if (--nrofunits==0)

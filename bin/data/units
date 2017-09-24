@@ -548,9 +548,8 @@ PROPERTIES       = 4    0   0   0   0   0   0   0   0   0
 ENDOBJ           = 1
 
 [NEWOBJECT] = 73 Protoss_Interceptor
-RECHARGE	 = 2 50 200
 PROPERTIES       = 2    0   0   0   0   0   0   0   0   0
-			256 257 333   399 0   0   0   0   0
+			256 257 333 399 0   0   0   0   0
 
 
 ENDOBJ           = 1

@@ -119,12 +119,12 @@ OBJ *CreateArchon(OBJ *a,OBJ *a2)
     switch(a->SC_Unit)
     {
 	case SC_HIGHTEMPLAROBJ:
-	    midlife=(int)(a->life+a2->life)*100/(GetUnitMaxLife(a->SC_Unit))/2;
+	    midlife=(int)(a->health+a2->health)*100/(GetUnitMaxHealth(a->SC_Unit))/2;
 	    midshield=(int)(a->shield+a2->shield)*100/GetUnitMaxShield(a->SC_Unit)/2;
 	    newobj = createobjman(GetOBJx(a),GetOBJy(a),SC_ARCHONOBJ,a->playernr,TYPEMOVEATBEGIN,midshield,midlife,100);
 	    break;
 	case SC_DARKTEMPLAROBJ:
-	    midlife=(int)(a->life+a2->life)*100/(GetUnitMaxLife(a->SC_Unit))/2;
+	    midlife=(int)(a->health+a2->health)*100/(GetUnitMaxHealth(a->SC_Unit))/2;
 	    midshield=(int)(a->shield+a2->shield)*100/GetUnitMaxShield(a->SC_Unit)/2;
 	    newobj = createobjman(GetOBJx(a),GetOBJy(a),SC_DARKARCHONOBJ,a->playernr,TYPEMOVEATBEGIN,midshield,midlife,100);
 	    break;
@@ -190,7 +190,7 @@ struct OBJ *createobjmanwithlife(int x,int y,int SC_Unit,int Pl,
     a->prop |= VARREADY;
     if (b)
     {
-	SetUnitPercentLife(a,perslife);
+	SetUnitPercentHealth(a,perslife);
 	SetUnitPercentShield(a,persshield);
 	if (IsSpellCaster(SC_Unit))
 	    SetUnitPercentMana(a,persenergy);
@@ -309,7 +309,7 @@ struct OBJ *createobjlowlevel(OBJ *workerobj,int x,int y,int SC_Unit,int playern
     a->SC_FromUnit = b->SC_CreateFromUnit;
     if (a->SC_FromUnit != SC_NOUNITNR)
     {
-	a->templife = GetUnitMaxLife(a->SC_FromUnit);
+	a->temphealth = GetUnitMaxHealth(a->SC_FromUnit);
 	a->tempshield = GetUnitMaxShield(a->SC_FromUnit);
     }
     a->creepbuildlist_ID=CREEPLISTEMPTY;
@@ -337,18 +337,18 @@ struct OBJ *createobjlowlevel(OBJ *workerobj,int x,int y,int SC_Unit,int playern
     a->timeleft=b->maxtimeleft;
     if (!IsBuild(a->SC_Unit))
     {
-	SetUnitPercentLife(a,perslife);
+	SetUnitPercentHealth(a,perslife);
 //	if (IsShieldEnable(SC_Unit))
 	    SetUnitPercentShield(a,persshield);
     }
     else
     {
 	a->shield=STARTBUILDSHIELD;
-	a->life=STARTBUILDLIFE;
+	a->health=STARTBUILDLIFE;
     }
     createobjregen();
 //    a->curentatacknr = b->maxbullets;
-    a->timeflybeforerecharge = b->timeflybeforerecharge;
+//    a->timeflybeforerecharge = b->timeflybeforerecharge;
     a->sfxplay.sfxtypeplayed = -1;
     a->sfxplay.nrsfxplayed = -1;
     a->sfxplay.nrselectplayed = 0;
@@ -977,28 +977,28 @@ int RegenerateShield(OBJ *a)
     return(change);
 }
 //========================================
-int RegenerateLife(OBJ *a)
+int RegenerateHealth(OBJ *a)
 {
     int change=0;
     if (IsRegenerate(a->SC_Unit))
     {
-	if (a->life<GetUnitMaxLife(a->SC_Unit))
+	if (a->health<GetUnitMaxHealth(a->SC_Unit))
 	{
 	    if (IsOBJBurrowed(a))
-		AddUnitLife(a,REGENERATELIFE+1);
+		AddUnitHealth(a,REGENERATELIFE+1);
 	    else
-		AddUnitLife(a,REGENERATELIFE);
+		AddUnitHealth(a,REGENERATELIFE);
 	    change=1;
 	}
     }
     else
     {
 	if (IsBuild(a->SC_Unit) && GetUnitRace(a->SC_Unit)==TERRANRACE)
-	    if (a->life*3<(GetUnitMaxLife(a->SC_Unit)))
+	    if (a->health*3<(GetUnitMaxHealth(a->SC_Unit)))
 	    {
-	        a->life -= DEREGENERATELIFE;
+	        a->health -= DEREGENERATELIFE;
 	        change=1;
-	        if (a->life <= 0)
+	        if (a->health <= 0)
 	            dieobj(a);
 	    }
     }
@@ -1070,9 +1070,9 @@ int ApplyDamageToUnit(struct OBJ *a)
     }
     if (a->lifedamage > 0)
     {
-	a->life -= a->lifedamage;
+	a->health -= a->lifedamage;
 	lifechange = 1;
-	if (a->life <= 0)
+	if (a->health <= 0)
 	    dieobj(a);
     }
     a->lifedamage = 0;
@@ -1100,7 +1100,7 @@ void allobj_dieheal(void)
     	if (!IsOBJUnderConstruct(a))
     	{
 	    if (!a->lifedamage)
-		lifechange += RegenerateLife(a);
+		lifechange += RegenerateHealth(a);
 	    DecrementLifeMage(a);
 	}
 	if (lifechange)
@@ -1339,7 +1339,7 @@ int moveobj_addonmode(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int
 	DoOrder(a->playernr,a,x,y,mageprop[mode].type_id,mageprop[mode].obj_id,
 				mageprop[mode].obj_id,mageprop[mode].stattxt_id_enable,mode,showerrorflag);
 	newobj = createobjman(x,y,mageprop[mode].obj_id,a->playernr);
-	newobj->life=STARTBUILDLIFE;
+	newobj->health=STARTBUILDLIFE;
 	newobj->shield=STARTBUILDSHIELD;
 	a->constrobj = newobj;
 	newobj->constrobj=a;
@@ -1381,7 +1381,7 @@ int moveobj_buildmode(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int
         if (a->SC_Unit == obj_id)
         {
 	    newobj = createobjman(x,y,SC_NYDUSCANALOBJ,a->playernr);
-	    newobj->life = GetUnitMaxLife(a->SC_Unit);
+	    newobj->health = GetUnitMaxHealth(a->SC_Unit);
 	    ChangeTypeOfProp(newobj,PROPEMPTY);
 	    ChangeTypeOfProp(a,PROPEMPTY);
 	    a->doubleunit = newobj;
@@ -1393,7 +1393,7 @@ int moveobj_buildmode(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int
 	    //build make build (usually zerg building upgrade)
     	    a->SC_ConstrUnit = obj_id;				//construct unit
 	    a->SC_FromUnit = a->SC_Unit;			//save previous unit
-	    a->templife = a->life;
+	    a->temphealth = a->health;
 	    a->tempshield = a->shield;
 	    x256 = GetOBJx256(a);
 	    y256 = GetOBJy256(a);
@@ -1401,7 +1401,7 @@ int moveobj_buildmode(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int
 
 	    ChangeSC_Unit(a,a->playernr,obj_id,CHANGESC_UNIT_CONSTR);
 	    CreateImageAndAddToList(a,x256,y256,0,NOLOIMAGE);
-	    SetUnitPercentLife(a,100);
+	    SetUnitPercentHealth(a,100);
 	    SetUnitPercentShield(a,100);
 	    ChangeResourcePlayer(a->playernr,MINUSFACTOR,mcost,gcost);
 	    SetBeginSelfConstruct(a);
@@ -1907,7 +1907,7 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
 		}
 		else
 		{
-		    if (GetUnitMaxLife(destobj->SC_Unit) == destobj->life)
+		    if (GetUnitMaxHealth(destobj->SC_Unit) == destobj->health)
 		    {
 			showadvisortext(STATTXT_UNABLEREPAIRTARGET);
 			return(MOVEOBJ_NOACT);
@@ -2309,10 +2309,10 @@ escapeconstrslots:
 	    break;
 	case MODESTIMPACK1:
 	case MODESTIMPACK2:
-	    if (a->life <= STIMPACKMINLIFE)
+	    if (a->health <= STIMPACKMINLIFE)
 	        return(MOVEOBJ_NOACT);
     	    addmage(a,ATRSTIMPACK,STIMPACKTIME);
-	    a->life -= STIMPACKMINLIFE;
+	    a->health -= STIMPACKMINLIFE;
 	    if (mageprop[mode].sound_id[SOUNDONCAST])
 		Play_sfxdata(GetOBJx(a),GetOBJy(a),mageprop[mode].sound_id[SOUNDONCAST],2);
 	    break;
@@ -2571,7 +2571,7 @@ bugguyexplode:
 		}
 	    }
 	    break;
-	case MODERECHARGE:		//recharge interceptor in carrier
+	case MODEGOTORECHARGE:
 	    if (!a->myparent || !destobj)
 	    {
 		dieobj(a);
@@ -2579,6 +2579,9 @@ bugguyexplode:
 	    }
 	    initmoveaction(a,destobj,mode,0,0,x,y);
 	    a->modemove = mode;
+	    break;
+	case MODERECHARGE:		//recharge interceptor in carrier
+	    ReturnedToBase(a);
 	    break;
 	case MODESUICIDEATACK:
 	    initmoveaction(a,NULL,mode,0,0,x,y);
@@ -2947,7 +2950,7 @@ int GetDefaultModeForRightClick(OBJ *a,OBJ *destobj,int playernr)
 			{
 			    if (IsMechanical(destobj->SC_Unit) && 
 				IsTerranRace(destobj->SC_Unit) && 
-				destobj->life != GetUnitMaxLife(destobj->SC_Unit))
+				destobj->health != GetUnitMaxHealth(destobj->SC_Unit))
 			    {
 				    modemove = MODEREPAIR;
 			    }
@@ -3468,6 +3471,7 @@ void WakeUpChild(OBJ *myparent,OBJ *a,OBJ *destobj,int deltax,int deltay)
 	SetModeMove(a,MODESTOP);
 	a->finalOBJ = NULL;
 	a->prop &= ~VARINBASE;
+	a->data.interceptor.refreshmyparent = INTERCEPTORREFRESHMYPARENT;
 
 	a->mainimage->EnableExecScript();
         a->mainimage->ShowChildsImgFlag();
@@ -3496,8 +3500,8 @@ void WakeUpAllChilds(OBJ *a,OBJ *destobj)
 		if (a->childs->parentof[i]->prop & VARINBASE)
 		    if (a->childs->parentof[i]->playernr == a->playernr)
 			WakeUpChild(a,a->childs->parentof[i],destobj,0,0);
-		    else
-			dieobj_silently(a->childs->parentof[i]);
+//		    else
+//			dieobj_silently(a->childs->parentof[i]);
 }
 //=================================
 void ReturnedToBase(struct OBJ *a)//after moved to base
@@ -3506,10 +3510,12 @@ void ReturnedToBase(struct OBJ *a)//after moved to base
     if (a->myparent->childs)
     {
 	//object now in base need wait factor
-	a->prop |= VARNOTHERE;
-	b = loadobj(a->SC_Unit);
-	MakeQueueAction(NONDETECTEDACTION,a,NULL,
-			0,0,0,b->timerechargeonbase);
+	a->prop |= VARNOTHERE | VARINBASE;
+	a->finalOBJ = NULL;
+	a->mainimage->DisableExecScript();
+    	a->mainimage->HideChildsImgFlag();
+	a->mainimage->HideImgFlag();
+	a->shield = GetUnitMaxShield(a->SC_Unit);
     }
     else
 	savelog("return non-child unit to base",0);
@@ -4096,12 +4102,13 @@ void SearchForAtacks(void)
     for (i=0;i<MaxObjects;i++)
     {
 	a = objects[i];
-	if (!a->finalOBJ)
-	    if (a->searchforatack_tick--==0)
-	    {
-		a->searchforatack_tick = MAXWAIT_SEARCHATACK_TICK;
-		OneUnitSearchGoal(a,0);
-	    } 
+	if (IsBattleReactions(a->SC_Unit))
+	    if (!a->finalOBJ)				//???? i need to atack unit who atack me
+		if (a->searchforatack_tick--==0)
+		{
+		    a->searchforatack_tick = MAXWAIT_SEARCHATACK_TICK;
+		    OneUnitSearchGoal(a,0);
+		} 
     }
 }
 //=================================
@@ -4643,8 +4650,8 @@ void ShowCircleAndBar(OBJ *a)
     	        else
     	    	timeleft=0;
     	        desenlife(x-map.MAPXGLOBAL-sizexhealthbar/2,fromy,sizexhealthbar,
-            		    player_aliance(NUMBGAMER,a->playernr),a->life,a->shield,a->mana,
-		    	    a->timeleft,GetUnitMaxLife(a->SC_Unit),maxshield,manacnt,timeleft);
+            		    player_aliance(NUMBGAMER,a->playernr),a->health,a->shield,a->mana,
+		    	    a->timeleft,GetUnitMaxHealth(a->SC_Unit),maxshield,manacnt,timeleft);
 	    }
 	}
     }
@@ -5344,5 +5351,10 @@ int LaunchScarab(OBJ *a,OBJ *destobj)
 	}
     }
     return(0);
+}
+//=================================
+void LaunchInterceptors(OBJ *a,OBJ *destobj)
+{
+    WakeUpAllChilds(a,destobj);    
 }
 //=================================

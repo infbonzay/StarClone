@@ -55,9 +55,9 @@ int getlifepercent(int number,int maxnumber)
 //risovati u objecta jizni,shield,magia
 void desenlife(int x,int y,
                int sizex,int statusplayer,
-               int life,int shield,
+               int health,int shield,
                int mage,int timelife,
-               int  maxlife,int maxshield,
+               int  maxhealth,int maxshield,
                int maxmage,int maxtimelife)
 {
     int color;
@@ -68,7 +68,7 @@ void desenlife(int x,int y,
         desenhealth2(x,y,BLUEHPBAR,kubik,maxkubik);
         y+=SIZEYKUBIK-1;
     }
-    switch(getlifepercent(life,maxlife))
+    switch(getlifepercent(health,maxhealth))
     {
 	case 0:
 	case 1:
@@ -83,7 +83,7 @@ void desenlife(int x,int y,
 	    color=GREENHPBAR;
 	    break;
     }
-    createmaxkubik(life,maxlife,sizex);
+    createmaxkubik(health,maxhealth,sizex);
     if (maxshield)
     {
 	desenhealth2(x,y,color,kubik,maxkubik);
@@ -208,7 +208,7 @@ void ifselectedDAMAGEDBUILD(OBJ *a)
     if (a)
     if (IsMechanical(a->SC_Unit) && IsReadyOBJ(a) && IsBuild(a->SC_Unit))
     {
-	switch(DamageFactor(a->life,GetUnitMaxLife(a->SC_Unit)))
+	switch(DamageFactor(a->health,GetUnitMaxHealth(a->SC_Unit)))
 	{
 	    case 0:
 		break;
@@ -265,7 +265,6 @@ OBJ *CreateUnitInUnit(struct OBJ *a,int obj_id,int playsound,int first_xpos,int 
 	    temp = createobjman(first_xpos,first_ypos,obj_id,a->playernr);
     	    addchild(a,temp);
 	    temp->prop |= VARNOTHERE;
-	    temp->modemove = MODESTOP;
 	    temp->finalOBJ = NULL;
 	    temp->prop |= VARINBASE;
 	    temp->modemove = MODERECHARGE;
@@ -274,11 +273,11 @@ OBJ *CreateUnitInUnit(struct OBJ *a,int obj_id,int playsound,int first_xpos,int 
     	    temp->mainimage->HideChildsImgFlag();
 	    temp->mainimage->HideImgFlag();
 	    temp->mainimage->elevationlevel = a->mainimage->elevationlevel-1;
+	    temp->prop |= VARREADY;
 
-	    if (obj_id==SC_NUKEOBJ)
+	    if (obj_id == SC_NUKEOBJ)
 	    {
 		PLAYER[a->playernr].nukes++;
-		temp->prop |= VARREADY;
 		if (playsound)
 		    playinfoadvisorsound(a->playernr,TERRANRACE,ADVNUCLREADY,PLAYADVISOR_TEXTANDSOUND);
 	    }
@@ -691,7 +690,7 @@ void printobjparam(void)
 		shield_pers = (int) a->shield*100/GetUnitMaxShield(SC_Unit);
 	    }
 	    objtype = 0;
-	    life_pers = (unsigned int) a->life*100/GetUnitMaxLife(SC_Unit);
+	    life_pers = (unsigned int) a->health*100/GetUnitMaxHealth(SC_Unit);
 	    drawunitinbar(XWINPOS+30,YWINPOS+0,4,0,NORAMKA,shield_pers,life_pers,grpicons,grpwire3,SC_Unit);
 	}
 	if (IsResourceContainer(SC_Unit)&&(!IsOBJUnderConstruct(a)) && !IfGeyserIsDepleted(a))
@@ -729,10 +728,10 @@ void printobjparam(void)
 	    	    {
 			ss[0]=0;
 		    }
-	    	    itoa((a->life+0xff)>>8,ss1,10);
+	    	    itoa((a->health+0xff)>>8,ss1,10);
     	    	    strcat(ss,ss1);
     	    	    strcat(ss,"/");
-    	    	    itoa((GetUnitMaxLife(a->SC_Unit)+0xff)>>8,ss1,10);
+    	    	    itoa((GetUnitMaxHealth(a->SC_Unit)+0xff)>>8,ss1,10);
     	    	    strcat(ss,ss1);
 		    putrowtext(XWINPOS+22,YWINPOS+64,80,IDFONT8,TEXT_CENTERALIGN,ss,GGREENCOLORFONT,tfontgamp);
 		}
@@ -1127,7 +1126,7 @@ void drawunitsintransport(int XWINPOS,int YWINPOS,struct OBJ *a)
 		    objtype = 1;
 	    else
 		objtype = 3;
-	life_pers = (int) (a1->life*100/GetUnitMaxLife(a1->SC_Unit));
+	life_pers = (int) (a1->health*100/GetUnitMaxHealth(a1->SC_Unit));
 	drawunitinbar(xpos+addx,ypos+addy-1,weightobj,objtype,WITHRAMKA,
 		      shield_pers,life_pers,
 		      grpicons,grpwire2,a1->SC_Unit);
@@ -1219,7 +1218,7 @@ void drawallunitsinbar(int XWINPOS,int YWINPOS,struct OBJ *a[],int count)
 			objtype = 1;
 		else
 		    objtype = 3;
-	    life_pers = (int) (a1->life*100/GetUnitMaxLife(a1->SC_Unit));
+	    life_pers = (int) (a1->health*100/GetUnitMaxHealth(a1->SC_Unit));
 	    if (mbuttonpress&&mousehotpos-MOUSEONSTATUNIT==i)
 	    {
 		addx=2;

@@ -361,13 +361,13 @@ unsigned char GetUnitElevationLevel(int SC_Unit)
 int GetUnitMaxHitPoints(int SC_Unit)
 {
     int hp;
-    hp = GetUnitMaxLife(SC_Unit);
+    hp = GetUnitMaxHealth(SC_Unit);
     if (IsShieldEnable(SC_Unit))
 	hp += GetUnitMaxShield(SC_Unit);
     return(hp);
 }
 //=======================================
-unsigned int GetUnitMaxLife(int SC_Unit)
+unsigned int GetUnitMaxHealth(int SC_Unit)
 {
     if (map.unit_settings.use_defaults[SC_Unit])
     {
@@ -379,21 +379,21 @@ unsigned int GetUnitMaxLife(int SC_Unit)
     }
 }
 //=======================================
-void SetUnitLife(OBJ *a,int life)
+void SetUnitHealth(OBJ *a,int health)
 {
-    a->life=life;
+    a->health=health;
 }
 //=======================================
-void SetUnitPercentLife(OBJ *a,int perslife)
+void SetUnitPercentHealth(OBJ *a,int pershealth)
 {
-    SetUnitLife(a,GetUnitMaxLife(a->SC_Unit)*perslife/100);
+    SetUnitHealth(a,GetUnitMaxHealth(a->SC_Unit)*pershealth/100);
 }
 //=======================================
-void AddUnitLife(OBJ *a,int addlife)
+void AddUnitHealth(OBJ *a,int addhealth)
 {
-    a->life += addlife;
-    if (a->life > GetUnitMaxLife(a->SC_Unit))
-	a->life = GetUnitMaxLife(a->SC_Unit);
+    a->health += addhealth;
+    if (a->health > GetUnitMaxHealth(a->SC_Unit))
+	a->health = GetUnitMaxHealth(a->SC_Unit);
 }
 //=======================================
 unsigned int GetUnitMaxShield(int SC_Unit)
@@ -534,13 +534,13 @@ int LowLevelDamage(OBJ *atacker,OBJ *a,int weapon_id,int typedamage,int totaldam
 	    break;
     }
     totaldamage=remaindamage;
-    remaindamage=totaldamage-(a->life-a->lifedamage+(armor<<8));
+    remaindamage=totaldamage-(a->health-a->lifedamage+(armor<<8));
     if (remaindamage>0)
     {
 	if (weapon_id==WEAPONID_PLAGUE)
-	    a->lifedamage+=(a->life-a->lifedamage)-((armor+1)<<8);
+	    a->lifedamage+=(a->health-a->lifedamage)-((armor+1)<<8);
 	else
-	    a->lifedamage+=a->life-a->lifedamage;
+	    a->lifedamage+=a->health-a->lifedamage;
     }
     else
     {

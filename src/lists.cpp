@@ -116,7 +116,7 @@ int isrechargebleobj(struct OBJ *a)
 int ishealingobj(struct OBJ *a)
 {
     if (IsOrganic(a->SC_Unit)&&!(a->prop&VARNOTHERE)&&!IsOBJUnderConstruct(a)&&
-	    GetMageAtr(&a->atrobj,ATRSTASIS)==0&&a->life<GetUnitMaxLife(a->SC_Unit))
+	    GetMageAtr(&a->atrobj,ATRSTASIS)==0 && a->health<GetUnitMaxHealth(a->SC_Unit))
 	if (!IsOnSkyOBJ(a))
 	    return 1;
     return 0;
@@ -124,7 +124,7 @@ int ishealingobj(struct OBJ *a)
 //==========================================
 int isobjtobeinfest(struct OBJ *a)
 {
-    if (a->SC_Unit==SC_COMMCENTEROBJ && (a->life<GetUnitMaxLife(a->SC_Unit)/2) && !IsOBJUnderConstruct(a))
+    if (a->SC_Unit==SC_COMMCENTEROBJ && (a->health < GetUnitMaxHealth(a->SC_Unit)/2) && !IsOBJUnderConstruct(a))
 	    return 1;
     return 0;
 }
@@ -157,7 +157,7 @@ struct OBJ *SearchUnitFunc(int playernr,int (*funccheckunit)(int SC_Unit),int ne
 }
 //==========================================
 //==========================================
-struct OBJ *SearchUnit(int playernr,int SC_Unit,int shieldp,int lifep,int energyp)
+struct OBJ *SearchUnit(int playernr,int SC_Unit,int shieldp,int healthp,int energyp)
 {
     int i,allstat;
     OBJ *a;
@@ -171,7 +171,7 @@ struct OBJ *SearchUnit(int playernr,int SC_Unit,int shieldp,int lifep,int energy
 		allstat = player_aliance(a->playernr,playernr);
 		if (allstat == MYOBJ || allstat == ALLIANCEOBJ)
 		{
-		    if (a->shield > shieldp && a->life > lifep && a->mana > energyp)
+		    if (a->shield > shieldp && a->health > healthp && a->mana > energyp)
 			return(a);
 		}
 	    }
@@ -222,7 +222,7 @@ struct OBJ *SearchOBJforOBJ(struct OBJ *a,int modemage)
 		case MODEREPAIR:
 		    if (IsBuild(destobj->SC_Unit) && GetUnitRace(destobj->SC_Unit)==TERRANRACE && IsReadyOBJ(destobj))
 		    {
-			if (destobj->life != GetUnitMaxLife(destobj->SC_Unit))
+			if (destobj->health != GetUnitMaxHealth(destobj->SC_Unit))
 			    if (GetDistanceBetweenUnits256(a,destobj) < (48<<8))
 			    {
 				findobj=1;
@@ -459,6 +459,11 @@ int IsCloakable(int SC_Unit)
 int IsOrganic(int SC_Unit)
 {
     return((alldattbl.units_dat->SpecialAbilityFlags[SC_Unit]&SPECIAL_ORGANICUNIT)!=0);
+}
+//=================================
+int IsBattleReactions(int SC_Unit)
+{
+    return((alldattbl.units_dat->SpecialAbilityFlags[SC_Unit]&SPECIAL_BATTLEREACTIONS)!=0);
 }
 //=================================
 int IsGroundUnit(int SC_Unit)

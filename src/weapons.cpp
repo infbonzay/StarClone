@@ -558,7 +558,7 @@ void WeaponDoDamage(OBJ *atacker,OBJ *destobj,int x256,int y256,unsigned char SC
 	    break;
 	case WEFFECT_BROODLINGS:
 	    //if queen is have hitpoints
-	    if (atacker && atacker->life && destobj)
+	    if (atacker && atacker->health && destobj)
 	    {
 		if (destobj->modemove == MODEDIE)
 		    return;
@@ -639,7 +639,7 @@ void WeaponDoDamage(OBJ *atacker,OBJ *destobj,int x256,int y256,unsigned char SC
     		    if (!WeaponCanApplyOnUnit(a,playernr,weapon_id))
 			continue;
 		    if (GetUnitMaxHitPoints(a->SC_Unit)*2/3 > realdamage)		//damage or 2/3 of unit's life+shield, depend who bigger
-			realdamage = GetUnitMaxLife(a->SC_Unit)*2/3;
+			realdamage = GetUnitMaxHealth(a->SC_Unit)*2/3;
 		    LowLevelDamage( atacker,a,weapon_id,
 				    alldattbl.weapons_dat->WeaponType[weapon_id],
 				    realdamage,0,0);

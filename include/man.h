@@ -116,6 +116,10 @@ union SOMEINFO
     {
 	OBJ 		*obj;
     }geyserdest;
+    struct
+    {
+	unsigned char	refreshmyparent;
+    }interceptor;
 };
 //=======================================
 struct OBJ
@@ -169,7 +173,7 @@ struct OBJ
 
 	SOMEINFO 	data;
 
-        int  		templife,life;
+        int  		temphealth,health;
         int		timeleft,dmatrix;
         int 		shield,tempshield;
 
@@ -214,7 +218,6 @@ struct OBJ
 	unsigned char   shieldrechargeenabled;	//if 1 the recharge shield appear
 
 	unsigned short	whatbuildconstr;
-	signed short	timeflybeforerecharge;	//time left before need to recharge on base
 	unsigned char	curentatacknr;		//curent atack number ,if ==0 and maxbullets!=0 need recharge on base
 
 	unsigned char	obj_see;			//8-bit for each players
@@ -280,7 +283,7 @@ struct OBJstruct
 	unsigned short 	maxtimeleft;
 	
 	unsigned short	timerechargeonbase;		//if select4,bit2 is set
-	signed	 short	timeflybeforerecharge;		//time left before need to recharge on base
+//	signed	 short	timeflybeforerecharge;		//time left before need to recharge on base
 //	unsigned char	race;
 
 	unsigned char	UNITprop; 
