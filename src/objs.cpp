@@ -2604,10 +2604,11 @@ bugguyexplode:
 	    break;
 	case MODEMOVEFORWARD:
 	    a->modemove = mode;    
-	    a->mainimage->side += myrand(-32,32);
+	    a->mainimage->side += myrand(-64,64);
 //	    UnitNeededDeltaDirection256(unsigned char deltadirection)
 	    deltax = (inertion256[a->mainimage->side][0]*INTERCEPTORDESTMOVEAFTERATACK)>>16;
 	    deltay = (inertion256[a->mainimage->side][1]*INTERCEPTORDESTMOVEAFTERATACK)>>16;
+//	    initmoveaction(a,NULL,mode,0,0,GetOBJx(a)+deltax,GetOBJy(a)+deltay);
 	    initmoveaction(a,NULL,mode,0,0,GetOBJx(a)+deltax,GetOBJy(a)+deltay);
 	    a->prop &= ~VARWAITDISTANCE;
 	    AddModeMove(a,destobj,MODEATACK,0,0,NOSHOWERROR);

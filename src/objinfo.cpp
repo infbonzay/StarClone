@@ -37,12 +37,14 @@ int INBAY_GetMaxUnitsToBeCreated(OBJ *a)
     int upgradenr;
     switch(a->SC_Unit)
     {
-        case SC_CARRIEROBJ:
         case SC_HERO_GANTRITHOROBJ:
+	    return(MINCARRIERCAPACITY*(1+1));
+        case SC_CARRIEROBJ:
 	    upgradenr = GetUpgradeTree(&map,a->playernr,TECHDATA_DAT_CARRIERCAPACITYTECH);
 	    return(MINCARRIERCAPACITY*(upgradenr+1));
-        case SC_REAVEROBJ:
         case SC_HERO_WARBRINGEROBJ:
+	    return(MINREAVERCAPACITY*(1+1));
+        case SC_REAVEROBJ:
 	    upgradenr = GetUpgradeTree(&map,a->playernr,TECHDATA_DAT_REAVERCAPACITYTECH);
 	    return(MINREAVERCAPACITY*(upgradenr+1));
         case SC_NUCLEARSILOOBJ:
