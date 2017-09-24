@@ -14,10 +14,9 @@
 #include "maps.h"
 #include "unitaction.h"
 
-#define NONDETECTEDACTION	1
-#define CREATELARVAEACTION	2
-#define WAITSOMETIMEACTION	3
-#define SELFCREATEACTION	4
+#define CREATELARVAEACTION	1
+#define WAITSOMETIMEACTION	2
+#define SELFCREATEACTION	3
 
 #define SPECIALMAPID			(void *)1
 #define SPECIALMAPUNITSID		(void *)2

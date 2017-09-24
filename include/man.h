@@ -203,6 +203,7 @@ struct OBJ
 	SFXPLAY		sfxplay;
 
         unsigned	char	visibleby;
+	unsigned	char	childnr;
 	CONSTRUCT	*construct;
 	SELFCONSTRUCT	selfconstruct;
         CHILDS		*childs;

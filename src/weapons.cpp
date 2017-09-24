@@ -286,10 +286,10 @@ void WeaponPlaySFX(OBJ *a,int sfxdata_id,int distance,int x,int y)
     Play_sfxdata_id(a,sfxdata_id,-1,distance);
 }
 //=======================================
-int CalcMaxRangeCoordsXY(int deltax,int deltay,int *destx,int *desty,unsigned char weapon_id,unsigned char flingy_id)
+//int CalcMaxRangeCoordsXY(int deltax,int deltay,int *destx,int *desty,unsigned char weapon_id,unsigned char flingy_id)
+int CalcMaxRangeCoordsXY(int deltax,int deltay,int *destx,int *desty,int maxdist)
 {
-    int deltaz,maxdist;
-    maxdist = alldattbl.weapons_dat->MaximumRange[weapon_id];// + alldattbl.flingy_dat->Acceleration[flingy_id]/256;
+    int deltaz;
     deltaz = (int)hypot(deltax>>8,deltay>>8);
     if (!deltaz)
     {
@@ -309,7 +309,7 @@ void CreateWeaponID(OBJ *a,OBJ *destobj,int xdest256,int ydest256,unsigned char 
     unsigned char flingy_id;
     unsigned short images_id,sprites_id;
     signed char xlo,ylo;
-    int xdest256_2,ydest256_2,maxrangex,maxrangey,elevationdelta;
+    int xdest256_2,ydest256_2,maxrangex,maxrangey,elevationdelta,maxdist;
     a->usedweapon_id = weapon_id;
     if (createflingy)
     {
@@ -381,7 +381,8 @@ void CreateWeaponID(OBJ *a,OBJ *destobj,int xdest256,int ydest256,unsigned char 
 		flingy = Create2FlingyID(a,destobj,GetOBJx256(a),GetOBJy256(a),xdest256,ydest256,xdest256_2,ydest256_2,weapon_id,flingy_id,elevationdelta);
 		break;
     	    case WB_GOTO_MAX_RANGE:				//9
-		CalcMaxRangeCoordsXY(xdest256 - GetOBJx256(a),ydest256 - GetOBJy256(a),&maxrangex,&maxrangey,weapon_id,flingy_id);
+		maxdist = alldattbl.weapons_dat->MaximumRange[weapon_id];// + alldattbl.flingy_dat->Acceleration[flingy_id]/256;
+		CalcMaxRangeCoordsXY(xdest256 - GetOBJx256(a),ydest256 - GetOBJy256(a),&maxrangex,&maxrangey,maxdist);
 	    
 		xdest256 = GetOBJx256(a) + maxrangex;// + 32*256;
 		ydest256 = GetOBJy256(a) + maxrangey;// + 32*256;

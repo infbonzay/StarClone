@@ -111,9 +111,9 @@ void ChangeObjXY(struct OBJ *a,int x,int y);
 void ChangeObjXYDelta(struct OBJ *a,int xdelta,int ydelta);
 void DeleteOldObjPointers(struct OBJ *a);
 int  QueueDelObj(struct OBJ *obj);
-void WakeUpChild(OBJ *myparent,OBJ *a,OBJ *destobj,int deltax,int deltay);
-void WakeUpChild(OBJ *a,OBJ *destobj,int deltax,int deltay);
-void WakeUpAllChilds(OBJ *a,OBJ *destobj);
+void WakeUpOneInterceptor(OBJ *myparent,OBJ *a,OBJ *destobj,int childnr);
+void WakeUpOneInterceptor(OBJ *a,OBJ *destobj);
+void WakeUpInterceptors(OBJ *a,OBJ *destobj);
 
 void sortselectedunits(struct OBJ *a[],int maxcount);
 void RemoveFromDestination(OBJ *a);
@@ -182,7 +182,7 @@ int  IfHaveNextModeMove(OBJ *a);
 
 void InsertModeMove(OBJ *a,OBJ *destobj,int mode,int x,int y,int showmesflag);
 void AddModeMove(OBJ *a,OBJ *destobj,int mode,int x,int y,int showmesflag);
-void DelAllModeMoves(struct OBJ *a);
+void DelAllModeMoves(struct OBJ *a,int dealloc);
 void DelOBJFromModeList(struct OBJ *a,struct OBJ *searchobj);
 int  GetOBJNrInTransport(OBJ *c,OBJ *a);
 void FreeOBJFromTransport(OBJ *c,OBJ *a,int objnr);

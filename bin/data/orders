@@ -1048,7 +1048,8 @@ MINDISTANCE = 15
 RIGHTWAY = YES
 
 [NEWMAGE] = 400 RechargeOnBase 309 -1
-RIGHTWAY = YES
+
+[NEWMAGE] = 401 InterceptorMoveForward 330 -1
 
 [NEWMAGE] = 420 Ground_Weapons 305 -1
 RIGHTWAY = YES

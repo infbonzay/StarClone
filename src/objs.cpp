@@ -106,7 +106,7 @@ void destroyobj(struct OBJ *a)
 	if (MaxObjects%MAPREGENERATION)
 	    MinObjRegen++;
 
-	DelAllModeMoves(a);
+	DelAllModeMoves(a,1);
 	wfree(a);
 	createobjregen();
     }
@@ -1535,7 +1535,7 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
 {
     OBJ *newobj;
     unsigned char flingy_id,SC_res_type,inv,useweapon_id;
-    int needmana,type_id,obj_id,ret,slotnr,deltaz,constrerror,resval;
+    int needmana,type_id,obj_id,ret,slotnr,deltaz,constrerror,resval,deltax,deltay;
     int i,j,tempvar,errmes,state,openstate;
     int (*comparefunc)(int *,int );					//for doodad
 //    if (a == destobj)
@@ -1955,8 +1955,9 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
 	    break;
 	case MODEHOLDPOS:
 	    a->finalOBJ=NULL;
-	    if (a->movelist)
-		a->movelist->EmptyElemFifo();
+	    DelAllModeMoves(a,0);
+//	    if (a->movelist)
+//		a->movelist->EmptyElemFifo();
 	    if (!(a->prop & VARHOLDPOSBIT))
 	    {
 		a->prop |= VARHOLDPOSBIT;
@@ -1979,8 +1980,9 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
 	    {
 		moveobj(a->subunit,destobj,mode,x,y,NOSHOWERROR,0);
 	    }
-	    if (a->movelist)
-		a->movelist->EmptyElemFifo();
+	    DelAllModeMoves(a,0);
+//	    if (a->movelist)
+//		a->movelist->EmptyElemFifo();
 	    if (a->modemove != mode)
 	    {
 		a->prop &= ~(VARMOVEACT | VARMOVEOBJACT | VARACCELERATIONBIT | VARPATROLFLAG);
@@ -2118,8 +2120,9 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
             doselectedOBJbit(a,NUMBGAMER,0);
 	    deselectobj(a);
             a->blinkvalue = 0;
-	    if (a->movelist)
-		a->movelist->EmptyElemFifo();
+	    DelAllModeMoves(a,0);
+//	    if (a->movelist)
+//		a->movelist->EmptyElemFifo();
 	    a->modemove = mode;
 	    if (GetMageAtr(&a->atrobj,ATRHALLUCINATION)!=0)
 	    {
@@ -2469,6 +2472,10 @@ bugguyexplode:
 			a->castmagenr = MODEMINEEXPLODE;
     			SpecialAtackAction(a,ISCRIPTNR_SPECIALSTATE1);
 			break;
+//		    case SC_INTERCEPTOROBJ:
+//			AddModeMove(a,destobj,MODEMOVEFORWARD,0,0,NOSHOWERROR);
+//			AtackAction(a,destobj,0);
+//			break;
 		    default:
 			AtackAction(a,destobj,0);
 			break;
@@ -2518,6 +2525,14 @@ bugguyexplode:
 	    else
 	    {
 		//atack to ground, check if object can move
+		if (a->SC_Unit == SC_INTERCEPTOROBJ)
+		{
+		    //???? search new obj for atack
+		    //or return tobase
+		    DelAllModeMoves(a,0);
+		    moveobj(a,a->myparent,MODEGOTORECHARGE,0,0,NOSHOWERROR,0);
+		    AddModeMove(a,NULL,MODERECHARGE,0,0,0);
+		}
 		if (accesstomove(a,loadobj(a->SC_Unit),MODEMOVE,a->playernr))
 		{
 		    a->prop |= VARMOVEINATACKMODE;
@@ -2586,6 +2601,13 @@ bugguyexplode:
 	case MODESUICIDEATACK:
 	    initmoveaction(a,NULL,mode,0,0,x,y);
 	    AddModeMove(a,NULL,MODEATACKREADY,x,y,NOSHOWERROR);
+	    break;
+	case MODEMOVEFORWARD:
+	    deltax = (inertion256[a->mainimage->side][0]*INTERCEPTORDESTMOVEAFTERATACK)>>16;
+	    deltay = (inertion256[a->mainimage->side][1]*INTERCEPTORDESTMOVEAFTERATACK)>>16;
+	    initmoveaction(a,NULL,mode,0,0,GetOBJx(a)+deltax,GetOBJy(a)+deltay);
+	    AddModeMove(a,destobj,MODEATACK,0,0,NOSHOWERROR);
+	    AddModeMove(a,destobj,MODEMOVEFORWARD,0,0,NOSHOWERROR);
 	    break;
 	default:
 	    DEBUGMESSCR("mode=%d not developed\n",mode);
@@ -2764,8 +2786,9 @@ int makemove(struct OBJ *a,struct OBJ *destobj,int locx,int locy,int mode,int pl
     	    return(0);
 	}
     }
-    if (a->movelist)
-	a->movelist->EmptyElemFifo();
+    DelAllModeMoves(a,0);
+//    if (a->movelist)
+//	a->movelist->EmptyElemFifo();
     if (mode != MODEHOLDPOS)
 	a->prop &= ~VARHOLDPOSBIT;
     moveobj(a,destobj,mode,locx,locy,showerrorflag,0);
@@ -3463,35 +3486,32 @@ void dieobj(struct OBJ *a)
 
 }
 //=================================
-void WakeUpChild(OBJ *myparent,OBJ *a,OBJ *destobj,int deltax,int deltay)
+void WakeUpOneInterceptor(OBJ *myparent,OBJ *a,OBJ *destobj,int childnr)
 {
-    if (a)
+    if (a && destobj)
     {
-	a->prop &= ~VARNOTHERE;
+	a->prop &= ~(VARNOTHERE|VARINBASE);
 	SetModeMove(a,MODESTOP);
 	a->finalOBJ = NULL;
-	a->prop &= ~VARINBASE;
 	a->data.interceptor.refreshmyparent = INTERCEPTORREFRESHMYPARENT;
+	a->mainimage->AllUnitDirection256(myparent->mainimage->side+childnr*32);
 
 	a->mainimage->EnableExecScript();
         a->mainimage->ShowChildsImgFlag();
         a->mainimage->ShowImgFlag();
         ChangeTypeOfProp(a,PROPNORMAL1);
-        SetOBJxy256(a,GetOBJx256(myparent)+deltax,GetOBJy256(myparent)+deltay);
-
-	if (destobj)
-	{
-	    moveobj(a,destobj,MODEATACK,GetOBJx(destobj),GetOBJy(destobj),NOSHOWERROR,0);
-	}
+        SetOBJxy256(a,GetOBJx256(myparent),GetOBJy256(myparent));
+	moveobj(a,destobj,MODEMOVEFORWARD,0,0,NOSHOWERROR,0);
     }
 }
 //=================================
-void WakeUpChild(OBJ *a,OBJ *destobj,int deltax,int deltay)
+void WakeUpOneInterceptor(OBJ *a,OBJ *destobj)
 {
-    WakeUpChild(a->myparent,a,destobj,deltax,deltay);
+    //need to know mychild nr???
+    WakeUpOneInterceptor(a->myparent,a,destobj,a->childnr);
 }
 //=================================
-void WakeUpAllChilds(OBJ *a,OBJ *destobj)
+void WakeUpInterceptors(OBJ *a,OBJ *destobj)
 {
     //set childs to be unlocked for fly,atack,etc.
     if (a->childs)
@@ -3499,7 +3519,7 @@ void WakeUpAllChilds(OBJ *a,OBJ *destobj)
 	    if (a->childs->parentof[i])
 		if (a->childs->parentof[i]->prop & VARINBASE)
 		    if (a->childs->parentof[i]->playernr == a->playernr)
-			WakeUpChild(a,a->childs->parentof[i],destobj,0,0);
+			WakeUpOneInterceptor(a,a->childs->parentof[i],destobj,i);
 //		    else
 //			dieobj_silently(a->childs->parentof[i]);
 }
@@ -3696,8 +3716,9 @@ void RemoveFromDestination(OBJ *a)
 		if (a1->finalOBJ == a)
 		{
 		    a1->finalOBJ = NULL;
-		    if (a->movelist)
-			a->movelist->EmptyElemFifo();
+		    DelAllModeMoves(a,0);
+//		    if (a->movelist)
+//			a->movelist->EmptyElemFifo();
 		    if (IsNonNeutralFlag(a->SC_Unit))	//unit is extractor or refinery or assimilator
 		    {
 			//if gas deposit is destroyed unit stopped
@@ -3735,8 +3756,9 @@ void FinishMainUnitConstruct(OBJ *a)
     if (a->constrobj->SC_Unit == SC_SCVOBJ)
     {
 	a->constrobj->prop &= ~VARMOVETHROWUNITS;
-	if (a->constrobj->movelist)
-	    a->constrobj->movelist->EmptyElemFifo();
+	DelAllModeMoves(a->constrobj,0);
+//	if (a->constrobj->movelist)
+//	    a->constrobj->movelist->EmptyElemFifo();
 	ApplyNextModeMove(a->constrobj);
 	ChangeTypeOfProp(a->constrobj,PROPNORMAL1);
 /*	if (!ApplyNextModeMove(a->constrobj))
@@ -4319,8 +4341,9 @@ void trapprepareforatack(OBJ *a,OBJ *a2)
 	}
 	else
 	{
-	    if (a->movelist)
-	        a->movelist->EmptyElemFifo();
+	    DelAllModeMoves(a,0);
+//	    if (a->movelist)
+//	        a->movelist->EmptyElemFifo();
 	    moveobj(a,a2,MODEATACK,0,0,NOSHOWERROR,0);
 	}
     }
@@ -5206,8 +5229,9 @@ int IfHaveDistanceForMove(OBJ *a,MAIN_IMG *img,OBJ *destobj,int mindistance)
 void SetModeMove(OBJ *a,int mode)
 {
     a->modemove = mode;
-    if (a->movelist)
-	a->movelist->EmptyElemFifo();
+    DelAllModeMoves(a,0);
+//    if (a->movelist)
+//	a->movelist->EmptyElemFifo();
 }
 //==================================
 void InsertModeMove(OBJ *a,OBJ *destobj,int mode,int x,int y,int showmesflag)
@@ -5318,13 +5342,16 @@ void DelOBJFromModeList(struct OBJ *a,struct OBJ *searchobj)
     }
 }
 //==============================================
-void DelAllModeMoves(struct OBJ *a)
+void DelAllModeMoves(struct OBJ *a,int dealloc)
 {
     if (a->movelist)
     {
 	a->movelist->EmptyElemFifo();
-	delete a->movelist;
-	a->movelist = NULL;
+	if (dealloc)
+	{
+	    delete a->movelist;
+	    a->movelist = NULL;
+	}
     }
 }
 //==============================================
@@ -5355,6 +5382,6 @@ int LaunchScarab(OBJ *a,OBJ *destobj)
 //=================================
 void LaunchInterceptors(OBJ *a,OBJ *destobj)
 {
-    WakeUpAllChilds(a,destobj);    
+    WakeUpInterceptors(a,destobj);    
 }
 //=================================

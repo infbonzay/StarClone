@@ -54,22 +54,6 @@ void QueueAction(void *IDQueueAction,int DestroyQueue)
 	actdestobj=(OBJ*)act->destobj;
 	switch(act->actiontype)
 	{
-	case NONDETECTEDACTION:
-	    //now need to eliminate obj from wait
-	    temp = actobj->myparent;
-	    actobj->prop |= VARINBASE;
-	    if (temp)
-	    {
-		if ((temp->prop&VARNOTHERE)||(temp->prop&VARNOTWORK) || GetMageAtr(&temp->atrobj,ATRSTASIS)>0)
-			;
-		else
-		    WakeUpChild(actobj,temp->finalOBJ,0,0);
-	    }
-	    b = loadobj(actobj->SC_Unit);
-	    actobj->data.interceptor.refreshmyparent = INTERCEPTORREFRESHMYPARENT;
-	    actobj->shield = GetUnitMaxShield(actobj->SC_Unit);
-	    //????
-	    break;
 	case CREATELARVAEACTION:
 	    if (actobj)
 	    {
@@ -113,7 +97,6 @@ void MakeQueueAction(int actiontype,void *a,void *destobj,
     act->param2 = param2;
 /*    switch(actiontype)
     {
-	case NONDETECTEDACTION:
 	case MAGETIMEDACTION:
 	case SELFCREATEACTIONION:
 	case TIMETOWAITNUKE:

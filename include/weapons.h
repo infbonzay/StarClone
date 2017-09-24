@@ -47,7 +47,7 @@ int  CreateWeapon(OBJ *atacker,OBJ *destobj);
 int  IfCanCreateWeapon(OBJ *atacker,OBJ *destobj,int *errmes,unsigned char *weapon_id,int flags);
 int  IsSplashDamage(unsigned char weapon_id);
 void WeaponPlaySFX(OBJ *a,int sfxdata_id,int distance,int x,int y);
-int  CalcMaxRangeCoordsXY(int deltax,int deltay,int *destx,int *desty,unsigned char weapon_id,unsigned char flingy_id);
+int  CalcMaxRangeCoordsXY(int deltax,int deltay,int *destx,int *desty,int maxdist);
 void GetLaunchOffsets(int direction,int maxdirection,int weapon_id,int *xoffs,int *yoffs);
 void CreateWeaponID(OBJ *a,OBJ *destobj,int xdest,int ydest,unsigned char weapon_id,int createflingy);
 void GetOBJXYSideOffsets(OBJ *a,MAIN_IMG *img,int overlaytype,signed char *x,signed char *y);

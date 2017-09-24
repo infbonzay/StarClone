@@ -584,11 +584,12 @@ int addchild(struct OBJ *a,struct OBJ *child)	//add child on parentof[] & pointe
 	a->childs = (struct CHILDS *) wmalloc(sizeof(CHILDS));
 	memset(a->childs,0,sizeof(CHILDS));
     }
-    int i=getfirstchildemptyslot(a);
-    if (i==-1)
+    int i = getfirstchildemptyslot(a);
+    if (i == -1)
         return -1;
     a->childs->parentof[i]=child;
     child->myparent = a;
+    child->childnr = i;
     a->childs->nrofchildunits++;
     return 0;
 }

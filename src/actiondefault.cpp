@@ -49,7 +49,7 @@ int CarrierAction(struct OBJ *a,MAIN_IMG *img)
 //    if (a->finalOBJ)
     if (0)
     {
-	WakeUpAllChilds(a,NULL);
+	WakeUpInterceptors(a,NULL);
     }
     return 0;
 }
@@ -62,7 +62,7 @@ int InterceptorsAction(struct OBJ *a,MAIN_IMG *img)
 	{
 	    if (a->myparent->finalOBJ)
 	    {
-		WakeUpChild(a,a->myparent->finalOBJ,0,0);
+		WakeUpOneInterceptor(a,a->myparent->finalOBJ);
 		return(1);
 	    }
 	}
@@ -83,6 +83,7 @@ int InterceptorsAction(struct OBJ *a,MAIN_IMG *img)
 	}
 	if (a->shield <= INTERCEPTORSHIELDRETURN)
 	{
+	    DelAllModeMoves(a,0);
 	    moveobj(a,a->myparent,MODEGOTORECHARGE,0,0,NOSHOWERROR,0);
 	    AddModeMove(a,NULL,MODERECHARGE,0,0,0);
 	    return(1);
