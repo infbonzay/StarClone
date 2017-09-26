@@ -2610,7 +2610,7 @@ bugguyexplode:
 	    deltay = (inertion256[a->mainimage->side][1]*INTERCEPTORDESTMOVEAFTERATACK)>>16;
 //	    initmoveaction(a,NULL,mode,0,0,GetOBJx(a)+deltax,GetOBJy(a)+deltay);
 	    initmoveaction(a,NULL,mode,0,0,GetOBJx(a)+deltax,GetOBJy(a)+deltay);
-	    a->prop &= ~VARWAITDISTANCE;
+//	    a->prop &= ~VARWAITDISTANCE;
 	    AddModeMove(a,destobj,MODEATACK,0,0,NOSHOWERROR);
 	    break;
 	default:
@@ -4971,8 +4971,8 @@ int PathFinding_MovePortionType2(OBJ *a,MAIN_IMG *img,unsigned char flingy_id,in
 //		deltaz/256,a->modemoveminusdistance/256,a->haltdistance/256,(deltaz-a->modemoveminusdistance)/256);
 	    InitStopAfterMove(a);
 	    a->prop |= VARWAITDISTANCE;
-	    if (a->modemove == MODEATACK)
-	        ApplyNextModeMove(a);
+//	    if (a->modemove == MODEATACK)
+//	        ApplyNextModeMove(a);
 	}
 	if (deltaz <= 2*256)		//prevent div 0
 	    return(1);
@@ -4991,7 +4991,7 @@ movelikeatoterrain2:
 	    if (deltaz - a->modemoveminusdistance <= a->haltdistance)
 	    {
 		InitStopAfterMove(a);
-		if (a->finalOBJ)
+//		if (a->finalOBJ)
 		    ApplyNextModeMove(a);	//if have goal do not wait completly stop
 	    }
 	}
@@ -5191,6 +5191,11 @@ void AllOBJMoving(void)
 			}
 			continue;
 		    }
+		    else
+			if (a->prop & VARWAITDISTANCE)
+			{
+			    ApplyNextModeMove(a);
+			}
 		}
 		PathFinding_MovePortionType2(a,img,flingy_id,GetSpeed(a,a->currentspeed));
 //

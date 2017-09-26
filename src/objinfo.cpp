@@ -169,29 +169,32 @@ int GetDistanceTo(OBJ *a,int x,int y)
     return(deltaz);
 }
 //====================================
-int GetRangeWeaponInPixels(OBJ *atacker,int weapon_id,int playernr)
+int GetRangeWeaponInPixels(OBJ *a,int weapon_id,int playernr)
 {
     int maxdist = alldattbl.weapons_dat->MaximumRange[weapon_id];
     if (weapons[weapon_id].rangeupgnr != 255)
-	maxdist += GetUpgradeTree(&map,playernr,weapons[weapon_id].rangeupgnr)*weapons[weapon_id].rangeupgaddfactor;
-    if (atacker->prop & VARINTRANSPORT)
+	if (IsHeroUnit(a->SC_Unit))
+	    maxdist += weapons[weapon_id].rangeupgaddfactor;
+	else
+	    maxdist += GetUpgradeTree(&map,playernr,weapons[weapon_id].rangeupgnr)*weapons[weapon_id].rangeupgaddfactor;
+    if (a->prop & VARINTRANSPORT)
 	maxdist += 48;
     return(maxdist);
 }
 //====================================
-int CheckWeaponRange(OBJ *atacker,OBJ *destobj,int weapon_id,int playernr)
+int CheckWeaponRange(OBJ *a,OBJ *destobj,int weapon_id,int playernr)
 {
     int deltaz,maxrange,minrange;
-//    OBJ *base = atacker;
+//    OBJ *base = a;
     OBJ *base;
-    if (GetSubUnitType(atacker) == SUBUNITTURRET)
-	base = atacker->subunit;
+    if (GetSubUnitType(a) == SUBUNITTURRET)
+	base = a->subunit;
     else
-	base = atacker;
+	base = a;
 
     deltaz = GetDistanceBetweenUnits256(base,destobj)>>8;
     minrange = alldattbl.weapons_dat->MinimumRange[weapon_id];
-    maxrange = GetRangeWeaponInPixels(base,weapon_id,atacker->playernr);
+    maxrange = GetRangeWeaponInPixels(base,weapon_id,a->playernr);
 //    printf("deltaz=%d maxrange=%d\n",deltaz,maxrange);
     if (deltaz <= maxrange)
 	if (deltaz >= minrange)

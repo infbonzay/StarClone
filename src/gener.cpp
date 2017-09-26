@@ -999,8 +999,6 @@ int gogame(struct mapinfo *info)
 			    
 			    weaponflingy.MoveAllWeaponFlingy();
 
-//			    AdditionalUnitsProceed();
-
 			    AllImages_ExecuteIScript();
 
 			    AllOBJMoving();
