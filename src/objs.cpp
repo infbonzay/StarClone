@@ -1962,7 +1962,8 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
 	    {
 		a->prop |= VARHOLDPOSBIT;
 		//engines off
-		a->prop &= ~(VARMOVEACT | VARMOVEOBJACT | VARACCELERATIONBIT | VARPATROLFLAG);
+//		a->prop &= ~(VARMOVEACT | VARMOVEOBJACT | VARACCELERATIONBIT | VARPATROLFLAG);
+		a->prop &= ~(VARMOVEOBJACT | VARACCELERATIONBIT | VARPATROLFLAG);
 		if (a->modemove == MODEATACK)
 		{
 		    EndAtackAction(a);
@@ -1985,7 +1986,8 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
 //		a->movelist->EmptyElemFifo();
 	    if (a->modemove != mode)
 	    {
-		a->prop &= ~(VARMOVEACT | VARMOVEOBJACT | VARACCELERATIONBIT | VARPATROLFLAG);
+//		a->prop &= ~(VARMOVEACT | VARMOVEOBJACT | VARACCELERATIONBIT | VARPATROLFLAG);
+		a->prop &= ~(VARMOVEOBJACT | VARACCELERATIONBIT | VARPATROLFLAG);
 		//engines off
 		if (a->modemove == MODEATACK)
 		{
@@ -4776,7 +4778,7 @@ void initmoveaction(OBJ *a,OBJ *destobj,int mode,int startx,int starty,int x,int
 	case FLINGYMOVECONTROL_ISCRIPT:
 	    a->finalx   = x<<8;
 	    a->finaly   = y<<8;
-	    a->prop |= VARMOVEACT;
+//	    a->prop |= VARMOVEACT;
 	    if (destobj)
 	    {
 		a->finalOBJ = destobj;
@@ -4793,7 +4795,7 @@ void initmoveaction(OBJ *a,OBJ *destobj,int mode,int startx,int starty,int x,int
 	case FLINGYMOVECONTROL_FLINGY:
 	case FLINGYMOVECONTROL_WEAPON:
 	    a->prop |= VARACCELERATIONBIT;
-	    a->prop |= VARMOVEACT;
+//	    a->prop |= VARMOVEACT;
 	    if (destobj)
 	    {
 		a->finalOBJ = destobj;
@@ -4821,7 +4823,8 @@ void InitStopAfterMove(OBJ *a)
 {
     //engines off
 //    a->modemove = MODESTOP;
-    a->prop &= ~(VARACCELERATIONBIT | VARMOVEACT);
+//    a->prop &= ~(VARACCELERATIONBIT | VARMOVEACT);
+    a->prop &= ~VARACCELERATIONBIT;
     SetOBJIScriptNr(a,ISCRIPTNR_WALKINGTOIDLE,ISCRIPTNR_EXECUTE);
 }
 //=======================================
@@ -4925,10 +4928,9 @@ int PathFinding_InitType2(OBJ *a,int initx,int inity,int destx,int desty,unsigne
 	if (retcalc)
 	{
 	    a->currentspeed=1;	//need to stop if dest is near
-	    a->prop &= ~VARACCELERATIONBIT;
-	    a->prop &= ~VARMOVEACT;
+//	    a->prop &= ~(VARACCELERATIONBIT | VARMOVEOBJACT | VARMOVEACT);
+	    a->prop &= ~(VARACCELERATIONBIT | VARMOVEOBJACT);
 	    a->finalOBJ = NULL;
-	    a->prop &= ~VARMOVEOBJACT;
 	}
     }
     return(retcalc);
@@ -4992,7 +4994,7 @@ movelikeatoterrain2:
 	    {
 		InitStopAfterMove(a);
 //		if (a->finalOBJ)
-		    ApplyNextModeMove(a);	//if have goal do not wait completly stop
+//		    ApplyNextModeMove(a);	//if have goal do not wait completly stop
 	    }
 	}
 	else
