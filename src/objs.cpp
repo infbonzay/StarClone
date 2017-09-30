@@ -2610,6 +2610,7 @@ bugguyexplode:
 	    deltax = (inertion256[a->mainimage->side][0]*INTERCEPTORDESTMOVEAFTERATACK)>>16;
 	    deltay = (inertion256[a->mainimage->side][1]*INTERCEPTORDESTMOVEAFTERATACK)>>16;
 	    initmoveaction(a,NULL,mode,0,0,GetOBJx(a)+deltax,GetOBJy(a)+deltay);
+	    a->prop &= ~VARWAITDISTANCE;
 	    AddModeMove(a,destobj,MODEATACK,0,0,NOSHOWERROR);
 	    break;
 	default:

@@ -48,7 +48,7 @@ struct SMKPLAY
 class PORTRAIT
 {
 public:
-    unsigned char	SC_Unit;
+    SCUNIT		SC_Unit;
     struct OBJ 		*obj;
     char		whichuse;		//0-no use mixing,1-specialin,2-specialout
     char 		talksmk;

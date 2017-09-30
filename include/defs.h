@@ -36,7 +36,7 @@ typedef unsigned char SCUNIT;
 #define INTERCEPTORSHIELDRETURN			(10*256)
 #define INTERCEPTORLIFELAUNCH			(20*256)
 #define INTERCEPTORREGENHEALTH			128		//0.5 life per frame
-#define INTERCEPTORDESTMOVEAFTERATACK		100
+#define INTERCEPTORDESTMOVEAFTERATACK		200
 //=================================
 
 #define DEPLEATEDGETGAZ		2

@@ -799,8 +799,9 @@ int (*UnitActionDefaults[MAX_UNITS_ELEM])(struct OBJ *a,MAIN_IMG *img)=
 //=================================
 int AdditionalUnitProceed(OBJ *a,MAIN_IMG *img)
 {
-    if (a->atackcooldowntime)
-//	if (a->SC_Unit != SC_INTERCEPTOROBJ)
+    if ((a->prop & (VARNOTWORK | VARPOWEROFF))||GetMageAtr(&a->atrobj,ATRSTASIS)>0)
+	return 0;
+    if (a->atackcooldowntime && !(a->mainimage->flags & SC_IMAGE_FLAG_NEEDROTATIONTODIRECTION))
 	if (--a->atackcooldowntime == 0)
 	{
 	    if (a->modemove == MODEATACK)
@@ -829,6 +830,14 @@ int AdditionalUnitProceed(OBJ *a,MAIN_IMG *img)
 		    }
 		    return 0;
 		}
+		if (a->SC_Unit == SC_INTERCEPTOROBJ)
+		{
+//		    if (!(a->mainimage->flags & SC_IMAGE_FLAG_NEEDROTATIONTODIRECTION))
+			moveobj(a,a->finalOBJ,MODEMOVEFORWARD,0,0,NOSHOWERROR,0);
+//		    else
+//			a->atackcooldowntime = 1;
+		    goto unitactiondefaultend;
+		}
 		switch(AtackCoolDownEnds(a,a->finalOBJ,1,NOSHOWERROR))
 		{
 		    case MOVEOBJ_NOACT:
@@ -849,9 +858,8 @@ int AdditionalUnitProceed(OBJ *a,MAIN_IMG *img)
 		}
 	    }
 	}
-    if ((a->prop & (VARNOTWORK | VARPOWEROFF))||GetMageAtr(&a->atrobj,ATRSTASIS)>0)
-	return 0;
-//    if (a->SC_Unit != SC_INTERCEPTOROBJ)
+//    if ((a->prop & (VARNOTWORK | VARPOWEROFF))||GetMageAtr(&a->atrobj,ATRSTASIS)>0)
+//	return 0;
     if (a->prop & VARWAITDISTANCE)
     {
 	if (NEEDTOMOVE1BIT)
@@ -869,14 +877,15 @@ int AdditionalUnitProceed(OBJ *a,MAIN_IMG *img)
 	    }
 	    else
 	    {
-		a->modemove = MODESTOP;
+//		a->finalOBJ = NULL;
+		SetModeMove(a,MODESTOP);
+//		a->modemove = MODESTOP;
 	    }
 	    a->prop &= ~VARWAITDISTANCE;
 	}
     }
-//    if (IsReadyOBJ(a))		// i gorgot abount lair,hive,greater spire than underconstruction but can do additionaproperties
-	return ((*UnitActionDefaults[a->SC_Unit])(a,img));
-//    return(0);
+unitactiondefaultend:
+    return ((*UnitActionDefaults[a->SC_Unit])(a,img));
 }
 //=================================
 int AtackCoolDownEnds(OBJ *a,OBJ *destobj,int continueatack,int showerrorflag)
