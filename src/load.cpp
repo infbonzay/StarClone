@@ -1005,6 +1005,7 @@ void LoadPatchTbl(void)
     alldattbl.flingy_dat->MoveControl[FLINGYID_GOLIATHTURRET] = FLINGYMOVECONTROL_ISCRIPT;	//goliath turret has flingy move control (why?)
     alldattbl.flingy_dat->TurnRadius[FLINGYID_HALOROCKETS] *= 2;
     alldattbl.units_dat->SpecialAbilityFlags[SC_SCANNERSWEEP] |= SPECIAL_INVINCIBLE;
+    alldattbl.units_dat->SpecialAbilityFlags[SC_BUNKEROBJ] |= SPECIAL_FULLAUTOATTACK;
 }
 //============================================
 void *imagesreftogrpdata[MAX_IMAGES_ELEM];

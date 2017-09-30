@@ -516,7 +516,7 @@ int IsAtackerActiveUnit(OBJ *a)
 {
     if (a->modemove == MODEDIE)
 	return(0);
-    if ((a->prop&(VARINTRANSPORT|VARNOTHERE)) || GetMageAtr(&a->atrobj,ATRSTASIS))
+    if ((a->prop & (VARINTRANSPORT | VARNOTHERE)) || GetMageAtr(&a->atrobj,ATRSTASIS))
 	return(0);
     return(1);
 }
