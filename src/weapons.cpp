@@ -131,14 +131,16 @@ int IfCanCreateWeapon(OBJ *atacker,OBJ *destobj,int *errmes,unsigned char *weapo
 			*errmes=875;
 		    return(CREATEDWEAPONSTATUS_CANTATACKTHISUNIT);
 		}
-	        if (!atacker->ammo)
-	    	    return(CREATEDWEAPONSTATUS_NOTAMMO);
+//	        if (!atacker->ammo)
+//	    	    return(CREATEDWEAPONSTATUS_NOTAMMO);
 	        if ( GetDistanceBetweenUnits256(atacker,destobj) <= (GetTargetAcquisitionRange(atacker->SC_Unit) << 13 ))	//256 * 32 (<<13)
 	    	    rangebad = 0;
 		else
 		    rangebad = 1;
 		weaponunitid = WEAPON_UNIT_ANY;
-		usedweapon_id = groundweapon_id;
+//		usedweapon_id = groundweapon_id;
+		usedweapon_id = WEAPONID_REAVERRANGE;
+		
 		weapon_id = NULL;
 		atackangle = alldattbl.weapons_dat->AttackAngle[WEAPONID_SCARAB];
 		break;
@@ -149,7 +151,8 @@ int IfCanCreateWeapon(OBJ *atacker,OBJ *destobj,int *errmes,unsigned char *weapo
 		else
 		    rangebad = 1;
 		weaponunitid = WEAPON_UNIT_CARRIER;
-		usedweapon_id = airweapon_id;
+//		usedweapon_id = airweapon_id;
+		usedweapon_id = WEAPONID_CARRIERRANGE;
 		atackangle = 255;
 		break;
 	    default:
