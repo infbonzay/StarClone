@@ -279,7 +279,13 @@ void drawMAP(int ignorefirstwaiting)
 		    (map.mapbits.underfog[NUMBGAMER][ii*MAXXMAP+jj]->nrofslots>0))
 		{
 			if (map.mapbits.underfog[NUMBGAMER][ii*MAXXMAP+jj]->pictureslot[0].flags & UNDERFOG_MAINIMAGE)
+			{
 			    minimapcolor=map.mapbits.underfog[NUMBGAMER][ii*MAXXMAP+jj]->pictureslot[0].grcolor;	//putobjonminimap
+			    if (!minimapcolor)
+				continue; 
+			}
+			else
+			    continue;
 			//previous color
 		}
 		else
@@ -295,7 +301,7 @@ void drawMAP(int ignorefirstwaiting)
 			    minimapcolor = CREEPCOLOR;
         	    }
             	if (mapSEE(jj,ii)>1)
-            	    if (minimapcolor)
+//            	    if (minimapcolor)
             		Minimap[i*MAXIMSIZEMINIMAP+j] = minimapcolor;
             	else
             	    if (mapOPEN(jj,ii)>1)
