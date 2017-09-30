@@ -3511,7 +3511,6 @@ void WakeUpOneInterceptor(OBJ *myparent,OBJ *a,OBJ *destobj,int childnr)
 //=================================
 void WakeUpOneInterceptor(OBJ *a,OBJ *destobj)
 {
-    //need to know mychild nr???
     WakeUpOneInterceptor(a->myparent,a,destobj,a->childnr);
 }
 //=================================
@@ -3524,8 +3523,6 @@ void WakeUpInterceptors(OBJ *a,OBJ *destobj)
 		if (a->childs->parentof[i]->prop & VARINBASE)
 		    if (a->childs->parentof[i]->playernr == a->playernr)
 			WakeUpOneInterceptor(a,a->childs->parentof[i],destobj,i);
-//		    else
-//			dieobj_silently(a->childs->parentof[i]);
 }
 //=================================
 void ReturnedToBase(struct OBJ *a)//after moved to base
@@ -3655,18 +3652,6 @@ void DeleteOldObjPointers(struct OBJ *a)
 	}
 	if (b->constrobj == a)
 	    b->constrobj = NULL;
-/*	c = firstmage;
-	while(c)
-	{
-	    if (c->whoobjputmage == a)
-		c->whoobjputmage = NULL;
-	    if (c->destobj == a)
-		c->destobj = NULL;
-	    if (c->onwhoobj == a)
-		c->onwhoobj = NULL;
-	    c = c->nextmage;
-	}
-*/
 	DelOBJFromModeList(b,a);	//search in obj b ref to obj a
     }
     for (i=0;i<MAXSELECTMAN;i++)
@@ -3721,8 +3706,6 @@ void RemoveFromDestination(OBJ *a)
 		{
 		    a1->finalOBJ = NULL;
 		    DelAllModeMoves(a,0);
-//		    if (a->movelist)
-//			a->movelist->EmptyElemFifo();
 		    if (IsNonNeutralFlag(a->SC_Unit))	//unit is extractor or refinery or assimilator
 		    {
 			//if gas deposit is destroyed unit stopped
@@ -3761,15 +3744,8 @@ void FinishMainUnitConstruct(OBJ *a)
     {
 	a->constrobj->prop &= ~VARMOVETHROWUNITS;
 	DelAllModeMoves(a->constrobj,0);
-//	if (a->constrobj->movelist)
-//	    a->constrobj->movelist->EmptyElemFifo();
 	ApplyNextModeMove(a->constrobj);
 	ChangeTypeOfProp(a->constrobj,PROPNORMAL1);
-/*	if (!ApplyNextModeMove(a->constrobj))
-	{
-	    ChangeTypeOfProp(a->constrobj,PROPNORMAL1);
-	}
-*/
     }
     a->constrobj->constrobj = NULL;
     a->constrobj = NULL;
@@ -3838,18 +3814,7 @@ void setpropertiestounit(struct OBJ *a,int special_props,int state_flags)
 	    {
 		SetInvisibleUnit(a);
 		a->mainimage->newgrpmethod = DISTORTION;
-/*		if (a->SC_Unit == SC_GHOSTOBJ)
-		    mode = MODEPERSONNELCLOAK;
-		else
-		    if (a->SC_Unit == SC_WRAITHOBJ)
-			mode = MODECLOAKFIELD;
-		    else
-		    {
-			mode = MODENON;
-		    }
-		if (mode != MODENON)
-		    moveobj(a,NULL,mode,0,0,NOSHOWERROR|ATACKMOVEBIT,0);
-*/	    }
+	    }
 	}
     if (state_flags&UNITONMAP_STATEFLAGS_BURROW)
 	if (special_props&UNITONMAP_STATEFLAGS_BURROW)
@@ -3947,7 +3912,6 @@ void SetAtackTick(OBJ *a)
 #define UNITATACKFUNCTYPE_REAVERS		4
 #define UNITATACKFUNCTYPE_CARRIERS		5
 #define UNITATACKFUNCTYPE_VULTUREMINES		6
-#define UNITATACKFUNCTYPE_UNITWITHSUBUNIT	7
 //=================================
 int GetOBJAtackWithoutWeapons(SCUNIT SC_Unit)
 {
@@ -3963,21 +3927,7 @@ int GetOBJAtackWithoutWeapons(SCUNIT SC_Unit)
 	    return(UNITATACKFUNCTYPE_CARRIERS);
 	case SC_VULTUREMINEOBJ:
 	    return(UNITATACKFUNCTYPE_VULTUREMINES);
-/*	case SC_TANKNORMALOBJ:
-	case SC_TANKSIEGEOBJ:
-	case SC_GOLIATHOBJ:
-	case SC_HERO_EDMUNDDUKETMOBJ:
-	case SC_HERO_EDMUNDDUKESMOBJ:
-	case SC_HERO_ALANSCHEZAROBJ:
-	    return(UNITATACKFUNCTYPE_UNITWITHSUBUNIT);
-	case SC_TANKNORMALTURRETOBJ:
-	case SC_TANKSIEGETURRETOBJ:
-	case SC_GOLIATHTURRETOBJ:
-	case SC_HERO_EDMUNDDUKETMTURRETOBJ:
-	case SC_HERO_EDMUNDDUKESMTURRETOBJ:
-	case SC_HERO_ALANSCHEZARTURRETOBJ:
-	    return(UNITATACKFUNCTYPE_NONE);
-*/	default:
+	default:
 	    if (IsDoodadState(SC_Unit)&&!IsInvincibleUnit(SC_Unit))
 	    {
 		//doodad traps
@@ -4054,16 +4004,25 @@ struct OBJ* DoodadTrapAtackFunc(OBJ *a,unsigned char weaponmask,unsigned char gr
     return(a2);
 }
 //=================================
-struct OBJ* (*Atack_IDFunc[8])(OBJ *a,unsigned char weaponmask,unsigned char groundweapon,unsigned char airweapon)=
+struct OBJ* CarrierUnitAtackFunc(OBJ *a,unsigned char weaponmask,unsigned char groundweapon,unsigned char airweapon)
+{
+    OBJ *a2;
+    if (!getchilds(a))
+	return(NULL);
+    a2 = FindObjForAtack(a,0x03,WEAPONID_CARRIERRANGE,WEAPONID_CARRIERRANGE,NULL);
+    unitprepareforatack(a,a2);
+    return(a2);
+}
+//=================================
+struct OBJ* (*Atack_IDFunc[7])(OBJ *a,unsigned char weaponmask,unsigned char groundweapon,unsigned char airweapon)=
 			{
 			    NULL,
 			    &EveryUnitAtackFunc,
 			    &DoodadTrapAtackFunc,
 			    &BunkerAtackFunc,
 			    &EveryUnitAtackFunc,
-			    &EveryUnitAtackFunc,
-			    &VultureMineUnitAtackFunc,
-			    &EveryUnitAtackFunc,
+			    &CarrierUnitAtackFunc,
+			    &VultureMineUnitAtackFunc
 			};
 //=================================
 struct OBJ* OneUnitSearchGoal(OBJ *a,int ignoremodes)
@@ -4085,8 +4044,6 @@ struct OBJ* OneUnitSearchGoal(OBJ *a,int ignoremodes)
 		unitatack_id = GetOBJAtackWithoutWeapons(SC_Unit);
 		switch(unitatack_id)
 		{
-//		    case UNITATACKFUNCTYPE_UNITWITHSUBUNIT:	//unitwithsubunits
-//			SC_Unit = alldattbl.units_dat->Subunit1[SC_Unit];
 		    case UNITATACKFUNCTYPE_EVERYUNITS:		//all units that not have a scpecial functions
 		    case UNITATACKFUNCTYPE_DOODADS:		//doodadunits
 		    case UNITATACKFUNCTYPE_VULTUREMINES:	//vulturemine

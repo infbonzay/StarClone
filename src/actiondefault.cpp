@@ -44,13 +44,6 @@ int TankTAction(struct OBJ *a,MAIN_IMG *img)
 //=================================
 int CarrierAction(struct OBJ *a,MAIN_IMG *img)
 {
-//    OBJstruct *b = loadobj(a->SC_Unit);
-//    if (needactionatack(a,b))	//if need creation make it
-//    if (a->finalOBJ)
-    if (0)
-    {
-	WakeUpInterceptors(a,NULL);
-    }
     return 0;
 }
 //=================================
@@ -79,15 +72,19 @@ int InterceptorsAction(struct OBJ *a,MAIN_IMG *img)
 	    {
 		dieobj(a);
 	    }
+	    else
+	    {
+		//check if no modeatack return to carrier
+		if (a->myparent->modemove != MODEATACK)
+		    goto needrecharge;
+		//check distance if too far need to return to carrier
+		if (GetDistanceBetweenUnits256(a,a->myparent) > (8+6)*256)
+		    goto needrecharge;
+	    }
 	    return 1;
 	}
 	if (a->shield <= INTERCEPTORSHIELDRETURN)
-	{
-	    DelAllModeMoves(a,0);
-	    moveobj(a,a->myparent,MODEGOTORECHARGE,0,0,NOSHOWERROR,0);
-//	    AddModeMove(a,NULL,MODERECHARGE,0,0,0);
-	    return(1);
-	}
+	    goto needrecharge;
     }
     else
     {
@@ -97,6 +94,10 @@ int InterceptorsAction(struct OBJ *a,MAIN_IMG *img)
 	}
     }
     return 0;
+needrecharge:
+    DelAllModeMoves(a,0);
+    moveobj(a,a->myparent,MODEGOTORECHARGE,0,0,NOSHOWERROR,0);
+    return(1);
 }
 //=================================
 int CritterAction(struct OBJ *a,MAIN_IMG *img)
