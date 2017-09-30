@@ -85,33 +85,9 @@ int InterceptorsAction(struct OBJ *a,MAIN_IMG *img)
 	{
 	    DelAllModeMoves(a,0);
 	    moveobj(a,a->myparent,MODEGOTORECHARGE,0,0,NOSHOWERROR,0);
-	    AddModeMove(a,NULL,MODERECHARGE,0,0,0);
+//	    AddModeMove(a,NULL,MODERECHARGE,0,0,0);
 	    return(1);
 	}
-/*	if (a->modemove == MODESTOP)
-	{
-	    int sx,sy,sxsource,sysource;
-	    if (a->myparent)
-	    {
-		sxsource = GetOBJx(a->myparent);
-		sysource = GetOBJy(a->myparent);
-	    }
-	    else
-	    {
-		//if parent die need to move around
-//		sxsource = (int) a->prevx;
-//		sysource = (int) a->prevy;
-	    }
-	    do{
-	        sx = sxsource + myrand(-INTERCEPTORFLYRANGE,INTERCEPTORFLYRANGE);
-	    }while(sx<0||sx>=MAXXMAP*SIZESPRLANSHX);
-	    do{    
-		sy = sysource + myrand(-INTERCEPTORFLYRANGE,INTERCEPTORFLYRANGE);
-	    }while(sy<0||sy>MAXYMAP*SIZESPRLANSHY);
-	    moveobj(a,NULL,MODEMOVE,sx,sy,NOSHOWERROR,0);
-	    return 1;
-	}
-*/
     }
     else
     {
@@ -824,7 +800,7 @@ int (*UnitActionDefaults[MAX_UNITS_ELEM])(struct OBJ *a,MAIN_IMG *img)=
 int AdditionalUnitProceed(OBJ *a,MAIN_IMG *img)
 {
     if (a->atackcooldowntime)
-	if (a->SC_Unit != SC_INTERCEPTOROBJ)
+//	if (a->SC_Unit != SC_INTERCEPTOROBJ)
 	if (--a->atackcooldowntime == 0)
 	{
 	    if (a->modemove == MODEATACK)
@@ -847,8 +823,8 @@ int AdditionalUnitProceed(OBJ *a,MAIN_IMG *img)
 			else
 			{
 			    EndAtackAction(a);
+			    a->finalOBJ = NULL;
 			    SetModeMove(a,MODESTOP);
-			    a->finalOBJ=NULL;
 			}
 		    }
 		    return 0;
@@ -863,8 +839,8 @@ int AdditionalUnitProceed(OBJ *a,MAIN_IMG *img)
 			}
 			else
 			{
+			    a->finalOBJ = NULL;
 			    SetModeMove(a,MODESTOP);
-			    a->finalOBJ=NULL;
 			}
 			return(0);
 		    case MOVEOBJ_WAITUNTIL:	//under disruption
@@ -875,7 +851,7 @@ int AdditionalUnitProceed(OBJ *a,MAIN_IMG *img)
 	}
     if ((a->prop & (VARNOTWORK | VARPOWEROFF))||GetMageAtr(&a->atrobj,ATRSTASIS)>0)
 	return 0;
-    if (a->SC_Unit != SC_INTERCEPTOROBJ)
+//    if (a->SC_Unit != SC_INTERCEPTOROBJ)
     if (a->prop & VARWAITDISTANCE)
     {
 	if (NEEDTOMOVE1BIT)

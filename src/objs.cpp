@@ -1962,7 +1962,6 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
 	    {
 		a->prop |= VARHOLDPOSBIT;
 		//engines off
-//		a->prop &= ~(VARMOVEACT | VARMOVEOBJACT | VARACCELERATIONBIT | VARPATROLFLAG);
 		a->prop &= ~(VARMOVEOBJACT | VARACCELERATIONBIT | VARPATROLFLAG);
 		if (a->modemove == MODEATACK)
 		{
@@ -1986,7 +1985,6 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
 //		a->movelist->EmptyElemFifo();
 	    if (a->modemove != mode)
 	    {
-//		a->prop &= ~(VARMOVEACT | VARMOVEOBJACT | VARACCELERATIONBIT | VARPATROLFLAG);
 		a->prop &= ~(VARMOVEOBJACT | VARACCELERATIONBIT | VARPATROLFLAG);
 		//engines off
 		if (a->modemove == MODEATACK)
@@ -2476,7 +2474,7 @@ bugguyexplode:
 			break;
 		    case SC_INTERCEPTOROBJ:
 			AtackAction(a,destobj,0);
-			AddModeMove(a,destobj,MODEMOVEFORWARD,0,0,NOSHOWERROR);
+//			AddModeMove(a,destobj,MODEMOVEFORWARD,0,0,NOSHOWERROR);
 			break;
 		    default:
 			AtackAction(a,destobj,0);
@@ -2533,7 +2531,7 @@ bugguyexplode:
 		    //or return tobase
 		    DelAllModeMoves(a,0);
 		    moveobj(a,a->myparent,MODEGOTORECHARGE,0,0,NOSHOWERROR,0);
-		    AddModeMove(a,NULL,MODERECHARGE,0,0,0);
+//		    AddModeMove(a,NULL,MODERECHARGE,0,0,0);
 		}
 		if (accesstomove(a,loadobj(a->SC_Unit),MODEMOVE,a->playernr))
 		{
@@ -2589,12 +2587,14 @@ bugguyexplode:
 	    }
 	    break;
 	case MODEGOTORECHARGE:
+//	    a->prop &= ~VARMOVEOBJACT;
 	    if (!a->myparent || !destobj)
 	    {
 		dieobj(a);
 		return(MOVEOBJ_NOACT);
 	    }
 	    initmoveaction(a,destobj,mode,0,0,x,y);
+	    AddModeMove(a,NULL,MODERECHARGE,0,0,0);
 	    a->modemove = mode;
 	    break;
 	case MODERECHARGE:		//recharge interceptor in carrier
@@ -2606,13 +2606,10 @@ bugguyexplode:
 	    break;
 	case MODEMOVEFORWARD:
 	    a->modemove = mode;    
-	    a->mainimage->side += myrand(-64,64);
-//	    UnitNeededDeltaDirection256(unsigned char deltadirection)
+	    a->mainimage->side += my2rand(-64,64);
 	    deltax = (inertion256[a->mainimage->side][0]*INTERCEPTORDESTMOVEAFTERATACK)>>16;
 	    deltay = (inertion256[a->mainimage->side][1]*INTERCEPTORDESTMOVEAFTERATACK)>>16;
-//	    initmoveaction(a,NULL,mode,0,0,GetOBJx(a)+deltax,GetOBJy(a)+deltay);
 	    initmoveaction(a,NULL,mode,0,0,GetOBJx(a)+deltax,GetOBJy(a)+deltay);
-//	    a->prop &= ~VARWAITDISTANCE;
 	    AddModeMove(a,destobj,MODEATACK,0,0,NOSHOWERROR);
 	    break;
 	default:
@@ -3497,7 +3494,7 @@ void WakeUpOneInterceptor(OBJ *myparent,OBJ *a,OBJ *destobj,int childnr)
     if (a && destobj)
     {
 	a->prop &= ~(VARNOTHERE|VARINBASE);
-	SetModeMove(a,MODESTOP);
+//	SetModeMove(a,MODESTOP);
 	a->finalOBJ = NULL;
 	a->data.interceptor.refreshmyparent = INTERCEPTORREFRESHMYPARENT;
 	a->mainimage->AllUnitDirection256(myparent->mainimage->side+childnr*32);
@@ -5241,6 +5238,11 @@ void SetModeMove(OBJ *a,int mode)
 {
     a->modemove = mode;
     DelAllModeMoves(a,0);
+    if (mode == MODESTOP)
+    {
+	if (IsReadyOBJ(a))
+	    OBJActionAfterStop(a);
+    }
 //    if (a->movelist)
 //	a->movelist->EmptyElemFifo();
 }
@@ -5382,8 +5384,8 @@ int LaunchScarab(OBJ *a,OBJ *destobj)
     	    ChangeTypeOfProp(temp,PROPNORMAL1);
 	    temp->mainimage->elevationlevel = a->mainimage->elevationlevel - 2;
 	    temp->prop |= VARREADY | VARIFDIEDESTTOTERRAIN | VARCANTSELECT;
-	    SetModeMove(temp,MODESTOP);
 	    temp->finalOBJ = NULL;
+	    SetModeMove(temp,MODESTOP);
 	    moveobj(temp,destobj,MODEATACK,GetOBJx(destobj),GetOBJy(destobj),NOSHOWERROR,0);
 	    return(1);
 	}
@@ -5394,5 +5396,15 @@ int LaunchScarab(OBJ *a,OBJ *destobj)
 void LaunchInterceptors(OBJ *a,OBJ *destobj)
 {
     WakeUpInterceptors(a,destobj);    
+}
+//=================================
+void OBJActionAfterStop(OBJ *a)
+{
+    switch(a->SC_Unit)
+    {
+	case SC_INTERCEPTOROBJ:
+	    moveobj(a,a->myparent,MODEGOTORECHARGE,0,0,NOSHOWERROR,0);
+	    break;
+    }    
 }
 //=================================

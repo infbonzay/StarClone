@@ -32,3 +32,10 @@ int myrand(int from,int to)		//get random numbers from..to included
     return (myrand(to-from+1)+from);
 }
 //==========================================
+int my2rand(int numb1,int numb2)
+{
+    if (myrand(2))
+	return(numb1);
+    return(numb2);
+}
+//==========================================

@@ -2,6 +2,7 @@
 #if !defined(_LIST_W)
 #define _LIST_W
 
+#include "man.h"
 #define UNITSOUND_READY		0
 #define UNITSOUND_WHATFIRST	1
 #define UNITSOUND_WHATLAST	2
@@ -102,19 +103,15 @@ int  IfHaveSubUnit(int SC_Unit);
 int  GetUnitSublabel(int SC_Unit);
 
 
-int  ChangeUnitIconProp(OBJ *a,int typeofprop);
 void ChangeSC_Unit(struct OBJ *a,int playernr,int SC_Unit,int flagready);
 int  IsOBJBurrowed(struct OBJ *a);
 int  SetBurrowFlag(struct OBJ *a,int flag);
 int  IsNonNeutralFlag(int SC_Unit);
-int  IsOBJUnderConstruct(struct OBJ *a);
 int  IsHallucination(struct OBJ *a);
-int  IsReadyOBJ(struct OBJ *a);
 int  IsUnitBaseBuild(struct OBJ *a);
 int  IfAtackCoolDown(struct OBJ *a);
 void ClearAtackCoolDown(struct OBJ *a);
 void SetAtackCoolDownAction(struct OBJ *a,int x,int y,struct OBJ *destobj,int mode);
-int  IsCloaked(OBJ *a);
 int  SetCloakedFlag(OBJ *a,int flag);
 char *getmapSTR(struct mapinfo *testmap,int nrofstr);
 struct OBJ *SearchUnit(int playernr,int SC_Unit,int shieldp,int lifep,int energyp);
@@ -133,6 +130,13 @@ int  GetUnitSound(OBJ *a,unsigned char fromsndtype,unsigned char tosndtype);
 
 void freeall(void);
 void freeforrestart(void);
+
+
+inline int  IsOBJUnderConstruct(struct OBJ *a) { return(!(a->prop & VARREADY)); };
+inline int  IsReadyOBJ(struct OBJ *a) { return( a->prop & VARREADY); };
+inline int  ChangeUnitIconProp(OBJ *a,int typeofprop) { a->typeofprop = typeofprop; };
+inline int  IsCloaked(OBJ *a) { return(a->prop & UNITPROP_PREVCLOAK); };
+
 
 #endif /*_LIST_W*/
 

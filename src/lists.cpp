@@ -777,11 +777,6 @@ int GetUnitRace(int SC_Unit)
     return(NEUTRALRACE);
 }
 //==================================
-int IsCloaked(OBJ *a)
-{
-    return(a->prop&UNITPROP_PREVCLOAK);
-}
-//==================================
 int SetCloakedFlag(OBJ *a,int flag)
 {
     if (flag)
@@ -790,24 +785,9 @@ int SetCloakedFlag(OBJ *a,int flag)
 	a->prop &= ~UNITPROP_PREVCLOAK;
 }
 //==================================
-int IsOBJUnderConstruct(OBJ *a)
-{
-    return(!(a->prop&VARREADY));
-}
-//==================================
-int IsReadyOBJ(OBJ *a)
-{
-    return(a->prop&VARREADY);
-}
-//==================================
 int IsHallucination(OBJ *a)
 {
     return(GetMageAtr(&a->atrobj,ATRHALLUCINATION));
-}
-//==================================
-int ChangeUnitIconProp(OBJ *a,int typeofprop)
-{
-    a->typeofprop = typeofprop;
 }
 //==================================
 void ChangeSC_Unit(struct OBJ *a,int newplayernr,int SC_Unit,int flagready)

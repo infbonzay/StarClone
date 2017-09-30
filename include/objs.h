@@ -192,6 +192,7 @@ int  RegenerateShield(OBJ *a);
 int  RegenerateHealth(OBJ *a);
 int  LaunchScarab(OBJ *reaver,OBJ *destobj);
 void LaunchInterceptors(OBJ *a,OBJ *destobj);
+void OBJActionAfterStop(OBJ *a);
 
 
 #define UnitDoAiAction(playernr) (map.pl_owner[playernr] == OWNER_COMPUTER)// || map.pl_owner[playernr] == OWNER_HUMAN)
