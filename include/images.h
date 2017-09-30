@@ -214,7 +214,7 @@ void InitSporeImage(OBJ *a,int acidvalue);
 void ChangeSporeImage(OBJ *a,int prevspores,int nextspores);
 void ChangeMineralSprite(OBJ *a);
 void SaveOBJImagesToFogTable(OBJ *a);
-void DrawRawMainImageOBJ(int x,int y,unsigned char SC_Unit,int plcolor,int grpfunc,int maxcolors);
+void DrawRawMainImageOBJ(int x,int y,SCUNIT SC_Unit,int plcolor,int grpfunc,int maxcolors);
 int  CheckForSpecificChildsImageID(MAIN_IMG *img,short image_idfrom,short image_idto);
 void DelSpecificChildsImageID(MAIN_IMG *img,short image_idfrom,short image_idto);
 int  GetIDFromOverlayLayer(unsigned short imageid,unsigned char overlaylayer);

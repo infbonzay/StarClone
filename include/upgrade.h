@@ -18,7 +18,7 @@ void SetTempTechTree(mapinfo *loadedmap,int nplayer,int tech_id,int incrvar);
 int  GetTempTechTree(mapinfo *loadedmap,int nplayer,int tech_id);
 int  GetTechTree(mapinfo *loadedmap,int nplayer,int tech_id);
 int  GetMaxTechTree(mapinfo *loadedmap,int nplayer,int tech_id);
-int  GetUnitRestrictions(mapinfo *loadedmap,int nplayer,int SC_Unit);
+int  GetUnitRestrictions(mapinfo *loadedmap,int nplayer,SCUNIT SC_Unit);
 
 
 

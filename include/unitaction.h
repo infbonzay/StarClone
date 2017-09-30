@@ -20,9 +20,9 @@
 int  GhostNUKEAction(OBJ *a);
 void GhostNUKECancel(OBJ *a,int mode);
 
-int  CheckIfCanBuild(OBJ *a,unsigned char SC_Unit,int x,int y,int *constrerror);
+int  CheckIfCanBuild(OBJ *a,SCUNIT SC_Unit,int x,int y,int *constrerror);
 int  CheckIfCanLand(OBJ *a,int x,int y,int *constrerror);
-int  DecrUnitCost(unsigned char SC_Unit,int playernr);
+int  DecrUnitCost(SCUNIT SC_Unit,int playernr);
 
 //=================================
 

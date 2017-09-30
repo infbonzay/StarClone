@@ -40,7 +40,7 @@ void GhostNUKECancel(OBJ *a,int mode)//GHOSTCANCELNUKE-if cancel,GHOSTRELEASENUK
     }
 }
 //=================================
-int CheckIfCanBuild(OBJ *a,unsigned char SC_Unit,int x,int y,int *constrerror)
+int CheckIfCanBuild(OBJ *a,SCUNIT SC_Unit,int x,int y,int *constrerror)
 {
     unsigned short retarray[MAXBUILDSPRSIZE*MAXBUILDSPRSIZE];
     int xp,yp,xs,ys,ret,goods,mcost,gcost;
@@ -52,7 +52,7 @@ int CheckIfCanBuild(OBJ *a,unsigned char SC_Unit,int x,int y,int *constrerror)
     return(ret);
 }
 //=================================
-int DecrUnitCost(unsigned char SC_Unit,int playernr)
+int DecrUnitCost(SCUNIT SC_Unit,int playernr)
 {
     int mcost,gcost,retstatus;
     GetCostUnit(SC_Unit,&mcost,&gcost);

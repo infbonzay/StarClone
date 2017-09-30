@@ -38,8 +38,8 @@ void SetAtackType(OBJ *a,OBJ *destobj);
 
 
 //=================================
-extern unsigned char SC_CARRY_GAS[];
-extern unsigned char SC_CARRY_MIN[];
+extern SCUNIT SC_CARRY_GAS[];
+extern SCUNIT SC_CARRY_MIN[];
 
 #endif
 

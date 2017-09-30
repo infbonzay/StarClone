@@ -30,31 +30,31 @@ int  ishealingobj(struct OBJ *a);
 int  isrechargebleobj(struct OBJ *a);
 int  isobjtobeinfest(struct OBJ *a);
 struct OBJ *GetNearCenter(struct OBJ *a);
-struct OBJ *GetNearResource(struct OBJ *a,int res_nr,int *resvalability);
+struct OBJ *GetNearResource(struct OBJ *a,SCUNIT SC_Unit,int *resvalability);
 
-int GetDeltaAddonHorizontal(int SC_Unit);
-int GetDeltaAddonVertical(int SC_Unit);
+int GetDeltaAddonHorizontal(SCUNIT SC_Unit);
+int GetDeltaAddonVertical(SCUNIT SC_Unit);
 
-int  IsResourceContainer(int SC_Unit);
-int  IsRegenerate(int SC_Unit);
+int  IsResourceContainer(SCUNIT SC_Unit);
+int  IsRegenerate(SCUNIT SC_Unit);
 
-int  IsAddon(int SC_Unit);
-int  IsSpellCaster(int SC_Unit);
-int  IsOrganic(int SC_Unit);
-int  IsBattleReactions(int SC_Unit);
-int  IsGroundUnit(int SC_Unit);
-int  IsAirUnit(int SC_Unit);
-int  IsHeroUnit(int SC_Unit);
+int  IsAddon(SCUNIT SC_Unit);
+int  IsSpellCaster(SCUNIT SC_Unit);
+int  IsOrganic(SCUNIT SC_Unit);
+int  IsBattleReactions(SCUNIT SC_Unit);
+int  IsGroundUnit(SCUNIT SC_Unit);
+int  IsAirUnit(SCUNIT SC_Unit);
+int  IsHeroUnit(SCUNIT SC_Unit);
 
 int  IsOnSkyOBJ(OBJ *a);
 void SetOnSkyOBJ(OBJ *a,int flag);
 
-int  IsInvincibleUnit(int SC_Unit);
+int  IsInvincibleUnit(SCUNIT SC_Unit);
 int  IsInvincibleOBJ(OBJ *a);
 void SetInvincibleOBJ(OBJ *a,int flag);
 
-int  IsMechanical(int SC_Unit);
-int  IsRobotic(int SC_Unit);
+int  IsMechanical(SCUNIT SC_Unit);
+int  IsRobotic(SCUNIT SC_Unit);
 #define UNITDIM_LEFT	0
 #define UNITDIM_UP	1
 #define UNITDIM_RIGHT	2
@@ -63,50 +63,50 @@ int  IsRobotic(int SC_Unit);
 #define UNITDIM_WIDTH	0
 #define UNITDIM_HEIGHT	1
 
-int  GetUnitWidthAndHeight(int SC_Unit,int pos);
-int  GetUnitDimensions(int SC_Unit,int pos);
+int  GetUnitWidthAndHeight(SCUNIT SC_Unit,int pos);
+int  GetUnitDimensions(SCUNIT SC_Unit,int pos);
 
-int  GetTargetAcquisitionRange(int SC_Unit);
-int  IsShieldEnable(int SC_Unit);
-int  IsProducesUnits(int SC_Unit);
-int  IsResource(struct OBJ *a,int typeresource);
-int  IsPsiUnit(int SC_Unit);
-int  IsResourceDepot(int SC_Unit);
-int  RequiresPylonEnergy(int SC_Unit);
-int  RequiresCreep(int SC_Unit);
-int  IsPickupUnit(int SC_Unit);
+int  GetTargetAcquisitionRange(SCUNIT SC_Unit);
+int  IsShieldEnable(SCUNIT SC_Unit);
+int  IsProducesUnits(SCUNIT SC_Unit);
+int  IsResource(struct OBJ *a,SCUNIT SC_Unit);
+int  IsPsiUnit(SCUNIT SC_Unit);
+int  IsResourceDepot(SCUNIT SC_Unit);
+int  RequiresPylonEnergy(SCUNIT SC_Unit);
+int  RequiresCreep(SCUNIT SC_Unit);
+int  IsPickupUnit(SCUNIT SC_Unit);
 
-int  IsWorkerUnit(int SC_Unit);
+int  IsWorkerUnit(SCUNIT SC_Unit);
 OBJ  *GetGEYSERfromMAP(int xmap,int ymap);
-int  GetUnitRace(int SC_Unit);
-int  GetBirthDirection(int SC_Unit);
-int  IsCloakable(int SC_Unit);
-int  IsBuild(int SC_Unit);
-int  IsDetector(int SC_Unit);
-int  IsPermanentCloak(int SC_Unit);
+int  GetUnitRace(SCUNIT SC_Unit);
+int  GetBirthDirection(SCUNIT SC_Unit);
+int  IsCloakable(SCUNIT SC_Unit);
+int  IsBuild(SCUNIT SC_Unit);
+int  IsDetector(SCUNIT SC_Unit);
+int  IsPermanentCloak(SCUNIT SC_Unit);
 
-int  IsExpansionUnit(int SC_Unit);
-int  IsDoodadState(int SC_Unit);
+int  IsExpansionUnit(SCUNIT SC_Unit);
+int  IsDoodadState(SCUNIT SC_Unit);
 
-int  IsZergRace(int SC_Unit);
-int  IsTerranRace(int SC_Unit);
-int  IsProtossRace(int SC_Unit);
+int  IsZergRace(SCUNIT SC_Unit);
+int  IsTerranRace(SCUNIT SC_Unit);
+int  IsProtossRace(SCUNIT SC_Unit);
 
-int  IsNoAnyGroupFlag(int SC_Unit);
-int  IsGroupBuildFlag(int SC_Unit);
-int  IsGroupMenFlag(int SC_Unit);
-int  IsGroupFactoryFlag(int SC_Unit);
-int  IsGroupNeutralFlag(int SC_Unit);
-int  IsSubUnit(int SC_Unit);
-int  IfHaveSubUnit(int SC_Unit);
+int  IsNoAnyGroupFlag(SCUNIT SC_Unit);
+int  IsGroupBuildFlag(SCUNIT SC_Unit);
+int  IsGroupMenFlag(SCUNIT SC_Unit);
+int  IsGroupFactoryFlag(SCUNIT SC_Unit);
+int  IsGroupNeutralFlag(SCUNIT SC_Unit);
+int  IsSubUnit(SCUNIT SC_Unit);
+int  IfHaveSubUnit(SCUNIT SC_Unit);
 
-int  GetUnitSublabel(int SC_Unit);
+int  GetUnitSublabel(SCUNIT SC_Unit);
 
 
-void ChangeSC_Unit(struct OBJ *a,int playernr,int SC_Unit,int flagready);
+void ChangeSC_Unit(struct OBJ *a,int playernr,SCUNIT SC_Unit,int flagready);
 int  IsOBJBurrowed(struct OBJ *a);
 int  SetBurrowFlag(struct OBJ *a,int flag);
-int  IsNonNeutralFlag(int SC_Unit);
+int  IsNonNeutralFlag(SCUNIT SC_Unit);
 int  IsHallucination(struct OBJ *a);
 int  IsUnitBaseBuild(struct OBJ *a);
 int  IfAtackCoolDown(struct OBJ *a);
@@ -114,17 +114,17 @@ void ClearAtackCoolDown(struct OBJ *a);
 void SetAtackCoolDownAction(struct OBJ *a,int x,int y,struct OBJ *destobj,int mode);
 int  SetCloakedFlag(OBJ *a,int flag);
 char *getmapSTR(struct mapinfo *testmap,int nrofstr);
-struct OBJ *SearchUnit(int playernr,int SC_Unit,int shieldp,int lifep,int energyp);
-struct OBJ *SearchUnitFunc(int playernr,int (*funccheckunit)(int SC_Unit),int nearx,int neary,int dist);
+struct OBJ *SearchUnit(int playernr,SCUNIT SC_Unit,int shieldp,int lifep,int energyp);
+struct OBJ *SearchUnitFunc(int playernr,int (*funccheckunit)(SCUNIT SC_Unit),int nearx,int neary,int dist);
 OBJ *SearchObjs(int x,int y,int range,int *array,int arraydim);
 int  FindSC_UnitType(OBJ *a,int player,int typeofbuild);
 int  SearchForUnitMask(int playernr,int mask,int *x,int *y);
-int  FindSC_UnitType(OBJ *a2,int player,int SC_Unit,int SC_AddonUnit);
-OBJ *SearchForObjInXY(int x,int y,unsigned char *SC_Units,int nrofunits);
+int  FindSC_UnitType(OBJ *a2,int player,SCUNIT SC_Unit,SCUNIT SC_AddonUnit);
+OBJ *SearchForObjInXY(int x,int y,SCUNIT *SC_Units,int nrofunits);
 
 
 int  IfGeyserIsDepleted(OBJ *a);
-int  GetUnitSoundID(unsigned char SC_Unit,unsigned char sndtype);
+int  GetUnitSoundID(SCUNIT SC_Unit,unsigned char sndtype);
 int  GetUnitSound(OBJ *a,unsigned char fromsndtype,unsigned char tosndtype);
 
 
@@ -136,6 +136,8 @@ inline int  IsOBJUnderConstruct(struct OBJ *a) { return(!(a->prop & VARREADY)); 
 inline int  IsReadyOBJ(struct OBJ *a) { return( a->prop & VARREADY); };
 inline int  ChangeUnitIconProp(OBJ *a,int typeofprop) { a->typeofprop = typeofprop; };
 inline int  IsCloaked(OBJ *a) { return(a->prop & UNITPROP_PREVCLOAK); };
+inline int  IsBattleReactions(SCUNIT SC_Unit){ return((alldattbl.units_dat->SpecialAbilityFlags[SC_Unit] & SPECIAL_BATTLEREACTIONS)!=0); };
+inline int  IsFullAutoAttack(SCUNIT SC_Unit){ return((alldattbl.units_dat->SpecialAbilityFlags[SC_Unit] & SPECIAL_FULLAUTOATTACK)!=0);};
 
 
 #endif /*_LIST_W*/

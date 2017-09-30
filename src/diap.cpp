@@ -836,7 +836,7 @@ int getborderbuild(int mx,int my,int *x,int *y)
 	return(kvadrant);
 }
 //=====================================
-int CheckCoordinates(int newx256,int newy256,unsigned char SC_Unit)
+int CheckCoordinates(int newx256,int newy256,SCUNIT SC_Unit)
 {
     if (newx256/256 + GetUnitWidthAndHeight(SC_Unit,UNITDIM_WIDTH)/2 < 0)
 	return(0);

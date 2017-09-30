@@ -53,7 +53,7 @@ int GetConstructNR(struct OBJ *a);
 int GetConstrComplete(struct OBJ *a,int percent);
 int GetConstruct(struct OBJ *a,int elemnr,int *type_id,int *obj_id,int *upgr_nr,int *timeremained,int *icon_nr,int *stattxt_id);
 void ConstructUnitsReleaseSupply(OBJ *a);
-void UnitConstrUnit(struct OBJ *a,int SC_Unit,int icon_nr,int stattxt_nr);
+void UnitConstrUnit(struct OBJ *a,SCUNIT SC_Unit,int icon_nr,int stattxt_nr);
 void UnitConstrUpgr(struct OBJ *a,int upgr_id,int upgr_nr,int icon_nr,int stattxt_nr);
 void UnitConstrTech(struct OBJ *a,int tech_id,int icon_nr,int stattxt_nr);
 void DoOrder(int playernr,struct OBJ *a,int x,int y,int type_id,int obj_id,int icon_nr,int stattxt_nr,int modemove,int showerrorflag);

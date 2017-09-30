@@ -12,7 +12,7 @@
 //=====================================
 //return 1- if posible to construct , 0 - no posible to construct
 int CanBuildOnPlace(int xb,int yb,int xsize,int ysize,unsigned short *returnedarray,
-		    char *ignorecells,int SC_Unit,int playernr,int *error)
+		    char *ignorecells,SCUNIT SC_Unit,int playernr,int *error)
 {
     int constrerror=0;
     OBJ *a,*a2;
@@ -80,7 +80,7 @@ int CanBuildOnPlace(int xb,int yb,int xsize,int ysize,unsigned short *returnedar
 //=============================================
 //return 1- if posible to construct , 0 - no posible to construct
 int CanBuildOnPlaceWithAddon(int xb,int yb,int xparent,int yparent,int xsize,int ysize,
-			    unsigned short *returnedarray,int SC_Unit,int playernr,int *constrerror)
+			    unsigned short *returnedarray,SCUNIT SC_Unit,int playernr,int *constrerror)
 {
     memset(returnedarray,0xff,xsize*ysize*sizeof(unsigned short));
     //check if not same place

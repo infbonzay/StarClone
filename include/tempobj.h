@@ -12,8 +12,8 @@
 
 unsigned char GetFirstUnitBuild(int race,int build_or_unit);
 
-OBJ *CreateMineralsOnMap(int x,int y,int unitnr,int player,int count,int maxcount,mapinfo *loadedmap);
-OBJ *CreateGeyserOnMap(int x,int y,int unitnr,int player,int count,int maxcount,mapinfo *loadedmap);
+OBJ *CreateMineralsOnMap(int x,int y,SCUNIT SC_Unit,int player,int count,int maxcount,mapinfo *loadedmap);
+OBJ *CreateGeyserOnMap(int x,int y,SCUNIT SC_Unit,int player,int count,int maxcount,mapinfo *loadedmap);
 OBJ *CreateUnitsFromMAP(int xpos,int ypos,int unit_type,int playernr,struct mapinfo *loadedmap);
 OBJ *CreateUnitsFromMAP(struct unit_on_map *unit,struct mapinfo *loadedmap);
 void RemoveUnitsFromLists(mylist *units);

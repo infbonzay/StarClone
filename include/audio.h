@@ -2,6 +2,7 @@
 #if !defined(_AUDIO_W)
 #define _AUDIO_W
 
+#include "defs.h"
 #include "mpq.h"
 #include "mylist.h"
 #include "audiolowlevel.h"
@@ -90,7 +91,7 @@ void stopallsounds(void);
 int  getsoundIDfromunitsfx(int unitnr,int soundmode);
 void WaitUntilAllAudioStops(int maxwait);
 int  FileWavePlayLength(HANDLE mpq,char *filesound);
-void getsoundIDfromunitdat(int SC_Unit,int soundmode,short *from,short *to);
+void getsoundIDfromunitdat(SCUNIT SC_Unit,int soundmode,short *from,short *to);
 
 #define PLAYADVISOR_ONLYTEXT		0
 #define PLAYADVISOR_TEXTANDSOUND	1

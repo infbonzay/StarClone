@@ -102,7 +102,7 @@ int loadstaticsmk(void)
     return(0);
 }
 //===================================
-void changeunitportrait(HANDLE hmpq,int smknr,int SC_Unit,int smkscroll)
+void changeunitportrait(HANDLE hmpq,int smknr,SCUNIT SC_Unit,int smkscroll)
 {
     int newunit;
     if (staticport.flags & HOLDPORTRAIT )
@@ -294,7 +294,7 @@ void SetPortraitShowedTime(int showedtime)
 //===================================
 //SMKNORMAL,SMKNORMAL2,SMKSPECIAL,SMKTALK, the engine automaticaly return to NORMAL after show here selected
 //if showedtime == -1 show all smk frames
-int SetPortrait(int SC_Unit,int typeofport,int soundfilenr,int showedtime)
+int SetPortrait(SCUNIT SC_Unit,int typeofport,int soundfilenr,int showedtime)
 {
     HANDLE hmpq;
     int nrof_smks,cursmk,smkscroll,mpqfilenr;
@@ -368,7 +368,7 @@ char soundtypetosmktype[MAXTYPESOFSOUND]={
 			    SMKNONE,SMKNORMAL,SMKTALK,SMKTALK,SMKNONE,
 			    SMKNONE,SMKNORMAL,SMKNORMAL,SMKNORMAL,SMKNONE,SMKNORMAL};
 //===================================
-int SetPortraitFromSound(int SC_Unit,int soundmode,int soundfilenr)
+int SetPortraitFromSound(SCUNIT SC_Unit,int soundmode,int soundfilenr)
 {
     if (soundmode>=0&&soundmode<MAXTYPESOFSOUND)
     {

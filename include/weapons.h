@@ -51,7 +51,7 @@ int  CalcMaxRangeCoordsXY(int deltax,int deltay,int *destx,int *desty,int maxdis
 void GetLaunchOffsets(int direction,int maxdirection,int weapon_id,int *xoffs,int *yoffs);
 void CreateWeaponID(OBJ *a,OBJ *destobj,int xdest,int ydest,unsigned char weapon_id,int createflingy);
 void GetOBJXYSideOffsets(OBJ *a,MAIN_IMG *img,int overlaytype,signed char *x,signed char *y);
-void WeaponDoDamage(OBJ *atacker,OBJ *destobj,int x256,int y256,unsigned char SC_Unit,
+void WeaponDoDamage(OBJ *atacker,OBJ *destobj,int x256,int y256,SCUNIT SC_Unit,
 		    int playernr,unsigned char weapon_id,int castmagenr,int targetnr,mylist *listdamaged);
 void AddOverlayAtrImages(OBJ *destobj,int castmagenr,int independentofmain);
 int  GetDeltaWeaponElevationLevel(unsigned char weapon_id);

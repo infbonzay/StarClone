@@ -112,7 +112,7 @@ void MakeQueueAction(int actiontype,void *a,void *destobj,
     }
 }
 //=================================
-unsigned char GetMotherAddon(unsigned char SC_Unit)
+unsigned char GetMotherAddon(SCUNIT SC_Unit)
 {
     switch(SC_Unit)
     {
@@ -131,7 +131,7 @@ unsigned char GetMotherAddon(unsigned char SC_Unit)
     }
 }
 //=================================
-void GetAddonType(unsigned char SC_Unit,unsigned char *addontype1,unsigned char *addontype2)
+void GetAddonType(SCUNIT SC_Unit,unsigned char *addontype1,unsigned char *addontype2)
 {
     switch(SC_Unit)
     {

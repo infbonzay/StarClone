@@ -898,7 +898,7 @@ void loadandputimage(int POSINMAP)
 {
     int nrpicture,x,y,maxcolor,grcolor,inverseflag,format,slots;
     int xk,yk;
-//    unsigned char SC_Unit;
+//    SCUNIT SC_Unit;
     GRPFILE *grppict;
     char colortable;
     xk=map.MAPXGLOBAL;
@@ -1427,7 +1427,7 @@ void SaveOBJImagesToFogTable(OBJ *a)
 		    img->invisiblecolors,img->imageusercolor,EVERYUNITRAWIMAGENR,img->flags);
 }
 //========================================
-void DrawRawMainImageOBJ(int x,int y,unsigned char SC_Unit,int plcolor,int grpfunc,int maxcolors)
+void DrawRawMainImageOBJ(int x,int y,SCUNIT SC_Unit,int plcolor,int grpfunc,int maxcolors)
 {
     GRPFILE *grp;
     unsigned short flingy_id,sprites_id,images_id;

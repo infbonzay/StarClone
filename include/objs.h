@@ -52,14 +52,14 @@ extern	int MaxObjsRevealMap;
 //==========================================
 void destroyobj(struct OBJ *a);
 OBJ *CreateArchon(OBJ *a,OBJ *a2);
-struct OBJ *createobjfulllife(int x,int y,int nobj,int Pl);
-struct OBJ *createobjmanwithlife(int x,int y,int nobj,int Pl,
+struct OBJ *createobjfulllife(int x,int y,SCUNIT SC_Unit,int Pl);
+struct OBJ *createobjmanwithlife(int x,int y,SCUNIT SC_Unit,int Pl,
 				 int persshield,int perslife,int energypers,int supplyflag);
-struct OBJ *createobjman(int x,int y,int nobj,int Pl,int typemoveatbegin,int pers_shield,int pers_life,int pers_enercy);
-struct OBJ *createobjman(int x,int y,int nobj,int Pl,int typemoveatbegin);
-struct OBJ *createobjman(int x,int y,int nobj,int Pl);
-struct OBJ *createreschunk(OBJ *workerobj,int x,int y,unsigned char SC_Unit);
-struct OBJ *createobjlowlevel(OBJ *workerobj,int x,int y,int SC_Unit,int playernr,
+struct OBJ *createobjman(int x,int y,SCUNIT SC_Unit,int Pl,int typemoveatbegin,int pers_shield,int pers_life,int pers_enercy);
+struct OBJ *createobjman(int x,int y,SCUNIT SC_Unit,int Pl,int typemoveatbegin);
+struct OBJ *createobjman(int x,int y,SCUNIT SC_Unit,int Pl);
+struct OBJ *createreschunk(OBJ *workerobj,int x,int y,SCUNIT SC_Unit);
+struct OBJ *createobjlowlevel(OBJ *workerobj,int x,int y,SCUNIT SC_Unit,int playernr,
 			      int readyatbegin,int persshield,int perslife,int energypers,unsigned short imagelo_id);
 void GeyserDisactivate(OBJ *a,OBJ *geyser);
 
@@ -132,8 +132,8 @@ void SetAtackTick(OBJ *a);
 OBJ *FindObjForAtack(OBJ *a,unsigned char weaponmask,
 		    			unsigned char groundweapon,
 					unsigned char airweapon,
-					int (*specialcheckfunc)(int));
-int  UnitIgnoreInvisibles(int SC_Unit);
+					int (*specialcheckfunc)(SCUNIT));
+int  UnitIgnoreInvisibles(SCUNIT SC_Unit);
 void unitprepareforatack(OBJ *a,OBJ *a2);
 void trapprepareforatack(OBJ *a,OBJ *a2);
 struct OBJ* OneUnitSearchGoal(OBJ *a,int ignoremodes);
@@ -156,10 +156,10 @@ int  makeinvisibles(struct OBJ *a);
 void invisiblestick(void);
 void SetHallucinationOBJ(OBJ *a);
 int  IfUnitIsSelectable(OBJ *a);
-void ChangeUnitSubUnitAndImagesAssociated(OBJ *a,int SC_NewUnit);
-void ChangeUnitAndImagesAssociated(OBJ *a,int SC_NewUnit);
+void ChangeUnitSubUnitAndImagesAssociated(OBJ *a,SCUNIT SC_NewUnit);
+void ChangeUnitAndImagesAssociated(OBJ *a,SCUNIT SC_NewUnit);
 void SlotReturnResources(OBJ *a,int playernr,int slotnr);
-void ReturnResources(unsigned char SC_Unit,int playernr,int factorreturn);
+void ReturnResources(SCUNIT SC_Unit,int playernr,int factorreturn);
 void initmoveaction(OBJ *a,OBJ *destobj,int mode,int startx,int starty,int x,int y);
 int  CalcDestVars(OBJ *a,OBJ *destobj,int x1,int y1,int x2,int y2,unsigned char flingy_id);
 void ForceKartChanges(OBJ *a);

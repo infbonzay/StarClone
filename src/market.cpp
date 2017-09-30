@@ -66,7 +66,7 @@ void IncrManaBITS(OBJ *a,int increasemana)
         a->mana=GetUnitMaxMana(a->SC_Unit,a->playernr);
 }
 //=======================================
-int GetUnitMaxMana(int SC_Unit,int playernr)
+int GetUnitMaxMana(SCUNIT SC_Unit,int playernr)
 {
     return(MAXMANA+GetAddManaFactor(SC_Unit,playernr));
 }
@@ -105,47 +105,47 @@ int CheckResourcePlayerBITS(int playernr,int mcostbits,int gcostbits)
     return(CHECKRES_OK);
 }
 //==================================
-int GetUnitBoxWidth(int SC_Unit)
+int GetUnitBoxWidth(SCUNIT SC_Unit)
 {
     return(alldattbl.units_dat->StarEditPlacementBoxWidthAndHeight[SC_Unit][0]);
 }
 //==================================
-int GetUnitBoxHeight(int SC_Unit)
+int GetUnitBoxHeight(SCUNIT SC_Unit)
 {
     return(alldattbl.units_dat->StarEditPlacementBoxWidthAndHeight[SC_Unit][1]);
 }
 //==================================
-int GetInEgg(int SC_Unit)
+int GetInEgg(SCUNIT SC_Unit)
 {
     return((alldattbl.units_dat->SpecialAbilityFlags[SC_Unit]&SPECIAL_TWOINONEEGG)!=0);
 }
 //==================================
-int GetSupplyUnit(int SC_Unit)
+int GetSupplyUnit(SCUNIT SC_Unit)
 {
     return(alldattbl.units_dat->SupplyRequired[SC_Unit]);
 }
 //==================================
-int GetSupplyProvided(int SC_Unit)
+int GetSupplyProvided(SCUNIT SC_Unit)
 {
     return(alldattbl.units_dat->SupplyProvided[SC_Unit]);
 }
 //==================================
-int GetSpaceProvided(int SC_Unit)
+int GetSpaceProvided(SCUNIT SC_Unit)
 {
     return(alldattbl.units_dat->SpaceProvided[SC_Unit]);
 }
 //==================================
-int GetSpaceRequired(int SC_Unit)
+int GetSpaceRequired(SCUNIT SC_Unit)
 {
     return(alldattbl.units_dat->SpaceRequired[SC_Unit]);
 }
 //==================================
-int GetUnitSize(int SC_Unit)
+int GetUnitSize(SCUNIT SC_Unit)
 {
     return(alldattbl.units_dat->UnitSize[SC_Unit]);
 }
 //==================================
-int GetUnitOverlaySize(int SC_Unit)
+int GetUnitOverlaySize(SCUNIT SC_Unit)
 {
     if (alldattbl.units_dat->SpecialAbilityFlags[SC_Unit]&SPECIAL_USELARGEOVERLAY)
 	return(LARGEOVERLAY);
@@ -154,7 +154,7 @@ int GetUnitOverlaySize(int SC_Unit)
     return(SMALLOVERLAY);
 }
 //==================================
-int CheckSupplyPlayer(int playernr,int SC_Unit)
+int CheckSupplyPlayer(int playernr,SCUNIT SC_Unit)
 {
     int race,supply,inegg;
     if (CODEFORPSIUNLIMIT)
@@ -173,7 +173,7 @@ int CheckSupplyPlayer(int playernr,int SC_Unit)
     return(CHECKRES_OK);
 }
 //=======================================
-void ChangeSupply(int playernr,int SC_Unit,int FACTOR)
+void ChangeSupply(int playernr,SCUNIT SC_Unit,int FACTOR)
 {
     if (playernr<PLAYEDPLAYERS)
     if (SC_Unit!=SC_NOUNITNR)
@@ -186,7 +186,7 @@ void ChangeSupply(int playernr,int SC_Unit,int FACTOR)
     }
 }
 //=======================================
-void ChangeMaxSupply(int playernr,int SC_Unit,int FACTOR)
+void ChangeMaxSupply(int playernr,SCUNIT SC_Unit,int FACTOR)
 {
     int race;
     if (SC_Unit!=SC_NOUNITNR)
@@ -213,7 +213,7 @@ void ChangeResourcePlayerBITS(int playernr,int FACTOR,int mcostbit,int gcostbit)
 }
 //=======================================
 //return nr of ticks
-int GetUnitBuildTime(int SC_Unit)
+int GetUnitBuildTime(SCUNIT SC_Unit)
 {
     if (map.unit_settings.use_defaults[SC_Unit])
     {
@@ -228,7 +228,7 @@ int GetUnitBuildTime(int SC_Unit)
     }
 }
 //=======================================
-void GetCostUnit(int SC_Unit,int *mcost,int *gcost)
+void GetCostUnit(SCUNIT SC_Unit,int *mcost,int *gcost)
 {
     if (map.unit_settings.use_defaults[SC_Unit])
     {
@@ -242,12 +242,12 @@ void GetCostUnit(int SC_Unit,int *mcost,int *gcost)
     }
 }
 //=======================================
-int GetBuildUnitScore(int SC_Unit)
+int GetBuildUnitScore(SCUNIT SC_Unit)
 {
     return(alldattbl.units_dat->BuildScore[SC_Unit]);
 }
 //=======================================
-int GetDestroyUnitScore(int SC_Unit)
+int GetDestroyUnitScore(SCUNIT SC_Unit)
 {
     return(alldattbl.units_dat->DestroyScore[SC_Unit]);
 }
@@ -353,12 +353,12 @@ int CheckForResource_typeid(OBJ *a,int playernr,int type_id,int obj_id)
     return(err);
 }
 //=======================================
-unsigned char GetUnitElevationLevel(int SC_Unit)
+unsigned char GetUnitElevationLevel(SCUNIT SC_Unit)
 {
     return(alldattbl.units_dat->ElevationLevel[SC_Unit]);
 }
 //=======================================
-int GetUnitMaxHitPoints(int SC_Unit)
+int GetUnitMaxHitPoints(SCUNIT SC_Unit)
 {
     int hp;
     hp = GetUnitMaxHealth(SC_Unit);
@@ -367,7 +367,7 @@ int GetUnitMaxHitPoints(int SC_Unit)
     return(hp);
 }
 //=======================================
-unsigned int GetUnitMaxHealth(int SC_Unit)
+unsigned int GetUnitMaxHealth(SCUNIT SC_Unit)
 {
     if (map.unit_settings.use_defaults[SC_Unit])
     {
@@ -396,7 +396,7 @@ void AddUnitHealth(OBJ *a,int addhealth)
 	a->health = GetUnitMaxHealth(a->SC_Unit);
 }
 //=======================================
-unsigned int GetUnitMaxShield(int SC_Unit)
+unsigned int GetUnitMaxShield(SCUNIT SC_Unit)
 {
 //    if (IsShieldEnable(SC_Unit))
     {

@@ -428,7 +428,7 @@ int activatesound(struct OBJ *a,int soundmode,int addfactor,int stopprevsound)
     return(soundmode);
 }
 //==============================================
-void getsoundIDfromunitdat(int SC_Unit,int soundmode,short *from,short *to)
+void getsoundIDfromunitdat(SCUNIT SC_Unit,int soundmode,short *from,short *to)
 {
     switch(soundmode)
     {

@@ -77,7 +77,7 @@ int GetTotalStartLocations(struct mapinfo *testmap)
     return(testmap->pl_startlocs);
 }
 //=====================================
-OBJ *CreateMineralsOnMap(int x,int y,int SC_Unit,int playernr,int count,int maxcount,mapinfo *loadedmap)
+OBJ *CreateMineralsOnMap(int x,int y,SCUNIT SC_Unit,int playernr,int count,int maxcount,mapinfo *loadedmap)
 {
     int xp,yp,sx,sy;
     struct OBJ *a;
@@ -104,7 +104,7 @@ OBJ *CreateMineralsOnMap(int x,int y,int SC_Unit,int playernr,int count,int maxc
     return(a);
 }
 //=====================================
-OBJ *CreateGeyserOnMap(int x,int y,int SC_Unit,int playernr,int count,int maxcount,mapinfo *loadedmap)
+OBJ *CreateGeyserOnMap(int x,int y,SCUNIT SC_Unit,int playernr,int count,int maxcount,mapinfo *loadedmap)
 {
     int xp,yp,sx,sy;
     struct OBJ *a;
@@ -146,7 +146,7 @@ OBJ *CreateUnitsFromMAP(struct unit_on_map *unit,struct mapinfo *loadedmap)
     struct OBJ *a,*aa,*a2,*a3=NULL;
     int i,playernr,xobj,yobj,race,owner;
     int hp,sp,ep;
-    unsigned char SC_Unit;
+    SCUNIT SC_Unit;
     if (unit->paried)
     {
 	if (unit->paried==TERRANPARIED)

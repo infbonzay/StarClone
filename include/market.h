@@ -23,7 +23,7 @@ int  getusemanaformodemove(int modemove);
 int  CheckForMana(OBJ *a,int needmana);
 void DecrMana(OBJ *a,int needmana);
 void IncrMana(OBJ *a,int needmana);
-int  GetUnitMaxMana(int SC_Unit,int playernr);
+int  GetUnitMaxMana(SCUNIT SC_Unit,int playernr);
 void SetUnitMana(OBJ *a,int mana);
 void SetUnitPercentMana(OBJ *a,int persmana);
 
@@ -31,24 +31,24 @@ void DecrManaBITS(OBJ *a,int needmana);
 void IncrManaBITS(OBJ *a,int needmana);
 int  CheckResourcePlayer(int nplayer,int mcost,int gcost);
 int  CheckResourcePlayerBITS(int nplayer,int mcostbits,int gcostbits);
-int  CheckSupplyPlayer(int nplayer,int SC_Unit);
-void ChangeSupply(int nplayer,int SC_Unit,int FACTOR);
-void ChangeMaxSupply(int nplayer,int SC_Unit,int FACTOR);
+int  CheckSupplyPlayer(int nplayer,SCUNIT SC_Unit);
+void ChangeSupply(int nplayer,SCUNIT SC_Unit,int FACTOR);
+void ChangeMaxSupply(int nplayer,SCUNIT SC_Unit,int FACTOR);
 void ChangeResourcePlayer(int nplayer,int FACTOR,int mcost,int gcost);
 void ChangeResourcePlayerBITS(int nplayer,int FACTOR,int mcostbits,int gcostbits);
 
-int  GetInEgg(int SC_Unit);
-int  GetSupplyUnit(int SC_Unit);
-int  GetSupplyProvided(int SC_Unit);
-int  GetSpaceProvided(int SC_Unit);
-int  GetSpaceRequired(int SC_Unit);
-int  GetUnitSize(int SC_Unit);
-int  GetUnitOverlaySize(int SC_Unit);
+int  GetInEgg(SCUNIT SC_Unit);
+int  GetSupplyUnit(SCUNIT SC_Unit);
+int  GetSupplyProvided(SCUNIT SC_Unit);
+int  GetSpaceProvided(SCUNIT SC_Unit);
+int  GetSpaceRequired(SCUNIT SC_Unit);
+int  GetUnitSize(SCUNIT SC_Unit);
+int  GetUnitOverlaySize(SCUNIT SC_Unit);
 
-int  GetUnitBuildTime(int SC_Unit);
-void GetCostUnit(int SC_Unit,int *mcost,int *gcost);
-int  GetBuildUnitScore(int SC_Unit);
-int  GetDestroyUnitScore(int SC_Unit);
+int  GetUnitBuildTime(SCUNIT SC_Unit);
+void GetCostUnit(SCUNIT SC_Unit,int *mcost,int *gcost);
+int  GetBuildUnitScore(SCUNIT SC_Unit);
+int  GetDestroyUnitScore(SCUNIT SC_Unit);
 
 void GetCostUpgr(int upgr_nr,int nplayer,int *mcost,int *gcost);
 int  GetUpgradeResearchTime(int upgr_id,int upgrlevel);
@@ -58,16 +58,16 @@ int  GetTechEnergyCost(int tech_id);
 int  GetTechResearchTime(int upgr_id);
 int  CheckForResource_typeid(OBJ *a,int nplayer,int type_id,int obj_id);
 
-unsigned int GetUnitMaxHealth(int SC_Unit);
+unsigned int GetUnitMaxHealth(SCUNIT SC_Unit);
 void AddUnitHealth(struct OBJ *a,int addhealth);
 void SetUnitHealth(struct OBJ *a,int health);
 void SetUnitPercentHealth(OBJ *a,int pershealth);
-int GetUnitMaxHitPoints(int SC_Unit);
-unsigned int GetUnitMaxShield(int SC_Unit);
+int GetUnitMaxHitPoints(SCUNIT SC_Unit);
+unsigned int GetUnitMaxShield(SCUNIT SC_Unit);
 void AddUnitShield(struct OBJ *a,int addshield);
 void SetUnitShield(struct OBJ *a,int shield);
 void SetUnitPercentShield(OBJ *a,int persmana);
-unsigned char GetUnitElevationLevel(int SC_Unit);
+unsigned char GetUnitElevationLevel(SCUNIT SC_Unit);
 
 int  LowLevelDamage(OBJ *atacker,OBJ *a,int weapon_id,int typedamage,int totaldamage,int directiondamage,int directorsplash);
 
@@ -76,8 +76,8 @@ int  LowLevelDamage(OBJ *atacker,OBJ *a,int weapon_id,int typedamage,int totalda
 //int  DoDamageToManyUnits(OBJ *atacker,OBJ *a,int xshot,int yshot,int weapon_id,int typedamage,int totaldamage,int directiondamage,mylist *dobjs,int damageby);
 //int  DoDamageToOneUnit(OBJ *atacker,OBJ *a,int xshot,int yshot,int weapon_id,int typedamage,int totaldamage,int directorsplash,int directiondamage,int damageby);
 //int  DoLineSplashDamage(OBJ *atacker,OBJ *destobj,int weapon_id,int totaldamage,int directiondamage,mylist *dobjs,int damageby);
-int  GetUnitBoxWidth(int SC_Unit);
-int  GetUnitBoxHeight(int SC_Unit);
+int  GetUnitBoxWidth(SCUNIT SC_Unit);
+int  GetUnitBoxHeight(SCUNIT SC_Unit);
 int  GetAtackCoolDown(OBJ *atacker,int weapon_id);
 
 

@@ -20,9 +20,9 @@
 int CanBuildOnPlace(int xb,int yb,int xsize,int ysize,
 		    unsigned short *returnedarray,
 		    char *ignorecells,
-		    int buildtype,int playernr,int *constrerror);
+		    SCUNIT SC_Unit,int playernr,int *constrerror);
 int CanBuildOnPlaceWithAddon(int xb,int yb,int parentx,int parenty,
-		    int xsize,int ysize,unsigned short *returnedarray,int buildtype,int playernr,int *constrerror);
+		    int xsize,int ysize,unsigned short *returnedarray,SCUNIT SC_Unit,int playernr,int *constrerror);
 int CanBuildOnCreep(int xb,int yb,int xsize,int ysize,
 		    unsigned short *returnedarray);
 int CanBuildOnPylonArea(int xb,int yb,int xsize,int ysize,

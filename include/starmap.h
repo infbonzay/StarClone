@@ -502,8 +502,8 @@ struct mapinfo
 #define UNITSTAT_PRODUCING	1
 #define UNITSTAT_HAVE		2
 
-void add_unit_stat(struct mapinfo *info,int stattype,int playernr,int unitnr);
-void sub_unit_stat(struct mapinfo *info,int stattype,int playernr,int unitnr);
+void add_unit_stat(struct mapinfo *info,int stattype,int playernr,SCUNIT SC_Unit);
+void sub_unit_stat(struct mapinfo *info,int stattype,int playernr,SCUNIT SC_Unit);
 
 /* reads map from unpacked chk */
 int  read_starmap( const char *fname, struct mapinfo * ,int flags);

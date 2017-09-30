@@ -134,7 +134,7 @@ int canatackobj(struct OBJ *a,struct OBJ *a2)
     return 0;
 }
 //==========================================
-struct OBJ *SearchUnitFunc(int playernr,int (*funccheckunit)(int SC_Unit),int nearx,int neary,int dist)
+struct OBJ *SearchUnitFunc(int playernr,int (*funccheckunit)(SCUNIT SC_Unit),int nearx,int neary,int dist)
 {
     int i,allstat;
     OBJ *a;
@@ -157,7 +157,7 @@ struct OBJ *SearchUnitFunc(int playernr,int (*funccheckunit)(int SC_Unit),int ne
 }
 //==========================================
 //==========================================
-struct OBJ *SearchUnit(int playernr,int SC_Unit,int shieldp,int healthp,int energyp)
+struct OBJ *SearchUnit(int playernr,SCUNIT SC_Unit,int shieldp,int healthp,int energyp)
 {
     int i,allstat;
     OBJ *a;
@@ -287,7 +287,7 @@ int SearchForUnitMask(int playernr,int mask,int *x,int *y)
     return(FALSE);
 }
 //=================================
-int FindSC_UnitType(OBJ *a2,int player,int SC_Unit,int SC_AddonUnit)
+int FindSC_UnitType(OBJ *a2,int player,SCUNIT SC_Unit,SCUNIT SC_AddonUnit)
 {
     OBJ *a;
     //if check for addon, we need to check addon in selected build(OBJ *a2)
@@ -396,7 +396,7 @@ struct OBJ *GetNearCenter(struct OBJ *a)
     return retobj;
 }
 //=================================
-struct OBJ *GetNearResource(struct OBJ *a,int SC_res_nr,int *resvalability)
+struct OBJ *GetNearResource(struct OBJ *a,SCUNIT SC_res_nr,int *resvalability)
 {
     int i,tempdist;
     struct OBJ *a2,*retobj=NULL;
@@ -426,47 +426,42 @@ struct OBJ *GetNearResource(struct OBJ *a,int SC_res_nr,int *resvalability)
     return(retobj);
 }
 //=================================
-int GetUnitSublabel(int SC_Unit)
+int GetUnitSublabel(SCUNIT SC_Unit)
 {
     return(alldattbl.units_dat->Sublabel[SC_Unit]);
 }
 //=================================
-int GetTargetAcquisitionRange(int SC_Unit)
+int GetTargetAcquisitionRange(SCUNIT SC_Unit)
 {
     return(alldattbl.units_dat->TargetAcquisitionRange[SC_Unit]);
 }
 //=================================
-int IsShieldEnable(int SC_Unit)
+int IsShieldEnable(SCUNIT SC_Unit)
 {
     return(alldattbl.units_dat->ShieldEnable[SC_Unit]);
 }
 //=================================
-int IsProducesUnits(int SC_Unit)
+int IsProducesUnits(SCUNIT SC_Unit)
 {
     return((alldattbl.units_dat->SpecialAbilityFlags[SC_Unit]&SPECIAL_PRODUCESUNITS)!=0);
 }
 //=================================
-int IsBuild(int SC_Unit)
+int IsBuild(SCUNIT SC_Unit)
 {
     return((alldattbl.units_dat->SpecialAbilityFlags[SC_Unit]&SPECIAL_ISBUILD)!=0);
 }
 //=================================
-int IsCloakable(int SC_Unit)
+int IsCloakable(SCUNIT SC_Unit)
 {
     return((alldattbl.units_dat->SpecialAbilityFlags[SC_Unit]&SPECIAL_CLOAKABLE)!=0);
 }
 //=================================
-int IsOrganic(int SC_Unit)
+int IsOrganic(SCUNIT SC_Unit)
 {
     return((alldattbl.units_dat->SpecialAbilityFlags[SC_Unit]&SPECIAL_ORGANICUNIT)!=0);
 }
 //=================================
-int IsBattleReactions(int SC_Unit)
-{
-    return((alldattbl.units_dat->SpecialAbilityFlags[SC_Unit]&SPECIAL_BATTLEREACTIONS)!=0);
-}
-//=================================
-int IsGroundUnit(int SC_Unit)
+int IsGroundUnit(SCUNIT SC_Unit)
 {
     return((alldattbl.units_dat->SpecialAbilityFlags[SC_Unit]&SPECIAL_FLY)==0);
 }
@@ -484,147 +479,147 @@ void SetOnSkyOBJ(OBJ *a,int flag)
 	a->prop &= ~VARONSKY;
 }
 //=================================
-int IsAirUnit(int SC_Unit)
+int IsAirUnit(SCUNIT SC_Unit)
 {
     return((alldattbl.units_dat->SpecialAbilityFlags[SC_Unit]&SPECIAL_FLY)!=0);
 }
 //=================================
-int IsHeroUnit(int SC_Unit)
+int IsHeroUnit(SCUNIT SC_Unit)
 {
     return((alldattbl.units_dat->SpecialAbilityFlags[SC_Unit]&SPECIAL_HERO)!=0);
 }
 //=================================
-int IsRegenerate(int SC_Unit)
+int IsRegenerate(SCUNIT SC_Unit)
 {
     return((alldattbl.units_dat->SpecialAbilityFlags[SC_Unit]&SPECIAL_REGENERATE)!=0);
 }
 //=================================
-int IsMechanical(int SC_Unit)
+int IsMechanical(SCUNIT SC_Unit)
 {
     return((alldattbl.units_dat->SpecialAbilityFlags[SC_Unit]&SPECIAL_MECHANICALUNIT)!=0);
 }
 //=================================
-int IsRobotic(int SC_Unit)
+int IsRobotic(SCUNIT SC_Unit)
 {
     return((alldattbl.units_dat->SpecialAbilityFlags[SC_Unit]&SPECIAL_ROBOTICUNIT)!=0);
 }
 //=================================
-int IsResourceContainer(int SC_Unit)
+int IsResourceContainer(SCUNIT SC_Unit)
 {
     return((alldattbl.units_dat->SpecialAbilityFlags[SC_Unit]&SPECIAL_RESOURCECONTAINER)!=0);
 }
 //=================================
-int IsResourceDepot(int SC_Unit)
+int IsResourceDepot(SCUNIT SC_Unit)
 {
     return((alldattbl.units_dat->SpecialAbilityFlags[SC_Unit]&SPECIAL_RESOURCEDEPOT)!=0);
 }
 //=================================
-int RequiresPylonEnergy(int SC_Unit)
+int RequiresPylonEnergy(SCUNIT SC_Unit)
 {
     return((alldattbl.units_dat->SpecialAbilityFlags[SC_Unit]&SPECIAL_REQUIRESPYLONAREA)!=0);
 }
 //=================================
-int RequiresCreep(int SC_Unit)
+int RequiresCreep(SCUNIT SC_Unit)
 {
     return((alldattbl.units_dat->SpecialAbilityFlags[SC_Unit]&SPECIAL_REQUIRESCREEP)!=0);
 }
 //=================================
-int IsPickupUnit(int SC_Unit)
+int IsPickupUnit(SCUNIT SC_Unit)
 {
     return((alldattbl.units_dat->SpecialAbilityFlags[SC_Unit]&SPECIAL_PICKUPITEM)!=0);
 }
 //=================================
-int IsNonNeutralFlag(int SC_Unit)
+int IsNonNeutralFlag(SCUNIT SC_Unit)
 {
     return((alldattbl.units_dat->StarEditAvailabilityFlags[SC_Unit]&STAREDIT_AF_NONNEUTRAL)!=0);
 }
 //=================================
-int IsExpansionUnit(int SC_Unit)
+int IsExpansionUnit(SCUNIT SC_Unit)
 {
     return((alldattbl.units_dat->StarEditAvailabilityFlags[SC_Unit]&STAREDIT_AF_EXPANSIONUNIT)!=0);
 }
 //=================================
-int IsDoodadState(int SC_Unit)
+int IsDoodadState(SCUNIT SC_Unit)
 {
     return((alldattbl.units_dat->StarEditAvailabilityFlags[SC_Unit]&STAREDIT_AF_DOODADSTATE)!=0);
 }
 //=================================
-int IsZergRace(int SC_Unit)
+int IsZergRace(SCUNIT SC_Unit)
 {
     return((alldattbl.units_dat->StarEditGroupFlags[SC_Unit]&STAREDIT_GF_ZERGRACE)!=0);
 }
 //=================================
-int IsTerranRace(int SC_Unit)
+int IsTerranRace(SCUNIT SC_Unit)
 {
     return((alldattbl.units_dat->StarEditGroupFlags[SC_Unit]&STAREDIT_GF_TERRANRACE)!=0);
 }
 //=================================
-int IsProtossRace(int SC_Unit)
+int IsProtossRace(SCUNIT SC_Unit)
 {
     return((alldattbl.units_dat->StarEditGroupFlags[SC_Unit]&STAREDIT_GF_PROTOSSRACE)!=0);
 }
 //=================================
-int IsNoAnyGroupFlag(int SC_Unit)
+int IsNoAnyGroupFlag(SCUNIT SC_Unit)
 {
     return((alldattbl.units_dat->StarEditGroupFlags[SC_Unit]&STAREDIT_GF_NOANYGROUPFLAG)==0);
 }
 //=================================
-int IsGroupBuildFlag(int SC_Unit)
+int IsGroupBuildFlag(SCUNIT SC_Unit)
 {
     return((alldattbl.units_dat->StarEditGroupFlags[SC_Unit]&STAREDIT_GF_BUILDING)!=0);
 }
 //=================================
-int IsGroupMenFlag(int SC_Unit)
+int IsGroupMenFlag(SCUNIT SC_Unit)
 {
     return((alldattbl.units_dat->StarEditGroupFlags[SC_Unit]&STAREDIT_GF_MEN)!=0);
 }
 //=================================
-int IsGroupFactoryFlag(int SC_Unit)
+int IsGroupFactoryFlag(SCUNIT SC_Unit)
 {
     return((alldattbl.units_dat->StarEditGroupFlags[SC_Unit]&STAREDIT_GF_FACTORY)!=0);
 }
 //=================================
-int IsGroupNeutralFlag(int SC_Unit)
+int IsGroupNeutralFlag(SCUNIT SC_Unit)
 {
     return((alldattbl.units_dat->StarEditGroupFlags[SC_Unit]&STAREDIT_GF_NEUTRAL)!=0);
 }
 //=================================
-int IsAddon(int SC_Unit)
+int IsAddon(SCUNIT SC_Unit)
 {
     return((alldattbl.units_dat->SpecialAbilityFlags[SC_Unit]&SPECIAL_ADDON)!=0);
 }
 //=================================
-int IsSpellCaster(int SC_Unit)
+int IsSpellCaster(SCUNIT SC_Unit)
 {
     return((alldattbl.units_dat->SpecialAbilityFlags[SC_Unit]&SPECIAL_SPELLCASTER)!=0);
 }
 //=================================
-int IsDetector(int SC_Unit)
+int IsDetector(SCUNIT SC_Unit)
 {
     return((alldattbl.units_dat->SpecialAbilityFlags[SC_Unit]&SPECIAL_DETECTOR)!=0);
 }
 //=================================
-int IsInvincibleUnit(int SC_Unit)
+int IsInvincibleUnit(SCUNIT SC_Unit)
 {
     return((alldattbl.units_dat->SpecialAbilityFlags[SC_Unit]&SPECIAL_INVINCIBLE)!=0);
 }
 //=================================
-int IsPermanentCloak(int SC_Unit)
+int IsPermanentCloak(SCUNIT SC_Unit)
 {
     return((alldattbl.units_dat->SpecialAbilityFlags[SC_Unit]&SPECIAL_PERMANENTCLOAK)!=0);
 }
 //=================================
-int  IsSubUnit(int SC_Unit)
+int  IsSubUnit(SCUNIT SC_Unit)
 {
     return((alldattbl.units_dat->SpecialAbilityFlags[SC_Unit]&SPECIAL_SUBUNIT)!=0);
 }
 //=================================
-int IfHaveSubUnit(int SC_Unit)
+int IfHaveSubUnit(SCUNIT SC_Unit)
 {
     return(alldattbl.units_dat->Subunit1[SC_Unit] < MAX_UNITS_ELEM);
 }
 //=================================
-int GetUnitSoundID(unsigned char SC_Unit,unsigned char sndtype)
+int GetUnitSoundID(SCUNIT SC_Unit,unsigned char sndtype)
 {
     switch(sndtype)
     {
@@ -655,12 +650,12 @@ int IsInvincibleOBJ(OBJ *a)
     return(a->prop&VARINVINCIBILITY);
 }
 //=================================
-int GetUnitWidthAndHeight(int SC_Unit,int pos)
+int GetUnitWidthAndHeight(SCUNIT SC_Unit,int pos)
 {
     return(alldattbl.units_dat->StarEditPlacementBoxWidthAndHeight[SC_Unit][pos]);
 }
 //=================================
-int GetUnitDimensions(int SC_Unit,int pos)	//leftuprightdown
+int GetUnitDimensions(SCUNIT SC_Unit,int pos)	//leftuprightdown
 {
     return(alldattbl.units_dat->UnitSizeLeftUpRightDown[SC_Unit][pos]);
 }
@@ -673,7 +668,7 @@ void SetInvincibleOBJ(OBJ *a,int flag)
 	a->prop&=~VARINVINCIBILITY;
 }
 //=================================
-int IsResource(struct OBJ *a,int SC_typeresource)
+int IsResource(struct OBJ *a,SCUNIT SC_typeresource)
 {
     switch(SC_typeresource)
     {
@@ -733,12 +728,12 @@ int IsUnitBaseBuild(struct OBJ *a)
     return 0;
 }
 //=================================
-int IsPsiUnit(int SC_Unit)
+int IsPsiUnit(SCUNIT SC_Unit)
 {
     return(GetSupplyProvided(SC_Unit)!=0);
 }
 //=================================
-int IsWorkerUnit(int SC_Unit)
+int IsWorkerUnit(SCUNIT SC_Unit)
 {
     switch(SC_Unit)
     {
@@ -766,7 +761,7 @@ OBJ *GetGEYSERfromMAP(int xmap,int ymap)
     return(NULL);
 }
 //==========================================
-int GetUnitRace(int SC_Unit)
+int GetUnitRace(SCUNIT SC_Unit)
 {
     int i;
     for (i=0;i<3;i++)
@@ -790,7 +785,7 @@ int IsHallucination(OBJ *a)
     return(GetMageAtr(&a->atrobj,ATRHALLUCINATION));
 }
 //==================================
-void ChangeSC_Unit(struct OBJ *a,int newplayernr,int SC_Unit,int flagready)
+void ChangeSC_Unit(struct OBJ *a,int newplayernr,SCUNIT SC_Unit,int flagready)
 {
     int inegg,i,ready;
     if (flagready==CHANGESC_UNIT_CONSTR)
@@ -820,7 +815,7 @@ void ChangeSC_Unit(struct OBJ *a,int newplayernr,int SC_Unit,int flagready)
     }
 }
 //==================================
-int GetBirthDirection(int SC_Unit)
+int GetBirthDirection(SCUNIT SC_Unit)
 {
     unsigned char birthdir=alldattbl.units_dat->UnitDirection[SC_Unit];
     if (birthdir>=32)
@@ -861,12 +856,12 @@ char *getmapSTR(struct mapinfo *testmap,int nrofstr)
     return(str);
 }
 //==========================================
-int GetDeltaAddonHorizontal(int SC_Unit)
+int GetDeltaAddonHorizontal(SCUNIT SC_Unit)
 {
     return(alldattbl.units_dat->AddonHorizontalVertical[SC_Unit - 106][0]);
 }
 //==========================================
-int GetDeltaAddonVertical(int SC_Unit)
+int GetDeltaAddonVertical(SCUNIT SC_Unit)
 {
     return(alldattbl.units_dat->AddonHorizontalVertical[SC_Unit - 106][1]);
 }

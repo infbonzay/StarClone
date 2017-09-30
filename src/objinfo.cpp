@@ -104,7 +104,7 @@ int GetUnitSightRange(OBJ *a,OBJstruct *b)
     return(seerange);
 }
 //=================================
-int GetWidthSummOfUnits(unsigned char SC_Unit1,unsigned char SC_Unit2,int deltax,int deltay)
+int GetWidthSummOfUnits(SCUNIT SC_Unit1,SCUNIT SC_Unit2,int deltax,int deltay)
 {
     if (abs(deltax) > abs(deltay))
         return ((GetUnitWidthAndHeight(SC_Unit1,UNITDIM_WIDTH)/2 + GetUnitWidthAndHeight(SC_Unit2,UNITDIM_WIDTH)/2)<<8);
@@ -112,7 +112,7 @@ int GetWidthSummOfUnits(unsigned char SC_Unit1,unsigned char SC_Unit2,int deltax
 	return ((GetUnitWidthAndHeight(SC_Unit1,UNITDIM_HEIGHT)/2 + GetUnitWidthAndHeight(SC_Unit2,UNITDIM_HEIGHT)/2)<<8);
 }
 //=================================
-int GetDestUnitHalfSize(unsigned char SC_Unit,int deltax,int deltay)
+int GetDestUnitHalfSize(SCUNIT SC_Unit,int deltax,int deltay)
 {
     if (abs(deltax) > abs(deltay))
         return (GetUnitWidthAndHeight(SC_Unit,UNITDIM_WIDTH)/2);
@@ -204,9 +204,9 @@ int CheckWeaponRange(OBJ *a,OBJ *destobj,int weapon_id,int playernr)
     return(1);//too far
 }
 //====================================
-int UnitWeaponMask(int SC_Unit)
+int UnitWeaponMask(SCUNIT SC_Unit)
 {
-    unsigned char Subunit1;
+    SCUNIT Subunit1;
     if (SC_Unit == SC_BUNKEROBJ)
     {
 	return((1<<GROUNDATACKER) | (1<<AIRATACKER));
@@ -222,14 +222,15 @@ int UnitWeaponMask(int SC_Unit)
     return(weaponmask);
 }
 //====================================
-unsigned char GetNewWeaponType(OBJ *atacker,OBJ *destobj,int newatackerunitusedweapon)
+unsigned char GetNewWeaponType(OBJ *a,OBJ *destobj,int newatackerunitusedweapon)
 {
-    unsigned char Subunit1,groundweapon,airweapon,SC_Unit,weapon_id;
-    Subunit1 = alldattbl.units_dat->Subunit1[newatackerunitusedweapon];
-    if (Subunit1<MAX_UNITS_ELEM)
-    	SC_Unit = Subunit1;
-    else
-        SC_Unit = newatackerunitusedweapon;
+    unsigned char groundweapon,airweapon,weapon_id;
+    SCUNIT SC_Unit;
+//    Subunit1 = alldattbl.units_dat->Subunit1[newatackerunitusedweapon];
+//    if (Subunit1<MAX_UNITS_ELEM)
+//    	SC_Unit = Subunit1;
+//    else
+    SC_Unit = newatackerunitusedweapon;
     weapon_id = MAX_WEAPONS_ELEM;
     groundweapon = alldattbl.units_dat->GroundWeapon[SC_Unit];
     if (groundweapon<MAX_WEAPONS_ELEM && !IsOnSkyOBJ(destobj) )
@@ -245,7 +246,7 @@ int GetCloakRange(OBJ *a,OBJstruct *b)
     return(b->cloakrange);
 }
 //====================================
-int GetAddManaFactor(int SC_Unit,int playernr)
+int GetAddManaFactor(SCUNIT SC_Unit,int playernr)
 {
     OBJstruct *b=loadobj(SC_Unit);
     if (IsHeroUnit(SC_Unit))
@@ -304,7 +305,7 @@ int GetNrSomeObjects(OBJ *a,int *newunit,char **iconmes)
 //*upgradenr - upgrade number they have
 //*upgdamage - damage that have upgrade technology
 //so totaldamage=damage+*upgdamage
-int GetAtackDamage(int SC_Unit,int playernr,int nrofhits,int weapon_id,int *upgradenr,int *upgdamage)
+int GetAtackDamage(SCUNIT SC_Unit,int playernr,int nrofhits,int weapon_id,int *upgradenr,int *upgdamage)
 {
     unsigned char weapon_upgr;
     int nrofmissiles;
@@ -326,7 +327,7 @@ int GetAtackDamage(int SC_Unit,int playernr,int nrofhits,int weapon_id,int *upgr
     }
 }
 //====================================
-int GetWeaponDamage(int SC_Unit,int playernr,int weapon_id)
+int GetWeaponDamage(SCUNIT SC_Unit,int playernr,int weapon_id)
 {
     unsigned char weapon_upgr;
     int upgradenr,upgradedamage;
@@ -358,7 +359,7 @@ int UniqueWeapon(int weapon_id)
     return(0);
 }
 //====================================
-int GetInfoWeapon(int SC_Unit,int playernr,int nrofhits,int weapon_id,int *upgradenr,int *upgdamage,char **finalmes)
+int GetInfoWeapon(SCUNIT SC_Unit,int playernr,int nrofhits,int weapon_id,int *upgradenr,int *upgdamage,char **finalmes)
 {
     unsigned char weapon_upgr;
     int nrofmissiles;
@@ -439,7 +440,7 @@ int GetShieldArmor(OBJ *a,int *upgradenr)
     return(sharmor);
 }
 //====================================
-char *getOBJname(unsigned char SC_Unit)
+char *getOBJname(SCUNIT SC_Unit)
 {
     if (SC_Unit!=SC_NOUNITNR)
     {
@@ -513,19 +514,6 @@ int IsActiveUnit(OBJ *a)
 //=================================
 int IsAtackerActiveUnit(OBJ *a)
 {
-/*    int intransport=0;
-    if (a->modemove == MODEDIE)
-	return(0);
-    if (a->prop & VARINTRANSPORT)
-    {
-	if (a->in_transport->SC_Unit == SC_BUNKEROBJ)
-	    return(1);
-	intransport = 1;
-    }
-    if (intransport || (a->prop & VARNOTHERE) || GetMageAtr(&a->atrobj,ATRSTASIS))
-	return(0);
-    return(1);
-*/
     if (a->modemove == MODEDIE)
 	return(0);
     if ((a->prop&(VARINTRANSPORT|VARNOTHERE)) || GetMageAtr(&a->atrobj,ATRSTASIS))
@@ -629,7 +617,7 @@ int objcmp(struct OBJ *a[],struct OBJ *b,int c)
    return -1;
 }
 //==================================
-int GetRangeObjSize(unsigned char SC_Unit,int *sizex,int *sizey)
+int GetRangeObjSize(SCUNIT SC_Unit,int *sizex,int *sizey)
 {
     int sizeret=0,sx,sy;
     sx = POSX(GetUnitWidthAndHeight(SC_Unit,UNITDIM_WIDTH));
@@ -671,7 +659,7 @@ void AlignMAPXYCoordRD(int *r,int *d)
         *d=MAXYMAP-1;
 }
 //=======================================
-int IfCanClickOBJ(unsigned char SC_Unit)
+int IfCanClickOBJ(SCUNIT SC_Unit)
 {
     unsigned char flingy_id;
     short sprites_id,images_id;

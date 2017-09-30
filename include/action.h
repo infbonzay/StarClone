@@ -58,8 +58,8 @@ void MakeQueueAction(int actiontype,void *a,void *destobj,
 void AdditionalMoveProceed(struct OBJ *a,int param0,int param1,int param2);
 void DettachAddon(OBJ *a);
 
-unsigned char GetMotherAddon(unsigned char SC_Unit);
-void GetAddonType(unsigned char SC_Unit,unsigned char *addontype1,unsigned char *addontype2);
+unsigned char GetMotherAddon(SCUNIT SC_Unit);
+void GetAddonType(SCUNIT SC_Unit,unsigned char *addontype1,unsigned char *addontype2);
 
 int  MageDepend(OBJ *a,int player,int typeofbuild);
 
@@ -85,7 +85,7 @@ void UnitBeginATACK(OBJ *a,OBJ *destobj);
 void UnitEndATACK(OBJ *a);
 int  AttachAddonToBuild(OBJ *a1);
 int  AttachNearestAddon(OBJ *a1);
-void AttachAddonDeltaCoords(unsigned char base_SC_Unit,unsigned char addon_SC_Unit,int *deltax,int *deltay);
+void AttachAddonDeltaCoords(SCUNIT base_SC_Unit,SCUNIT addon_SC_Unit,int *deltax,int *deltay);
 
 
 #endif /*_ACTION_W */

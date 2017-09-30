@@ -287,7 +287,7 @@ void checkstrforrefer(char *str,int *refer,int *mulfactor)
 int readrecordmans(FILE *f,int objnr)
 {
 HANDLE nr_mpq;
-unsigned int SC_Unit;
+SCUNIT SC_Unit;
 int sprites_id;
 
 int mcost,gcost;
@@ -1138,7 +1138,7 @@ void FreeSMKInfo(SMKPORTRAITS *smkinfo)
     wfree(smkinfo);
 }
 //=====================================================
-SMKPORTRAITS *FillSMKInfo(int SC_Unit)
+SMKPORTRAITS *FillSMKInfo(SCUNIT SC_Unit)
 {
     SMKPORTRAITS *portraits=NULL;
 //    HANDLE hmpq;

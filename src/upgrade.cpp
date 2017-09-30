@@ -71,7 +71,7 @@ int GetMaxTechTree(mapinfo *loadedmap,int playernr,int tech_id)
 }
 //===================================
 //get unit restrictions
-int GetUnitRestrictions(mapinfo *loadedmap,int playernr,int SC_Unit)
+int GetUnitRestrictions(mapinfo *loadedmap,int playernr,SCUNIT SC_Unit)
 {
     if (loadedmap->prod_restrictions.use_defaults[playernr][SC_Unit])
     {

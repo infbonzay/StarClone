@@ -239,18 +239,18 @@ int (*DoorConditionFunctions[TRG_MAXTYPEFUNC])(int *var1,int var2)=
 		    };
 //=================================================
 int UNITNRFORCHECK;
-int CheckForUnit_UnitNr(int SC_Unit)
+int CheckForUnit_UnitNr(SCUNIT SC_Unit)
 {
     return(UNITNRFORCHECK==SC_Unit);
 }
 //=================================================
-int CheckForUnit_EveryUnit(int SC_Unit)
+int CheckForUnit_EveryUnit(SCUNIT SC_Unit)
 {
     return(1);
 }
 //=================================================
 char readyfunc[5]={1,1,0,0,0};
-int (*CheckUnit[5])(int )=
+int (*CheckUnit[5])(SCUNIT)=
 		    {
 			&CheckForUnit_UnitNr,				//unit  nr			//228
 			&CheckForUnit_EveryUnit,			//every unit			//229
@@ -269,7 +269,7 @@ int CheckForUnit(int (*ConditionFunction)(int *, int),
 		 int actiononplayers,int unitid,int cntunits,OBJ **retlast,struct XY *searcharea,int modemove)
 {
     int i,nrofunits=0,checkready=0;
-    int (*UnitTypeFunc) (int);
+    int (*UnitTypeFunc) (SCUNIT);
     struct OBJ *a,*last=NULL;
 //    mylistsimple *objlist = new mylistsimple(MaxObjects);
     if (unitid>=MAX_UNITS_ELEM)					

@@ -32,7 +32,7 @@ public:
     short int		dmgpertick;
     MAIN_IMG		*img;
     unsigned char	flags;
-    unsigned char	SC_Unit;
+    SCUNIT		SC_Unit;
     unsigned char	movedticks;
     int			sizedestobj;
     

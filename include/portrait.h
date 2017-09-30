@@ -72,13 +72,13 @@ int  loadSMK(SMKPLAY *tempplay,int smkflags);
 void unloadSMK(SMKPLAY *templay);
 int  unloadstaticsmk(void);
 int  loadstaticsmk(void);
-void changeunitportrait(HANDLE hmpq,int smknr,int SC_Unit);
+void changeunitportrait(HANDLE hmpq,int smknr,SCUNIT SC_Unit);
 
 void showportrait(void);
 void drawmainportrait(int x,int y,unsigned char *pixelsbuff);
 void mergepixels(int iteration,unsigned char *outbuf,unsigned char *buf,unsigned char *buf2);
-int  SetPortrait(int SC_Unit,int typeofport,int soundfilenr,int showedtime);
-int  SetPortraitFromSound(int SC_Unit,int soundmode,int soundfilenr);
+int  SetPortrait(SCUNIT SC_Unit,int typeofport,int soundfilenr,int showedtime);
+int  SetPortraitFromSound(SCUNIT SC_Unit,int soundmode,int soundfilenr);
 void ShowAdvisorPortrait(void);
 void SetPortraitOBJ(OBJ *a);
 OBJ *GetPortraitOBJ(void);

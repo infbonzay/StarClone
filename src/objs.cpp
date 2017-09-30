@@ -140,13 +140,13 @@ OBJ *CreateArchon(OBJ *a,OBJ *a2)
     return(newobj);
 }
 //==========================================
-struct OBJ *createobjfulllife(int x,int y,int SC_Unit,int player)
+struct OBJ *createobjfulllife(int x,int y,SCUNIT SC_Unit,int player)
 {
     return(createobjmanwithlife(x,y,SC_Unit,player,100,100,100,1));
 }
 //==========================================
 //sozdati OBJECT
-struct OBJ *createobjmanwithlife(int x,int y,int SC_Unit,int Pl,
+struct OBJ *createobjmanwithlife(int x,int y,SCUNIT SC_Unit,int Pl,
 				 int persshield,int perslife,int persenergy,int supplyflag)
 {
     OBJ *a;
@@ -238,29 +238,29 @@ struct OBJ *createobjmanwithlife(int x,int y,int SC_Unit,int Pl,
 }
 //==========================================
 //sozdati OBJECT
-struct OBJ *createobjman(int x,int y,int SC_Unit,int playernr)
+struct OBJ *createobjman(int x,int y,SCUNIT SC_Unit,int playernr)
 {
     return(createobjman(x,y,SC_Unit,playernr,0));
 }
 //==========================================
 //sozdati OBJECT
-struct OBJ *createobjman(int x,int y,int SC_Unit,int playernr,int readyatbegin)
+struct OBJ *createobjman(int x,int y,SCUNIT SC_Unit,int playernr,int readyatbegin)
 {
     return (createobjman(x,y,SC_Unit,playernr,readyatbegin,100,100,100));
 }
 //==========================================
-struct OBJ *createobjman(int x,int y,int SC_Unit,int playernr,int readyatbegin,int persshield,int perslife,int energypers)
+struct OBJ *createobjman(int x,int y,SCUNIT SC_Unit,int playernr,int readyatbegin,int persshield,int perslife,int energypers)
 {
     return(createobjlowlevel(NULL,x,y,SC_Unit,playernr,readyatbegin,persshield,perslife,energypers,NOLOIMAGE));
 }
 //==========================================
-struct OBJ *createreschunk(OBJ *workerobj,int x,int y,unsigned char SC_Unit)
+struct OBJ *createreschunk(OBJ *workerobj,int x,int y,SCUNIT SC_Unit)
 {
     return(createobjlowlevel(workerobj,x,y,SC_Unit,GREYNEUTRALCOLORPLAYER,1,100,100,30,NOLOIMAGE));
 }
 //==========================================
 //primary function to create an object
-struct OBJ *createobjlowlevel(OBJ *workerobj,int x,int y,int SC_Unit,int playernr,
+struct OBJ *createobjlowlevel(OBJ *workerobj,int x,int y,SCUNIT SC_Unit,int playernr,
 			      int readyatbegin,int persshield,int perslife,int energypers,unsigned short imagelo_id)
 {
     int i;
@@ -395,7 +395,7 @@ struct OBJ *createobjlowlevel(OBJ *workerobj,int x,int y,int SC_Unit,int playern
 	//if subunit skip creation image (this is will do at base from initturret script)
 	if (IsSubUnit(SC_Unit))
 	{
-	    a->prop |= VARNOTHERE;
+//	    a->prop |= VARNOTHERE;
 	    return(a);
 	}
 	CreateImageAndAddToList(a,x<<8,y<<8,readyatbegin,imagelo_id);
@@ -467,7 +467,7 @@ void deselectallexcludeonetypeobj(struct OBJ *a1)
 void DetectIfAnyPylonOnSelected(void)
 {
 #ifdef DESENPYLONAREA
-    unsigned char SC_Unit;
+    SCUNIT SC_Unit;
     pylonselected = 0;
     if (buildconstr != SC_NOUNITNR)
     {
@@ -1290,7 +1290,7 @@ void CreateImageAndAddToList(OBJ *a,int x256,int y256,int readyatbegin,unsigned 
     }
 }
 //==================================
-void ChangeUnitSubUnitAndImagesAssociated(OBJ *a,int SC_NewUnit)
+void ChangeUnitSubUnitAndImagesAssociated(OBJ *a,SCUNIT SC_NewUnit)
 {
     int x256,y256;
     x256 = GetOBJx256(a);
@@ -1308,7 +1308,7 @@ void ChangeUnitSubUnitAndImagesAssociated(OBJ *a,int SC_NewUnit)
 
 }
 //==================================
-void ChangeUnitAndImagesAssociated(OBJ *a,int SC_NewUnit)
+void ChangeUnitAndImagesAssociated(OBJ *a,SCUNIT SC_NewUnit)
 {
     int x256,y256;
     x256 = GetOBJx256(a);
@@ -2687,7 +2687,7 @@ void SlotReturnResources(OBJ *a,int playernr,int slotnr)
     ChangeResourcePlayer(playernr,PLUSFACTOR,mcost*factorreturn/100,gcost*factorreturn/100);
 }
 //==========================================
-void ReturnResources(unsigned char SC_Unit,int playernr,int factorreturn)
+void ReturnResources(SCUNIT SC_Unit,int playernr,int factorreturn)
 {
     int mcost,gcost;
     GetCostUnit(SC_Unit,&mcost,&gcost);
@@ -3230,7 +3230,7 @@ void dieobj_silently(OBJ *a)
 //=================================
 void dieobj(struct OBJ *a)
 {
-    unsigned char SC_Unit;
+    SCUNIT SC_Unit;
     struct OBJstruct *b;
     int i,needtodestroyonexit,inegg,damage,oldsnd,changesupply=0;
     struct OBJ *a1,*newobj;
@@ -3949,7 +3949,7 @@ void SetAtackTick(OBJ *a)
 #define UNITATACKFUNCTYPE_VULTUREMINES		6
 #define UNITATACKFUNCTYPE_UNITWITHSUBUNIT	7
 //=================================
-int GetOBJAtackWithoutWeapons(int SC_Unit)
+int GetOBJAtackWithoutWeapons(SCUNIT SC_Unit)
 {
     switch(SC_Unit)
     {
@@ -3963,7 +3963,7 @@ int GetOBJAtackWithoutWeapons(int SC_Unit)
 	    return(UNITATACKFUNCTYPE_CARRIERS);
 	case SC_VULTUREMINEOBJ:
 	    return(UNITATACKFUNCTYPE_VULTUREMINES);
-	case SC_TANKNORMALOBJ:
+/*	case SC_TANKNORMALOBJ:
 	case SC_TANKSIEGEOBJ:
 	case SC_GOLIATHOBJ:
 	case SC_HERO_EDMUNDDUKETMOBJ:
@@ -3977,7 +3977,7 @@ int GetOBJAtackWithoutWeapons(int SC_Unit)
 	case SC_HERO_EDMUNDDUKESMTURRETOBJ:
 	case SC_HERO_ALANSCHEZARTURRETOBJ:
 	    return(UNITATACKFUNCTYPE_NONE);
-	default:
+*/	default:
 	    if (IsDoodadState(SC_Unit)&&!IsInvincibleUnit(SC_Unit))
 	    {
 		//doodad traps
@@ -4027,7 +4027,7 @@ struct OBJ* BunkerAtackFunc(OBJ *aa,unsigned char wm,unsigned char gw,unsigned c
 	return(NULL);
 }
 //=================================
-int CheckMineSpecialUnit(int SC_Unit)
+int CheckMineSpecialUnit(SCUNIT SC_Unit)
 {
     return(IsBuild(SC_Unit));
 }
@@ -4054,17 +4054,6 @@ struct OBJ* DoodadTrapAtackFunc(OBJ *a,unsigned char weaponmask,unsigned char gr
     return(a2);
 }
 //=================================
-struct OBJ* UnitWithSubUnitAtackFunc(OBJ *a,unsigned char weaponmask,unsigned char groundweapon,unsigned char airweapon)
-{
-    OBJ *a2;
-    if (weaponmask)
-    {
-        a2 = FindObjForAtack(a,weaponmask,groundweapon,airweapon,NULL);
-	unitprepareforatack(a,a2);
-    }
-    return(a2);
-}
-//=================================
 struct OBJ* (*Atack_IDFunc[8])(OBJ *a,unsigned char weaponmask,unsigned char groundweapon,unsigned char airweapon)=
 			{
 			    NULL,
@@ -4074,25 +4063,30 @@ struct OBJ* (*Atack_IDFunc[8])(OBJ *a,unsigned char weaponmask,unsigned char gro
 			    &EveryUnitAtackFunc,
 			    &EveryUnitAtackFunc,
 			    &VultureMineUnitAtackFunc,
-			    &UnitWithSubUnitAtackFunc
+			    &EveryUnitAtackFunc,
 			};
 //=================================
 struct OBJ* OneUnitSearchGoal(OBJ *a,int ignoremodes)
 {
-    unsigned char weaponmask,groundweapon,airweapon,SC_Unit,Subunit1,unitatack_id;
+    unsigned char weaponmask,groundweapon,airweapon,unitatack_id;
+    SCUNIT SC_Unit,Subunit1;
+    OBJ *baseunit = a;
     //neutral units cannot automatic atack
     if (IsAtackerActiveUnit(a) && ( map.pl_owner[a->playernr] == OWNER_HUMAN || map.pl_owner[a->playernr] == OWNER_COMPUTER))
     {
-	if (ignoremodes || a->modemove == MODESTOP || a->prop & VARHOLDPOSBIT || a->modemove == MODEPATROL || (a->prop & VARMOVEINATACKMODE)||
-	    (IsDoodadState(a->SC_Unit)&&!IsInvincibleUnit(a->SC_Unit)&&(GetDoodadMoveDirection(a) != DOODAD_MOVE_NONE)))
+	if (IsSubUnit(a->SC_Unit))
+	    baseunit = a->subunit;
+	if (ignoremodes || baseunit->modemove == MODESTOP || baseunit->prop & VARHOLDPOSBIT || baseunit->modemove == MODEPATROL || 
+	    (baseunit->prop & VARMOVEINATACKMODE) ||
+	    (IsDoodadState(baseunit->SC_Unit)&&!IsInvincibleUnit(baseunit->SC_Unit)&&(GetDoodadMoveDirection(baseunit) != DOODAD_MOVE_NONE)))
 	    {
 		//zero if usual unit,     bunker,reaver,carrie have a special unitatack_id
 		SC_Unit = a->SC_Unit;
 		unitatack_id = GetOBJAtackWithoutWeapons(SC_Unit);
 		switch(unitatack_id)
 		{
-		    case UNITATACKFUNCTYPE_UNITWITHSUBUNIT:	//unitwithsubunits
-			SC_Unit = alldattbl.units_dat->Subunit1[SC_Unit];
+//		    case UNITATACKFUNCTYPE_UNITWITHSUBUNIT:	//unitwithsubunits
+//			SC_Unit = alldattbl.units_dat->Subunit1[SC_Unit];
 		    case UNITATACKFUNCTYPE_EVERYUNITS:		//all units that not have a scpecial functions
 		    case UNITATACKFUNCTYPE_DOODADS:		//doodadunits
 		    case UNITATACKFUNCTYPE_VULTUREMINES:	//vulturemine
@@ -4128,7 +4122,7 @@ void SearchForAtacks(void)
     for (i=0;i<MaxObjects;i++)
     {
 	a = objects[i];
-	if (IsBattleReactions(a->SC_Unit))
+	if (IsFullAutoAttack(a->SC_Unit))
 	    if (!a->finalOBJ)				//???? i need to atack unit who atack me
 		if (a->searchforatack_tick--==0)
 		{
@@ -4138,7 +4132,7 @@ void SearchForAtacks(void)
     }
 }
 //=================================
-int UnitIgnoreInvisibles(int SC_Unit)
+int UnitIgnoreInvisibles(SCUNIT SC_Unit)
 {
     if (SC_Unit == SC_VULTUREMINEOBJ)
 	return(1);
@@ -4150,7 +4144,7 @@ OBJ *FindObjForAtack(OBJ *a,
 		     unsigned char weaponmask,
 		     unsigned char groundweapon,
 		     unsigned char airweapon,
-		     int (*checkspecialfunc)(int))
+		     int (*checkspecialfunc)(SCUNIT))
 {
     int deltaz,i,j,minrange,maxrange,finddistance,mindeltaz[3],weapon_id,wmask;
     int addsiegerange = 0;
@@ -4163,9 +4157,9 @@ OBJ *FindObjForAtack(OBJ *a,
 
     findobj[AIRATACKER]=NULL;			//airatacker
     mindeltaz[AIRATACKER] = 256*256*256;
-    if (map.pl_owner[a->playernr] == OWNER_COMPUTER)
+    if (map.pl_owner[a->playernr] == OWNER_COMPUTER)	//if computer need to add range to try siege mode
     {
-	if (a->SC_Unit == SC_TANKNORMALOBJ || a->SC_Unit == SC_HERO_EDMUNDDUKETMOBJ)
+	if (a->SC_Unit == SC_TANKNORMALTURRETOBJ || a->SC_Unit == SC_HERO_EDMUNDDUKETMTURRETOBJ)
 	{
 	    addsiegerange = 5*32;
 	}
@@ -4257,27 +4251,27 @@ void unitprepareforatack(OBJ *a,OBJ *a2)
 		    }
 		}
 		break;
-	    case SC_TANKNORMALOBJ:
-	    case SC_HERO_EDMUNDDUKETMOBJ:
+	    case SC_TANKNORMALTURRETOBJ:
+	    case SC_HERO_EDMUNDDUKETMTURRETOBJ:
 		if (aiaction)
 		{
-		    if (MageDepend(a,a->playernr,MODETANKSIEGE))
+		    if (MageDepend(a->subunit,a->playernr,MODETANKSIEGE))
 		    {
-			if (accesstomove(a,loadobj(a->SC_Unit),MODETANKSIEGE,a->playernr))//if can go siegemode
+			if (accesstomove(a->subunit,loadobj(a->SC_Unit),MODETANKSIEGE,a->playernr))//if can go siegemode
 			{
-			    if (a->SC_Unit == SC_TANKNORMALOBJ)
-				NEWSC_Unit = SC_TANKSIEGEOBJ;
+			    if (a->SC_Unit == SC_TANKNORMALTURRETOBJ)
+				NEWSC_Unit = SC_TANKSIEGETURRETOBJ;
 			    else
-				if (a->SC_Unit == SC_HERO_EDMUNDDUKETMOBJ)
-				    NEWSC_Unit = SC_HERO_EDMUNDDUKESMOBJ;
+				if (a->SC_Unit == SC_HERO_EDMUNDDUKETMTURRETOBJ)
+				    NEWSC_Unit = SC_HERO_EDMUNDDUKESMTURRETOBJ;
 				else
 				    break;
 			    groundweapon_id = GetNewWeaponType(a,a2,NEWSC_Unit);
 			    if (groundweapon_id < MAX_WEAPONS_ELEM)
 			    {
 				status = CheckWeaponRange(a,a2,groundweapon_id,a->playernr);
-				if (status==0)	//siege weapon in range, we can go siege
-				    moveobj(a,NULL,MODETANKSIEGE,0,0,NOSHOWERROR,0);
+				if (status == 0)//siege weapon in range, we can go siege
+				    moveobj(a->subunit,NULL,MODETANKSIEGE,0,0,NOSHOWERROR,0);
 				else
 				    //to close obj, do normal atack
 				    doatack=1;

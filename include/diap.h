@@ -21,7 +21,7 @@ void maketypeofmove(struct OBJ *a,struct OBJstruct *b);
 void allobjtypemove(void);
 int  getborderbuild(int mx,int my,int *x,int *y);
 void playadvisorerr(int playernr,int race,int retreserror);
-int  CheckCoordinates(int newx256,int newy256,unsigned char SC_Unit);
+int  CheckCoordinates(int newx256,int newy256,SCUNIT SC_Unit);
 
 
 #endif /*_DIAP_W*/

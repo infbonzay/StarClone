@@ -241,7 +241,7 @@ int GetMapFogUnderOBJ(OBJ *a,OBJstruct *b)
 	    return(0);
 }
 //==============================================
-void NewUnitPlace(OBJ *a,int SC_Unit,int *first_xpos,int *first_ypos)
+void NewUnitPlace(OBJ *a,SCUNIT SC_Unit,int *first_xpos,int *first_ypos)
 {
 //    *first_xpos=a->sourcex+64;
 //    *first_ypos=a->sourcey+64;
@@ -423,8 +423,9 @@ void PutUpgrdMes(int xpos,int ypos,char *iconmes,char *message,int param1,int pa
 void ShowUpgradesInBar(int XWINPOS,int YWINPOS,OBJ *a,OBJstruct *b)
 {
     int xpos=XWINPOS+104,ypos=YWINPOS+51;
-    unsigned short stattxt_id,Subunit1,Subunit2;
+    unsigned short stattxt_id;
     unsigned char  nrofhits,tech_id;
+    SCUNIT Subunit1;
     int upgradenr,upgtot,mousehot=MOUSEONUPGRDICONS;
     int upgrade_id,weapon_id1,weapon_id2;
     int atack1,atack2,armor,sharmor,icon,icon2;
@@ -438,7 +439,7 @@ void ShowUpgradesInBar(int XWINPOS,int YWINPOS,OBJ *a,OBJstruct *b)
 	return;
     if (GetConstructNR(a)||a->loaded)
 	return;
-    unsigned char SC_Unit=a->SC_Unit;
+    SCUNIT SC_Unit=a->SC_Unit;
     upgrade_id=alldattbl.units_dat->ArmorUpgrade[SC_Unit];
     if (upgrade_id<MAX_UPGRADES_ELEM)
     {
@@ -598,7 +599,7 @@ void printobjparam(void)
     int constrcomplete,underconstruct=0;
     int shields,lifes,shieldl;
     int sizex,sizey;
-    unsigned char SC_Unit;
+    SCUNIT SC_Unit;
     char ss[100],ss1[100];
     char *ss2;
     struct OBJ *a;

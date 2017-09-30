@@ -228,7 +228,7 @@ void ConstructUnitsReleaseSupply(OBJ *a)
     }
 }
 //=======================================
-void UnitConstrUnit(OBJ *a,int SC_Unit,int icon_nr,int stattxt_nr)
+void UnitConstrUnit(OBJ *a,SCUNIT SC_Unit,int icon_nr,int stattxt_nr)
 {
     int mcost,gcost;
     GetCostUnit(SC_Unit,&mcost,&gcost);
@@ -502,7 +502,7 @@ int TickUnderConstruct(OBJ *a)
 int SetBeginSelfConstruct(OBJ *a)
 {
     int fromshield,fromlife;
-    unsigned char SC_Unit=a->SC_Unit;
+    SCUNIT SC_Unit=a->SC_Unit;
     OBJstruct *b = loadobj(a->SC_Unit);
     if (a->SC_ConstrUnit != 255)
     {

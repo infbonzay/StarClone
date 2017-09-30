@@ -103,8 +103,8 @@ int unitweapon_retstatus[3]={CREATEDWEAPONSTATUS_ATACKSUCCESS,CREATEDWEAPONSTATU
 //===========================================
 int IfCanCreateWeapon(OBJ *atacker,OBJ *destobj,int *errmes,unsigned char *weapon_id,int flags)
 {
-    unsigned char SC_Unit=atacker->SC_Unit;
-    unsigned char Subunit1;
+    SCUNIT SC_Unit = atacker->SC_Unit;
+    SCUNIT Subunit1;
     int rangebad=0,weaponunitid;
     signed char deltaside;
     unsigned char groundweapon_id,airweapon_id,usedweapon_id,atackangle,neededside;
@@ -439,7 +439,7 @@ void GetOBJXYSideOffsets(OBJ *a,MAIN_IMG *img,int overlaytype,signed char *xlo,s
 //			0-100%,1-11%,2-33%,3-100%
 int BounceDamage[5]={256,28,89,256};
 //===========================================
-void WeaponDoDamage(OBJ *atacker,OBJ *destobj,int x256,int y256,unsigned char SC_Unit,
+void WeaponDoDamage(OBJ *atacker,OBJ *destobj,int x256,int y256,SCUNIT SC_Unit,
 		    int playernr,unsigned char weapon_id,int castmagenr,int targetnr,mylist *listdamaged)
 {
     MAIN_IMG *newimg;
@@ -986,7 +986,7 @@ int GetDeltaWeaponElevationLevel(unsigned char weapon_id)
 int WeaponCanApplyOnUnit(OBJ *a,int playernr,unsigned char weapon_id)
 {
     unsigned short targetflags = alldattbl.weapons_dat->TargetFlags[weapon_id];
-    unsigned char SC_Unit = a->SC_Unit;
+    SCUNIT SC_Unit = a->SC_Unit;
     if ((targetflags & WTF_NONBUILD) && IsBuild(SC_Unit))
 	return(0);
     if ((targetflags & WTF_NONROBOTIC) && IsRobotic(SC_Unit))

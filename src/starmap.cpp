@@ -55,7 +55,7 @@ char terraintypes[MAXTERRAINTYPES][10] =
 	"Twilight"
 };
 //=====================================================
-void add_unit_stat(struct mapinfo *info,int stattype,int playernr,int SC_Unit)
+void add_unit_stat(struct mapinfo *info,int stattype,int playernr,SCUNIT SC_Unit)
 {
     if (TRIG_ChangeStat)
     {
@@ -75,7 +75,7 @@ void add_unit_stat(struct mapinfo *info,int stattype,int playernr,int SC_Unit)
     }
 }
 //=====================================================
-void sub_unit_stat(struct mapinfo *info,int stattype,int playernr,int SC_Unit)
+void sub_unit_stat(struct mapinfo *info,int stattype,int playernr,SCUNIT SC_Unit)
 {
     if (TRIG_ChangeStat)
     {

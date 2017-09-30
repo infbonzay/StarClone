@@ -38,7 +38,7 @@ int  loadcfg(char *filename,int *mpqresult);
 void saveconf(void);
 int  readmageproperties(void);
 void FreeSMKInfo(struct SMKPORTRAITS *smkinfo);
-struct SMKPORTRAITS *FillSMKInfo(int SC_Unit);
+struct SMKPORTRAITS *FillSMKInfo(SCUNIT SC_Unit);
 extern MPQPRIO *mpqprio;
 
 
