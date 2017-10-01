@@ -1179,7 +1179,7 @@ void invisiblestick(void)
         a = objects[i];
         if (a->modemove == MODEDIE || IsInvincibleUnit(a->SC_Unit))
     	    continue;
-	if (IsDoodadState(a->SC_Unit))// || IsBuild(a->SC_Unit))
+	if (IsDoodadState(a->SC_Unit) || a->prop & VARNOTHERE)
 	    continue;
         if (GetMageAtr(&a->atrobj,ATRSTASIS)==0 )
         {
@@ -2472,7 +2472,6 @@ bugguyexplode:
 			break;
 		    case SC_INTERCEPTOROBJ:
 			AtackAction(a,destobj,0);
-//			AddModeMove(a,destobj,MODEMOVEFORWARD,0,0,NOSHOWERROR);
 			break;
 		    default:
 			AtackAction(a,destobj,0);
@@ -2603,8 +2602,11 @@ bugguyexplode:
 	    break;
 	case MODEMOVEFORWARD:
 	    a->prop |= VARNEXTMODEMOVEIGNOREACCEL;
+	    if (!a->currentspeed)
+		a->currentspeed = 1;
 	    a->modemove = mode;    
-	    a->mainimage->side += my2rand(-64,64);
+	    if (!x)
+		a->mainimage->side += my2rand(-64,64);
 	    deltax = (inertion256[a->mainimage->side][0]*INTERCEPTORDESTMOVEAFTERATACK)>>16;
 	    deltay = (inertion256[a->mainimage->side][1]*INTERCEPTORDESTMOVEAFTERATACK)>>16;
 	    initmoveaction(a,NULL,mode,0,0,GetOBJx(a)+deltax,GetOBJy(a)+deltay);
@@ -3290,9 +3292,9 @@ void dieobj(struct OBJ *a)
     if (a->loaded)
     {
 	int maxloadedunits = a->loaded->nrofloadedunits;
-	if (SC_Unit!=SC_BUNKEROBJ)
+	if (SC_Unit != SC_BUNKEROBJ)
 	{
-	    for (i=0;i<maxloadedunits;i++)
+	    for (i=maxloadedunits-1;i>=0;i--)
 	    {
 //		ChangeSupply(a->loaded->loadedunits[i]->playernr,a->loaded->loadedunits[i]->SC_Unit,MINUSFACTOR);
 		dieobj_silently(a->loaded->loadedunits[i]);
@@ -3301,7 +3303,7 @@ void dieobj(struct OBJ *a)
 	else
 	{
 //	    oldsnd = BlockSoundToPlay();
-	    for (i=0;i<maxloadedunits;i++)
+	    for (i=maxloadedunits-1;i>=0;i--)
 		UnLoadObjInObj(a,0,NOCHANGEXYCOORDS,0,0,1);
 //	    RestoreSoundToPlay(oldsnd);
 	}
@@ -3502,7 +3504,7 @@ void WakeUpOneInterceptor(OBJ *myparent,OBJ *a,OBJ *destobj,int childnr)
         a->mainimage->ShowImgFlag();
         ChangeTypeOfProp(a,PROPNORMAL1);
         SetOBJxy256(a,GetOBJx256(myparent),GetOBJy256(myparent));
-	moveobj(a,destobj,MODEMOVEFORWARD,0,0,NOSHOWERROR,0);
+	moveobj(a,destobj,MODEMOVEFORWARD,1,0,NOSHOWERROR,0);
     }
 }
 //=================================
@@ -3518,8 +3520,13 @@ void WakeUpInterceptors(OBJ *a,OBJ *destobj)
 	for (int i=0;i<MAXCHILDS;i++)
 	    if (a->childs->parentof[i])
 		if (a->childs->parentof[i]->prop & VARINBASE)
-		    if (a->childs->parentof[i]->playernr == a->playernr)
-			WakeUpOneInterceptor(a,a->childs->parentof[i],destobj,i);
+		{
+		    WakeUpOneInterceptor(a,a->childs->parentof[i],destobj,i);
+		}
+		else
+		{
+		    moveobj(a->childs->parentof[i],destobj,MODEMOVEFORWARD,1,0,NOSHOWERROR,0);
+		}
 }
 //=================================
 void ReturnedToBase(struct OBJ *a)//after moved to base
