@@ -77,8 +77,11 @@ int InterceptorsAction(struct OBJ *a,MAIN_IMG *img)
 		//check if no modeatack return to carrier
 		if (a->myparent->modemove != MODEATACK)
 		    goto needrecharge;
+		else
+		    if (a->myparent->finalOBJ == NULL)
+			goto needrecharge;
 		//check distance if too far need to return to carrier
-		if (GetDistanceBetweenUnits256(a,a->myparent) > (8+6)*256)
+		if (GetDistanceBetweenUnits256(a,a->myparent) > (8+6)*32*256)
 		    goto needrecharge;
 	    }
 	    return 1;
@@ -865,22 +868,23 @@ int AdditionalUnitProceed(OBJ *a,MAIN_IMG *img)
     {
 	if (NEEDTOMOVE1BIT)
 	{
-	    if (a->finalOBJ)
+	    if (a->prop & VARMOVEOBJACT)
 	    {
-		if (GetDistanceBetweenUnits256(a,a->finalOBJ) <= (32<<8) )
+		if (a->finalOBJ)
 		{
-		    return(0);	//no move, repeat move iscript
+		    if (GetDistanceBetweenUnits256(a,a->finalOBJ) <= (32<<8) )
+		    {
+			return(0);	//no move, repeat move iscript
+		    }
+		    if (a->modemove == MODEATACK)
+			;//initmoveaction(a,a->finalOBJ,a->modemove,a->usedweapon_id,0,GetOBJx(a->finalOBJ),GetOBJy(a->finalOBJ));
+		    else
+			initmoveaction(a,a->finalOBJ,a->modemove,0,0,GetOBJx(a->finalOBJ),GetOBJy(a->finalOBJ));
 		}
-		if (a->modemove == MODEATACK)
-		    ;//initmoveaction(a,a->finalOBJ,a->modemove,a->usedweapon_id,0,GetOBJx(a->finalOBJ),GetOBJy(a->finalOBJ));
 		else
-		    initmoveaction(a,a->finalOBJ,a->modemove,0,0,GetOBJx(a->finalOBJ),GetOBJy(a->finalOBJ));
-	    }
-	    else
-	    {
-//		a->finalOBJ = NULL;
-		SetModeMove(a,MODESTOP);
-//		a->modemove = MODESTOP;
+		{
+		    SetModeMove(a,MODESTOP);
+		}
 	    }
 	    a->prop &= ~VARWAITDISTANCE;
 	}

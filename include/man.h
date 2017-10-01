@@ -225,7 +225,7 @@ struct OBJ
 	unsigned char	obj_invsee;			//8-bit for each players
 	unsigned char	obj_notdetect;			//8-bit for each players
 	
-        unsigned int	prop;          //see man.h
+        unsigned int	prop;          			//see man.h
 
 };
 //=======================================

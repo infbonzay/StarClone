@@ -57,6 +57,8 @@ extern char	STAREDITCHK[];
 extern char	GAMECURSOR_NAME[];
 extern char	ARROW_STR[];
 
+#define STARCLONEEXT		".scu"
+
 #define CONSOLEPCX		"console.pcx"
 #define CONSOLEOVERPCX		"conover.pcx"
 #define BUILDEMPTYPCX		"pbrempt.pcx"

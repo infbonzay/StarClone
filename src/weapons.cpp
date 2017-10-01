@@ -305,7 +305,8 @@ int CalcMaxRangeCoordsXY(int deltax,int deltay,int *destx,int *desty,int maxdist
     return(0);
 }
 //=================================
-void CreateWeaponID(OBJ *a,OBJ *destobj,int xdest256,int ydest256,unsigned char weapon_id,int createflingy)
+//return 1 if selfdestruct
+int CreateWeaponID(OBJ *a,OBJ *destobj,int xdest256,int ydest256,unsigned char weapon_id,int createflingy)
 {
     SC_FLINGY *flingy;
     MAIN_IMG *img,*newimg;
@@ -363,6 +364,7 @@ void CreateWeaponID(OBJ *a,OBJ *destobj,int xdest256,int ydest256,unsigned char 
     	    case WB_ATACK_AND_SELF_DESTRUCT:		//6
     		CreateFlingyID(a,destobj,GetOBJx256(destobj),GetOBJy256(destobj),GetOBJx256(destobj),GetOBJy256(destobj),weapon_id,flingy_id,elevationdelta);
     		dieobj_silently(a);
+    		return(1);
     		break;
     	    case WB_BOUNCE:				//7
     		flingy = CreateFlingyID(a,destobj,GetOBJx256(a),GetOBJy256(a),GetOBJx256(destobj),GetOBJy256(destobj),weapon_id,flingy_id,elevationdelta);
@@ -404,6 +406,7 @@ void CreateWeaponID(OBJ *a,OBJ *destobj,int xdest256,int ydest256,unsigned char 
 	//do damage only
 	WeaponDoDamage( a,destobj,GetOBJx256(a),GetOBJy256(a),a->SC_Unit,a->playernr,weapon_id,-1,0,NULL);
     }
+    return(0);
 }
 //===========================================
 void GetOBJXYSideOffsets(OBJ *a,MAIN_IMG *img,int overlaytype,signed char *xlo,signed char *ylo)

@@ -530,6 +530,7 @@ int IScriptCmd_sigorder(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
 //============================================
 int IScriptCmd_attackwith(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
 {
+    int err;
     unsigned char subunit;
     signed char *adrxyoffs;
     OBJ *a,*tr;
@@ -597,11 +598,13 @@ int IScriptCmd_attackwith(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
 		    mainimageslist.AddElem(newimg);
 
 		}
-		CreateWeaponID( a,a->finalOBJ,GetOBJx256(a->finalOBJ),GetOBJy256(a->finalOBJ),weapon_id,1);
+		if (CreateWeaponID( a,a->finalOBJ,GetOBJx256(a->finalOBJ),GetOBJy256(a->finalOBJ),weapon_id,1))
+		    return(1);
 	    }
 	    else	//atack on ground
 	    {
-		CreateWeaponID( a,NULL,GetOBJx256(a),GetOBJy256(a),weapon_id,1);
+		if (CreateWeaponID( a,NULL,GetOBJx256(a),GetOBJy256(a),weapon_id,1))
+		    return(1);
 	    }
 	}
     }

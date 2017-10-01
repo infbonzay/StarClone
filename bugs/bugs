@@ -400,6 +400,7 @@
 *164 cursor disappear then menu goes out    
     interceptor atack script
     interceptor atack stuck
+    carrier atack ground after atack obj, and interceptors launch but no goal
     
     ?dust moves with unit
     save/load mem under selectation box

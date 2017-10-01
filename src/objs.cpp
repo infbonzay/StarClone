@@ -1589,9 +1589,7 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
     if (mode != MODEDIE)
 	ReleaseResource(a);
     OBJstruct *b = loadobj(a->SC_Unit);
-    a->prop &= ~VARPATROLFLAG;
-//    if (mode != MODEATACK)
-//	a->prop &= ~VARHOLDPOSBIT;
+    a->prop &= ~(VARPATROLFLAG | VARNEXTMODEMOVEIGNOREACCEL);
     if (a->mainimage->flags & SC_IMAGE_FLAG_CANTBREAKCODE)
 	if (mode != MODEDIE)
 	{
@@ -2587,7 +2585,6 @@ bugguyexplode:
 	    }
 	    break;
 	case MODEGOTORECHARGE:
-//	    a->prop &= ~VARMOVEOBJACT;
 	    if (!a->myparent || !destobj)
 	    {
 		dieobj(a);
@@ -2605,12 +2602,12 @@ bugguyexplode:
 	    AddModeMove(a,NULL,MODEATACKREADY,x,y,NOSHOWERROR);
 	    break;
 	case MODEMOVEFORWARD:
+	    a->prop |= VARNEXTMODEMOVEIGNOREACCEL;
 	    a->modemove = mode;    
 	    a->mainimage->side += my2rand(-64,64);
 	    deltax = (inertion256[a->mainimage->side][0]*INTERCEPTORDESTMOVEAFTERATACK)>>16;
 	    deltay = (inertion256[a->mainimage->side][1]*INTERCEPTORDESTMOVEAFTERATACK)>>16;
 	    initmoveaction(a,NULL,mode,0,0,GetOBJx(a)+deltax,GetOBJy(a)+deltay);
-	    a->prop &= ~VARWAITDISTANCE;
 	    AddModeMove(a,destobj,MODEATACK,0,0,NOSHOWERROR);
 	    break;
 	default:
@@ -4825,6 +4822,8 @@ int PathFinding_MovePortionType1(OBJ *a,MAIN_IMG *img,int deltamove)
 //	    return(0);
 //here unit stopped and wait for change distance to move again
 	    a->prop |= VARWAITDISTANCE;
+	    if (a->modemove == MODEATACK)
+		a->prop |= VARNEXTMODEMOVEIGNOREACCEL;
 	    SetOBJIScriptNr(a,ISCRIPTNR_WALKINGTOIDLE,ISCRIPTNR_EXECUTE);
 	    return(2);
 	}
@@ -4922,8 +4921,8 @@ int PathFinding_MovePortionType2(OBJ *a,MAIN_IMG *img,unsigned char flingy_id,in
 //		deltaz/256,a->modemoveminusdistance/256,a->haltdistance/256,(deltaz-a->modemoveminusdistance)/256);
 	    InitStopAfterMove(a);
 	    a->prop |= VARWAITDISTANCE;
-//	    if (a->modemove == MODEATACK)
-//	        ApplyNextModeMove(a);
+	    if (a->modemove == MODEATACK)
+		a->prop |= VARNEXTMODEMOVEIGNOREACCEL;
 	}
 	if (deltaz <= 2*256)		//prevent div 0
 	    return(1);
@@ -5143,9 +5142,10 @@ void AllOBJMoving(void)
 			continue;
 		    }
 		    else
-			if (a->prop & VARWAITDISTANCE)
+			if (a->prop & VARNEXTMODEMOVEIGNOREACCEL)
 			{
 			    ApplyNextModeMove(a);
+			    break;
 			}
 		}
 		PathFinding_MovePortionType2(a,img,flingy_id,GetSpeed(a,a->currentspeed));
