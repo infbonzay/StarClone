@@ -399,9 +399,9 @@
 *163 black point on map then build is destroyed and rubble remain
 *164 cursor disappear then menu goes out    
 *165 interceptor atack script
-     interceptor atack stuck
-*166 carrier atack ground after atack obj, and interceptors launch but no goal
-    
+*166 interceptor atack stuck
+*167 carrier atack ground after atack obj, and interceptors launch but no goal
+    interceptors launch to obj who on far destination from carrier
     ?dust moves with unit
     save/load mem under selectation box
     consume on non zerg units

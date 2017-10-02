@@ -9423,6 +9423,7 @@ InterceptorGndAttkInit:
 	wait           	1
 	playfram       	0x00	# frame set 0
 	gotorepeatattk 	
+	sigorder	1
 	goto           	common_waitforever
 
 InterceptorWalking:

@@ -996,16 +996,15 @@ void UnloadDatTblFiles(DATTBLSTRUCT *dattbl)
 //============================================
 void LoadPatchTbl(void)
 {
-//    printf("maxrange=%d\n",alldattbl.weapons_dat->MaximumRange[64]);	//is 15
-//    printf("maxrange=%d\n",alldattbl.weapons_dat->MaximumRange[82]);	//is 128
     alldattbl.weapons_dat->MaximumRange[WEAPONID_SCARAB] = 15;		//scarab need to be melee atack
     alldattbl.weapons_dat->WeaponCooldown[WEAPONID_SCARAB] = 60;	//reaver cooldown
+    alldattbl.weapons_dat->WeaponCooldown[WEAPONID_PULSECANNON] = 10;	//interceptor cooldown
     alldattbl.units_dat->ElevationLevel[SC_REAVEROBJ] += 1;	//reaver elevation
     alldattbl.units_dat->ElevationLevel[SC_HERO_WARBRINGEROBJ] += 1;	//warbringer elevation
     alldattbl.flingy_dat->MoveControl[FLINGYID_GOLIATHTURRET] = FLINGYMOVECONTROL_ISCRIPT;	//goliath turret has flingy move control (why?)
-    alldattbl.flingy_dat->TurnRadius[FLINGYID_HALOROCKETS] *= 2;
-    alldattbl.units_dat->SpecialAbilityFlags[SC_SCANNERSWEEP] |= SPECIAL_INVINCIBLE;
-    alldattbl.units_dat->SpecialAbilityFlags[SC_BUNKEROBJ] |= SPECIAL_FULLAUTOATTACK;
+    alldattbl.flingy_dat->TurnRadius[FLINGYID_HALOROCKETS] *= 2;	//doubel rotation speed to prevent freeze around
+    alldattbl.units_dat->SpecialAbilityFlags[SC_SCANNERSWEEP] |= SPECIAL_INVINCIBLE;	//prevent attack sweep
+    alldattbl.units_dat->SpecialAbilityFlags[SC_BUNKEROBJ] |= SPECIAL_FULLAUTOATTACK;	//units inside bunker can atack
 }
 //============================================
 void *imagesreftogrpdata[MAX_IMAGES_ELEM];

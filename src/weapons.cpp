@@ -154,6 +154,7 @@ int IfCanCreateWeapon(OBJ *atacker,OBJ *destobj,int *errmes,unsigned char *weapo
 //		usedweapon_id = airweapon_id;
 		usedweapon_id = WEAPONID_CARRIERRANGE;
 		atackangle = 255;
+		atacker->prop &= ~VARNEEDTOLAUNCHINTERCEPTORS;
 		break;
 	    default:
 		if (!IsOnSkyOBJ(destobj))

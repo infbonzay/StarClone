@@ -643,3 +643,8 @@ int  SIGOrder_UnitDies(OBJ *a)
     dieobj(a);
 }
 //==================================
+int  SIGOrder_InterceptorAfterAtack(OBJ *a)
+{
+    moveobj(a,a->finalOBJ,MODEMOVEFORWARD,0,0,NOSHOWERROR,0);
+    return(1);
+}

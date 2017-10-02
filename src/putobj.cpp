@@ -281,6 +281,13 @@ OBJ *CreateUnitInUnit(struct OBJ *a,int obj_id,int playsound,int first_xpos,int 
 		if (playsound)
 		    playinfoadvisorsound(a->playernr,TERRANRACE,ADVNUCLREADY,PLAYADVISOR_TEXTANDSOUND);
 	    }
+	    else
+	    { 
+		if (obj_id == SC_INTERCEPTOROBJ)
+		{
+		    SetOrder(temp,1,&SIGOrder_InterceptorAfterAtack);
+		}
+	    }
 	    break;
 	default:
 	    temp = createobjman(first_xpos,first_ypos,obj_id,a->playernr);

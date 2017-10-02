@@ -53,10 +53,13 @@ int InterceptorsAction(struct OBJ *a,MAIN_IMG *img)
     {
 	if (a->health >= INTERCEPTORLIFELAUNCH)
 	{
-	    if (a->myparent->finalOBJ)
+	    if (a->myparent->prop & VARNEEDTOLAUNCHINTERCEPTORS)
 	    {
-		WakeUpOneInterceptor(a,a->myparent->finalOBJ);
-		return(1);
+		if (a->myparent->finalOBJ)
+		{
+		    WakeUpOneInterceptor(a,a->myparent->finalOBJ);
+		    return(1);
+		}
 	    }
 	}
 	//regen interceptor health
@@ -834,14 +837,6 @@ int AdditionalUnitProceed(OBJ *a,MAIN_IMG *img)
 		    }
 		    return 0;
 		}
-		if (a->SC_Unit == SC_INTERCEPTOROBJ)
-		{
-//		    if (!(a->mainimage->flags & SC_IMAGE_FLAG_NEEDROTATIONTODIRECTION))
-			moveobj(a,a->finalOBJ,MODEMOVEFORWARD,0,0,NOSHOWERROR,0);
-//		    else
-//			a->atackcooldowntime = 1;
-		    goto unitactiondefaultend;
-		}
 		switch(AtackCoolDownEnds(a,a->finalOBJ,1,NOSHOWERROR))
 		{
 		    case MOVEOBJ_NOACT:
@@ -874,7 +869,8 @@ int AdditionalUnitProceed(OBJ *a,MAIN_IMG *img)
 		{
 		    if (GetDistanceBetweenUnits256(a,a->finalOBJ) <= (32<<8) )
 		    {
-			return(0);	//no move, repeat move iscript
+			goto unitactiondefaultend;
+//			return(0);	//no move, repeat move iscript
 		    }
 		    if (a->modemove == MODEATACK)
 			;//initmoveaction(a,a->finalOBJ,a->modemove,a->usedweapon_id,0,GetOBJx(a->finalOBJ),GetOBJy(a->finalOBJ));
@@ -961,6 +957,7 @@ int AtackCoolDownEnds(OBJ *a,OBJ *destobj,int continueatack,int showerrorflag)
 		SetAtackType(a,destobj);
 		return(MOVEOBJ_STOPANDCONTINUEJOB);
 	    case CREATEDWEAPONSTATUS_LAUNCHINTERCEPTORS:
+		a->prop |= VARNEEDTOLAUNCHINTERCEPTORS;
 		a->finalOBJ = destobj;
 		LaunchInterceptors(a,destobj);
 		return(MOVEOBJ_DONE);

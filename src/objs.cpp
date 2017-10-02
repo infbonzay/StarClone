@@ -2470,9 +2470,6 @@ bugguyexplode:
 			a->castmagenr = MODEMINEEXPLODE;
     			SpecialAtackAction(a,ISCRIPTNR_SPECIALSTATE1);
 			break;
-		    case SC_INTERCEPTOROBJ:
-			AtackAction(a,destobj,0);
-			break;
 		    default:
 			AtackAction(a,destobj,0);
 			break;
@@ -2606,7 +2603,7 @@ bugguyexplode:
 		a->currentspeed = 1;
 	    a->modemove = mode;    
 	    if (!x)
-		a->mainimage->side += my2rand(-64,64);
+		a->mainimage->side += myrand(-64,64);
 	    deltax = (inertion256[a->mainimage->side][0]*INTERCEPTORDESTMOVEAFTERATACK)>>16;
 	    deltay = (inertion256[a->mainimage->side][1]*INTERCEPTORDESTMOVEAFTERATACK)>>16;
 	    initmoveaction(a,NULL,mode,0,0,GetOBJx(a)+deltax,GetOBJy(a)+deltay);
