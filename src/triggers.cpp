@@ -812,9 +812,11 @@ int Action_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int trig_nr,int playernr,int
 		    }
 		    TRIG_MusicQuieter += TRIG_pause;
 		    //blink transmission unit
-		    ownedactiononplayers=OneGroup_Prepare(info,temptrg->action[i].actiononplayers,playernrmask);
+//		    ownedactiononplayers=OneGroup_Prepare(info,temptrg->action[i].actiononplayers,playernrmask);
+//		    nrofunits = 1;
 		    newobj=NULL;
-		    nrofunits=CheckForUnit(NULL,ownedactiononplayers,unitnr,nrofunits,&newobj,&info->gamelocations[locnr].coords);
+//		    nrofunits=CheckForUnit(NULL,ownedactiononplayers,unitnr,nrofunits,&newobj,&info->gamelocations[locnr].coords);
+		    nrofunits=CheckForUnit(NULL,TRIGGER_ALLPLAYERSBITMASK,unitnr,1,&newobj,&info->gamelocations[locnr].coords);
 		    if (newobj)
 		    {
 			if (GetTriggeredUnitState(newobj))
