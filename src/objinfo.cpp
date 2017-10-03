@@ -196,7 +196,7 @@ int CheckWeaponRange(OBJ *a,OBJ *destobj,int weapon_id,int playernr)
     minrange = alldattbl.weapons_dat->MinimumRange[weapon_id];
     maxrange = GetRangeWeaponInPixels(base,weapon_id,a->playernr);
 //    printf("deltaz=%d maxrange=%d\n",deltaz,maxrange);
-    if (deltaz <= maxrange)
+    if (deltaz < maxrange)
 	if (deltaz >= minrange)
 	    return(0);//in atack range;
 	else

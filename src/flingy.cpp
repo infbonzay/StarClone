@@ -196,7 +196,7 @@ void SC_FLINGY::MoveFlingy(void)
     if (alldattbl.flingy_dat->MoveControl[flingy_id] != FLINGYMOVECONTROL_ISCRIPT)
     {
         currentspeed += alldattbl.flingy_dat->Acceleration[flingy_id];
-        if (currentspeed >= alldattbl.flingy_dat->TopSpeed[flingy_id])
+        if (currentspeed > alldattbl.flingy_dat->TopSpeed[flingy_id])
         {
             currentspeed = alldattbl.flingy_dat->TopSpeed[flingy_id];
 //    	    flags |= FLINGY_FLAG_REACHMAXSPEED;

@@ -153,7 +153,7 @@ int IfCanCreateWeapon(OBJ *atacker,OBJ *destobj,int *errmes,unsigned char *weapo
 		weaponunitid = WEAPON_UNIT_CARRIER;
 //		usedweapon_id = airweapon_id;
 		usedweapon_id = WEAPONID_CARRIERRANGE;
-		atackangle = 255;
+		atackangle = 0;
 		atacker->prop &= ~VARNEEDTOLAUNCHINTERCEPTORS;
 		break;
 	    default:
@@ -229,21 +229,23 @@ int IfCanCreateWeapon(OBJ *atacker,OBJ *destobj,int *errmes,unsigned char *weapo
 		    }
 		if (UnitIgnoreInvisibles(SC_Unit) || !OBJ_VAR_CHK(destobj,obj_notdetect,atacker->playernr))
     		{
-		    neededside = CalcDirection(GetOBJx256(atacker),GetOBJy256(atacker),GetOBJx256(destobj),GetOBJy256(destobj));
-		    deltaside = neededside - atacker->mainimage->side;
-		    if (abs(deltaside) > atackangle)
+		    if (atackangle)
 		    {
-			//need to rotate before createweapon
-			atacker->mainimage->UnitNeededDirection256(neededside);
-			if (!atacker->atackcooldowntime)
+			neededside = CalcDirection(GetOBJx256(atacker),GetOBJy256(atacker),GetOBJx256(destobj),GetOBJy256(destobj));
+			deltaside = neededside - atacker->mainimage->side;
+			if (abs(deltaside) > atackangle)
 			{
-			    atacker->atackcooldowntime = 2;	//to come here again from additionalunitproceed
-			    atacker->mainimage->waitticks = 1;
-			}    
-			return(CREATEDWEAPONSTATUS_ATACKSUCCESSWITHROTATION);
-		    }
-		    if (atackangle != 255)
+			    //need to rotate before createweapon
+			    atacker->mainimage->UnitNeededDirection256(neededside);
+			    if (!atacker->atackcooldowntime)
+			    {
+				atacker->atackcooldowntime = 2;	//to come here again from additionalunitproceed
+				atacker->mainimage->waitticks = 1;
+			    }
+			    return(CREATEDWEAPONSTATUS_ATACKSUCCESSWITHROTATION);
+			}
 			atacker->mainimage->AllUnitDirection256(neededside);
+	    	    }
 	    	    return(unitweapon_retstatus[weaponunitid]);
 		}
 		break;

@@ -263,9 +263,6 @@ int  SIGOrder_AfterBurrow(OBJ *a)
 int SIGOrder_AfterUnburrow(OBJ *a)
 {
     ChangeTypeOfProp(a,PROPNORMAL1);
-//    SetBurrowFlag(a,0);
-//    SetMageAtr(&a->atrobj,ATRINVISIBLE,0);
-//    a->mainimage->invisiblecolors = MININVISIBLECOLOR;
     if (a->SC_Unit != SC_VULTUREMINEOBJ)
 	Play_sfxdata(a->mainimage->xpos>>8,a->mainimage->ypos>>8,SFXDATA_BURROWUP,2);
     SetOrder(a,0,NULL);
@@ -276,7 +273,9 @@ int SIGOrder_AfterUnburrow(OBJ *a)
     }
     else
     {
-	a->modemove = MODESTOP;		//to prevent obj to stay with unburrow mode
+//	a->modemove = MODESTOP;		//to prevent obj to stay with unburrow mode
+	a->finalOBJ = NULL;
+	SetModeMove(a,MODESTOP);
     }
     return(0);
 }

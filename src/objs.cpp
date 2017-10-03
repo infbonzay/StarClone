@@ -4155,7 +4155,7 @@ OBJ *FindObjForAtack(OBJ *a,
 			for (j=0;wmask;j++,wmask>>=1)
 			{
 			    if (wmask & 1)
-				if (deltaz < mindeltaz[j] && (maxrange>=deltaz) && (minrange<=deltaz))
+				if (deltaz < mindeltaz[j] && (maxrange>deltaz) && (minrange<=deltaz))
 				{
 				    mindeltaz[j] = deltaz;
 				    findobj[j] = a2;
