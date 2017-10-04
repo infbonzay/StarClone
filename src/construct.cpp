@@ -514,8 +514,10 @@ int SetBeginSelfConstruct(OBJ *a)
     a->selfconstruct.timemax = a->selfconstruct.timeremained;
     if (!(b->UNITprop & NOADDSTATSATCONSTR))
     {
-	a->selfconstruct.incrshield=(GetUnitMaxShield(SC_Unit)-fromshield+0x4ff)/a->selfconstruct.timemax;
-	a->selfconstruct.incrlife=(GetUnitMaxHealth(SC_Unit)-fromlife+0x4ff)/a->selfconstruct.timemax;
+//	a->selfconstruct.incrshield=(GetUnitMaxShield(SC_Unit)-fromshield+0x4ff)/a->selfconstruct.timemax;
+//	a->selfconstruct.incrlife=(GetUnitMaxHealth(SC_Unit)-fromlife+0x4ff)/a->selfconstruct.timemax;
+	a->selfconstruct.incrshield = (GetUnitMaxShield(SC_Unit)-fromshield+a->selfconstruct.timemax-1)/a->selfconstruct.timemax;
+	a->selfconstruct.incrlife = (GetUnitMaxHealth(SC_Unit)-fromlife+a->selfconstruct.timemax-1)/a->selfconstruct.timemax;
     }
 }
 //==================================

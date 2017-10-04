@@ -1043,7 +1043,7 @@ int ApplyDamageToUnit(struct OBJ *a)
 	if (GetMageAtr(&a->atrobj,ATRHALLUCINATION)>0)
 	{
 	    dieobj(a);
-	    return(0);
+	    return(2);
 	}
 	LowLevelDamage(NULL,a,WEAPONID_PSISTORM,DAMAGE_IGNOREARMOR,a->psistormdamage,0,DAMAGE_SPLASH|DAMAGE_NOSHOWHIT);
 	a->psistormdamage=0;
@@ -1061,23 +1061,30 @@ int ApplyDamageToUnit(struct OBJ *a)
 	    if (IsOnSkyOBJ(a))
 		imgflags = SC_IMAGE_FLAG_AIRIMG;
 	    newimg = new OVERLAY_IMG(img,image_id,0,0,a->mainimage->elevationlevel+1,imgflags | SC_IMAGE_FLAG_IMGOVER,ISCRIPTNR_INIT);
-//	    iscriptinfo.ExecuteScript(newimg);
 	}
+        a->dmatrixdamage = 0;
     }
     if (a->shielddamage > 0)
     {
 	a->shield -= a->shielddamage;
+	if (a->shield<0)
+	{
+	    DEBUGMESSCR("shield/shielddamage:%d/%d\n",a->shield,a->shielddamage);
+	}
     }
     if (a->lifedamage > 0)
     {
 	a->health -= a->lifedamage;
-	lifechange = 1;
 	if (a->health <= 0)
+	{
 	    dieobj(a);
+	    lifechange = 2;
+	}
+	else
+	    lifechange = 1;
     }
     a->lifedamage = 0;
     a->shielddamage = 0;
-    a->dmatrixdamage = 0;
     return(lifechange);
 }
 //========================================
@@ -1091,8 +1098,10 @@ void allobj_dieheal(void)
         if (a->modemove == MODEDIE)
     	    continue;
 	lifechange = ApplyDamageToUnit(a);
-        if (a->modemove == MODEDIE)
+        if (lifechange == 2)
     	    continue;
+//        if (a->modemove == MODEDIE)
+//    	    continue;
 	mageattributedothings(a);
 	if (IsShieldEnable(a->SC_Unit))
     	    if (!a->shielddamage)
@@ -1568,7 +1577,9 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
 	}
     }
     if ((a->prop & VARPOWEROFF) && mode == MODEPOWERON)
+    {
 	;
+    }
     else
     {
     	if (mode != MODEDIE)
@@ -1578,11 +1589,11 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
 		if (a->subunit->prop & VARNOTWORK)
     	    	    return(MOVEOBJ_NOACT);
 	    }
-	}
-	else
-	{
-	    if (a->prop & VARNOTWORK)
-    		return(MOVEOBJ_NOACT);
+	    else
+	    {
+		if (a->prop & VARNOTWORK)
+    		    return(MOVEOBJ_NOACT);
+    	    }
     	}
     }
     //release any resource field
