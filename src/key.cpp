@@ -118,7 +118,7 @@ void keyhandler(void)
 #ifdef DEBUG
     if (KEYPRESS(F12))
     {
-	logend();
+//	logend();
 	menustatus = EXITGAME;
 	return;
     }

@@ -1575,6 +1575,7 @@ void wscreenonmem(int nrregions,SCREEN_REGION regions[])
 //===================================================
 void gameend(char *mes)
 {
+    logend();
     printf("%s\n",mes);
     if (map.valid_vcode)
         unload_starmap(&map);
@@ -1609,6 +1610,17 @@ void logend(void)
     int i,j,ii,jj,k;
     unsigned short kk;
     FILE *f;
+/*    f=fopen("MAPvision0.txt","wb");
+    for (i=0;i<MAXVISY;i++)
+    {
+        for (j=0;j<MAXVISX;j++)
+        {
+	    fprintf(f,"%03d ",MAPvision[0][i][j]);
+	}
+	fprintf(f,"\n");
+    }
+    fclose(f);
+*/    
 /*    f=fopen("pylonarea.txt","wb");
     for (i=0;i<MAXYMAP;i++)
     {

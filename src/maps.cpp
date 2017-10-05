@@ -697,7 +697,7 @@ void arbitermakewarpfield(OBJ *a,OBJstruct *b)
 void makeoneobjseeopen(OBJ *a,OBJstruct *b)
 {
     int x,y,opendelta,mapchanges=0,objxysize,pl;
-    int i,j,k,pp,see,prst=0,opn,nrofuplevel,objsee,onsky=0;
+    int i,j,k,pp,see,prst=0,opn,nrofuplevel,onsky=0;
     int xcenter,ycenter,level;
 
     int nosave,indextile32;
@@ -726,7 +726,6 @@ void makeoneobjseeopen(OBJ *a,OBJstruct *b)
 	see=SEERANGEIFNOTREADY;
     if (IsOnSkyOBJ(a))
 	onsky=1;
-
     objxysize = GetRangeObjSize(a->SC_Unit,NULL,NULL);
 
     xcenter=a->xkart-xypos[0][objxysize];
@@ -757,17 +756,11 @@ void makeoneobjseeopen(OBJ *a,OBJstruct *b)
 		continue;
 	    if (x>=MAXXMAP)
 		break;
-	    if (map.maplevel[y*MAXXMAP+x]<=level)
-	    {
-	        objsee=1;
-	    }
-	    else
-	        objsee=0;
-	    if (objsee||onsky)
-	    {
-        	    if (!CODEFORSCREEN)
-        	    {
-//			pp=force_slots.playernr[a->playernr];
+	    if (!onsky)
+		if (map.maplevel[y*MAXXMAP+x]>level)
+		    continue;
+    	    if (!CODEFORSCREEN)
+    	    {
 			pp=a->playernr;
             		if (opn&(1<<pp))
             		{
@@ -804,22 +797,24 @@ void makeoneobjseeopen(OBJ *a,OBJstruct *b)
 			if (opendelta==1)
 			    continue;
                     	a->visibleby=opn;
-			if (opn)
-			{
-            		}
-        	    }
-        	    if ((!(a->prop&VARNOTWORK))&&!IsOBJUnderConstruct(a)&&(a->prop|VARPOWEROFF))//esli dvigaetsea
-                	if (IsDetector(a->SC_Unit)&&GetMageAtr(&a->atrobj,ATRBLIND)==0)
-			{
+//			if (opn)
+//			{
+//            		}
+    	    }//codeforscreen
+    	    if ((!(a->prop&VARNOTWORK)) && !IsOBJUnderConstruct(a) && (a->prop|VARPOWEROFF))//esli dvigaetsea
+    	    {
+    	    	if (IsDetector(a->SC_Unit)&&GetMageAtr(&a->atrobj,ATRBLIND)==0)
+		{
                         	if  (opn)//esli alienseobj|parasite
 				{
 				    map.mapbits.seedetector2[y*MAXXMAP+x]|=opn;
 				    map.mapbits.seedetector[y*MAXXMAP+x]|=opn;
 				}
-			}
-    		    nosave=0;
-    		    if (mapchanges && a->playernr == NUMBGAMER)
-    		    {
+		}
+    	    }
+    	    nosave=0;
+    	    if (mapchanges && a->playernr == NUMBGAMER)
+    	    {
     			indextile32=map.display_map[y*MAXXMAP+x];
 			creepnr = GetCreepAroundWithFog(x,y,indextile32);
 			if (creepnr==-1)
@@ -827,11 +822,9 @@ void makeoneobjseeopen(OBJ *a,OBJstruct *b)
     			    savemaptileadr(x,y,indextile32);
 			}
 			savemapcreepadr(x,y,map.creepflagplace[y*MAXXMAP+x]);
-		    }
-
 	    }
-	}
-    }
+	}//for j
+    }//for i
     if (mapchanges)
 	map.clearfog[a->playernr]=1;
 }
