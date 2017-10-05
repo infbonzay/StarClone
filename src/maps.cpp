@@ -703,19 +703,17 @@ void makeoneobjseeopen(OBJ *a,OBJstruct *b)
     int nosave,indextile32;
     signed char creepnr;
 
-    if (IsSubUnit(a->SC_Unit))
+    if (a->prop & VARKARTCHANGES)
+	a->prop &= ~VARKARTCHANGES;
+    else
 	return;
     if (a->prop & VARNOTHERE)
-	return;
-    if (a->prop&VARKARTCHANGES)
-	a->prop&=~VARKARTCHANGES;
-    else
 	return;
     if (a->in_transport)//in buncker/transport
 	return;
     if (IsSubUnit(a->SC_Unit))
 	return;		//subunit not reveal the map
-    if (a->playernr>=PLAYEDPLAYERS)		//this is neutral unit
+    if (a->playernr >= PLAYEDPLAYERS)		//this is neutral unit
 	return;
     if (!IsOBJUnderConstruct(a))
     {
@@ -731,7 +729,6 @@ void makeoneobjseeopen(OBJ *a,OBJstruct *b)
     xcenter=a->xkart-xypos[0][objxysize];
     ycenter=a->ykart-xypos[1][objxysize];
 
-//    level=map.maplevel[ycenter*MAXXMAP+xcenter];
     level=map.maplevel[a->ykart*MAXXMAP+a->xkart];
     opn=GetVisionBitsPlayer(a->playernr);
     if (!opn && !prst)
