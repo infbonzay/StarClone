@@ -2,8 +2,8 @@
 #define _VISION_W
 
 #define ALLVIS		15
-#define MAXVISX		29
-#define MAXVISY		29
+#define MAXVISX		30
+#define MAXVISY		30
 #define MIDX		((MAXVISX-1)/2)
 #define MIDY		((MAXVISY-1)/2)
 #define PI 			3.141592658

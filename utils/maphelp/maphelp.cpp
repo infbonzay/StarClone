@@ -6,6 +6,7 @@
 
 #include "maphelp.h"
 
+char fn[500];
 unsigned char MAPvision[4][MAXVISY][MAXVISX];
 //=============================================
 void setvisiontable(int table,int addx,int addy)
@@ -50,7 +51,6 @@ void SetVisionTables(void)
     setvisiontable(1,1,0);
     setvisiontable(2,0,1);
     setvisiontable(3,1,1);
-    CreateMapOffsets();
 }
 //=============================================
 //0xXXYY	XX - 01-14 vision range, YY - delta from center(0,0)
@@ -110,6 +110,8 @@ struct MAPVISIONOFFSETS
 int currentoffset;
 void arrayset(FILE *f,int elem,int k,int xpos,int ypos)
 {
+    if (!k)
+	k=1;
     fprintf(f," ,%d,%d,%d  ",k,xpos,ypos);
     offs.mapelement[elem].rangevision = k;
     offs.mapelement[elem].xoffset = xpos;
@@ -117,18 +119,18 @@ void arrayset(FILE *f,int elem,int k,int xpos,int ypos)
     currentoffset += sizeof(MAPOFFSETELEMENT);
 }
 //=======================================
-void CreateMapOffsets(void)
+void CreateMapOffsets(int table)
 {
     int g,k,i,j,xpos,ypos,mapgrad,err,curelem;
-    FILE *f = fopen("offset0.txt","wb");
+    sprintf(fn,"offset%d.txt",table);
+    FILE *f = fopen(fn,"wb");
     currentoffset = (int)&offs.mapelement[0] - (int)&offs;
     curelem=0;
     for (g = 0; g<MAXANGLES; g++)
     {
-//	offs.offsets[g] = currentoffset;
 	offs.offsets[g] = curelem;
-	printf("current offset %d=0x%x\n",g,currentoffset);
-	for (k=1;k<ALLVIS;k++)
+	printf("current element nr %d=0x%x\n",g,curelem);
+	for (k=0;k<ALLVIS;k++)
 	{
 	    err=0;
 	    for (i=0;i<MAXVISY;i++)
@@ -140,9 +142,9 @@ void CreateMapOffsets(void)
 		    mapgrad = CalcGradus(0,0,xpos*10,ypos*10);
 		    if (mapgrad >= g*360/MAXANGLES && mapgrad < (g+1)*360/MAXANGLES)
 		    {
-			if ( k == MAPvision[0][i][j])
+			if ( k == MAPvision[table][i][j])
 			{
-			    MAPvision[0][i][j]=255;
+			    MAPvision[table][i][j]=255;
 			    arrayset(f,curelem++,k,xpos,ypos);
 			    err++;
 			}
@@ -158,24 +160,26 @@ void CreateMapOffsets(void)
     fclose(f);
 }
 //=======================================
-void ShowRemainMapVision(void)
+void ShowRemainMapVision(int table)
 {
     int i,j;
-    FILE *f=fopen("remmapvis.txt","wb");
+    sprintf(fn,"remmapvis%d.txt",table);
+    FILE *f = fopen(fn,"wb");
     for (i=0;i<MAXVISY;i++)
     {
         for (j=0;j<MAXVISX;j++)
         {
-	    fprintf(f,"%03d ",MAPvision[0][i][j]);
+	    fprintf(f,"%03d ",MAPvision[table][i][j]);
 	}
 	fprintf(f,"\n");
     }
     fclose(f);
 }
 //=======================================
-void SaveMapOffsets(void)
+void SaveMapOffsets(int table)
 {
-    FILE *f=fopen("vision0.dat","w");
+    sprintf(fn,"vision%d.dat",table);
+    FILE *f = fopen(fn,"wb");
     fwrite(&offs,currentoffset,1,f);
     fclose(f);
 }
@@ -183,6 +187,24 @@ void SaveMapOffsets(void)
 int main(void)
 {
     SetVisionTables();
-    ShowRemainMapVision();
-    SaveMapOffsets();
+
+//    ShowRemainMapVision(0);
+    CreateMapOffsets(0);
+    ShowRemainMapVision(0);
+    SaveMapOffsets(0);
+
+//    ShowRemainMapVision(1);
+    CreateMapOffsets(1);
+    ShowRemainMapVision(1);
+    SaveMapOffsets(1);
+
+//    ShowRemainMapVision(2);
+    CreateMapOffsets(2);
+    ShowRemainMapVision(2);
+    SaveMapOffsets(2);
+
+//    ShowRemainMapVision(3);
+    CreateMapOffsets(3);
+    ShowRemainMapVision(3);
+    SaveMapOffsets(3);
 }

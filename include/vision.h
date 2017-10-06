@@ -1,15 +1,13 @@
 #if !defined(_VISION_W)
 #define _VISION_W
 
-#define ALLVIS		15
-#define MAXVISX		29
-#define MAXVISY		29
-#define MIDX		((MAXVISX-1)/2)
-#define MIDY		((MAXVISY-1)/2)
-#define MAXSTORONSVETA		8
-#define MAXSEERANGE		14
-#define MINSEERANGE		2
+#define ALLVIS			15
+#define MAXVISX			30
+#define MAXVISY			30
+#define MIDX			((MAXVISX-1)/2)
+#define MIDY			((MAXVISY-1)/2)
 #define SEERANGEIFNOTREADY	7
+#define MINSEERANGE		2
 
 #define MAXANGLES		16
 #define MAXOFFSETELEMENTS	(MAXVISX*MAXVISY)
@@ -17,8 +15,8 @@
 struct MAPOFFSETELEMENT
 {
     unsigned char	rangevision;		//1 - (ALLVIS-1)
-    signed char		xoffset;		//-MAXXVIS .. +MAXXVIS
-    signed char		yoffset;		//-MAXYVIS .. +MAXYVIS
+    signed char		xoffset;		//-ALLVIS .. +ALLVIS
+    signed char		yoffset;		//-ALLVIS .. +ALLVIS
 };
 struct MAPVISIONOFFSETS
 {
