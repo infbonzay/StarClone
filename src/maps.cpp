@@ -870,11 +870,11 @@ void makeoneobjseeopen(OBJ *a,OBJstruct *b)
 	return;
     for (g=0;g<MAXANGLES;g++)
     {
-	elemnr = mapvisiontables->offsetelemnr[g];
+	elemnr = mapvisiontables[objxysize]->offsetelemnr[g];
+	cmdoffs = &mapvisiontables[objxysize]->mapelement[0];
 	do{
-	    cmdoffs = &mapvisiontables->mapelement[elemnr++];
-//	    if (vis = cmdoffs->rangevision == 0)
-//		break;
+//	    cmdoffs = &mapvisiontables[objxysize]->mapelement[elemnr++];
+	    cmdoffs++;
 	    vis = cmdoffs->rangevision;
 	    if (!vis)
 		break;
@@ -934,9 +934,6 @@ void makeoneobjseeopen(OBJ *a,OBJstruct *b)
 			if (opendelta==1)
 			    continue;
                     	a->visibleby=opn;
-//			if (opn)
-//			{
-//            		}
     	    }//codeforscreen
     	    if ((!(a->prop&VARNOTWORK)) && !IsOBJUnderConstruct(a) && (a->prop|VARPOWEROFF))//esli dvigaetsea
     	    {

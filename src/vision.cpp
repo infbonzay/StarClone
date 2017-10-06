@@ -8,7 +8,7 @@
 #include "vision.h"
 #include "load.h"
 
-MAPVISIONOFFSETS *mapvisiontables;
+MAPVISIONOFFSETS *mapvisiontables[4];
 
 unsigned char MAPvision[4][MAXVISY][MAXVISX];
 //=============================================
@@ -57,14 +57,23 @@ void SetVisionTables(void)
     LoadVisionBinTables();
 }
 //=============================================
-#define MAPVISIONTABLES_DAT	"map\\vision0.dat"
+#define MAPVISIONTABLES0_DAT	"map\\vision0.dat"
+#define MAPVISIONTABLES1_DAT	"map\\vision1.dat"
+#define MAPVISIONTABLES2_DAT	"map\\vision2.dat"
+#define MAPVISIONTABLES3_DAT	"map\\vision3.dat"
 void LoadVisionBinTables(void)
 {
-    mpqloadfile(MAPVISIONTABLES_DAT,(char **)&mapvisiontables);
+    mpqloadfile(MAPVISIONTABLES0_DAT,(char **)&mapvisiontables[0]);
+    mpqloadfile(MAPVISIONTABLES1_DAT,(char **)&mapvisiontables[1]);
+    mpqloadfile(MAPVISIONTABLES2_DAT,(char **)&mapvisiontables[2]);
+    mpqloadfile(MAPVISIONTABLES3_DAT,(char **)&mapvisiontables[3]);
 }
 //============================================
 void UnloadVisionBinTables(void)
 {
-    unloadfilefrommpq(mapvisiontables);
+    unloadfilefrommpq(mapvisiontables[0]);
+    unloadfilefrommpq(mapvisiontables[1]);
+    unloadfilefrommpq(mapvisiontables[2]);
+    unloadfilefrommpq(mapvisiontables[3]);
 }
 //============================================

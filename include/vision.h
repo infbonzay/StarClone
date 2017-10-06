@@ -26,7 +26,7 @@ struct MAPVISIONOFFSETS
 //=======================================
 
 extern unsigned char MAPvision[4][MAXVISY][MAXVISX];
-extern MAPVISIONOFFSETS *mapvisiontables;
+extern MAPVISIONOFFSETS *mapvisiontables[4];
 
 //=============================================
 void SetVisionTables(void);
