@@ -872,15 +872,18 @@ void makeoneobjseeopen(OBJ *a,OBJstruct *b)
     {
 	elemnr = mapvisiontables->offsetelemnr[g];
 	do{
-	    cmdoffs = &mapvisiontables->mapelement[elemnr];
-	    if (vis = cmdoffs->rangevision == 0)
+	    cmdoffs = &mapvisiontables->mapelement[elemnr++];
+//	    if (vis = cmdoffs->rangevision == 0)
+//		break;
+	    vis = cmdoffs->rangevision;
+	    if (!vis)
 		break;
-	    y = ycenter + cmdoffs->yoffset - MIDY;
+	    y = ycenter + cmdoffs->yoffset;
 	    if (y<0)
 		continue;
 	    if (y>=MAXYMAP)
 		continue;
-	    x = xcenter + cmdoffs->xoffset - MIDX;
+	    x = xcenter + cmdoffs->xoffset;
 	    if (x<0)
 		continue;
 	    if (x>=MAXXMAP)
@@ -957,7 +960,6 @@ void makeoneobjseeopen(OBJ *a,OBJstruct *b)
 			}
 			savemapcreepadr(x,y,map.creepflagplace[y*MAXXMAP+x]);
 	    }
-	    elemnr++;
 	}while(1);
     }//for g
     if (mapchanges)
