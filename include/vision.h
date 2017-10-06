@@ -12,6 +12,7 @@
 #define MAXANGLES		16
 #define MAXOFFSETELEMENTS	(MAXVISX*MAXVISY)
 //=======================================
+#pragma pack(push,1)
 struct MAPOFFSETELEMENT
 {
     unsigned char	rangevision;		//1 - (ALLVIS-1)
@@ -23,6 +24,7 @@ struct MAPVISIONOFFSETS
     unsigned int offsetelemnr[MAXANGLES];
     MAPOFFSETELEMENT mapelement[MAXOFFSETELEMENTS];
 };
+#pragma pack(pop)
 //=======================================
 
 extern unsigned char MAPvision[4][MAXVISY][MAXVISX];

@@ -871,10 +871,9 @@ void makeoneobjseeopen(OBJ *a,OBJstruct *b)
     for (g=0;g<MAXANGLES;g++)
     {
 	elemnr = mapvisiontables[objxysize]->offsetelemnr[g];
-	cmdoffs = &mapvisiontables[objxysize]->mapelement[0];
-	do{
-//	    cmdoffs = &mapvisiontables[objxysize]->mapelement[elemnr++];
-	    cmdoffs++;
+	cmdoffs = &mapvisiontables[objxysize]->mapelement[elemnr];
+	for (;;cmdoffs++)
+	{
 	    vis = cmdoffs->rangevision;
 	    if (!vis)
 		break;
@@ -957,7 +956,7 @@ void makeoneobjseeopen(OBJ *a,OBJstruct *b)
 			}
 			savemapcreepadr(x,y,map.creepflagplace[y*MAXXMAP+x]);
 	    }
-	}while(1);
+	}//for
     }//for g
     if (mapchanges)
 	map.clearfog[a->playernr]=1;
