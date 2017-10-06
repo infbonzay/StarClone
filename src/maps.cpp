@@ -694,7 +694,7 @@ void arbitermakewarpfield(OBJ *a,OBJstruct *b)
     }
 }
 //=================================
-void makeoneobjseeopen(OBJ *a,OBJstruct *b)
+void OLDmakeoneobjseeopen(OBJ *a,OBJstruct *b)
 {
     int x,y,opendelta,mapchanges=0,objxysize,pl;
     int i,j,k,pp,see,prst=0,opn,nrofuplevel,onsky=0;
@@ -822,6 +822,144 @@ void makeoneobjseeopen(OBJ *a,OBJstruct *b)
 	    }
 	}//for j
     }//for i
+    if (mapchanges)
+	map.clearfog[a->playernr]=1;
+}
+//=================================
+void makeoneobjseeopen(OBJ *a,OBJstruct *b)
+{
+    int x,y,opendelta,mapchanges=0,objxysize,pl;
+    int g,i,j,k,pp,see,prst=0,opn,nrofuplevel,onsky=0;
+    int xcenter,ycenter,level;
+
+    int nosave,indextile32;
+    signed char creepnr,vis;
+
+    int elemnr;
+    MAPOFFSETELEMENT *cmdoffs;
+
+    if (a->prop & VARKARTCHANGES)
+	a->prop &= ~VARKARTCHANGES;
+    else
+	return;
+    if (a->prop & VARNOTHERE)
+	return;
+    if (a->in_transport)//in buncker/transport
+	return;
+    if (IsSubUnit(a->SC_Unit))
+	return;		//subunit not reveal the map
+    if (a->playernr >= PLAYEDPLAYERS)		//this is neutral unit
+	return;
+    if (!IsOBJUnderConstruct(a))
+    {
+        prst=GetMageAtr(&a->atrobj,ATRPARASITEFROM);
+        see=GetUnitSightRange(a,b)+2;
+    }
+    else
+	see=SEERANGEIFNOTREADY;
+    if (IsOnSkyOBJ(a))
+	onsky=1;
+    objxysize = GetRangeObjSize(a->SC_Unit,NULL,NULL);
+
+    xcenter=a->xkart-xypos[0][objxysize];
+    ycenter=a->ykart-xypos[1][objxysize];
+
+    level=map.maplevel[a->ykart*MAXXMAP+a->xkart];
+    opn=GetVisionBitsPlayer(a->playernr);
+    if (!opn && !prst)
+	return;
+    for (g=0;g<MAXANGLES;g++)
+    {
+	elemnr = mapvisiontables->offsetelemnr[g];
+	do{
+	    cmdoffs = &mapvisiontables->mapelement[elemnr];
+	    if (vis = cmdoffs->rangevision == 0)
+		break;
+	    y = ycenter + cmdoffs->yoffset - MIDY;
+	    if (y<0)
+		continue;
+	    if (y>=MAXYMAP)
+		continue;
+	    x = xcenter + cmdoffs->xoffset - MIDX;
+	    if (x<0)
+		continue;
+	    if (x>=MAXXMAP)
+		continue;
+	    opendelta = see - vis + 1;
+	    if (opendelta < 1)
+		break;
+	    if (opendelta > 4)
+		opendelta = 4;
+	    if (!onsky)
+		if (map.maplevel[y*MAXXMAP+x]>level)
+		    break;
+    	    if (!CODEFORSCREEN)
+    	    {
+			pp=a->playernr;
+            		if (opn&(1<<pp))
+            		{
+				if (mapSEE(x,y,pp)<opendelta)
+				{
+				    map.mapbits.whitefog[pp][y*MAXXMAP+x]=opendelta;
+				    mapchanges=1;
+				}
+				if (mapSEE2(x,y,pp)<opendelta)
+				{
+				    map.mapbits.whitefog2[pp][y*MAXXMAP+x]=opendelta;
+				    mapchanges=1;
+				}
+			}
+			if (prst)
+			{
+			    for (pp=0;pp<PLAYEDPLAYERS;pp++)
+			    {
+				if (prst&(1<<pp))
+				{
+				    if (mapSEE(x,y,pp)<opendelta)
+				    {
+					map.mapbits.whitefog[pp][y*MAXXMAP+x]=opendelta;
+					mapchanges=1;
+				    }
+				    if (mapSEE2(x,y,pp)<opendelta)
+				    {
+					map.mapbits.whitefog2[pp][y*MAXXMAP+x]=opendelta;
+					mapchanges=1;
+				    }
+				}
+			    }
+			}
+			if (opendelta==1)
+			    continue;
+                    	a->visibleby=opn;
+//			if (opn)
+//			{
+//            		}
+    	    }//codeforscreen
+    	    if ((!(a->prop&VARNOTWORK)) && !IsOBJUnderConstruct(a) && (a->prop|VARPOWEROFF))//esli dvigaetsea
+    	    {
+    	    	if (IsDetector(a->SC_Unit)&&GetMageAtr(&a->atrobj,ATRBLIND)==0)
+		{
+                        	if  (opn)//esli alienseobj|parasite
+				{
+				    map.mapbits.seedetector2[y*MAXXMAP+x]|=opn;
+				    map.mapbits.seedetector[y*MAXXMAP+x]|=opn;
+				}
+		}
+    	    }
+    	    nosave=0;
+    	    if (mapchanges && a->playernr == NUMBGAMER)
+    	    {
+    			indextile32=map.display_map[y*MAXXMAP+x];
+			creepnr = GetCreepAroundWithFog(x,y,indextile32);
+			if (creepnr==-1)
+			{
+    			    savemaptileadr(x,y,indextile32);
+			}
+			savemapcreepadr(x,y,map.creepflagplace[y*MAXXMAP+x]);
+	    }
+	    elemnr++;
+	}while(1);
+    }//for g
     if (mapchanges)
 	map.clearfog[a->playernr]=1;
 }

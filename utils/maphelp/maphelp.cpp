@@ -125,7 +125,8 @@ void CreateMapOffsets(void)
     curelem=0;
     for (g = 0; g<MAXANGLES; g++)
     {
-	offs.offsets[g] = currentoffset;
+//	offs.offsets[g] = currentoffset;
+	offs.offsets[g] = curelem;
 	printf("current offset %d=0x%x\n",g,currentoffset);
 	for (k=1;k<ALLVIS;k++)
 	{

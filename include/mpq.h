@@ -32,7 +32,7 @@ struct MPQPRIO
 };
 //============================================
 int  loadfilefrommpq(HANDLE mpq,char *filename,char **mem,int *fsize);
-void unloadfilefrommpq(char *mem);
+void unloadfilefrommpq(void *mem);
 HANDLE MpqsFindFile(char *filename);
 HANDLE LoadMpq(char *MPQFileName);
 void UnLoadAllMpqs(void);

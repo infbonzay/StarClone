@@ -1592,6 +1592,8 @@ void gameend(char *mes)
     unloadznak();
     UnloadDatTblFiles(&alldattbl);
     unloadallfonts();
+    UnloadVisionBinTables();
+
 //    unloadtexturegrp();
 //    Unload_SC_Images_List();
     settextmode();
@@ -1610,7 +1612,7 @@ void logend(void)
     int i,j,ii,jj,k;
     unsigned short kk;
     FILE *f;
-    f=fopen("MAPvision0.txt","wb");
+/*    f=fopen("MAPvision0.txt","wb");
     for (i=0;i<MAXVISY;i++)
     {
         for (j=0;j<MAXVISX;j++)
@@ -1620,7 +1622,7 @@ void logend(void)
 	fprintf(f,"\n");
     }
     fclose(f);
-    
+*/    
 /*    f=fopen("pylonarea.txt","wb");
     for (i=0;i<MAXYMAP;i++)
     {

@@ -993,7 +993,7 @@ void UnloadDatTblFiles(DATTBLSTRUCT *dattbl)
 	dattbl->campaign_tbl=NULL;
     }
 }
-//============================================
+//================================================
 void LoadPatchTbl(void)
 {
     alldattbl.weapons_dat->MaximumRange[WEAPONID_SCARAB] = 15;		//scarab need to be melee atack

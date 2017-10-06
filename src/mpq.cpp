@@ -31,7 +31,7 @@ int loadfilefrommpq(HANDLE hmpq,char *filename,char **mem,int *fsize)
 	err = wr_SFileOpenFileEx(hmpq,filename,SFILE_OPEN_FROM_MPQ,&f);
     if (!err)
     {
-	printf("%s not found\n",filename);
+	printf("loadfilefrommpq: %s not found\n",filename);
 	return -1;
     }
     filesize = SFileGetFileSize(f,NULL);
@@ -54,7 +54,7 @@ int loadfilefrommpq(HANDLE hmpq,char *filename,char **mem,int *fsize)
     return 0;
 }
 //============================================
-void unloadfilefrommpq(char *mem)
+void unloadfilefrommpq(void *mem)
 {
     if (mem)
     {
