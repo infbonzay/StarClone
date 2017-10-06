@@ -5,10 +5,8 @@
 #include <math.h>
 
 #include "vars.h"
-#include "auxil.h"
 #include "vision.h"
 
-void CreateMapOffsets(void);
 unsigned char MAPvision[4][MAXVISY][MAXVISX];
 //=============================================
 void setvisiontable(int table,int addx,int addy)
@@ -53,43 +51,5 @@ void SetVisionTables(void)
     setvisiontable(1,1,0);
     setvisiontable(2,0,1);
     setvisiontable(3,1,1);
-    CreateMapOffsets();
 }
 //=============================================
-//0xXXYY	XX - 01-14 vision range, YY - delta from center(0,0)
-//signed char MAPVisionOffsets[16][3];
-//=============================================
-void CreateMapOffsets(void)
-{
-    int g,k,i,j,xpos,ypos,mapgrad,err;
-    FILE *f = fopen("Mapoffset.txt","wb");
-    for (g=0;g<16;g++)
-    {
-	for (k=1;k<ALLVIS;k++)
-	{
-	    err=0;
-	    for (i=0;i<MAXVISY;i++)
-	    {
-    		ypos = i - MIDY;
-    		for (j=0;j<MAXVISX;j++)
-    		{
-		    xpos = j - MIDX;
-		    mapgrad = CalcGradus(0,0,xpos*10,ypos*10);
-		    if (mapgrad >= g*360/16 && mapgrad < (g+1)*360/16)
-		    {
-			if ( k == MAPvision[0][i][j])
-			{
-			    err++;
-			    fprintf(f," ,%d,%d,%d  ",k,xpos,ypos);
-			}
-		    }
-		}
-	    }
-	    if (err)
-		fprintf(f,"\n");
-//	    fprintf(f,"0,0,0\n");
-	}
-        fprintf(f,"0,0,0\n\n");
-    }
-    fclose(f);
-}
