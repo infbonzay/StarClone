@@ -27,7 +27,7 @@ struct MAPVISIONOFFSETS
 #pragma pack(pop)
 //=======================================
 
-extern unsigned char MAPvision[4][MAXVISY][MAXVISX];
+//extern unsigned char MAPvision[4][MAXVISY][MAXVISX];
 extern MAPVISIONOFFSETS *mapvisiontables[4];
 
 //=============================================

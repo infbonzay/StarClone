@@ -10,7 +10,7 @@
 
 MAPVISIONOFFSETS *mapvisiontables[4];
 
-unsigned char MAPvision[4][MAXVISY][MAXVISX];
+/*unsigned char MAPvision[4][MAXVISY][MAXVISX];
 //=============================================
 void setvisiontable(int table,int addx,int addy)
 {
@@ -46,14 +46,16 @@ void setvisiontable(int table,int addx,int addy)
 	    }
     }
 }
+*/
 //=============================================
 void SetVisionTables(void)
 {
-    memset(MAPvision,0xff,sizeof(MAPvision));
+/*    memset(MAPvision,0xff,sizeof(MAPvision));
     setvisiontable(0,0,0);
     setvisiontable(1,1,0);
     setvisiontable(2,0,1);
     setvisiontable(3,1,1);
+*/
     LoadVisionBinTables();
 }
 //=============================================

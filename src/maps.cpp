@@ -651,10 +651,10 @@ void makeopenseeKarta(int beginobj,int endobj)
 //=================================
 char xypos[2][4]={{0,1,0,1},{0,0,1,1}};
 //=================================
-void arbitermakewarpfield(OBJ *a,OBJstruct *b)
+/*void OLDarbitermakewarpfield(OBJ *a,OBJstruct *b)
 {
     int x,y,i,j,mybits,xcenter,ycenter,see,objxysize;
-    if (a->SC_Unit!=SC_ARBITEROBJ&&a->SC_Unit!=SC_HERO_DANIMOTHOBJ)
+    if (a->SC_Unit != SC_ARBITEROBJ && a->SC_Unit != SC_HERO_DANIMOTHOBJ)
 	return;
     if (a->prop&VARNOTWORK)
 	return;
@@ -667,8 +667,6 @@ void arbitermakewarpfield(OBJ *a,OBJstruct *b)
 
     xcenter=a->xkart-xypos[0][objxysize];
     ycenter=a->ykart-xypos[1][objxysize];
-//    xcenter=a->xkart;
-//    ycenter=a->ykart;
     mybits=1<<a->playernr;
 
     for (i=0;i<MAXVISY;i++)
@@ -693,8 +691,58 @@ void arbitermakewarpfield(OBJ *a,OBJstruct *b)
 	}
     }
 }
+*/
 //=================================
-void OLDmakeoneobjseeopen(OBJ *a,OBJstruct *b)
+void arbitermakewarpfield(OBJ *a,OBJstruct *b)
+{
+    int g,x,y,i,j,mybits,xcenter,ycenter,see,objxysize;
+    signed char vis;
+    int elemnr;
+    MAPOFFSETELEMENT *cmdoffs;
+
+    if (a->SC_Unit!=SC_ARBITEROBJ&&a->SC_Unit!=SC_HERO_DANIMOTHOBJ)
+	return;
+    if (a->prop&VARNOTWORK)
+	return;
+    if (GetMageAtr(&a->atrobj,ATRHALLUCINATION)!=0)
+	return;
+    if (PLAYER[a->playernr].isobserverflag)
+	return;
+    see=GetCloakRange(a,b);
+    objxysize = GetRangeObjSize(a->SC_Unit,NULL,NULL);
+
+    xcenter=a->xkart-xypos[0][objxysize];
+    ycenter=a->ykart-xypos[1][objxysize];
+//    xcenter=a->xkart;
+//    ycenter=a->ykart;
+    mybits=1<<a->playernr;
+
+    for (g=0;g<MAXANGLES;g++)
+    {
+	elemnr = mapvisiontables[objxysize]->offsetelemnr[g];
+	cmdoffs = &mapvisiontables[objxysize]->mapelement[elemnr];
+	for (;;cmdoffs++)
+	{
+	    vis = cmdoffs->rangevision;
+	    if (!vis || vis>see)
+		break;
+	    y = ycenter + cmdoffs->yoffset;
+	    if (y<0)
+		continue;
+	    if (y>=MAXYMAP)
+		continue;
+	    x = xcenter + cmdoffs->xoffset;
+	    if (x<0)
+		continue;
+	    if (x>=MAXXMAP)
+		continue;
+	    map.mapbits.arbiterfield[y*MAXXMAP+x] |= mybits;
+	    map.mapbits.arbiterfield2[y*MAXXMAP+x] |= mybits;
+	}
+    }
+}
+//=================================
+/*void OLDmakeoneobjseeopen(OBJ *a,OBJstruct *b)
 {
     int x,y,opendelta,mapchanges=0,objxysize,pl;
     int i,j,k,pp,see,prst=0,opn,nrofuplevel,onsky=0;
@@ -825,6 +873,7 @@ void OLDmakeoneobjseeopen(OBJ *a,OBJstruct *b)
     if (mapchanges)
 	map.clearfog[a->playernr]=1;
 }
+*/
 //=================================
 void makeoneobjseeopen(OBJ *a,OBJstruct *b)
 {
