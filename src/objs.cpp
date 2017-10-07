@@ -1337,7 +1337,7 @@ void ReleaseResource(OBJ *a)
     }
 }
 //==================================
-int moveobj_addonmode(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerrorflag)
+int moveobj_addonmode(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int modemoveflags)
 {
     OBJ *newobj;
     int deltax,deltay;
@@ -1346,7 +1346,7 @@ int moveobj_addonmode(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int
     {
 	//the near position
 	DoOrder(a->playernr,a,x,y,mageprop[mode].type_id,mageprop[mode].obj_id,
-				mageprop[mode].obj_id,mageprop[mode].stattxt_id_enable,mode,showerrorflag);
+				mageprop[mode].obj_id,mageprop[mode].stattxt_id_enable,mode,modemoveflags);
 	newobj = createobjman(x,y,mageprop[mode].obj_id,a->playernr);
 	newobj->health=STARTBUILDLIFE;
 	newobj->shield=STARTBUILDSHIELD;
@@ -1361,16 +1361,16 @@ int moveobj_addonmode(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int
     {
 	if (IfHaveNextModeMove(a))
 	{
-	    moveobj(a,NULL,MODEMOVE,x - deltax,y - AIRUNITS_START_YPOS - deltay,showerrorflag,0);	//move to land destination
-	    AddModeMove(a,NULL,MODELANDING,x - deltax,y - deltay,showerrorflag);			//land to destination
-	    AddModeMove(a,NULL,mode,x,y,showerrorflag);							//create addon after
+	    moveobj(a,NULL,MODEMOVE,x - deltax,y - AIRUNITS_START_YPOS - deltay,modemoveflags);		//move to land destination
+	    AddModeMove(a,NULL,MODELANDING,x - deltax,y - deltay,modemoveflags);			//land to destination
+	    AddModeMove(a,NULL,mode,x,y,modemoveflags);							//create addon after
 	}
 	else
 	{
-	    moveobj(a,NULL,MODELIFTOFF,x - deltax,y - deltay,showerrorflag,0);	//liftoff
-	    AddModeMove(a,NULL,MODEMOVE,x - deltax,y - AIRUNITS_START_YPOS - deltay,showerrorflag);	//move to land destination
-	    AddModeMove(a,NULL,MODELANDING,x - deltax,y - deltay,showerrorflag);			//land to destination
-	    AddModeMove(a,NULL,mode,x,y,showerrorflag);							//create addon after
+	    moveobj(a,NULL,MODELIFTOFF,x - deltax,y - deltay,modemoveflags);	//liftoff
+	    AddModeMove(a,NULL,MODEMOVE,x - deltax,y - AIRUNITS_START_YPOS - deltay,modemoveflags);	//move to land destination
+	    AddModeMove(a,NULL,MODELANDING,x - deltax,y - deltay,modemoveflags);			//land to destination
+	    AddModeMove(a,NULL,mode,x,y,modemoveflags);							//create addon after
 	}
 //	printf("deltax=%d deltay=%d\n",x-GetOBJx(a),y-GetOBJy(a));
 	//far position
@@ -1378,7 +1378,7 @@ int moveobj_addonmode(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int
 
 }
 //==================================
-int moveobj_buildmode(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerrorflag)
+int moveobj_buildmode(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int modemoveflags)
 {
     OBJ *newobj;
     int mcost,gcost,x256,y256,constrerror;
@@ -1435,7 +1435,7 @@ int moveobj_buildmode(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int
 	    initmoveaction(a,destobj,mode,0,0,x,y);
 	    if (destobj)
 		a->data.geyserdest.obj = destobj;
-	    AddModeMove(a,NULL,mode,x,y,showerrorflag);//create build after
+	    AddModeMove(a,NULL,mode,x,y,modemoveflags);//create build after
 	}
 	else
 	{
@@ -1449,7 +1449,7 @@ int moveobj_buildmode(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int
 		if (!destobj)
 		{
 		    DEBUGMESSCR("geyser is NULL\n");
-		    moveobj(a,NULL,MODESTOP,0,0,NOSHOWERROR,0);
+		    moveobj(a,NULL,MODESTOP,0,0,NOSHOWERROR);
 		    return(MOVEOBJ_NOACT);
 		}
 	    }
@@ -1457,8 +1457,8 @@ int moveobj_buildmode(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int
 	    //check if can construct on this place
 	    if (!CheckIfCanBuild(a,obj_id,x,y,&constrerror))
 	    {
-		moveobj(a,NULL,MODESTOP,0,0,NOSHOWERROR,0);
-		if (a->playernr == NUMBGAMER && (showerrorflag & SHOWERRORTEXT) )
+		moveobj(a,NULL,MODESTOP,0,0,NOSHOWERROR);
+		if (a->playernr == NUMBGAMER && (modemoveflags & SHOWERRORTEXT) )
 	    	{
 		    activatesound(a,MODESOUNDERROR,2,NOSTOPCURRENTSOUNDS);
 		    putbuildplacemessage(-constrerror);
@@ -1472,7 +1472,7 @@ int moveobj_buildmode(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int
 		case SC_PROBEOBJ:
 		    if (!DecrUnitCost(obj_id,a->playernr))
 		    {
-			moveobj(a,NULL,MODESTOP,0,0,NOSHOWERROR,0);
+			moveobj(a,NULL,MODESTOP,0,0,NOSHOWERROR);
 			return(MOVEOBJ_NOACT);
 		    }
 		    createobjman(x,y,obj_id,a->playernr,0,1,1,33);
@@ -1488,7 +1488,7 @@ int moveobj_buildmode(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int
 		case SC_SCVOBJ:
 		    if (!DecrUnitCost(obj_id,a->playernr))
 		    {
-			moveobj(a,NULL,MODESTOP,0,0,NOSHOWERROR,0);
+			moveobj(a,NULL,MODESTOP,0,0,NOSHOWERROR);
 			return(MOVEOBJ_NOACT);
 		    }
 		    //create build
@@ -1504,7 +1504,7 @@ int moveobj_buildmode(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int
     return(MOVEOBJ_NOACT);
 }
 //==================================
-int moveobj_unitmode(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerrorflag)
+int moveobj_unitmode(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int modemoveflags)
 {
     int needmana;
     OBJ *newobj;
@@ -1540,7 +1540,12 @@ int moveobj_unitmode(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int 
 //==================================
 short TARGETERROR[3]={SFXDATA_ERRORTARGET_ZERG,SFXDATA_ERRORTARGET_TERRAN,SFXDATA_ERRORTARGET_PROTOSS};
 //==================================
-int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerrorflag,int shiftbit)
+int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int modemoveflags)
+{
+    moveobj(a,destobj,mode,0,0,modemoveflags|XYNOTCOORDS);
+}
+//==================================
+int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int modemoveflags)
 {
     OBJ *newobj;
     unsigned char flingy_id,SC_res_type,inv,useweapon_id;
@@ -1568,11 +1573,11 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
     if (mageprop[a->modemove].atr & ORDER_CANNOTBEINTERRUPTED)
         return(MOVEOBJ_NOACT);
     //add to list of moves if have flag and have some in listmove
-    if (shiftbit && mageprop[mode].atr & ORDER_CANBEQUEUED)
+    if ((modemoveflags & SHIFTBIT) && (mageprop[mode].atr & ORDER_CANBEQUEUED))
     {
 	if (a->modemove != MODESTOP)
 	{
-	    AddModeMove(a,destobj,mode,x,y,showerrorflag);
+	    AddModeMove(a,destobj,mode,x,y,modemoveflags);
 	    return(MOVEOBJ_DONE);
 	}
     }
@@ -1620,21 +1625,21 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
 	a->mainimage->DeleteChilds(SC_IMAGE_FLAG_IMGOVER);
 	a->castmagenr = 0;
     }
-    if (!(showerrorflag & ATACKMOVEBIT))
+    if (!(modemoveflags & ATACKMOVEBIT))
         a->prop &= ~VARMOVEINATACKMODE;
     if (mageprop[mode].type_id==ORDERS_UNIT)
     {
 	if (IsAddon(mageprop[mode].obj_id))
 	{
-	    return(moveobj_addonmode(a,destobj,mode,x,y,showerrorflag));
+	    return(moveobj_addonmode(a,destobj,mode,x,y,modemoveflags));
 	}
 	else if (IsBuild(mageprop[mode].obj_id))
 	{
-	    return(moveobj_buildmode(a,destobj,mode,x,y,showerrorflag));
+	    return(moveobj_buildmode(a,destobj,mode,x,y,modemoveflags));
 	}
 	else
 	{
-	    return(moveobj_unitmode(a,destobj,mode,x,y,showerrorflag));
+	    return(moveobj_unitmode(a,destobj,mode,x,y,modemoveflags));
 	}
     }
     else
@@ -1681,7 +1686,7 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
 	    a->modemove = mode;
 	    //move to destination
 	    initmoveaction(a,destobj,mode,0,0,x,y);
-	    AddModeMove(a,destobj,MODEGHOSTSEATNUKEPOS,x,y,showerrorflag);
+	    AddModeMove(a,destobj,MODEGHOSTSEATNUKEPOS,x,y,modemoveflags);
 	    break;
 	case MODEINFEST:
 	    if (destobj)
@@ -1697,7 +1702,7 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
 		    a->modemove = mode;
 		    //move to destination
 		    initmoveaction(a,destobj,mode,0,0,x,y);
-		    AddModeMove(a,destobj,MODEINFEST,x,y,showerrorflag);//cast mage after
+		    AddModeMove(a,destobj,MODEINFEST,x,y,modemoveflags);//cast mage after
 		}
 	    }
 	    break;	
@@ -1738,14 +1743,14 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
 	    a->modemove = mode;
 	    //move to destination
 	    initmoveaction(a,destobj,mode,0,0,x,y);
-	    AddModeMove(a,destobj,MODECASTSPELL,x,y,showerrorflag);//cast mage after
+	    AddModeMove(a,destobj,MODECASTSPELL,x,y,modemoveflags);//cast mage after
 	    break;
 	case MODEYAMATOGUN:
 	    a->castmagenr = mode;
 	    a->modemove = mode;
 	    //move to destination
 	    initmoveaction(a,destobj,mode,0,0,x,y);
-	    AddModeMove(a,destobj,MODECASTSPELL,x,y,showerrorflag);//cast mage after
+	    AddModeMove(a,destobj,MODECASTSPELL,x,y,modemoveflags);//cast mage after
 //	    a->finalOBJ = NULL;		
 	    a->prop &= ~VARMOVEOBJACT;	//this is prevent move to destobj at next tick, that create engine glowing then do yamatogun
 	    break;
@@ -1790,18 +1795,18 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
 	    {
 	        newobj = GetNearResource(a,SC_res_type,&resval);
 	        if (newobj)
-		    moveobj(a,newobj,MODEGATHER,0,0,NOSHOWERROR,0);
+		    moveobj(a,newobj,MODEGATHER,0,0,NOSHOWERROR);
 		else
 	    	    if (resval)
 	    		if (SC_res_type = SC_MINERAL1OBJ)
-	    		    moveobj(a,NULL,MODEWAITHARVESTMINERAL,0,0,NOSHOWERROR,0);
+	    		    moveobj(a,NULL,MODEWAITHARVESTMINERAL,0,0,NOSHOWERROR);
 	    		else
-	    		    moveobj(a,NULL,MODEWAITHARVESTGAS,0,0,NOSHOWERROR,0);
+	    		    moveobj(a,NULL,MODEWAITHARVESTGAS,0,0,NOSHOWERROR);
 	    	    else
-	    		moveobj(a,NULL,MODESTOP,0,0,NOSHOWERROR,0);
+	    		moveobj(a,NULL,MODESTOP,0,0,NOSHOWERROR);
 	    }
 	    else
-	        moveobj(a,a->prevresourceobj,MODEGATHER,0,0,NOSHOWERROR,0);
+	        moveobj(a,a->prevresourceobj,MODEGATHER,0,0,NOSHOWERROR);
 	    break;
 	case MODERETURNCARGO:
 	    a->modemove = mode;
@@ -1811,12 +1816,12 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
 	    {
 		a->modemove = mode;
 		initmoveaction(a,newobj,mode,0,0,x,y);
-		AddModeMove(a,newobj,MODEGIVERESOURCETOBASE,x,y,showerrorflag);
+		AddModeMove(a,newobj,MODEGIVERESOURCETOBASE,x,y,modemoveflags);
 	    }
 	    else
 	    {
 		//set to wait to appear base build
-		moveobj(a,NULL,MODEWAITRETURNCARGO,0,0,showerrorflag,0);
+		moveobj(a,NULL,MODEWAITRETURNCARGO,0,0,modemoveflags);
 	    }
 	    return(MOVEOBJ_DONE);
 	    break;
@@ -1841,19 +1846,19 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
 	    a->prevresourceobj = NULL;
 	    newobj = GetNearResource(a,SC_MINERAL1OBJ,&resval);
 	    if (newobj)
-	        moveobj(a,newobj,MODEGATHER,0,0,showerrorflag,0);
+	        moveobj(a,newobj,MODEGATHER,0,0,modemoveflags);
 	    else
 		if (resval)
-	    	    moveobj(a,NULL,MODEWAITHARVESTMINERAL,0,0,showerrorflag,0);
+	    	    moveobj(a,NULL,MODEWAITHARVESTMINERAL,0,0,modemoveflags);
 		else
-	    	    moveobj(a,NULL,MODESTOP,0,0,showerrorflag,0);
+	    	    moveobj(a,NULL,MODESTOP,0,0,modemoveflags);
 	    break;
 	case MODEGATHERGAS:
 	    if (destobj)
 	    {
 		if (IsOBJUnderConstruct(destobj))
 		{
-	    	    moveobj(a,NULL,MODESTOP,0,0,showerrorflag,0);
+	    	    moveobj(a,NULL,MODESTOP,0,0,modemoveflags);
 		    return(MOVEOBJ_NOACT);
 		}
 		if (!destobj->resourceobj)		//somebody harvest from this resource?
@@ -1872,17 +1877,17 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
 		    return(MOVEOBJ_DONE);
 		}
 		else
-		    moveobj(a,NULL,MODEWAITHARVESTGAS,0,0,showerrorflag,0);
+		    moveobj(a,NULL,MODEWAITHARVESTGAS,0,0,modemoveflags);
 	    }
 	    else
-	        moveobj(a,NULL,MODESTOP,0,0,showerrorflag,0);
+	        moveobj(a,NULL,MODESTOP,0,0,modemoveflags);
 	    break;
 	case MODEGATHER:
 	    if (destobj)
 	    {
 		if (a->carryobj)
 		{
-		    moveobj(a,destobj,MODEMOVE,0,0,NOSHOWERROR,0);
+		    moveobj(a,destobj,MODEMOVE,0,0,NOSHOWERROR);
 		}
 		else
 		{
@@ -1890,9 +1895,9 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
 		    a->prop |= VARAUTOMATRESOURCERET;
 		    initmoveaction(a,destobj,mode,0,0,x,y);
 		    if (IsNonNeutralFlag(destobj->SC_Unit))	//dest unit is extractor or refinery or assimilator
-			AddModeMove(a,destobj,MODEGATHERGAS,x,y,showerrorflag);
+			AddModeMove(a,destobj,MODEGATHERGAS,x,y,modemoveflags);
 		    else
-			AddModeMove(a,destobj,MODEGATHERMINERAL,x,y,showerrorflag);
+			AddModeMove(a,destobj,MODEGATHERMINERAL,x,y,modemoveflags);
 		}
 	    }
 	    break;
@@ -1908,7 +1913,7 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
 		//continue construction
 		if (IsOBJUnderConstruct(destobj))
 		{
-		    moveobj(a,NULL,MODEMOVE,GetOBJx(destobj),GetOBJy(destobj),NOSHOWERROR,0);
+		    moveobj(a,NULL,MODEMOVE,GetOBJx(destobj),GetOBJy(destobj),NOSHOWERROR);
 		    if (!destobj->constrobj)
 		    {
 			AddModeMove(a,destobj,MODECONSTRUCT,0,0,NOSHOWERROR);
@@ -1949,7 +1954,7 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
 	    {
 		a->constrobj->constrobj = NULL;
 		a->constrobj = NULL;
-		moveobj(a,NULL,MODESTOP,0,0,NOSHOWERROR,0);
+		moveobj(a,NULL,MODESTOP,0,0,NOSHOWERROR);
 		ChangeTypeOfProp(a,b,PROPNORMAL1);
 	    }
 	    break;
@@ -1987,7 +1992,7 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
 	    a->finalOBJ=NULL;
 	    if (alldattbl.units_dat->Subunit1[a->SC_Unit] < MAX_UNITS_ELEM)
 	    {
-		moveobj(a->subunit,destobj,mode,x,y,NOSHOWERROR,0);
+		moveobj(a->subunit,destobj,mode,x,y,NOSHOWERROR);
 	    }
 	    DelAllModeMoves(a,0);
 //	    if (a->movelist)
@@ -2016,7 +2021,7 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
 	    SetModeMove(a,mode);
 	    if (alldattbl.units_dat->Subunit1[a->SC_Unit] < MAX_UNITS_ELEM)
 	    {
-		moveobj(a->subunit,NULL,MODESTOP,x,y,NOSHOWERROR,0);
+		moveobj(a->subunit,NULL,MODESTOP,x,y,NOSHOWERROR);
 	    }
 	    initmoveaction(a,destobj,mode,0,0,x,y);
 	    break;
@@ -2031,7 +2036,7 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
 	    a->modemove = mode;
 	    if (alldattbl.units_dat->Subunit1[a->SC_Unit] < MAX_UNITS_ELEM)
 	    {
-		moveobj(a->subunit,NULL,MODESTOP,x,y,NOSHOWERROR,0);
+		moveobj(a->subunit,NULL,MODESTOP,x,y,NOSHOWERROR);
 	    }
 	    if (destobj)
 	    {
@@ -2149,8 +2154,8 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
 	    {
 		if (!CheckIfCanLand(a,x,y,&constrerror))
 		{
-		    moveobj(a,NULL,MODESTOP,0,0,NOSHOWERROR,0);
-		    if (a->playernr == NUMBGAMER && (showerrorflag & SHOWERRORTEXT)) 
+		    moveobj(a,NULL,MODESTOP,0,0,NOSHOWERROR);
+		    if (a->playernr == NUMBGAMER && (modemoveflags & SHOWERRORTEXT)) 
 	    	    {
 			Play_sfxdata_id(fordeselect[0],PUTLIFTDOWNERROR,2,0);
 			putbuildplacemessage(-constrerror);
@@ -2170,8 +2175,8 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerror
 	    }
 	    else
 	    {
-		moveobj(a,NULL,MODEMOVE,x,y-AIRUNITS_START_YPOS,NOSHOWERROR,0);
-		InsertModeMove(a,NULL,mode,x,y,showerrorflag);
+		moveobj(a,NULL,MODEMOVE,x,y-AIRUNITS_START_YPOS,NOSHOWERROR);
+		InsertModeMove(a,NULL,mode,x,y,modemoveflags);
 	    }
 	    break;
 	case MODELIFTOFF:
@@ -2351,7 +2356,7 @@ escapeconstrslots:
 		}
 		else
 		{
-		    moveobj(a,destobj,MODEMOVE,0,0,NOSHOWERROR,0);
+		    moveobj(a,destobj,MODEMOVE,0,0,NOSHOWERROR);
 		}
 	    }
 	    break;
@@ -2365,7 +2370,7 @@ escapeconstrslots:
 		a->modemove = mode;
 		//move to destination
 		initmoveaction(a,destobj,mode,0,0,x,y);
-		AddModeMove(a,destobj,MODEWARPINIT,x,y,showerrorflag);//cast mage after
+		AddModeMove(a,destobj,MODEWARPINIT,x,y,modemoveflags);//cast mage after
 	    }
 	    return(MOVEOBJ_DONE);
 	case MODEUNLOADALLUNITS:
@@ -2381,7 +2386,7 @@ escapeconstrslots:
 	case MODEHEAL:
 	    if (destobj == NULL)
 	    {
-		moveobj(a,NULL,MODESTOP,0,0,NOSHOWERROR,0);
+		moveobj(a,NULL,MODESTOP,0,0,NOSHOWERROR);
 		return(MOVEOBJ_NOACT);
 	    }
 	    if (ishealingobj(destobj))
@@ -2435,7 +2440,7 @@ escapeconstrslots:
 	case MODELOADUNITS:
 	    a->modemove = mode;
 	    initmoveaction(a,destobj,mode,0,0,x,y);
-	    moveobj(destobj,a,MODEENTERTRANSPORT,0,0,NOSHOWERROR,0);
+	    moveobj(destobj,a,MODEENTERTRANSPORT,0,0,NOSHOWERROR);
 	    break;
 	case MODEUNLOADUNITS:
 	    if (destobj)
@@ -2458,12 +2463,12 @@ escapeconstrslots:
 	case MODEATACKREADY:
 	    if (alldattbl.units_dat->Subunit1[a->SC_Unit] < MAX_UNITS_ELEM)
 	    {
-		moveobj(a->subunit,destobj,mode,x,y,showerrorflag,0);
+		moveobj(a->subunit,destobj,mode,x,y,modemoveflags);
 		return(MOVEOBJ_DONE);
 	    }
 	    if (destobj)
 	    {
-		ret = AtackCoolDownEnds(a,destobj,0,showerrorflag);
+		ret = AtackCoolDownEnds(a,destobj,0,modemoveflags);
 		switch(ret)
 		{
 		    case MOVEOBJ_CONTINUEJOB:
@@ -2498,12 +2503,12 @@ bugguyexplode:
 	    {
 		if (alldattbl.units_dat->Subunit1[a->SC_Unit] < MAX_UNITS_ELEM)
 		{
-		    moveobj(a->subunit,destobj,mode,x,y,showerrorflag,0);
+		    moveobj(a->subunit,destobj,mode,x,y,modemoveflags);
 		    return(MOVEOBJ_DONE);
 		}
-		if (!(showerrorflag & ATACKMOVEBIT))
+		if (!(modemoveflags & ATACKMOVEBIT))
 		    a->prop &= ~VARMOVEINATACKMODE;
-		ret = AtackCoolDownEnds(a,destobj,0,showerrorflag);
+		ret = AtackCoolDownEnds(a,destobj,0,modemoveflags);
 		switch(ret)
 		{
 		    case MOVEOBJ_DONE:
@@ -2535,7 +2540,7 @@ bugguyexplode:
 		    //???? search new obj for atack
 		    //or return tobase
 		    DelAllModeMoves(a,0);
-		    moveobj(a,a->myparent,MODEGOTORECHARGE,0,0,NOSHOWERROR,0);
+		    moveobj(a,a->myparent,MODEGOTORECHARGE,0,0,NOSHOWERROR);
 //		    AddModeMove(a,NULL,MODERECHARGE,0,0,0);
 		}
 		if (accesstomove(a,loadobj(a->SC_Unit),MODEMOVE,a->playernr))
@@ -2632,7 +2637,7 @@ void CheckIfGotoBattery(OBJ *a,OBJ *destobj)
     switch(destobj->SC_Unit)
     {
 	case SC_BATTERYOBJ:
-	    moveobj(destobj,a,MODERECHARGESHIELD,0,0,NOSHOWERROR,0);
+	    moveobj(destobj,a,MODERECHARGESHIELD,0,0,NOSHOWERROR);
 	    break;
     }
 }
@@ -2779,7 +2784,7 @@ int movefrommouse(struct OBJ *a)
     return 1;
 }
 //==================================
-int makemove(struct OBJ *a,struct OBJ *destobj,int locx,int locy,int mode,int player,int showerrorflag)
+int makemove(struct OBJ *a,struct OBJ *destobj,int locx,int locy,int mode,int player,int modemoveflags)
 {
     struct OBJstruct *b;
     b=loadobj(a->SC_Unit);
@@ -2802,11 +2807,11 @@ int makemove(struct OBJ *a,struct OBJ *destobj,int locx,int locy,int mode,int pl
 //	a->movelist->EmptyElemFifo();
     if (mode != MODEHOLDPOS)
 	a->prop &= ~VARHOLDPOSBIT;
-    moveobj(a,destobj,mode,locx,locy,showerrorflag,0);
+    moveobj(a,destobj,mode,locx,locy,modemoveflags);
     return(1);
 }
 //==================================
-int selectedobjmove(struct OBJ *destobj,int locx,int locy,int mode,int player,int showerrorflag,int rightclick)
+int selectedobjmove(struct OBJ *destobj,int locx,int locy,int mode,int player,int modemoveflags,int rightclick)
 {
     int minx,miny,maxx,maxy,midx=0,midy=0,deltax=0,deltay=0,flags=SHOWERRORTEXT;
     int i,k=0,maxmoveobj=0;
@@ -3109,7 +3114,7 @@ void LoadObjInObj(struct OBJ *a,struct OBJ *c)
 	}
 	c->loaded->nrofloadedunits++;
 	a->in_transport = c;
-	moveobj(a,NULL,MODESTOP,0,0,NOSHOWERROR,0);
+	moveobj(a,NULL,MODESTOP,0,0,NOSHOWERROR);
 	Play_sfxdata(GetOBJx(c),GetOBJy(c),SFXDATA_ZINTRANSPORT+GetUnitRace(c->SC_Unit),2);
 	//disable drawing in transport unit
 	a->prop |= (VARINTRANSPORT | VARCANTSELECT | VARNOTHERE);
@@ -3216,7 +3221,7 @@ void UnLoadObjInObj(struct OBJ *c,int nrofunloadobj,int typeofnewxycoords,int de
     	    ChangeSubUnitCoords(a->subunit,a);
 	    ForceKartChanges(a->subunit);
 	}
-	moveobj(a,NULL,MODESTOP,0,0,NOSHOWERROR,0);
+	moveobj(a,NULL,MODESTOP,0,0,NOSHOWERROR);
 	if (!silentlyflag)
 	    Play_sfxdata(GetOBJx(c),GetOBJy(c),SFXDATA_ZOUTTRANSPORT+GetUnitRace(c->SC_Unit),2);
 
@@ -3255,7 +3260,7 @@ void dieobj(struct OBJ *a)
     a->currentspeed = 0;
     a->prop &= ~VARACCELERATIONBIT;
     
-    moveobj(a,NULL,MODEDIE,0,0,NOSHOWERROR,0);
+    moveobj(a,NULL,MODEDIE,0,0,NOSHOWERROR);
 
     needtodestroyonexit=0;
     deselectobj(a);
@@ -3278,7 +3283,7 @@ void dieobj(struct OBJ *a)
 		newobj->mainimage->ShowChildsImgFlag();
 		newobj->mainimage->ShowImgFlag();
 		newobj->prop &= ~VARNOTHERE;
-		moveobj(newobj,NULL,MODESTOP,0,0,NOSHOWERROR,0);
+		moveobj(newobj,NULL,MODESTOP,0,0,NOSHOWERROR);
 	    }
 	    break;
 	case SC_NUCLEARSILOOBJ:
@@ -3336,7 +3341,7 @@ void dieobj(struct OBJ *a)
 	}
 	else
 	{
-	    moveobj(a->addonobj,NULL,MODEESCAPE1,0,0,NOSHOWERROR,0);//cancel construct addon
+	    moveobj(a->addonobj,NULL,MODEESCAPE1,0,0,NOSHOWERROR);//cancel construct addon
 	}
 	if (a->addonobj)
 	{
@@ -3512,7 +3517,7 @@ void WakeUpOneInterceptor(OBJ *myparent,OBJ *a,OBJ *destobj,int childnr)
         a->mainimage->ShowImgFlag();
         ChangeTypeOfProp(a,PROPNORMAL1);
         SetOBJxy256(a,GetOBJx256(myparent),GetOBJy256(myparent));
-	moveobj(a,destobj,MODEMOVEFORWARD,1,0,NOSHOWERROR,0);
+	moveobj(a,destobj,MODEMOVEFORWARD,1,0,NOSHOWERROR);
     }
 }
 //=================================
@@ -3533,7 +3538,7 @@ void WakeUpInterceptors(OBJ *a,OBJ *destobj)
 		}
 		else
 		{
-		    moveobj(a->childs->parentof[i],destobj,MODEMOVEFORWARD,1,0,NOSHOWERROR,0);
+		    moveobj(a->childs->parentof[i],destobj,MODEMOVEFORWARD,1,0,NOSHOWERROR);
 		}
 }
 //=================================
@@ -3659,7 +3664,7 @@ void DeleteOldObjPointers(struct OBJ *a)
 	    b->whoatack = NULL;
 	if (b->finalOBJ == a)
 	{
-	    moveobj(b,NULL,MODESTOP,0,0,NOSHOWERROR,0);
+	    moveobj(b,NULL,MODESTOP,0,0,NOSHOWERROR);
 	    b->finalOBJ = NULL;
 	}
 	if (b->constrobj == a)
@@ -3721,19 +3726,19 @@ void RemoveFromDestination(OBJ *a)
 		    if (IsNonNeutralFlag(a->SC_Unit))	//unit is extractor or refinery or assimilator
 		    {
 			//if gas deposit is destroyed unit stopped
-			moveobj(a1,NULL,MODESTOP,0,0,NOSHOWERROR,0);
+			moveobj(a1,NULL,MODESTOP,0,0,NOSHOWERROR);
 		    }
 		    else
 		    {
 			//if mineral field (destroyed or dissapeared), unit stopped
 			tempobj = GetNearResource(a1,a->SC_Unit,&resval);
 			if (tempobj)
-			    moveobj(a1,tempobj,MODEGATHER,0,0,NOSHOWERROR,0);
+			    moveobj(a1,tempobj,MODEGATHER,0,0,NOSHOWERROR);
 			else
 			    if (resval)
-				moveobj(a1,NULL,MODEWAITHARVESTMINERAL,0,0,NOSHOWERROR,0);
+				moveobj(a1,NULL,MODEWAITHARVESTMINERAL,0,0,NOSHOWERROR);
 			    else
-				moveobj(a1,NULL,MODESTOP,0,0,NOSHOWERROR,0);
+				moveobj(a1,NULL,MODESTOP,0,0,NOSHOWERROR);
 		    }
 		}
 	}
@@ -4216,7 +4221,7 @@ void unitprepareforatack(OBJ *a,OBJ *a2)
 		{
 		    if (aiaction)
 		    {
-			moveobj(a,NULL,MODEBURROW2,0,0,NOSHOWERROR,0);
+			moveobj(a,NULL,MODEBURROW2,0,0,NOSHOWERROR);
 		    }
 		}
 		break;
@@ -4240,7 +4245,7 @@ void unitprepareforatack(OBJ *a,OBJ *a2)
 			    {
 				status = CheckWeaponRange(a,a2,groundweapon_id,a->playernr);
 				if (status == 0)//siege weapon in range, we can go siege
-				    moveobj(a->subunit,NULL,MODETANKSIEGE,0,0,NOSHOWERROR,0);
+				    moveobj(a->subunit,NULL,MODETANKSIEGE,0,0,NOSHOWERROR);
 				else
 				    //to close obj, do normal atack
 				    doatack=1;
@@ -4260,7 +4265,7 @@ void unitprepareforatack(OBJ *a,OBJ *a2)
 		{
 		    if (aiaction)
 		    {
-			moveobj(a,NULL,MODEUNBURROW,0,0,NOSHOWERROR,0);
+			moveobj(a,NULL,MODEUNBURROW,0,0,NOSHOWERROR);
 			AddModeMove(a,a2,MODEATACK,0,0,NOSHOWERROR);
 		    }	
 		}
@@ -4268,7 +4273,7 @@ void unitprepareforatack(OBJ *a,OBJ *a2)
 	}
 	if (doatack)
 	{
-	    moveobj(a,a2,MODEATACK,0,0,NOSHOWERROR|ATACKMOVEBIT,0);
+	    moveobj(a,a2,MODEATACK,0,0,NOSHOWERROR|ATACKMOVEBIT);
 	}
     }
     else//no body to atack
@@ -4279,7 +4284,7 @@ void unitprepareforatack(OBJ *a,OBJ *a2)
 	    {
 		case SC_VULTUREMINEOBJ:		//mine burrow of not have atack goal
 		    if (!IsOBJBurrowed(a))
-			moveobj(a,NULL,MODEBURROW2,0,0,NOSHOWERROR,0);
+			moveobj(a,NULL,MODEBURROW2,0,0,NOSHOWERROR);
 		    break;
 		default:
 /*		    if (!IsOBJBurrowed(a))
@@ -4287,7 +4292,7 @@ void unitprepareforatack(OBJ *a,OBJ *a2)
 			b=loadobj(a->SC_Unit);
 			if (accesstomove(a,b,MODEBURROW,a->playernr))
 			{
-			    moveobj(a,NULL,MODEBURROW,0,0,NOSHOWERROR,0);
+			    moveobj(a,NULL,MODEBURROW,0,0,NOSHOWERROR);
 			}
 		    }
 */
@@ -4311,7 +4316,7 @@ void trapprepareforatack(OBJ *a,OBJ *a2)
 	    DelAllModeMoves(a,0);
 //	    if (a->movelist)
 //	        a->movelist->EmptyElemFifo();
-	    moveobj(a,a2,MODEATACK,0,0,NOSHOWERROR,0);
+	    moveobj(a,a2,MODEATACK,0,0,NOSHOWERROR);
 	}
     }
     else
@@ -4380,18 +4385,18 @@ void atackback(OBJ *firstatacker,OBJ *destobj,int directiondamage)
 		    {
 		    }
 		    else
-			moveobj(destobj,firstatacker->in_transport,MODEATACK,0,0,NOSHOWERROR|ATACKMOVEBIT,0);	//atack bunker back
+			moveobj(destobj,firstatacker->in_transport,MODEATACK,0,0,NOSHOWERROR|ATACKMOVEBIT);	//atack bunker back
 		}
 		else
 		{
 		    if (IsOBJBurrowed(destobj))
 		    {
-			moveobj(destobj,firstatacker,MODEUNBURROW,0,0,NOSHOWERROR|ATACKMOVEBIT,0);
+			moveobj(destobj,firstatacker,MODEUNBURROW,0,0,NOSHOWERROR|ATACKMOVEBIT);
 			AddModeMove(destobj,firstatacker,MODEATACK,0,0,NOSHOWERROR);
 		    }
 		    else
 		    {
-			moveobj(destobj,firstatacker,MODEATACK,0,0,NOSHOWERROR|ATACKMOVEBIT,0);
+			moveobj(destobj,firstatacker,MODEATACK,0,0,NOSHOWERROR|ATACKMOVEBIT);
 		    }
 		}
 	    }
@@ -4411,7 +4416,7 @@ void moveaway(OBJ *atacker,OBJ *a,int directiondamage,int modeofmove,int addtoqu
     if (addtoqueue)
 	AddModeMove(a,NULL,modeofmove,GetOBJx(a)+dx,GetOBJy(a)+dy,NOSHOWERROR);
     else
-	moveobj(a,NULL,modeofmove,GetOBJx(a)+dx,GetOBJy(a)+dy,NOSHOWERROR,0);
+	moveobj(a,NULL,modeofmove,GetOBJx(a)+dx,GetOBJy(a)+dy,NOSHOWERROR);
 
 }
 //=================================
@@ -4425,7 +4430,7 @@ int tryaiaction(OBJ *a,OBJ *atacker,int directiondamage)
 	    //check for distance to unit to check if we need to go normal tank mode
 	    err = IfCanCreateWeapon(a,atacker,NULL,NULL,0);
 	    if ( err == CREATEDWEAPONSTATUS_DESTTOCLOSE)
-		moveobj(a,NULL,MODETANKNORMAL,0,0,NOSHOWERROR,0);
+		moveobj(a,NULL,MODETANKNORMAL,0,0,NOSHOWERROR);
 	    return(0);
 	case SC_LURKEROBJ:
 	    err = IfCanCreateWeapon(a,atacker,NULL,NULL,0);
@@ -4437,7 +4442,7 @@ int tryaiaction(OBJ *a,OBJ *atacker,int directiondamage)
 		    if (IsOBJBurrowed(a))
 		    {
 			//if cannot atack -> unburrow & get out of here
-			moveobj(a,NULL,MODEUNBURROW,0,0,NOSHOWERROR,0);
+			moveobj(a,NULL,MODEUNBURROW,0,0,NOSHOWERROR);
 			moveaway(atacker,a,directiondamage,MODEMOVE,1);//add this command to queue
 		    }
 		    return(0);
@@ -4445,17 +4450,17 @@ int tryaiaction(OBJ *a,OBJ *atacker,int directiondamage)
 		case CREATEDWEAPONSTATUS_ATACKSUCCESSWITHROTATION:
 		//we in position, do not unburrow
 		    if (!IsOBJBurrowed(a))
-			moveobj(a,NULL,MODEBURROW2,0,0,NOSHOWERROR,0);
+			moveobj(a,NULL,MODEBURROW2,0,0,NOSHOWERROR);
 		    return(1);
 		case CREATEDWEAPONSTATUS_DESTOUTOFRANGE:
 		case CREATEDWEAPONSTATUS_DESTTOCLOSE://never
 		    if (IsOBJBurrowed(a))
 		    {
-			moveobj(a,NULL,MODEUNBURROW,0,0,NOSHOWERROR,0);
+			moveobj(a,NULL,MODEUNBURROW,0,0,NOSHOWERROR);
 		    }
 		    else
 		    {
-//			moveobj(a,atacker,MODEATACK,0,0,NOSHOWERROR,0);
+//			moveobj(a,atacker,MODEATACK,0,0,NOSHOWERROR);
 		    }
 		    return(1);
 	    }
@@ -4468,7 +4473,7 @@ int tryaiaction(OBJ *a,OBJ *atacker,int directiondamage)
 	    //cloakunit
 	    if (!GetMageAtr(&a->atrobj,ATRINVISIBLE))
 	    {
-		moveobj(a,NULL,MODECLOAKFIELD,0,0,NOSHOWERROR,0);
+		moveobj(a,NULL,MODECLOAKFIELD,0,0,NOSHOWERROR);
     	    }
 	    return(0);
 	}
@@ -4478,7 +4483,7 @@ int tryaiaction(OBJ *a,OBJ *atacker,int directiondamage)
 		//cloakunit
 		if (!GetMageAtr(&a->atrobj,ATRINVISIBLE))
 		{
-		    moveobj(a,NULL,MODEPERSONNELCLOAK,0,0,NOSHOWERROR,0);
+		    moveobj(a,NULL,MODEPERSONNELCLOAK,0,0,NOSHOWERROR);
 		}
 		return(0);
 	    }
@@ -4497,17 +4502,17 @@ int tryunitaction(OBJ *a,OBJ *atacker)
 	    return(0);
 /*	    if (IsOBJBurrowed(a))
 	    {
-//		moveobj(a,NULL,MODEUNBURROW,0,0,NOSHOWERROR,0);
+//		moveobj(a,NULL,MODEUNBURROW,0,0,NOSHOWERROR);
 	    }
 	    else
 	    {
-		moveobj(a,NULL,MODEBURROW2,0,0,NOSHOWERROR,0);
+		moveobj(a,NULL,MODEBURROW2,0,0,NOSHOWERROR);
 	    }
 */
     }
     if (IsOBJBurrowed(a))
     {
-	moveobj(a,NULL,MODEUNBURROW,0,0,NOSHOWERROR,0);
+	moveobj(a,NULL,MODEUNBURROW,0,0,NOSHOWERROR);
 	AddModeMove(a,atacker,MODEATACK,0,0,NOSHOWERROR);
 	return(0);
     }
@@ -4528,7 +4533,7 @@ void TryToScanArea(OBJ *a,OBJ *scanobjarea)
 	if (a2)
 	{
 	    //scan the region
-	    moveobj(a2,NULL,MODESCANREGION,GetOBJx(scanobjarea),GetOBJy(scanobjarea),NOSHOWERROR,0);
+	    moveobj(a2,NULL,MODESCANREGION,GetOBJx(scanobjarea),GetOBJy(scanobjarea),NOSHOWERROR);
 	    return;
 	}
     }
@@ -4546,10 +4551,10 @@ void TryToScanArea(OBJ *a,OBJ *scanobjarea)
 	    }
 	}
 	if (a2)		//send observer obj to the area
-	    moveobj(a2,NULL,MODEMOVE,GetOBJx(scanobjarea),GetOBJy(scanobjarea),NOSHOWERROR,0);
+	    moveobj(a2,NULL,MODEMOVE,GetOBJx(scanobjarea),GetOBJy(scanobjarea),NOSHOWERROR);
     }
     else		//scan area
-	moveobj(a2,NULL,MODESCANREGION,GetOBJx(scanobjarea),GetOBJy(scanobjarea),NOSHOWERROR,0);
+	moveobj(a2,NULL,MODESCANREGION,GetOBJx(scanobjarea),GetOBJy(scanobjarea),NOSHOWERROR);
 	
 }
 //=================================
@@ -4573,13 +4578,13 @@ void TellOtherUnitsAboutAtacking(OBJ *a,OBJ *atacker)
 		    {
 			if (a2->SC_Unit != SC_LURKEROBJ)
 			{
-			    moveobj(a2,NULL,MODEUNBURROW,0,0,NOSHOWERROR,0);
+			    moveobj(a2,NULL,MODEUNBURROW,0,0,NOSHOWERROR);
 			}
 		    }
 		    else
 		    {
 			if (a2->SC_Unit != SC_LURKEROBJ)
-			    moveobj(a2,atacker,MODEATACK,0,0,NOSHOWERROR,0);
+			    moveobj(a2,atacker,MODEATACK,0,0,NOSHOWERROR);
 		    }
 		}
 	    }
@@ -5183,7 +5188,7 @@ int TryToEnterNydus(OBJ *a,OBJ *nydus)
 	getcoordofnewunit(nydus->doubleunit,a->SC_Unit,&x,&y);
 	ChangeObjXY(a,x,y);
 	ForceKartChanges(a);
-	moveobj(a,NULL,MODESTOP,x,y,NOSHOWERROR,0);
+	moveobj(a,NULL,MODESTOP,x,y,NOSHOWERROR);
 	a->finalOBJ = NULL;
 	return(1);
     }
@@ -5283,7 +5288,7 @@ int ApplyNextModeMove(OBJ *a)
 	if (!a->movelist || !a->movelist->GetUsedElem())
 	{
 	    if (!a->finalOBJ )
-		return(moveobj(a,NULL,MODESTOP,0,0,NOSHOWERROR,0));
+		return(moveobj(a,NULL,MODESTOP,0,0,NOSHOWERROR));
 //	    else
 //		a->modemove = MODESTOP;
 	    return(0);
@@ -5296,7 +5301,7 @@ int ApplyNextModeMove(OBJ *a)
 	showerrmes = onemodemove->showerrflag;
 	a->movelist->DelCurElem();
     }while(modemove == MODENON);
-    moveobj(a,destobj,modemove,dx,dy,showerrmes|ATACKMOVEBIT,0);
+    moveobj(a,destobj,modemove,dx,dy,showerrmes|ATACKMOVEBIT);
     return(1);
 }
 //==================================
@@ -5353,7 +5358,7 @@ int LaunchScarab(OBJ *a,OBJ *destobj)
 	    temp->prop |= VARREADY | VARIFDIEDESTTOTERRAIN | VARCANTSELECT;
 	    temp->finalOBJ = NULL;
 	    SetModeMove(temp,MODESTOP);
-	    moveobj(temp,destobj,MODEATACK,GetOBJx(destobj),GetOBJy(destobj),NOSHOWERROR,0);
+	    moveobj(temp,destobj,MODEATACK,GetOBJx(destobj),GetOBJy(destobj),NOSHOWERROR);
 	    return(1);
 	}
     }
@@ -5370,7 +5375,7 @@ void OBJActionAfterStop(OBJ *a)
     switch(a->SC_Unit)
     {
 	case SC_INTERCEPTOROBJ:
-	    moveobj(a,a->myparent,MODEGOTORECHARGE,0,0,NOSHOWERROR,0);
+	    moveobj(a,a->myparent,MODEGOTORECHARGE,0,0,NOSHOWERROR);
 	    break;
     }    
 }

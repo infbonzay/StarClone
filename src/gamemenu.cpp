@@ -4365,7 +4365,7 @@ void MakeObserver(int playernr)
     {
 	a=objects[i];
 	if (a->playernr==playernr)
-	    moveobj(a,NULL,MODESTOP,0,0,NOSHOWERROR,0);
+	    moveobj(a,NULL,MODESTOP,0,0,NOSHOWERROR);
     }
 }
 //==========================================

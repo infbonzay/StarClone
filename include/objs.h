@@ -32,8 +32,10 @@
 #define TYPEMOVEATBEGIN		1
 
 #define NOSHOWERROR		0x00
-#define SHOWERRORTEXT		0x01
-#define ATACKMOVEBIT		0x02
+#define SHIFTBIT		0x01
+#define SHOWERRORTEXT		0x02
+#define ATACKMOVEBIT		0x04
+#define XYNOTCOORDS		0x08
 
 #define NOCHANGEXYCOORDS	0
 #define NEWXYCOORDS		1
@@ -85,7 +87,8 @@ void allobjdecrmtimemage(void);
 void ReleaseResource(OBJ *a);
 void allobj_dieheal(void);
 void allobjconstr(void);
-int  moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerrorflag,int shiftbit);
+int  moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int showerrorflag);
+int  moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int showerrorflag);
 void CheckIfGotoTransport(OBJ *a,OBJ *destobj);
 void CheckIfGotoBattery(OBJ *a,OBJ *destobj);
 

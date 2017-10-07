@@ -381,7 +381,7 @@ int  SIGOrder_ZergUnitBirth(OBJ *a)
         y += adrxyoffs[1];
 	//here go to the rally point
 	if (a->finalx && a->finaly)
-	    moveobj(a2,NULL,MODEMOVE,a->finalx,a->finaly,NOSHOWERROR,0);
+	    moveobj(a2,NULL,MODEMOVE,a->finalx,a->finaly,NOSHOWERROR);
     }
     else
     {
@@ -404,7 +404,7 @@ int  SIGOrder_ZergUnitBirth(OBJ *a)
     a->prop |= VARREADY;
     //here go to the rally point
     if (a->finalx && a->finaly)
-	moveobj(a,NULL,MODEMOVE,a->finalx,a->finaly,NOSHOWERROR,0);
+	moveobj(a,NULL,MODEMOVE,a->finalx,a->finaly,NOSHOWERROR);
     return(0);
 }
 //==================================
@@ -555,7 +555,7 @@ int  SIGOrder_UnitInitComplete(OBJ *a)
     activatesound(a,MODESOUNDREADY,2,NOSTOPCURRENTSOUNDS);
     //here go to the rally point
     if (a->finalx && a->finaly)
-	moveobj(a,NULL,MODEMOVE,a->finalx,a->finaly,NOSHOWERROR,0);
+	moveobj(a,NULL,MODEMOVE,a->finalx,a->finaly,NOSHOWERROR);
     return(0);
 }
 //==================================
@@ -586,7 +586,7 @@ int  SIGOrder_NukeLanding(OBJ *a)
     else
         ChangeTypeOfProp(ghostobj,PROPNORMAL1);//or normal2
     //nuke move down
-    moveobj(a,NULL,MODEMOVE,GetOBJx(a),GetOBJy(a)+NUKE_MAXAIR_YPOS+INITIAL_NUKE_YPOS,NOSHOWERROR,0);
+    moveobj(a,NULL,MODEMOVE,GetOBJx(a),GetOBJy(a)+NUKE_MAXAIR_YPOS+INITIAL_NUKE_YPOS,NOSHOWERROR);
     //after, do special state(create weapon, that do damage)
     AddModeMove(a,NULL,MODENUKESPECIALSTATE1,0,0,0);
     return(1);
@@ -604,12 +604,12 @@ int  SIGOrder_AfterCastHeal(OBJ *a)
 	    //check if unitlife is max do search next to heal
 	    if (a->finalOBJ->health == GetUnitMaxHealth(a->finalOBJ->SC_Unit))
 	    {
-//		moveobj(a,NULL,MODESTOP,0,0,NOSHOWERROR,0);
+//		moveobj(a,NULL,MODESTOP,0,0,NOSHOWERROR);
 //		return(1);
 		//try to hear other unit
 		a->modemove = MODEPATROL;
 		if (!MedicAction(a,a->mainimage))
-		    moveobj(a,NULL,MODESTOP,0,0,NOSHOWERROR,0);
+		    moveobj(a,NULL,MODESTOP,0,0,NOSHOWERROR);
 		return(1);
 	    }
 	}
@@ -625,13 +625,13 @@ int  SIGOrder_AfterCastHeal(OBJ *a)
 	else
 	{
 	    //unit goes out of heal range
-	    moveobj(a,a->finalOBJ,MODEHEAL,0,0,NOSHOWERROR,0);
+	    moveobj(a,a->finalOBJ,MODEHEAL,0,0,NOSHOWERROR);
 	    return(1);
 	}
     }
     else
     {
-        moveobj(a,NULL,MODESTOP,0,0,NOSHOWERROR,0);
+        moveobj(a,NULL,MODESTOP,0,0,NOSHOWERROR);
         return(1);
     }
     return(0);
@@ -644,6 +644,6 @@ int  SIGOrder_UnitDies(OBJ *a)
 //==================================
 int  SIGOrder_InterceptorAfterAtack(OBJ *a)
 {
-    moveobj(a,a->finalOBJ,MODEMOVEFORWARD,0,0,NOSHOWERROR,0);
+    moveobj(a,a->finalOBJ,MODEMOVEFORWARD,0,0,NOSHOWERROR);
     return(1);
 }

@@ -524,7 +524,7 @@ int CreateNuke(OBJ *a,int x,int y)
     		nuke->mainimage->ShowImgFlag();
 		//sound nuke launch from silo
 		WeaponPlaySFX(nuke,SFXDATA_LAUNCHNUKE,0,GetOBJx(nuke),GetOBJy(nuke));
-		moveobj(nuke,NULL,MODEMOVE,nukestartx,nukestarty-NUKE_MAXAIR_YPOS,NOSHOWERROR,0);
+		moveobj(nuke,NULL,MODEMOVE,nukestartx,nukestarty-NUKE_MAXAIR_YPOS,NOSHOWERROR);
 		AddModeMove(nuke,NULL,MODENUKEWAITFORLANDING,x,y-NUKE_MAXAIR_YPOS,0);
 		SetOnSkyOBJ(nuke,1);
 		a->mainimage->flags |= SC_IMAGE_FLAG_AIRIMG;

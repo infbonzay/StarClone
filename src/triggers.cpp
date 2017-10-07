@@ -1172,7 +1172,7 @@ int Action_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int trig_nr,int playernr,int
 				ChangeObjXY(objects[j], xobj,yobj);
 
 				ForceKartChanges(objects[j]);
-				moveobj(objects[j],NULL,MODESTOP,0,0,NOSHOWERROR,0);
+				moveobj(objects[j],NULL,MODESTOP,0,0,NOSHOWERROR);
 				if (--nrofunits==0)
 				    break;
 			    }
@@ -1206,7 +1206,7 @@ int Action_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int trig_nr,int playernr,int
 			SetTriggeredUnitState(newobj,0);
 			movestate = GetDoodadMoveDirection(newobj);
 			if (movestate == DOODAD_MOVE_NONE)
-			    moveobj(newobj,NULL,MODEDOODADCHANGESTATE,openstate,0,NOSHOWERROR,0);
+			    moveobj(newobj,NULL,MODEDOODADCHANGESTATE,openstate,0,NOSHOWERROR);
 			else
 			    AddModeMove(newobj,NULL,MODEDOODADCHANGESTATE,openstate,0,NOSHOWERROR);
 /*			
@@ -1347,20 +1347,20 @@ creationwithoutproperties:
 				{
 				    case SC_TANKSIEGEOBJ:
 				    case SC_HERO_EDMUNDDUKESMOBJ:
-					err = moveobj(objects[j],NULL,MODETANKNORMAL,0,0,NOSHOWERROR,0);
+					err = moveobj(objects[j],NULL,MODETANKNORMAL,0,0,NOSHOWERROR);
 					if (err == MOVEOBJ_DONE)
 					    AddModeMove(objects[j],NULL,state,xobj2+deltax,yobj2+deltay,NOSHOWERROR);
 					break;
 				    default:
 					if (IsOBJBurrowed(objects[j]))
 					{
-					    err = moveobj(objects[j],NULL,MODEUNBURROW,0,0,NOSHOWERROR,0);
+					    err = moveobj(objects[j],NULL,MODEUNBURROW,0,0,NOSHOWERROR);
 					    if (err == MOVEOBJ_DONE)
 						AddModeMove(objects[j],NULL,state,xobj2+deltax,yobj2+deltay,NOSHOWERROR);
 					}
 					else
 					{
-					    moveobj(objects[j],NULL,state,xobj2+deltax,yobj2+deltay,NOSHOWERROR,0);
+					    moveobj(objects[j],NULL,state,xobj2+deltax,yobj2+deltay,NOSHOWERROR);
 					}
 					break;
 				}
@@ -1406,7 +1406,7 @@ creationwithoutproperties:
 				//done by previous trigger
 				SetTriggeredUnitState(objects[j],0);
 				MakeMindControl(objects[j],playernr,PLAYER[playernr].colorRACE);
-				moveobj(objects[j],NULL,MODESTOP,0,0,NOSHOWERROR,0);
+				moveobj(objects[j],NULL,MODESTOP,0,0,NOSHOWERROR);
 		    		SetBlinkOBJ(objects[j]);
 				if (--nrofunits==0)
 				    break;
@@ -1704,7 +1704,7 @@ int TRG_RunAIScriptAtLocation(mapinfo *info,int aiscriptnr,int playernr,int play
 				}
 			    }
 			    if (findbunker)
-				moveobj(objects[j],findbunker,MODEMOVE,0,0,NOSHOWERROR,0);
+				moveobj(objects[j],findbunker,MODEMOVE,0,0,NOSHOWERROR);
 			}
 		    }
 	    }
@@ -1788,12 +1788,12 @@ int TRG_RunAIScriptAtLocation(mapinfo *info,int aiscriptnr,int playernr,int play
 		    if (a->playernr == playernr && a->modemove == MODESTOP)
 			if (IsOBJBurrowed(objects[j]))
 			{
-			    if (moveobj(a,NULL,MODEUNBURROW,0,0,NOSHOWERROR,0) == MOVEOBJ_DONE)
+			    if (moveobj(a,NULL,MODEUNBURROW,0,0,NOSHOWERROR) == MOVEOBJ_DONE)
 				AddModeMove(a,NULL,MODEATACK,xpos,ypos,NOSHOWERROR);
 			}
 			else
 			{
-			    moveobj(a,NULL,MODEATACK,xpos,ypos,NOSHOWERROR,0);
+			    moveobj(a,NULL,MODEATACK,xpos,ypos,NOSHOWERROR);
 			}
 		}
 	    }

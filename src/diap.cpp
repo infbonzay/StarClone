@@ -420,8 +420,8 @@ selectedicon:
 				    }
 				    else
 				    {
-                        		moveobj(obj,obj2,localprop[i*3+j],0,0,NOSHOWERROR,0);
-                        		moveobj(obj2,obj,localprop[i*3+j],0,0,NOSHOWERROR,0);
+                        		moveobj(obj,obj2,localprop[i*3+j],0,0,NOSHOWERROR);
+                        		moveobj(obj2,obj,localprop[i*3+j],0,0,NOSHOWERROR);
 					obj2 = NULL;
 				    }
 				}//if obj
@@ -462,7 +462,7 @@ selectedicon:
     }
     if (selectedunloadunit!=-1)
     {
-	moveobj(transportplaceobj,NULL,MODEUNLOADUNITNR,selectedunloadunit,0,NOSHOWERROR,0);
+	moveobj(transportplaceobj,NULL,MODEUNLOADUNITNR,selectedunloadunit,0,NOSHOWERROR);
     }
   }//if !patrate
 }

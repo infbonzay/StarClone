@@ -102,7 +102,7 @@ int InterceptorsAction(struct OBJ *a,MAIN_IMG *img)
     return 0;
 needrecharge:
     DelAllModeMoves(a,0);
-    moveobj(a,a->myparent,MODEGOTORECHARGE,0,0,NOSHOWERROR,0);
+    moveobj(a,a->myparent,MODEGOTORECHARGE,0,0,NOSHOWERROR);
     return(1);
 }
 //=================================
@@ -122,7 +122,7 @@ int CritterAction(struct OBJ *a,MAIN_IMG *img)
 		do{
 		    sy = (int) a->starty + myrand(-CRITTERRANGE,CRITTERRANGE);
 		}while(sy<0||sy>MAXYMAP*SIZESPRLANSHY);
-		moveobj(a,NULL,MODEMOVE,sx,sy,NOSHOWERROR,0);
+		moveobj(a,NULL,MODEMOVE,sx,sy,NOSHOWERROR);
 		return 1;
 	    }
 	    else
@@ -169,7 +169,7 @@ void SCVConstructAction(OBJ *a,MAIN_IMG *img)
 	{
 	    if (!a->finalOBJ)
 	    {
-		moveobj(a,NULL,MODESTOP,0,0,NOSHOWERROR,0);
+		moveobj(a,NULL,MODESTOP,0,0,NOSHOWERROR);
 		return;
 	    }
 	    //check if repaired unit is move away, need to move to him
@@ -180,13 +180,13 @@ void SCVConstructAction(OBJ *a,MAIN_IMG *img)
 		}
 		else
 		{
-		    moveobj(a,a->finalOBJ,MODEREPAIR,0,0,NOSHOWERROR,0);
+		    moveobj(a,a->finalOBJ,MODEREPAIR,0,0,NOSHOWERROR);
 		    return;
 		}
 	    }
 	    if (!RepairUnit(a->playernr,a,a->finalOBJ))
 	    {
-		moveobj(a,NULL,MODESTOP,0,0,NOSHOWERROR,0);
+		moveobj(a,NULL,MODESTOP,0,0,NOSHOWERROR);
 		return;
 	    }
 	}
@@ -289,7 +289,7 @@ int WorkersAction(struct OBJ *a,MAIN_IMG *img)
 		newobj->mainimage->side = a->mainimage->side;
 		newobj->mainimage->neededside = a->mainimage->side;
 
-		moveobj(a,NULL,MODERETURNCARGO,0,0,NOSHOWERROR,0);
+		moveobj(a,NULL,MODERETURNCARGO,0,0,NOSHOWERROR);
 	    }
 	    break;
 	case MODEGATHERGAS:
@@ -318,7 +318,7 @@ int WorkersAction(struct OBJ *a,MAIN_IMG *img)
 		newobj->mainimage->side = a->mainimage->side;
 		newobj->mainimage->neededside = a->mainimage->side;
 
-		moveobj(a,NULL,MODERETURNCARGO,0,0,NOSHOWERROR,0);
+		moveobj(a,NULL,MODERETURNCARGO,0,0,NOSHOWERROR);
 	    }
 	    break;
 	case MODEWAITHARVESTMINERAL:
@@ -326,12 +326,12 @@ int WorkersAction(struct OBJ *a,MAIN_IMG *img)
 	    {
 		newobj = GetNearResource(a,SC_MINERAL1OBJ,&resval);
 		if (newobj)
-		    moveobj(a,newobj,MODEGATHER,0,0,NOSHOWERROR,0);
+		    moveobj(a,newobj,MODEGATHER,0,0,NOSHOWERROR);
 		else
 		    if (resval)
 			a->data.gather.waittoharvest = WAITTOHARVEST;
 		    else
-			moveobj(a,NULL,MODESTOP,0,0,NOSHOWERROR,0);
+			moveobj(a,NULL,MODESTOP,0,0,NOSHOWERROR);
 	    }
 	    break;
 	case MODEWAITHARVESTGAS:
@@ -339,11 +339,11 @@ int WorkersAction(struct OBJ *a,MAIN_IMG *img)
 	    {
 		if (a->finalOBJ)
 		    if (!a->finalOBJ->resourceobj)//if is not occupied gather
-			moveobj(a,a->finalOBJ,MODEGATHERGAS,0,0,NOSHOWERROR,0);
+			moveobj(a,a->finalOBJ,MODEGATHERGAS,0,0,NOSHOWERROR);
 		    else
 			a->data.gather.waittoharvest = WAITTOHARVEST;
 		else
-		    moveobj(a,NULL,MODESTOP,0,0,NOSHOWERROR,0);
+		    moveobj(a,NULL,MODESTOP,0,0,NOSHOWERROR);
 	    }
 	    break;
 	case MODEWAITRETURNCARGO:
@@ -369,7 +369,7 @@ int WorkersAction(struct OBJ *a,MAIN_IMG *img)
 		    if (IsPickupUnit(a->carryobj->SC_Unit) && !IsInvincibleUnit(a->carryobj->SC_Unit))
 		    {
 			//if it is mineral or gas orb
-			moveobj(a,NULL,MODERETURNCARGO,0,0,NOSHOWERROR,0);
+			moveobj(a,NULL,MODERETURNCARGO,0,0,NOSHOWERROR);
 		    }
 		return(0);
 	    }
@@ -383,7 +383,7 @@ int WorkersAction(struct OBJ *a,MAIN_IMG *img)
 	    		newobj = SearchOBJforOBJ(a,MODEREPAIR);
 			if (newobj)
 			{
-			    moveobj(a,newobj,MODEREPAIR,0,0,NOSHOWERROR,0);
+			    moveobj(a,newobj,MODEREPAIR,0,0,NOSHOWERROR);
 			    return(1);
 			}
 		    }
@@ -529,7 +529,7 @@ int MedicAction(struct OBJ *a,MAIN_IMG *img)
 		    c = SearchOBJforOBJ(a,MODEHEAL);
 		    if (c)
 		    {
-			moveobj(a,c,MODEHEAL,0,0,NOSHOWERROR,0);
+			moveobj(a,c,MODEHEAL,0,0,NOSHOWERROR);
 			return(1);
 		    }
 		}
@@ -622,7 +622,7 @@ int QueenAction(struct OBJ *a,MAIN_IMG *img)
 		    dieobj_silently(c);
 		    c = createobjfulllife(x,y,SC_INFCOMMCENTEROBJ,a->playernr);
 		}
-		moveobj(a,NULL,MODESTOP,0,0,NOSHOWERROR,0);
+		moveobj(a,NULL,MODESTOP,0,0,NOSHOWERROR);
 	    }
 	    
 	}
@@ -638,7 +638,7 @@ int QueenAction(struct OBJ *a,MAIN_IMG *img)
 	    	c = SearchOBJforOBJ(a,MODEINFEST);
 		if (c)
 		{
-		    moveobj(a,c,MODEINFEST,0,0,NOSHOWERROR,0);
+		    moveobj(a,c,MODEINFEST,0,0,NOSHOWERROR);
 		    return(1);
 		}
 		return(0);
@@ -688,8 +688,8 @@ int SpiderMineAction(OBJ *a,MAIN_IMG *img)
 /*    if (a->modemove==MODESTOP||a->destobj)
 	if (!IsOBJBurrowed(a)&&(a->modemove!=MODEBURROW)&&(a->modemove!=MODEBURROW2))
 	{
-    	    moveobj(a,NULL,MODESTOP,0,0,NOSHOWERROR,0);
-    	    moveobj(a,NULL,MODEBURROW,0,0,NOSHOWERROR,0);
+    	    moveobj(a,NULL,MODESTOP,0,0,NOSHOWERROR);
+    	    moveobj(a,NULL,MODEBURROW,0,0,NOSHOWERROR);
 	}
 */
     return(0);
@@ -818,9 +818,9 @@ int AdditionalUnitProceed(OBJ *a,MAIN_IMG *img)
 		    if (a->prop & VARMOVEINATACKMODE)
 		    {
     			if (IsSubUnit(a->SC_Unit))
-    			    moveobj(a->subunit,NULL,MODEATACK,a->subunit->finalxatack,a->subunit->finalyatack,NOSHOWERROR|ATACKMOVEBIT,0);
+    			    moveobj(a->subunit,NULL,MODEATACK,a->subunit->finalxatack,a->subunit->finalyatack,NOSHOWERROR|ATACKMOVEBIT);
     			else    
-    			    moveobj(a,NULL,MODEATACK,a->finalxatack,a->finalyatack,NOSHOWERROR|ATACKMOVEBIT,0);
+    			    moveobj(a,NULL,MODEATACK,a->finalxatack,a->finalyatack,NOSHOWERROR|ATACKMOVEBIT);
 		    }
 		    else
 		    {
@@ -843,7 +843,7 @@ int AdditionalUnitProceed(OBJ *a,MAIN_IMG *img)
 			EndAtackAction(a);
 		        if (a->prop & VARMOVEINATACKMODE)
 		        {
-    			    moveobj(a,NULL,MODEATACK,a->finalxatack,a->finalyatack,NOSHOWERROR|ATACKMOVEBIT,0);
+    			    moveobj(a,NULL,MODEATACK,a->finalxatack,a->finalyatack,NOSHOWERROR|ATACKMOVEBIT);
 			}
 			else
 			{
@@ -889,7 +889,7 @@ unitactiondefaultend:
     return ((*UnitActionDefaults[a->SC_Unit])(a,img));
 }
 //=================================
-int AtackCoolDownEnds(OBJ *a,OBJ *destobj,int continueatack,int showerrorflag)
+int AtackCoolDownEnds(OBJ *a,OBJ *destobj,int continueatack,int modemoveflags)
 {
 	int resval,errmes;
 	//need to check if range is ok for atack again
@@ -917,7 +917,7 @@ int AtackCoolDownEnds(OBJ *a,OBJ *destobj,int continueatack,int showerrorflag)
 		{
 		    if (!accesstomove(a,loadobj(a->SC_Unit),MODEMOVE,a->playernr) || a->in_transport)
 		    {
-			if (showerrorflag & SHOWERRORTEXT)
+			if (modemoveflags & SHOWERRORTEXT)
 			{
 		    	    //invalid target
 		    	    Play_sfxdata_id(NULL,TARGETERROR[GetUnitRace(a->SC_Unit)],3,0);
@@ -934,7 +934,7 @@ int AtackCoolDownEnds(OBJ *a,OBJ *destobj,int continueatack,int showerrorflag)
 		return(MOVEOBJ_CONTINUEJOB);
 	    case CREATEDWEAPONSTATUS_DESTTOCLOSE://to close
 	    case CREATEDWEAPONSTATUS_CANTATACKTHISUNIT:
-		if (showerrorflag & SHOWERRORTEXT)
+		if (modemoveflags & SHOWERRORTEXT)
 		{
 		    //invalid target
 		    Play_sfxdata_id(NULL,TARGETERROR[GetUnitRace(a->SC_Unit)],3,0);
@@ -1019,8 +1019,6 @@ void EndAtackAction(OBJ *a)
     {
         SetOBJIScriptNr(a,ISCRIPTNR_GNDATTKTOIDLE,ISCRIPTNR_SETONLY);
     }
-//    if (a->prop & VARMOVEINATACKMODE)
-//    	moveobj(a,NULL,MODEATACK,a->finalxatack,a->finalyatack,NOSHOWERROR,0);
 }
 //=================================
 

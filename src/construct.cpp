@@ -257,7 +257,7 @@ void UnitConstrUnit(OBJ *a,SCUNIT SC_Unit,int icon_nr,int stattxt_nr)
 		case SC_HYDRALISKOBJ:
 		    if (IsOBJBurrowed(a))
 		    {
-			moveobj(a,NULL,MODEUNBURROW,0,0,NOSHOWERROR,0);
+			moveobj(a,NULL,MODEUNBURROW,0,0,NOSHOWERROR);
 			AddModeMove(a,NULL,MODEMORPHINLURKER,0,0,NOSHOWERROR);
 			break;
 		    }
@@ -321,7 +321,7 @@ void UnitConstrTech(OBJ *a,int tech_id,int icon_nr,int stattxt_nr)
 	}
 }
 //=======================================
-void DoOrder(int playernr,OBJ *a,int x,int y,int modemove,int showerrorflag)
+void DoOrder(int playernr,OBJ *a,int x,int y,int modemove,int modemoveflags)
 {
     MAGEP *mp;
     mp = &mageprop[modemove];
@@ -334,10 +334,10 @@ void DoOrder(int playernr,OBJ *a,int x,int y,int modemove,int showerrorflag)
 	    mageprop[modemove].icon_id,
 	    mageprop[modemove].stattxt_id_enable,
 	    modemove,
-	    showerrorflag);
+	    modemoveflags);
 }
 //=======================================
-void DoOrder(int playernr,OBJ *a,int x,int y,int type_id,int obj_id,int icon_nr,int stattxt_nr,int modemove,int showerrorflag)
+void DoOrder(int playernr,OBJ *a,int x,int y,int type_id,int obj_id,int icon_nr,int stattxt_nr,int modemove,int modemoveflags)
 {
     int upgr_level=0;
     switch(type_id)
@@ -345,11 +345,11 @@ void DoOrder(int playernr,OBJ *a,int x,int y,int type_id,int obj_id,int icon_nr,
 	case ORDERS_NONE:
 	    break;
 	case ORDERS_MODEMOVE:
-	    makemove(a,NULL,x,y,modemove,playernr,showerrorflag);
+	    makemove(a,NULL,x,y,modemove,playernr,modemoveflags);
 	    break;
 	case ORDERS_UNIT:
 	    if (IsBuild(obj_id)&&!IsAddon(obj_id))
-		makemove(a,NULL,x,y,modemove,playernr,showerrorflag);
+		makemove(a,NULL,x,y,modemove,playernr,modemoveflags);
 	    else
 		UnitConstrUnit(a,obj_id,icon_nr,stattxt_nr);
 	    break;
