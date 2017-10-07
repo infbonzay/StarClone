@@ -760,7 +760,7 @@ int (*UnitActionDefaults[MAX_UNITS_ELEM])(struct OBJ *a,MAIN_IMG *img)=
     &NoneActionUnit,&NoneActionUnit,&NoneActionUnit,&NoneActionUnit,&MedicAction,	//030-034
     &LarvaeAction,  &NoneActionUnit,&NoneActionUnit,&NoneActionUnit,&NoneActionUnit,	//035-039
     &NoneActionUnit,&WorkersAction, &TransportAction,&NoneActionUnit,&NoneActionUnit,	//040-044
-    &QueenAction,   &NoneActionUnit,&NoneActionUnit,&NoneActionUnit,&NoneActionUnit,	//045-049
+    &QueenAction,   &NoneActionUnit,&NoneActionUnit,&NoneActionUnit,&QueenAction,	//045-049
     &NoneActionUnit,&NoneActionUnit,&NoneActionUnit,&NoneActionUnit,&NoneActionUnit,	//050-054
     &NoneActionUnit,&NoneActionUnit,&TransportAction,&NoneActionUnit,&NoneActionUnit,	//055-059
     &NoneActionUnit,&NoneActionUnit,&NoneActionUnit,&NoneActionUnit,&WorkersAction,	//060-064

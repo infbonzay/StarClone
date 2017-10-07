@@ -1694,14 +1694,15 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int modemovef
 	    if (destobj)
 	    {
 		//queen search command center by self
+		a->castmagenr = mode;
+		a->modemove = mode;
 		if (GetDistanceTo(destobj,GetOBJx(a),GetOBJy(a)) <= 0 )
 		{
-		    CastSpellWithOutWeaponnr(a,a->castmagenr);
+		    a->finalOBJ = destobj;
+		    CastSpellWithOutWeaponnr(a,mode);
 		}
 		else
 		{
-		    a->castmagenr = mode;
-		    a->modemove = mode;
 		    //move to destination
 		    initmoveaction(a,destobj,mode,0,0,x,y);
 		    AddModeMove(a,destobj,MODEINFEST,x,y,modemoveflags);//cast mage after
