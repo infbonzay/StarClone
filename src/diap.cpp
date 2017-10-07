@@ -420,8 +420,8 @@ selectedicon:
 				    }
 				    else
 				    {
-                        		moveobj(obj,obj2,localprop[i*3+j],0,0,NOSHOWERROR);
-                        		moveobj(obj2,obj,localprop[i*3+j],0,0,NOSHOWERROR);
+                        		moveobj(obj,obj2,localprop[i*3+j],NOSHOWERROR);
+                        		moveobj(obj2,obj,localprop[i*3+j],NOSHOWERROR);
 					obj2 = NULL;
 				    }
 				}//if obj

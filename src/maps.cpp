@@ -1100,7 +1100,7 @@ void ClearFinalOBJ(OBJ *a0)
 	if (a0 == a->finalOBJ)
 	{
     	    if (OBJ_VAR_CHK(a0,obj_notdetect,a->playernr))
-		moveobj(a,NULL,MODESTOP,0,0,NOSHOWERROR);
+		moveobj(a,NULL,MODESTOP,NOSHOWERROR);
 	}
     }
 }

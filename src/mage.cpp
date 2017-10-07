@@ -121,8 +121,8 @@ void mageeffect(int typemage,struct OBJ *a,struct OBJ *whoobjputmage)
 	case MODELOCKDOWN:
 	    //need to stop construct
 	    if (a->SC_Unit == SC_SCVOBJ)
-		moveobj(a,NULL,MODEHALTCONSTRUCT,0,0,NOSHOWERROR);
-	    moveobj(a,NULL,MODESTOP,0,0,NOSHOWERROR);
+		moveobj(a,NULL,MODEHALTCONSTRUCT,NOSHOWERROR);
+	    moveobj(a,NULL,MODESTOP,NOSHOWERROR);
     	    a->prop |= VARNOTWORK;
 	    break;
 	case MODESTASISFIELD:
@@ -275,7 +275,7 @@ void DecrementOBJAtr(struct OBJ *a)
 			    case ATRSTASIS:
             			SetMageAtr(&a->atrobj,i,0);
     				a->prop &= ~(VARNOTWORK | VARNOTHERE);
-    				moveobj(a,NULL,MODESTOP,0,0,NOSHOWERROR);
+    				moveobj(a,NULL,MODESTOP,NOSHOWERROR);
 				break;
 			    case ATRMATRIX:
             			SetMageAtr(&a->atrobj,i,0);
@@ -293,7 +293,7 @@ void DecrementOBJAtr(struct OBJ *a)
 					if (CheckCoordinates(GetOBJx256(a)+newx256,GetOBJy256(a)+newy256,a->SC_Unit))
 					    a->mainimage->SetDeltaCoords(a,newx256,newy256);
 				    }
-				    moveobj(a,NULL,MODESTOP,0,0,NOSHOWERROR);
+				    moveobj(a,NULL,MODESTOP,NOSHOWERROR);
 				    a->atrobj.flags = 0;
             			    SetMageAtr(&a->atrobj,i,17 * DELTAMANAONCYCLE);
             			    //continue show recall overlays
@@ -479,7 +479,7 @@ void MakeMindControl(OBJ *a,int playernr,int ncolor)
     }
 //    makeoneobjseeopen(a,loadobj(a->SC_Unit));
 
-//    moveobj(a,NULL,MODESTOP,0,0,NOSHOWERROR);
+//    moveobj(a,NULL,MODESTOP,NOSHOWERROR);
 }
 //==============================================
 //return 1 if atribute can work on me

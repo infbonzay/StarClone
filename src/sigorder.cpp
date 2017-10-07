@@ -604,12 +604,10 @@ int  SIGOrder_AfterCastHeal(OBJ *a)
 	    //check if unitlife is max do search next to heal
 	    if (a->finalOBJ->health == GetUnitMaxHealth(a->finalOBJ->SC_Unit))
 	    {
-//		moveobj(a,NULL,MODESTOP,0,0,NOSHOWERROR);
-//		return(1);
 		//try to hear other unit
 		a->modemove = MODEPATROL;
 		if (!MedicAction(a,a->mainimage))
-		    moveobj(a,NULL,MODESTOP,0,0,NOSHOWERROR);
+		    moveobj(a,NULL,MODESTOP,NOSHOWERROR);
 		return(1);
 	    }
 	}
@@ -625,13 +623,13 @@ int  SIGOrder_AfterCastHeal(OBJ *a)
 	else
 	{
 	    //unit goes out of heal range
-	    moveobj(a,a->finalOBJ,MODEHEAL,0,0,NOSHOWERROR);
+	    moveobj(a,a->finalOBJ,MODEHEAL,NOSHOWERROR);
 	    return(1);
 	}
     }
     else
     {
-        moveobj(a,NULL,MODESTOP,0,0,NOSHOWERROR);
+        moveobj(a,NULL,MODESTOP,NOSHOWERROR);
         return(1);
     }
     return(0);
@@ -644,6 +642,6 @@ int  SIGOrder_UnitDies(OBJ *a)
 //==================================
 int  SIGOrder_InterceptorAfterAtack(OBJ *a)
 {
-    moveobj(a,a->finalOBJ,MODEMOVEFORWARD,0,0,NOSHOWERROR);
+    moveobj(a,a->finalOBJ,MODEMOVEFORWARD,NOSHOWERROR);
     return(1);
 }

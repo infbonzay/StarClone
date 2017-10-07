@@ -130,7 +130,7 @@ void AddBuildsInPower(unsigned char *pylonarea,int playernr)
 			    nrofpower++;
 		if (nrofpower>=xs*ys/2)
 		{
-		    moveobj(a,NULL,MODEPOWERON,0,0,NOSHOWERROR);
+		    moveobj(a,NULL,MODEPOWERON,NOSHOWERROR);
 		}
 	    }
 	}
@@ -164,7 +164,7 @@ void DelBuildsFromPower(unsigned char *pylonarea,int playernr)
 		    {
 		        if (gameconf.audioconf.buildsounds&&a->playernr==NUMBGAMER)
 			    Play_sfxdata_id(a,sfx_powerdown[PROTOSSRACE],2,0);
-			moveobj(a,NULL,MODEPOWEROFF,0,0,NOSHOWERROR);
+			moveobj(a,NULL,MODEPOWEROFF,NOSHOWERROR);
 		    }
 		}
 	}
@@ -191,11 +191,11 @@ void CheckBuildForPower(struct mapinfo *mymap,OBJ *a,int playernr)
 		        nrofpower++;
     	    if (nrofpower<xs*ys/2)
 	    {
-		moveobj(a,NULL,MODEPOWEROFF,0,0,NOSHOWERROR);
+		moveobj(a,NULL,MODEPOWEROFF,NOSHOWERROR);
 	    }
 	    else
 	    {
-		moveobj(a,NULL,MODEPOWERON,0,0,NOSHOWERROR);
+		moveobj(a,NULL,MODEPOWERON,NOSHOWERROR);
 	    }
 	}
 }

@@ -257,7 +257,7 @@ void UnitConstrUnit(OBJ *a,SCUNIT SC_Unit,int icon_nr,int stattxt_nr)
 		case SC_HYDRALISKOBJ:
 		    if (IsOBJBurrowed(a))
 		    {
-			moveobj(a,NULL,MODEUNBURROW,0,0,NOSHOWERROR);
+			moveobj(a,NULL,MODEUNBURROW,NOSHOWERROR);
 			AddModeMove(a,NULL,MODEMORPHINLURKER,0,0,NOSHOWERROR);
 			break;
 		    }

@@ -102,7 +102,7 @@ int InterceptorsAction(struct OBJ *a,MAIN_IMG *img)
     return 0;
 needrecharge:
     DelAllModeMoves(a,0);
-    moveobj(a,a->myparent,MODEGOTORECHARGE,0,0,NOSHOWERROR);
+    moveobj(a,a->myparent,MODEGOTORECHARGE,NOSHOWERROR);
     return(1);
 }
 //=================================
@@ -169,7 +169,7 @@ void SCVConstructAction(OBJ *a,MAIN_IMG *img)
 	{
 	    if (!a->finalOBJ)
 	    {
-		moveobj(a,NULL,MODESTOP,0,0,NOSHOWERROR);
+		moveobj(a,NULL,MODESTOP,NOSHOWERROR);
 		return;
 	    }
 	    //check if repaired unit is move away, need to move to him
@@ -180,13 +180,13 @@ void SCVConstructAction(OBJ *a,MAIN_IMG *img)
 		}
 		else
 		{
-		    moveobj(a,a->finalOBJ,MODEREPAIR,0,0,NOSHOWERROR);
+		    moveobj(a,a->finalOBJ,MODEREPAIR,NOSHOWERROR);
 		    return;
 		}
 	    }
 	    if (!RepairUnit(a->playernr,a,a->finalOBJ))
 	    {
-		moveobj(a,NULL,MODESTOP,0,0,NOSHOWERROR);
+		moveobj(a,NULL,MODESTOP,NOSHOWERROR);
 		return;
 	    }
 	}
@@ -289,7 +289,7 @@ int WorkersAction(struct OBJ *a,MAIN_IMG *img)
 		newobj->mainimage->side = a->mainimage->side;
 		newobj->mainimage->neededside = a->mainimage->side;
 
-		moveobj(a,NULL,MODERETURNCARGO,0,0,NOSHOWERROR);
+		moveobj(a,NULL,MODERETURNCARGO,NOSHOWERROR);
 	    }
 	    break;
 	case MODEGATHERGAS:
@@ -318,7 +318,7 @@ int WorkersAction(struct OBJ *a,MAIN_IMG *img)
 		newobj->mainimage->side = a->mainimage->side;
 		newobj->mainimage->neededside = a->mainimage->side;
 
-		moveobj(a,NULL,MODERETURNCARGO,0,0,NOSHOWERROR);
+		moveobj(a,NULL,MODERETURNCARGO,NOSHOWERROR);
 	    }
 	    break;
 	case MODEWAITHARVESTMINERAL:
@@ -326,12 +326,12 @@ int WorkersAction(struct OBJ *a,MAIN_IMG *img)
 	    {
 		newobj = GetNearResource(a,SC_MINERAL1OBJ,&resval);
 		if (newobj)
-		    moveobj(a,newobj,MODEGATHER,0,0,NOSHOWERROR);
+		    moveobj(a,newobj,MODEGATHER,NOSHOWERROR);
 		else
 		    if (resval)
 			a->data.gather.waittoharvest = WAITTOHARVEST;
 		    else
-			moveobj(a,NULL,MODESTOP,0,0,NOSHOWERROR);
+			moveobj(a,NULL,MODESTOP,NOSHOWERROR);
 	    }
 	    break;
 	case MODEWAITHARVESTGAS:
@@ -339,11 +339,11 @@ int WorkersAction(struct OBJ *a,MAIN_IMG *img)
 	    {
 		if (a->finalOBJ)
 		    if (!a->finalOBJ->resourceobj)//if is not occupied gather
-			moveobj(a,a->finalOBJ,MODEGATHERGAS,0,0,NOSHOWERROR);
+			moveobj(a,a->finalOBJ,MODEGATHERGAS,NOSHOWERROR);
 		    else
 			a->data.gather.waittoharvest = WAITTOHARVEST;
 		else
-		    moveobj(a,NULL,MODESTOP,0,0,NOSHOWERROR);
+		    moveobj(a,NULL,MODESTOP,NOSHOWERROR);
 	    }
 	    break;
 	case MODEWAITRETURNCARGO:
@@ -369,7 +369,7 @@ int WorkersAction(struct OBJ *a,MAIN_IMG *img)
 		    if (IsPickupUnit(a->carryobj->SC_Unit) && !IsInvincibleUnit(a->carryobj->SC_Unit))
 		    {
 			//if it is mineral or gas orb
-			moveobj(a,NULL,MODERETURNCARGO,0,0,NOSHOWERROR);
+			moveobj(a,NULL,MODERETURNCARGO,NOSHOWERROR);
 		    }
 		return(0);
 	    }
@@ -383,7 +383,7 @@ int WorkersAction(struct OBJ *a,MAIN_IMG *img)
 	    		newobj = SearchOBJforOBJ(a,MODEREPAIR);
 			if (newobj)
 			{
-			    moveobj(a,newobj,MODEREPAIR,0,0,NOSHOWERROR);
+			    moveobj(a,newobj,MODEREPAIR,NOSHOWERROR);
 			    return(1);
 			}
 		    }
@@ -529,7 +529,7 @@ int MedicAction(struct OBJ *a,MAIN_IMG *img)
 		    c = SearchOBJforOBJ(a,MODEHEAL);
 		    if (c)
 		    {
-			moveobj(a,c,MODEHEAL,0,0,NOSHOWERROR);
+			moveobj(a,c,MODEHEAL,NOSHOWERROR);
 			return(1);
 		    }
 		}
@@ -622,7 +622,7 @@ int QueenAction(struct OBJ *a,MAIN_IMG *img)
 		    dieobj_silently(c);
 		    c = createobjfulllife(x,y,SC_INFCOMMCENTEROBJ,a->playernr);
 		}
-		moveobj(a,NULL,MODESTOP,0,0,NOSHOWERROR);
+		moveobj(a,NULL,MODESTOP,NOSHOWERROR);
 	    }
 	    
 	}
@@ -638,7 +638,7 @@ int QueenAction(struct OBJ *a,MAIN_IMG *img)
 	    	c = SearchOBJforOBJ(a,MODEINFEST);
 		if (c)
 		{
-		    moveobj(a,c,MODEINFEST,0,0,NOSHOWERROR);
+		    moveobj(a,c,MODEINFEST,NOSHOWERROR);
 		    return(1);
 		}
 		return(0);
@@ -688,8 +688,8 @@ int SpiderMineAction(OBJ *a,MAIN_IMG *img)
 /*    if (a->modemove==MODESTOP||a->destobj)
 	if (!IsOBJBurrowed(a)&&(a->modemove!=MODEBURROW)&&(a->modemove!=MODEBURROW2))
 	{
-    	    moveobj(a,NULL,MODESTOP,0,0,NOSHOWERROR);
-    	    moveobj(a,NULL,MODEBURROW,0,0,NOSHOWERROR);
+    	    moveobj(a,NULL,MODESTOP,NOSHOWERROR);
+    	    moveobj(a,NULL,MODEBURROW,NOSHOWERROR);
 	}
 */
     return(0);
@@ -910,7 +910,7 @@ int AtackCoolDownEnds(OBJ *a,OBJ *destobj,int continueatack,int modemoveflags)
 		    a->subunit->modemove = MODEATACK;
 		    a->atackcooldowntime = 0;
 		    initmoveaction(a->subunit,destobj,MODEATACK,a->usedweapon_id,0,GetOBJx(destobj),GetOBJy(destobj));
-//		    AddModeMove(a->subunit,destobj,MODEATACKREADY,0,0,NOSHOWERROR);
+//		    AddModeMove(a->subunit,destobj,MODEATACKREADY,NOSHOWERROR);
 		    InsertModeMove(a->subunit,destobj,MODEATACKREADY,0,0,NOSHOWERROR);
 		}
 		else
@@ -928,7 +928,7 @@ int AtackCoolDownEnds(OBJ *a,OBJ *destobj,int continueatack,int modemoveflags)
 		    a->modemove = MODEATACK;
 		    a->atackcooldowntime = 0;
 		    initmoveaction(a,destobj,MODEATACK,a->usedweapon_id,0,GetOBJx(destobj),GetOBJy(destobj));
-//		    AddModeMove(a,destobj,MODEATACKREADY,0,0,NOSHOWERROR);
+//		    AddModeMove(a,destobj,MODEATACKREADY,NOSHOWERROR);
 		    InsertModeMove(a,destobj,MODEATACKREADY,0,0,NOSHOWERROR);
 		}
 		return(MOVEOBJ_CONTINUEJOB);
