@@ -175,13 +175,12 @@ extern GRPFILE *gametilegrp,*gamedlggrp;
 extern DATTBLSTRUCT alldattbl;
 
 
-extern int 	MAPREGENERATIONBIT,MAPUNITSREGENERATIONBIT,NEEDTOCHANGECREEPBIT,NEEDTOHEALBIT,NEEDTOINFESTBIT;
-extern int	NEEDTOMOVE1BIT,NEEDTOREPAIRREFRESHBIT;
+extern int 	MAPREGENERATIONBIT,MAPUNITSREGENERATIONBIT,NEEDTOCHANGECREEPBIT,NEEDTOINFESTBIT;
+extern int	NEEDTOMOVE1BIT;
 extern GRPFILE 	*znakgrp,*grpicons,*creepgrp;
 extern GRPFILE	*grpminmineral[],*grpmingas[];
 extern char	twirep[];
-extern int	needclearmap;
-
+extern char	needclearmap,ifhaverescuableplayers;
 
 extern GRPFILE *grpwire1,*grpwire2,*grpwire3,*blinkgrp;
 

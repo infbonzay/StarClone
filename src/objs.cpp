@@ -3784,29 +3784,31 @@ void applyrescuableunits(void)
 {
     int i,haverescued=0;
     OBJ *a,*c;
-    if (NEEDTOREPAIRREFRESHBIT)
+    if (MINIMAPREFRESHCYCLE)
     {
-    	for (i=0;i<MaxObjects;i++)
-	{
-    	    a=objects[i];
-	    //if rescuable unit/player need to apply to seeit player
-	    if (map.pl_iowner[a->playernr]==OWNER_RESCUABLE)
+    	if (ifhaverescuableplayers)
+    	{
+    	    for (i=0;i<MaxObjects;i++)
 	    {
-//		printf("rescuable=%s\n",getOBJname(a->SC_Unit));
-	    	c = SearchOBJforOBJ(a,SEARCHMODE_RESCUABLE);
-		if (c)
+    		a=objects[i];
+		//if rescuable unit/player need to apply to seeit player
+		if (map.pl_iowner[a->playernr] == OWNER_RESCUABLE)
 		{
-		    MakeMindControl(a,NUMBGAMER,a->color);
-		    SetBlinkOBJ(a);
-		    if (++haverescued>2)
-			break;
+//		    printf("rescuable=%s\n",getOBJname(a->SC_Unit));
+	    	    c = SearchOBJforOBJ(a,SEARCHMODE_RESCUABLE);
+		    if (c)
+		    {
+			MakeMindControl(a,NUMBGAMER,a->color);
+			SetBlinkOBJ(a);
+			if (++haverescued>2)
+			    break;
+		    }
 		}
 	    }
-	}
-	if (haverescued)
-	{
-//	    CheckProtossBuildsForPower(&map);
-	    play_race_rescue(gameconf.pl_race[NUMBGAMER],4,0);
+	    if (haverescued)
+	    {
+		play_race_rescue(gameconf.pl_race[NUMBGAMER],4,0);
+	    }
 	}
     }
 }

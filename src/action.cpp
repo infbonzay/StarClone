@@ -1,5 +1,4 @@
 
-#include <math.h>
 #include "auxil.h"
 #include "gener.h"
 #include "diap.h"
@@ -17,12 +16,6 @@
 #include "action.h"
 
 //====================================
-//get min-distance to do for next move
-//=================================
-//=================================
-//if obj in stop position need to make 'ca4ainie objecta' and no more (return 1)
-//=================================
-//=================================
 void PickupObj(OBJ *a,OBJ *pickupobj)
 {
 

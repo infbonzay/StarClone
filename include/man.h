@@ -80,7 +80,7 @@ union SOMEINFO
 {
     struct
     {
-	signed char	rechargetime;
+	unsigned char	rechargetime;
     }battery;
     struct
     {
@@ -88,8 +88,9 @@ union SOMEINFO
     }nukehitdot;
     struct
     {
-	short	int remaintimetoinfest;
-	char	actionbit;
+	short		int remaintimetoinfest;
+	char		actionbit;
+	unsigned char	infestrefreshbit;
     }queeninfest;
     struct
     {
@@ -120,6 +121,10 @@ union SOMEINFO
     {
 	unsigned char	refreshmyparent;
     }interceptor;
+    struct
+    {
+	unsigned char	ishealtime;
+    }medic;
 };
 //=======================================
 struct OBJ
@@ -164,7 +169,8 @@ struct OBJ
                                              //plague,...)
         unsigned short	nrobject;	  //nomer sozdannogo objecta
 
-	unsigned char	searchforatack_tick;	  //
+	unsigned char	searchforatack_tick;
+	unsigned char	movetoobj_tick;
 	int		creepbuildlist_ID;
 	int 		createcycle;
 	int 		serial1;

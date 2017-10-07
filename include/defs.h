@@ -84,6 +84,7 @@ typedef unsigned char SCUNIT;
 #define MAXCONSTRUCTINBUILD	5
 //==========================================
 #define MEDICHEALFACTOR		(4<<8)
+#define MEDICWAITFORHEAL	15
 
 #define BATTERYRECHARGEFACTOR	(2<<8)
 #define BATTERYRECHARGEWAITTIME	3

@@ -173,8 +173,9 @@ void SCVConstructAction(OBJ *a,MAIN_IMG *img)
 		return;
 	    }
 	    //check if repaired unit is move away, need to move to him
-	    if (NEEDTOREPAIRREFRESHBIT)
+	    if (a->movetoobj_tick-- == 0)
 	    {
+		a->movetoobj_tick = MOVETOOBJ_TICK;
 		if ( GetDistanceTo(a->finalOBJ,GetOBJx(a),GetOBJy(a)) <= 16 )
 		{
 		}
@@ -516,10 +517,13 @@ int HiveAction(struct OBJ *a,MAIN_IMG *img)
 int MedicAction(struct OBJ *a,MAIN_IMG *img)
 {
     struct OBJ *c;
-    if (NEEDTOHEALBIT)
+    if (a->prop & VARHOLDPOSBIT)
+        return(1);
+    if (a->modemove == MODEHEAL)
+	return(1);
+    if (a->data.medic.ishealtime-- == 0)
     {
-	if (a->prop & VARHOLDPOSBIT)
-	    return(1);
+	a->data.medic.ishealtime = MEDICWAITFORHEAL;
 	switch(a->modemove)
 	{
 	    case MODESTOP:
@@ -534,12 +538,8 @@ int MedicAction(struct OBJ *a,MAIN_IMG *img)
 		    }
 		}
 		return(0);
-	    case MODEHEAL:
-		return(1);
 	}
     }
-    if (a->modemove == MODEHEAL)
-	return(1);
     return(0);
 }
 //=================================
@@ -557,7 +557,7 @@ int BatteryAction(struct OBJ *a,MAIN_IMG *img)
 	    return(1);
 	}
 	//show recharge shield image
-	if (--a->data.battery.rechargetime<=0)
+	if (a->data.battery.rechargetime-- == 0 )
 	{
 	    a->data.battery.rechargetime = BATTERYRECHARGEWAITTIME;
 	    if (GetDistanceBetweenUnits256(a,destobj) <= mageprop[a->castmagenr].mindistance)
@@ -624,14 +624,14 @@ int QueenAction(struct OBJ *a,MAIN_IMG *img)
 		}
 		moveobj(a,NULL,MODESTOP,NOSHOWERROR);
 	    }
-	    
 	}
 	return 1;
     }
-    if (NEEDTOINFESTBIT)
+    if (a->prop & VARHOLDPOSBIT)
+        return(0);
+    if (a->data.queeninfest.infestrefreshbit-- == 0)
     {
-	if (a->prop & VARHOLDPOSBIT)
-	    return(0);
+	a->data.queeninfest.infestrefreshbit = QUEENINFEST_TICK;
 	switch(a->modemove)
 	{
 	    case MODESTOP:
@@ -641,8 +641,6 @@ int QueenAction(struct OBJ *a,MAIN_IMG *img)
 		    moveobj(a,c,MODEINFEST,NOSHOWERROR);
 		    return(1);
 		}
-		return(0);
-	    case MODEINFEST:
 		return(0);
 	}
     }
@@ -861,8 +859,9 @@ int AdditionalUnitProceed(OBJ *a,MAIN_IMG *img)
 //	return 0;
     if (a->prop & VARWAITDISTANCE)
     {
-	if (NEEDTOMOVE1BIT)
+	if (a->movetoobj_tick-- == 0)
 	{
+	    a->movetoobj_tick = MOVETOOBJ_TICK;
 	    if (a->prop & VARMOVEOBJACT)
 	    {
 		if (a->finalOBJ)

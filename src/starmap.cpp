@@ -1424,7 +1424,14 @@ int load_starmap( const char *mapfile,char *fname, struct mapinfo *info,GAMECONF
     }
     for (i=0;i<PLAYEDPLAYERS;i++)
 	info->clearfog[i]=1;
-//    info->iscriptmem = LoadIScriptBin();
+
+    ifhaverescuableplayers = 0;
+    for (i=0;i<MAXPLAYERS;i++)
+    {
+	//if rescuable player
+	if (map.pl_iowner[i] == OWNER_RESCUABLE)
+	    ifhaverescuableplayers++;
+    }
     return(0);
 }
 //=================================================

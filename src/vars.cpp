@@ -125,12 +125,11 @@ unsigned char imanap[14*14],iemptycubep[14*14];
 
 short int resource_sprites_id[3][2]={{292,296},{292,298},{292,294}};
 
-int 	MAPREGENERATIONBIT,MAPUNITSREGENERATIONBIT,NEEDTOCHANGEMANABIT,NEEDTOCHANGECREEPBIT,NEEDTOHEALBIT,NEEDTOINFESTBIT;
-int	NEEDTOMOVE1BIT,NEEDTOMOVE2BIT,NEEDTOREPAIRREFRESHBIT;
+int 	MAPREGENERATIONBIT,MAPUNITSREGENERATIONBIT,NEEDTOCHANGEMANABIT,NEEDTOCHANGECREEPBIT;
 GRPFILE	*znakgrp,*grpicons,*creepgrp;
 GRPFILE	*grpwire1,*grpwire2,*grpwire3,*blinkgrp;
 GRPFILE	*grpminmineral[3],*grpmingas[3];
-int	needclearmap;
+char	needclearmap,ifhaverescuableplayers;
 int	magenrfrommageatr[MAXMAGEATR];
 int	buildconstr,posibleconstruct;
 OBJ	*cbuild;
@@ -227,7 +226,7 @@ char    CODEFORSCREEN		= 0;
 char    CODEFORGOD		= 0;
 char    CODEFORMINERALS		= 0;
 char    CODEFORGAS		= 0;
-char    CODEFORQUICKMAKE	= 32;	//1-32	//!!!!!!! 0 is bad idea
+char    CODEFORQUICKMAKE	= 1;	//1-32	//!!!!!!! 0 is bad idea
 char    CHEATERBIT		= 0;
 char    CODEFORWITHOUTGOODS	= 1;
 char    CODEFORWITHOUTTECHTREE	= 1;
