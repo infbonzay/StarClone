@@ -25,14 +25,24 @@ int loadfilefrommpq(HANDLE hmpq,char *filename,char **mem,int *fsize)
     HANDLE f;
     unsigned int filesize,readed;
 
-    if (!hmpq)
-	err = (SFileOpenFileTryAllMpqs(filename,&f) == 0);
-    else
-	err = wr_SFileOpenFileEx(hmpq,filename,SFILE_OPEN_FROM_MPQ,&f);
+    char *filename2 = filename2unix(filename);
+    err=wr_SFileOpenFileEx(NULL,filename2,SFILE_OPEN_LOCAL_FILE,&f);
+    wfree(filename2);
     if (!err)
     {
-	printf("loadfilefrommpq: %s not found\n",filename);
-	return -1;
+	if (!hmpq)
+	    err = (SFileOpenFileTryAllMpqs(filename,&f) == 0);
+	else
+	    err = wr_SFileOpenFileEx(hmpq,filename,SFILE_OPEN_FROM_MPQ,&f);
+	if (!err)
+	{
+	    printf("loadfilefrommpq: %s not found\n",filename);
+	    return -1;
+	}
+    }
+    else
+    {
+	printf("loadfilefrommpq: %s found on local filesystem\n",filename);
     }
     filesize = SFileGetFileSize(f,NULL);
     if (fsize)

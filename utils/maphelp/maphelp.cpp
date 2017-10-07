@@ -110,8 +110,11 @@ struct MAPVISIONOFFSETS
 int currentoffset;
 void arrayset(FILE *f,int elem,int k,int xpos,int ypos)
 {
-    if (!k)
-	k=1;
+    if (k==-1)
+	k=0;
+    else
+	if (!k)
+	    k=1;
     fprintf(f," ,%d,%d,%d  ",k,xpos,ypos);
     offs.mapelement[elem].rangevision = k;
     offs.mapelement[elem].xoffset = xpos;
@@ -154,7 +157,7 @@ void CreateMapOffsets(int table)
 	    if (err)
 		fprintf(f,"\n");
 	}
-	arrayset(f,curelem++,0,0,0);
+	arrayset(f,curelem++,-1,0,0);
         fprintf(f,"\n\n");
     }
     fclose(f);

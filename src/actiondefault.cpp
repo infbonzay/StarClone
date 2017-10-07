@@ -909,7 +909,6 @@ int AtackCoolDownEnds(OBJ *a,OBJ *destobj,int continueatack,int modemoveflags)
 		    a->subunit->modemove = MODEATACK;
 		    a->atackcooldowntime = 0;
 		    initmoveaction(a->subunit,destobj,MODEATACK,a->usedweapon_id,0,GetOBJx(destobj),GetOBJy(destobj));
-//		    AddModeMove(a->subunit,destobj,MODEATACKREADY,NOSHOWERROR);
 		    InsertModeMove(a->subunit,destobj,MODEATACKREADY,0,0,NOSHOWERROR);
 		}
 		else
@@ -927,7 +926,6 @@ int AtackCoolDownEnds(OBJ *a,OBJ *destobj,int continueatack,int modemoveflags)
 		    a->modemove = MODEATACK;
 		    a->atackcooldowntime = 0;
 		    initmoveaction(a,destobj,MODEATACK,a->usedweapon_id,0,GetOBJx(destobj),GetOBJy(destobj));
-//		    AddModeMove(a,destobj,MODEATACKREADY,NOSHOWERROR);
 		    InsertModeMove(a,destobj,MODEATACKREADY,0,0,NOSHOWERROR);
 		}
 		return(MOVEOBJ_CONTINUEJOB);
@@ -941,9 +939,12 @@ int AtackCoolDownEnds(OBJ *a,OBJ *destobj,int continueatack,int modemoveflags)
 		}
 		return(MOVEOBJ_NOACT);
 	    case CREATEDWEAPONSTATUS_ATACKSUCCESS:
+		a->prop |= VARMOVEOBJACT;
+		a->prop &= ~VARACCELERATIONBIT;
+		if (!a->currentspeed)
+		    a->currentspeed = 1;
 		a->finalOBJ = destobj;
 		SetAtackType(a,destobj);
-//		a->prop |= VARMOVEOBJACT;
 		if (!a->atackcooldowntime)
 		{
 		    AtackAction(a,destobj,continueatack);
@@ -951,7 +952,10 @@ int AtackCoolDownEnds(OBJ *a,OBJ *destobj,int continueatack,int modemoveflags)
 		}
 		return(MOVEOBJ_NOACT);
 	    case CREATEDWEAPONSTATUS_ATACKSUCCESSWITHROTATION:
-//		a->prop |= VARMOVEOBJACT;
+		a->prop |= VARMOVEOBJACT;
+		a->prop &= ~VARACCELERATIONBIT;
+		if (!a->currentspeed)
+		    a->currentspeed = 1;
 		a->finalOBJ = destobj;
 		a->finalx = GetOBJx256(destobj);
 		a->finaly = GetOBJy256(destobj);

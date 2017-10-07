@@ -923,6 +923,8 @@ void makeoneobjseeopen(OBJ *a,OBJstruct *b)
 	cmdoffs = &mapvisiontables[objxysize]->mapelement[elemnr];
 	for (;;cmdoffs++)
 	{
+	    if (cmdoffs->xoffset>15 || cmdoffs->yoffset>15 || cmdoffs->rangevision>14)
+		DEBUGMESSCR("OOOPS= g=%d r=%d x=%d y=%d\n",g,cmdoffs->rangevision,cmdoffs->xoffset,cmdoffs->yoffset);
 	    vis = cmdoffs->rangevision;
 	    if (!vis)
 		break;

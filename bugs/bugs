@@ -408,7 +408,8 @@
 *172 queen can't infest in over cc
 *173 matriarh can't infest cc
 *174 queen broodling on ground
-    move to obj then atack, atacker come close to atack (initmoveaction not activated)
+*175 move to obj then atack, atacker come close to atack (initmoveaction not activated)
+*176 mapoffset bug with carrier at test map
     ?dust moves with unit
     save/load mem under selectation box
     consume on non zerg units

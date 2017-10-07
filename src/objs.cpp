@@ -1607,7 +1607,7 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int modemovef
     if (mode != MODEDIE)
 	ReleaseResource(a);
     OBJstruct *b = loadobj(a->SC_Unit);
-    a->prop &= ~(VARPATROLFLAG | VARNEXTMODEMOVEIGNOREACCEL);
+    a->prop &= ~(VARPATROLFLAG | VARNEXTMODEMOVEIGNOREINERTION);
     if (a->mainimage->flags & SC_IMAGE_FLAG_CANTBREAKCODE)
 	if (mode != MODEDIE)
 	{
@@ -2617,7 +2617,7 @@ bugguyexplode:
 	    AddModeMove(a,NULL,MODEATACKREADY,x,y,NOSHOWERROR);
 	    break;
 	case MODEMOVEFORWARD:
-	    a->prop |= VARNEXTMODEMOVEIGNOREACCEL;
+	    a->prop |= VARNEXTMODEMOVEIGNOREINERTION;
 	    if (!a->currentspeed)
 		a->currentspeed = 1;
 	    a->modemove = mode;    
@@ -4850,7 +4850,7 @@ int PathFinding_MovePortionType1(OBJ *a,MAIN_IMG *img,int deltamove)
 //here unit stopped and wait for change distance to move again
 	    a->prop |= VARWAITDISTANCE;
 	    if (a->modemove == MODEATACK)
-		a->prop |= VARNEXTMODEMOVEIGNOREACCEL;
+		a->prop |= VARNEXTMODEMOVEIGNOREINERTION;
 	    SetOBJIScriptNr(a,ISCRIPTNR_WALKINGTOIDLE,ISCRIPTNR_EXECUTE);
 	    return(2);
 	}
@@ -4949,7 +4949,7 @@ int PathFinding_MovePortionType2(OBJ *a,MAIN_IMG *img,unsigned char flingy_id,in
 	    InitStopAfterMove(a);
 	    a->prop |= VARWAITDISTANCE;
 	    if (a->modemove == MODEATACK)
-		a->prop |= VARNEXTMODEMOVEIGNOREACCEL;
+		a->prop |= VARNEXTMODEMOVEIGNOREINERTION;
 	}
 	if (deltaz <= 2*256)		//prevent div 0
 	    return(1);
@@ -5064,12 +5064,14 @@ void AdditionalUnitsProceed(void)
 void AllOBJMoving(void)
 {
     int i,rot,deltax,deltay,deltaz,widthsumm,curspeed;
-    signed char incfactor;
+    signed char incfactor,nextmoveignorefullinertion;
+
     unsigned char flingy_id,side1,side2;
     MAIN_IMG *img;
     OBJ *a;
     for (i=0;i<MaxObjects;i++)
     {
+	nextmoveignorefullinertion = 0;
 	a = objects[i];
 	img = a->mainimage;
 	flingy_id = alldattbl.units_dat->flingy_id[a->SC_Unit];
@@ -5169,13 +5171,21 @@ void AllOBJMoving(void)
 			continue;
 		    }
 		    else
-			if (a->prop & VARNEXTMODEMOVEIGNOREACCEL)
-			{
-			    ApplyNextModeMove(a);
-			    break;
-			}
+		    {
+			nextmoveignorefullinertion = 1;
+//			if (a->prop & VARNEXTMODEMOVEIGNOREINERTION)
+//			{
+//			    ApplyNextModeMove(a);
+//			    break;
+//			}
+		    }
 		}
 		PathFinding_MovePortionType2(a,img,flingy_id,GetSpeed(a,a->currentspeed));
+		if (nextmoveignorefullinertion)
+		{
+		    ApplyNextModeMove(a);
+		    break;
+		}
 //
 //		if (a->subunit)
 //		    ChangeSubUnitCoords(a->subunit,a);
