@@ -4129,8 +4129,8 @@ Unused1        	[NONE]
 GndAttkRpt     	BattlecruiserGndAttkInit
 AirAttkRpt     	BattlecruiserAirAttkInit
 CastSpell      	BattlecruiserCastSpell
-GndAttkToIdle  	common_waitforever
-AirAttkToIdle  	common_waitforever
+GndAttkToIdle  	common_wiggleairunit
+AirAttkToIdle  	common_wiggleairunit
 Unused2        	[NONE]
 Walking        	BattlecruiserWalking
 WalkingToIdle  	common_wiggleairunit
@@ -4141,7 +4141,7 @@ SpecialState1  	[NONE]
 BattlecruiserInit:
 	imgul          	219 0 42	# BattlecruiserShad (terran\BattleCr.grp)
 	playfram       	0x00	# frame set 0
-	goto           	common_waitforever
+	goto           	common_wiggleairunit
 
 BattlecruiserDeath:
 	playsnd        	177	# Terran\BATTLE\tbaDth00.wav
