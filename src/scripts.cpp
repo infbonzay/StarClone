@@ -953,9 +953,17 @@ while(!feof(f))
             		{
 			    ormask |= WTF_ORGANIC;
 		        }
+			else if (!strcmp(strvalue,"MECHANICALORGANIC"))
+            		{
+			    ormask |= WTF_MECHANICALORGANIC;
+		        }
+			else if (!strcmp(strvalue,"OWN"))
+            		{
+			    ormask |= WTF_OWN;
+		        }
 			else if (!strcmp(strvalue,"NOUNITDESTINATION"))
             		{
-            		    //ignore destobj in moveobj
+            		    //cast on place were is unit where in casting time
             		    mageprop[whatobj].atr |= ORDER_IGNOREUNITDESTINATION;
 		        }
 			else

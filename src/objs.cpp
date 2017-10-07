@@ -2800,8 +2800,10 @@ int makemove(struct OBJ *a,struct OBJ *destobj,int locx,int locy,int mode,int pl
 	if (!accesstomage(a,destobj,mode))
 	{
 	    if (player==NUMBGAMER)
-		if (gameconf.audioconf.advisorsounds)
-		    Play_sfxdata_id(a,PUTMAGEERROR,1,0);
+	    {
+		showadvisortext(875);//invalid target
+		Play_sfxdata_id(a,PUTMAGEERROR,1,0);
+    	    }
     	    return(0);
 	}
     }

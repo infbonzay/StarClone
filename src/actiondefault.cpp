@@ -943,6 +943,7 @@ int AtackCoolDownEnds(OBJ *a,OBJ *destobj,int continueatack,int modemoveflags)
 	    case CREATEDWEAPONSTATUS_ATACKSUCCESS:
 		a->finalOBJ = destobj;
 		SetAtackType(a,destobj);
+//		a->prop |= VARMOVEOBJACT;
 		if (!a->atackcooldowntime)
 		{
 		    AtackAction(a,destobj,continueatack);
@@ -950,6 +951,7 @@ int AtackCoolDownEnds(OBJ *a,OBJ *destobj,int continueatack,int modemoveflags)
 		}
 		return(MOVEOBJ_NOACT);
 	    case CREATEDWEAPONSTATUS_ATACKSUCCESSWITHROTATION:
+//		a->prop |= VARMOVEOBJACT;
 		a->finalOBJ = destobj;
 		a->finalx = GetOBJx256(destobj);
 		a->finaly = GetOBJy256(destobj);
