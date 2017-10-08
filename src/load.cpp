@@ -1005,6 +1005,8 @@ void LoadPatchTbl(void)
     alldattbl.flingy_dat->TurnRadius[FLINGYID_HALOROCKETS] *= 2;	//doubel rotation speed to prevent freeze around
     alldattbl.units_dat->SpecialAbilityFlags[SC_SCANNERSWEEP] |= SPECIAL_INVINCIBLE;	//prevent attack sweep
     alldattbl.units_dat->SpecialAbilityFlags[SC_BUNKEROBJ] |= SPECIAL_FULLAUTOATTACK;	//units inside bunker can atack
+    alldattbl.units_dat->SpecialAbilityFlags[SC_MAPREVEALEROBJ] |= SPECIAL_INVINCIBLE;	//prevent attack sweep
+    
 }
 //============================================
 void *imagesreftogrpdata[MAX_IMAGES_ELEM];

@@ -110,7 +110,8 @@ int IfCanCreateWeapon(OBJ *atacker,OBJ *destobj,int *errmes,unsigned char *weapo
     unsigned char groundweapon_id,airweapon_id,usedweapon_id,atackangle,neededside;
     if (destobj)
     {
-	if (!IsActiveUnit(destobj))
+//	if (!IsActiveUnit(destobj))
+	if (!IsActiveUnitForAtack(destobj))
 	{
 	    if (errmes)
     		*errmes=875;
