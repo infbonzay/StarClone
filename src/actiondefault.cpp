@@ -600,7 +600,7 @@ int BatteryAction(struct OBJ *a,MAIN_IMG *img)
 //=================================
 int QueenAction(struct OBJ *a,MAIN_IMG *img)
 {
-    int x,y;
+    int x,y,flyflag;
     struct OBJ *c;
     if (a->modemove == MODEINFEST)
     {
@@ -619,8 +619,14 @@ int QueenAction(struct OBJ *a,MAIN_IMG *img)
 		{
 		    x = GetOBJx(c);
 		    y = GetOBJy(c);
+		    flyflag = IsOnSkyOBJ(c);    
 		    dieobj_silently(c);
 		    c = createobjfulllife(x,y,SC_INFCOMMCENTEROBJ,a->playernr);
+		    if (flyflag)
+		    {
+			setpropertiestounit(c,UNITONMAP_STATEFLAGS_BUILDINTRANSIT,UNITONMAP_STATEFLAGS_BUILDINTRANSIT);
+		    }
+		    SetOBJxy(a,x,y);
 		}
 		moveobj(a,NULL,MODESTOP,NOSHOWERROR);
 	    }

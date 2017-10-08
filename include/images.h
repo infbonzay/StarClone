@@ -240,6 +240,7 @@ inline int  GetOBJx256(OBJ *a) { return(a->mainimage->xpos); };
 inline int  GetOBJy256(OBJ *a) { return(a->mainimage->ypos); };
 
 inline void SetOBJxy256(OBJ *a,int x256,int y256) { a->mainimage->xpos = x256; a->mainimage->ypos = y256; };
+inline void SetOBJxy(OBJ *a,int x,int y) { a->mainimage->xpos = x<<8; a->mainimage->ypos = y<<8; };
 //============================================
 
 
