@@ -7,12 +7,21 @@
 #include "tbl.h"
 #include "stringfiles.h"
 
+
 char GAMEPATH[1];
 
 FILE *f;
 long long filesize;
 int STRS,i;
 char *strarray[10000];
+void LockAudio(void)
+{
+}
+void UnlockAudio(void)
+{
+}
+
+
 int main(int argc,char *argv[])
 {
     if (argc!=2)

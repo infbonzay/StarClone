@@ -50,18 +50,18 @@ int PCX::openMpqPcx(char *filepcx,HANDLE hmpq)
     unsigned int readed;
     HANDLE openedfile;
 
-    char *filepcx2=filename2unix(filepcx);
-    wr_SFileOpenFileEx(NULL,filepcx2,SFILE_OPEN_LOCAL_FILE,&openedfile);
-    wfree(filepcx2);
-    if (!openedfile)
-    {
+//    char *filepcx2=filename2unix(filepcx);
+//    wr_SFileOpenFileEx(NULL,filepcx2,SFILE_OPEN_LOCAL_FILE,&openedfile);
+//    wfree(filepcx2);
+//    if (!openedfile)
+//    {
 	SFileOpenFileTryAllMpqs(filepcx,&openedfile);
 	if (!openedfile)
 	{
 //	    printf("%s not found\n",filepcx);
     	    return(NOPCX);
 	}
-    }
+//    }
     wr_SFileReadFile(openedfile,&header,sizeof(header),&readed,NULL);
     if (readed==sizeof(header))
     {
