@@ -1,0 +1,16 @@
+#!/bin/bash
+
+if [ -z $1 ] ; then
+    echo "$0 dir"
+    exit
+fi
+if [ ! -d $1 ] ; then
+    echo "$1 is not directory"
+    exit
+fi
+MYPATH=`pwd`
+LISTFILE="$MYPATH/(listfile)"
+
+cd "$1"
+find "." -type f | gawk ' { print substr($0,3) } ' | tr '/' '\' > "$LISTFILE" 
+cd "$MYPATH"

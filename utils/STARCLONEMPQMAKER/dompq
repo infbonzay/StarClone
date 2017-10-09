@@ -1,0 +1,6 @@
+#!/bin/bash
+
+./makelist "$1"
+./makempq "$1"
+rm -rf forstaredit/*
+rm "(listfile)"

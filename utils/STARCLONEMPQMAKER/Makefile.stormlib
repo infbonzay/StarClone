@@ -1,0 +1,17 @@
+
+OBJS = makempq.o 
+INCLUDE = -I../../include
+CFLAGS = -g3 -funsigned-char -O0 $(INCLUDE) -DSTORMLIB
+LDFLAGS = -lstdc++ -lStorm -lz
+#LDFLAGS = -lstdc++ -lmpq -lz
+
+all:
+
+makempq: makempq.o
+	gcc $(LDFLAGS) $(OBJS) -o makempq
+
+makempq.o: makempq.cpp
+	gcc -c $(CFLAGS) makempq.cpp -o makempq.o
+clean:
+	-rm makempq makempq.o
+	
