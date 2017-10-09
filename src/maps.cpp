@@ -21,6 +21,7 @@
 #include "gener.h"
 #include "market.h"
 #include "images.h"
+#include "walk.h"
 #include "maps.h"
 
 #ifdef WITHSDL
@@ -461,6 +462,8 @@ int SetVisualMapPosition(int x,int y)//x,y-0..MAX?MAP*32
     int retval=0;
     if (map.flags & STARMAP_FLAG_AUTOMOVE)
 	return(0);
+    x &= ~0x1f;
+    y &= ~0x1f;
     if (x<0) 
 	x=0;
     if (y<0) 
@@ -508,7 +511,7 @@ void savemapcreepadr(int x,int y,int creepnr)
 	map.mapbits.savedcreep[NUMBGAMER][y*MAXXMAP+x]=creepnr;
 }
 //==================================
-//risovati lanshaft
+//risovati lanshaft xglob,yglob (0-639,0-479) x,y 0-maxxmap 0-maxymap
 void putlansh(int xglob,int yglob,int x,int y,int indextile32,char wfog,char bfog)
 {
     signed char creepnr;
@@ -529,6 +532,19 @@ void putlansh(int xglob,int yglob,int x,int y,int indextile32,char wfog,char bfo
         putspr32x32(xglob,yglob,adrspr);
 	if (!nosave)
     	    savemaptileadr(x,y,indextile32);
+/*	struct XY a;
+	for (int i=0;i<4;i++)
+	    for (int j=0;j<4;j++)
+	    {
+		a.x1 = xglob + j*8;
+		a.y1 = yglob + i*8;
+		a.x2 = a.x1 + 8;
+		a.y2 = a.y1 + 8;
+		if (!GetMapWalk8(x*4+j,y*4+i,1,1))
+		    wsetimage8x(DISABLECONSTRUCT,&a);
+//		    wrectangle(DISABLECONSTRUCT,a.x1,a.y1,a.x2,a.y2);
+	    }
+*/
     }
     else
     {
@@ -545,6 +561,7 @@ void putlansh(int xglob,int yglob,int x,int y,int indextile32,char wfog,char bfo
     }
     if (!nosave)
 	savemapcreepadr(x,y,map.creepflagplace[y*MAXXMAP+x]);
+
 }
 //==================================
 void clearopenseeKarta(void)
