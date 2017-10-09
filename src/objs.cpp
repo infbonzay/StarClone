@@ -395,12 +395,15 @@ struct OBJ *createobjlowlevel(OBJ *workerobj,int x,int y,SCUNIT SC_Unit,int play
 	//if subunit skip creation image (this is will do at base from initturret script)
 	if (IsSubUnit(SC_Unit))
 	{
-//	    a->prop |= VARNOTHERE;
 	    return(a);
 	}
 	CreateImageAndAddToList(a,x<<8,y<<8,readyatbegin,imagelo_id);
+	if (a->subunit)
+	{
+	    //subunit turn face like a base
+	    a->subunit->mainimage->AllUnitDirection256(a->mainimage->side);
+	}
     }
-//    ForceKartChanges(a);
     if (a->xkart>=MAXXMAP||a->ykart>=MAXYMAP)
     {
 	sprintf(forexit,"coords error UNIT=%d (mapx,mapy)=(%d,%d)\n",SC_Unit,a->xkart,a->ykart);
