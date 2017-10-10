@@ -766,7 +766,10 @@ void MAIN_IMG::SetDeltaCoords(OBJ *a,int deltax256,int deltay256)
     xpos += deltax256;
     ypos += deltay256;
     if (a)
+    {
 	CheckForKartChanges(a,xpos,ypos);
+	CheckForWalkChanges(a,xpos,ypos);
+    }
 }
 //============================================
 int MAIN_IMG::Rotation(unsigned char rotationfactor)

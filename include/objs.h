@@ -168,6 +168,8 @@ int  CalcDestVars(OBJ *a,OBJ *destobj,int x1,int y1,int x2,int y2,unsigned char 
 void ForceKartChanges(OBJ *a);
 void ForceKartChanges(OBJ *a,int xpos,int ypos);
 void CheckForKartChanges(OBJ *a,int xpos,int ypos);
+void CheckForWalkChanges(OBJ *a,int xpos,int ypos);
+
 void InitStopAfterMove(OBJ *a);
 
 void PathFinding_InitType1(OBJ *a,int initx,int inity,int destx,int desty);

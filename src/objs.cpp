@@ -5053,6 +5053,11 @@ void CheckForKartChanges(OBJ *a,int xpos,int ypos)
     }
 }
 //=================================
+void CheckForWalkChanges(OBJ *a,int xpos,int ypos)
+{
+    
+}
+//=================================
 //deltax,deltay - delta between movedunit & destination unit
 void AdditionalUnitsProceed(void)
 {
