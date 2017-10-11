@@ -584,6 +584,7 @@ void OVERLAY_IMG::DrawImageXY(int x,int y)
 				framenr + oneside,
 				flags|mirror,
 				protossbuildwhite);
+
 	    if (alldattbl.images_dat->Clickable[imageid])
 	    {
 		if (parentimg->whocreate == SC_IMAGE_OBJ_CREATOR)

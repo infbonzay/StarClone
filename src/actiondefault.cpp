@@ -137,7 +137,7 @@ void SCVConstructAction(OBJ *a,MAIN_IMG *img)
     int x,y,mx,my;
     if (a->modemove == MODECONSTRUCT)
     {
-        if (a->timerepair==0)
+        if (a->timerepair-- ==0)
 	{
 	    //repair next part
 	    a->timerepair = TIMETOREPAIRINONEPOSITION;
@@ -158,10 +158,9 @@ void SCVConstructAction(OBJ *a,MAIN_IMG *img)
 	    initmoveaction(a,NULL,MODECONSTRUCTMOVE,0,0,x*32,y*32);//move to construct point build
 //	    SetOBJIScriptNr(a,ISCRIPTNR_WALKING,ISCRIPTNR_EXECUTE);			//set the same script to all obj images and subimages
 	    a->modemove = MODECONSTRUCTMOVE;
-	    AddModeMove(a,NULL,MODETURN180,0,0,0);//contibue construction
+	    AddModeMove(a,NULL,MODETURN180,0,0,0);//continue construction
 	    AddModeMove(a,NULL,MODECONSTRUCT,x,y,0);//continue construction
 	}
-	a->timerepair--;
     }
     else
     {

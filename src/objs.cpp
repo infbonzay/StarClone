@@ -5180,8 +5180,8 @@ void AllOBJMoving(void)
 		    }
 		    else
 		    {
-			nextmoveignorefullinertion = 1;
-//			if (a->prop & VARNEXTMODEMOVEIGNOREINERTION)
+			if (a->prop & VARNEXTMODEMOVEIGNOREINERTION)
+			    nextmoveignorefullinertion = 1;
 //			{
 //			    ApplyNextModeMove(a);
 //			    break;
