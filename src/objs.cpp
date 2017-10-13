@@ -188,6 +188,8 @@ struct OBJ *createobjmanwithlife(int x,int y,SCUNIT SC_Unit,int Pl,
     b = loadobj(a->SC_Unit);
     AdditionalProperties(a);
     a->prop |= VARREADY;
+    if (a->subunit)
+	a->subunit->prop |= VARREADY;
     if (b)
     {
 	SetUnitPercentHealth(a,perslife);
