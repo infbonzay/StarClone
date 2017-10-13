@@ -668,48 +668,6 @@ void makeopenseeKarta(int beginobj,int endobj)
 //=================================
 char xypos[2][4]={{0,1,0,1},{0,0,1,1}};
 //=================================
-/*void OLDarbitermakewarpfield(OBJ *a,OBJstruct *b)
-{
-    int x,y,i,j,mybits,xcenter,ycenter,see,objxysize;
-    if (a->SC_Unit != SC_ARBITEROBJ && a->SC_Unit != SC_HERO_DANIMOTHOBJ)
-	return;
-    if (a->prop&VARNOTWORK)
-	return;
-    if (GetMageAtr(&a->atrobj,ATRHALLUCINATION)!=0)
-	return;
-    if (PLAYER[a->playernr].isobserverflag)
-	return;
-    see=GetCloakRange(a,b);
-    objxysize = GetRangeObjSize(a->SC_Unit,NULL,NULL);
-
-    xcenter=a->xkart-xypos[0][objxysize];
-    ycenter=a->ykart-xypos[1][objxysize];
-    mybits=1<<a->playernr;
-
-    for (i=0;i<MAXVISY;i++)
-    {
-	y=ycenter+i-MIDY;
-	if (y<0)
-	    continue;
-	if (y>=MAXYMAP)
-	    break;
-	for (j=0;j<MAXVISX;j++)
-	{
-	    if (MAPvision[objxysize][i][j]<=see)
-	    {
-		x=xcenter+j-MIDX;
-		if (x<0)
-		    continue;
-		if (x>=MAXXMAP)
-		    break;
-		map.mapbits.arbiterfield[y*MAXXMAP+x]|=mybits;
-		map.mapbits.arbiterfield2[y*MAXXMAP+x]|=mybits;
-	    }
-	}
-    }
-}
-*/
-//=================================
 void arbitermakewarpfield(OBJ *a,OBJstruct *b)
 {
     int g,x,y,i,j,mybits,xcenter,ycenter,see,objxysize;
@@ -759,139 +717,6 @@ void arbitermakewarpfield(OBJ *a,OBJstruct *b)
     }
 }
 //=================================
-/*void OLDmakeoneobjseeopen(OBJ *a,OBJstruct *b)
-{
-    int x,y,opendelta,mapchanges=0,objxysize,pl;
-    int i,j,k,pp,see,prst=0,opn,nrofuplevel,onsky=0;
-    int xcenter,ycenter,level;
-
-    int nosave,indextile32;
-    signed char creepnr;
-
-    if (a->prop & VARKARTCHANGES)
-	a->prop &= ~VARKARTCHANGES;
-    else
-	return;
-    if (a->prop & VARNOTHERE)
-	return;
-    if (a->in_transport)//in buncker/transport
-	return;
-    if (IsSubUnit(a->SC_Unit))
-	return;		//subunit not reveal the map
-    if (a->playernr >= PLAYEDPLAYERS)		//this is neutral unit
-	return;
-    if (!IsOBJUnderConstruct(a))
-    {
-        prst=GetMageAtr(&a->atrobj,ATRPARASITEFROM);
-        see=GetUnitSightRange(a,b)+2;
-    }
-    else
-	see=SEERANGEIFNOTREADY;
-    if (IsOnSkyOBJ(a))
-	onsky=1;
-    objxysize = GetRangeObjSize(a->SC_Unit,NULL,NULL);
-
-    xcenter=a->xkart-xypos[0][objxysize];
-    ycenter=a->ykart-xypos[1][objxysize];
-
-    level=map.maplevel[a->ykart*MAXXMAP+a->xkart];
-    opn=GetVisionBitsPlayer(a->playernr);
-    if (!opn && !prst)
-	return;
-
-    for (i=0;i<MAXVISY;i++)
-    {
-	y=ycenter+i-MIDY;
-	if (y<0)
-	    continue;
-	if (y>=MAXYMAP)
-	    break;
-	for (j=0;j<MAXVISX;j++)
-	{
-	    opendelta=see-MAPvision[objxysize][i][j]+1;
-	    if (opendelta<1)
-		continue;
-	    if (opendelta>4)
-		opendelta=4;
-	    x=xcenter+j-MIDX;
-	    if (x<0)
-		continue;
-	    if (x>=MAXXMAP)
-		break;
-	    if (!onsky)
-		if (map.maplevel[y*MAXXMAP+x]>level)
-		    continue;
-    	    if (!CODEFORSCREEN)
-    	    {
-			pp=a->playernr;
-            		if (opn&(1<<pp))
-            		{
-				if (mapSEE(x,y,pp)<opendelta)
-				{
-				    map.mapbits.whitefog[pp][y*MAXXMAP+x]=opendelta;
-				    mapchanges=1;
-				}
-				if (mapSEE2(x,y,pp)<opendelta)
-				{
-				    map.mapbits.whitefog2[pp][y*MAXXMAP+x]=opendelta;
-				    mapchanges=1;
-				}
-			}
-			if (prst)
-			{
-			    for (pp=0;pp<PLAYEDPLAYERS;pp++)
-			    {
-				if (prst&(1<<pp))
-				{
-				    if (mapSEE(x,y,pp)<opendelta)
-				    {
-					map.mapbits.whitefog[pp][y*MAXXMAP+x]=opendelta;
-					mapchanges=1;
-				    }
-				    if (mapSEE2(x,y,pp)<opendelta)
-				    {
-					map.mapbits.whitefog2[pp][y*MAXXMAP+x]=opendelta;
-					mapchanges=1;
-				    }
-				}
-			    }
-			}
-			if (opendelta==1)
-			    continue;
-                    	a->visibleby=opn;
-//			if (opn)
-//			{
-//            		}
-    	    }//codeforscreen
-    	    if ((!(a->prop&VARNOTWORK)) && !IsOBJUnderConstruct(a) && (a->prop|VARPOWEROFF))//esli dvigaetsea
-    	    {
-    	    	if (IsDetector(a->SC_Unit)&&GetMageAtr(&a->atrobj,ATRBLIND)==0)
-		{
-                        	if  (opn)//esli alienseobj|parasite
-				{
-				    map.mapbits.seedetector2[y*MAXXMAP+x]|=opn;
-				    map.mapbits.seedetector[y*MAXXMAP+x]|=opn;
-				}
-		}
-    	    }
-    	    nosave=0;
-    	    if (mapchanges && a->playernr == NUMBGAMER)
-    	    {
-    			indextile32=map.display_map[y*MAXXMAP+x];
-			creepnr = GetCreepAroundWithFog(x,y,indextile32);
-			if (creepnr==-1)
-			{
-    			    savemaptileadr(x,y,indextile32);
-			}
-			savemapcreepadr(x,y,map.creepflagplace[y*MAXXMAP+x]);
-	    }
-	}//for j
-    }//for i
-    if (mapchanges)
-	map.clearfog[a->playernr]=1;
-}
-*/
-//=================================
 void makeoneobjseeopen(OBJ *a,OBJstruct *b)
 {
     int x,y,opendelta,mapchanges=0,objxysize,pl;
@@ -940,8 +765,8 @@ void makeoneobjseeopen(OBJ *a,OBJstruct *b)
 	cmdoffs = &mapvisiontables[objxysize]->mapelement[elemnr];
 	for (;;cmdoffs++)
 	{
-	    if (cmdoffs->xoffset>15 || cmdoffs->yoffset>15 || cmdoffs->rangevision>14)
-		DEBUGMESSCR("OOOPS= g=%d r=%d x=%d y=%d\n",g,cmdoffs->rangevision,cmdoffs->xoffset,cmdoffs->yoffset);
+//	    if (cmdoffs->xoffset>15 || cmdoffs->yoffset>15 || cmdoffs->rangevision>14)
+//		DEBUGMESSCR("OOOPS= g=%d r=%d x=%d y=%d\n",g,cmdoffs->rangevision,cmdoffs->xoffset,cmdoffs->yoffset);
 	    vis = cmdoffs->rangevision;
 	    if (!vis)
 		break;
@@ -1228,11 +1053,6 @@ int mapOPEN(int xkart,int ykart)
     return(fogvalue);
 }
 //=============================================
-int mapEFFECT(int xkart,int ykart,int effectmage)
-{
-    return(map.mapbits.mageeffect[effectmage][ykart*MAXXMAP+xkart]);
-}
-//=============================================
 int CreateAlianceBitsPlayer(int playernr)
 {
     int i,allbits=0;
@@ -1247,22 +1067,6 @@ int CreateAlianceBitsPlayer(int playernr)
     return(allbits);
 }
 //================================================
-int GetVisionBitsPlayer(int playernr)
-{
-    return (map.pl_visionbits[playernr]);
-}
-//================================================
-int player_aliance(int whopl,int pl)
-{
-    return (map.pl_allied[whopl][pl]);
-	//0-enemy,1-neutral,2-alience,3-my
-}
-//==================================
-int player_vision(int whopl,int pl)
-{
-    return (map.pl_vision[whopl][pl]);
-}
-//==================================
 int GetMapFog(int x,int y)
 {
     if (mapSEE(x/32,y/32)>1)

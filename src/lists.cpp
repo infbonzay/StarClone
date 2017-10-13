@@ -129,11 +129,6 @@ int isobjtobeinfest(struct OBJ *a)
     return 0;
 }
 //==========================================
-int canatackobj(struct OBJ *a,struct OBJ *a2)
-{
-    return 0;
-}
-//==========================================
 struct OBJ *SearchUnitFunc(int playernr,int (*funccheckunit)(SCUNIT SC_Unit),int nearx,int neary,int dist)
 {
     int i,allstat;
@@ -197,16 +192,6 @@ struct OBJ *SearchOBJforOBJ(struct OBJ *a,int modemage)
 		case MODEHEAL:
 		    //need to healing obj and my troops
 		    if (ishealingobj(destobj) && a->playernr == destobj->playernr)
-			if (GetDistanceBetweenUnits256(a,destobj) < mindistance)
-			    findobj=1;
-		    break;
-		case MODERECHARGESHIELD:
-		    if (isrechargebleobj(destobj))
-			if (GetDistanceBetweenUnits256(a,destobj) < mindistance)
-			    findobj=1;
-		    break;
-		case MODEATACK:
-		    if (canatackobj(a,destobj))
 			if (GetDistanceBetweenUnits256(a,destobj) < mindistance)
 			    findobj=1;
 		    break;
@@ -426,199 +411,6 @@ struct OBJ *GetNearResource(struct OBJ *a,SCUNIT SC_res_nr,int *resvalability)
     return(retobj);
 }
 //=================================
-int GetUnitSublabel(SCUNIT SC_Unit)
-{
-    return(alldattbl.units_dat->Sublabel[SC_Unit]);
-}
-//=================================
-int GetTargetAcquisitionRange(SCUNIT SC_Unit)
-{
-    return(alldattbl.units_dat->TargetAcquisitionRange[SC_Unit]);
-}
-//=================================
-int IsShieldEnable(SCUNIT SC_Unit)
-{
-    return(alldattbl.units_dat->ShieldEnable[SC_Unit]);
-}
-//=================================
-int IsProducesUnits(SCUNIT SC_Unit)
-{
-    return((alldattbl.units_dat->SpecialAbilityFlags[SC_Unit]&SPECIAL_PRODUCESUNITS)!=0);
-}
-//=================================
-int IsBuild(SCUNIT SC_Unit)
-{
-    return((alldattbl.units_dat->SpecialAbilityFlags[SC_Unit]&SPECIAL_ISBUILD)!=0);
-}
-//=================================
-int IsCloakable(SCUNIT SC_Unit)
-{
-    return((alldattbl.units_dat->SpecialAbilityFlags[SC_Unit]&SPECIAL_CLOAKABLE)!=0);
-}
-//=================================
-int IsOrganic(SCUNIT SC_Unit)
-{
-    return((alldattbl.units_dat->SpecialAbilityFlags[SC_Unit]&SPECIAL_ORGANICUNIT)!=0);
-}
-//=================================
-int IsGroundUnit(SCUNIT SC_Unit)
-{
-    return((alldattbl.units_dat->SpecialAbilityFlags[SC_Unit]&SPECIAL_FLY)==0);
-}
-//=================================
-int IsOnSkyOBJ(OBJ *a)
-{
-    return((a->prop & VARONSKY) !=0);
-}
-//=================================
-void SetOnSkyOBJ(OBJ *a,int flag)
-{
-    if (flag)
-	a->prop |= VARONSKY;
-    else
-	a->prop &= ~VARONSKY;
-}
-//=================================
-int IsAirUnit(SCUNIT SC_Unit)
-{
-    return((alldattbl.units_dat->SpecialAbilityFlags[SC_Unit]&SPECIAL_FLY)!=0);
-}
-//=================================
-int IsHeroUnit(SCUNIT SC_Unit)
-{
-    return((alldattbl.units_dat->SpecialAbilityFlags[SC_Unit]&SPECIAL_HERO)!=0);
-}
-//=================================
-int IsRegenerate(SCUNIT SC_Unit)
-{
-    return((alldattbl.units_dat->SpecialAbilityFlags[SC_Unit]&SPECIAL_REGENERATE)!=0);
-}
-//=================================
-int IsMechanical(SCUNIT SC_Unit)
-{
-    return((alldattbl.units_dat->SpecialAbilityFlags[SC_Unit]&SPECIAL_MECHANICALUNIT)!=0);
-}
-//=================================
-int IsRobotic(SCUNIT SC_Unit)
-{
-    return((alldattbl.units_dat->SpecialAbilityFlags[SC_Unit]&SPECIAL_ROBOTICUNIT)!=0);
-}
-//=================================
-int IsResourceContainer(SCUNIT SC_Unit)
-{
-    return((alldattbl.units_dat->SpecialAbilityFlags[SC_Unit]&SPECIAL_RESOURCECONTAINER)!=0);
-}
-//=================================
-int IsResourceDepot(SCUNIT SC_Unit)
-{
-    return((alldattbl.units_dat->SpecialAbilityFlags[SC_Unit]&SPECIAL_RESOURCEDEPOT)!=0);
-}
-//=================================
-int RequiresPylonEnergy(SCUNIT SC_Unit)
-{
-    return((alldattbl.units_dat->SpecialAbilityFlags[SC_Unit]&SPECIAL_REQUIRESPYLONAREA)!=0);
-}
-//=================================
-int RequiresCreep(SCUNIT SC_Unit)
-{
-    return((alldattbl.units_dat->SpecialAbilityFlags[SC_Unit]&SPECIAL_REQUIRESCREEP)!=0);
-}
-//=================================
-int IsPickupUnit(SCUNIT SC_Unit)
-{
-    return((alldattbl.units_dat->SpecialAbilityFlags[SC_Unit]&SPECIAL_PICKUPITEM)!=0);
-}
-//=================================
-int IsNonNeutralFlag(SCUNIT SC_Unit)
-{
-    return((alldattbl.units_dat->StarEditAvailabilityFlags[SC_Unit]&STAREDIT_AF_NONNEUTRAL)!=0);
-}
-//=================================
-int IsExpansionUnit(SCUNIT SC_Unit)
-{
-    return((alldattbl.units_dat->StarEditAvailabilityFlags[SC_Unit]&STAREDIT_AF_EXPANSIONUNIT)!=0);
-}
-//=================================
-int IsDoodadState(SCUNIT SC_Unit)
-{
-    return((alldattbl.units_dat->StarEditAvailabilityFlags[SC_Unit]&STAREDIT_AF_DOODADSTATE)!=0);
-}
-//=================================
-int IsZergRace(SCUNIT SC_Unit)
-{
-    return((alldattbl.units_dat->StarEditGroupFlags[SC_Unit]&STAREDIT_GF_ZERGRACE)!=0);
-}
-//=================================
-int IsTerranRace(SCUNIT SC_Unit)
-{
-    return((alldattbl.units_dat->StarEditGroupFlags[SC_Unit]&STAREDIT_GF_TERRANRACE)!=0);
-}
-//=================================
-int IsProtossRace(SCUNIT SC_Unit)
-{
-    return((alldattbl.units_dat->StarEditGroupFlags[SC_Unit]&STAREDIT_GF_PROTOSSRACE)!=0);
-}
-//=================================
-int IsNoAnyGroupFlag(SCUNIT SC_Unit)
-{
-    return((alldattbl.units_dat->StarEditGroupFlags[SC_Unit]&STAREDIT_GF_NOANYGROUPFLAG)==0);
-}
-//=================================
-int IsGroupBuildFlag(SCUNIT SC_Unit)
-{
-    return((alldattbl.units_dat->StarEditGroupFlags[SC_Unit]&STAREDIT_GF_BUILDING)!=0);
-}
-//=================================
-int IsGroupMenFlag(SCUNIT SC_Unit)
-{
-    return((alldattbl.units_dat->StarEditGroupFlags[SC_Unit]&STAREDIT_GF_MEN)!=0);
-}
-//=================================
-int IsGroupFactoryFlag(SCUNIT SC_Unit)
-{
-    return((alldattbl.units_dat->StarEditGroupFlags[SC_Unit]&STAREDIT_GF_FACTORY)!=0);
-}
-//=================================
-int IsGroupNeutralFlag(SCUNIT SC_Unit)
-{
-    return((alldattbl.units_dat->StarEditGroupFlags[SC_Unit]&STAREDIT_GF_NEUTRAL)!=0);
-}
-//=================================
-int IsAddon(SCUNIT SC_Unit)
-{
-    return((alldattbl.units_dat->SpecialAbilityFlags[SC_Unit]&SPECIAL_ADDON)!=0);
-}
-//=================================
-int IsSpellCaster(SCUNIT SC_Unit)
-{
-    return((alldattbl.units_dat->SpecialAbilityFlags[SC_Unit]&SPECIAL_SPELLCASTER)!=0);
-}
-//=================================
-int IsDetector(SCUNIT SC_Unit)
-{
-    return((alldattbl.units_dat->SpecialAbilityFlags[SC_Unit]&SPECIAL_DETECTOR)!=0);
-}
-//=================================
-int IsInvincibleUnit(SCUNIT SC_Unit)
-{
-    return((alldattbl.units_dat->SpecialAbilityFlags[SC_Unit]&SPECIAL_INVINCIBLE)!=0);
-}
-//=================================
-int IsPermanentCloak(SCUNIT SC_Unit)
-{
-    return((alldattbl.units_dat->SpecialAbilityFlags[SC_Unit]&SPECIAL_PERMANENTCLOAK)!=0);
-}
-//=================================
-int  IsSubUnit(SCUNIT SC_Unit)
-{
-    return((alldattbl.units_dat->SpecialAbilityFlags[SC_Unit]&SPECIAL_SUBUNIT)!=0);
-}
-//=================================
-int IfHaveSubUnit(SCUNIT SC_Unit)
-{
-    return(alldattbl.units_dat->Subunit1[SC_Unit] < MAX_UNITS_ELEM);
-}
-//=================================
 int GetUnitSoundID(SCUNIT SC_Unit,unsigned char sndtype)
 {
     switch(sndtype)
@@ -643,21 +435,6 @@ int GetUnitSoundID(SCUNIT SC_Unit,unsigned char sndtype)
 int GetUnitSound(OBJ *a,unsigned char fromsndtype,unsigned char tosndtype)
 {
     return( myrand( GetUnitSoundID(a->SC_Unit,fromsndtype), GetUnitSoundID(a->SC_Unit,tosndtype) ) );
-}
-//=================================
-int IsInvincibleOBJ(OBJ *a)
-{
-    return(a->prop&VARINVINCIBILITY);
-}
-//=================================
-int GetUnitWidthAndHeight(SCUNIT SC_Unit,int pos)
-{
-    return(alldattbl.units_dat->StarEditPlacementBoxWidthAndHeight[SC_Unit][pos]);
-}
-//=================================
-int GetUnitDimensions(SCUNIT SC_Unit,int pos)	//leftuprightdown
-{
-    return(alldattbl.units_dat->UnitSizeLeftUpRightDown[SC_Unit][pos]);
 }
 //=================================
 void SetInvincibleOBJ(OBJ *a,int flag)
@@ -726,11 +503,6 @@ int IsUnitBaseBuild(struct OBJ *a)
 	    return(1);
     }
     return 0;
-}
-//=================================
-int IsPsiUnit(SCUNIT SC_Unit)
-{
-    return(GetSupplyProvided(SC_Unit)!=0);
 }
 //=================================
 int IsWorkerUnit(SCUNIT SC_Unit)
@@ -823,11 +595,6 @@ int GetBirthDirection(SCUNIT SC_Unit)
     return(birthdir);
 }
 //==================================
-int IsOBJBurrowed(OBJ *a)
-{
-    return(a->prop & VARBURROW);
-}
-//==================================
 int SetBurrowFlag(OBJ *a,int flag)
 {
     if (flag)
@@ -856,18 +623,4 @@ char *getmapSTR(struct mapinfo *testmap,int nrofstr)
     return(str);
 }
 //==========================================
-int GetDeltaAddonHorizontal(SCUNIT SC_Unit)
-{
-    return(alldattbl.units_dat->AddonHorizontalVertical[SC_Unit - 106][0]);
-}
-//==========================================
-int GetDeltaAddonVertical(SCUNIT SC_Unit)
-{
-    return(alldattbl.units_dat->AddonHorizontalVertical[SC_Unit - 106][1]);
-}
-//==========================================
-int IfGeyserIsDepleted(OBJ *a)
-{
-    return(a->data.resource.resource_count == 0);
-}
 //==========================================

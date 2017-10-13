@@ -14,6 +14,7 @@
 #include "stars.h"
 #include "load.h"
 #include "lists.h"
+#include "objinfo.h"
 #include "mytime.h"
 #include "tempobj.h"
 #include "gamemenu.h"

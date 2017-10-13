@@ -105,46 +105,6 @@ int CheckResourcePlayerBITS(int playernr,int mcostbits,int gcostbits)
     return(CHECKRES_OK);
 }
 //==================================
-int GetUnitBoxWidth(SCUNIT SC_Unit)
-{
-    return(alldattbl.units_dat->StarEditPlacementBoxWidthAndHeight[SC_Unit][0]);
-}
-//==================================
-int GetUnitBoxHeight(SCUNIT SC_Unit)
-{
-    return(alldattbl.units_dat->StarEditPlacementBoxWidthAndHeight[SC_Unit][1]);
-}
-//==================================
-int GetInEgg(SCUNIT SC_Unit)
-{
-    return((alldattbl.units_dat->SpecialAbilityFlags[SC_Unit]&SPECIAL_TWOINONEEGG)!=0);
-}
-//==================================
-int GetSupplyUnit(SCUNIT SC_Unit)
-{
-    return(alldattbl.units_dat->SupplyRequired[SC_Unit]);
-}
-//==================================
-int GetSupplyProvided(SCUNIT SC_Unit)
-{
-    return(alldattbl.units_dat->SupplyProvided[SC_Unit]);
-}
-//==================================
-int GetSpaceProvided(SCUNIT SC_Unit)
-{
-    return(alldattbl.units_dat->SpaceProvided[SC_Unit]);
-}
-//==================================
-int GetSpaceRequired(SCUNIT SC_Unit)
-{
-    return(alldattbl.units_dat->SpaceRequired[SC_Unit]);
-}
-//==================================
-int GetUnitSize(SCUNIT SC_Unit)
-{
-    return(alldattbl.units_dat->UnitSize[SC_Unit]);
-}
-//==================================
 int GetUnitOverlaySize(SCUNIT SC_Unit)
 {
     if (alldattbl.units_dat->SpecialAbilityFlags[SC_Unit]&SPECIAL_USELARGEOVERLAY)

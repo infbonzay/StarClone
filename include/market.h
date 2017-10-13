@@ -37,13 +37,10 @@ void ChangeMaxSupply(int nplayer,SCUNIT SC_Unit,int FACTOR);
 void ChangeResourcePlayer(int nplayer,int FACTOR,int mcost,int gcost);
 void ChangeResourcePlayerBITS(int nplayer,int FACTOR,int mcostbits,int gcostbits);
 
-int  GetInEgg(SCUNIT SC_Unit);
-int  GetSupplyUnit(SCUNIT SC_Unit);
-int  GetSupplyProvided(SCUNIT SC_Unit);
-int  GetSpaceProvided(SCUNIT SC_Unit);
-int  GetSpaceRequired(SCUNIT SC_Unit);
-int  GetUnitSize(SCUNIT SC_Unit);
 int  GetUnitOverlaySize(SCUNIT SC_Unit);
+
+int  GetUnitBoxWidth(int SC_Unit);
+int  GetUnitBoxHeight(int SC_Unit);
 
 int  GetUnitBuildTime(SCUNIT SC_Unit);
 void GetCostUnit(SCUNIT SC_Unit,int *mcost,int *gcost);
@@ -71,13 +68,6 @@ unsigned char GetUnitElevationLevel(SCUNIT SC_Unit);
 
 int  LowLevelDamage(OBJ *atacker,OBJ *a,int weapon_id,int typedamage,int totaldamage,int directiondamage,int directorsplash);
 
-//int  DoDamage(OBJ *atacker,OBJ *a,int xshot,int yshot,int weapon_id,int totaldamage,int directiondamage,mylist *dobjs,int damageby);
-//int  CheckWeaponOnUnitType(OBJ *atacker,OBJ *a2,unsigned short t_flags);
-//int  DoDamageToManyUnits(OBJ *atacker,OBJ *a,int xshot,int yshot,int weapon_id,int typedamage,int totaldamage,int directiondamage,mylist *dobjs,int damageby);
-//int  DoDamageToOneUnit(OBJ *atacker,OBJ *a,int xshot,int yshot,int weapon_id,int typedamage,int totaldamage,int directorsplash,int directiondamage,int damageby);
-//int  DoLineSplashDamage(OBJ *atacker,OBJ *destobj,int weapon_id,int totaldamage,int directiondamage,mylist *dobjs,int damageby);
-int  GetUnitBoxWidth(SCUNIT SC_Unit);
-int  GetUnitBoxHeight(SCUNIT SC_Unit);
 int  GetAtackCoolDown(OBJ *atacker,int weapon_id);
 
 

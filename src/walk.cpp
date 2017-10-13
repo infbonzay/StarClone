@@ -7,6 +7,7 @@
 #include "load.h"
 #include "action.h"
 #include "images.h"
+#include "objinfo.h"
 #include "walk.h"
 //=====================================
 //=====================================
