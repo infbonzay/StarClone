@@ -110,6 +110,11 @@ int wMUSIC::playPCMdata(int firstrun)
 	    }
 	    fade = 0;
 	}
+	if (musicsample)
+	{
+	    //free previous music sample
+	    wFreeChunk(musicsample);
+	}
 	musicsample = PlayRAWMem(apacket->packetdata,apacket->len);
 	chunkplay = wPlayChannel(chunkplay,musicsample,0);
 
@@ -132,6 +137,12 @@ int wMUSIC::StopPCMPlay(void)
     stopchannel = 1;
     if (chunkplay!=-1)
 	wStopChannel(chunkplay);
+    if (musicsample)
+    {
+	//free previous music sample
+	wFreeChunk(musicsample);
+	musicsample = NULL;
+    }
 }
 //=======================================
 #define	MUSIC_AUDIOBUFFERS	8
