@@ -244,7 +244,9 @@ int IScriptCmd_sproluselo(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)	//15
     sprite_id = *((unsigned short *)&buf[0]);
     image_id = alldattbl.sprites_dat->images_id[sprite_id];
 
-    GetLoadedImage( alldattbl.images_dat->Attack_Overlay[img->imageid],(void **)&lo);
+//    GetLoadedImage( alldattbl.images_dat->Attack_Overlay[img->imageid],(void **)&lo);
+    GetLoadedImage( GetIDFromOverlayLayer(img->imageid,IMAGE_OVERLAY_ATACK),(void **)&lo);
+
     if (img->parentimg->side & 0x80)
     {
 	side = (256 - img->parentimg->side) / 8;
@@ -587,7 +589,8 @@ int IScriptCmd_attackwith(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
 		    unsigned char side = CalcDirection(GetOBJx256(tr),GetOBJy256(tr),GetOBJx256(a->finalOBJ),GetOBJy256(a->finalOBJ));
 		    tr->mainimage->AllUnitDirection256(side);
 		    
-		    GetLoadedImage( alldattbl.images_dat->Attack_Overlay[tr->mainimage->imageid],(void **)&lo);
+//		    GetLoadedImage( alldattbl.images_dat->Attack_Overlay[tr->mainimage->imageid],(void **)&lo);
+		    GetLoadedImage( GetIDFromOverlayLayer(tr->mainimage->imageid,IMAGE_OVERLAY_ATACK),(void **)&lo);
 		    adrxyoffs = GetLoXY(lo,0,BUNKERFIRELO[tr->mainimage->side/16]);
 		
 		    newimg = new MAIN_IMG(IMAGEID_BUNKERFIREOVERLAY,GetOBJx256(tr),GetOBJy256(tr),
