@@ -410,7 +410,8 @@
 *174 queen broodling on ground
 *175 move to obj then atack, atacker come close to atack (initmoveaction not activated)
 *176 mapoffset bug with carrier at test map
-    interceptor go out of map border
+*177 interceptor go out of map border
+    if interceptors kill destobj return to carrier but carrier in atackmode & interceptors dont launch again
     ?dust moves with unit
     save/load mem under selectation box
     consume on non zerg units

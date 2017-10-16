@@ -2622,9 +2622,10 @@ bugguyexplode:
 		a->currentspeed = 1;
 	    a->modemove = mode;    
 	    if (!x)
-		a->mainimage->neededside += myrand(-64,64);
-	    newx = (GetOBJx256(a) + (inertion256[a->mainimage->neededside][0]*INTERCEPTORDESTMOVEAFTERATACK)) >> 16;
-	    newy = (GetOBJy256(a) + (inertion256[a->mainimage->neededside][1]*INTERCEPTORDESTMOVEAFTERATACK)) >> 16;
+		a->mainimage->UnitNeededDeltaDirection256(myrand(-64,64));
+//		a->mainimage->neededside += myrand(-64,64);
+	    newx = GetOBJx(a) + ((inertion256[a->mainimage->neededside][0]*INTERCEPTORDESTMOVEAFTERATACK) >> 16);
+	    newy = GetOBJy(a) + ((inertion256[a->mainimage->neededside][1]*INTERCEPTORDESTMOVEAFTERATACK) >> 16);
 	    FixMapCoords(newx,newy);
 	    initmoveaction(a,NULL,mode,0,0,newx,newy);
 	    AddModeMove(a,destobj,MODEATACK,0,0,NOSHOWERROR);
