@@ -140,6 +140,11 @@ inline int GetInEgg(SCUNIT SC_Unit) { return((alldattbl.units_dat->SpecialAbilit
 inline int GetSupplyUnit(SCUNIT SC_Unit) { return(alldattbl.units_dat->SupplyRequired[SC_Unit]); };
 inline int GetUnitBoxWidth(int SC_Unit) { return(alldattbl.units_dat->StarEditPlacementBoxWidthAndHeight[SC_Unit][0]); };
 inline int GetUnitBoxHeight(int SC_Unit) { return(alldattbl.units_dat->StarEditPlacementBoxWidthAndHeight[SC_Unit][1]); };
+inline void SetUnitHealth(OBJ *a,int health) { a->health=health; };
+inline void SetUnitShield(OBJ *a,int shield) { a->shield=shield; };
+inline int GetBuildUnitScore(SCUNIT SC_Unit) { return(alldattbl.units_dat->BuildScore[SC_Unit]); };
+inline int GetDestroyUnitScore(SCUNIT SC_Unit) { return(alldattbl.units_dat->DestroyScore[SC_Unit]); };
+inline unsigned char GetUnitElevationLevel(SCUNIT SC_Unit) { return(alldattbl.units_dat->ElevationLevel[SC_Unit]); };
 //=====================================================
 
 

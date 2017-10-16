@@ -289,7 +289,7 @@ struct OBJstruct
 
 	unsigned short 	maxtimeleft;
 	
-	unsigned short	timerechargeonbase;		//if select4,bit2 is set
+//	unsigned short	timerechargeonbase;		//if select4,bit2 is set
 //	signed	 short	timeflybeforerecharge;		//time left before need to recharge on base
 //	unsigned char	race;
 

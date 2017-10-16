@@ -202,16 +202,6 @@ void GetCostUnit(SCUNIT SC_Unit,int *mcost,int *gcost)
     }
 }
 //=======================================
-int GetBuildUnitScore(SCUNIT SC_Unit)
-{
-    return(alldattbl.units_dat->BuildScore[SC_Unit]);
-}
-//=======================================
-int GetDestroyUnitScore(SCUNIT SC_Unit)
-{
-    return(alldattbl.units_dat->DestroyScore[SC_Unit]);
-}
-//=======================================
 void GetCostUpgr(int upgr_id,int playernr,int *mcost,int *gcost)
 {
     int upgr_level=GetUpgradeTree(&map,playernr,upgr_id);
@@ -313,11 +303,6 @@ int CheckForResource_typeid(OBJ *a,int playernr,int type_id,int obj_id)
     return(err);
 }
 //=======================================
-unsigned char GetUnitElevationLevel(SCUNIT SC_Unit)
-{
-    return(alldattbl.units_dat->ElevationLevel[SC_Unit]);
-}
-//=======================================
 int GetUnitMaxHitPoints(SCUNIT SC_Unit)
 {
     int hp;
@@ -337,11 +322,6 @@ unsigned int GetUnitMaxHealth(SCUNIT SC_Unit)
     {
 	return(map.unit_settings.unitlife[SC_Unit].hitpoints<<8);
     }
-}
-//=======================================
-void SetUnitHealth(OBJ *a,int health)
-{
-    a->health=health;
 }
 //=======================================
 void SetUnitPercentHealth(OBJ *a,int pershealth)
@@ -366,11 +346,6 @@ unsigned int GetUnitMaxShield(SCUNIT SC_Unit)
 	    return(map.unit_settings.shieldpoints[SC_Unit]<<8);
     }
     return(0);
-}
-//=======================================
-void SetUnitShield(OBJ *a,int shield)
-{
-    a->shield=shield;
 }
 //=======================================
 void SetUnitPercentShield(OBJ *a,int persshield)

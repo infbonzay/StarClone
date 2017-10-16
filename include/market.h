@@ -44,8 +44,6 @@ int  GetUnitBoxHeight(int SC_Unit);
 
 int  GetUnitBuildTime(SCUNIT SC_Unit);
 void GetCostUnit(SCUNIT SC_Unit,int *mcost,int *gcost);
-int  GetBuildUnitScore(SCUNIT SC_Unit);
-int  GetDestroyUnitScore(SCUNIT SC_Unit);
 
 void GetCostUpgr(int upgr_nr,int nplayer,int *mcost,int *gcost);
 int  GetUpgradeResearchTime(int upgr_id,int upgrlevel);
@@ -57,14 +55,11 @@ int  CheckForResource_typeid(OBJ *a,int nplayer,int type_id,int obj_id);
 
 unsigned int GetUnitMaxHealth(SCUNIT SC_Unit);
 void AddUnitHealth(struct OBJ *a,int addhealth);
-void SetUnitHealth(struct OBJ *a,int health);
 void SetUnitPercentHealth(OBJ *a,int pershealth);
 int GetUnitMaxHitPoints(SCUNIT SC_Unit);
 unsigned int GetUnitMaxShield(SCUNIT SC_Unit);
 void AddUnitShield(struct OBJ *a,int addshield);
-void SetUnitShield(struct OBJ *a,int shield);
 void SetUnitPercentShield(OBJ *a,int persmana);
-unsigned char GetUnitElevationLevel(SCUNIT SC_Unit);
 
 int  LowLevelDamage(OBJ *atacker,OBJ *a,int weapon_id,int typedamage,int totaldamage,int directiondamage,int directorsplash);
 
