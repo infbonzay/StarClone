@@ -108,28 +108,14 @@ needrecharge:
 //=================================
 int CritterAction(struct OBJ *a,MAIN_IMG *img)
 {
-    int sx,sy;
-    if (GetUnitRace(a->SC_Unit)==NEUTRALRACE&&IsGroupMenFlag(a->SC_Unit))
+    if (a->modemove == MODESTOP)
     {
-	if (a->modemove==MODESTOP)
+	if (a->data.critter.waitbeforemove -- == 0)
 	{
-	    if (a->whatbuildconstr==0)
-	    {
-		a->whatbuildconstr = TIMETOWAITBEFOREMOVECRITTER;
-		do{
-    		    sx = (int) a->startx + myrand(-CRITTERRANGE,CRITTERRANGE);
-		}while(sx<0||sx>=MAXXMAP*SIZESPRLANSHX);
-		do{
-		    sy = (int) a->starty + myrand(-CRITTERRANGE,CRITTERRANGE);
-		}while(sy<0||sy>MAXYMAP*SIZESPRLANSHY);
-		moveobj(a,NULL,MODEMOVE,sx,sy,NOSHOWERROR);
-		return 1;
-	    }
-	    else
-		a->whatbuildconstr--;
+	    a->data.critter.waitbeforemove = TIMETOWAITBEFOREMOVECRITTER;
+	    moveobj(a,NULL,MODEMOVE,a->startx + myrand(-CRITTERRANGE,CRITTERRANGE),a->starty + myrand(-CRITTERRANGE,CRITTERRANGE),NOSHOWERROR);
 	}
     }
-    return 0;
 }
 //=================================
 void SCVConstructAction(OBJ *a,MAIN_IMG *img)
@@ -773,7 +759,7 @@ int (*UnitActionDefaults[MAX_UNITS_ELEM])(struct OBJ *a,MAIN_IMG *img)=
     &NoneActionUnit,&NoneActionUnit,&CarrierAction, &InterceptorsAction,&NoneActionUnit,//070-074
     &NoneActionUnit,&NoneActionUnit,&NoneActionUnit,&NoneActionUnit,&NoneActionUnit,	//075-079
     &NoneActionUnit,&NoneActionUnit,&CarrierAction, &NoneActionUnit,&NoneActionUnit,	//080-084
-    &ScarabActionUnit,&NoneActionUnit,&NoneActionUnit,&NoneActionUnit,&CritterAction,	//085-089
+    &NoneActionUnit,&NoneActionUnit,&NoneActionUnit,&NoneActionUnit,&CritterAction,	//085-089
     &CritterAction, &NoneActionUnit,&NoneActionUnit,&CritterAction, &CritterAction,	//090-094
     &CritterAction, &CritterAction ,&NoneActionUnit,&NoneActionUnit,&NoneActionUnit,	//095-099
 

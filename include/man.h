@@ -125,6 +125,10 @@ union SOMEINFO
     {
 	unsigned char	ishealtime;
     }medic;
+    struct
+    {
+	unsigned char	waitbeforemove;
+    }critter;
 };
 //=======================================
 struct OBJ

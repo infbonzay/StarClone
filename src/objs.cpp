@@ -236,6 +236,7 @@ struct OBJ *createobjmanwithlife(int x,int y,SCUNIT SC_Unit,int Pl,
     AddRemoveBloodFlameOverlays(a);
     add_unit_stat(&map,UNITSTAT_HAVE,a->playernr,a->SC_Unit);
     addremoveuniteffectfrommap(a,1,&map);
+    SetModeMove(a,MODESTOP);
     return (a);
 }
 //==========================================
@@ -381,7 +382,8 @@ struct OBJ *createobjlowlevel(OBJ *workerobj,int x,int y,SCUNIT SC_Unit,int play
     a->whoatack=NULL;
     SetAtackTick(a);
     add_unit_stat(&map,UNITSTAT_PRODUCING,a->playernr,a->SC_Unit);
-    SetModeMove(a,MODESTOP);
+//    SetModeMove(a,MODESTOP);
+    a->modemove = MODESTOP;
     if (IsDoodadState(a->SC_Unit))
     {
 	CreateImageAndAddToList(a,x<<8,y<<8,5,NOLOIMAGE);//5 is for doodadunit and no execute scripts
@@ -1554,7 +1556,7 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int modemovef
 {
     OBJ *newobj;
     unsigned char flingy_id,SC_res_type,inv,useweapon_id;
-    int needmana,type_id,obj_id,ret,slotnr,deltaz,constrerror,resval,deltax,deltay;
+    int needmana,type_id,obj_id,ret,slotnr,deltaz,constrerror,resval,newx,newy;
     int i,j,tempvar,errmes,state,openstate;
     int (*comparefunc)(int *,int );					//for doodad
 //    if (a == destobj)
@@ -1563,14 +1565,7 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int modemovef
 
     if (!(modemoveflags & XYNOTCOORDS))
     {
-	if (x < 16)
-	    x = 16;
-	if (y < 16)
-	    y = 16;
-	if (x >= MAXXMAP*32-16)
-	    x = MAXXMAP*32-16;
-	if (y >= MAXYMAP*32-16)
-	    y = MAXYMAP*32-16;
+	FixMapCoords(x,y);
     }
     if (a->modemove == MODEDIE)
     {
@@ -2627,10 +2622,11 @@ bugguyexplode:
 		a->currentspeed = 1;
 	    a->modemove = mode;    
 	    if (!x)
-		a->mainimage->side += myrand(-64,64);
-	    deltax = (inertion256[a->mainimage->side][0]*INTERCEPTORDESTMOVEAFTERATACK)>>16;
-	    deltay = (inertion256[a->mainimage->side][1]*INTERCEPTORDESTMOVEAFTERATACK)>>16;
-	    initmoveaction(a,NULL,mode,0,0,GetOBJx(a)+deltax,GetOBJy(a)+deltay);
+		a->mainimage->neededside += myrand(-64,64);
+	    newx = (GetOBJx256(a) + (inertion256[a->mainimage->neededside][0]*INTERCEPTORDESTMOVEAFTERATACK)) >> 16;
+	    newy = (GetOBJy256(a) + (inertion256[a->mainimage->neededside][1]*INTERCEPTORDESTMOVEAFTERATACK)) >> 16;
+	    FixMapCoords(newx,newy);
+	    initmoveaction(a,NULL,mode,0,0,newx,newy);
 	    AddModeMove(a,destobj,MODEATACK,0,0,NOSHOWERROR);
 	    break;
 	default:
@@ -4382,9 +4378,10 @@ void atackback(OBJ *firstatacker,OBJ *destobj,int directiondamage)
 	    if (notdetect || err == CREATEDWEAPONSTATUS_CANTATACKTHISUNIT)
 	    {
 		//cannot atackback -> moveaway
-		if (accesstomove(destobj,loadobj(destobj->SC_Unit),MODEMOVE,destobj->playernr))
-		    if (destobj->modemove == MODESTOP)
-			moveaway(firstatacker,destobj,directiondamage,MODEATACK,0);
+		if (!(destobj->prop & VARHOLDPOSBIT))
+		    if (accesstomove(destobj,loadobj(destobj->SC_Unit),MODEMOVE,destobj->playernr))
+			if (destobj->modemove == MODESTOP)
+			    moveaway(firstatacker,destobj,directiondamage,MODEATACK,0);
 	    }
 	    else
 	    {
@@ -4454,8 +4451,11 @@ int tryaiaction(OBJ *a,OBJ *atacker,int directiondamage)
 		    if (IsOBJBurrowed(a))
 		    {
 			//if cannot atack -> unburrow & get out of here
-			moveobj(a,NULL,MODEUNBURROW,NOSHOWERROR);
-			moveaway(atacker,a,directiondamage,MODEMOVE,1);//add this command to queue
+			if (!(a->prop & VARHOLDPOSBIT))
+			{
+			    moveobj(a,NULL,MODEUNBURROW,NOSHOWERROR);
+			    moveaway(atacker,a,directiondamage,MODEMOVE,1);//add this command to queue
+			}
 		    }
 		    return(0);
 		case CREATEDWEAPONSTATUS_ATACKSUCCESS:
@@ -5104,6 +5104,7 @@ void AllOBJMoving(void)
 		    rot = img->Rotation(img->TurnRadius);
 		    if (!rot)
 		    {
+//	    		img->MoveInUnitDirection(a,side1,GetSpeed(a,a->topspeed));
 	    		img->MoveInUnitDirection(a,side1,GetSpeed(a,a->currentspeed));
 			img->UnitNeededDirection256(CalcDirection(GetOBJx256(a),GetOBJy256(a),a->finalx,a->finaly));
 			continue;
@@ -5398,6 +5399,15 @@ void OBJActionAfterStop(OBJ *a)
 	case SC_INTERCEPTOROBJ:
 	    moveobj(a,a->myparent,MODEGOTORECHARGE,NOSHOWERROR);
 	    break;
+/*	case SC_NEUTRAL_CRITTER1://		89		//rhynadon (badlands)
+	case SC_NEUTRAL_CRITTER2://		90		//bengalaas(jungle)
+	case SC_NEUTRAL_CRITTER3://		93		//scandid(desert)
+	case SC_NEUTRAL_CRITTER4://		94		//kakaru(twilight)
+	case SC_NEUTRAL_CRITTER5://		95		//ragnasaur(ashworld)
+	case SC_NEUTRAL_CRITTER6://		96		//ursadon(iceworld)
+	    moveobj(a,NULL,MODEMOVE,a->startx + myrand(-CRITTERRANGE,CRITTERRANGE),a->starty + myrand(-CRITTERRANGE,CRITTERRANGE),NOSHOWERROR);
+	    break;
+*/
     }    
 }
 //=================================
