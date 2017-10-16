@@ -2,7 +2,6 @@
 #if !defined(_KEY_W)
 #define _KEY_W
 
-extern int enterpasw;
 //================================
 void keyscroll(void);
 void keyup(void);

@@ -36,7 +36,6 @@
 #define  TIMEFORKEY  4
 #define  KEYSLAY     2
 
-int enterpasw;
 //================================
 void keyscroll(void)
 {

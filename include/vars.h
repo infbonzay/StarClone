@@ -116,7 +116,6 @@ extern char	*grptexture;
 extern int 	DELTASCREENX;
 extern int 	DELTASCREENY,DELTASCREENY2;
 
-extern int	speedignore;
 extern int	curentreadkey;
 extern int	maxlanshaftparts;
 extern int      changegoods;

@@ -56,7 +56,6 @@ int 	DELTASCREENX;
 int 	DELTASCREENY,DELTASCREENY2;
 
 int 	nextscenario;
-int	speedignore;
 int     curentreadkey;
 int     changegoods=1;
 long	gamecycle;
@@ -237,15 +236,11 @@ char	EXPANSIONSET		= 1;
 //==========================================================
 void inivars(void)
 {
-    int i;
-    speedignore = 0;
     mousedetect=0;
-    enterpasw=0;
     GAME=0;
     keyactive=0;
     lastkey=0;
     mouse=1;
-//    firstmage=NULL;
 }
 //================================
 void addvars(void)
