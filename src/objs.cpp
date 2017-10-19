@@ -1973,8 +1973,6 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int modemovef
 	case MODEHOLDPOS:
 	    a->finalOBJ=NULL;
 	    DelAllModeMoves(a,0);
-//	    if (a->movelist)
-//		a->movelist->EmptyElemFifo();
 	    if (!(a->prop & VARHOLDPOSBIT))
 	    {
 		a->prop |= VARHOLDPOSBIT;
@@ -1998,26 +1996,19 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int modemovef
 		moveobj(a->subunit,destobj,mode,x,y,NOSHOWERROR);
 	    }
 	    DelAllModeMoves(a,0);
-//	    if (a->movelist)
-//		a->movelist->EmptyElemFifo();
 	    if (a->modemove != mode)
 	    {
 		a->prop &= ~(VARMOVEOBJACT | VARACCELERATIONBIT | VARPATROLFLAG);
 		//engines off
 		if (a->modemove == MODEATACK)
 		{
-		    if (OneUnitSearchGoal(a,1))
-		    {
-			a->searchforatack_tick = MAXWAIT_SEARCHATACK_TICK;
-			break;
-		    }
-		    EndAtackAction(a);
+		    CALLBACK_OBJ_AtackedOBJISNULL(a);
 	    	}
 		else
 		{
 		    SetOBJIScriptNr(a,ISCRIPTNR_WALKINGTOIDLE,ISCRIPTNR_EXECUTE);
+		    SetModeMove(a,mode);
 		}
-		SetModeMove(a,mode);
 	    }
 	    break;
 	case MODEPATROL:
@@ -4107,7 +4098,7 @@ void SearchForAtacks(void)
 	a = objects[i];
 	if (IsFullAutoAttack(a->SC_Unit))
 	    if (!a->finalOBJ)				//???? i need to atack unit who atack me
-		if (a->searchforatack_tick--==0)
+		if (a->searchforatack_tick -- ==0)
 		{
 		    a->searchforatack_tick = MAXWAIT_SEARCHATACK_TICK;
 		    OneUnitSearchGoal(a,0);
@@ -4382,7 +4373,7 @@ void atackback(OBJ *firstatacker,OBJ *destobj,int directiondamage)
 		if (!(destobj->prop & VARHOLDPOSBIT))
 		    if (accesstomove(destobj,loadobj(destobj->SC_Unit),MODEMOVE,destobj->playernr))
 			if (destobj->modemove == MODESTOP)
-			    moveaway(firstatacker,destobj,directiondamage,MODEATACK,0);
+			    moveaway(firstatacker,destobj,directiondamage,MODEMOVE,0);
 	    }
 	    else
 	    {
@@ -5242,7 +5233,7 @@ void SetModeMove(OBJ *a,int mode)
     if (mode == MODESTOP)
     {
 	if (IsReadyOBJ(a))
-	    OBJActionAfterStop(a);
+	    CALLBACK_OBJ_AfterStop(a);
     }
 }
 //==================================
@@ -5393,7 +5384,7 @@ void LaunchInterceptors(OBJ *a,OBJ *destobj)
     WakeUpInterceptors(a,destobj);    
 }
 //=================================
-void OBJActionAfterStop(OBJ *a)
+void CALLBACK_OBJ_AfterStop(OBJ *a)
 {
     switch(a->SC_Unit)
     {
@@ -5410,5 +5401,19 @@ void OBJActionAfterStop(OBJ *a)
 	    break;
 */
     }    
+}
+//=================================
+void CALLBACK_OBJ_AtackedOBJISNULL(OBJ *a)
+{
+    if (OneUnitSearchGoal(a,1))
+    {
+        a->searchforatack_tick = MAXWAIT_SEARCHATACK_TICK;
+    }
+    else
+    {
+        EndAtackAction(a);
+        a->finalOBJ = NULL;
+        SetModeMove(a,MODESTOP);
+    }
 }
 //=================================

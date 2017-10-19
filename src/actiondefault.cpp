@@ -813,16 +813,7 @@ int AdditionalUnitProceed(OBJ *a,MAIN_IMG *img)
 		    }
 		    else
 		    {
-			if (OneUnitSearchGoal(a,1))
-			{
-			    a->searchforatack_tick = MAXWAIT_SEARCHATACK_TICK;
-			}
-			else
-			{
-			    EndAtackAction(a);
-			    a->finalOBJ = NULL;
-			    SetModeMove(a,MODESTOP);
-			}
+			CALLBACK_OBJ_AtackedOBJISNULL(a);
 		    }
 		    return 0;
 		}

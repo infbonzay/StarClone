@@ -197,7 +197,9 @@ int  RegenerateShield(OBJ *a);
 int  RegenerateHealth(OBJ *a);
 int  LaunchScarab(OBJ *reaver,OBJ *destobj);
 void LaunchInterceptors(OBJ *a,OBJ *destobj);
-void OBJActionAfterStop(OBJ *a);
+void CALLBACK_OBJ_AfterStop(OBJ *a);
+void CALLBACK_OBJ_AtackedOBJISNULL(OBJ *a);
+
 
 #define FixMapCoords(x,y) 				\
 	if (x < 16) x = 16;				\
