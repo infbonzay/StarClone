@@ -945,8 +945,12 @@ int AtackCoolDownEnds(OBJ *a,OBJ *destobj,int continueatack,int modemoveflags)
 		return(MOVEOBJ_STOPANDCONTINUEJOB);
 	    case CREATEDWEAPONSTATUS_LAUNCHINTERCEPTORS:
 		a->prop |= VARNEEDTOLAUNCHINTERCEPTORS;
+		//if player order to atack -> all interceptors atack that unit else earch interceptor search for his goal
+		if (modemoveflags & PLAYERDOMOVE)
+		    LaunchInterceptors(a,destobj);
+		else
+		    LaunchInterceptors(a,NULL);
 		a->finalOBJ = destobj;
-		LaunchInterceptors(a,destobj);
 		return(MOVEOBJ_DONE);
 	    default:
 		DEBUGMESSCR("error resval from ifcancreateweapon\n");

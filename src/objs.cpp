@@ -2619,7 +2619,21 @@ bugguyexplode:
 	    newy = GetOBJy(a) + ((inertion256[a->mainimage->neededside][1]*INTERCEPTORDESTMOVEAFTERATACK) >> 16);
 	    FixMapCoords(newx,newy);
 	    initmoveaction(a,NULL,mode,0,0,newx,newy);
-	    AddModeMove(a,destobj,MODEATACK,0,0,NOSHOWERROR);
+	    if (destobj)
+		AddModeMove(a,destobj,MODEATACK,0,0,NOSHOWERROR);
+	    else
+		AddModeMove(a,NULL,MODESEARCHGOAL,0,0,NOSHOWERROR);
+	    break;
+	case MODESEARCHGOAL:
+	    if (OneUnitSearchGoal(a,1))
+	    {
+    		a->searchforatack_tick = MAXWAIT_SEARCHATACK_TICK;
+	    }
+	    else
+	    {
+		if (a->myparent && a->myparent->finalOBJ)
+		    moveobj(a,a->myparent->finalOBJ,MODEATACK,NOSHOWERROR);
+	    }
 	    break;
 	default:
 	    DEBUGMESSCR("mode=%d not developed\n",mode);
@@ -2805,7 +2819,7 @@ int makemove(struct OBJ *a,struct OBJ *destobj,int locx,int locy,int mode,int pl
 //	a->movelist->EmptyElemFifo();
     if (mode != MODEHOLDPOS)
 	a->prop &= ~VARHOLDPOSBIT;
-    moveobj(a,destobj,mode,locx,locy,modemoveflags);
+    moveobj(a,destobj,mode,locx,locy,modemoveflags | PLAYERDOMOVE);
     return(1);
 }
 //==================================
@@ -3502,7 +3516,8 @@ void dieobj(struct OBJ *a)
 //=================================
 void WakeUpOneInterceptor(OBJ *myparent,OBJ *a,OBJ *destobj,int childnr)
 {
-    if (a && destobj)
+//    if (a && destobj)
+    if (a)
     {
 	a->prop &= ~(VARNOTHERE|VARINBASE);
 //	SetModeMove(a,MODESTOP);
@@ -3515,7 +3530,7 @@ void WakeUpOneInterceptor(OBJ *myparent,OBJ *a,OBJ *destobj,int childnr)
         a->mainimage->ShowImgFlag();
         ChangeTypeOfProp(a,PROPNORMAL1);
         SetOBJxy256(a,GetOBJx256(myparent),GetOBJy256(myparent));
-	moveobj(a,destobj,MODEMOVEFORWARD,1,0,NOSHOWERROR);
+	moveobj(a,destobj,MODEMOVEFORWARD,1,0,NOSHOWERROR|XYNOTCOORDS);
     }
 }
 //=================================
@@ -3536,7 +3551,7 @@ void WakeUpInterceptors(OBJ *a,OBJ *destobj)
 		}
 		else
 		{
-		    moveobj(a->childs->parentof[i],destobj,MODEMOVEFORWARD,1,0,NOSHOWERROR);
+		    moveobj(a->childs->parentof[i],destobj,MODEMOVEFORWARD,1,0,NOSHOWERROR|XYNOTCOORDS);
 		}
 }
 //=================================

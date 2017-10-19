@@ -860,6 +860,8 @@ SHOWHALLUCINATED = YES
 
 [NEWMAGE] = 335 Siucide_Atack 230 -1
 
+[NEWMAGE] = 336 SearchGoal 230 -1
+
 
 [NEWMAGE] = 350 Train_Marine 0 -1
 RACE = TERRAN
