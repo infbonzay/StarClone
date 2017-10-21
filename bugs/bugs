@@ -413,6 +413,8 @@
 *177 interceptor go out of map border
 *178 interceptors search own goal if not specifyed by atack to ...
     if interceptors kill destobj return to carrier but carrier in atackmode & interceptors dont launch again
+    interceptors fly to atack far then carrier range
+    carrier stop move if atack to ground and stops to atack somebody
     ?dust moves with unit
     save/load mem under selectation box
     consume on non zerg units

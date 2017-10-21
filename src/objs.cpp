@@ -856,8 +856,8 @@ void selectMAN(int x1,int y1,int x2,int y2,int mode)
 			activatesound(speakOBJ,MODESOUNDSELECT,0,NOSTOPCURRENTSOUNDS);
 		}
 	    }
-	    else
-		activatesound(firstobj,MODESOUNDCONSTRUCT,0,NOSTOPCURRENTSOUNDS);
+//	    else
+//		activatesound(firstobj,MODESOUNDCONSTRUCT,0,NOSTOPCURRENTSOUNDS);
 	}
     }
 }//end func
@@ -2531,11 +2531,15 @@ bugguyexplode:
 		//atack to ground, check if object can move
 		if (a->SC_Unit == SC_INTERCEPTOROBJ)
 		{
-		    //???? search new obj for atack
-		    //or return tobase
-		    DelAllModeMoves(a,0);
-		    moveobj(a,a->myparent,MODEGOTORECHARGE,NOSHOWERROR);
-//		    AddModeMove(a,NULL,MODERECHARGE,0,0,0);
+		    if (CALLBACK_OBJ_AtackedOBJISNULL(a))
+		    {
+			return(MOVEOBJ_DONE);
+		    }
+		    else
+		    {
+			DelAllModeMoves(a,0);
+			moveobj(a,a->myparent,MODEGOTORECHARGE,NOSHOWERROR);
+		    }
 		}
 		if (accesstomove(a,loadobj(a->SC_Unit),MODEMOVE,a->playernr))
 		{
@@ -2618,6 +2622,7 @@ bugguyexplode:
 	    newx = GetOBJx(a) + ((inertion256[a->mainimage->neededside][0]*INTERCEPTORDESTMOVEAFTERATACK) >> 16);
 	    newy = GetOBJy(a) + ((inertion256[a->mainimage->neededside][1]*INTERCEPTORDESTMOVEAFTERATACK) >> 16);
 	    FixMapCoords(newx,newy);
+	    Play_sfxdata(a->mainimage->xpos>>8,a->mainimage->ypos>>8,SFXDATA_LAUNCHINTERCEPTOR,4);
 	    initmoveaction(a,NULL,mode,0,0,newx,newy);
 	    if (destobj)
 		AddModeMove(a,destobj,MODEATACK,0,0,NOSHOWERROR);
@@ -5406,29 +5411,22 @@ void CALLBACK_OBJ_AfterStop(OBJ *a)
 	case SC_INTERCEPTOROBJ:
 	    moveobj(a,a->myparent,MODEGOTORECHARGE,NOSHOWERROR);
 	    break;
-/*	case SC_NEUTRAL_CRITTER1://		89		//rhynadon (badlands)
-	case SC_NEUTRAL_CRITTER2://		90		//bengalaas(jungle)
-	case SC_NEUTRAL_CRITTER3://		93		//scandid(desert)
-	case SC_NEUTRAL_CRITTER4://		94		//kakaru(twilight)
-	case SC_NEUTRAL_CRITTER5://		95		//ragnasaur(ashworld)
-	case SC_NEUTRAL_CRITTER6://		96		//ursadon(iceworld)
-	    moveobj(a,NULL,MODEMOVE,a->startx + myrand(-CRITTERRANGE,CRITTERRANGE),a->starty + myrand(-CRITTERRANGE,CRITTERRANGE),NOSHOWERROR);
-	    break;
-*/
     }    
 }
 //=================================
-void CALLBACK_OBJ_AtackedOBJISNULL(OBJ *a)
+int CALLBACK_OBJ_AtackedOBJISNULL(OBJ *a)
 {
     if (OneUnitSearchGoal(a,1))
     {
         a->searchforatack_tick = MAXWAIT_SEARCHATACK_TICK;
+        return(1);
     }
     else
     {
         EndAtackAction(a);
         a->finalOBJ = NULL;
         SetModeMove(a,MODESTOP);
+        return(0);
     }
 }
 //=================================

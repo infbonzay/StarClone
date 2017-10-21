@@ -114,27 +114,11 @@ void getsoundIDfromunitdat(SCUNIT SC_Unit,int soundmode,short *from,short *to);
 
 #define MAXSOUNDS               16
 
-#define MODESOUNDBEGINATTACK    0
-#define MODESOUNDDEATH          1
-#define MODESOUNDERROR          2
-#define MODESOUNDWORK           3
-#define MODESOUNDWORKDONE       4
-#define MODESOUNDHIT            5
-#define MODESOUNDPSS            6
-#define MODESOUNDMAGE5          7
-#define MODESOUNDMAGE6          8
-#define MODESOUNDMAGE7          9
-#define MODESOUNDMAGE8          10
-#define MODESOUNDREADY          11
-#define MODESOUNDSELECT         12
-#define MODESOUNDACTION         13
-#define MODESOUNDMODEIN         14
-#define MODESOUNDMODEOUT        15
-#define MODESOUNDBEGINCONSTRUCT 16
-#define MODESOUNDCONSTRUCT      17
-#define MODESOUNDWARP           18
-#define MODESOUNDONMOVE         19
-#define MODESOUNDDECONSTRUCT	20
-#define MAXTYPESOFSOUND         21
+#define MODESOUNDREADY          0
+#define MODESOUNDACTION         1
+#define MODESOUNDSELECT         2
+#define MODESOUNDPSS            3
+#define MODESOUNDERROR          4
+#define MAXTYPESOFSOUND         5
 
 #endif /*_AUDIO_W*/

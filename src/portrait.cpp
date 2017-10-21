@@ -362,11 +362,15 @@ int SetPortrait(SCUNIT SC_Unit,int typeofport,int soundfilenr,int showedtime)
 //		   hit       pss    mage5     mage6   mage7   
 //		     mage8 ready    select    action  modein 
 //		 modeout   bconstr  construct  warp   move     deconstruct
-char soundtypetosmktype[MAXTYPESOFSOUND]={
+/*char soundtypetosmktype[MAXTYPESOFSOUND]={
 			    SMKNONE,SMKRETURNTOADVISOR,SMKTALK,SMKNONE,SMKTALK,
 			    SMKNONE,SMKTALK,SMKNONE,SMKNONE,SMKNONE,
 			    SMKNONE,SMKNORMAL,SMKTALK,SMKTALK,SMKNONE,
 			    SMKNONE,SMKNORMAL,SMKNORMAL,SMKNORMAL,SMKNONE,SMKNORMAL};
+*/
+//ready,action,select,pss,error
+char soundtypetosmktype[MAXTYPESOFSOUND]={
+			    SMKNORMAL,SMKTALK,SMKTALK,SMKTALK,SMKTALK};
 //===================================
 int SetPortraitFromSound(SCUNIT SC_Unit,int soundmode,int soundfilenr)
 {

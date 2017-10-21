@@ -292,13 +292,11 @@ int activatesound(struct OBJ *a,int soundmode,int addfactor,int stopprevsound)
     maxmusnr = sndto - sndfrom+1;
     if (!sndfrom)
     {
-	if (soundmode==MODESOUNDSELECT||
-	    ((player_aliance(NUMBGAMER,a->playernr)!=ENEMYOBJ)&&
-	    (soundmode==MODESOUNDCONSTRUCT||soundmode==MODESOUNDBEGINCONSTRUCT||soundmode==MODESOUNDDECONSTRUCT)))
-	    {
-		SetPortrait(a->SC_Unit,SMKNORMAL,NOSOUNDFILENR,-1);
-		SetPortraitOBJ(a);
-	    }
+	if (soundmode == MODESOUNDSELECT || player_aliance(NUMBGAMER,a->playernr)!=ENEMYOBJ)
+	{
+	    SetPortrait(a->SC_Unit,SMKNORMAL,NOSOUNDFILENR,-1);
+	    SetPortraitOBJ(a);
+	}
 	return -1;
     }
     aliance=player_aliance(NUMBGAMER,a->playernr);
@@ -340,42 +338,29 @@ int activatesound(struct OBJ *a,int soundmode,int addfactor,int stopprevsound)
 	    break;
     }
     distance = (int) hypot(GetOBJx(a)-map.MAPXGLOBAL,GetOBJy(a)-map.MAPYGLOBAL);
-    if (GetMageAtr(&a->atrobj,ATRHALLUCINATION)>0&&soundmode==MODESOUNDDEATH)
+    if (a->sfxplay.sfxtypeplayed != soundmode && a->sfxplay.sfxtypeplayed != MODESOUNDPSS)
     {
-	    if (stopprevsound)
-	        stopcurrentsound(a);
-	    Play_sfxdata_id(NULL,SFXDATA_HALLUCINATIONDIE,repeatedsongs,distance);
-//	    loadandplaywav(NULL,a,"galiun_death_song (need to find this) :))",
-//			repeatedsongs,distance);
-	    a->sfxplay.sfxtypeplayed = soundmode;
-	    a->sfxplay.nrsfxplayed = 0;
+        a->sfxplay.nrselectplayed = 0;
     }
     else
-    {
-	if (a->sfxplay.sfxtypeplayed != soundmode&&
-	    a->sfxplay.sfxtypeplayed != MODESOUNDPSS)
-	{
-	    a->sfxplay.nrselectplayed = 0;
-	}
+        needadd=1;
+    if (soundmode == MODESOUNDSELECT)
+        if (a->sfxplay.sfxtypeplayed == MODESOUNDPSS)
+	    soundmode = MODESOUNDPSS;
 	else
-	    needadd=1;
-	if (soundmode == MODESOUNDSELECT)
-	    if (a->sfxplay.sfxtypeplayed == MODESOUNDPSS)
-		soundmode = MODESOUNDPSS;
-	    else
-		if (player_aliance(NUMBGAMER,a->playernr) == MYOBJ &&
-		    a->sfxplay.nrselectplayed >= MAXSELECTPLAY     && 
-		    a->SC_Unit < MAX_UNITS_ELEM2 && alldattbl.units_dat->PissSoundStart[a->SC_Unit] > 0 )
-		{
+	    if (player_aliance(NUMBGAMER,a->playernr) == MYOBJ &&
+	        a->sfxplay.nrselectplayed >= MAXSELECTPLAY     && 
+	        a->SC_Unit < MAX_UNITS_ELEM2 && alldattbl.units_dat->PissSoundStart[a->SC_Unit] > 0 )
+	    {
 		    soundmode = MODESOUNDPSS;
 		    a->sfxplay.nrselectplayed = 0;
-		}
-	getsoundIDfromunitdat(a->SC_Unit,soundmode,&sndfrom,&sndto);
-	maxmusnr = sndto - sndfrom+1;
-	if (!sndfrom)
-	    return -1;
-	if (soundmode == MODESOUNDPSS)
-	{
+	    }
+    getsoundIDfromunitdat(a->SC_Unit,soundmode,&sndfrom,&sndto);
+    maxmusnr = sndto - sndfrom+1;
+    if (!sndfrom)
+        return -1;
+    if (soundmode == MODESOUNDPSS)
+    {
 		musnr = a->sfxplay.nrselectplayed;
 		if (musnr >= maxmusnr)
 		{
@@ -385,9 +370,9 @@ int activatesound(struct OBJ *a,int soundmode,int addfactor,int stopprevsound)
 		    maxmusnr = sndto - sndfrom+1;
 		    a->sfxplay.nrselectplayed = 0;
 		}
-	}
-	else
-	{
+    }
+    else
+    {
 	    musnr = myrand(maxmusnr);
 		//this if need for no repeat this song with previous song
 	    if (maxmusnr > 1 && a->sfxplay.sfxtypeplayed == soundmode &&  musnr == a->sfxplay.nrsfxplayed)
@@ -396,35 +381,34 @@ int activatesound(struct OBJ *a,int soundmode,int addfactor,int stopprevsound)
 	        if (musnr>=maxmusnr)
 	    	    musnr=0;
 	    }
-	}
-	musplay = sndfrom+musnr;
-	if (IsBuild(a->SC_Unit))
-	{
+    }
+    musplay = sndfrom+musnr;
+    if (IsBuild(a->SC_Unit))
+    {
     		if (!gameconf.audioconf.buildsounds)
 		    return(soundmode);
-	}
-	else
-	{
+    }
+    else
+    {
 		if (!gameconf.audioconf.unitspeach)
 		    return(soundmode);
-	}
-	err = playOBJsound(a,soundmode,musplay,stopprevsound,repeatedsongs);
-	if (err>=0)
-	{
+    }
+    err = playOBJsound(a,soundmode,musplay,stopprevsound,repeatedsongs);
+    if (err>=0)
+    {
 	    a->sfxplay.nrsfxplayed = musnr;
 	    if (needadd)
 	        a->sfxplay.nrselectplayed++;
-	}
-	a->sfxplay.sfxtypeplayed = soundmode;
-	SetPortraitFromSound(a->SC_Unit,soundmode,musnr);
-	SetPortraitOBJ(a);
-	if (soundmode == MODESOUNDPSS)
-	    if (err>=0)
-	    {
-	        //show as we hear sound
-	        SetPortraitShowedTime(getchannelplaylength(err));
-	    }
     }
+    a->sfxplay.sfxtypeplayed = soundmode;
+    SetPortraitFromSound(a->SC_Unit,soundmode,musnr);
+    SetPortraitOBJ(a);
+    if (soundmode == MODESOUNDPSS)
+        if (err>=0)
+        {
+            //show as we hear sound
+            SetPortraitShowedTime(getchannelplaylength(err));
+        }
     return(soundmode);
 }
 //==============================================
@@ -432,11 +416,11 @@ void getsoundIDfromunitdat(SCUNIT SC_Unit,int soundmode,short *from,short *to)
 {
     switch(soundmode)
     {
-	case MODESOUNDPSS:
+	case MODESOUNDREADY:
 	    if (SC_Unit < MAX_UNITS_ELEM2)
 	    {
-		*from = alldattbl.units_dat->PissSoundStart[SC_Unit];
-		*to = alldattbl.units_dat->PissSoundEnd[SC_Unit];
+		*from = alldattbl.units_dat->ReadySound[SC_Unit];
+		*to = alldattbl.units_dat->ReadySound[SC_Unit];
 		return;
 	    }
 	    break;
@@ -448,18 +432,18 @@ void getsoundIDfromunitdat(SCUNIT SC_Unit,int soundmode,short *from,short *to)
 		return;
 	    }
 	    break;
-	case MODESOUNDREADY:
-	    if (SC_Unit < MAX_UNITS_ELEM2)
-	    {
-		*from = alldattbl.units_dat->ReadySound[SC_Unit];
-		*to = alldattbl.units_dat->ReadySound[SC_Unit];
-		return;
-	    }
-	    break;
 	case MODESOUNDSELECT:
 	    *from = alldattbl.units_dat->WhatSoundStart[SC_Unit];
 	    *to = alldattbl.units_dat->WhatSoundEnd[SC_Unit];
 	    return;
+	    break;
+	case MODESOUNDPSS:
+	    if (SC_Unit < MAX_UNITS_ELEM2)
+	    {
+		*from = alldattbl.units_dat->PissSoundStart[SC_Unit];
+		*to = alldattbl.units_dat->PissSoundEnd[SC_Unit];
+		return;
+	    }
 	    break;
     }
     *from=0;
@@ -617,11 +601,16 @@ void FreeChannelWithObj(struct OBJ *a)
 //		   hit       pss    mage5    mage6   mage7   
 //		  mage8      ready  select    action  modein 
 //		 modeout   bconstr  construct  warp    move  deconstruct
-char playenemysoundobj[MAXTYPESOFSOUND]={
+/*char playenemysoundobj[MAXTYPESOFSOUND]={
 					    1,1,0,1,0,
 					    1,0,1,1,1,
 					    1,0,0,0,1,
 					    1,1,1,1,1,1
+					};
+*/
+//ready,action,select,pss,error
+char playenemysoundobj[MAXTYPESOFSOUND]={
+					0,0,0,0,0    
 					};
 //====================================================
 int canplaysound(OBJ *a,int soundmode,int statuspl)
