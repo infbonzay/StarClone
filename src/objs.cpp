@@ -2619,9 +2619,11 @@ bugguyexplode:
 	    if (!x)
 		a->mainimage->UnitNeededDeltaDirection256(myrand(-64,64));
 //		a->mainimage->neededside += myrand(-64,64);
+	    //move in new direction (front of new direction)
 	    newx = GetOBJx(a) + ((inertion256[a->mainimage->neededside][0]*INTERCEPTORDESTMOVEAFTERATACK) >> 16);
 	    newy = GetOBJy(a) + ((inertion256[a->mainimage->neededside][1]*INTERCEPTORDESTMOVEAFTERATACK) >> 16);
 	    FixMapCoords(newx,newy);
+	    //play launch interceptor song
 	    Play_sfxdata(a->mainimage->xpos>>8,a->mainimage->ypos>>8,SFXDATA_LAUNCHINTERCEPTOR,4);
 	    initmoveaction(a,NULL,mode,0,0,newx,newy);
 	    if (destobj)
@@ -3949,6 +3951,7 @@ void SetAtackTick(OBJ *a)
 #define UNITATACKFUNCTYPE_REAVERS		4
 #define UNITATACKFUNCTYPE_CARRIERS		5
 #define UNITATACKFUNCTYPE_VULTUREMINES		6
+#define UNITATACKFUNCTYPE_INTERCEPTORS		7
 //=================================
 int GetOBJAtackWithoutWeapons(SCUNIT SC_Unit)
 {
@@ -3964,6 +3967,8 @@ int GetOBJAtackWithoutWeapons(SCUNIT SC_Unit)
 	    return(UNITATACKFUNCTYPE_CARRIERS);
 	case SC_VULTUREMINEOBJ:
 	    return(UNITATACKFUNCTYPE_VULTUREMINES);
+	case SC_INTERCEPTOROBJ:
+	    return(UNITATACKFUNCTYPE_INTERCEPTORS);
 	default:
 	    if (IsDoodadState(SC_Unit)&&!IsInvincibleUnit(SC_Unit))
 	    {
@@ -4051,7 +4056,23 @@ struct OBJ* CarrierUnitAtackFunc(OBJ *a,unsigned char weaponmask,unsigned char g
     return(a2);
 }
 //=================================
-struct OBJ* (*Atack_IDFunc[7])(OBJ *a,unsigned char weaponmask,unsigned char groundweapon,unsigned char airweapon)=
+struct OBJ* InterceptorUnitAtackFunc(OBJ *a,unsigned char weaponmask,unsigned char groundweapon,unsigned char airweapon)
+{
+    OBJ *a2;
+    if (weaponmask)
+    {
+        if (a->myparent)
+        {
+    	    a2 = FindObjForAtack(a->myparent,weaponmask,groundweapon,airweapon,NULL);
+	    unitprepareforatack(a,a2);
+	}
+	else
+	    a2 = NULL;
+    }
+    return(a2);
+}
+//=================================
+struct OBJ* (*Atack_IDFunc[8])(OBJ *a,unsigned char weaponmask,unsigned char groundweapon,unsigned char airweapon)=
 			{
 			    NULL,
 			    &EveryUnitAtackFunc,
@@ -4059,7 +4080,8 @@ struct OBJ* (*Atack_IDFunc[7])(OBJ *a,unsigned char weaponmask,unsigned char gro
 			    &BunkerAtackFunc,
 			    &EveryUnitAtackFunc,
 			    &CarrierUnitAtackFunc,
-			    &VultureMineUnitAtackFunc
+			    &VultureMineUnitAtackFunc,
+			    &InterceptorUnitAtackFunc
 			};
 //=================================
 struct OBJ* OneUnitSearchGoal(OBJ *a,int ignoremodes)
@@ -4084,6 +4106,7 @@ struct OBJ* OneUnitSearchGoal(OBJ *a,int ignoremodes)
 		    case UNITATACKFUNCTYPE_EVERYUNITS:		//all units that not have a scpecial functions
 		    case UNITATACKFUNCTYPE_DOODADS:		//doodadunits
 		    case UNITATACKFUNCTYPE_VULTUREMINES:	//vulturemine
+		    case UNITATACKFUNCTYPE_INTERCEPTORS:
 			weaponmask=0;
 			groundweapon = alldattbl.units_dat->GroundWeapon[SC_Unit];
 			if (groundweapon<MAX_WEAPONS_ELEM)
@@ -4520,6 +4543,8 @@ int tryunitaction(OBJ *a,OBJ *atacker)
     int err;
     switch(a->SC_Unit)
     {
+	case SC_INTERCEPTOROBJ:
+	    return(1);
 	case SC_VULTUREMINEOBJ:
 	    return(1);
 	case SC_LURKEROBJ:
@@ -5409,8 +5434,15 @@ void CALLBACK_OBJ_AfterStop(OBJ *a)
     switch(a->SC_Unit)
     {
 	case SC_INTERCEPTOROBJ:
-	    moveobj(a,a->myparent,MODEGOTORECHARGE,NOSHOWERROR);
-	    break;
+	    if (OneUnitSearchGoal(a,1))
+	    {
+    		a->searchforatack_tick = MAXWAIT_SEARCHATACK_TICK;
+	    }
+	    else
+	    {
+		moveobj(a,a->myparent,MODEGOTORECHARGE,NOSHOWERROR);
+	    }
+	break;
     }    
 }
 //=================================

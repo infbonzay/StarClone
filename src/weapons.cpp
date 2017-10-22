@@ -157,6 +157,9 @@ int IfCanCreateWeapon(OBJ *atacker,OBJ *destobj,int *errmes,unsigned char *weapo
 		atackangle = 0;
 		atacker->prop &= ~VARNEEDTOLAUNCHINTERCEPTORS;
 		break;
+	    case SC_INTERCEPTOROBJ:
+		if (GetDistanceBetweenUnits256(atacker,atacker->myparent) > (8+6)*32*256)
+		    return(CREATEDWEAPONSTATUS_INTERCEPTORFARAWAY);
 	    default:
 		if (!IsOnSkyOBJ(destobj))
 		{
