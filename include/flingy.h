@@ -54,7 +54,7 @@ public:
     void DeleteMarked(void);
     void FreeAndEmptyAll(void);
 
-    void RemoveOBJFromFlingyobj(OBJ *obj);
+    void RemoveOBJFromFlingyobj(OBJ *obj,OBJ *newatacker);
     void MoveAllWeaponFlingy(void);
 
 };

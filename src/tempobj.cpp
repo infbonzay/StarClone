@@ -203,10 +203,10 @@ OBJ *CreateUnitsFromMAP(struct unit_on_map *unit,struct mapinfo *loadedmap)
 			    {
 				    getcoordofnewunit(a,SC_Unit,&xobj,&yobj);
 				    a2 = createobjfulllife(xobj,yobj,SC_Unit,playernr);
-				    if (!i)
+/*				    if (!i)
 					a3 = GetNearCenter(a2);
 				    a2->baseobj = a3;
-			    }
+*/			    }
 			}
 		    }
 		}

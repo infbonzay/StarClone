@@ -878,6 +878,7 @@ void opentempmap(int playernr,int xkart,int ykart,int sizex,int sizey)
 	    map.mapbits.whitefog[playernr][i*MAXXMAP+j]=4;
     	    map.mapbits.whitefog2[playernr][i*MAXXMAP+j]=4;
     	}
+    map.clearfog[playernr] = 1;
 }
 //=================================
 void calcfullinvandsee(void)

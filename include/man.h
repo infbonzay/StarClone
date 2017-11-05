@@ -221,7 +221,7 @@ struct OBJ
 	OBJ		*doubleunit;		//if one unit die, second unit die too
 	LOADED		*loaded;
 	OBJ		*in_transport;
-	OBJ		*baseobj;		//object from what we get resources
+//	OBJ		*baseobj;		//object from what we get resources
 	    
 	unsigned char	triggerstate;
 	unsigned char 	blinkvalue;

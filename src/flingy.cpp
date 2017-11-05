@@ -68,7 +68,7 @@ void FLINGYLIST::FreeAndEmptyAll(void)					//mark all,delete all,empty all
     EnumListInit();
 }
 //=========================================
-void FLINGYLIST::RemoveOBJFromFlingyobj(OBJ *obj)
+void FLINGYLIST::RemoveOBJFromFlingyobj(OBJ *obj,OBJ *newatacker)
 {
     SC_FLINGY *flingy;
     weaponflingy.EnumListInit();
@@ -80,7 +80,7 @@ void FLINGYLIST::RemoveOBJFromFlingyobj(OBJ *obj)
 	}
 	if (flingy->atacker == obj)
 	{
-	    flingy->atacker = NULL;
+	    flingy->atacker = newatacker;
 	}
     }
 }

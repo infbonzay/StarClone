@@ -370,6 +370,7 @@ int damages[UNITSIZE_TYPES][DAMAGE_TYPES]=
 //=======================================
 int LowLevelDamage(OBJ *atacker,OBJ *a,int weapon_id,int typedamage,int totaldamage,int directiondamage,int directorsplash)
 {
+    OBJ *myparent;
     OBJstruct *b;
     int remaindamage,armor,upgnr,upgarmor,shieldarmor;
     if (atacker && IsHallucination(atacker))
@@ -397,13 +398,35 @@ int LowLevelDamage(OBJ *atacker,OBJ *a,int weapon_id,int typedamage,int totaldam
 		    return(0);
 		}
 	}
+    //need to check if scarab do damage
+    myparent = atacker;
     if (atacker && a)
-	OBJ_VAR_SET(atacker,obj_see,a->playernr);
-    atackback(atacker,a,directiondamage);
-    if (atacker)
     {
-	a->atackernr=atacker->playernr;
-	a->whoatack=atacker;
+	switch(atacker->SC_Unit)
+	{
+	    case SC_SCARABOBJ:
+		myparent = a->whoatack;
+		break;
+	    case SC_INTERCEPTOROBJ:
+		if (atacker->myparent)
+		    OBJ_VAR_SET(atacker->myparent,obj_see,a->playernr);
+		if (!OBJ_VAR_CHK(atacker->myparent,obj_notdetect,a->playernr))
+		    opentempmap(a->playernr,atacker->myparent->xkart,atacker->myparent->ykart,3,3);
+		break;
+	}
+	OBJ_VAR_SET(myparent,obj_see,a->playernr);
+	if (myparent->subunit)
+	    OBJ_VAR_SET(myparent->subunit,obj_see,a->playernr);
+    }
+    if (myparent && (!OBJ_VAR_CHK(myparent,obj_notdetect,a->playernr)))
+    {
+	opentempmap(a->playernr,myparent->xkart,myparent->ykart,3,3);
+    }
+    atackback(myparent,a,directiondamage);
+    if (myparent)
+    {
+	a->atackernr = myparent->playernr;
+	a->whoatack = myparent;
     }
     if (a->dmatrix-a->dmatrixdamage>0&&remaindamage)
     {
@@ -483,10 +506,6 @@ int LowLevelDamage(OBJ *atacker,OBJ *a,int weapon_id,int typedamage,int totaldam
 	    a->lifedamage+=0x80;
 	else
     	    a->lifedamage+=totaldamage-(armor<<8);
-    }
-    if (atacker && (!OBJ_VAR_CHK(atacker,obj_notdetect,a->playernr)))
-    {
-	opentempmap(a->playernr,atacker->xkart,atacker->ykart,3,3);
     }
     return(0);
 }

@@ -93,7 +93,10 @@ void destroyobj(struct OBJ *a)
 	    a->loaded = NULL;
 	}
 	
-	weaponflingy.RemoveOBJFromFlingyobj(a);
+	if (a->SC_Unit != SC_SCARABOBJ)
+	    weaponflingy.RemoveOBJFromFlingyobj(a,NULL);
+	else
+	    weaponflingy.RemoveOBJFromFlingyobj(a,a->whoatack);
 
 	DeleteOldObjPointers(a);
 	if (a->subunit)
@@ -5412,6 +5415,7 @@ int LaunchScarab(OBJ *a,OBJ *destobj)
 //	    CalcXYOffsets(a->mainimage->parentimg->side,GetUnitDimensions(a->SC_Unit,UNITDIM_DOWN),0,&deltax,&deltay);
 	    CalcXYOffsets(a->mainimage->parentimg->side,32,0,&deltax,&deltay);
 	    temp = createobjman(GetOBJx(a)+deltax,GetOBJy(a)+deltay,SC_SCARABOBJ,a->playernr);
+    	    temp->whoatack = a;
     	    ChangeTypeOfProp(temp,PROPNORMAL1);
 	    temp->mainimage->elevationlevel = a->mainimage->elevationlevel - 2;
 	    temp->prop |= VARREADY | VARIFDIEDESTTOTERRAIN | VARCANTSELECT;
