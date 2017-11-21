@@ -19,8 +19,8 @@ struct spkFile
 {
     short numLayers;
     short numStarCount[];
-    starRef References[];
-    starBmap Bitmaps[];
+//    starRef References[];
+//    starBmap Bitmaps[];
 };
 
 int loadStars(char *starfn);

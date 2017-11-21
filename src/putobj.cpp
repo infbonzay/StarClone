@@ -730,7 +730,7 @@ void printobjparam(void)
         		itoa(GetUnitMaxShield(a->SC_Unit)>>8,ss1,10);
         		strcat(ss,ss1);
 			shieldl = getmessagelen(IDFONT8,ss,&shields,NULL);
-        		strcat(ss," "GGREENCOLORFONTCHAR);
+        		strcat(ss," " GGREENCOLORFONTCHAR);
 	    	    }
 	    	    else
 	    	    {
