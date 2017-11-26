@@ -201,13 +201,13 @@ void putcube(int x,int y,int sizex,int sizey,char color)
 void puttranslucencyrow(int x,int y,int sizex,int sizey,unsigned char *buff,int grdnr)//0-25%,1-50%,2-75%,3-100%
 {
     int i,j;
-    char *vidbuf,*tr_table;
+    unsigned char *vidbuf,*tr_table;
     unsigned char pixel;
-    vidbuf=GRP_vidmem+GRP_scanlineoffsets[y]+x;
+    vidbuf=(unsigned char *)GRP_vidmem+GRP_scanlineoffsets[y]+x;
     switch(grdnr)
     {
 	case 0:		//25%
-            tr_table=GRP_transpcolors+0*256*256;	//table 0(75%) and inverse source&dest pixels
+            tr_table=(unsigned char *)GRP_transpcolors+0*256*256;	//table 0(75%) and inverse source&dest pixels
             for (i=0;i<sizey;i++)
             {
 		for (j=0;j<sizex;j++)
@@ -223,7 +223,7 @@ void puttranslucencyrow(int x,int y,int sizex,int sizey,unsigned char *buff,int 
     	    }
 	    break;
 	case 1:		//50%
-            tr_table=GRP_transpcolors+1*256*256;	//table 1(50%) and normal source&dest pixels
+            tr_table=(unsigned char *)GRP_transpcolors+1*256*256;	//table 1(50%) and normal source&dest pixels
             for (i=0;i<sizey;i++)
             {
 		for (j=0;j<sizex;j++)
@@ -239,7 +239,7 @@ void puttranslucencyrow(int x,int y,int sizex,int sizey,unsigned char *buff,int 
     	    }
 	    break;
 	case 2:		//75%
-            tr_table=GRP_transpcolors+0*256*256;	//table 0(75%) and normal source&dest pixels
+            tr_table=(unsigned char *)GRP_transpcolors+0*256*256;	//table 0(75%) and normal source&dest pixels
             for (i=0;i<sizey;i++)
             {
 		for (j=0;j<sizex;j++)
@@ -289,9 +289,9 @@ void putrowwithtable(int x,int y,int sizex,int sizey,unsigned char *buff,char *t
 void putrow(int x,int y,int sizex,int sizey,unsigned char *buff)
 {
     int i,j;
-    char *vidbuf;
+    unsigned char *vidbuf;
     unsigned char pixel;
-    vidbuf=GRP_vidmem+GRP_scanlineoffsets[y]+x;
+    vidbuf=(unsigned char *)GRP_vidmem+GRP_scanlineoffsets[y]+x;
     for (i=0;i<sizey;i++)
     {
 //	memcpy(vidbuf,buff,sizex);
@@ -315,8 +315,8 @@ void putrow(int x,int y,int sizex,int sizey,unsigned char *buff)
 void putrow2x2(int x,int y,int sizex,int sizey,unsigned char *buff)
 {
     int i,j,posx;
-    char *vidbuf;
-    vidbuf=GRP_vidmem+GRP_scanlineoffsets[y]+x;
+    unsigned char *vidbuf;
+    vidbuf=(unsigned char *)GRP_vidmem+GRP_scanlineoffsets[y]+x;
     posx=0;
     sizey*=2;
     for (i=0;i<sizey;i++)
@@ -342,8 +342,8 @@ void putrow2x1(int x,int y,int sizex,int sizey,unsigned char *buff)
 {
     int i,j;
     unsigned char pixel;
-    char *vidbuf;
-    vidbuf=GRP_vidmem+GRP_scanlineoffsets[y]+x;
+    unsigned char *vidbuf;
+    vidbuf=(unsigned char *)GRP_vidmem+GRP_scanlineoffsets[y]+x;
     for (i=0;i<sizey;i++)
     {
 	for (j=0;j<sizex;j++)
