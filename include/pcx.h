@@ -77,11 +77,11 @@ public:
     long int  sizePcx(void);
     long int  xsizePcx(void);
     long int  ysizePcx(void);
-    void PutPcx(int x,int y,char emptycolor);
-    void PutPcx(int x,int y,char emptycolor,char transparentcolor,int grdnr);
-    void PutPcx(int x,int y,int showx,char emptycolor,char transparentcolor,int grdnr);
-    void PutPcx(int x,int y,int fromlines,int showinglines,char emptycolor,char transparentcolor,int grdnr);
-    void PutPcx(int x,int y,int showx,int fromlines,int showinglines,char emptycolor,char transparentcolor,int grdnr);
+    void PutPcx(int x,int y,unsigned char emptycolor);
+    void PutPcx(int x,int y,unsigned char emptycolor,unsigned char transparentcolor,int grdnr);
+    void PutPcx(int x,int y,int showx,unsigned char emptycolor,unsigned char transparentcolor,int grdnr);
+    void PutPcx(int x,int y,int fromlines,int showinglines,unsigned char emptycolor,unsigned char transparentcolor,int grdnr);
+    void PutPcx(int x,int y,int showx,int fromlines,int showinglines,unsigned char emptycolor,unsigned char transparentcolor,int grdnr);
     int  IfPcxIsReady(void);
     void PutScaledPcx(int x,int y,char emptycolor);
 };

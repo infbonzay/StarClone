@@ -192,37 +192,37 @@ long int PCX::ysizePcx(void)
     return(ysize);
 }
 //==================
-char * PCX::GetPcxRawBytes(void)
+char *PCX::GetPcxRawBytes(void)
 {
     return(adrpict);
 }
 //==================
-char * PCX::GetRawPal768(void)
+char *PCX::GetRawPal768(void)
 {
     return(adrpal);
 }
 //==================
-void PCX::PutPcx(int x,int y,char emptycolor)
+void PCX::PutPcx(int x,int y,unsigned char emptycolor)
 {
     PutPcx(x,y,0,ysize,emptycolor,0,PCXSHOW_100);
 }
 //==================
-void PCX::PutPcx(int x,int y,char emptycolor,char transparentcolor,int grdnr)
+void PCX::PutPcx(int x,int y,unsigned char emptycolor,unsigned char transparentcolor,int grdnr)
 {
     PutPcx(x,y,0,ysize,emptycolor,transparentcolor,grdnr);
 }
 //==================
-void PCX::PutPcx(int x,int y,int showx,char emptycolor,char transparentcolor,int grdnr)
+void PCX::PutPcx(int x,int y,int showx,unsigned char emptycolor,unsigned char transparentcolor,int grdnr)
 {
     PutPcx(x,y,showx,0,ysize,emptycolor,transparentcolor,grdnr);
 }
 //==================
-void PCX::PutPcx(int x,int y,int fromline,int nroflines,char emptycolor,char transparentcolor,int grdnr)
+void PCX::PutPcx(int x,int y,int fromline,int nroflines,unsigned char emptycolor,unsigned char transparentcolor,int grdnr)
 {
     PutPcx(x,y,xsize,fromline,nroflines,emptycolor,transparentcolor,grdnr);
 }
 //==================
-void PCX::PutPcx(int x,int y,int showx,int fromline,int nroflines,char emptycolor,char transparentcolor,int grdnr)
+void PCX::PutPcx(int x,int y,int showx,int fromline,int nroflines,unsigned char emptycolor,unsigned char transparentcolor,int grdnr)
 {
     int sx,sy;
     unsigned char *bytes=(unsigned char *)adrpict;
@@ -339,9 +339,9 @@ void PCX::PutPcx(int x,int y,int showx,int fromline,int nroflines,char emptycolo
 void PCX::PutScaledPcx(int x,int y,char emptycolor)
 {
     int i,j,offsofbyte,deltay,prevdeltay;
-    char *bytes=adrpict;
-    char *adrvid;
-    adrvid = GRP_vidmem+GRP_scanlineoffsets[0]+0;
+    unsigned char *bytes=(unsigned char *)adrpict;
+    unsigned char *adrvid;
+    adrvid = (unsigned char *)GRP_vidmem+GRP_scanlineoffsets[0]+0;
     deltay=prevdeltay=0;
     for (i=0;i<GRP_screensizey;i++)
     {

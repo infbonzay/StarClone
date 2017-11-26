@@ -79,7 +79,8 @@ void ShowPreviewBuff(char *cmpbuf,int sizebuf,int esckeyaction)
 	char pal[256*4],prevchar;
 	char *txtstr;
 	TIMER_TICK tick;
-	char *fonttable,*fntadr;
+	char *fonttable;
+	char *fntadr;
 	fntadr = NULL;
 	fadespeed = FADESPEED_DEFAULT;
 	displaytime = DISPLAYTIME_DEFAULT;
