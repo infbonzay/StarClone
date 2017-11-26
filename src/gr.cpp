@@ -355,16 +355,15 @@ void putrow2x1(int x,int y,int sizex,int sizey,unsigned char *buff)
     }
 }
 /*==========================*/
-
 void palettegamma(char *palette,const char *origpalette,int factor)		// palette 256*4 bytes,factor -50 +49
 {
     int i,r,g,b,newr,newg,newb;
     
     for (i=0;i<256;i++)
     {
-	r=origpalette[i*4+0];
-	g=origpalette[i*4+1];
-	b=origpalette[i*4+2];
+	r=(unsigned char)origpalette[i*4+0];
+	g=(unsigned char)origpalette[i*4+1];
+	b=(unsigned char)origpalette[i*4+2];
 	newr=r+r*factor/99;
 	newg=g+g*factor/99;
 	newb=b+b*factor/99;
@@ -398,9 +397,9 @@ void palettemono(char *palette,const char *origpalette,int factor)		// palette 2
 
     for (i=0;i<256;i++)
     {
-	r=origpalette[i*4+0];
-	g=origpalette[i*4+1];
-	b=origpalette[i*4+2];
+	r=(unsigned char)origpalette[i*4+0];
+	g=(unsigned char)origpalette[i*4+1];
+	b=(unsigned char)origpalette[i*4+2];
 	grey=(r+g+b)/3;
 	
 	newr=grey+(r-grey)*factor/99;

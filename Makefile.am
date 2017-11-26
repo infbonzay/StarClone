@@ -21,7 +21,8 @@ endif
 EXTRA_DIST = bin bugs include obj src
 ADDVARS = -DUNDERLINUX 
 OPTIM = -m$(SUFFIX)
-CFLAGS=$(WARN) $(DEBUG) $(OPTIM) $(ADDVARS) -funsigned-char -Iinclude -Iinclude/network
+CHARTYPE = #-funsigned-char
+CFLAGS=$(WARN) $(DEBUG) $(OPTIM) $(ADDVARS) $(CHARTYPE) -Iinclude -Iinclude/network
 if HAVELOCALLIBS
     LDPATH= -L$(abs_builddir)/libs -L/lib$(SUFFIX) -L/usr/lib$(SUFFIX) -L/usr/local/lib$(SUFFIX)
 else

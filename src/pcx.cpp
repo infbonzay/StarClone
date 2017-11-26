@@ -225,9 +225,8 @@ void PCX::PutPcx(int x,int y,int fromline,int nroflines,char emptycolor,char tra
 void PCX::PutPcx(int x,int y,int showx,int fromline,int nroflines,char emptycolor,char transparentcolor,int grdnr)
 {
     int sx,sy;
-    unsigned char pixel;
-    char *bytes=adrpict;
-    char *adrvid,*adrtr;
+    unsigned char *bytes=(unsigned char *)adrpict;
+    unsigned char *adrvid,*adrtr;
     sx=showx;
 //    sx=xsize;
     if (fromline+nroflines>ysize)
@@ -265,11 +264,11 @@ void PCX::PutPcx(int x,int y,int showx,int fromline,int nroflines,char emptycolo
 	    return;
     } 
     bytes += (skipy+fromline)*sizex+skipx;
-    adrvid = GRP_vidmem+GRP_scanlineoffsets[y]+x;
+    adrvid = (unsigned char *)GRP_vidmem+GRP_scanlineoffsets[y]+x;
     switch(grdnr)
     {
 	case 0:	//25%
-            adrtr = GRP_transpcolors + 0*256*256;
+            adrtr = (unsigned char *)GRP_transpcolors + 0*256*256;
             for (i=0;i<sy;i++)
             {
 		for (j=0;j<sx;j++)
@@ -287,7 +286,7 @@ void PCX::PutPcx(int x,int y,int showx,int fromline,int nroflines,char emptycolo
             }
 	    break;
 	case 1:	//50%
-            adrtr = GRP_transpcolors + 1*256*256;
+            adrtr = (unsigned char *)GRP_transpcolors + 1*256*256;
             for (i=0;i<sy;i++)
             {
 		for (j=0;j<sx;j++)
@@ -305,7 +304,7 @@ void PCX::PutPcx(int x,int y,int showx,int fromline,int nroflines,char emptycolo
             }
 	    break;
 	case 2:	//75%
-            adrtr = GRP_transpcolors + 0*256*256;
+            adrtr = (unsigned char *)GRP_transpcolors + 0*256*256;
             for (i=0;i<sy;i++)
             {
 		for (j=0;j<sx;j++)
