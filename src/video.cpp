@@ -466,16 +466,23 @@ void PlayVideoSmk(char *smkfile)
 		    smkpal = smk_get_palette(smk);
 		    if (smkpal)
 		    {
+			//current frame palette not identical with previous frame palette
+			if (memcmp(smkpal,palbuf,256*3))
+			{
+			    memcpy(palbuf,smkpal,3*256);
+			    palflag=1;
+			}
+/*
 			for (i=0;i<3*256;i++)
 			{
 			    if (smkpal[i] != palbuf[i])
 			    {
-				//current frame palette not identical with previous frame palette
 				memcpy(palbuf,smkpal,3*256);
 				palflag=1;
 				break;
 			    }
 			}
+*/
 		    }
 		}
 		if (vidbuff)
