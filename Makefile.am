@@ -13,14 +13,15 @@ if HAVEWARNING
 else
     WARN = -Wno-write-strings
 endif
-if HAVE64
-    SUFFIX=64
-else
+if FORCE32BIT
     SUFFIX=32
+    OPTIM=-m32
+else
+    SUFFIX=
+    OPTIM=
 endif
 EXTRA_DIST = bin bugs include obj src
 ADDVARS = -DUNDERLINUX 
-OPTIM = -m$(SUFFIX)
 CHARTYPE = #-funsigned-char
 CFLAGS=$(WARN) $(DEBUG) $(OPTIM) $(ADDVARS) $(CHARTYPE) -Iinclude -Iinclude/network
 if HAVELOCALLIBS

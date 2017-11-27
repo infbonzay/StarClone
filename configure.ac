@@ -19,10 +19,10 @@ AC_HEADER_STDC
 	[ --disable-sdlmixer     Disable Audio (Enabled by Default) ],
     	[ withaudio=no ],
 	[ withaudio=yes ])
-    AC_ARG_ENABLE([bit64],
-	[ --enable-bit64         Enable 64-bit compile (Disabled by Default in 32-bit Systems) ],
-    	[ with64=yes ],
-	[ with64=no ])
+    AC_ARG_ENABLE([bit32],
+	[ --enable-bit32         Enable 32-bit compile (Only for 64 bit multilib system) ],
+    	[ with32=yes ],
+	[ with32=no ])
     AC_ARG_ENABLE([debug],
 	[ --enable-debug         Enable debugging (Disabled by Default) ],
     	[ debug=yes ],
@@ -87,14 +87,11 @@ AC_CHECK_SIZEOF([void *])
 SIZEOF_VOID_P=$ac_cv_sizeof_void_p
 
 if test "$SIZEOF_VOID_P" = "8"; then
-    with64="yes"
-else
-    if test "$SIZEOF_VOID_P" = "4"; then
-        with32="yes"
-    else
-        echo "No detect 32 nor 64-bit system"
-        exit 1
+    if test "x$with32" == "xyes" ; then
+	with32="yes"
     fi
+else
+    with32="no"
 fi
 
 if test "$locallibs" = "no" ; then
@@ -368,7 +365,7 @@ fi
     AM_CONDITIONAL(HAVERT,test "$HAVERT" = "yes")
     AM_CONDITIONAL(HAVESDLLIB,test "$HAVESDLLIB" = "yes")
     AM_CONDITIONAL(HAVESDLMIXERLIB,test "$HAVESDLMIXERLIB" = "yes")
-    AM_CONDITIONAL(HAVE64,test "$with64" = "yes")
+    AM_CONDITIONAL(FORCE32BIT,test "$with32" = "yes")
     AM_CONDITIONAL(HAVEWARNING,test "$warning" = "yes")
     AM_CONDITIONAL(HAVESTORMLIB,test "$HAVESTORMLIB" = "yes")
 
