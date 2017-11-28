@@ -518,7 +518,7 @@ void loaddefcfg(void)
     gameconf.audioconf.buildsounds = 1;
     gameconf.audioconf.subtitles = 1;
     gameconf.videoconf.gamma = MAXGAMMA/2;
-    gameconf.videoconf.saturate = MAXSATURATE-1;
+    gameconf.videoconf.saturate = MAXSATURATE/2;
     gameconf.videoconf.animation = 1;
     gameconf.videoconf.portraits = CONF_VIDEO_PORTRAITS_ANIMATED;
     gameconf.grmode.x = 640;

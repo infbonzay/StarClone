@@ -364,9 +364,9 @@ void palettegamma(char *palette,const char *origpalette,int factor)		// palette 
 	r=(unsigned char)origpalette[i*4+0];
 	g=(unsigned char)origpalette[i*4+1];
 	b=(unsigned char)origpalette[i*4+2];
-	newr=r+r*factor/99;
-	newg=g+g*factor/99;
-	newb=b+b*factor/99;
+	newr=r+r*factor/(MAXGAMMA-1);
+	newg=g+g*factor/(MAXGAMMA-1);
+	newb=b+b*factor/(MAXGAMMA-1);
 	if (factor<0)
 	{
 	    if (newr<0) 
@@ -402,9 +402,9 @@ void palettemono(char *palette,const char *origpalette,int factor)		// palette 2
 	b=(unsigned char)origpalette[i*4+2];
 	grey=(r+g+b)/3;
 	
-	newr=grey+(r-grey)*factor/99;
-	newg=grey+(g-grey)*factor/99;
-	newb=grey+(b-grey)*factor/99;
+	newr = grey+(r-grey)*factor/(MAXSATURATE/2);
+	newg = grey+(g-grey)*factor/(MAXSATURATE/2);
+	newb = grey+(b-grey)*factor/(MAXSATURATE/2);
 	if (newr<0) 
 	    newr=0;
 	if (newg<0) 
