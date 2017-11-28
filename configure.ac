@@ -86,12 +86,12 @@ AC_CHECK_SIZEOF([void *])
 
 SIZEOF_VOID_P=$ac_cv_sizeof_void_p
 
-if test "$SIZEOF_VOID_P" = "8"; then
-    if test "x$with32" == "xyes" ; then
-	with32="yes"
-    fi
-else
+if test "$SIZEOF_VOID_P" == "4"; then
+    sys64="no"
     with32="no"
+fi
+if test "$SIZEOF_VOID_P" == "8"; then
+    sys64="yes"
 fi
 
 if test "$locallibs" = "no" ; then
@@ -366,6 +366,7 @@ fi
     AM_CONDITIONAL(HAVESDLLIB,test "$HAVESDLLIB" = "yes")
     AM_CONDITIONAL(HAVESDLMIXERLIB,test "$HAVESDLMIXERLIB" = "yes")
     AM_CONDITIONAL(FORCE32BIT,test "$with32" = "yes")
+    AM_CONDITIONAL(SYS64,test "$sys64" = "yes")
     AM_CONDITIONAL(HAVEWARNING,test "$warning" = "yes")
     AM_CONDITIONAL(HAVESTORMLIB,test "$HAVESTORMLIB" = "yes")
 
@@ -373,8 +374,12 @@ AC_OUTPUT(Makefile)
 
     echo "***************************************"
     echo "Current Configuration:"
-    if test "$with64" = "yes"; then
-	echo "compile 64-bit binary with 64-bit library support"
+    if test "$sys64" = "yes"; then
+	if test "$with32" = "yes"; then
+	    echo "compile 32-bit binary with 32-bit library support (on 64-bit system)"
+	else
+	    echo "compile 64-bit binary with 64-bit library support"
+	fi
     else
 	echo "compile 32-bit binary with 32-bit library support"
     fi

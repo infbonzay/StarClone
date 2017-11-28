@@ -1393,11 +1393,14 @@ void updatescoremenu(void)
 		    map.tempscore[i][j]=map.score[i][jj];
 		    flags++;
 		}
-		total+=map.tempscore[i][j];
+		if (selectedlist==3 && j==2)
+		    ;
+		else
+		    total+=map.tempscore[i][j];
 		sprintf(txt,"%%%d %d",map.tempscore[i][j],map.maxscore[jj]);
 		changetextitem(gluscore,pl*6+15+j,txt);
 	    }
-	    sprintf(txt,"%d",total,map.maxscore[jj]);			//total
+	    sprintf(txt,"%d",total);					//total
 	    changetextitem(gluscore,pl*6+15+3,txt);			//total
 	}
 	if (flags==3*force_slots.realplayers)
@@ -1458,7 +1461,7 @@ void initscoreinfo(struct mapinfo *info,int fromoptid)
 //==========================================
 void setmaxscore(struct mapinfo *info)
 {
-    int i,j,k,val,pl;
+    int i,j,k,val,pl,maxscore;
     for (pl=0;pl<force_slots.realplayers;pl++)
     {
         i=force_slots.playernr[pl];
@@ -1466,10 +1469,16 @@ void setmaxscore(struct mapinfo *info)
 	    continue;
 	for (j=0;j<3;j++)
 	{
-	    info->score[i][j]=0;
+//	    if (j<2)
+//		maxscore=3;
+//	    else
+//		maxscore=2;
+	    info->score[i][j] = 0;
+//	    for (k=0;k<maxscore;k++)
 	    for (k=0;k<3;k++)
-		info->score[i][j]+=info->score[i][3+j*3+k];
+		info->score[i][j] += info->score[i][3+j*3+k];
 	}
+	info->score[i][2] = info->score[i][3+2*3+2];
     }
     for (j=0;j<12;j++)
     {
@@ -1594,9 +1603,11 @@ void glu_score(struct mapinfo *info)
 	info->score[i][3]=PLAYER[i].statplayer.stat[STATPLAYER_UNITSPRODUCED];
 	info->score[i][4]=PLAYER[i].statplayer.stat[STATPLAYER_UNITSKILLED];
 	info->score[i][5]=PLAYER[i].statplayer.stat[STATPLAYER_UNITSLOST];
+	
 	info->score[i][6]=PLAYER[i].statplayer.stat[STATPLAYER_BUILDSCONSTRUCTED];
 	info->score[i][7]=PLAYER[i].statplayer.stat[STATPLAYER_BUILDSRISED];
 	info->score[i][8]=PLAYER[i].statplayer.stat[STATPLAYER_BUILDSLOST];
+	
 	info->score[i][9]=PLAYER[i].statplayer.stat[STATPLAYER_GASMINED];
 	info->score[i][10]=PLAYER[i].statplayer.stat[STATPLAYER_MINERALSMINED];
 	info->score[i][11]=PLAYER[i].statplayer.stat[STATPLAYER_GASMINED]+PLAYER[i].statplayer.stat[STATPLAYER_MINERALSMINED];

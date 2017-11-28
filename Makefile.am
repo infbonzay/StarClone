@@ -13,9 +13,14 @@ if HAVEWARNING
 else
     WARN = -Wno-write-strings
 endif
+if SYS64
 if FORCE32BIT
-    SUFFIX=32
-    OPTIM=-m32
+  SUFFIX=32
+  OPTIM=-m32
+else
+  SUFFIX=
+  OPTIM=-m64
+endif
 else
     SUFFIX=
     OPTIM=
