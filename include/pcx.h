@@ -6,6 +6,9 @@
 #include <stdlib.h>
 #include "mpq.h"
 
+#define PCX_EMPTYCOLOR1		0
+#define PCX_EMPTYCOLOR2		255
+
 #define OKPCX       	0
 #define NOFILE      	1
 #define NOPCX       	2

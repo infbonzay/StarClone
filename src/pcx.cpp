@@ -267,7 +267,7 @@ void PCX::PutPcx(int x,int y,int showx,int fromline,int nroflines,unsigned char 
     adrvid = (unsigned char *)GRP_vidmem+GRP_scanlineoffsets[y]+x;
     switch(grdnr)
     {
-	case 0:	//25%
+	case PCXSHOW_25:	//25%
             adrtr = (unsigned char *)GRP_transpcolors + 0*256*256;
             for (i=0;i<sy;i++)
             {
@@ -285,7 +285,7 @@ void PCX::PutPcx(int x,int y,int showx,int fromline,int nroflines,unsigned char 
 		bytes+=sizex;
             }
 	    break;
-	case 1:	//50%
+	case PCXSHOW_50:	//50%
             adrtr = (unsigned char *)GRP_transpcolors + 1*256*256;
             for (i=0;i<sy;i++)
             {
@@ -303,7 +303,7 @@ void PCX::PutPcx(int x,int y,int showx,int fromline,int nroflines,unsigned char 
 		bytes+=sizex;
             }
 	    break;
-	case 2:	//75%
+	case PCXSHOW_75:	//75%
             adrtr = (unsigned char *)GRP_transpcolors + 0*256*256;
             for (i=0;i<sy;i++)
             {
@@ -321,7 +321,7 @@ void PCX::PutPcx(int x,int y,int showx,int fromline,int nroflines,unsigned char 
 		bytes+=sizex;
             }
 	    break;
-	case 3:	//100%
+	case PCXSHOW_100:	//100%
             for (i=0;i<sy;i++)
             {
 		for (j=0;j<sx;j++)

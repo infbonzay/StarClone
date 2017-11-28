@@ -295,7 +295,7 @@ int putmessage(int x,int y,int fontnr,char *str,int fromcolor,char *table,GRPFIL
 			    pcx=&dlgfilediriconspcx[symb-ICONFOROPENDIR];
 			    if (pcx->IfPcxIsReady())
 			    {
-			        pcx->PutPcx(x+sizex,y+sizey,0);
+			        pcx->PutPcx(x+sizex,y+sizey,PCX_EMPTYCOLOR1);
 			        sizex+=pcx->xsizePcx()+2;
 			    }
 			    continue;
@@ -462,7 +462,7 @@ int putmessage(int x,int y,int fontnr,char *str,int fromcolor,char *table,GRPFIL
 			    pcx=&dlgfilediriconspcx[symb-ICONFOROPENDIR];
 			    if (pcx->IfPcxIsReady())
 			    {
-			        pcx->PutPcx(x+sizex,y+sizey,0);
+			        pcx->PutPcx(x+sizex,y+sizey,PCX_EMPTYCOLOR1);
 			        sizex+=pcx->xsizePcx()+2;
 			    }
 			    continue;

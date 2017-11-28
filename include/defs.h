@@ -110,6 +110,7 @@ typedef unsigned char SCUNIT;
 #define COLORTIMELEFT          	COLORMAGE
 #define BLACKCOLOR             	0
 #define WHITECOLOR             	85
+#define HOLECOLOR		255
 #define YELLOWCOLOR            	YELLOWLIFE
 #define PI 			3.141592658
 #define MAXCHILDS		10

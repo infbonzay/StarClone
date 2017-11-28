@@ -2261,7 +2261,7 @@ void drawradiobuttonitem(MENUSTR *allmenus,int itemnr)
     if (usedpcx)
     {
 	usedpcx->PutPcx(menuitem->hotdeltax+menuitem->item.radiobutton->deltax,
-		    menuitem->hotdeltay+menuitem->item.radiobutton->deltay,255);
+		    menuitem->hotdeltay+menuitem->item.radiobutton->deltay,PCX_EMPTYCOLOR2);
     }
     if (dlggrp)
     {
