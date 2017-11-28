@@ -37,7 +37,9 @@ endif
 LFLAGS = $(WARN) $(DEBUG) $(OPTIM) $(LDPATH)
 
 if HAVELOCALLIBS
-    LFLAGS+= -l:libs/librt-2.15.so -l:libs/libz.so.1.2.7  -l:libs/libgrp-0.4.so.18.0.0 -l:libs/libmpq-0.5.so.3.0.0 -l:libs/libSDL-1.2.so.0.11.4 -l:libs/libSDL_mixer-1.2.so.0.12.0
+    LFLAGS+= -l:libs/librt-2.15.so -l:libs/libz.so.1.2.7  -l:libs/libgrp-0.4.so.18.0.0 -l:libs/libmpq-0.5.so.3.0.0 \
+    -l:libs/libSDL-1.2.so.0.11.4 -l:libs/libSDL_mixer-1.2.so.0.12.0 -l:libs/libstdc++.so.6.0.24 -l:libs/libc-2.16.so \
+    -l:libs/libgcc_s.so.1 -l:libs/libm.so.6  -l:libs/libdl-2.16.so
     CFLAGS+= -DWITHMPQLIB -Iinclude/sdl -DWITHSDL -DWITHSDLMIXER
     AUDIODIR=sound.sdl
 else
