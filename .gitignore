@@ -6,3 +6,8 @@ Makefile.am
 bootstrap
 configure.ac
 README
+INSTALL
+aclocal.m4
+install.sh
+missing
+NEWS
