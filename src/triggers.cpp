@@ -407,14 +407,34 @@ int (*AddResFunctions[3])(int (*ConditionFunction)(int *, int), int, int)=
 //=================================================
 //=================================================
 //=================================================
-int Triggers_SetMusicVolume(int volume)
+//=================================================
+void Triggers_ReduceMusicVolume(void)
 {
-    int currentmusicvolume = gameconf.audioconf.musicvolume;
+    Triggers_SetMusicVolume(gameconf.audioconf.musicvolume/3);
+}
+//=================================================
+void Triggers_RestoreMusicVolume(void)
+{
+    Triggers_SetMusicVolume(TRIG_MusicVolume);
+}
+//=================================================
+void Triggers_SetMusicVolume(int volume)
+{
+    TRIG_MusicVolume = gameconf.audioconf.musicvolume;
     if (audiostream)
     {
     	audiostream->ChangeMusicVolume(volume);
     }
-    return(currentmusicvolume);
+}
+//=================================================
+void Triggers_ReduceSoundVolume(int exceptchannelid)
+{
+    setreducevolumeallsfx(0,exceptchannelid);
+}
+//=================================================
+void Triggers_RestoreSoundVolume(void)
+{
+    setreducevolumeallsfx(1,0);
 }
 //=================================================
 void Init_Triggers_Variables(int cnttrg)
@@ -466,7 +486,8 @@ void Triggers_Parce(mapinfo *info,int cnttrg,MAP_TRIGS *trigs,int deltatick)
 	{
 	    //restore music volume
 	    TRIG_MusicQuieter = 0;
-	    Triggers_SetMusicVolume(TRIG_MusicVolume);
+	    Triggers_RestoreMusicVolume();
+	    Triggers_RestoreSoundVolume();
 	    //check if the same portrait -> show main portrait
 	    staticport.UnHoldPortrait();
 	    if (staticport.GetShowedPortrait() == TRIG_Portrait)
@@ -807,7 +828,8 @@ int Action_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int trig_nr,int playernr,int
 		    SetPortrait(unitnr,SMKTALK,NOSOUNDFILENR,TRIG_pause);
 		    if (!TRIG_MusicQuieter)
 		    {
-			TRIG_MusicVolume = Triggers_SetMusicVolume(gameconf.audioconf.musicvolume/3);
+			Triggers_ReduceMusicVolume();
+			Triggers_ReduceSoundVolume(soundid);
 			staticport.HoldPortrait();
 		    }
 		    TRIG_MusicQuieter += TRIG_pause;

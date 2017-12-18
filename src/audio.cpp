@@ -235,13 +235,44 @@ int unloadwav(int channel)
     return 0;
 }
 //==============================================
-void volumeallsfx(int volume)//volume in %
+void volumeallsfx(int volume)   //volume in %
 {
     int i;
     if (unitsound)
     {
 	for (i=0;i<maxunitsounds;i++)
-    	    unitsound[i].volume = MIX_MAX_VOLUME*volume/100;
+	{
+    	    unitsound[i].volume = MIX_MAX_VOLUME * volume / 100;
+    	}
+    }
+}
+//==============================================
+void setreducevolumeallsfx(int action,int exceptchannelid)
+{
+    int i;
+    if (unitsound)
+    {
+	switch(action)
+	{
+	    case 0:
+		for (i=0;i<maxunitsounds;i++)
+		{
+    		    unitsound[i].prevvolume = unitsound[i].volume;
+    		    if (exceptchannelid != i)
+    		    {
+    			unitsound[i].volume = unitsound[i].volume / 3;
+			wChannelVolume(i,unitsound[i].volume);
+		    }
+    		}
+		break;
+	    case 1:
+		for (i=0;i<maxunitsounds;i++)
+		{
+    		    unitsound[i].volume = unitsound[i].prevvolume;
+		    wChannelVolume(i,unitsound[i].volume);
+    		}
+		break;
+	}
     }
 }
 //==============================================

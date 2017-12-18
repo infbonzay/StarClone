@@ -21,20 +21,6 @@
 
 struct WAVHEADER
 {
-/*    unsigned long  chunkId;		//"RIFF"
-    unsigned long  chunkSize;		//size from next to end of file
-    unsigned long  format;		//"WAVE"
-    unsigned long  subchunk1Id;		//"fmt "
-    unsigned long  subchunk1Size;	//size of fmt table
-    unsigned short audioFormat;		//
-    unsigned short numChannels;		//
-    unsigned long  sampleRate;		//
-    unsigned long  byteRate;		//
-    unsigned short blockAlign;		//
-    unsigned short bitsPerSample;	//
-    unsigned long  subchunk2Id;		//"data"
-    unsigned long  subchunk2Size;	//size from next to end of file
-*/
     unsigned int  chunkId;		//"RIFF"
     unsigned int  chunkSize;		//size from next to end of file
     unsigned int  format;		//"WAVE"
@@ -68,7 +54,8 @@ struct AUDIOUNIT
 					    
     unsigned char 	distance;		//distance from seeing kart to object
     unsigned char 	prevdistance;		//prev distance from seeing kart to object
-    unsigned char 	volume;		//volume this sound
+    unsigned char 	volume;			//volume this sound
+    unsigned char	prevvolume;		//saved previous volume
     struct OBJ		*obj;			//object who create sound
     int			length;
     MPQIDS		fileID;
@@ -89,6 +76,7 @@ int  unloadwav(int channel);
 int  activatesound(struct OBJ *a,int soundmode,int addfactor,int stopprevsound);
 void stopcurrentsound(struct OBJ *a);
 void volumeallsfx(int volume);
+void setreducevolumeallsfx(int action,int exceptchannelid);
 int  GetSoundsPlay(void);
 int  BlockSoundToPlay(void);
 int  UnBlockSoundToPlay(void);

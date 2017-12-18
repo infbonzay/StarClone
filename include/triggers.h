@@ -203,6 +203,12 @@ struct LEADERBOARD
 	char		calcready;
 };
 
+void Triggers_ReduceMusicVolume(void);
+void Triggers_RestoreMusicVolume(void);
+void Triggers_SetMusicVolume(int volume);
+void Triggers_ReduceSoundVolume(int exceptchannelid);
+void Triggers_RestoreSoundVolume(void);
+
 int CheckForUnit(int (*ConditionFunction)(int *, int),
 		 int actiononplayers,int unitid,int cntunits,OBJ **retfirst,struct XY *searcharea,int modemove);
 int CheckForUnit(int (*ConditionFunction)(int *, int),
