@@ -21,7 +21,7 @@
 
 struct WAVHEADER
 {
-    unsigned long  chunkId;		//"RIFF"
+/*    unsigned long  chunkId;		//"RIFF"
     unsigned long  chunkSize;		//size from next to end of file
     unsigned long  format;		//"WAVE"
     unsigned long  subchunk1Id;		//"fmt "
@@ -34,6 +34,20 @@ struct WAVHEADER
     unsigned short bitsPerSample;	//
     unsigned long  subchunk2Id;		//"data"
     unsigned long  subchunk2Size;	//size from next to end of file
+*/
+    unsigned int  chunkId;		//"RIFF"
+    unsigned int  chunkSize;		//size from next to end of file
+    unsigned int  format;		//"WAVE"
+    unsigned int  subchunk1Id;		//"fmt "
+    unsigned int  subchunk1Size;	//size of fmt table
+    unsigned short audioFormat;		//
+    unsigned short numChannels;		//
+    unsigned int  sampleRate;		//
+    unsigned int  byteRate;		//
+    unsigned short blockAlign;		//
+    unsigned short bitsPerSample;	//
+    unsigned int  subchunk2Id;		//"data"
+    unsigned int  subchunk2Size;	//size from next to end of file
 };
 
 #pragma pack(pop)

@@ -415,6 +415,7 @@
 *179 tempopenmap for carrier if interceptors atacks
 *180 no atackback to reaver if scarab do damage
 *181 no atackback to siegetank if turret from tank do damage
+    sfx sounds need to lower in transmission message
     if interceptors kill destobj return to carrier but carrier in atackmode & interceptors dont launch again
     interceptors fly to atack far then carrier range
     carrier stop move if atack to ground and stops to atack somebody
