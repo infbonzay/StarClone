@@ -1537,6 +1537,7 @@ creationwithoutproperties:
 			    if (ownedactiononplayers & mask2)
 		    	    {
 		    		CreateAliance(info,playernr,jj,state);
+//		    		CreateAliance(info,jj,playernr,state);//???? add
 				ownedactiononplayers &= ~mask2;
 				if (!ownedactiononplayers)
 				    break;
@@ -1717,12 +1718,17 @@ int TRG_RunAIScriptAtLocation(mapinfo *info,int aiscriptnr,int playernr,int play
 //	    DEBUGMESSCR("swithchcompplayertorescuedpassive:aiscript=0x%04x\n",aiscriptnr);
 	    haverescued=0;
 	    info->pl_iowner[playernr] = OWNER_RESCUABLE;
-    	    for (j=0;j<MaxObjects;j++)
+	    ifhaverescuableplayers++;
+	    applyrescuableunits();
+//	    ifhaverescuableplayers--;
+/*    	    for (j=0;j<MaxObjects;j++)
 	    {
     		    a = objects[j];
-    		    if (a->playernr!=NUMBGAMER)
+    		    if (a->playernr != NUMBGAMER)
     		    {
+//			bug in xterran7 medics with OWNER_COMPUTER do not attach to current player
 			if (map.pl_iowner[a->playernr] == OWNER_RESCUABLE)
+			// || map.pl_iowner[a->playernr] == OWNER_COMPUTER)
 	    		{
 			    MakeMindControl(a,NUMBGAMER,a->color);
 			    haverescued++;
@@ -1733,6 +1739,7 @@ int TRG_RunAIScriptAtLocation(mapinfo *info,int aiscriptnr,int playernr,int play
 	    {
 		play_race_rescue(gameconf.pl_race[NUMBGAMER],4,0);
 	    }
+*/
 	    return(1);
 	case TRG_AISCRIPT_SETPLAYERTOENEMYHERE://121
 //	    DEBUGMESSCR("setplayertoenemyhere:aiscript=0x%04x\n",aiscriptnr);

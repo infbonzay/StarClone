@@ -998,7 +998,8 @@ int gogame(struct mapinfo *info)
 			    AdditionalUnitsProceed();
 			    			    
 			    invisiblestick();
-        		    applyrescuableunits();
+			    if (MINIMAPREFRESHCYCLE)
+        			applyrescuableunits();
 			    
 			    if (mousedestimg)
 				iscriptinfo.ExecuteScript(mousedestimg);

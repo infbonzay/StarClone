@@ -3805,7 +3805,7 @@ void applyrescuableunits(void)
 {
     int i,haverescued=0;
     OBJ *a,*c;
-    if (MINIMAPREFRESHCYCLE)
+//    if (MINIMAPREFRESHCYCLE)
     {
     	if (ifhaverescuableplayers)
     	{
