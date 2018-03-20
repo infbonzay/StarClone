@@ -20,8 +20,6 @@ src_prepare() {
 	multilib_copy_sources
 }
 
-echoit() { echo "$@"; "$@"; }
-
 multilib_src_configure() {
 	local myconf=""
 	if use asm ; then
@@ -32,10 +30,10 @@ multilib_src_configure() {
 	if use debug ; then
 	    myconf="${myconf} --enable-debug"
 	fi
-	echoit "${S}"/configure ${myconf} \
-		--prefix="${EPREFIX}/usr" \
-		--libdir="${EPREFIX}/usr/$(get_libdir)" \
-		|| die
+	econf ${myconf} \
+	    --prefix="${EPREFIX}/usr" \
+	    --libdir="${EPREFIX}/usr/$(get_libdir)" \
+	    || die
 }
 
 multilib_src_compile() {
