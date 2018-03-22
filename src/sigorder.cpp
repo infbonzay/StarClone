@@ -526,6 +526,7 @@ int  SIGOrder_DoodadAfterTop(OBJ *a)
     {
         OBJSetInvisibleColors(a,MININVISIBLECOLOR);
         SetMageAtr(&a->atrobj,ATRINVISIBLE,0);
+        SetCloakedFlag(a,0);
     }
     SetDoodadState(a,DOODAD_TOP_STATE);
     SetDoodadMoveDirection(a,DOODAD_MOVE_NONE);
@@ -538,8 +539,10 @@ int  SIGOrder_DoodadAfterBottom(OBJ *a)
     SetOrder(a,0,NULL);
     if (!IsInvincibleUnit(a->SC_Unit))
     {
-        OBJSetInvisibleColors(a,MAXINVISIBLECOLOR);
-        SetMageAtr(&a->atrobj,ATRINVISIBLE,ATRMAGEINFINITE);
+	SetInvisibleUnit(a);
+//        OBJSetInvisibleColors(a,MAXINVISIBLECOLOR);
+//        SetMageAtr(&a->atrobj,ATRINVISIBLE,ATRMAGEINFINITE);
+//        SetCloakedFlag(a,1);
     }
     SetDoodadState(a,DOODAD_BOTTOM_STATE);
     SetDoodadMoveDirection(a,DOODAD_MOVE_NONE);

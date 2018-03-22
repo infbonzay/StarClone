@@ -228,6 +228,15 @@ void ConstructUnitsReleaseSupply(OBJ *a)
     }
 }
 //=======================================
+void immediateSTOP(OBJ *a)
+{
+    a->finalx=0;
+    a->finaly=0;
+    a->prop &= ~(VARACCELERATIONBIT | VARMOVEOBJACT);
+    moveobj(a,NULL,MODESTOP,NOSHOWERROR);
+    a->currentspeed = 0;
+}
+//=======================================
 void UnitConstrUnit(OBJ *a,SCUNIT SC_Unit,int icon_nr,int stattxt_nr)
 {
     int mcost,gcost;
@@ -272,6 +281,7 @@ void UnitConstrUnit(OBJ *a,SCUNIT SC_Unit,int icon_nr,int stattxt_nr)
 		    ChangeResourcePlayer(a->playernr,MINUSFACTOR,mcost,gcost);
 		    SetBeginSelfConstruct(a);
 		    a->selfconstruct.currentconstrstep = CONSTR_STEP_ZERGUNITLESS99;
+		    immediateSTOP(a);
 		    break;
 		case SC_MUTALISKOBJ:
 		    a->SC_ConstrUnit=SC_Unit;			//construct unit
@@ -285,6 +295,7 @@ void UnitConstrUnit(OBJ *a,SCUNIT SC_Unit,int icon_nr,int stattxt_nr)
 		    ChangeResourcePlayer(a->playernr,MINUSFACTOR,mcost,gcost);
 		    SetBeginSelfConstruct(a);
 		    a->selfconstruct.currentconstrstep = CONSTR_STEP_ZERGUNITLESS99;
+		    immediateSTOP(a);
 		    break;
 		default:
 		    a->SC_FromUnit=SC_NOUNITNR;

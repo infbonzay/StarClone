@@ -239,7 +239,8 @@ struct OBJ *createobjmanwithlife(int x,int y,SCUNIT SC_Unit,int Pl,
     AddRemoveBloodFlameOverlays(a);
     add_unit_stat(&map,UNITSTAT_HAVE,a->playernr,a->SC_Unit);
     addremoveuniteffectfrommap(a,1,&map);
-    SetModeMove(a,MODESTOP);
+    if (a->modemove != MODECARRYME)
+	SetModeMove(a,MODESTOP);
     return (a);
 }
 //==========================================

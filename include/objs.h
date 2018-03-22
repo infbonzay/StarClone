@@ -198,6 +198,8 @@ int  RegenerateShield(OBJ *a);
 int  RegenerateHealth(OBJ *a);
 int  LaunchScarab(OBJ *reaver,OBJ *destobj);
 void LaunchInterceptors(OBJ *a,OBJ *destobj);
+void SetInvisibleUnit(struct OBJ *a);
+
 void CALLBACK_OBJ_AfterStop(OBJ *a);
 int  CALLBACK_OBJ_AtackedOBJISNULL(OBJ *a);
 

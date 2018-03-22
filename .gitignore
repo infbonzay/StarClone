@@ -1,13 +1,13 @@
 # Ignore everything in this directory
 *
 # Except this file
+!Changelog
 !.gitignore
-Makefile.am
-bootstrap
-configure.ac
-README
-INSTALL
-aclocal.m4
-install.sh
-missing
-NEWS
+!Makefile.am
+!bootstrap
+!configure.ac
+!README
+!INSTALL
+!aclocal.m4
+!missing
+!NEWS
