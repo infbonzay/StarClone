@@ -893,17 +893,23 @@ void calcfullinvandseeobj(OBJ *a)
 {
     int i,decloaked,cloaked,notdetect=0;
     unsigned char visbits,plmask;
-    decloaked = existatrdecloak(a);
+    OBJ_VAR_MASK_CLR(a,obj_invsee,0xff);
+    OBJ_VAR_MASK_CLR(a,obj_see,0xff);
     if (IsCloaked(a) || IsOBJBurrowed(a))
+    {
 	cloaked=1;
+	OBJ_VAR_MASK_SET(a,obj_notdetect,0xff);
+	decloaked = existatrdecloak(a);
+	if (decloaked)
+    	    OBJ_VAR_MASK_SET(a,obj_invsee,0xff);
+    }
     else
+    {
 	cloaked=0;
+	OBJ_VAR_MASK_CLR(a,obj_notdetect,0xff);
+    }
     for (i=0,plmask=1;i<PLAYEDPLAYERS;i++,plmask<<=1)
     {
-	if (cloaked)
-    	    OBJ_VAR_MASK_SET(a,obj_notdetect,plmask);
-    	else
-    	    OBJ_VAR_MASK_CLR(a,obj_notdetect,plmask);
         if (map.pl_vision[i][a->playernr]			||
     	    player_aliance(i,a->playernr) == ALLIANCEOBJ	||
     	    existparasitebit(a,i))
@@ -914,22 +920,16 @@ void calcfullinvandseeobj(OBJ *a)
         }
         else
         {
-    	    OBJ_VAR_MASK_CLR(a,obj_invsee,plmask);
-    	    OBJ_VAR_MASK_CLR(a,obj_see,plmask);
 	    if (mapSEE(a->xkart,a->ykart,i)>1)
     		OBJ_VAR_MASK_SET(a,obj_see,plmask);
 	    visbits = GetVisionBitsPlayer(i);
     	    if (map.mapbits.seedetector[a->ykart*MAXXMAP+a->xkart] & visbits)
-    	    {//esli vidim detectorom
+    	    {	
+    		//esli vidim detectorom
     		OBJ_VAR_MASK_SET(a,obj_invsee,plmask);
     		OBJ_VAR_MASK_CLR(a,obj_notdetect,plmask);
     	    }
 	}
-    	if (OBJ_VAR_MASK_CHK(a,obj_notdetect,plmask))
-        {
-	    if (decloaked)
-    		OBJ_VAR_MASK_CLR(a,obj_notdetect,plmask);
-    	}
     }//for
     if (cloaked)
 	ClearFinalOBJ(a);
