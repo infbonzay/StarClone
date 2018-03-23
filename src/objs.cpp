@@ -2636,7 +2636,7 @@ bugguyexplode:
 		AddModeMove(a,NULL,MODESEARCHGOAL,0,0,NOSHOWERROR);
 	    break;
 	case MODESEARCHGOAL:
-	    if (OneUnitSearchGoal(a,1))
+	    if (OneUnitSearchGoal(a,1,0))
 	    {
     		a->searchforatack_tick = MAXWAIT_SEARCHATACK_TICK;
 	    }
@@ -4088,7 +4088,7 @@ struct OBJ* (*Atack_IDFunc[8])(OBJ *a,unsigned char weaponmask,unsigned char gro
 			    &InterceptorUnitAtackFunc
 			};
 //=================================
-struct OBJ* OneUnitSearchGoal(OBJ *a,int ignoremodes)
+struct OBJ* OneUnitSearchGoal(OBJ *a,int ignoremodes,int facedirectionatackonly)
 {
     unsigned char weaponmask,groundweapon,airweapon,unitatack_id;
     SCUNIT SC_Unit,Subunit1;
@@ -4130,7 +4130,8 @@ struct OBJ* OneUnitSearchGoal(OBJ *a,int ignoremodes)
 		    case UNITATACKFUNCTYPE_NONE:	//base/turret
 			return(NULL);
 		}
-		return ((*Atack_IDFunc[unitatack_id])(a,weaponmask,groundweapon,airweapon));
+		weaponmask |= facedirectionatackonly;
+		return ((*Atack_IDFunc[unitatack_id])(a,weaponmask ,groundweapon,airweapon));
 	    }
     }
     return(NULL);
@@ -4149,7 +4150,7 @@ void SearchForAtacks(void)
 		if (a->searchforatack_tick -- ==0)
 		{
 		    a->searchforatack_tick = MAXWAIT_SEARCHATACK_TICK;
-		    OneUnitSearchGoal(a,0);
+		    OneUnitSearchGoal(a,0,0);
 		} 
 	}
 	else
@@ -4158,7 +4159,7 @@ void SearchForAtacks(void)
 		if (a->searchforatack_tick -- ==0)
 		{
 		    a->searchforatack_tick = MAXWAIT_SEARCHATACK_TICK;
-		    OneUnitSearchGoal(a,0);		//atack only face direction
+		    OneUnitSearchGoal(a,0,4);		//atack only face direction
 		} 
 	}
     }
@@ -4231,6 +4232,10 @@ OBJ *FindObjForAtack(OBJ *a,
 			    if (wmask & 1)
 				if (deltaz < mindeltaz[j] && (maxrange>deltaz) && (minrange<=deltaz))
 				{
+				    if (weaponmask & 4)		//atackfacedirectiononly
+				    {
+					//????
+				    }
 				    mindeltaz[j] = deltaz;
 				    findobj[j] = a2;
 				}
@@ -5450,7 +5455,7 @@ void CALLBACK_OBJ_AfterStop(OBJ *a)
     switch(a->SC_Unit)
     {
 	case SC_INTERCEPTOROBJ:
-	    if (OneUnitSearchGoal(a,1))
+	    if (OneUnitSearchGoal(a,1,0))
 	    {
     		a->searchforatack_tick = MAXWAIT_SEARCHATACK_TICK;
 	    }
@@ -5464,7 +5469,7 @@ void CALLBACK_OBJ_AfterStop(OBJ *a)
 //=================================
 int CALLBACK_OBJ_AtackedOBJISNULL(OBJ *a)
 {
-    if (OneUnitSearchGoal(a,1))
+    if (OneUnitSearchGoal(a,1,0))
     {
         a->searchforatack_tick = MAXWAIT_SEARCHATACK_TICK;
         return(1);

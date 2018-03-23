@@ -140,7 +140,7 @@ OBJ *FindObjForAtack(OBJ *a,unsigned char weaponmask,
 int  UnitIgnoreInvisibles(SCUNIT SC_Unit);
 void unitprepareforatack(OBJ *a,OBJ *a2);
 void trapprepareforatack(OBJ *a,OBJ *a2);
-struct OBJ* OneUnitSearchGoal(OBJ *a,int ignoremodes);
+struct OBJ* OneUnitSearchGoal(OBJ *a,int ignoremodes,int facedirectionatackmode);
 void SearchForAtacks(void);
 
 void atackback(OBJ *firstatacker,OBJ *destobj,int directiondamage);
