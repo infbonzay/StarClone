@@ -390,7 +390,8 @@ struct OBJ *createobjlowlevel(OBJ *workerobj,int x,int y,SCUNIT SC_Unit,int play
     a->modemove = MODESTOP;
     if (IsDoodadState(a->SC_Unit))
     {
-	CreateImageAndAddToList(a,x<<8,y<<8,5,NOLOIMAGE);//5 is for doodadunit and no execute scripts
+//	CreateImageAndAddToList(a,x<<8,y<<8,5,NOLOIMAGE);//5 is for doodadunit and no execute scripts
+	CreateImageAndAddToList(a,x<<8,y<<8,readyatbegin,NOLOIMAGE);//5 is for doodadunit and no execute scripts
     }
     else
     {
@@ -4181,6 +4182,7 @@ OBJ *FindObjForAtack(OBJ *a,
 {
     int deltaz,i,j,minrange,maxrange,finddistance,mindeltaz[3],weapon_id,wmask;
     int addsiegerange = 0;
+    unsigned char neededside;
     OBJ *a2,*findobj[3];
     findobj[NOATACKER]=NULL;			//no atacker
     mindeltaz[NOATACKER] = 256*256*256;
@@ -4234,7 +4236,9 @@ OBJ *FindObjForAtack(OBJ *a,
 				{
 				    if (weaponmask & 4)		//atackfacedirectiononly
 				    {
-					//????
+					neededside = CalcDirection(GetOBJx256(a),GetOBJy256(a),GetOBJx256(a2),GetOBJy256(a2));
+					if (abs(a->mainimage->side-neededside)/8>3)
+					    continue;
 				    }
 				    mindeltaz[j] = deltaz;
 				    findobj[j] = a2;

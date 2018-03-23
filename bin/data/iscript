@@ -17418,7 +17418,7 @@ Burrow         	[NONE]
 
 FloorMissileTrapTurretInit:
 	playfram       	0x00	# frame set 0
-	wait           	1
+#	wait           	1
 	setfldirect    	20
 	goto           	common_waitforever
 
@@ -17587,7 +17587,7 @@ Enable         	common_waitforever
 
 WallMissileTrapType1Init:
 	playfram       	1
-	wait           	1
+#	wait           	1
 	setfldirect    	12
 	goto           	common_waitforever
 
@@ -17672,7 +17672,7 @@ Enable         	common_waitforever
 WallMissileTrapTypet2Init:
 	playfram       	1
 	setflipstate   	1
-	wait           	1
+#	wait           	1
 	setfldirect    	20
 	goto           	common_waitforever
 
@@ -17757,7 +17757,7 @@ Enable         	common_waitforever
 
 WallFlameTrapType1Init:
 	playfram       	1
-	wait           	1
+#	wait           	1
 	setfldirect    	12
 	goto           	common_waitforever
 
@@ -17866,7 +17866,7 @@ Enable         	common_waitforever
 WallFlameTrapType2Init:
 	playfram       	1
 	setflipstate   	1
-	wait           	1
+#	wait           	1
 	setfldirect    	20
 	goto           	common_waitforever
 
