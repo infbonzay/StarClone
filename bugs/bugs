@@ -418,7 +418,8 @@
 *182 fly zerg unit enter to nydus
 *183 after birth lurker,guardian,devourer go to prev dest coords or rally point
 *184 not cloaked underearth traps
- 185 !!!!AGAIN!!!! psi emitter not attached to scv zerg2map 
+*185 !!!!AGAIN!!!! psi emitter not attached to scv zerg2map 
+ 186 trap can atack only in face direction (NO FULLATACKMODE BIT)  (unitnr=211 facecreation = 0)
     sfx sounds need to lower in transmission message
     if interceptors kill destobj return to carrier but carrier in atackmode & interceptors dont launch again
     interceptors fly to atack far then carrier range

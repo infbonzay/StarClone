@@ -3974,7 +3974,7 @@ int GetOBJAtackWithoutWeapons(SCUNIT SC_Unit)
 	case SC_INTERCEPTOROBJ:
 	    return(UNITATACKFUNCTYPE_INTERCEPTORS);
 	default:
-	    if (IsDoodadState(SC_Unit)&&!IsInvincibleUnit(SC_Unit))
+	    if (IsDoodadState(SC_Unit) && !IsInvincibleUnit(SC_Unit))
 	    {
 		//doodad traps
 		return(UNITATACKFUNCTYPE_DOODADS);
@@ -4144,12 +4144,23 @@ void SearchForAtacks(void)
     {
 	a = objects[i];
 	if (IsFullAutoAttack(a->SC_Unit))
+	{
 	    if (!a->finalOBJ)				//???? i need to atack unit who atack me
 		if (a->searchforatack_tick -- ==0)
 		{
 		    a->searchforatack_tick = MAXWAIT_SEARCHATACK_TICK;
 		    OneUnitSearchGoal(a,0);
 		} 
+	}
+	else
+	{
+	    if (!a->finalOBJ)
+		if (a->searchforatack_tick -- ==0)
+		{
+		    a->searchforatack_tick = MAXWAIT_SEARCHATACK_TICK;
+		    OneUnitSearchGoal(a,0);		//atack only face direction
+		} 
+	}
     }
 }
 //=================================

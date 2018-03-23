@@ -132,7 +132,11 @@ int OVERLAY_IMG::SetIScriptNr(int scriptnr)					//set the script function and ad
 	return(-2);
     if (flags & SC_IMAGE_FLAG_INDEPENDENTOFMAINIMG && scriptnr != ISCRIPTNR_INIT)
 	return(-3);
-
+    if (scriptnr == ISCRIPTNR_DEATH)
+    {
+	//prevent do rotation at execute death scripts
+	flags &= ~SC_IMAGE_FLAG_ISCRIPTROTATION;
+    }
     cmdoffs = iscriptinfo.iscriptsid[iscriptid].cmdbufoffs[scriptnr];
     //if have command for this iscriptnr
     if (cmdoffs)
