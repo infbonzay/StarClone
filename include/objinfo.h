@@ -33,11 +33,6 @@ int  GetWeaponDamage(SCUNIT SC_Unit,int playernr,int weapon_id);
 
 int  GetArmor(OBJ *a,int armorupgnr,int *upgradenr,int *upgarmor);
 int  GetShieldArmor(OBJ *a,int *upgradenr);
-int  GetRotatePos(OBJ *a);
-int  GetDestRotatePos(OBJ *a);
-void SetRotatePos(OBJ *a,float storonasveta);
-int  ModifyRotatePos(OBJ *a,int maxsides,float factor,int deststorona);
-void SetDestRotatePos(OBJ *a,int deststoronasveta);
 int  GetCloakRange(OBJ *a,OBJstruct *b);
 
 int  GetNrSomeObjects(OBJ *a,int *newunit,char **countmes);

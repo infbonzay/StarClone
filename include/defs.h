@@ -22,12 +22,8 @@ typedef unsigned char SCUNIT;
 
 #define STIMPACKTIME		(5<<8)
 #define STIMPACKMINLIFE		(10<<8)
-#define MAXATACKHITS		4
 //=============================
 #define MAXMANA			(200<<8)
-//=============================
-#define GROUNDOBJ		0
-#define AIROBJ			1
 //=============================
 
 #define INTERCEPTORREFRESHMYPARENT		100
@@ -51,13 +47,11 @@ typedef unsigned char SCUNIT;
 #define GHOSTRELEASENUKE		1
 
 
-
 #define MAXBEGINPROBE		4	//four probes-unit at begin
 //=============================
 #define TIMEFORCLICKBUTON	2
 
 #define TIMETOUNLOADUNIT	20			//time for unload units
-#define TIMETOMAKEMAGEDAMAGE	5
 
 #define VERYSLOWSPEED		0
 #define SLOWEDSPEED		1
@@ -121,20 +115,13 @@ typedef unsigned char SCUNIT;
 #define MAXFONTS		8
 #define MAXGAMERCOLORS		16
 
-#define COLOR1           ((REDLIFE<<16)+YELLOWLIFE)
-#define COLOR2           ((GREENLIFE<<16)+COLORSHIELD)
-#define COLOR3           ((COLORMAGE<<16)+GREENLIFE)
-#define COLORHR          0x75
-#define _COLOR_RAMKA_    114
-#define _COLOR_LIT_      REDLIFE
-
 #define MAXSIZEBUILD 256
 #define SIZEXRANGEFORBUILD (MAXSIZEBUILD/SIZESPRLANSHX)
 #define SIZEYRANGEFORBUILD (MAXSIZEBUILD/SIZESPRLANSHY)
 #define SIZERANGEFORBUILD  (SIZEXRANGEFORBUILD*SIZEYRANGEFORBUILD)
-#define PATRATEDIVIDE  2//2*2-odin kvadrat
 
-#define FACTORBUILDTELEPORT 0xa0
+#define COLORHR          0x75
+
 #define BLACKGRADCOLOR 32
 #define WHITEGRADCOLOR 32
 #define BEXPLGRADCOLOR 63
@@ -150,7 +137,6 @@ typedef unsigned char SCUNIT;
 #define MAXTICKS         256
 #define MAXSPEED         20
 #define MAXSPEEDRANGE    20
-#define HIESTOBJFLY      45
 #define NUKE_MAXAIR_YPOS 300
 #define INITIAL_NUKE_YPOS 16
 
@@ -192,14 +178,7 @@ typedef unsigned char SCUNIT;
 #define FACTORMULX  MAXIMSIZEMINIMAP/MAXXMAP
 #define FACTORMULY  MAXIMSIZEMINIMAP/MAXYMAP
 
-#define BEGINMAGE    55
 #define MAXSELECTMAN 12
-
-#define VARDESTINATIONROCKET 1	//if 0-maker,1-destination
-#define VARBUILD     		2
-#define VARMOVIE     		4
-#define VARFULLLIFE  		4
-#define SHADOWS      		0x80
 
 //prop
 #define VARNOTWORK  	  		0x00000001
@@ -269,17 +248,11 @@ typedef unsigned char SCUNIT;
 #define SIZEXKUBIK	3
 #define SIZEYKUBIK	4
 
-#define CIRCLE1                253-1
-#define COLOREMYOBJ            GREENLIFE
-#define COLORENEUTRALOBJ       YALOWLIFE
-#define COLOREENEMYOBJ         REDLIFE
 //===========================================
 #define TERRAIN                	0x01
 #define UNITS                  	0x02
 
 #define MAPREGENERATION        	60
-
-#define BEGINCONSTRDELTA	20
 
 //OBJstruct
 #define NOADDSTATSATCONSTR	0x01
@@ -357,14 +330,6 @@ typedef unsigned char SCUNIT;
 #define MAPSCROLLTICKS 		3
 #define NEXTLARVAEMOVETICK	100
 //=========================================
-//lo statuses
-#define LOFIRSTINV		0x01
-#define LONOINV			0x02
-#define LOCOPYPREVMIRROR	0x04
-#define LONOCLEAR		0x08
-
-#define LOMALLOCKED		0x80
-//=========================================
 //=====================line properties
 #define PROPDECONSTRUCT		0
 #define PROPNORMAL1		1
@@ -418,8 +383,6 @@ typedef unsigned char SCUNIT;
 
 #define MAXGEYSERGASNR			4000
 #define MAXMINERALSNR			1500
-
-#define DRONEBUILD_STORONASVETA		8
 
 #define MAXCHATSYMB			50
 #define SYSTEMCHAT			-1
