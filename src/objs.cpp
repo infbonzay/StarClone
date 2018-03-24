@@ -4237,7 +4237,7 @@ OBJ *FindObjForAtack(OBJ *a,
 				    if (weaponmask & 4)		//atackfacedirectiononly
 				    {
 					neededside = CalcDirection(GetOBJx256(a),GetOBJy256(a),GetOBJx256(a2),GetOBJy256(a2));
-					if (abs(a->mainimage->side-neededside)/8>3)
+					if (abs(a->mainimage->side-neededside)/8 > 1)
 					    continue;
 				    }
 				    mindeltaz[j] = deltaz;
@@ -5271,7 +5271,7 @@ void AllOBJMoving(void)
 int TryToEnterNydus(OBJ *a,OBJ *nydus)
 {
     int x,y;
-    if (nydus->doubleunit && GetUnitRace(a->SC_Unit) == ZERGRACE || IsGroundUnit(a->SC_Unit))
+    if (nydus->doubleunit && GetUnitRace(a->SC_Unit) == ZERGRACE && IsGroundUnit(a->SC_Unit))
     {
 	Play_sfxdata_id(nydus,SFXDATA_INTONYDUS,4,0);
 	getcoordofnewunit(nydus->doubleunit,a->SC_Unit,&x,&y);
