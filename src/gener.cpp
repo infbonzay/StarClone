@@ -101,6 +101,7 @@ int main(int c,char **parm,char **env)
        fflush(stdout);
     }
     getcwd(GAMEPATH,sizeof(GAMEPATH)-1);//get temp pwd directory, it will be change after load config
+    printf("SIZEOF SOMEINFO UNION=%d\n",sizeof(SOMEINFO));
     printf("OBJ=%d OBJstruct=%d\n",sizeof(OBJ),sizeof(OBJstruct));
     do{
 	printf("Loading config file " SC_CONFIGFILE "\n");

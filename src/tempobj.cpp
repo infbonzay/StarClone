@@ -219,9 +219,12 @@ OBJ *CreateUnitsFromMAP(struct unit_on_map *unit,struct mapinfo *loadedmap)
 		a = createunitwithproperties(unit->xpos,unit->ypos,unit->unit_type,unit->player,
 					     unit->special_props,unit->special_prop2,unit->state_flags,
 					     unit->hitpoints,unit->shieldpoints,unit->energypoints,unit->resource_count,unit->units_in_hangar);
-		a->serial1 = unit->unit_serialnumberfirst;
-		a->serial2 = unit->unit_serialnumbersecond;
+//		a->serial1 = unit->unit_serialnumberfirst;
+//		a->serial2 = unit->unit_serialnumbersecond;
 		a->paried = unit->paried;
+		a->data.beforestartplay.serial1 = unit->unit_serialnumberfirst;
+		a->data.beforestartplay.serial2 = unit->unit_serialnumbersecond;
+//		a->data.beforestartplay.paried = unit->paried;
 	    }
 	    else
 	    {
@@ -681,10 +684,11 @@ void ConnectingPairBuilds(struct mapinfo *loadedmap)
 	{
 	    a=objects[i];
 	    if (a->paried==ZERGPARIED)
+//	    if (a->data.beforestartplay.paried==ZERGPARIED)
 	    {
 		for (j=i+1;j<MaxObjects;j++)
 		{
-		    if (a->serial2==objects[j]->serial1)
+		    if (a->data.beforestartplay.serial2==objects[j]->data.beforestartplay.serial1)
 		    {
 			//found doubles builds
 			b=loadobj(objects[j]->SC_Unit);

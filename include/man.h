@@ -129,6 +129,12 @@ union SOMEINFO
     {
 	unsigned char	waitbeforemove;
     }critter;
+    struct
+    {
+	int serial1;
+	int serial2;
+//	char paried;
+    }beforestartplay;
 };
 //=======================================
 struct OBJ
@@ -177,8 +183,8 @@ struct OBJ
 	unsigned char	movetoobj_tick;
 	int		creepbuildlist_ID;
 	int 		createcycle;
-	int 		serial1;
-	int 		serial2;
+//	int 		serial1;
+//	int 		serial2;
 	char		paried;
 
 	SOMEINFO 	data;
@@ -192,7 +198,7 @@ struct OBJ
 	signed char	atackcooldowntime;	//coolddown after atack
 	unsigned char	usedweapon_id;
 	
-        unsigned char	curentmode;
+//        unsigned char	curentmode;
         unsigned char	ammo;
 
         unsigned char	color;               //tsvet unita
@@ -229,7 +235,6 @@ struct OBJ
 	unsigned char   shieldrechargeenabled;	//if 1 the recharge shield appear
 
 	unsigned short	whatbuildconstr;
-	unsigned char	curentatacknr;		//curent atack number ,if ==0 and maxbullets!=0 need recharge on base
 
 	unsigned char	obj_see;			//8-bit for each players
 	unsigned char	obj_invsee;			//8-bit for each players

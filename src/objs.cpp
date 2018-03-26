@@ -354,8 +354,6 @@ struct OBJ *createobjlowlevel(OBJ *workerobj,int x,int y,SCUNIT SC_Unit,int play
 	a->health=STARTBUILDLIFE;
     }
     createobjregen();
-//    a->curentatacknr = b->maxbullets;
-//    a->timeflybeforerecharge = b->timeflybeforerecharge;
     a->sfxplay.sfxtypeplayed = -1;
     a->sfxplay.nrsfxplayed = -1;
     a->sfxplay.nrselectplayed = 0;
