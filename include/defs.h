@@ -331,9 +331,9 @@ typedef unsigned char SCUNIT;
 #define NEXTLARVAEMOVETICK	100
 //=========================================
 //=====================line properties
-#define PROPDECONSTRUCT		0
-#define PROPNORMAL1		1
-#define PROPNORMAL2		2
+#define PROPNORMAL1		0
+#define PROPNORMAL2		1
+#define PROPDECONSTRUCT		2
 #define PROPDEUPGRADE		3
 #define PROPONAIR		4
 #define PROPBUILDSIMPLE		5
