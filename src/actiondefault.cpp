@@ -587,6 +587,8 @@ int QueenAction(struct OBJ *a,MAIN_IMG *img)
 {
     int x,y,flyflag;
     struct OBJ *c;
+    if (a->prop & VARHOLDPOSBIT)
+        return(0);
     if (a->modemove == MODEINFEST)
     {
 	if (a->data.queeninfest.actionbit)
@@ -618,8 +620,6 @@ int QueenAction(struct OBJ *a,MAIN_IMG *img)
 	}
 	return 1;
     }
-    if (a->prop & VARHOLDPOSBIT)
-        return(0);
     if (a->data.queeninfest.infestrefreshbit-- == 0)
     {
 	a->data.queeninfest.infestrefreshbit = QUEENINFEST_TICK;

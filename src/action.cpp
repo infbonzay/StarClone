@@ -556,7 +556,7 @@ void addremoveuniteffectfrommap(OBJ *a,int plusminus,mapinfo *testmap)
     	    sx2 = x/32 + 1;		
     	    if (x%32 > 16)
     	    {
-    		sx2++;			//x%32 > 16 or < 16
+    		sx2++;			//the position is more to the right, need to change map position +1 to right
     		sx1++;
     	    }
     	    sy2 = y/32 + 1;
@@ -568,14 +568,14 @@ void addremoveuniteffectfrommap(OBJ *a,int plusminus,mapinfo *testmap)
     	    sx2 = x/32 + 2;		
     	    if (x%32 > 16)
     	    {
-    		sx2++;			//x%32 > 16 or < 16
+    		sx2++;			//the position is more to the right, need to change map position +1 to right
     		sx1++;
     	    }
     	    sy1 = y/32 - 3;
     	    sy2 = y/32 + 2;		
     	    if (y%32 > 16)
     	    {
-    		sy2++;			//x%32 > 16 or < 16
+    		sy2++;			//the position is more to the bottom, need to change map position +1 to bottom
     		sy1++;
     	    }
     	    break;
@@ -593,16 +593,20 @@ void addremoveuniteffectfrommap(OBJ *a,int plusminus,mapinfo *testmap)
     }
 }
 //=================================
+//SCV repair tick goes here
+//return 0 - if complete repairing or not neede repair
+//=================================
 int RepairUnit(int playernr,OBJ *scv,OBJ *a)
 {
     OBJstruct *b;
     if (a->health < GetUnitMaxHealth(a->SC_Unit))
     {
 	b=loadobj(a->SC_Unit);
+	//check if have enough resources for repair
 	if (CheckResourcePlayerBITS(playernr,b->repairmin * CODEFORQUICKMAKE,b->repairgas * CODEFORQUICKMAKE) == CHECKRES_OK)
 	{
 	    a->health += b->repairlife * CODEFORQUICKMAKE;
-	    AddRemoveBloodFlameOverlays(a);
+	    AddRemoveBloodFlameOverlays(a);	//change overlay blood|flame
 	    
 	    ChangeResourcePlayerBITS(playernr,MINUSFACTOR,b->repairmin * CODEFORQUICKMAKE,b->repairgas * CODEFORQUICKMAKE);
 	    if (a->health < GetUnitMaxHealth(a->SC_Unit))

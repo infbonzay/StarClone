@@ -125,7 +125,7 @@ int BAction_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int actiononplayers,int con
     for (i=0;i<TRIG_MAX_ACTIONS;i++)
     {
 	    triggset=0;
-	    if (temptrg->action[i].TriggerEntryFlags&(TRIGGERENTRYFLAG_STATEDISABLED|TRIGGERENTRYFLAG_EXECUTED))
+	    if (temptrg->action[i].TriggerEntryFlags & (TRIGGERENTRYFLAG_STATEDISABLED|TRIGGERENTRYFLAG_EXECUTED))
 	    {
 		triggset=1;
 		triggcnt+=triggset;
@@ -333,12 +333,12 @@ void Briefing_ScrollText(MENUSTR *allmenus)
     int i,skip;
     for (i=0;i<MAX_BRIEF_SLOTS;i++)
     {
-	if (brief_slots[i].command==PORTRAIT_TALKING||brief_slots[i].command==PORTRAIT_NONE_MESSAGESCROLL)
+	if (brief_slots[i].command == PORTRAIT_TALKING || brief_slots[i].command == PORTRAIT_NONE_MESSAGESCROLL)
 	{
 	    brief_slots[i].skippixels--;
-	    if (brief_slots[i].skippixels<brief_slots[i].maxskippixels)
-		brief_slots[i].skippixels=brief_slots[i].maxskippixels;
-	    if (brief_slots[i].skippixels>0)
+	    if (brief_slots[i].skippixels < brief_slots[i].maxskippixels)
+		brief_slots[i].skippixels = brief_slots[i].maxskippixels;
+	    if (brief_slots[i].skippixels > 0)
 		skip=0;
 	    else
 		skip=brief_slots[i].skippixels/BRIEFSCROLLTEXTSPEED;
@@ -368,15 +368,15 @@ void Reload_Briefing(struct mapinfo *info,MENUSTR *allmenus)
     Briefing_SetPause(-1,0);
     for (i=0;i<TRIG_MAX_CONDITIONS;i++)
     {
-	    temptrg=&(*alltrigs)[i];
-	    if (temptrg->condition[i].conditiontype==TRG_CONDITIONTYPE_NONE)
+	    temptrg = &(*alltrigs)[i];
+	    if (temptrg->condition[i].conditiontype == TRG_CONDITIONTYPE_NONE)
 		break;
-	    temptrg->condition[i].SwitchState&=~TRIGGERCONDITIONSTATE_CHECKED;
+	    temptrg->condition[i].SwitchState &= ~TRIGGERCONDITIONSTATE_CHECKED;
 	    for (j=0;j<TRIG_MAX_ACTIONS;j++)
 	    {
-		if (temptrg->action[j].actiontype==BTRG_ACTIONTYPE_NONE)
+		if (temptrg->action[j].actiontype == BTRG_ACTIONTYPE_NONE)
 		    break;
-	        temptrg->action[j].TriggerEntryFlags&=~TRIGGERENTRYFLAG_EXECUTED;
+	        temptrg->action[j].TriggerEntryFlags &= ~TRIGGERENTRYFLAG_EXECUTED;
 	    }
     }
     if (soundid>=0)

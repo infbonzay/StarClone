@@ -45,7 +45,6 @@ void setmemd(char *adr,int count,int value);
 //==================================
 int CalcTotalDistance(int fromspeed,int tospeed,int acceleration);
 
-void recalcxy(struct OBJ *x);
 int  strscmps(char *strvalue,char *soundtypes[],int counttypes);
 int  rmdirrec(const char *dirname);
 long long FILElength(FILE *descriptor);

@@ -164,14 +164,6 @@ int strscmps(char *strvalue,char *soundtypes[],int counttypes)
     return -1;
 }
 //==================================
-void recalcxy(struct OBJ *x)
-{
-//    x->deltax=(short int)(x->destx-x->sourcex);
-//    x->deltay=(short int)(x->desty-x->sourcey);
-//    x->Sq=hypot(x->deltax,x->deltay);
-//    x->Stotal=0;
-}
-//==================================
 int rmdirrec(const char *dirname)
 {
     DIR *dir;
