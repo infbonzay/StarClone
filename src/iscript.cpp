@@ -219,7 +219,8 @@ int comparestrings(char *str,char *strarray[],int nrofstrarray)
     return(-1);
 }
 //============================================
-#define MAXCMDPARAM	5
+#define MAXCMDPARAM		5
+#define MAXCOMPILEBUFSIZE	65535
 int ISCRIPT::CompilePass1(FILE *f)
 {
     int i,k,stridlen,compilebufoffs,retcmd,retstatus=0,intval,isheader,nrparams;
@@ -232,11 +233,11 @@ int ISCRIPT::CompilePass1(FILE *f)
 	DEBUGMESSCR("scriptfile not opened\n");
 	return(-1);
     }
-    compilebuf = (char *)wmalloc(65535);
-    memset(compilebuf,0,65535);
+    compilebuf = (char *)wmalloc(MAXCOMPILEBUFSIZE);
+    memset(compilebuf,0,MAXCOMPILEBUFSIZE);
     isheader=0;
     compilebuf[0x0000] = ISCRIPTCMD_UNKNOWN;			//unknown command
-    compilebufoffs=0x0001;		//lets compile the code from offset 0x0001, offset 0x0000 is reserved
+    compilebufoffs=0x0001;		//lets compile the code from offset 0x0001, offset 0x0000 is reserved for BUGS
     while(1)
     {
 	strid[0]=0;
@@ -286,7 +287,12 @@ int ISCRIPT::CompilePass1(FILE *f)
     		    goto endcompilepass1;
 		}
 		//save script cmd
-		SaveCmdToBuff(compilebuf,compilebufoffs++,1,cmd);
+		SaveCmdToBuff(compilebuf,compilebufoffs,1,cmd);
+		if (++compilebufoffs >= MAXCOMPILEBUFSIZE)
+		{
+    		    retstatus=-1;
+    		    goto endcompilepass1;
+		}
 		cmdsize = iscriptcmdsizeparam[cmd][0];
 		if (cmdsize == 0x80)
 		{
@@ -294,7 +300,11 @@ int ISCRIPT::CompilePass1(FILE *f)
 		    fscanf(f,"%s \n",strid);
 		    nrparams = atoi(strid);
 		    SaveCmdToBuff(compilebuf,compilebufoffs,1,nrparams);		//save nr of params
-		    compilebufoffs++;
+		    if (++compilebufoffs >= MAXCOMPILEBUFSIZE)
+		    {
+    			retstatus=-1;
+    			goto endcompilepass1;
+		    }
 		}
 		else
 		{
@@ -327,7 +337,12 @@ int ISCRIPT::CompilePass1(FILE *f)
 			nameoflabels.AllocAndAddList(strid,stridlen+1);
 //			printf("ref [0x%04x]\n",compilebufoffs);
 		    }
-		    compilebufoffs+=(subcmdsize & 0x7f);
+		    compilebufoffs += (subcmdsize & 0x7f);
+		    if (compilebufoffs >= MAXCOMPILEBUFSIZE)
+		    {
+    			retstatus=-1;
+    			goto endcompilepass1;
+		    }
 		}
 	    }
 	}
@@ -469,7 +484,7 @@ ISCRIPT::ISCRIPT(void)
 //============================================
 int ISCRIPT::CompileIScripts(char *filename)
 {
-    int i,j;
+    int i,j,retcode=0;
     FILE *f = fopen(filename,"r");
     if (!f)
     {
@@ -480,7 +495,7 @@ int ISCRIPT::CompileIScripts(char *filename)
     if (CompilePass1(f))
     {
         printf("cannot complete pass 1\n");
-        return(-1);
+        retcode = -1;
     }
     else
     {
@@ -489,7 +504,7 @@ int ISCRIPT::CompileIScripts(char *filename)
 	    if (CompilePass2(f))
 	    {
 		printf("cannot complete pass 2\n");
-		return(-1);
+    		retcode = -1;
 	    }
 	    else
 	    {
@@ -515,7 +530,7 @@ int ISCRIPT::CompileIScripts(char *filename)
     nameoflabels.DeallocList();
     labeloffsets.FlushList();
     labels.DeallocList();
-    return(0);
+    return(retcode);
 }
 //============================================
 //============================================
