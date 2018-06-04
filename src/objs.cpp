@@ -4687,9 +4687,10 @@ void ShowCircleAndBar(OBJ *a)
 	b = loadobj(a->SC_Unit);
         x = GetOBJx(a);
         y = GetOBJy(a);
-        fromy=desencircle(x-map.MAPXGLOBAL,
+        fromy=drawcircle(x-map.MAPXGLOBAL,
                           y-map.MAPYGLOBAL,
-                          player_aliance(NUMBGAMER,a->playernr),a,b);
+                          player_aliance(NUMBGAMER,a->playernr),
+                          a);
 
 	if (!IsInvincibleOBJ(a))
 	{

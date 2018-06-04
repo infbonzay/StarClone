@@ -165,7 +165,7 @@ int showcircle(int x,int y,GRPFILE *grp,int color)
     return(y+grp->Picture[0].LinesPerPicture+grp->Picture[0].SkipUp);//+5);
 }
 //===================================================
-int desencircle(int x,int y,int st,struct OBJ *a,struct OBJstruct *b)
+int drawcircle(int x,int y,int st,struct OBJ *a)
 {
     int color,flingy_id,sprites_id,images_tbl;
     int nrcircle,circleoffset;
@@ -389,7 +389,7 @@ short unitlimitmes[3][4]=
     {822,816,819,825}
 };
 //==============================================
-void ShowBaseBuildMessage(int XWINPOS,int YWINPOS,OBJ *a,OBJstruct *b)
+void ShowBaseBuildMessage(int XWINPOS,int YWINPOS,OBJ *a)
 {
     char mes[50];
     if (a->playernr!=NUMBGAMER||GetConstructNR(a))
@@ -745,7 +745,7 @@ void printobjparam(void)
 		}
 	    }
 	}
-	ShowBaseBuildMessage(XWINPOS,YWINPOS,a,b);
+	ShowBaseBuildMessage(XWINPOS,YWINPOS,a);
 	ShowUpgradesInBar(XWINPOS,YWINPOS,a,b);
 	addxforlife=0;
     	ss[0]=0;

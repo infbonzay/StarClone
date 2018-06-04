@@ -53,7 +53,7 @@ void desenlife(int x,int y,
 //========================================
 void desenhealth(int x,int y,int kubik,int count,int max);
 void desenhealth2(int x,int y,int kubik,int count,int max);
-int desencircle(int x,int y,int st,struct OBJ *a,struct OBJstruct *b);
+int  drawcircle(int x,int y,int st,struct OBJ *a);
 void workingbuilds(struct OBJ *a);
 void minimap_showobjs(void);
 void putobjsonminimap(void);
