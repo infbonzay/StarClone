@@ -4,9 +4,7 @@
 #ifdef WITHMPQLIB
     #include <mpqlib/StormLib.h>
     #define MPQOPENPARAM SFILE_OPEN_HARD_DISK_FILE
-
-#endif
-#ifdef WITHSTORMLIB
+#elif WITHSTORMLIB
     #include <StormLib/StormLib.h>
     #define MPQOPENPARAM (MPQ_OPEN_FORCE_MPQ_V1 | STREAM_FLAG_READ_ONLY | MPQ_OPEN_NO_LISTFILE)
     #define SFileOpenFileEx SFileOpenFileExStormLibVersion
@@ -15,6 +13,12 @@
     UINT SFileGetFileInfo(HANDLE hMpqOrFile, UINT dwInfoType);
     UINT SFileOpenFileExStormLibVersion(HANDLE hMpq, const char * szFileName, UINT dwSearchScope, HANDLE * phFile);
     UINT SFileHasFileStormLibVersion(HANDLE hMpq, const char * szFileName);
+#else
+    // using mpqlib if not declared both
+    #define WITHMPQLIB
+    
+    #include <mpqlib/StormLib.h>
+    #define MPQOPENPARAM SFILE_OPEN_HARD_DISK_FILE
 #endif
 
 #include "mpqwrapper.h"

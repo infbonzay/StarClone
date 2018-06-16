@@ -87,11 +87,14 @@ OBJS =  obj/flingy.o obj/iscript.o obj/images.o obj/music.o obj/myfifo.o obj/tri
 	obj/hod.o obj/walk.o obj/pylon.o obj/upgrade.o \
 	obj/objinfo.o obj/rand.o obj/vision.o obj/messages.o \
 	obj/grsdl.o obj/mousesdl.o obj/audiolowlevel.o obj/scrolltile.o \
-	obj/player.o obj/debug.o obj/smacker.o obj/smk_bitstream.o obj/smk_hufftree.o 
+	obj/player.o obj/debug.o obj/smacker.o obj/smk_bitstream.o obj/smk_hufftree.o obj/DrawItem.o
 
 $(PROGS): $(OBJS) 
 	$(CXX) -o $(PROGS) $(OBJS) $(LFLAGS)
 
+obj/DrawItem.o: src/DrawItem.cpp include/*.h  Makefile
+	$(CXX) -c $(CFLAGS) src/DrawItem.cpp -o obj/DrawItem.o
+	
 obj/flingy.o: src/flingy.cpp include/*.h  Makefile
 	$(CXX) -c $(CFLAGS) src/flingy.cpp -o obj/flingy.o
 	

@@ -40,6 +40,7 @@
 #include "lists.h"
 #include "triggers.h"
 #include "briefing.h"
+#include "DrawItem.h"
 #include "gamemenu.h"
 
 #define CHECKFORINSTALLEXE
@@ -426,6 +427,104 @@ void MenuAppear(MENUSTR *allmenus,int flag,int elems,MENUFIRSTDATA *menudata,PCX
 //		wclrscr(0);
 //	    backgnd->PutScaledPcx(DELTASCREENX,DELTASCREENY2,0);
 	    for (j=0;j<elemnr;j++)
+	    {
+		menuinfo[j].xpos-=accelertable[i]*menuinfo[j].deltax;
+		menuinfo[j].ypos-=accelertable[i]*menuinfo[j].deltay;
+		menuinfo[j].pcx->PutPcx(menuinfo[j].xpos,menuinfo[j].ypos,
+					menuinfo[j].color1,menuinfo[j].color2,
+					menuinfo[j].transvalue);
+	    }
+	    if (staticmenu)
+		checkanddrawmenu(staticmenu,ITEMNOONEACTIVE,ITEM_NOSAVELOADUNDER);
+	    eventwindowloop();
+	    putmouseonscreen();
+	    wscreenon();
+	    usleep(WAITMENUAPPEAR);
+//	    mytimer.MyNanoSleep(100000000);
+	}
+	wfree(menuinfo);
+	menuinfo=NULL;
+    }
+}
+//==========================================
+void _MenuAppear(MENUSTR *allmenus,int flag,int elems,MENUFIRSTDATA *menudata,PCX *backgnd,MENUSTR *staticmenu)
+{
+    static MENUAPPEARDATA *menuinfo=NULL;
+    static mylistsimple *items = NULL;
+    DrawItemPcx *oneitem;
+    int i,j,stopscript;
+    if (flag == MENU_IN)
+    {
+	if (menuinfo)
+	    printf("Error menu in, but last not out\n");
+	items = new mylistsimple(elems);
+	for (i=0; i < elems; i++)
+	{
+	    if ( allmenus->menu[i].itemtype != ISIMAGE )
+		printf("Error elem(%d) is not IMAGE\n",i);
+	    oneitem = new DrawItemPcx(allmenus->menu[i].item.image->pcx);
+	    items->AddElem( oneitem );
+	    oneitem->SetFlags(DRAWITEM_FLAG_VISIBILITY | DRAWITEM_FLAG_SCRIPTWORKABILITY);
+	    oneitem->SetPcxParam(allmenus->menu[i].item.image->color1,
+				 allmenus->menu[i].item.image->color2,
+				 allmenus->menu[i].item.image->transvalue);
+	    switch(menudata[i].appearposition)
+	    {
+		case MENUAPPEAR_FROMLEFT:
+		    oneitem->SetSpeedParam(100, 0, 6);
+		    oneitem->SetXYPos(allmenus->menu[i].hotdeltax - oneitem->CalcMaxDistance(),
+				      allmenus->menu[i].hotdeltay);
+		    break;
+		case MENUAPPEAR_FROMRIGHT:
+		    oneitem->SetSpeedParam(-100, 0, 6);
+		    oneitem->SetXYPos(allmenus->menu[i].hotdeltax + oneitem->CalcMaxDistance(),
+				      allmenus->menu[i].hotdeltay);
+		    break;
+		case MENUAPPEAR_FROMTOP:
+		    oneitem->SetSpeedParam(0, 100, 6);
+		    oneitem->SetXYPos(allmenus->menu[i].hotdeltax,
+				      allmenus->menu[i].hotdeltay - oneitem->CalcMaxDistance());
+		    break;
+		case MENUAPPEAR_FROMBOTTOM:
+		    oneitem->SetSpeedParam(0, -100, 6);
+		    oneitem->SetXYPos(allmenus->menu[i].hotdeltax,
+				      allmenus->menu[i].hotdeltay + oneitem->CalcMaxDistance());
+		    break;
+	    }
+	}
+	Play_sfxdata_id(NULL,SFXDATA_SNDMENUIN,-1,0);
+	int value=0;
+	do{
+	    memcpy(GRP_vidmem,backgnd->GetPcxRawBytes(),backgnd->xsizePcx()*backgnd->ysizePcx());
+	    stopscript = elems;
+	    for (i = 0; i < elems; i++)
+	    {
+		oneitem = (DrawItemPcx *) items->GetElem(i,NULL);
+		stopscript -= oneitem->Script1();
+		oneitem->Draw();
+	    }
+	    if (staticmenu)
+		checkanddrawmenu(staticmenu,ITEMNOONEACTIVE,ITEM_NOSAVELOADUNDER);
+	    eventwindowloop();
+	    putmouseonscreen();
+	    wscreenon();
+	    usleep(WAITMENUAPPEAR);
+	    value++;
+	}while( stopscript );
+	printf("%d\n",value);
+	memcpy(GRP_vidmem,backgnd->GetPcxRawBytes(),backgnd->xsizePcx()*backgnd->ysizePcx());
+	Play_sfxdata_id(NULL,SFXDATA_SNDMENULOCK,-1,0);
+    }
+    else
+    {
+	Play_sfxdata_id(NULL,SFXDATA_SNDMENUOUT,-1,0);
+	for (i=MAXACCEL-1;i>=0;i--)
+	{
+	    memcpy(GRP_vidmem,backgnd->GetPcxRawBytes(),backgnd->xsizePcx()*backgnd->ysizePcx());
+//	    if (DELTASCREENY2)
+//		wclrscr(0);
+//	    backgnd->PutScaledPcx(DELTASCREENX,DELTASCREENY2,0);
+	    for (j=0;j<elems;j++)
 	    {
 		menuinfo[j].xpos-=accelertable[i]*menuinfo[j].deltax;
 		menuinfo[j].ypos-=accelertable[i]*menuinfo[j].deltay;
