@@ -3,21 +3,21 @@
 
 short mage_descriptions_hod[MAXMAGEATR] =
 {
-  826,				//parasite detected
-  831,				//hallucination
-  1299,				//acid spores
-  1298,				//blind
-  830,				//detector
-  -1,				//ensnare
-  -1,				//defence matrix
-  -1,				//stim pack
-  -1,				//invisible
-  -1,				//lock down
-  -1,				//maelstrom
-  -1,				//stasis field
-  -1,				//plague
-  -1,				//irradiate
-  -1,				//recall
+  STATTXT_PARASITEDETECTED,				//parasite detected
+  STATTXT_HALLUCINATE,					//hallucination
+  STATTXT_ACIDSPORE,					//acid spores
+  STATTXT_BLIND,					//blind
+  STATTXT_DETECTOR,					//detector
+  -1,							//ensnare
+  -1,							//defence matrix
+  -1,							//stim pack
+  -1,							//invisible
+  -1,							//lock down
+  -1,							//maelstrom
+  -1,							//stasis field
+  -1,							//plague
+  -1,							//irradiate
+  -1,							//recall
 };
 
 short ub_constr[3][4] = 

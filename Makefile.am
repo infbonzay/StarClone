@@ -73,10 +73,11 @@ else
 endif
 endif
 PROGS = bin/$(PACKAGE)
-OBJS =  obj/flingy.o obj/iscript.o obj/images.o obj/music.o obj/myfifo.o obj/triggers.o obj/briefing.o obj/video.o \
+OBJS =  obj/DrawItem.o obj/gamemenu.o \
+	obj/flingy.o obj/iscript.o obj/images.o obj/music.o obj/myfifo.o obj/triggers.o obj/briefing.o obj/video.o \
 	obj/network_general.o obj/network_udp.o obj/network_tcp.o obj/network_dc.o obj/network_modem.o \
 	obj/netwgame.o obj/netwplay.o obj/mpqwrapper.o obj/sigorder.o \
-	obj/construct.o obj/market.o obj/menu.o obj/gamemenu.o obj/weapons.o \
+	obj/construct.o obj/market.o obj/menu.o obj/weapons.o \
 	obj/mouse.o obj/fog.o obj/auxil.o obj/rules.o obj/key.o obj/lists.o \
 	obj/mylist.o obj/mytime.o obj/pcx.o obj/wmem.o obj/tbl.o obj/overlay.o \
 	obj/diap.o obj/gener.o obj/gr.o obj/load.o obj/mage.o obj/objlists.o \
@@ -87,7 +88,7 @@ OBJS =  obj/flingy.o obj/iscript.o obj/images.o obj/music.o obj/myfifo.o obj/tri
 	obj/hod.o obj/walk.o obj/pylon.o obj/upgrade.o \
 	obj/objinfo.o obj/rand.o obj/vision.o obj/messages.o \
 	obj/grsdl.o obj/mousesdl.o obj/audiolowlevel.o obj/scrolltile.o \
-	obj/player.o obj/debug.o obj/smacker.o obj/smk_bitstream.o obj/smk_hufftree.o obj/DrawItem.o
+	obj/player.o obj/debug.o obj/smacker.o obj/smk_bitstream.o obj/smk_hufftree.o
 
 $(PROGS): $(OBJS) 
 	$(CXX) -o $(PROGS) $(OBJS) $(LFLAGS)

@@ -115,7 +115,6 @@ public:
     void FreeAndEmptyAll(void);
     inline int   GetFreeElements(void){ return(allocatedelem - totalelem); };
     void  DelElem(void *);
-    void FlushAllPointers();
 };
 
 #endif  /*	_MYLIST_W  */

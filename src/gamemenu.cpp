@@ -292,20 +292,6 @@ void listusers(char *path,mylist *flist)
     } 
 }
 //==========================================
-//#define MAXACCEL 15
-//int accelertable[MAXACCEL]={90,75,62,50,40,31,23,17,12,8,5,3,2,1,1};
-#define MAXACCEL 16
-int accelertable[MAXACCEL]={102,87,73,60,48,37,27,20,15,11,8,5,3,2,1,1};
-			//-15,-14,-13,-12,-11,-10,-7,-5,-4,-3,-3,-2,-1,-1
-//==========================================
-int getbeginposfromaccel(void)
-{
-    int total=0;
-    for (int i=0;i<MAXACCEL;i++)
-	total+=accelertable[i];
-    return(total);
-}
-//==========================================
 void LoadTransPal(char *filename,char *palette,char *menutranspcolors,float factor)
 {
     LoadTransPal(filename,palette,menutranspcolors,factor,0);
@@ -340,151 +326,6 @@ void LoadTransPal(char *filename,char *palette,char *menutranspcolors,float fact
     wfree(filename2);
 }
 //==========================================
-/*void _MenuAppear(MENUSTR *allmenus,int flag,int elems,MENUFIRSTDATA *menudata,PCX *backgnd,MENUSTR *staticmenu)
-{
-    static MENUAPPEARDATA *menuinfo=NULL;
-    static int elemnr;
-    int i,j,e;
-    if (flag==MENU_IN)
-    {
-	if (menuinfo)
-	    printf("Error menu in, but last not out\n");
-	elemnr=elems;
-	menuinfo = (MENUAPPEARDATA*) wmalloc(sizeof(MENUAPPEARDATA)*elemnr);
-	memset(menuinfo,0,sizeof(MENUAPPEARDATA)*elemnr);
-	for (i=0;i<elemnr;i++)
-	{
-	    e=menudata[i].elemid;
-	    if ( allmenus->menu[e].itemtype != ISIMAGE )
-		printf("Error elem(%d) is not IMAGE\n",i);
-	    menuinfo[i].pcx=allmenus->menu[e].item.image->pcx;
-	    menuinfo[i].color1=allmenus->menu[e].item.image->color1;
-	    menuinfo[i].color2=allmenus->menu[e].item.image->color2;
-	    menuinfo[i].transvalue=allmenus->menu[e].item.image->transvalue;
-	    switch(menudata[i].appearposition)
-	    {
-		case MENUAPPEAR_FROMLEFT:
-		    menuinfo[i].xpos=allmenus->menu[e].hotdeltax-getbeginposfromaccel();
-		    menuinfo[i].ypos=allmenus->menu[e].hotdeltay;
-		    menuinfo[i].deltax=1;
-		    menuinfo[i].deltay=0;
-		    break;
-		case MENUAPPEAR_FROMRIGHT:
-		    menuinfo[i].xpos=allmenus->menu[e].hotdeltax+getbeginposfromaccel();
-		    menuinfo[i].ypos=allmenus->menu[e].hotdeltay;
-		    menuinfo[i].deltax=-1;
-		    menuinfo[i].deltay=0;
-		    break;
-		case MENUAPPEAR_FROMTOP:
-		    menuinfo[i].xpos=allmenus->menu[e].hotdeltax;
-		    menuinfo[i].ypos=allmenus->menu[e].hotdeltay-getbeginposfromaccel();
-		    menuinfo[i].deltax=0;
-		    menuinfo[i].deltay=1;
-		    break;
-		case MENUAPPEAR_FROMBOTTOM:
-		    menuinfo[i].xpos=allmenus->menu[e].hotdeltax;
-		    menuinfo[i].ypos=allmenus->menu[e].hotdeltay+getbeginposfromaccel();
-		    menuinfo[i].deltax=0;
-		    menuinfo[i].deltay=-1;
-		    break;
-	    }
-	}
-	Play_sfxdata_id(NULL,SFXDATA_SNDMENUIN,-1,0);
-	for (i=0;i<MAXACCEL;i++)
-	{
-	    memcpy(GRP_vidmem,backgnd->GetPcxRawBytes(),backgnd->xsizePcx()*backgnd->ysizePcx());
-//	    if (DELTASCREENY2)
-//		wclrscr(0);
-//	    backgnd->PutScaledPcx(DELTASCREENX,DELTASCREENY2,0);
-	    for (j=0;j<elemnr;j++)
-	    {
-		menuinfo[j].xpos+=accelertable[i]*menuinfo[j].deltax;
-		menuinfo[j].ypos+=accelertable[i]*menuinfo[j].deltay;
-		menuinfo[j].pcx->PutPcx(menuinfo[j].xpos,menuinfo[j].ypos,
-					menuinfo[j].color1,menuinfo[j].color2,
-					menuinfo[j].transvalue);
-	    }
-	    if (staticmenu)
-		checkanddrawmenu(staticmenu,ITEMNOONEACTIVE,ITEM_NOSAVELOADUNDER);
-	    eventwindowloop();
-	    putmouseonscreen();
-	    wscreenon();
-	    usleep(WAITMENUAPPEAR);
-//	    mytimer.MyNanoSleep(1000000000);
-	}
-	memcpy(GRP_vidmem,backgnd->GetPcxRawBytes(),backgnd->xsizePcx()*backgnd->ysizePcx());
-//	if (DELTASCREENY2)
-//	    wclrscr(0);
-//	backgnd->PutScaledPcx(DELTASCREENX,DELTASCREENY2,0);
-	Play_sfxdata_id(NULL,SFXDATA_SNDMENULOCK,-1,0);
-    }
-    else
-    {
-	Play_sfxdata_id(NULL,SFXDATA_SNDMENUOUT,-1,0);
-	for (i=MAXACCEL-1;i>=0;i--)
-	{
-	    memcpy(GRP_vidmem,backgnd->GetPcxRawBytes(),backgnd->xsizePcx()*backgnd->ysizePcx());
-//	    if (DELTASCREENY2)
-//		wclrscr(0);
-//	    backgnd->PutScaledPcx(DELTASCREENX,DELTASCREENY2,0);
-	    for (j=0;j<elemnr;j++)
-	    {
-		menuinfo[j].xpos-=accelertable[i]*menuinfo[j].deltax;
-		menuinfo[j].ypos-=accelertable[i]*menuinfo[j].deltay;
-		menuinfo[j].pcx->PutPcx(menuinfo[j].xpos,menuinfo[j].ypos,
-					menuinfo[j].color1,menuinfo[j].color2,
-					menuinfo[j].transvalue);
-	    }
-	    if (staticmenu)
-		checkanddrawmenu(staticmenu,ITEMNOONEACTIVE,ITEM_NOSAVELOADUNDER);
-	    eventwindowloop();
-	    putmouseonscreen();
-	    wscreenon();
-	    usleep(WAITMENUAPPEAR);
-//	    mytimer.MyNanoSleep(100000000);
-	}
-	wfree(menuinfo);
-	menuinfo=NULL;
-    }
-}
-*/
-//==========================================
-int MenuAppearScript(DrawItem *item)
-{
-    int accelerate = accelertable[item->tempval1];
-    if (item->speedx > 0)
-	item->xpos += accelerate;
-    else 
-	if (item->speedx < 0)
-	    item->xpos -= accelerate;
-    if (item->speedy > 0)
-	item->ypos += accelerate;
-    else 
-	if (item->speedy < 0)
-	    item->ypos -= accelerate;
-    item->tempval1 += item->tempval2;
-    if (item->tempval1 >= MAXACCEL)
-    {
-	item->tempval2 = -item->tempval2;
-	item->speedx = -item->speedx;
-	item->speedy = -item->speedy;
-	item->tempval1--;
-	item->DisableScriptWork();
-	return(1);
-    }
-    if (item->tempval1 < 0)
-    {
-	item->tempval2 = -item->tempval2;
-	item->speedx = -item->speedx;
-	item->speedy = -item->speedy;
-	item->tempval1++;
-	item->DisableScriptWork();
-	return(1);
-    }
-    
-
-    return(0);
-}
 //==========================================
 void MenuAppear(MENUSTR *allmenus,int flag,int elems,MENUFIRSTDATA *menudata,PCX *backgnd,MENUSTR *staticmenu)
 {
@@ -509,29 +350,28 @@ void MenuAppear(MENUSTR *allmenus,int flag,int elems,MENUFIRSTDATA *menudata,PCX
 	    oneitem->SetPcxParam(allmenus->menu[e].item.image->color1,
 				 allmenus->menu[e].item.image->color2,
 				 allmenus->menu[e].item.image->transvalue);
-	    oneitem->SetScript(&MenuAppearScript);
-	    oneitem->tempval2 = 1;
+	    oneitem->SetScript(&DrawItem::SimpleScript);
 	    switch(menudata[i].appearposition)
 	    {
 		case MENUAPPEAR_FROMLEFT:
 		    oneitem->SetSpeedParam(100, 0, 6);
-		    oneitem->SetXYPos(allmenus->menu[e].hotdeltax - getbeginposfromaccel(),
+		    oneitem->SetXYPos(allmenus->menu[e].hotdeltax - oneitem->SimpleScriptCalcMaxDistance(0),
 				      allmenus->menu[e].hotdeltay);
 		    break;
 		case MENUAPPEAR_FROMRIGHT:
 		    oneitem->SetSpeedParam(-100, 0, 6);
-		    oneitem->SetXYPos(allmenus->menu[e].hotdeltax + getbeginposfromaccel(),
+		    oneitem->SetXYPos(allmenus->menu[e].hotdeltax + oneitem->SimpleScriptCalcMaxDistance(0),
 				      allmenus->menu[e].hotdeltay);
 		    break;
 		case MENUAPPEAR_FROMTOP:
 		    oneitem->SetSpeedParam(0, 100, 6);
 		    oneitem->SetXYPos(allmenus->menu[e].hotdeltax,
-				      allmenus->menu[e].hotdeltay - getbeginposfromaccel());
+				      allmenus->menu[e].hotdeltay - oneitem->SimpleScriptCalcMaxDistance(0) );
 		    break;
 		case MENUAPPEAR_FROMBOTTOM:
 		    oneitem->SetSpeedParam(0, -100, 6);
 		    oneitem->SetXYPos(allmenus->menu[e].hotdeltax,
-				      allmenus->menu[e].hotdeltay + getbeginposfromaccel());
+				      allmenus->menu[e].hotdeltay + oneitem->SimpleScriptCalcMaxDistance(0) );
 		    break;
 	    }
 	}
@@ -590,11 +430,13 @@ void MenuAppear(MENUSTR *allmenus,int flag,int elems,MENUFIRSTDATA *menudata,PCX
 	    if (deltatime > 0)
 		usleep(deltatime);
 	}while( stopscript );
-	items->FlushAllPointers();
+	for (i = 0; i < items->GetMaxElements(); i++)
+	    delete (DrawItemPcx *) items->GetElem(i,NULL);
 	delete items;
 	items = NULL;
     }
     mytimer.DestroyTickCounter(time1);
+//    usleep(1000000);
 }
 //==========================================
 char campaign_race[3]={STAR_PROTOSS_CAMPAIGN,STAR_TERRAN_CAMPAIGN,STAR_ZERG_CAMPAIGN};
