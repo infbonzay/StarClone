@@ -46,24 +46,25 @@ void DrawItem::SetSpeedParam(uint32_t spx,uint32_t spy,uint32_t acc)
     accelerate = acc;
 }
 //=================================================================
-#define MAXACCEL 17
-//const int accelertable[MAXACCEL] = {128,110,94,79,65,52,40,29,21,16,12,8,5,3,2,1,1};
-const int accelertable[MAXACCEL] = {1,1,2,3,5,8,12,16,21,29,40,52,65,79,94,110,128};
+//#define MAXACCEL 17
+//const int accelertable[MAXACCEL] = {1,1,2,3,5,8,12,16,21,29,40,52,65,79,94,110,128};
+#define MAXACCEL 12
+const int accelertable[MAXACCEL] = {1,1,2,3,5,8,13,21,34,55,89,144};
 //=================================================================
 int DrawItem::SimpleScriptCalcMaxDistance(int maxlength)
 {
     int i,total = 0;
+    stopatacceltable = MAXACCEL;
     for (i = 0; i < MAXACCEL; i++)
     {
 	total += accelertable[i];
 /*	if (total >= maxlength )
 	{
-	    stopatacceltable = i;
+	    stopatacceltable = i + 1;
 	    break;
 	}
 */
     }	    
-    stopatacceltable = MAXACCEL;
     tempval1 = stopatacceltable - 1;
     tempval2 = -1;
     return(total);
