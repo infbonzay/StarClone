@@ -296,6 +296,7 @@ void listusers(char *path,mylist *flist)
 //int accelertable[MAXACCEL]={90,75,62,50,40,31,23,17,12,8,5,3,2,1,1};
 #define MAXACCEL 16
 int accelertable[MAXACCEL]={102,87,73,60,48,37,27,20,15,11,8,5,3,2,1,1};
+			//-15,-14,-13,-12,-11,-10,-7,-5,-4,-3,-3,-2,-1,-1
 //==========================================
 int getbeginposfromaccel(void)
 {
@@ -490,6 +491,9 @@ void MenuAppear(MENUSTR *allmenus,int flag,int elems,MENUFIRSTDATA *menudata,PCX
     static mylistsimple *items = NULL;
     DrawItemPcx *oneitem;
     int i,j,e,stopscript;
+    TICKCOUNTER *time1;
+    TIMER_TICK	deltatime;
+    time1 = mytimer.CreateTickCounter();
     if (flag == MENU_IN)
     {
 	if (items)
@@ -532,6 +536,7 @@ void MenuAppear(MENUSTR *allmenus,int flag,int elems,MENUFIRSTDATA *menudata,PCX
 	    }
 	}
 	Play_sfxdata_id(NULL,SFXDATA_SNDMENUIN,-1,0);
+	mytimer.GetDeltaCounter(time1);			//reset delta time
 	do{
 	    memcpy(GRP_vidmem,backgnd->GetPcxRawBytes(),backgnd->xsizePcx()*backgnd->ysizePcx());
 	    stopscript = items->GetMaxElements();
@@ -547,7 +552,10 @@ void MenuAppear(MENUSTR *allmenus,int flag,int elems,MENUFIRSTDATA *menudata,PCX
 	    eventwindowloop();
 	    putmouseonscreen();
 	    wscreenon();
-	    usleep(WAITMENUAPPEAR);
+	    //calculate remain time to sleep (try to sleep MAXWAITMENUAPPEAR 'minus' time of draw entire one cycle)
+	    deltatime = MAXWAITMENUAPPEAR - mytimer.GetDeltaCounter(time1)/1000;
+	    if (deltatime > 0)
+		usleep(deltatime);
 	}while( stopscript );		//wait before all scripts are go at finish
 	memcpy(GRP_vidmem,backgnd->GetPcxRawBytes(),backgnd->xsizePcx()*backgnd->ysizePcx());
 	Play_sfxdata_id(NULL,SFXDATA_SNDMENULOCK,-1,0);
@@ -561,6 +569,7 @@ void MenuAppear(MENUSTR *allmenus,int flag,int elems,MENUFIRSTDATA *menudata,PCX
 	    oneitem = (DrawItemPcx *) items->GetElem(i,NULL);
 	    oneitem->EnableScriptWork();
 	}
+	mytimer.GetDeltaCounter(time1);			//reset delta time
 	do{
 	    memcpy(GRP_vidmem,backgnd->GetPcxRawBytes(),backgnd->xsizePcx()*backgnd->ysizePcx());
 	    stopscript = items->GetMaxElements();
@@ -576,12 +585,16 @@ void MenuAppear(MENUSTR *allmenus,int flag,int elems,MENUFIRSTDATA *menudata,PCX
 	    eventwindowloop();
 	    putmouseonscreen();
 	    wscreenon();
-	    usleep(WAITMENUAPPEAR);
+	    //calculate remain time to sleep (try to sleep MAXWAITMENUAPPEAR 'minus' time of draw entire one cycle)
+	    deltatime = MAXWAITMENUAPPEAR - mytimer.GetDeltaCounter(time1)/1000;
+	    if (deltatime > 0)
+		usleep(deltatime);
 	}while( stopscript );
 	items->FlushAllPointers();
 	delete items;
 	items = NULL;
     }
+    mytimer.DestroyTickCounter(time1);
 }
 //==========================================
 char campaign_race[3]={STAR_PROTOSS_CAMPAIGN,STAR_TERRAN_CAMPAIGN,STAR_ZERG_CAMPAIGN};
