@@ -14,6 +14,8 @@ DrawItem::DrawItem(void)
     speedx = 0;
     speedy = 0;
     accelerate = 0;
+    tempval1 = 0;
+    tempval2 = 0;
 }
 //=================================================================
 void DrawItem::SetFlags(uint8_t flgs)
@@ -21,34 +23,23 @@ void DrawItem::SetFlags(uint8_t flgs)
     flags = flgs;
 }
 //=================================================================
-void DrawItem::DoScript(DrawItem *obj)
+int DrawItem::DoScript(void)
 {
     if ( IfCanScriptWork() )
     {
 	if ( ScriptFunc )
 	{
-	    (*ScriptFunc)(obj);
+	    return (*ScriptFunc)(this);
 	}
     }
-};
+    return(0);
+}
 //=================================================================
 void DrawItem::SetSpeedParam(uint32_t spx,uint32_t spy,uint32_t acc)
 {
     speedx = spx;
     speedy = spy;
     accelerate = acc;
-}
-//=================================================================
-int DrawItem::CalcMaxDistance(void)
-{
-    int total = 0;
-    int speed = max( abs(speedx), abs(speedy ) );
-    while (speed > 0)
-    {
-	total += speed;
-	speed -= accelerate;
-    }
-    return(total);
 }
 //=================================================================
 //=================================================================
@@ -70,57 +61,6 @@ void DrawItemPcx::Draw(void)
     {
         obj->PutPcx(xpos, ypos, holecolor, transpcolor, grdtransp);
     }
-}
-//=================================================================
-int DrawItemPcx::Script1(void)
-{
-    if (!IfCanScriptWork())
-	return(1);
-    if (speedx == 0 && speedy == 0)
-	return(1);
-    xpos += speedx;
-    ypos += speedy;
-    if (speedx > 0)
-    {
-	speedx -= accelerate;
-	if ( speedx <= 0 )
-	{
-	    DisableScriptWork();
-	    return(1);	    
-	}
-    }
-    else
-	if (speedx < 0)
-	{
-	    speedx += accelerate;
-	    if ( speedx >= 0 )
-	    {
-		DisableScriptWork();
-		return(1);	    
-	    }
-	}
-    {
-    if (speedy > 0)
-    {
-	    speedy -= accelerate;
-	    if ( speedy <= 0 )
-	    {
-		DisableScriptWork();
-		return(1);
-	    }
-    }
-    else
-	if (speedy < 0)
-	{
-	    speedy += accelerate;
-	    if ( speedy >= 0 )
-	    {
-		DisableScriptWork();
-		return(1);
-	    }
-	}
-    }
-    return(0);	    
 }
 //=================================================================
 

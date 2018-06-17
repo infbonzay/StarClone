@@ -640,3 +640,13 @@ void mylistsimple::DelElem(void *elem)
     }
 }
 //=========================================
+void mylistsimple::FlushAllPointers(void)
+{
+    int i;
+    for (i = 0; i < GetMaxElements(); i++)
+    {
+        delete GetElem(i,NULL);
+    }
+//    delete this;
+}
+//=========================================
