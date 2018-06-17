@@ -339,7 +339,7 @@ void LoadTransPal(char *filename,char *palette,char *menutranspcolors,float fact
     wfree(filename2);
 }
 //==========================================
-void _MenuAppear(MENUSTR *allmenus,int flag,int elems,MENUFIRSTDATA *menudata,PCX *backgnd,MENUSTR *staticmenu)
+/*void _MenuAppear(MENUSTR *allmenus,int flag,int elems,MENUFIRSTDATA *menudata,PCX *backgnd,MENUSTR *staticmenu)
 {
     static MENUAPPEARDATA *menuinfo=NULL;
     static int elemnr;
@@ -446,6 +446,7 @@ void _MenuAppear(MENUSTR *allmenus,int flag,int elems,MENUFIRSTDATA *menudata,PC
 	menuinfo=NULL;
     }
 }
+*/
 //==========================================
 int MenuAppearScript(DrawItem *item)
 {
@@ -467,7 +468,7 @@ int MenuAppearScript(DrawItem *item)
 	item->speedx = -item->speedx;
 	item->speedy = -item->speedy;
 	item->tempval1--;
-//	item->DisableScriptWork();
+	item->DisableScriptWork();
 	return(1);
     }
     if (item->tempval1 < 0)
@@ -476,7 +477,7 @@ int MenuAppearScript(DrawItem *item)
 	item->speedx = -item->speedx;
 	item->speedy = -item->speedy;
 	item->tempval1++;
-//	item->DisableScriptWork();
+	item->DisableScriptWork();
 	return(1);
     }
     
@@ -486,22 +487,20 @@ int MenuAppearScript(DrawItem *item)
 //==========================================
 void MenuAppear(MENUSTR *allmenus,int flag,int elems,MENUFIRSTDATA *menudata,PCX *backgnd,MENUSTR *staticmenu)
 {
-    static MENUAPPEARDATA *menuinfo=NULL;
     static mylistsimple *items = NULL;
     DrawItemPcx *oneitem;
     int i,j,e,stopscript;
     if (flag == MENU_IN)
     {
-	if (menuinfo)
-	    printf("Error menu in, but last not out\n");
+	if (items)
+	    printf("Error menu appear, but last menu not dissapear\n");
 	items = new mylistsimple(elems);
 	for (i=0; i < elems; i++)
 	{
 	    e = menudata[i].elemid;
 	    if ( allmenus->menu[e].itemtype != ISIMAGE )
 		printf("Error elem(%d) is not IMAGE\n",i);
-	    oneitem = new DrawItemPcx(allmenus->menu[e].item.image->pcx);
-	    items->AddElem( oneitem );
+	    items->AddElem( oneitem = new DrawItemPcx(allmenus->menu[e].item.image->pcx) );
 	    oneitem->SetFlags(DRAWITEM_FLAG_VISIBILITY | DRAWITEM_FLAG_SCRIPTWORKABILITY);
 	    oneitem->SetPcxParam(allmenus->menu[e].item.image->color1,
 				 allmenus->menu[e].item.image->color2,
@@ -536,10 +535,11 @@ void MenuAppear(MENUSTR *allmenus,int flag,int elems,MENUFIRSTDATA *menudata,PCX
 	do{
 	    memcpy(GRP_vidmem,backgnd->GetPcxRawBytes(),backgnd->xsizePcx()*backgnd->ysizePcx());
 	    stopscript = items->GetMaxElements();
+	    //draw all elements
 	    for (i = 0; i < items->GetMaxElements(); i++)
 	    {
 		oneitem = (DrawItemPcx *) items->GetElem(i,NULL);
-		stopscript -= oneitem->DoScript();
+		stopscript -= oneitem->DoScript();		//decrement if one script finishes
 		oneitem->Draw();
 	    }
 	    if (staticmenu)
@@ -548,16 +548,23 @@ void MenuAppear(MENUSTR *allmenus,int flag,int elems,MENUFIRSTDATA *menudata,PCX
 	    putmouseonscreen();
 	    wscreenon();
 	    usleep(WAITMENUAPPEAR);
-	}while( stopscript );
+	}while( stopscript );		//wait before all scripts are go at finish
 	memcpy(GRP_vidmem,backgnd->GetPcxRawBytes(),backgnd->xsizePcx()*backgnd->ysizePcx());
 	Play_sfxdata_id(NULL,SFXDATA_SNDMENULOCK,-1,0);
     }
     else
     {
 	Play_sfxdata_id(NULL,SFXDATA_SNDMENUOUT,-1,0);
+	//enable all scripting again
+	for (i = 0; i < items->GetMaxElements(); i++)
+	{
+	    oneitem = (DrawItemPcx *) items->GetElem(i,NULL);
+	    oneitem->EnableScriptWork();
+	}
 	do{
 	    memcpy(GRP_vidmem,backgnd->GetPcxRawBytes(),backgnd->xsizePcx()*backgnd->ysizePcx());
 	    stopscript = items->GetMaxElements();
+	    //draw all elements
 	    for (i = 0; i < items->GetMaxElements(); i++)
 	    {
 		oneitem = (DrawItemPcx *) items->GetElem(i,NULL);
@@ -573,8 +580,7 @@ void MenuAppear(MENUSTR *allmenus,int flag,int elems,MENUFIRSTDATA *menudata,PCX
 	}while( stopscript );
 	items->FlushAllPointers();
 	delete items;
-	wfree(menuinfo);
-	menuinfo=NULL;
+	items = NULL;
     }
 }
 //==========================================
