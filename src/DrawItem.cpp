@@ -11,11 +11,8 @@ DrawItem::DrawItem(void)
     SetScript(NULL);
     SetFlags(0x00);
     SetXYPos(0,0);
-    speedx = 0;
-    speedy = 0;
-    accelerate = 0;
-    tempval1 = 0;
-    tempval2 = 0;
+    SetParams(0,0,0);
+    SetTempVars();
 }
 //=================================================================
 DrawItem::~DrawItem()
@@ -36,10 +33,10 @@ int DrawItem::DoScript(void)
 	    return  (this->*DrawItem::ScriptFunc)() ;
 	}
     }
-    return(0);
+    return(1);	//return end of script work
 }
 //=================================================================
-void DrawItem::SetSpeedParam(uint32_t spx,uint32_t spy,uint32_t acc)
+void DrawItem::SetParams(uint32_t spx,uint32_t spy,uint32_t acc)
 {
     speedx = spx;
     speedy = spy;
@@ -51,10 +48,14 @@ void DrawItem::SetSpeedParam(uint32_t spx,uint32_t spy,uint32_t acc)
 #define MAXACCEL 12
 const uint8_t accelertable[MAXACCEL] = {1,1,2,3,5,8,13,21,34,55,89,144};
 //=================================================================
-int DrawItem::SimpleScriptCalcMaxDistance(void)
+void DrawItem::SetTempVars(void)
 {
     tempval1 = MAXACCEL - 1;
     tempval2 = -1;
+}
+//=================================================================
+int DrawItem::SimpleScriptCalcMaxDistance(void)
+{
 //    return(1+1+2+3+4+5+13+21+34+55+89+144);
     return(1+1+2+3+5+8+13+21+34+55+89+144);
 }

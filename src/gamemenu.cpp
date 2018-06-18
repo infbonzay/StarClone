@@ -351,25 +351,26 @@ void MenuAppear(MENUSTR *allmenus,int flag,int elems,MENUFIRSTDATA *menudata,PCX
 				 allmenus->menu[e].item.image->color2,
 				 allmenus->menu[e].item.image->transvalue);
 	    oneitem->SetScript(&DrawItem::SimpleScript);
+	    oneitem->SetTempVars();
 	    switch(menudata[i].appearposition)
 	    {
 		case MENUAPPEAR_FROMLEFT:
-		    oneitem->SetSpeedParam(1, 0, 0);
+		    oneitem->SetParams(1, 0, 0);
 		    oneitem->SetXYPos(allmenus->menu[e].hotdeltax - oneitem->SimpleScriptCalcMaxDistance(),
 				      allmenus->menu[e].hotdeltay);
 		    break;
 		case MENUAPPEAR_FROMRIGHT:
-		    oneitem->SetSpeedParam(-1, 0, 0);
+		    oneitem->SetParams(-1, 0, 0);
 		    oneitem->SetXYPos(allmenus->menu[e].hotdeltax + oneitem->SimpleScriptCalcMaxDistance(),
 				      allmenus->menu[e].hotdeltay);
 		    break;
 		case MENUAPPEAR_FROMTOP:
-		    oneitem->SetSpeedParam(0, 1, 0);
+		    oneitem->SetParams(0, 1, 0);
 		    oneitem->SetXYPos(allmenus->menu[e].hotdeltax,
 				      allmenus->menu[e].hotdeltay - oneitem->SimpleScriptCalcMaxDistance());
 		    break;
 		case MENUAPPEAR_FROMBOTTOM:
-		    oneitem->SetSpeedParam(0, -1, 0);
+		    oneitem->SetParams(0, -1, 0);
 		    oneitem->SetXYPos(allmenus->menu[e].hotdeltax,
 				      allmenus->menu[e].hotdeltay + oneitem->SimpleScriptCalcMaxDistance());
 		    break;
@@ -386,7 +387,6 @@ void MenuAppear(MENUSTR *allmenus,int flag,int elems,MENUFIRSTDATA *menudata,PCX
 	    oneitem = (DrawItemPcx *) items->GetElem(i,NULL);
 	    oneitem->EnableScriptWork();
 	}
-	
     }
     mytimer.GetDeltaCounter(time1);			//reset delta time	
     do{

@@ -10,7 +10,7 @@
 class DrawItem
 {
 protected:
-    uint8_t	flags;		//0x01	-	visibility bit
+    uint8_t	flags;		
     int32_t	xpos;		//screen x position
     int32_t	ypos;		//screen y position
     int32_t	speedx;
@@ -18,14 +18,13 @@ protected:
     int32_t	accelerate;
     int		tempval1;
     int		tempval2;
-				//0x02	-	script work bit
     int 	(DrawItem::*ScriptFunc)(void);
 public:
 
 		DrawItem();
 		~DrawItem();
     
-    void 	Draw(void);
+//    void 	Draw(void);
     void 	SetFlags(uint8_t flags);
     inline void EnableVisible(void) { SetFlags(flags |= DRAWITEM_FLAG_VISIBILITY); };
     inline void DisableVisible(void) { SetFlags(flags &= ~DRAWITEM_FLAG_VISIBILITY); };
@@ -36,7 +35,8 @@ public:
     inline int	IfCanScriptWork(void) { return flags & DRAWITEM_FLAG_SCRIPTWORKABILITY; }; 
     inline void SetXYPos(int x,int y) { xpos = x; ypos = y; };
     int  	DoScript(void);
-    void	SetSpeedParam(uint32_t spx, uint32_t spy, uint32_t acc);
+    void	SetParams(uint32_t spx, uint32_t spy, uint32_t acc);
+    void 	SetTempVars(void);
     int		SimpleScript(void);
     int		SimpleScriptCalcMaxDistance(void);
 
