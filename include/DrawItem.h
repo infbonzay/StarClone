@@ -15,13 +15,12 @@ protected:
     int32_t	ypos;		//screen y position
     int32_t	speedx;
     int32_t	speedy;
-    uint32_t	accelerate;
-    int32_t	stopatacceltable;
+    int32_t	accelerate;
+    int		tempval1;
+    int		tempval2;
 				//0x02	-	script work bit
     int 	(DrawItem::*ScriptFunc)(void);
 public:
-    int		tempval1;
-    int		tempval2;
 
 		DrawItem();
 		~DrawItem();
@@ -39,7 +38,7 @@ public:
     int  	DoScript(void);
     void	SetSpeedParam(uint32_t spx, uint32_t spy, uint32_t acc);
     int		SimpleScript(void);
-    int		SimpleScriptCalcMaxDistance(int maxlength);
+    int		SimpleScriptCalcMaxDistance(void);
 
 };
 

@@ -333,7 +333,6 @@ void MenuAppear(MENUSTR *allmenus,int flag,int elems,MENUFIRSTDATA *menudata,PCX
     DrawItemPcx *oneitem;
     int i,j,e,stopscript;
     TICKCOUNTER *time1;
-    PCX *pcx;
     TIMER_TICK	deltatime;
     time1 = mytimer.CreateTickCounter();
     if (flag == MENU_IN)
@@ -346,7 +345,7 @@ void MenuAppear(MENUSTR *allmenus,int flag,int elems,MENUFIRSTDATA *menudata,PCX
 	    e = menudata[i].elemid;
 	    if ( allmenus->menu[e].itemtype != ISIMAGE )
 		printf("Error elem(%d) is not IMAGE\n",i);
-	    items->AddElem( oneitem = new DrawItemPcx(pcx = allmenus->menu[e].item.image->pcx) );
+	    items->AddElem( oneitem = new DrawItemPcx(allmenus->menu[e].item.image->pcx) );
 	    oneitem->SetFlags(DRAWITEM_FLAG_VISIBILITY | DRAWITEM_FLAG_SCRIPTWORKABILITY);
 	    oneitem->SetPcxParam(allmenus->menu[e].item.image->color1,
 				 allmenus->menu[e].item.image->color2,
@@ -355,24 +354,24 @@ void MenuAppear(MENUSTR *allmenus,int flag,int elems,MENUFIRSTDATA *menudata,PCX
 	    switch(menudata[i].appearposition)
 	    {
 		case MENUAPPEAR_FROMLEFT:
-		    oneitem->SetSpeedParam(100, 0, 6);
-		    oneitem->SetXYPos(allmenus->menu[e].hotdeltax - oneitem->SimpleScriptCalcMaxDistance( pcx->xsizePcx() ),
+		    oneitem->SetSpeedParam(1, 0, 0);
+		    oneitem->SetXYPos(allmenus->menu[e].hotdeltax - oneitem->SimpleScriptCalcMaxDistance(),
 				      allmenus->menu[e].hotdeltay);
 		    break;
 		case MENUAPPEAR_FROMRIGHT:
-		    oneitem->SetSpeedParam(-100, 0, 6);
-		    oneitem->SetXYPos(allmenus->menu[e].hotdeltax + oneitem->SimpleScriptCalcMaxDistance( pcx->xsizePcx() ),
+		    oneitem->SetSpeedParam(-1, 0, 0);
+		    oneitem->SetXYPos(allmenus->menu[e].hotdeltax + oneitem->SimpleScriptCalcMaxDistance(),
 				      allmenus->menu[e].hotdeltay);
 		    break;
 		case MENUAPPEAR_FROMTOP:
-		    oneitem->SetSpeedParam(0, 100, 6);
+		    oneitem->SetSpeedParam(0, 1, 0);
 		    oneitem->SetXYPos(allmenus->menu[e].hotdeltax,
-				      allmenus->menu[e].hotdeltay - oneitem->SimpleScriptCalcMaxDistance( pcx->ysizePcx() ) );
+				      allmenus->menu[e].hotdeltay - oneitem->SimpleScriptCalcMaxDistance());
 		    break;
 		case MENUAPPEAR_FROMBOTTOM:
-		    oneitem->SetSpeedParam(0, -100, 6);
+		    oneitem->SetSpeedParam(0, -1, 0);
 		    oneitem->SetXYPos(allmenus->menu[e].hotdeltax,
-				      allmenus->menu[e].hotdeltay + oneitem->SimpleScriptCalcMaxDistance( pcx->ysizePcx() ) );
+				      allmenus->menu[e].hotdeltay + oneitem->SimpleScriptCalcMaxDistance());
 		    break;
 	    }
 	}

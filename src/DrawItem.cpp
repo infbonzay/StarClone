@@ -49,27 +49,16 @@ void DrawItem::SetSpeedParam(uint32_t spx,uint32_t spy,uint32_t acc)
 //#define MAXACCEL 17
 //const int accelertable[MAXACCEL] = {1,1,2,3,5,8,12,16,21,29,40,52,65,79,94,110,128};
 #define MAXACCEL 12
-const int accelertable[MAXACCEL] = {1,1,2,3,5,8,13,21,34,55,89,144};
+const uint8_t accelertable[MAXACCEL] = {1,1,2,3,5,8,13,21,34,55,89,144};
 //=================================================================
-int DrawItem::SimpleScriptCalcMaxDistance(int maxlength)
+int DrawItem::SimpleScriptCalcMaxDistance(void)
 {
-    int i,total = 0;
-    stopatacceltable = MAXACCEL;
-    for (i = 0; i < MAXACCEL; i++)
-    {
-	total += accelertable[i];
-/*	if (total >= maxlength )
-	{
-	    stopatacceltable = i + 1;
-	    break;
-	}
-*/
-    }	    
-    tempval1 = stopatacceltable - 1;
+    tempval1 = MAXACCEL - 1;
     tempval2 = -1;
-    return(total);
+//    return(1+1+2+3+4+5+13+21+34+55+89+144);
+    return(1+1+2+3+5+8+13+21+34+55+89+144);
 }
-//==========================================
+//=================================================================
 int DrawItem::SimpleScript(void)
 {
     accelerate = accelertable[ tempval1 ];
@@ -84,7 +73,7 @@ int DrawItem::SimpleScript(void)
 	if (speedy < 0)
 	    ypos -= accelerate;
     tempval1 += tempval2;
-    if (tempval1 >= stopatacceltable)
+    if (tempval1 >= MAXACCEL)
     {
 	tempval2 = -tempval2;
 	speedx = -speedx;
