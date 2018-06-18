@@ -346,33 +346,34 @@ void MenuAppear(MENUSTR *allmenus,int flag,int elems,MENUFIRSTDATA *menudata,PCX
 	    if ( allmenus->menu[e].itemtype != ISIMAGE )
 		printf("Error elem(%d) is not IMAGE\n",i);
 	    items->AddElem( oneitem = new DrawItemPcx(allmenus->menu[e].item.image->pcx) );
-	    oneitem->SetFlags(DRAWITEM_FLAG_VISIBILITY | DRAWITEM_FLAG_SCRIPTWORKABILITY);
+	    oneitem->AddMoveAction();
+	    oneitem->EnableVisible();
 	    oneitem->SetPcxParam(allmenus->menu[e].item.image->color1,
 				 allmenus->menu[e].item.image->color2,
 				 allmenus->menu[e].item.image->transvalue);
-	    oneitem->SetScript(&DrawItem::SimpleScript);
-	    oneitem->SetTempVars();
+	    oneitem->moveaction->SetMoveScript(&MoveItem::SimpleMoveScript);
+	    oneitem->moveaction->SetTempVars();
 	    switch(menudata[i].appearposition)
 	    {
 		case MENUAPPEAR_FROMLEFT:
-		    oneitem->SetParams(1, 0, 0);
-		    oneitem->SetXYPos(allmenus->menu[e].hotdeltax - oneitem->SimpleScriptCalcMaxDistance(),
+		    oneitem->moveaction->SetParams(1, 0, 0);
+		    oneitem->SetXYPos(allmenus->menu[e].hotdeltax - oneitem->moveaction->SimpleScriptCalcMaxDistance(),
 				      allmenus->menu[e].hotdeltay);
 		    break;
 		case MENUAPPEAR_FROMRIGHT:
-		    oneitem->SetParams(-1, 0, 0);
-		    oneitem->SetXYPos(allmenus->menu[e].hotdeltax + oneitem->SimpleScriptCalcMaxDistance(),
+		    oneitem->moveaction->SetParams(-1, 0, 0);
+		    oneitem->SetXYPos(allmenus->menu[e].hotdeltax + oneitem->moveaction->SimpleScriptCalcMaxDistance(),
 				      allmenus->menu[e].hotdeltay);
 		    break;
 		case MENUAPPEAR_FROMTOP:
-		    oneitem->SetParams(0, 1, 0);
+		    oneitem->moveaction->SetParams(0, 1, 0);
 		    oneitem->SetXYPos(allmenus->menu[e].hotdeltax,
-				      allmenus->menu[e].hotdeltay - oneitem->SimpleScriptCalcMaxDistance());
+				      allmenus->menu[e].hotdeltay - oneitem->moveaction->SimpleScriptCalcMaxDistance());
 		    break;
 		case MENUAPPEAR_FROMBOTTOM:
-		    oneitem->SetParams(0, -1, 0);
+		    oneitem->moveaction->SetParams(0, -1, 0);
 		    oneitem->SetXYPos(allmenus->menu[e].hotdeltax,
-				      allmenus->menu[e].hotdeltay + oneitem->SimpleScriptCalcMaxDistance());
+				      allmenus->menu[e].hotdeltay + oneitem->moveaction->SimpleScriptCalcMaxDistance());
 		    break;
 	    }
 	}
@@ -381,12 +382,12 @@ void MenuAppear(MENUSTR *allmenus,int flag,int elems,MENUFIRSTDATA *menudata,PCX
     else
     {
 	Play_sfxdata_id(NULL,SFXDATA_SNDMENUOUT,-1,0);
-	//enable all scripting again
-	for (i = 0; i < items->GetMaxElements(); i++)
-	{
-	    oneitem = (DrawItemPcx *) items->GetElem(i,NULL);
-	    oneitem->EnableScriptWork();
-	}
+    }
+    //enable move scripting
+    for (i = 0; i < items->GetMaxElements(); i++)
+    {
+        oneitem = (DrawItemPcx *) items->GetElem(i,NULL);
+        oneitem->moveaction->EnableMoveScript();
     }
     mytimer.GetDeltaCounter(time1);			//reset delta time	
     do{
@@ -396,7 +397,7 @@ void MenuAppear(MENUSTR *allmenus,int flag,int elems,MENUFIRSTDATA *menudata,PCX
 	for (i = 0; i < items->GetMaxElements(); i++)
 	{
 	    oneitem = (DrawItemPcx *) items->GetElem(i,NULL);
-	    stopscript -= oneitem->DoScript();		//decrement if one script finishes
+	    stopscript -= oneitem->moveaction->MoveScript();		//decrement if one script finishes
 	    oneitem->Draw();
 	}
 	if (staticmenu)
