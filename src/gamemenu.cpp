@@ -376,29 +376,6 @@ void MenuAppear(MENUSTR *allmenus,int flag,int elems,MENUFIRSTDATA *menudata,PCX
 	    }
 	}
 	Play_sfxdata_id(NULL,SFXDATA_SNDMENUIN,-1,0);
-	mytimer.GetDeltaCounter(time1);			//reset delta time
-	do{
-	    memcpy(GRP_vidmem,backgnd->GetPcxRawBytes(),backgnd->xsizePcx()*backgnd->ysizePcx());
-	    stopscript = items->GetMaxElements();
-	    //draw all elements
-	    for (i = 0; i < items->GetMaxElements(); i++)
-	    {
-		oneitem = (DrawItemPcx *) items->GetElem(i,NULL);
-		stopscript -= oneitem->DoScript();		//decrement if one script finishes
-		oneitem->Draw();
-	    }
-	    if (staticmenu)
-		checkanddrawmenu(staticmenu,ITEMNOONEACTIVE,ITEM_NOSAVELOADUNDER);
-	    eventwindowloop();
-	    putmouseonscreen();
-	    wscreenon();
-	    //calculate remain time to sleep (try to sleep MAXWAITMENUAPPEAR 'minus' time of draw entire one cycle)
-	    deltatime = MAXWAITMENUAPPEAR - mytimer.GetDeltaCounter(time1)/1000;
-	    if (deltatime > 0)
-		usleep(deltatime);
-	}while( stopscript );		//wait before all scripts are go at finish
-	memcpy(GRP_vidmem,backgnd->GetPcxRawBytes(),backgnd->xsizePcx()*backgnd->ysizePcx());
-	Play_sfxdata_id(NULL,SFXDATA_SNDMENULOCK,-1,0);
     }
     else
     {
@@ -409,27 +386,36 @@ void MenuAppear(MENUSTR *allmenus,int flag,int elems,MENUFIRSTDATA *menudata,PCX
 	    oneitem = (DrawItemPcx *) items->GetElem(i,NULL);
 	    oneitem->EnableScriptWork();
 	}
-	mytimer.GetDeltaCounter(time1);			//reset delta time
-	do{
-	    memcpy(GRP_vidmem,backgnd->GetPcxRawBytes(),backgnd->xsizePcx()*backgnd->ysizePcx());
-	    stopscript = items->GetMaxElements();
-	    //draw all elements
-	    for (i = 0; i < items->GetMaxElements(); i++)
-	    {
-		oneitem = (DrawItemPcx *) items->GetElem(i,NULL);
-		stopscript -= oneitem->DoScript();
-		oneitem->Draw();
-	    }
-	    if (staticmenu)
-		checkanddrawmenu(staticmenu,ITEMNOONEACTIVE,ITEM_NOSAVELOADUNDER);
-	    eventwindowloop();
-	    putmouseonscreen();
-	    wscreenon();
-	    //calculate remain time to sleep (try to sleep MAXWAITMENUAPPEAR 'minus' time of draw entire one cycle)
-	    deltatime = MAXWAITMENUAPPEAR - mytimer.GetDeltaCounter(time1)/1000;
-	    if (deltatime > 0)
-		usleep(deltatime);
-	}while( stopscript );
+	
+    }
+    mytimer.GetDeltaCounter(time1);			//reset delta time	
+    do{
+	memcpy(GRP_vidmem,backgnd->GetPcxRawBytes(),backgnd->xsizePcx()*backgnd->ysizePcx());
+	stopscript = items->GetMaxElements();
+	//draw all elements
+	for (i = 0; i < items->GetMaxElements(); i++)
+	{
+	    oneitem = (DrawItemPcx *) items->GetElem(i,NULL);
+	    stopscript -= oneitem->DoScript();		//decrement if one script finishes
+	    oneitem->Draw();
+	}
+	if (staticmenu)
+	    checkanddrawmenu(staticmenu,ITEMNOONEACTIVE,ITEM_NOSAVELOADUNDER);
+	eventwindowloop();
+	putmouseonscreen();
+	wscreenon();
+	//calculate remain time to sleep (try to sleep MAXWAITMENUAPPEAR 'minus' time of draw entire one cycle)
+	deltatime = MAXWAITMENUAPPEAR - mytimer.GetDeltaCounter(time1)/1000;
+	if (deltatime > 0)
+	    usleep(deltatime);
+    }while( stopscript );		//wait before all scripts are go at finish
+    if (flag == MENU_IN)
+    {
+	memcpy(GRP_vidmem,backgnd->GetPcxRawBytes(),backgnd->xsizePcx()*backgnd->ysizePcx());
+	Play_sfxdata_id(NULL,SFXDATA_SNDMENULOCK,-1,0);
+    }
+    else
+    {
 	for (i = 0; i < items->GetMaxElements(); i++)
 	    delete (DrawItemPcx *) items->GetElem(i,NULL);
 	delete items;
