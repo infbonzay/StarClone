@@ -334,25 +334,15 @@ void LoadTransPal(char *filename,char *palette,char *menutranspcolors,float fact
     wfree(filename2);
 }
 //==========================================
-void MenuDisappear(MENUAPPEAR *items,MENUSTR *staticmenu)
+void MenuAppearDrawCycle(MENUAPPEAR *items, MENUSTR *staticmenu, TICKCOUNTER *timer)
 {
+    int i,stopscript;
     MenuItemPcx *oneitem;
-    int i,j,e,stopscript;
-    TICKCOUNTER *time1;
-    TIMER_TICK	deltatime;
     char *savedscreen;
+    TIMER_TICK	deltatime;
     
-    time1 = mytimer.CreateTickCounter();
-    Play_sfxdata_id(NULL,SFXDATA_SNDMENUOUT,-1,0);
-    //enable move scripting
-    for (i = 0; i < items->GetMaxElements(); i++)
-    {
-        oneitem = (MenuItemPcx *) items->GetElem(i,NULL);
-        oneitem->moveaction->EnableMoveScript();
-    }
     savedscreen = savescreen();
     do{
-//	memcpy(GRP_vidmem,backgnd->GetPcxRawBytes(),backgnd->xsizePcx()*backgnd->ysizePcx());
 	stopscript = items->GetMaxElements();
 	//draw all elements
 	for (i = 0; i < items->GetMaxElements(); i++)
@@ -368,11 +358,30 @@ void MenuDisappear(MENUAPPEAR *items,MENUSTR *staticmenu)
 	wscreenon();
 	restorescreen(savedscreen);
 	//calculate remain time to sleep (try to sleep MAXWAITMENUAPPEAR 'minus' time of draw entire one cycle)
-	deltatime = MAXWAITMENUAPPEAR - mytimer.GetDeltaCounter(time1)/1000;
+	deltatime = MAXWAITMENUAPPEAR - mytimer.GetDeltaCounter(timer) / 1000;
 	if (deltatime > 0)
 	    usleep(deltatime);
     }while( stopscript );		//wait before all scripts are go at finish
     wfree(savedscreen);
+}
+//==========================================
+void MenuDisappear(MENUAPPEAR *items,MENUSTR *staticmenu)
+{
+    MenuItemPcx *oneitem;
+    int i;
+    TICKCOUNTER *time1;
+    
+    time1 = mytimer.CreateTickCounter();
+    Play_sfxdata_id(NULL,SFXDATA_SNDMENUOUT,-1,0);
+    //enable move scripting
+    for (i = 0; i < items->GetMaxElements(); i++)
+    {
+        oneitem = (MenuItemPcx *) items->GetElem(i,NULL);
+        oneitem->moveaction->EnableMoveScript();
+    }
+
+    MenuAppearDrawCycle(items,staticmenu,time1);
+
     for (i = 0; i < items->GetMaxElements(); i++)
         delete (MenuItemPcx *) items->GetElem(i,NULL);
     delete items;
@@ -384,10 +393,8 @@ MENUAPPEAR *MenuAppear(MENUSTR *allmenus,int elems,MENUFIRSTDATA *menudata,MENUS
 {
     MENUAPPEAR *items;
     MenuItemPcx *oneitem;
-    int i,j,e,stopscript;
+    int i,e;
     TICKCOUNTER *time1;
-    TIMER_TICK	deltatime;
-    char *savedscreen;
     time1 = mytimer.CreateTickCounter();
     items = new MENUAPPEAR(elems);
     for (i=0; i < elems; i++)
@@ -435,28 +442,9 @@ MENUAPPEAR *MenuAppear(MENUSTR *allmenus,int elems,MENUFIRSTDATA *menudata,MENUS
         oneitem->moveaction->EnableMoveScript();
     }
     mytimer.GetDeltaCounter(time1);			//reset delta time	
-    savedscreen = savescreen();
-    do{
-	stopscript = items->GetMaxElements();
-	//draw all elements
-	for (i = 0; i < items->GetMaxElements(); i++)
-	{
-	    oneitem = (MenuItemPcx *) items->GetElem(i,NULL);
-	    stopscript -= oneitem->moveaction->MoveScript();		//decrement if one script finishes
-	    oneitem->Draw();
-	}
-	if (staticmenu)
-	    checkanddrawmenu(staticmenu,ITEMNOONEACTIVE,ITEM_NOSAVELOADUNDER);
-	eventwindowloop();
-	putmouseonscreen();
-	wscreenon();
-	restorescreen(savedscreen);
-	//calculate remain time to sleep (try to sleep MAXWAITMENUAPPEAR 'minus' time of draw entire one cycle)
-	deltatime = MAXWAITMENUAPPEAR - mytimer.GetDeltaCounter(time1)/1000;
-	if (deltatime > 0)
-	    usleep(deltatime);
-    }while( stopscript );		//wait before all scripts are go at finish
-    wfree(savedscreen);
+
+    MenuAppearDrawCycle(items,staticmenu,time1);
+
     Play_sfxdata_id(NULL,SFXDATA_SNDMENULOCK,-1,0);
     mytimer.DestroyTickCounter(time1);
     return(items);
