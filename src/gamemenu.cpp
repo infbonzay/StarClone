@@ -40,7 +40,7 @@
 #include "lists.h"
 #include "triggers.h"
 #include "briefing.h"
-#include "DrawItem.h"
+#include "MenuItem.h"
 #include "gamemenu.h"
 
 #define CHECKFORINSTALLEXE
@@ -85,6 +85,14 @@ char	CHATBOXDIALOGFILE[]="rez\\?textbox.bin";
 #define REZBRIEFFRAMEPCX_OFFSET3	18
 char	REZBRIEFFRAMEPCX_NAME[]="glue\\ready?\\?Frame??.pcx";
 
+//==========================================
+MENUAPPEAR::MENUAPPEAR(int elems) : mylistsimple(elems)
+{
+}
+//==========================================
+MENUAPPEAR::~MENUAPPEAR()
+{
+}
 //==========================================
 FORCE_SLOTS::~FORCE_SLOTS()
 {
@@ -326,35 +334,77 @@ void LoadTransPal(char *filename,char *palette,char *menutranspcolors,float fact
     wfree(filename2);
 }
 //==========================================
-//==========================================
-void MenuAppear(MENUSTR *allmenus,int flag,int elems,MENUFIRSTDATA *menudata,PCX *backgnd,MENUSTR *staticmenu)
+void MenuDisappear(MENUAPPEAR *items,MENUSTR *staticmenu)
 {
-    static mylistsimple *items = NULL;
-    DrawItemPcx *oneitem;
+    MenuItemPcx *oneitem;
     int i,j,e,stopscript;
     TICKCOUNTER *time1;
     TIMER_TICK	deltatime;
+    char *savedscreen;
+    
     time1 = mytimer.CreateTickCounter();
-    if (flag == MENU_IN)
+    Play_sfxdata_id(NULL,SFXDATA_SNDMENUOUT,-1,0);
+    //enable move scripting
+    for (i = 0; i < items->GetMaxElements(); i++)
     {
-	if (items)
-	    printf("Error menu appear, but last menu not dissapear\n");
-	items = new mylistsimple(elems);
-	for (i=0; i < elems; i++)
+        oneitem = (MenuItemPcx *) items->GetElem(i,NULL);
+        oneitem->moveaction->EnableMoveScript();
+    }
+    savedscreen = savescreen();
+    do{
+//	memcpy(GRP_vidmem,backgnd->GetPcxRawBytes(),backgnd->xsizePcx()*backgnd->ysizePcx());
+	stopscript = items->GetMaxElements();
+	//draw all elements
+	for (i = 0; i < items->GetMaxElements(); i++)
 	{
-	    e = menudata[i].elemid;
-	    if ( allmenus->menu[e].itemtype != ISIMAGE )
-		printf("Error elem(%d) is not IMAGE\n",i);
-	    items->AddElem( oneitem = new DrawItemPcx(allmenus->menu[e].item.image->pcx) );
-	    oneitem->AddMoveAction();
-	    oneitem->EnableVisible();
-	    oneitem->SetPcxParam(allmenus->menu[e].item.image->color1,
-				 allmenus->menu[e].item.image->color2,
-				 allmenus->menu[e].item.image->transvalue);
-	    oneitem->moveaction->SetMoveScript(&MoveItem::SimpleMoveScript);
-	    oneitem->moveaction->SetTempVars();
-	    switch(menudata[i].appearposition)
-	    {
+	    oneitem = (MenuItemPcx *) items->GetElem(i,NULL);
+	    stopscript -= oneitem->moveaction->MoveScript();		//decrement if one script finishes
+	    oneitem->Draw();
+	}
+	if (staticmenu)
+	    checkanddrawmenu(staticmenu,ITEMNOONEACTIVE,ITEM_NOSAVELOADUNDER);
+	eventwindowloop();
+	putmouseonscreen();
+	wscreenon();
+	restorescreen(savedscreen);
+	//calculate remain time to sleep (try to sleep MAXWAITMENUAPPEAR 'minus' time of draw entire one cycle)
+	deltatime = MAXWAITMENUAPPEAR - mytimer.GetDeltaCounter(time1)/1000;
+	if (deltatime > 0)
+	    usleep(deltatime);
+    }while( stopscript );		//wait before all scripts are go at finish
+    wfree(savedscreen);
+    for (i = 0; i < items->GetMaxElements(); i++)
+        delete (MenuItemPcx *) items->GetElem(i,NULL);
+    delete items;
+    items = NULL;
+    mytimer.DestroyTickCounter(time1);
+}
+//==========================================
+MENUAPPEAR *MenuAppear(MENUSTR *allmenus,int elems,MENUFIRSTDATA *menudata,MENUSTR *staticmenu)
+{
+    MENUAPPEAR *items;
+    MenuItemPcx *oneitem;
+    int i,j,e,stopscript;
+    TICKCOUNTER *time1;
+    TIMER_TICK	deltatime;
+    char *savedscreen;
+    time1 = mytimer.CreateTickCounter();
+    items = new MENUAPPEAR(elems);
+    for (i=0; i < elems; i++)
+    {
+	e = menudata[i].elemid;
+	if ( allmenus->menu[e].itemtype != ISIMAGE )
+	    printf("Error elem(%d) is not IMAGE\n",i);
+	items->AddElem( oneitem = new MenuItemPcx(allmenus->menu[e].item.image->pcx) );
+	oneitem->AddMoveAction();
+	oneitem->EnableVisible();
+	oneitem->SetPcxParam(allmenus->menu[e].item.image->color1,
+			     allmenus->menu[e].item.image->color2,
+			     allmenus->menu[e].item.image->transvalue);
+	oneitem->moveaction->SetMoveScript(&MoveItem::SimpleMoveScript);
+	oneitem->moveaction->SetTempVars();
+	switch(menudata[i].appearposition)
+	{
 		case MENUAPPEAR_FROMLEFT:
 		    oneitem->moveaction->SetParams(1, 0, 0);
 		    oneitem->SetXYPos(allmenus->menu[e].hotdeltax - oneitem->moveaction->SimpleScriptCalcMaxDistance(),
@@ -375,28 +425,23 @@ void MenuAppear(MENUSTR *allmenus,int flag,int elems,MENUFIRSTDATA *menudata,PCX
 		    oneitem->SetXYPos(allmenus->menu[e].hotdeltax,
 				      allmenus->menu[e].hotdeltay + oneitem->moveaction->SimpleScriptCalcMaxDistance());
 		    break;
-	    }
 	}
-	Play_sfxdata_id(NULL,SFXDATA_SNDMENUIN,-1,0);
     }
-    else
-    {
-	Play_sfxdata_id(NULL,SFXDATA_SNDMENUOUT,-1,0);
-    }
+    Play_sfxdata_id(NULL,SFXDATA_SNDMENUIN,-1,0);
     //enable move scripting
     for (i = 0; i < items->GetMaxElements(); i++)
     {
-        oneitem = (DrawItemPcx *) items->GetElem(i,NULL);
+        oneitem = (MenuItemPcx *) items->GetElem(i,NULL);
         oneitem->moveaction->EnableMoveScript();
     }
     mytimer.GetDeltaCounter(time1);			//reset delta time	
+    savedscreen = savescreen();
     do{
-	memcpy(GRP_vidmem,backgnd->GetPcxRawBytes(),backgnd->xsizePcx()*backgnd->ysizePcx());
 	stopscript = items->GetMaxElements();
 	//draw all elements
 	for (i = 0; i < items->GetMaxElements(); i++)
 	{
-	    oneitem = (DrawItemPcx *) items->GetElem(i,NULL);
+	    oneitem = (MenuItemPcx *) items->GetElem(i,NULL);
 	    stopscript -= oneitem->moveaction->MoveScript();		//decrement if one script finishes
 	    oneitem->Draw();
 	}
@@ -405,25 +450,16 @@ void MenuAppear(MENUSTR *allmenus,int flag,int elems,MENUFIRSTDATA *menudata,PCX
 	eventwindowloop();
 	putmouseonscreen();
 	wscreenon();
+	restorescreen(savedscreen);
 	//calculate remain time to sleep (try to sleep MAXWAITMENUAPPEAR 'minus' time of draw entire one cycle)
 	deltatime = MAXWAITMENUAPPEAR - mytimer.GetDeltaCounter(time1)/1000;
 	if (deltatime > 0)
 	    usleep(deltatime);
     }while( stopscript );		//wait before all scripts are go at finish
-    if (flag == MENU_IN)
-    {
-	memcpy(GRP_vidmem,backgnd->GetPcxRawBytes(),backgnd->xsizePcx()*backgnd->ysizePcx());
-	Play_sfxdata_id(NULL,SFXDATA_SNDMENULOCK,-1,0);
-    }
-    else
-    {
-	for (i = 0; i < items->GetMaxElements(); i++)
-	    delete (DrawItemPcx *) items->GetElem(i,NULL);
-	delete items;
-	items = NULL;
-    }
+    wfree(savedscreen);
+    Play_sfxdata_id(NULL,SFXDATA_SNDMENULOCK,-1,0);
     mytimer.DestroyTickCounter(time1);
-//    usleep(1000000);
+    return(items);
 }
 //==========================================
 char campaign_race[3]={STAR_PROTOSS_CAMPAIGN,STAR_TERRAN_CAMPAIGN,STAR_ZERG_CAMPAIGN};
@@ -491,7 +527,7 @@ int campaignselect(void)
     menushow[1].elemid=1;
     menushow[1].appearposition=MENUAPPEAR_FROMRIGHT;
 
-    MenuAppear(raceselection,MENU_IN,2,menushow,&backgnd,NULL);
+    MENUAPPEAR *items = MenuAppear(raceselection,2,menushow,NULL);
 
     setdefaultbutton(raceselection,-1);
     setmenuflags(raceselection,MENUFLAGS_ALWAYSDRAW);
@@ -592,7 +628,7 @@ int campaignselect(void)
 
     installmousemoveevent(&mymousemoveevent);
 
-    MenuAppear(NULL,MENU_OUT,0,NULL,&backgnd,NULL);
+    MenuDisappear(items,NULL);
 
     uninstallmousemoveevent();
     mytimer.ClearMyTimerFunc();
@@ -674,7 +710,7 @@ int xcampaignselect(void)
     menushow[1].elemid=1;
     menushow[1].appearposition=MENUAPPEAR_FROMRIGHT;
 
-    MenuAppear(raceselection,MENU_IN,2,menushow,&backgnd,NULL);
+    MENUAPPEAR *items = MenuAppear(raceselection,2,menushow,NULL);
 
     setdefaultbutton(raceselection,-1);
     setmenuflags(raceselection,MENUFLAGS_ALWAYSDRAW);
@@ -773,7 +809,7 @@ int xcampaignselect(void)
     }while(repeat);
 
     installmousemoveevent(&mymousemoveevent);
-    MenuAppear(NULL,MENU_OUT,0,NULL,&backgnd,NULL);
+    MenuDisappear(items,NULL);
 
     uninstallmousemoveevent();
     mytimer.ClearMyTimerFunc();
@@ -838,7 +874,7 @@ int glu_loadgame(void)
     menushow[2].elemid=2;
     menushow[2].appearposition=MENUAPPEAR_FROMRIGHT;
 
-    MenuAppear(gluload,MENU_IN,3,menushow,&backgnd,NULL);
+    MENUAPPEAR *items = MenuAppear(gluload,3,menushow,NULL);
 
     mylist saves;
     do{
@@ -897,7 +933,7 @@ int glu_loadgame(void)
     }while(repeat);
 
     installmousemoveevent(&mymousemoveevent);
-    MenuAppear(NULL,MENU_OUT,0,NULL,&backgnd,NULL);
+    MenuDisappear(items,NULL);
 
     uninstallmousemoveevent();
     mytimer.ClearMyTimerFunc();
@@ -962,7 +998,7 @@ int glu_loadreplay(void)
     menushow[2].elemid=2;
     menushow[2].appearposition=MENUAPPEAR_FROMRIGHT;
 
-    MenuAppear(gluloadrep,MENU_IN,3,menushow,&backgnd,NULL);
+    MENUAPPEAR *items = MenuAppear(gluloadrep,3,menushow,NULL);
 
     mylist saves;
     do{
@@ -1018,7 +1054,7 @@ int glu_loadreplay(void)
     }while(repeat);
 
     installmousemoveevent(&mymousemoveevent);
-    MenuAppear(NULL,MENU_OUT,0,NULL,&backgnd,NULL);
+    MenuDisappear(items,NULL);
 
     uninstallmousemoveevent();
     mytimer.ClearMyTimerFunc();
@@ -1236,10 +1272,11 @@ int glu_briefing(int race,int networksingle,struct mapinfo *info,char *prefix_ca
     {
 	err=0;
     }
+    MENUAPPEAR *items;
     if (err)
-	MenuAppear(glubrief,MENU_IN,totalpcx,menushow,&backgnd,errmenu);
+	items = MenuAppear(glubrief,totalpcx,menushow,errmenu);
     else
-	MenuAppear(glubrief,MENU_IN,totalpcx,menushow,&backgnd,NULL);
+	items = MenuAppear(glubrief,totalpcx,menushow,NULL);
 
     memcpy(GRP_vidmem,backgnd.GetPcxRawBytes(),backgnd.xsizePcx()*backgnd.ysizePcx());
 //    backgnd.PutPcx(DELTASCREENX,DELTASCREENY2,PCX_EMPTYCOLOR1);
@@ -1326,7 +1363,7 @@ int glu_briefing(int race,int networksingle,struct mapinfo *info,char *prefix_ca
     StopMusic(MUSIC_STOPWITHFADE);
 
     installmousemoveevent(&mymousemoveevent);
-    MenuAppear(NULL,MENU_OUT,0,NULL,&backgnd,NULL);
+    MenuDisappear(items,NULL);
 
     uninstallmousemoveevent();
     mytimer.ClearMyTimerFunc();
@@ -1562,7 +1599,7 @@ void glu_score(struct mapinfo *info)
     menushow[0].elemid=0;
     menushow[0].appearposition=MENUAPPEAR_FROMLEFT;
 
-    MenuAppear(gluscore,MENU_IN,1,menushow,&backgnd,NULL);
+    MENUAPPEAR *items = MenuAppear(gluscore,1,menushow,NULL);
     memcpy(GRP_vidmem,backgnd.GetPcxRawBytes(),backgnd.xsizePcx()*backgnd.ysizePcx());
 //    backgnd.PutPcx(DELTASCREENX,DELTASCREENY2,PCX_EMPTYCOLOR1);
 
@@ -1670,7 +1707,7 @@ void glu_score(struct mapinfo *info)
     StopMusic(MUSIC_STOPWITHFADE);
 
     installmousemoveevent(&mymousemoveevent);
-    MenuAppear(NULL,MENU_OUT,0,NULL,&backgnd,NULL);
+    MenuDisappear(items,NULL);
 
     uninstallmousemoveevent();
     mytimer.ClearMyTimerFunc();
@@ -1842,7 +1879,7 @@ int glu_conn(void)
     menushow[3].elemid=3;
     menushow[3].appearposition=MENUAPPEAR_FROMRIGHT;
 
-    MenuAppear(gluconn,MENU_IN,4,menushow,&backgnd,NULL);
+    MENUAPPEAR *items = MenuAppear(gluconn,4,menushow,NULL);
 
     mylist saves;
     for (i=0;i<MAXCONNTYPES;i++)
@@ -1891,7 +1928,7 @@ int glu_conn(void)
     saves.FlushList();
 
     installmousemoveevent(&mymousemoveevent);
-    MenuAppear(NULL,MENU_OUT,0,NULL,&backgnd,NULL);
+    MenuDisappear(items,NULL);
 
     uninstallmousemoveevent();
     mytimer.ClearMyTimerFunc();
@@ -2051,10 +2088,11 @@ int glu_join(FORCE_SLOTS *fslots)
     menushow[3].elemid=3;
     menushow[3].appearposition=MENUAPPEAR_FROMRIGHT;
 
-    if (error<0)
-	MenuAppear(glujoin,MENU_IN,4,menushow,&backgnd,gluerr);
+    MENUAPPEAR *items;
+    if (error < 0)
+	items = MenuAppear(glujoin,4,menushow,gluerr);
     else
-	MenuAppear(glujoin,MENU_IN,4,menushow,&backgnd,NULL);
+	items = MenuAppear(glujoin,4,menushow,NULL);
 
     if (error<0)
     {
@@ -2179,7 +2217,7 @@ int glu_join(FORCE_SLOTS *fslots)
     }
 
     installmousemoveevent(&mymousemoveevent);
-    MenuAppear(NULL,MENU_OUT,0,NULL,&backgnd,NULL);
+    MenuDisappear(items,NULL);
 
     uninstallmousemoveevent();
     mytimer.ClearMyTimerFunc();
@@ -2261,11 +2299,11 @@ int glu_login(void)
     menushow[2].elemid=2;
     menushow[2].appearposition=MENUAPPEAR_FROMRIGHT;
 
-
+    MENUAPPEAR *items;
     if (!nrofusers)
-        MenuAppear(singammenu,MENU_IN,3,menushow,&backgnd,nplayer);
+	items = MenuAppear(singammenu,3,menushow,nplayer);
     else
-        MenuAppear(singammenu,MENU_IN,3,menushow,&backgnd,NULL);
+	items = MenuAppear(singammenu,3,menushow,NULL);
 
     int retstatus,retstatus2,repeat=1;
     do{
@@ -2393,7 +2431,7 @@ int glu_login(void)
 
     installmousemoveevent(&mymousemoveevent);
 
-    MenuAppear(NULL,MENU_OUT,0,NULL,&backgnd,NULL);
+    MenuDisappear(items,NULL);
 
     uninstallmousemoveevent();
     mytimer.ClearMyTimerFunc();
@@ -2910,7 +2948,7 @@ int selectmapmenu(void)
     menushow[4].elemid=4;
     menushow[4].appearposition=MENUAPPEAR_FROMRIGHT;
 
-    MenuAppear(selmap,MENU_IN,5,menushow,&backgnd,NULL);
+    MENUAPPEAR *items = MenuAppear(selmap,5,menushow,NULL);
 
     chdir(GAMEMAPPATH);
     if (EXPANSIONSET)
@@ -3127,7 +3165,7 @@ int selectmapmenu(void)
     }while(repeat);
 
     installmousemoveevent(&mymousemoveevent);
-    MenuAppear(NULL,MENU_OUT,0,NULL,&backgnd,NULL);
+    MenuDisappear(items,NULL);
 
     uninstallmousemoveevent();
     mytimer.ClearMyTimerFunc();
@@ -3231,7 +3269,7 @@ int glu_creat(FORCE_SLOTS *fslots)
     menushow[3].elemid=3;
     menushow[3].appearposition=MENUAPPEAR_FROMRIGHT;
 
-    MenuAppear(glucreat,MENU_IN,4,menushow,&backgnd,NULL);
+    MENUAPPEAR *items = MenuAppear(glucreat,4,menushow,NULL);
 
     chdir(GAMEMAPPATH);
     if (EXPANSIONSET)
@@ -3414,7 +3452,7 @@ int glu_creat(FORCE_SLOTS *fslots)
     }while(repeat);
 
     installmousemoveevent(&mymousemoveevent);
-    MenuAppear(NULL,MENU_OUT,0,NULL,&backgnd,NULL);
+    MenuDisappear(items,NULL);
 
     uninstallmousemoveevent();
     mytimer.ClearMyTimerFunc();
@@ -3781,10 +3819,11 @@ int glu_chat(int masterjoin,int playernr,FORCE_SLOTS *fslots)
     menushow[4].elemid=4;
     menushow[4].appearposition=MENUAPPEAR_FROMRIGHT;
 
+    MENUAPPEAR *items;
     if (error<0)
-        MenuAppear(gluchat,MENU_IN,menuappear,menushow,&backgnd,gluerr);
+	items = MenuAppear(gluchat,menuappear,menushow,gluerr);
     else
-        MenuAppear(gluchat,MENU_IN,menuappear,menushow,&backgnd,NULL);
+	items = MenuAppear(gluchat,menuappear,menushow,NULL);
 
     if (error<0)
     {
@@ -4022,7 +4061,7 @@ int glu_chat(int masterjoin,int playernr,FORCE_SLOTS *fslots)
     CallNetwork(NETWORK_CLOSENETWORK,&waitconn);
 
     installmousemoveevent(&mymousemoveevent);
-    MenuAppear(NULL,MENU_OUT,0,NULL,&backgnd,NULL);
+    MenuDisappear(items,NULL);
 
     uninstallmousemoveevent();
     mytimer.ClearMyTimerFunc();

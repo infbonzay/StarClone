@@ -5,6 +5,15 @@
 #include "menu.h"
 #include "network_general.h"
 
+#include "mylist.h"
+
+class MENUAPPEAR : public mylistsimple
+{
+public:
+    MENUAPPEAR(int elems);
+    ~MENUAPPEAR();
+};
+
 #define GDECOR_DISABLED		144
 #define GDECOR_NOFOCUS		123
 #define GDECOR_ONSELECT		165
@@ -71,9 +80,6 @@ struct MENUINFO_SMKS
 	int sizex;
 	int sizey;
 };
-
-#define MENU_IN		0
-#define MENU_OUT	1
 
 #define WAITMENUAPPEAR		20000
 #define MAXWAITMENUAPPEAR	40000
@@ -316,7 +322,8 @@ int  glu_selectmission(MENUSTR *prevmenu,int campaign_race,char *fonttable,GRPFI
 int  messagingmenu(void);
 MENUSTR *showtitle(void);
 void cleartitle(MENUSTR *menu);
-void MenuAppear(MENUSTR *allmenus,int flag,int elemnr,MENUFIRSTDATA *menudata,PCX *backgnd,MENUSTR *staticmenu);
+void MenuDisappear(MENUAPPEAR *items,MENUSTR *staticmenu);
+MENUAPPEAR *MenuAppear(MENUSTR *allmenus,int elemnr,MENUFIRSTDATA *menudata,MENUSTR *staticmenu);
 void glu_score(struct mapinfo *info);
 void updatescoremenu(void);
 int  glu_conn(void);

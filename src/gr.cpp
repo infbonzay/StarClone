@@ -493,5 +493,17 @@ void drawmonoifpaused(void)
 	    GRP_vidmem[i]=tomono[GRP_vidmem[i]];
     }
 }
-
+//====================================
+char *savescreen(void)
+{
+    char *scr = (char *)wmalloc(GRP_wmaxdwordwritel * 4);
+    memcpy(scr, GRP_vidmem, GRP_wmaxdwordwritel * 4);
+    return(scr);
+}
+//====================================
+void restorescreen(char *scr)
+{
+    memcpy(GRP_vidmem, scr, GRP_wmaxdwordwritel * 4);
+}
+//====================================
 

@@ -74,5 +74,8 @@ void ConvertColorsToNewPalette(unsigned char *pictpal,unsigned char *newpal,unsi
 void putgrp_nopacked2(int x,int y,int onlyx,int onlyy,GRPFILE *grp,int pictnr);
 void drawmonoifpaused(void);
 
+char *savescreen(void);
+void restorescreen(char *adr);
+
 #endif
 

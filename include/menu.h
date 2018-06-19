@@ -447,6 +447,7 @@ void saveunderitem(MENUSTR *allmenus,int itemnr);
 char *savepartscreen(int x,int y,int sizex,int sizey);
 void loadpartscreen(int x,int y,int sizex,int sizey,char *savedscreen);
 void restorepartscreen(int x,int y,int sizex,int sizey,char *savedscreen);
+
 void loadunderitems(MENUSTR *allmenus,int restoreandfree);
 int  drawmenu(MENUSTR *allmenusm,int drawandcontinue);
 int  showlistmenu(MENUSTR *allmenus);

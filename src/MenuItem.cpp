@@ -3,7 +3,7 @@
 
 #include "auxil.h"
 #include "pcx.h"
-#include "DrawItem.h"
+#include "MenuItem.h"
 
 //=================================================================
 MoveItem::MoveItem(void)
@@ -85,19 +85,19 @@ int MoveItem::SimpleMoveScript(void)
     return(0);
 }
 //=================================================================
-DrawItem::DrawItem(void)
+MenuItem::MenuItem(void)
 {
     SetFlags(0x00);
     SetXYPos(0,0);
 }
 //=================================================================
-DrawItem::~DrawItem()
+MenuItem::~MenuItem()
 {
     if (moveaction)
 	delete moveaction;				//delet move obj
 }
 //=================================================================
-void DrawItem::AddMoveAction(void)
+void MenuItem::AddMoveAction(void)
 {
     moveaction = new MoveItem();			//add move obj
     moveaction->parent = this;
@@ -107,23 +107,23 @@ void DrawItem::AddMoveAction(void)
     moveaction->SetParams(0,0,0);
 }
 //=================================================================
-DrawItemPcx::DrawItemPcx(PCX *pcx) : DrawItem()
+MenuItemPcx::MenuItemPcx(PCX *pcx) : MenuItem()
 {
     obj = pcx;
 }
 //=================================================================
-DrawItemPcx::~DrawItemPcx()
+MenuItemPcx::~MenuItemPcx()
 {
 }
 //=================================================================
-void DrawItemPcx::SetPcxParam(uint8_t color1,uint8_t color2,uint8_t color3)
+void MenuItemPcx::SetPcxParam(uint8_t color1,uint8_t color2,uint8_t color3)
 {
     holecolor = color1;
     transpcolor = color2;
     grdtransp = color3;
 }
 //=================================================================
-void DrawItemPcx::Draw(void)
+void MenuItemPcx::Draw(void)
 {
     if ( IsVisibled() )
     {
