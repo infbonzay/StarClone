@@ -2,5 +2,5 @@
 
 ./makelist "$1"
 ./makempq "$1"
-rm -rf forstaredit/*
-rm "(listfile)"
+#rm -rf forstaredit/*
+#rm "(listfile)"

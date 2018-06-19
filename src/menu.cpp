@@ -350,10 +350,11 @@ int actiondblclick(MENUSTR *allmenus,int downmenu)
 		}
 		if (!action)
 		{
-		    itemselected=(mouse_y-item->hotdeltay)/item->item.listbox->pixelsbetweenlines;
-		    if (itemselected<item->item.listbox->lines)
-			itemselected+=item->item.listbox->from;
 		    if (item->item.listbox->flist)
+		    {
+			itemselected=(mouse_y-item->hotdeltay)/item->item.listbox->pixelsbetweenlines;
+			if (itemselected<item->item.listbox->lines)
+			    itemselected+=item->item.listbox->from;
 			if (itemselected<item->item.listbox->flist->GetMaxElements())
 			{
 			    item->item.listbox->selectednr=itemselected;
@@ -361,6 +362,7 @@ int actiondblclick(MENUSTR *allmenus,int downmenu)
 			        Play_sfxdata_id(NULL,allmenus->selectmenusnd,-1,0);
 			    return(downmenu);
 			}
+		    }
 		}
 		else
 		{

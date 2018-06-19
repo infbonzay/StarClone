@@ -15,7 +15,7 @@
 HANDLE mpq[1];
 char filename[500];
 char buffdir[500];
-char mask[]="(listfile)";
+char mask[]="listfile";
 //=========================================
 int maskequal(char *filename,char *mask)
 {

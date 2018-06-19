@@ -6,10 +6,12 @@ Local Area Network (UDP)
 Modem
 Direct Connection
 Local Area Network (TCP)
-Requirments: All computers must be connected to the same local area network with TCP/IP compatible network.
+Dedicated Game Servers
+Requirements: All computers must be connected to the same local area network with TCP/IP compatible network.
 Requirements: Each computer will need a properly configured modem connected to a phone line. Each player needs a different phone number.
 Requirements: The computers must be linked together using a null-modem cable that is connected to serial port on each computer.
-Requirments: All computers must be connected to the same local area network with TCP/IP compatible network.
+Requirements: All computers must be connected to the same local area network with TCP/IP compatible network.
+Requirements: Active Internet Connection.
 Network port already used. Change network port in configuration.
 You can not play any campaign.#This option is disabled.
 Load saved games disabled.#Not programmed.

@@ -365,6 +365,14 @@ void MenuAppearDrawCycle(MENUAPPEAR *items, MENUSTR *staticmenu, TICKCOUNTER *ti
     wfree(savedscreen);
 }
 //==========================================
+void MenuDisappearDestroy(MENUAPPEAR *items)
+{
+    int i;
+    for (i = 0; i < items->GetMaxElements(); i++)
+        delete (MenuItemPcx *) items->GetElem(i,NULL);
+    delete items;
+}
+//==========================================
 void MenuDisappear(MENUAPPEAR *items,MENUSTR *staticmenu)
 {
     MenuItemPcx *oneitem;
@@ -381,11 +389,7 @@ void MenuDisappear(MENUAPPEAR *items,MENUSTR *staticmenu)
     }
 
     MenuAppearDrawCycle(items,staticmenu,time1);
-
-    for (i = 0; i < items->GetMaxElements(); i++)
-        delete (MenuItemPcx *) items->GetElem(i,NULL);
-    delete items;
-    items = NULL;
+    MenuDisappearDestroy(items);
     mytimer.DestroyTickCounter(time1);
 }
 //==========================================
@@ -404,12 +408,15 @@ MENUAPPEAR *MenuAppear(MENUSTR *allmenus,int elems,MENUFIRSTDATA *menudata,MENUS
 	    printf("Error elem(%d) is not IMAGE\n",i);
 	items->AddElem( oneitem = new MenuItemPcx(allmenus->menu[e].item.image->pcx) );
 	oneitem->AddMoveAction();
-	oneitem->EnableVisible();
+	if (menudata[i].disabled == 0 )
+	    oneitem->EnableVisible();
+	else
+	    oneitem->DisableVisible();
+	oneitem->moveaction->SetMoveScript(&MoveItem::SimpleMoveScript);
+	oneitem->moveaction->SetTempVars();
 	oneitem->SetPcxParam(allmenus->menu[e].item.image->color1,
 			     allmenus->menu[e].item.image->color2,
 			     allmenus->menu[e].item.image->transvalue);
-	oneitem->moveaction->SetMoveScript(&MoveItem::SimpleMoveScript);
-	oneitem->moveaction->SetTempVars();
 	switch(menudata[i].appearposition)
 	{
 		case MENUAPPEAR_FROMLEFT:
@@ -509,11 +516,9 @@ int campaignselect(void)
     restrictmousecoords(MOUSEMODE1);
     installmousemoveevent(&mymousemoveevent);
     
-    MENUFIRSTDATA menushow[2];
-    menushow[0].elemid=0;
-    menushow[0].appearposition=MENUAPPEAR_FROMLEFT;
-    menushow[1].elemid=1;
-    menushow[1].appearposition=MENUAPPEAR_FROMRIGHT;
+    MENUFIRSTDATA menushow[2] = { 
+			    {.elemid = 0, .appearposition = MENUAPPEAR_FROMLEFT, .disabled = 0},
+			    {.elemid = 1, .appearposition = MENUAPPEAR_FROMRIGHT, .disabled = 0} };
 
     MENUAPPEAR *items = MenuAppear(raceselection,2,menushow,NULL);
 
@@ -692,12 +697,9 @@ int xcampaignselect(void)
     restrictmousecoords(MOUSEMODE1);
     installmousemoveevent(&mymousemoveevent);
 
-    MENUFIRSTDATA menushow[2];
-    menushow[0].elemid=0;
-    menushow[0].appearposition=MENUAPPEAR_FROMLEFT;
-    menushow[1].elemid=1;
-    menushow[1].appearposition=MENUAPPEAR_FROMRIGHT;
-
+    MENUFIRSTDATA menushow[2] = { 
+			    {.elemid = 0, .appearposition = MENUAPPEAR_FROMLEFT, .disabled = 0},
+			    {.elemid = 1, .appearposition = MENUAPPEAR_FROMRIGHT, .disabled = 0} };
     MENUAPPEAR *items = MenuAppear(raceselection,2,menushow,NULL);
 
     setdefaultbutton(raceselection,-1);
@@ -854,13 +856,11 @@ int glu_loadgame(void)
     restrictmousecoords(MOUSEMODE1);
     installmousemoveevent(&mymousemoveevent);
 
-    MENUFIRSTDATA menushow[3];
-    menushow[0].elemid=0;
-    menushow[0].appearposition=MENUAPPEAR_FROMLEFT;
-    menushow[1].elemid=1;
-    menushow[1].appearposition=MENUAPPEAR_FROMBOTTOM;
-    menushow[2].elemid=2;
-    menushow[2].appearposition=MENUAPPEAR_FROMRIGHT;
+    MENUFIRSTDATA menushow[3] = { 
+			    {.elemid = 0, .appearposition = MENUAPPEAR_FROMLEFT, .disabled = 0},
+			    {.elemid = 1, .appearposition = MENUAPPEAR_FROMBOTTOM, .disabled = 0},
+			    {.elemid = 2, .appearposition = MENUAPPEAR_FROMRIGHT, .disabled = 0} 
+			    };
 
     MENUAPPEAR *items = MenuAppear(gluload,3,menushow,NULL);
 
@@ -978,14 +978,11 @@ int glu_loadreplay(void)
     restrictmousecoords(MOUSEMODE1);
     installmousemoveevent(&mymousemoveevent);
 
-    MENUFIRSTDATA menushow[3];
-    menushow[0].elemid=0;
-    menushow[0].appearposition=MENUAPPEAR_FROMLEFT;
-    menushow[1].elemid=1;
-    menushow[1].appearposition=MENUAPPEAR_FROMBOTTOM;
-    menushow[2].elemid=2;
-    menushow[2].appearposition=MENUAPPEAR_FROMRIGHT;
-
+    MENUFIRSTDATA menushow[3] = { 
+			    {.elemid = 0, .appearposition = MENUAPPEAR_FROMLEFT, .disabled = 0},
+			    {.elemid = 1, .appearposition = MENUAPPEAR_FROMBOTTOM, .disabled = 0},
+			    {.elemid = 2, .appearposition = MENUAPPEAR_FROMRIGHT, .disabled = 0} 
+			    };
     MENUAPPEAR *items = MenuAppear(gluloadrep,3,menushow,NULL);
 
     mylist saves;
@@ -1199,26 +1196,34 @@ int glu_briefing(int race,int networksingle,struct mapinfo *info,char *prefix_ca
     totalpcx=7-networksingle;
     menushow[0].elemid=e;
     menushow[0].appearposition=MENUAPPEAR_FROMRIGHT;
+    menushow[0].disabled=0;
     menushow[1].elemid=e+1;
     menushow[1].appearposition=MENUAPPEAR_FROMLEFT;
+    menushow[1].disabled=0;
     menushow[2].elemid=e+3;
     menushow[2].appearposition=MENUAPPEAR_FROMLEFT;
+    menushow[2].disabled=0;
     menushow[3].elemid=e+4;
     menushow[3].appearposition=MENUAPPEAR_FROMTOP;
+    menushow[3].disabled=0;
     menushow[4].elemid=e+5;
     menushow[4].appearposition=MENUAPPEAR_FROMTOP;
+    menushow[4].disabled=0;
     menushow[5].elemid=e+6;
     menushow[5].appearposition=MENUAPPEAR_FROMRIGHT;
+    menushow[5].disabled=0;
     if (networksingle)
     {
 	setmenuitem_VISIBLED(glubrief,e+2,FALSE);	//pcx replay
 	setmenuitem_VISIBLED(glubrief,e+10,FALSE);	//replay button
-	glubrief->menu[e+7].dialogbin_flags&=~DIALOGBIN_FLAGS_RESPONDTOESCKEY;//prevent press ESC key
+	glubrief->menu[e+7].dialogbin_flags &= ~DIALOGBIN_FLAGS_RESPONDTOESCKEY;//prevent press ESC key
     }
     else
     {
 	menushow[6].elemid=e+2;
 	menushow[6].appearposition=MENUAPPEAR_FROMBOTTOM;
+	menushow[6].disabled=0;
+
     }
     for (i=e+0;i<e+7;i++)
     {
@@ -1583,9 +1588,9 @@ void glu_score(struct mapinfo *info)
     mousetype=NORMALMOUSE;
     loadonecursor(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,RACE_CHAR[race],LOSEWIN_STR[losewin],ARROW_STR),mousetype);
 
-    MENUFIRSTDATA menushow[1];
-    menushow[0].elemid=0;
-    menushow[0].appearposition=MENUAPPEAR_FROMLEFT;
+    MENUFIRSTDATA menushow[1] = { 
+			    {.elemid = 0, .appearposition = MENUAPPEAR_FROMLEFT, .disabled = 0}
+			    };
 
     MENUAPPEAR *items = MenuAppear(gluscore,1,menushow,NULL);
     memcpy(GRP_vidmem,backgnd.GetPcxRawBytes(),backgnd.xsizePcx()*backgnd.ysizePcx());
@@ -1784,20 +1789,64 @@ int mainmenu(void)
     return retvalue;
 }
 //==========================================
-char CONNMAXPLAYERS[MAXCONNTYPES]={8,2,2,8};
+char CONNMAXPLAYERS[MAXCONNTYPES]={8,2,2,8,8};
 //==========================================
+MENUAPPEAR *menunetwitems;
+MENUAPPEAR *dedicated_items;
+MENUFIRSTDATA menunetw[5] = { 
+				{ .elemid = 0, .appearposition = MENUAPPEAR_FROMLEFT, .disabled = 0 },
+				{ .elemid = 1, .appearposition = MENUAPPEAR_FROMRIGHT, .disabled = 0 },
+				{ .elemid = 2, .appearposition = MENUAPPEAR_FROMBOTTOM, .disabled = 0  },
+				{ .elemid = 3, .appearposition = MENUAPPEAR_FROMRIGHT, .disabled = 0  },
+				{ .elemid = 4, .appearposition = MENUAPPEAR_FROMLEFT, .disabled = 1 }
+			    };
+
 void selconn_callback(MENUSTR *allmenus,int nr,int listnr)
 {
+    MenuItemPcx *oneitem;
     char txt[50];
-    if (listnr!=-1)
+    if (listnr != -1)
     {
+	
 	changetextitem(allmenus, 10,MYTBLSTR(MYINFO_TBL_NETTYPE1+listnr));			//connection type
 	sprintf(txt,GLUALLSTR(GLUALL_TBL_MAXPLAYERS),CONNMAXPLAYERS[listnr]);
-	changetextitem(allmenus,11,txt);									//players info
-	changetextitem(allmenus,12,MYTBLSTR(MYINFO_TBL_NETREQ1+listnr));		//additional info about connection
+	changetextitem(allmenus,11,txt);							//players info
+	changetextitem(allmenus,12,MYTBLSTR(MYINFO_TBL_NETREQ1+listnr));			//additional info about connection
 	setmenuitem_VISIBLED(allmenus,10,TRUE);
 	setmenuitem_VISIBLED(allmenus,11,TRUE);
 	setmenuitem_VISIBLED(allmenus,12,TRUE);
+	if (listnr == MYINFO_TBL_NETTYPE5 - MYINFO_TBL_NETTYPE1)
+	{
+	    if (!dedicated_items)
+	    {
+		menunetw[4].disabled = 0;
+    		oneitem = (MenuItemPcx *) menunetwitems->GetElem(4,NULL);
+    		oneitem->EnableVisible();
+		dedicated_items = MenuAppear(allmenus, 1, (MENUFIRSTDATA *) &menunetw[4], NULL);	//gateway.pcx
+	    }
+	    //show servers menu
+	    setmenuitem_VISIBLED(allmenus,4,TRUE);
+	    setmenuitem_VISIBLED(allmenus,7,TRUE);
+	    setmenuitem_VISIBLED(allmenus,8,TRUE);
+	    setmenuitem_VISIBLED(allmenus,9,TRUE);
+
+	}
+	else
+	{
+	    if (dedicated_items)
+	    {
+		menunetw[4].disabled = 1;
+    		oneitem = (MenuItemPcx *) menunetwitems->GetElem(4,NULL);
+    		oneitem->DisableVisible();
+		MenuDisappear(dedicated_items, NULL);
+		//close servers menu
+		setmenuitem_VISIBLED(allmenus,4,FALSE);
+		setmenuitem_VISIBLED(allmenus,7,FALSE);
+		setmenuitem_VISIBLED(allmenus,8,FALSE);
+		setmenuitem_VISIBLED(allmenus,9,FALSE);
+		dedicated_items = NULL;
+	    }
+	}
     }
     else
     {
@@ -1839,12 +1888,19 @@ int glu_conn(void)
 
     gluconn=LoadDialogBin("rez\\gluconn.bin",DIALOGBIN_MAINDIALOGS,IDFONT16);
     listboxlineitems(gluconn,6,6,20);
+
+
+//    setmenuitem_VISIBLED(gluconn,4,TRUE);	//pcx table
+//    setmenuitem_VISIBLED(gluconn,7,TRUE);	//name pcx teble("gateway")
+//    setmenuitem_VISIBLED(gluconn,8,TRUE);	//listbox of items
+//    setmenuitem_VISIBLED(gluconn,9,TRUE);	//textbox of descriptions
+
     //disable gateway pcx
     setmenuitem_VISIBLED(gluconn,4,FALSE);
     setmenuitem_VISIBLED(gluconn,7,FALSE);
     setmenuitem_VISIBLED(gluconn,8,FALSE);
     setmenuitem_VISIBLED(gluconn,9,FALSE);
-//    gluconn->defaultlistitem=6;
+    gluconn->defaultlistitem=6;
 
     gluconn->menu[1].hotdeltax-=2;
     gluconn->menu[12].item.textitem->rowsize+=2;
@@ -1857,17 +1913,8 @@ int glu_conn(void)
     restrictmousecoords(MOUSEMODE1);
     installmousemoveevent(&mymousemoveevent);
 
-    MENUFIRSTDATA menushow[4];
-    menushow[0].elemid=0;
-    menushow[0].appearposition=MENUAPPEAR_FROMLEFT;
-    menushow[1].elemid=1;
-    menushow[1].appearposition=MENUAPPEAR_FROMRIGHT;
-    menushow[2].elemid=2;
-    menushow[2].appearposition=MENUAPPEAR_FROMBOTTOM;
-    menushow[3].elemid=3;
-    menushow[3].appearposition=MENUAPPEAR_FROMRIGHT;
-
-    MENUAPPEAR *items = MenuAppear(gluconn,4,menushow,NULL);
+    menunetw[4].disabled = 1;
+    menunetwitems = MenuAppear(gluconn,5,menunetw,NULL);
 
     mylist saves;
     for (i=0;i<MAXCONNTYPES;i++)
@@ -1916,7 +1963,13 @@ int glu_conn(void)
     saves.FlushList();
 
     installmousemoveevent(&mymousemoveevent);
-    MenuDisappear(items,NULL);
+    if (dedicated_items)
+    {
+	MenuDisappearDestroy(dedicated_items);//destroy if was created in sel_conn callback
+	dedicated_items = NULL;	
+    }
+    MenuDisappear(menunetwitems,NULL);
+    menunetwitems = NULL;
 
     uninstallmousemoveevent();
     mytimer.ClearMyTimerFunc();
@@ -2066,15 +2119,12 @@ int glu_join(FORCE_SLOTS *fslots)
     restrictmousecoords(MOUSEMODE1);
     installmousemoveevent(&mymousemoveevent);
 
-    MENUFIRSTDATA menushow[4];
-    menushow[0].elemid=0;
-    menushow[0].appearposition=MENUAPPEAR_FROMLEFT;
-    menushow[1].elemid=1;
-    menushow[1].appearposition=MENUAPPEAR_FROMRIGHT;
-    menushow[2].elemid=2;
-    menushow[2].appearposition=MENUAPPEAR_FROMBOTTOM;
-    menushow[3].elemid=3;
-    menushow[3].appearposition=MENUAPPEAR_FROMRIGHT;
+    MENUFIRSTDATA menushow[4] = { 
+			    {.elemid = 0, .appearposition = MENUAPPEAR_FROMLEFT, .disabled = 0},
+			    {.elemid = 1, .appearposition = MENUAPPEAR_FROMRIGHT, .disabled = 0} ,
+			    {.elemid = 2, .appearposition = MENUAPPEAR_FROMBOTTOM, .disabled = 0},
+			    {.elemid = 3, .appearposition = MENUAPPEAR_FROMRIGHT, .disabled = 0} 
+			    };
 
     MENUAPPEAR *items;
     if (error < 0)
@@ -2279,13 +2329,12 @@ int glu_login(void)
     int nrofusers=ulist.GetMaxElements();
     ulist.DeallocList();
 
-    MENUFIRSTDATA menushow[3];
-    menushow[0].elemid=0;
-    menushow[0].appearposition=MENUAPPEAR_FROMLEFT;
-    menushow[1].elemid=1;
-    menushow[1].appearposition=MENUAPPEAR_FROMBOTTOM;
-    menushow[2].elemid=2;
-    menushow[2].appearposition=MENUAPPEAR_FROMRIGHT;
+    MENUFIRSTDATA menushow[3] = { 
+			    {.elemid = 0, .appearposition = MENUAPPEAR_FROMLEFT, .disabled = 0},
+			    {.elemid = 1, .appearposition = MENUAPPEAR_FROMBOTTOM, .disabled = 0},
+			    {.elemid = 2, .appearposition = MENUAPPEAR_FROMRIGHT, .disabled = 0} 
+			    };
+
 
     MENUAPPEAR *items;
     if (!nrofusers)
@@ -2924,17 +2973,13 @@ int selectmapmenu(void)
     restrictmousecoords(MOUSEMODE1);
     installmousemoveevent(&mymousemoveevent);
 
-    MENUFIRSTDATA menushow[5];
-    menushow[0].elemid=0;
-    menushow[0].appearposition=MENUAPPEAR_FROMLEFT;
-    menushow[1].elemid=1;
-    menushow[1].appearposition=MENUAPPEAR_FROMTOP;
-    menushow[2].elemid=2;
-    menushow[2].appearposition=MENUAPPEAR_FROMBOTTOM;
-    menushow[3].elemid=3;
-    menushow[3].appearposition=MENUAPPEAR_FROMBOTTOM;
-    menushow[4].elemid=4;
-    menushow[4].appearposition=MENUAPPEAR_FROMRIGHT;
+    MENUFIRSTDATA menushow[5] = { 
+			    {.elemid = 0, .appearposition = MENUAPPEAR_FROMLEFT, .disabled = 0},
+			    {.elemid = 1, .appearposition = MENUAPPEAR_FROMTOP, .disabled = 0},
+			    {.elemid = 2, .appearposition = MENUAPPEAR_FROMBOTTOM, .disabled = 0},
+			    {.elemid = 3, .appearposition = MENUAPPEAR_FROMBOTTOM, .disabled = 0},
+			    {.elemid = 4, .appearposition = MENUAPPEAR_FROMRIGHT, .disabled = 0} 
+			    };
 
     MENUAPPEAR *items = MenuAppear(selmap,5,menushow,NULL);
 
@@ -3247,15 +3292,12 @@ int glu_creat(FORCE_SLOTS *fslots)
     restrictmousecoords(MOUSEMODE1);
     installmousemoveevent(&mymousemoveevent);
 
-    MENUFIRSTDATA menushow[4];
-    menushow[0].elemid=0;
-    menushow[0].appearposition=MENUAPPEAR_FROMLEFT;
-    menushow[1].elemid=1;
-    menushow[1].appearposition=MENUAPPEAR_FROMRIGHT;
-    menushow[2].elemid=2;
-    menushow[2].appearposition=MENUAPPEAR_FROMBOTTOM;
-    menushow[3].elemid=3;
-    menushow[3].appearposition=MENUAPPEAR_FROMRIGHT;
+    MENUFIRSTDATA menushow[4] = { 
+			    {.elemid = 0, .appearposition = MENUAPPEAR_FROMLEFT, .disabled = 0},
+			    {.elemid = 1, .appearposition = MENUAPPEAR_FROMRIGHT, .disabled = 0},
+			    {.elemid = 2, .appearposition = MENUAPPEAR_FROMBOTTOM, .disabled = 0},
+			    {.elemid = 3, .appearposition = MENUAPPEAR_FROMRIGHT, .disabled = 0} 
+			    };
 
     MENUAPPEAR *items = MenuAppear(glucreat,4,menushow,NULL);
 
@@ -3795,17 +3837,13 @@ int glu_chat(int masterjoin,int playernr,FORCE_SLOTS *fslots)
     restrictmousecoords(MOUSEMODE1);
     installmousemoveevent(&mymousemoveevent);
         
-    MENUFIRSTDATA menushow[5];
-    menushow[0].elemid=0;
-    menushow[0].appearposition=MENUAPPEAR_FROMBOTTOM;
-    menushow[1].elemid=1;
-    menushow[1].appearposition=MENUAPPEAR_FROMRIGHT;
-    menushow[2].elemid=2;
-    menushow[2].appearposition=MENUAPPEAR_FROMLEFT;
-    menushow[3].elemid=3;
-    menushow[3].appearposition=MENUAPPEAR_FROMBOTTOM;
-    menushow[4].elemid=4;
-    menushow[4].appearposition=MENUAPPEAR_FROMRIGHT;
+    MENUFIRSTDATA menushow[5] = { 
+			    {.elemid = 0, .appearposition = MENUAPPEAR_FROMBOTTOM, .disabled = 0},
+			    {.elemid = 1, .appearposition = MENUAPPEAR_FROMRIGHT, .disabled = 0},
+			    {.elemid = 2, .appearposition = MENUAPPEAR_FROMLEFT, .disabled = 0},
+			    {.elemid = 3, .appearposition = MENUAPPEAR_FROMBOTTOM, .disabled = 0},
+			    {.elemid = 4, .appearposition = MENUAPPEAR_FROMRIGHT, .disabled = 0} 
+			    };
 
     MENUAPPEAR *items;
     if (error<0)

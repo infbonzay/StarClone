@@ -6,8 +6,8 @@ OBJS  = $(OBJ) ../../obj/tbl.o ../../obj/debug.o ../../obj/wmem.o ../../obj/auxi
 SOURCES = maketbl.cpp
 
 INCLUDE = -I../../include
-CFLAGS = -g3 -funsigned-char -O0 $(INCLUDE)
-LDFLAGS = -lSDL -lpthread -lgrp -L./grplib -lstdc++ -lmpq -lz
+CFLAGS = -g3 -O0 $(INCLUDE)
+LDFLAGS = -lSDL -lpthread -lgrp -L./grplib -lstdc++ -lmpq -lz -lm
 
 all:  $(PROGS) $(OBJS)
 

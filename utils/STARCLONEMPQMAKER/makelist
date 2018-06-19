@@ -12,5 +12,5 @@ MYPATH=`pwd`
 LISTFILE="$MYPATH/(listfile)"
 
 cd "$1"
-find "." -type f | gawk ' { print substr($0,3) } ' | tr '/' '\' > "$LISTFILE" 
+find "." -type f | gawk ' { print substr($0,3) } ' | tr '/' '\\' > "$LISTFILE" 
 cd "$MYPATH"

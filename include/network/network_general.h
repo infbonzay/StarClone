@@ -9,7 +9,7 @@
 #include "player.h"
 
 #define MKADDR(a,b,c,d)				( (a<<24) | (b<<16) | (c<<8) | d)
-#define MAXCONNTYPES	4			//nr of network types (tcpip,udp,modem,.....)
+#define MAXCONNTYPES	5			//nr of network types (tcpip,udp,modem,.....)
 
 #define MAXCREATEDGAMES				8
 #define STARCLONE_NETWORKJOIN_MAXGAMETITLESYMB	MAXPLAYERNAMESYMBOLS
