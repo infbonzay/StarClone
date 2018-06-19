@@ -390,7 +390,7 @@ void MenuDisappear(MENUSTR *allmenus,MENUAPPEAR *items,MENUSTR *staticmenu)
 
     MenuAppearDrawCycle(items,staticmenu,time1);
     MenuDisappearDestroy(items);
-    allmenus->menuappear = NULL;
+//    allmenus->menuappear = NULL;
     mytimer.DestroyTickCounter(time1);
 }
 //==========================================
@@ -402,8 +402,8 @@ MENUAPPEAR *MenuAppear(MENUSTR *allmenus,int elems,MENUFIRSTDATA *menudata,MENUS
     TICKCOUNTER *time1;
     time1 = mytimer.CreateTickCounter();
     items = new MENUAPPEAR(elems);
-    allmenus->menuappear = items;
-    for (i=0; i < elems; i++)
+//    allmenus->menuappear = items;
+    for (i = 0; i < elems; i++)
     {
 	e = menudata[i].elemid;
 	if ( allmenus->menu[e].itemtype != ISIMAGE )
@@ -1793,9 +1793,18 @@ int mainmenu(void)
 //==========================================
 char CONNMAXPLAYERS[MAXCONNTYPES]={8,2,2,8,8};
 //==========================================
+    char *savedscreen;
+    MENUAPPEAR *gatewayitem;
+    MENUFIRSTDATA menunetw[5] = { 
+				{ .elemid = 0, .appearposition = MENUAPPEAR_FROMLEFT, .disabled = 0 },
+				{ .elemid = 1, .appearposition = MENUAPPEAR_FROMRIGHT, .disabled = 0 },
+				{ .elemid = 2, .appearposition = MENUAPPEAR_FROMBOTTOM, .disabled = 0  },
+				{ .elemid = 3, .appearposition = MENUAPPEAR_FROMRIGHT, .disabled = 0  },
+				{ .elemid = 4, .appearposition = MENUAPPEAR_FROMLEFT, .disabled = 1 }
+			    };
+
 void selconn_callback(MENUSTR *allmenus,int nr,int listnr)
 {
-    static char first;
     MenuItemPcx *oneitem;
     char txt[50];
     if (listnr != -1)
@@ -1808,15 +1817,13 @@ void selconn_callback(MENUSTR *allmenus,int nr,int listnr)
 	setmenuitem_VISIBLED(allmenus,10,TRUE);
 	setmenuitem_VISIBLED(allmenus,11,TRUE);
 	setmenuitem_VISIBLED(allmenus,12,TRUE);
-/*	if (listnr == MYINFO_TBL_NETTYPE5 - MYINFO_TBL_NETTYPE1)
+	if (listnr == MYINFO_TBL_NETTYPE5 - MYINFO_TBL_NETTYPE1)
 	{
-	    if (!first)
+	    if (!gatewayitem)
 	    {
-		first=1;
-    		oneitem = (MenuItemPcx *) allmenus->menuappear->->GetElem(4,NULL);
-    		oneitem->EnableVisible();
 		savedscreen = savescreen();
-		dedicated_items = MenuAppear(allmenus, 1, (MENUFIRSTDATA *) &menunetw[4], NULL);	//gateway.pcx
+		menunetw[4].disabled = 0;
+		gatewayitem = MenuAppear(allmenus,1,&menunetw[4],NULL);
 	    }
 	    //show servers menu
 	    setmenuitem_VISIBLED(allmenus,4,TRUE);
@@ -1827,24 +1834,22 @@ void selconn_callback(MENUSTR *allmenus,int nr,int listnr)
 	}
 	else
 	{
-	    if (dedicated_items)
+	    if (gatewayitem)
 	    {
-		menunetw[4].disabled = 1;
-    		oneitem = (MenuItemPcx *) menunetwitems->GetElem(4,NULL);
-    		oneitem->DisableVisible();
 		restorescreen(savedscreen);
 		wfree(savedscreen);
 		savedscreen = NULL;
-		MenuDisappear(dedicated_items, NULL);
+		menunetw[4].disabled = 1;
+		MenuDisappear(allmenus,gatewayitem, NULL);
+		gatewayitem = NULL;
 		//close servers menu
 		setmenuitem_VISIBLED(allmenus,4,FALSE);
 		setmenuitem_VISIBLED(allmenus,7,FALSE);
 		setmenuitem_VISIBLED(allmenus,8,FALSE);
 		setmenuitem_VISIBLED(allmenus,9,FALSE);
-		dedicated_items = NULL;
 	    }
 	}
-*/    }
+    }
     else
     {
 	setmenuitem_VISIBLED(allmenus,10,FALSE);
@@ -1876,8 +1881,6 @@ int glu_conn(void)
     MENUSTR *gluerr,*gluconn;
     NETWORK_INFO recvbcast;
 
-    MENUAPPEAR *menunetwitems;
-
     mpqloadfile(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,SINGLEGAME_STR[0],SINGLEGAME_STR[1],DLGGRP_STR),(char **)&dlg);
     backgnd.openMpqPcx(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,SINGLEGAME_STR[0],SINGLEGAME_STR[1],BACKGND_STR));
     backgnd.readPalFromPcx(pal,0);
@@ -1903,16 +1906,16 @@ int glu_conn(void)
     listboxlineitems(gluconn,8,4,20);
 
 
-    setmenuitem_VISIBLED(gluconn,4,TRUE);	//pcx table
-    setmenuitem_VISIBLED(gluconn,7,TRUE);	//name pcx teble("gateway")
-    setmenuitem_VISIBLED(gluconn,8,TRUE);	//listbox of items
-    setmenuitem_VISIBLED(gluconn,9,TRUE);	//textbox of descriptions
+//    setmenuitem_VISIBLED(gluconn,4,TRUE);	//pcx table
+//    setmenuitem_VISIBLED(gluconn,7,TRUE);	//name pcx teble("gateway")
+//    setmenuitem_VISIBLED(gluconn,8,TRUE);	//listbox of items
+//    setmenuitem_VISIBLED(gluconn,9,TRUE);	//textbox of descriptions
 
     //disable gateway pcx
-//    setmenuitem_VISIBLED(gluconn,4,FALSE);
-//    setmenuitem_VISIBLED(gluconn,7,FALSE);
-//    setmenuitem_VISIBLED(gluconn,8,FALSE);
-//    setmenuitem_VISIBLED(gluconn,9,FALSE);
+    setmenuitem_VISIBLED(gluconn,4,FALSE);
+    setmenuitem_VISIBLED(gluconn,7,FALSE);
+    setmenuitem_VISIBLED(gluconn,8,FALSE);
+    setmenuitem_VISIBLED(gluconn,9,FALSE);
     gluconn->defaultlistitem=6;			//????????? change default is click on other list
 
     gluconn->menu[1].hotdeltax-=2;
@@ -1926,24 +1929,18 @@ int glu_conn(void)
     restrictmousecoords(MOUSEMODE1);
     installmousemoveevent(&mymousemoveevent);
 
-    MENUFIRSTDATA menunetw[5] = { 
-				{ .elemid = 0, .appearposition = MENUAPPEAR_FROMLEFT, .disabled = 0 },
-				{ .elemid = 1, .appearposition = MENUAPPEAR_FROMRIGHT, .disabled = 0 },
-				{ .elemid = 2, .appearposition = MENUAPPEAR_FROMBOTTOM, .disabled = 0  },
-				{ .elemid = 3, .appearposition = MENUAPPEAR_FROMRIGHT, .disabled = 0  },
-				{ .elemid = 4, .appearposition = MENUAPPEAR_FROMLEFT, .disabled = 1 }
-			    };
-    menunetwitems = MenuAppear(gluconn,5,menunetw,NULL);
+    menunetw[4].disabled = 1;
+    MENUAPPEAR *menunetwitems = MenuAppear(gluconn,5,menunetw,NULL);
 
     mylist saves;
     for (i=0;i<MAXCONNTYPES;i++)
 	saves.AddList(MYTBLSTR(MYINFO_TBL_NETTYPE1+i));
-    setlistbox_lists(gluconn,6,0,&saves,selconn_callback);
+    setlistbox_lists(gluconn,6,0,&saves,&selconn_callback);
 
     mylist gateways;
     for (i=0;i<MAXGATEWAYS;i++)
 	gateways.AddList(MYTBLSTR(MYINFO_TBL_GATEWAY1+i));
-    setlistbox_lists(gluconn,8,0,&gateways,selconn_gatewaycallback);
+    setlistbox_lists(gluconn,8,0,&gateways,&selconn_gatewaycallback);
     
     repeat=1;
     do{
@@ -1974,6 +1971,7 @@ int glu_conn(void)
     		    AddPrevMenuShowing(gluerr,gluconn);
 		    changetextitem(gluerr,2,GLUALLSTR(GLUALL_TBL_NETWORKERR));
 		    drawmenu(gluerr,MENUFLAGS_EMPTY);
+		    UnloadDialogBin(gluerr);
 		    break;
 		}
 		repeat=0;
@@ -1991,8 +1989,18 @@ int glu_conn(void)
 
     installmousemoveevent(&mymousemoveevent);
 
+    if (gatewayitem)
+    {
+	MenuDisappearDestroy(gatewayitem);	//deallocate allocated from sel_conncallback
+	gatewayitem = NULL;
+    }
+    if (savedscreen)
+    {
+	wfree(savedscreen);
+	savedscreen = NULL;
+    }
     MenuDisappear(gluconn, menunetwitems, NULL);
-
+    
     uninstallmousemoveevent();
     mytimer.ClearMyTimerFunc();
     unloadmousecursors();

@@ -474,7 +474,7 @@ int load_terrain_tiles( struct mapinfo *info,
 	{
 	    memcpy(info->creeptiles+i*32*32,(*tiles)+allcreeptiles[i]*32*32,32*32);
 	}
-	info->creeptileminimapcolors=createminimapcolorsfrom(info->creeptiles,info->creeptilecnt);
+//	info->creeptileminimapcolors=createminimapcolorsfrom(info->creeptiles,info->creeptilecnt);
 
 	for( i=0; i<h; i++ )
 	{
@@ -1825,7 +1825,7 @@ int *createminimapcolorsfrom(char *tiles,int tilecnt)
     {
 	for (j=0;j<4;j++)
 	{
-	    minimapcolors[i]|=createcolors8x8(tiles+i*32*32,j)<<(j*8);
+	    minimapcolors[i] |= createcolors8x8(tiles+i*32*32,j)<<(j*8);
 	}
     }
     return(minimapcolors);

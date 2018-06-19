@@ -423,7 +423,7 @@ struct MENUSTR
     struct MENUVARS 	vars;
     unsigned char 	incrementfactor;	//value for increase/decrease 0-255
     unsigned char 	menuflags;		//menu flags
-    MENUAPPEAR		*menuappear;
+//    MENUAPPEAR		*menuappear;
     struct MENUPOS 	menu[];
 };
 
