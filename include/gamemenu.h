@@ -14,6 +14,8 @@ public:
     ~MENUAPPEAR();
 };
 
+#define MAXGATEWAYS		4
+
 #define GDECOR_DISABLED		144
 #define GDECOR_NOFOCUS		123
 #define GDECOR_ONSELECT		165
@@ -229,6 +231,14 @@ struct MENUINFO_SMKS
 #define MYINFO_TBL_STARTINGIN		53
 #define MYINFO_TBL_ERRNOSTARINSTALL	54
 #define MYINFO_TBL_CORRUPTCHAR		55
+#define MYINFO_TBL_GATEWAY1		56
+#define MYINFO_TBL_GATEWAY2		57
+#define MYINFO_TBL_GATEWAY3		58
+#define MYINFO_TBL_GATEWAY4		59
+#define MYINFO_TBL_GATEWAY1_DESCR	60
+#define MYINFO_TBL_GATEWAY2_DESCR	61
+#define MYINFO_TBL_GATEWAY3_DESCR	62
+#define MYINFO_TBL_GATEWAY4_DESCR	63
 
 
 #define GLUALLSTR(strnr)		alldattbl.gluall_tbl->get_TBL_STR(strnr)
@@ -328,7 +338,7 @@ int  glu_selectmission(MENUSTR *prevmenu,int campaign_race,char *fonttable,GRPFI
 int  messagingmenu(void);
 MENUSTR *showtitle(void);
 void cleartitle(MENUSTR *menu);
-void MenuDisappear(MENUAPPEAR *items,MENUSTR *staticmenu);
+void MenuDisappear(MENUSTR *allmenus,MENUAPPEAR *items,MENUSTR *staticmenu);
 MENUAPPEAR *MenuAppear(MENUSTR *allmenus,int elemnr,MENUFIRSTDATA *menudata,MENUSTR *staticmenu);
 void glu_score(struct mapinfo *info);
 void updatescoremenu(void);

@@ -127,6 +127,8 @@
 
 #define MENUITEM_LISTBOX_FLUSHLIST	0
 #define MENUITEM_LISTBOX_DEALLOCLIST	1
+class MENUAPPEAR;
+
 struct BAR
 {
     int bar;
@@ -402,26 +404,27 @@ struct MENUVARS
 };
 struct MENUSTR
 {
-    int x;
-    int y;
-    int xsize;
-    int ysize;
-    int elements;
-    int defaultbutton;		//action on ENTER
-    int defaultlistitem;	//-1 if none,
-    short selectmenusnd;
-    short mouseoversnd;
-    int	mainmenuflags;			//dialogbin flags
-    CALLBACKINFO *CallBackInfo;
-    unsigned char *palette;
-    GRPFILE *dlggrp;
-    char *fonttable;
-    char *saveunder;
-    struct MENUSTR *prevmenu;
-    struct MENUVARS vars;
-    unsigned char incrementfactor;	//value for increase/decrease 0-255
-    unsigned char menuflags;		//menu flags
-    struct MENUPOS menu[];
+    int 		x;
+    int 		y;
+    int 		xsize;
+    int 		ysize;
+    int 		elements;
+    int 		defaultbutton;		//action on ENTER
+    int 		defaultlistitem;	//-1 if none,
+    short 		selectmenusnd;
+    short 		mouseoversnd;
+    int			mainmenuflags;			//dialogbin flags
+    CALLBACKINFO 	*CallBackInfo;
+    unsigned char 	*palette;
+    GRPFILE 		*dlggrp;
+    char 		*fonttable;
+    char 		*saveunder;
+    struct MENUSTR 	*prevmenu;
+    struct MENUVARS 	vars;
+    unsigned char 	incrementfactor;	//value for increase/decrease 0-255
+    unsigned char 	menuflags;		//menu flags
+    MENUAPPEAR		*menuappear;
+    struct MENUPOS 	menu[];
 };
 
 #define MENUFLAGS_ALWAYSDRAW		0x01

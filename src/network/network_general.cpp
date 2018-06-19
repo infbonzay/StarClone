@@ -7,7 +7,12 @@
 ALLNETWCONNECTION	playersconn;
 
 int (*NetworkFunc)(NETWORK_INFO *);
-int (*networkfunc[MAXCONNTYPES])(NETWORK_INFO *)={&NETWORKGAME_UDP,&NETWORKGAME_TCP,&NETWORKGAME_DC,&NETWORKGAME_MODEM};
+int (*networkfunc[MAXCONNTYPES])(NETWORK_INFO *)={&NETWORKGAME_UDP,
+						  &NETWORKGAME_TCP,
+						  &NETWORKGAME_DC,
+						  &NETWORKGAME_MODEM,
+						  &NETWORKGAME_DEDICATED
+						  };
 
 void DEBUG_packet(int inout,NETWORK_JOIN_PACKET *mypacket,struct sockaddr_in *sk)
 {

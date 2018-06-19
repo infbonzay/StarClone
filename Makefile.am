@@ -75,7 +75,7 @@ endif
 PROGS = bin/$(PACKAGE)
 OBJS =  obj/MenuItem.o obj/gamemenu.o \
 	obj/flingy.o obj/iscript.o obj/images.o obj/music.o obj/myfifo.o obj/triggers.o obj/briefing.o obj/video.o \
-	obj/network_general.o obj/network_udp.o obj/network_tcp.o obj/network_dc.o obj/network_modem.o \
+	obj/network_general.o obj/network_udp.o obj/network_tcp.o obj/network_dc.o obj/network_modem.o obj/network_dedicated.o \
 	obj/netwgame.o obj/netwplay.o obj/mpqwrapper.o obj/sigorder.o \
 	obj/construct.o obj/market.o obj/menu.o obj/weapons.o \
 	obj/mouse.o obj/fog.o obj/auxil.o obj/rules.o obj/key.o obj/lists.o \
@@ -143,6 +143,9 @@ obj/network_tcp.o: src/network/network_tcp.cpp include/network/*.h include/*.h  
 	
 obj/network_udp.o: src/network/network_udp.cpp include/network/*.h include/*.h  Makefile
 	$(CXX) -c $(CFLAGS) src/network/network_udp.cpp -o obj/network_udp.o
+	
+obj/network_dedicated.o: src/network/network_dedicated.cpp include/network/*.h include/*.h  Makefile
+	$(CXX) -c $(CFLAGS) src/network/network_dedicated.cpp -o obj/network_dedicated.o
 	
 obj/player.o: src/player.cpp include/*.h  Makefile
 	$(CXX) -c $(CFLAGS) src/player.cpp -o obj/player.o

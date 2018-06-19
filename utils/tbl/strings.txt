@@ -54,3 +54,11 @@ To %s:
 Starting in: %d %s
 To Play Campaign Created By Blizzard#You need to:##1. Copy install.exe from CD's to bin/#2. Rename those install.exe files#to starinstall.exe and broodinstall.exe
 Corrupted Character data file#Please create another one
+Europe
+North America
+Asia
+Africa
+Stable server are here.
+The best players in the World stay here.
+A large number of players goes around here.
+Come here, We wait for new players... 

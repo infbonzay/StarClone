@@ -373,7 +373,7 @@ void MenuDisappearDestroy(MENUAPPEAR *items)
     delete items;
 }
 //==========================================
-void MenuDisappear(MENUAPPEAR *items,MENUSTR *staticmenu)
+void MenuDisappear(MENUSTR *allmenus,MENUAPPEAR *items,MENUSTR *staticmenu)
 {
     MenuItemPcx *oneitem;
     int i;
@@ -390,6 +390,7 @@ void MenuDisappear(MENUAPPEAR *items,MENUSTR *staticmenu)
 
     MenuAppearDrawCycle(items,staticmenu,time1);
     MenuDisappearDestroy(items);
+    allmenus->menuappear = NULL;
     mytimer.DestroyTickCounter(time1);
 }
 //==========================================
@@ -401,6 +402,7 @@ MENUAPPEAR *MenuAppear(MENUSTR *allmenus,int elems,MENUFIRSTDATA *menudata,MENUS
     TICKCOUNTER *time1;
     time1 = mytimer.CreateTickCounter();
     items = new MENUAPPEAR(elems);
+    allmenus->menuappear = items;
     for (i=0; i < elems; i++)
     {
 	e = menudata[i].elemid;
@@ -621,7 +623,7 @@ int campaignselect(void)
 
     installmousemoveevent(&mymousemoveevent);
 
-    MenuDisappear(items,NULL);
+    MenuDisappear(raceselection,items,NULL);
 
     uninstallmousemoveevent();
     mytimer.ClearMyTimerFunc();
@@ -799,7 +801,7 @@ int xcampaignselect(void)
     }while(repeat);
 
     installmousemoveevent(&mymousemoveevent);
-    MenuDisappear(items,NULL);
+    MenuDisappear(raceselection, items, NULL);
 
     uninstallmousemoveevent();
     mytimer.ClearMyTimerFunc();
@@ -921,7 +923,7 @@ int glu_loadgame(void)
     }while(repeat);
 
     installmousemoveevent(&mymousemoveevent);
-    MenuDisappear(items,NULL);
+    MenuDisappear(gluload, items, NULL);
 
     uninstallmousemoveevent();
     mytimer.ClearMyTimerFunc();
@@ -1039,7 +1041,7 @@ int glu_loadreplay(void)
     }while(repeat);
 
     installmousemoveevent(&mymousemoveevent);
-    MenuDisappear(items,NULL);
+    MenuDisappear(gluloadrep, items, NULL);
 
     uninstallmousemoveevent();
     mytimer.ClearMyTimerFunc();
@@ -1356,7 +1358,7 @@ int glu_briefing(int race,int networksingle,struct mapinfo *info,char *prefix_ca
     StopMusic(MUSIC_STOPWITHFADE);
 
     installmousemoveevent(&mymousemoveevent);
-    MenuDisappear(items,NULL);
+    MenuDisappear(glubrief, items, NULL);
 
     uninstallmousemoveevent();
     mytimer.ClearMyTimerFunc();
@@ -1700,7 +1702,7 @@ void glu_score(struct mapinfo *info)
     StopMusic(MUSIC_STOPWITHFADE);
 
     installmousemoveevent(&mymousemoveevent);
-    MenuDisappear(items,NULL);
+    MenuDisappear(gluscore, items, NULL);
 
     uninstallmousemoveevent();
     mytimer.ClearMyTimerFunc();
@@ -1791,18 +1793,9 @@ int mainmenu(void)
 //==========================================
 char CONNMAXPLAYERS[MAXCONNTYPES]={8,2,2,8,8};
 //==========================================
-MENUAPPEAR *menunetwitems;
-MENUAPPEAR *dedicated_items;
-MENUFIRSTDATA menunetw[5] = { 
-				{ .elemid = 0, .appearposition = MENUAPPEAR_FROMLEFT, .disabled = 0 },
-				{ .elemid = 1, .appearposition = MENUAPPEAR_FROMRIGHT, .disabled = 0 },
-				{ .elemid = 2, .appearposition = MENUAPPEAR_FROMBOTTOM, .disabled = 0  },
-				{ .elemid = 3, .appearposition = MENUAPPEAR_FROMRIGHT, .disabled = 0  },
-				{ .elemid = 4, .appearposition = MENUAPPEAR_FROMLEFT, .disabled = 1 }
-			    };
-
 void selconn_callback(MENUSTR *allmenus,int nr,int listnr)
 {
+    static char first;
     MenuItemPcx *oneitem;
     char txt[50];
     if (listnr != -1)
@@ -1815,13 +1808,14 @@ void selconn_callback(MENUSTR *allmenus,int nr,int listnr)
 	setmenuitem_VISIBLED(allmenus,10,TRUE);
 	setmenuitem_VISIBLED(allmenus,11,TRUE);
 	setmenuitem_VISIBLED(allmenus,12,TRUE);
-	if (listnr == MYINFO_TBL_NETTYPE5 - MYINFO_TBL_NETTYPE1)
+/*	if (listnr == MYINFO_TBL_NETTYPE5 - MYINFO_TBL_NETTYPE1)
 	{
-	    if (!dedicated_items)
+	    if (!first)
 	    {
-		menunetw[4].disabled = 0;
-    		oneitem = (MenuItemPcx *) menunetwitems->GetElem(4,NULL);
+		first=1;
+    		oneitem = (MenuItemPcx *) allmenus->menuappear->->GetElem(4,NULL);
     		oneitem->EnableVisible();
+		savedscreen = savescreen();
 		dedicated_items = MenuAppear(allmenus, 1, (MENUFIRSTDATA *) &menunetw[4], NULL);	//gateway.pcx
 	    }
 	    //show servers menu
@@ -1838,6 +1832,9 @@ void selconn_callback(MENUSTR *allmenus,int nr,int listnr)
 		menunetw[4].disabled = 1;
     		oneitem = (MenuItemPcx *) menunetwitems->GetElem(4,NULL);
     		oneitem->DisableVisible();
+		restorescreen(savedscreen);
+		wfree(savedscreen);
+		savedscreen = NULL;
 		MenuDisappear(dedicated_items, NULL);
 		//close servers menu
 		setmenuitem_VISIBLED(allmenus,4,FALSE);
@@ -1847,12 +1844,25 @@ void selconn_callback(MENUSTR *allmenus,int nr,int listnr)
 		dedicated_items = NULL;
 	    }
 	}
-    }
+*/    }
     else
     {
 	setmenuitem_VISIBLED(allmenus,10,FALSE);
 	setmenuitem_VISIBLED(allmenus,11,FALSE);
 	setmenuitem_VISIBLED(allmenus,12,FALSE);
+    }
+}
+//==========================================
+void selconn_gatewaycallback(MENUSTR *allmenus,int nr,int listnr)
+{
+    MenuItemPcx *oneitem;
+    char txt[50];
+    if (listnr != -1)
+    {
+	changetextitem(allmenus,9,MYTBLSTR(MYINFO_TBL_GATEWAY1_DESCR + listnr));			//additional info about selected gateway
+    }
+    else
+    {
     }
 }
 //==========================================
@@ -1865,6 +1875,8 @@ int glu_conn(void)
     char pal[256*4];
     MENUSTR *gluerr,*gluconn;
     NETWORK_INFO recvbcast;
+
+    MENUAPPEAR *menunetwitems;
 
     mpqloadfile(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,SINGLEGAME_STR[0],SINGLEGAME_STR[1],DLGGRP_STR),(char **)&dlg);
     backgnd.openMpqPcx(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,SINGLEGAME_STR[0],SINGLEGAME_STR[1],BACKGND_STR));
@@ -1888,19 +1900,20 @@ int glu_conn(void)
 
     gluconn=LoadDialogBin("rez\\gluconn.bin",DIALOGBIN_MAINDIALOGS,IDFONT16);
     listboxlineitems(gluconn,6,6,20);
+    listboxlineitems(gluconn,8,4,20);
 
 
-//    setmenuitem_VISIBLED(gluconn,4,TRUE);	//pcx table
-//    setmenuitem_VISIBLED(gluconn,7,TRUE);	//name pcx teble("gateway")
-//    setmenuitem_VISIBLED(gluconn,8,TRUE);	//listbox of items
-//    setmenuitem_VISIBLED(gluconn,9,TRUE);	//textbox of descriptions
+    setmenuitem_VISIBLED(gluconn,4,TRUE);	//pcx table
+    setmenuitem_VISIBLED(gluconn,7,TRUE);	//name pcx teble("gateway")
+    setmenuitem_VISIBLED(gluconn,8,TRUE);	//listbox of items
+    setmenuitem_VISIBLED(gluconn,9,TRUE);	//textbox of descriptions
 
     //disable gateway pcx
-    setmenuitem_VISIBLED(gluconn,4,FALSE);
-    setmenuitem_VISIBLED(gluconn,7,FALSE);
-    setmenuitem_VISIBLED(gluconn,8,FALSE);
-    setmenuitem_VISIBLED(gluconn,9,FALSE);
-    gluconn->defaultlistitem=6;
+//    setmenuitem_VISIBLED(gluconn,4,FALSE);
+//    setmenuitem_VISIBLED(gluconn,7,FALSE);
+//    setmenuitem_VISIBLED(gluconn,8,FALSE);
+//    setmenuitem_VISIBLED(gluconn,9,FALSE);
+    gluconn->defaultlistitem=6;			//????????? change default is click on other list
 
     gluconn->menu[1].hotdeltax-=2;
     gluconn->menu[12].item.textitem->rowsize+=2;
@@ -1913,13 +1926,25 @@ int glu_conn(void)
     restrictmousecoords(MOUSEMODE1);
     installmousemoveevent(&mymousemoveevent);
 
-    menunetw[4].disabled = 1;
+    MENUFIRSTDATA menunetw[5] = { 
+				{ .elemid = 0, .appearposition = MENUAPPEAR_FROMLEFT, .disabled = 0 },
+				{ .elemid = 1, .appearposition = MENUAPPEAR_FROMRIGHT, .disabled = 0 },
+				{ .elemid = 2, .appearposition = MENUAPPEAR_FROMBOTTOM, .disabled = 0  },
+				{ .elemid = 3, .appearposition = MENUAPPEAR_FROMRIGHT, .disabled = 0  },
+				{ .elemid = 4, .appearposition = MENUAPPEAR_FROMLEFT, .disabled = 1 }
+			    };
     menunetwitems = MenuAppear(gluconn,5,menunetw,NULL);
 
     mylist saves;
     for (i=0;i<MAXCONNTYPES;i++)
 	saves.AddList(MYTBLSTR(MYINFO_TBL_NETTYPE1+i));
     setlistbox_lists(gluconn,6,0,&saves,selconn_callback);
+
+    mylist gateways;
+    for (i=0;i<MAXGATEWAYS;i++)
+	gateways.AddList(MYTBLSTR(MYINFO_TBL_GATEWAY1+i));
+    setlistbox_lists(gluconn,8,0,&gateways,selconn_gatewaycallback);
+    
     repeat=1;
     do{
 	if (!saves.GetMaxElements())
@@ -1934,6 +1959,7 @@ int glu_conn(void)
 	retstatus&=~SELECTITEMDOUBLECLICK;
 	switch(retstatus)
 	{
+	    case 8://dblclick on list of gateways
 	    case 6://dblclick on listmenu
 	    case 13://ok
 		//check if can use this network type
@@ -1960,16 +1986,12 @@ int glu_conn(void)
 		break;
 	}
     }while(repeat);
+    gateways.FlushList();
     saves.FlushList();
 
     installmousemoveevent(&mymousemoveevent);
-    if (dedicated_items)
-    {
-	MenuDisappearDestroy(dedicated_items);//destroy if was created in sel_conn callback
-	dedicated_items = NULL;	
-    }
-    MenuDisappear(menunetwitems,NULL);
-    menunetwitems = NULL;
+
+    MenuDisappear(gluconn, menunetwitems, NULL);
 
     uninstallmousemoveevent();
     mytimer.ClearMyTimerFunc();
@@ -2255,7 +2277,7 @@ int glu_join(FORCE_SLOTS *fslots)
     }
 
     installmousemoveevent(&mymousemoveevent);
-    MenuDisappear(items,NULL);
+    MenuDisappear(glujoin, items ,NULL);
 
     uninstallmousemoveevent();
     mytimer.ClearMyTimerFunc();
@@ -2468,7 +2490,7 @@ int glu_login(void)
 
     installmousemoveevent(&mymousemoveevent);
 
-    MenuDisappear(items,NULL);
+    MenuDisappear(singammenu, items, NULL);
 
     uninstallmousemoveevent();
     mytimer.ClearMyTimerFunc();
@@ -3198,7 +3220,7 @@ int selectmapmenu(void)
     }while(repeat);
 
     installmousemoveevent(&mymousemoveevent);
-    MenuDisappear(items,NULL);
+    MenuDisappear(selmap, items, NULL);
 
     uninstallmousemoveevent();
     mytimer.ClearMyTimerFunc();
@@ -3482,7 +3504,7 @@ int glu_creat(FORCE_SLOTS *fslots)
     }while(repeat);
 
     installmousemoveevent(&mymousemoveevent);
-    MenuDisappear(items,NULL);
+    MenuDisappear(glucreat, items, NULL);
 
     uninstallmousemoveevent();
     mytimer.ClearMyTimerFunc();
@@ -4087,7 +4109,7 @@ int glu_chat(int masterjoin,int playernr,FORCE_SLOTS *fslots)
     CallNetwork(NETWORK_CLOSENETWORK,&waitconn);
 
     installmousemoveevent(&mymousemoveevent);
-    MenuDisappear(items,NULL);
+    MenuDisappear(gluchat, items, NULL);
 
     uninstallmousemoveevent();
     mytimer.ClearMyTimerFunc();

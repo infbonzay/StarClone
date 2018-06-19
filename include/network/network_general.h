@@ -304,6 +304,8 @@ int  NETWORKGAME_UDP(NETWORK_INFO *param);
 int  NETWORKGAME_TCP(NETWORK_INFO *param);
 int  NETWORKGAME_DC(NETWORK_INFO *param);
 int  NETWORKGAME_MODEM(NETWORK_INFO *param);
+int  NETWORKGAME_DEDICATED(NETWORK_INFO *param);
+
 
 void SetNetworkType(int networktype);
 int  CallNetwork(int funcid,NETWORK_INFO *info);
