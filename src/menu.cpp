@@ -391,6 +391,7 @@ int actionmenuonpressmouse(MENUSTR *allmenus,int downmenu,int *selectedmenu)
 	case ISLISTBOX:
 	    if (item->item.listbox->flist)
 	    {
+		allmenus->defaultlistitem = downmenu;
 		action=0;
 		bar =item->item.listbox->bar;
 		if (bar)

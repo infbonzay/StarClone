@@ -1795,6 +1795,7 @@ char CONNMAXPLAYERS[MAXCONNTYPES]={8,2,2,8,8};
 //==========================================
     char *savedscreen;
     MENUAPPEAR *gatewayitem;
+    MENUAPPEAR *menunetwitems;
     MENUFIRSTDATA menunetw[5] = { 
 				{ .elemid = 0, .appearposition = MENUAPPEAR_FROMLEFT, .disabled = 0 },
 				{ .elemid = 1, .appearposition = MENUAPPEAR_FROMRIGHT, .disabled = 0 },
@@ -1803,6 +1804,7 @@ char CONNMAXPLAYERS[MAXCONNTYPES]={8,2,2,8,8};
 				{ .elemid = 4, .appearposition = MENUAPPEAR_FROMLEFT, .disabled = 1 }
 			    };
 
+#define GATEWAYITEM	(MYINFO_TBL_NETTYPE5 - MYINFO_TBL_NETTYPE1)
 void selconn_callback(MENUSTR *allmenus,int nr,int listnr)
 {
     MenuItemPcx *oneitem;
@@ -1817,20 +1819,21 @@ void selconn_callback(MENUSTR *allmenus,int nr,int listnr)
 	setmenuitem_VISIBLED(allmenus,10,TRUE);
 	setmenuitem_VISIBLED(allmenus,11,TRUE);
 	setmenuitem_VISIBLED(allmenus,12,TRUE);
-	if (listnr == MYINFO_TBL_NETTYPE5 - MYINFO_TBL_NETTYPE1)
+	if (listnr == GATEWAYITEM)
 	{
 	    if (!gatewayitem)
 	    {
 		savedscreen = savescreen();
-		menunetw[4].disabled = 0;
-		gatewayitem = MenuAppear(allmenus,1,&menunetw[4],NULL);
+		menunetw[GATEWAYITEM].disabled = 0;
+		oneitem = (MenuItemPcx *) menunetwitems->GetElem(GATEWAYITEM,NULL);
+		oneitem->EnableVisible();						// enable slide visibility to disapear with all items
+		gatewayitem = MenuAppear(allmenus,1,&menunetw[GATEWAYITEM],NULL);	//slide item
 	    }
 	    //show servers menu
 	    setmenuitem_VISIBLED(allmenus,4,TRUE);
 	    setmenuitem_VISIBLED(allmenus,7,TRUE);
 	    setmenuitem_VISIBLED(allmenus,8,TRUE);
 	    setmenuitem_VISIBLED(allmenus,9,TRUE);
-
 	}
 	else
 	{
@@ -1839,8 +1842,10 @@ void selconn_callback(MENUSTR *allmenus,int nr,int listnr)
 		restorescreen(savedscreen);
 		wfree(savedscreen);
 		savedscreen = NULL;
-		menunetw[4].disabled = 1;
-		MenuDisappear(allmenus,gatewayitem, NULL);
+		menunetw[GATEWAYITEM].disabled = 1;
+		oneitem = (MenuItemPcx *) menunetwitems->GetElem(GATEWAYITEM,NULL);
+		oneitem->DisableVisible();				// disable slide visibility with all items, because will do now
+		MenuDisappear(allmenus,gatewayitem, NULL);		//slide back
 		gatewayitem = NULL;
 		//close servers menu
 		setmenuitem_VISIBLED(allmenus,4,FALSE);
@@ -1916,7 +1921,7 @@ int glu_conn(void)
     setmenuitem_VISIBLED(gluconn,7,FALSE);
     setmenuitem_VISIBLED(gluconn,8,FALSE);
     setmenuitem_VISIBLED(gluconn,9,FALSE);
-    gluconn->defaultlistitem=6;			//????????? change default is click on other list
+    gluconn->defaultlistitem=6;
 
     gluconn->menu[1].hotdeltax-=2;
     gluconn->menu[12].item.textitem->rowsize+=2;
@@ -1930,7 +1935,7 @@ int glu_conn(void)
     installmousemoveevent(&mymousemoveevent);
 
     menunetw[4].disabled = 1;
-    MENUAPPEAR *menunetwitems = MenuAppear(gluconn,5,menunetw,NULL);
+    menunetwitems = MenuAppear(gluconn,5,menunetw,NULL);
 
     mylist saves;
     for (i=0;i<MAXCONNTYPES;i++)
@@ -2000,6 +2005,7 @@ int glu_conn(void)
 	savedscreen = NULL;
     }
     MenuDisappear(gluconn, menunetwitems, NULL);
+    menunetwitems = NULL;
     
     uninstallmousemoveevent();
     mytimer.ClearMyTimerFunc();
