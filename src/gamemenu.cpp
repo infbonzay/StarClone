@@ -623,6 +623,7 @@ int campaignselect(void)
 
     installmousemoveevent(&mymousemoveevent);
 
+    memcpy(GRP_vidmem,backgnd.GetPcxRawBytes(),backgnd.xsizePcx()*backgnd.ysizePcx());
     MenuDisappear(raceselection,items,NULL);
 
     uninstallmousemoveevent();
@@ -702,6 +703,7 @@ int xcampaignselect(void)
     MENUFIRSTDATA menushow[2] = { 
 			    {.elemid = 0, .appearposition = MENUAPPEAR_FROMLEFT, .disabled = 0},
 			    {.elemid = 1, .appearposition = MENUAPPEAR_FROMRIGHT, .disabled = 0} };
+    
     MENUAPPEAR *items = MenuAppear(raceselection,2,menushow,NULL);
 
     setdefaultbutton(raceselection,-1);
@@ -801,6 +803,7 @@ int xcampaignselect(void)
     }while(repeat);
 
     installmousemoveevent(&mymousemoveevent);
+    memcpy(GRP_vidmem,backgnd.GetPcxRawBytes(),backgnd.xsizePcx()*backgnd.ysizePcx());
     MenuDisappear(raceselection, items, NULL);
 
     uninstallmousemoveevent();

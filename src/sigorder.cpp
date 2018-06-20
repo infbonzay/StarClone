@@ -351,6 +351,8 @@ int  SIGOrder_ZergEggBirth(OBJ *a)
     CreateImageAndAddToList(a,x256,y256,0,NOLOIMAGE);
     SetUnitPercentHealth(a,100);
     SetUnitPercentShield(a,100);
+    if (IsSpellCaster(a->SC_Unit))
+        SetUnitPercentMana(a, MANAATBIRTH);
     SetOrder(a,4,&SIGOrder_ZergUnitBirth);
     SetOBJIScriptNr(a,ISCRIPTNR_SPECIALSTATE1,ISCRIPTNR_EXECUTE);		//zerg birth script
     activatesound(a,MODESOUNDREADY,2,NOSTOPCURRENTSOUNDS);

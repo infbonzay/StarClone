@@ -337,7 +337,7 @@ struct OBJ *createobjlowlevel(OBJ *workerobj,int x,int y,SCUNIT SC_Unit,int play
     a->playernr=playernr;
     if (IsSpellCaster(a->SC_Unit))//&&(GetMageAtr(&a->atrobj,ATRHALLUCINATION)==0))
     {
-	SetUnitPercentMana(a,33);
+	SetUnitPercentMana(a, MANAATBIRTH);
     }
 //    ChangeObjXY(a,x,y);
 
@@ -1485,7 +1485,7 @@ int moveobj_buildmode(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int
 			moveobj(a,NULL,MODESTOP,NOSHOWERROR);
 			return(MOVEOBJ_NOACT);
 		    }
-		    createobjman(x,y,obj_id,a->playernr,0,1,1,33);
+		    createobjman(x, y, obj_id, a->playernr, 0, 1, 1, MANAATBIRTH);
 		    break;
 		case SC_DRONEOBJ:
 		    //doliftdown
@@ -1502,7 +1502,7 @@ int moveobj_buildmode(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int
 			return(MOVEOBJ_NOACT);
 		    }
 		    //create build
-		    newobj = createobjman(x,y,obj_id,a->playernr,0,1,1,33);
+		    newobj = createobjman(x, y, obj_id, a->playernr, 0, 1, 1,MANAATBIRTH);
 		    //lets begin construct
 		    ContinueSCVConstruct(a,newobj);
 		    SetModeMove(a,MODECONSTRUCT);

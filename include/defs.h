@@ -24,6 +24,7 @@ typedef unsigned char SCUNIT;
 #define STIMPACKMINLIFE		(10<<8)
 //=============================
 #define MAXMANA			(200<<8)
+#define MANAATBIRTH		33		//in percents
 //=============================
 
 #define INTERCEPTORREFRESHMYPARENT		100

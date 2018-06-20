@@ -421,8 +421,8 @@
 *185 !!!!AGAIN!!!! psi emitter not attached to scv zerg2map 
 *186 trap can atack only in face direction (NO FULLATACKMODE BIT)  (unitnr=211 facecreation = 0)
 *187 sfx sounds need to lower in transmission message
- 188 firebat damage 1-3 to bunker ?????
- 189 defiler & queen has no mana at birth
+*188 defiler & queen has no mana at birth
+*189 custom play menu wrong
     if interceptors kill destobj return to carrier but carrier in atackmode & interceptors dont launch again
     interceptors fly to atack far then carrier range
     carrier stop move if atack to ground and stops to atack somebody
