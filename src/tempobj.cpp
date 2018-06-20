@@ -229,8 +229,8 @@ OBJ *CreateUnitsFromMAP(struct unit_on_map *unit,struct mapinfo *loadedmap)
 	    else
 	    {
 #ifndef TEST
-		if (!IsGroupNeutralFlag(unit->unit_type))
-		    return(NULL);
+//		if (!IsGroupNeutralFlag(unit->unit_type))
+//		    return(NULL);
 #endif
 		a = createobjfulllife(unit->xpos,unit->ypos,unit->unit_type,unit->player);
 //		a = createobjman(unit->xpos,unit->ypos,unit->unit_type,unit->player,0,1,1,1);

@@ -14,8 +14,8 @@ int TBL::loadTBL(char *filename)
 	tbl=NULL;
 	if (mpqloadfile(filename,(char **)&tbl))
 	    return(-1);
-	DEBUGMES("***********************%s\n",filename);
-	log_STRS();
+//	DEBUGMES("***********************%s\n",filename);
+//	log_STRS();
 
 	return(0);
     }
