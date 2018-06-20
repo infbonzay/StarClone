@@ -158,8 +158,12 @@ int IfCanCreateWeapon(OBJ *atacker,OBJ *destobj,int *errmes,unsigned char *weapo
 		atacker->prop &= ~VARNEEDTOLAUNCHINTERCEPTORS;
 		break;
 	    case SC_INTERCEPTOROBJ:
-		if (GetDistanceBetweenUnits256(atacker,atacker->myparent) > (8+6)*32*256)
-		    return(CREATEDWEAPONSTATUS_INTERCEPTORFARAWAY);
+		if (atacker->myparent)		//ignore distance between interceptorparent(carrier) and atack destination
+						//because carier was die
+		{
+		    if (GetDistanceBetweenUnits256(atacker,atacker->myparent) > (8+6)*32*256)
+			return(CREATEDWEAPONSTATUS_INTERCEPTORFARAWAY);
+		}
 	    default:
 		if (!IsOnSkyOBJ(destobj))
 		{

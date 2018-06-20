@@ -409,9 +409,11 @@ int LowLevelDamage(OBJ *atacker,OBJ *a,int weapon_id,int typedamage,int totaldam
 		break;
 	    case SC_INTERCEPTOROBJ:
 		if (atacker->myparent)
+		{
 		    OBJ_VAR_SET(atacker->myparent,obj_see,a->playernr);
-		if (!OBJ_VAR_CHK(atacker->myparent,obj_notdetect,a->playernr))
-		    opentempmap(a->playernr,atacker->myparent->xkart,atacker->myparent->ykart,3,3);
+		    if (!OBJ_VAR_CHK(atacker->myparent,obj_notdetect,a->playernr))
+			opentempmap(a->playernr,atacker->myparent->xkart,atacker->myparent->ykart,3,3);
+		}
 		break;
 	}
 	OBJ_VAR_SET(myparent,obj_see,a->playernr);

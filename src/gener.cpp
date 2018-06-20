@@ -882,7 +882,7 @@ int gogame(struct mapinfo *info)
     totalimgs=0;
     drawedimgs=0;
     AllImages_Draw();
-    printf("At begin totalimgs=%d drawedimgs=%d\n",totalimgs,drawedimgs);		//to check for leaks
+    DEBUGMESSCR("At begin totalimgs=%d drawedimgs=%d\n",totalimgs,drawedimgs);		//to check for leaks
 
     putfog();			//show fogofwar
     drawMINIMAP();

@@ -28,8 +28,8 @@ int MoveItem::MoveScript(void)
 //=================================================================
 //#define MAXACCEL 17
 //const int accelertable[MAXACCEL] = {1,1,2,3,5,8,12,16,21,29,40,52,65,79,94,110,128};
-#define MAXACCEL 12
-const uint8_t accelertable[MAXACCEL] = {1,1,2,3,5,8,13,21,34,55,89,144};
+#define MAXACCEL 13
+const uint8_t accelertable[MAXACCEL] = {1,1,2,3,5,8,13,21,34,55,89,144,233};
 //=================================================================
 void MoveItem::SetTempVars(void)
 {
@@ -40,7 +40,7 @@ void MoveItem::SetTempVars(void)
 int MoveItem::SimpleScriptCalcMaxDistance(void)
 {
 //    return(1+1+2+3+4+5+13+21+34+55+89+144);
-    return(1+1+2+3+5+8+13+21+34+55+89+144);
+    return(1+1+2+3+5+8+13+21+34+55+89+144+233);
 }
 //=================================================================
 void MoveItem::SetParams(uint32_t spx,uint32_t spy,uint32_t acc)
