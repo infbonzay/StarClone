@@ -5,6 +5,7 @@
 
 #include "debug.h"
 #include "auxil.h"
+#define DEBUGPREFIXSTRING	"DEBUG : "
 char DEBUGFLAGS;
 char DEBUGOUTFILE[1024];
 //===========================================
@@ -35,7 +36,7 @@ int dfprintf(const char *prefix,const char *format, ...)
     FILE *f=fopen(DEBUGOUTFILE,"a");
     if (f)
     {
-	fprintf(f,"%s:",prefix);
+	fprintf(f,DEBUGPREFIXSTRING "%s:",prefix);
 	vfprintf(f,format, args);
 	fclose(f);
     }
@@ -49,7 +50,7 @@ int dprintf(const char *prefix,const char *format, ...)
     va_list args;
     va_start(args, format);
 
-    printf("%s:",prefix);
+    printf(DEBUGPREFIXSTRING "%s:",prefix);
     vprintf(format, args);
     va_end(args);
 #endif

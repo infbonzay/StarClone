@@ -1981,6 +1981,7 @@ int glu_conn(void)
 		}
 		repeat=0;
 		exitstatus=NETWORKGAMETYPE1+gluconn->menu[6].item.listbox->selectednr;
+//		gatewaystatus=gluconn->menu[8].item.listbox->selectednr;
 		break;
 	    case CANCELFROMMENU://ESC
 	    case 14://cancel

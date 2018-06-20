@@ -52,7 +52,7 @@ void CreateDoodadsFromLists(mylist *mapdoodads,mapinfo *loadedmap)
     int i,doodadtype;
     OBJ *a;
     doodad_on_map *doodad;
-    printf("total doodads = %d \n",mapdoodads->GetMaxElements());
+    DEBUGMESSCR("total doodads = %d \n",mapdoodads->GetMaxElements());
     mapdoodads->EnumListInit();
     while(doodad=(doodad_on_map *)mapdoodads->GetNextListElem())
     {

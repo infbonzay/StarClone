@@ -3,7 +3,7 @@
 
 #include "debug.h"
 
-#define MAXLISTELEMENTS 100
+#define MAXLISTELEMENTS 64
 #define MYLIST_FULL	1
 #define MYLIST_EMPTY	0
 struct listelem

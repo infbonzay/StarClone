@@ -352,6 +352,8 @@ int actiondblclick(MENUSTR *allmenus,int downmenu)
 		{
 		    if (item->item.listbox->flist)
 		    {
+			if (!item->item.listbox->pixelsbetweenlines)
+			    return(NOSELECTMENUBAR);
 			itemselected=(mouse_y-item->hotdeltay)/item->item.listbox->pixelsbetweenlines;
 			if (itemselected<item->item.listbox->lines)
 			    itemselected+=item->item.listbox->from;
@@ -452,6 +454,8 @@ int actionmenuonpressmouse(MENUSTR *allmenus,int downmenu,int *selectedmenu)
 		}
 		else
 		{
+		    if (!item->item.listbox->pixelsbetweenlines)
+		        return(0);
 		    itemselected=(mouse_y-item->hotdeltay)/item->item.listbox->pixelsbetweenlines;
 		    if (itemselected<item->item.listbox->lines)
 			itemselected+=item->item.listbox->from;
@@ -3579,6 +3583,11 @@ void setlistbox_lists(MENUSTR *allmenus,int nr,int selectednr,mylist *listbox)
     {
 	if (listbox)
 	{
+            if (!menuitem->item.listbox->pixelsbetweenlines)
+            {
+		DEBUGMESSCR("missing listboxlineitems(MENU, %d , lines, pixelsbetweenlines);\n" \
+			    "not initialized for item %d (lines & pixelsbetweenlines equals with zero)\n",nr,nr);
+            }
 	    prevlistelements=listbox->GetMaxElements();
 	    if (menuitem->item.listbox->flist!=listbox)
 		dellistboxitem(allmenus,nr,0,MENUITEM_LISTBOX_DEALLOCLIST);
