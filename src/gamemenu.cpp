@@ -45,6 +45,7 @@
 
 #define CHECKFORINSTALLEXE
 #define STARMENUMAP_SHOWNEW
+//#define SKIPSCENARIOBUTTONACTIVE
 
 #define GLUEPAL_OFFSET		8
 char GLUEPAL_NAME[256]="glue\\Pal";
@@ -407,7 +408,7 @@ MENUAPPEAR *MenuAppear(MENUSTR *allmenus,int elems,MENUFIRSTDATA *menudata,MENUS
     {
 	e = menudata[i].elemid;
 	if ( allmenus->menu[e].itemtype != ISIMAGE )
-	    printf("Error elem(%d) is not IMAGE\n",i);
+	    printf("Error elem(%d) is not IMAGE\n",e);
 	items->AddElem( oneitem = new MenuItemPcx(allmenus->menu[e].item.image->pcx) );
 	oneitem->AddMoveAction();
 	if (menudata[i].disabled == 0 )
@@ -1145,7 +1146,7 @@ int CheckOtherPlayers(MENUSTR *allmenus,void *data)
 }
 //==========================================
 #define FRAMEPCXS	8
-int glu_briefing(int race,int networksingle,struct mapinfo *info,char *prefix_campaignpath)
+int glu_briefing(int race,int networksingle,struct mapinfo *info,char *prefix_campaignpath,int skipmissionbutton)
 {
     int retstatus,retstatus2,exitstatus,i,repeat,e,err;
     int totalpcx;
@@ -1198,7 +1199,7 @@ int glu_briefing(int race,int networksingle,struct mapinfo *info,char *prefix_ca
     e=BRIEFING_ELEMS[race];
 
     MENUFIRSTDATA menushow[7];
-    totalpcx=7-networksingle;
+    totalpcx=7;
     menushow[0].elemid=e;
     menushow[0].appearposition=MENUAPPEAR_FROMRIGHT;
     menushow[0].disabled=0;
@@ -1217,18 +1218,27 @@ int glu_briefing(int race,int networksingle,struct mapinfo *info,char *prefix_ca
     menushow[5].elemid=e+6;
     menushow[5].appearposition=MENUAPPEAR_FROMRIGHT;
     menushow[5].disabled=0;
+    menushow[6].elemid=e+2;
+    menushow[6].appearposition=MENUAPPEAR_FROMBOTTOM;
+
+#ifdef SKIPSCENARIOBUTTONACTIVE
+    skipmissionbutton=1;
+#endif
+    if (skipmissionbutton )
+    {
+	setmenuitem_VISIBLED(glubrief,e+8,TRUE);	//pcx skip tutorial pcx
+	setmenuitem_VISIBLED(glubrief,e+9,TRUE);	//pcx skip tutorial text
+    }
     if (networksingle)
     {
+	menushow[6].disabled = 1;
 	setmenuitem_VISIBLED(glubrief,e+2,FALSE);	//pcx replay
 	setmenuitem_VISIBLED(glubrief,e+10,FALSE);	//replay button
 	glubrief->menu[e+7].dialogbin_flags &= ~DIALOGBIN_FLAGS_RESPONDTOESCKEY;//prevent press ESC key
     }
     else
     {
-	menushow[6].elemid=e+2;
-	menushow[6].appearposition=MENUAPPEAR_FROMBOTTOM;
-	menushow[6].disabled=0;
-
+	menushow[6].disabled = 0;
     }
     for (i=e+0;i<e+7;i++)
     {
@@ -1354,6 +1364,10 @@ int glu_briefing(int race,int networksingle,struct mapinfo *info,char *prefix_ca
 	{
 	    repeat=0;
 	    exitstatus=CANCELGAME;
+	}else if (retstatus == e+9 )	//tutoril button
+	{
+	    repeat=0;
+	    exitstatus=SKIPMISSION;
 	}
     }while(repeat);
     Remove_Briefing(info);

@@ -56,7 +56,7 @@
 #define SHOWVIDEO	2
 #define PREVIEWTEXT	3
 #define ENDCAMPAIGN	4
-
+#define SKIPMISSION	5
 
 
 #define MAXQUEUEEDELEM	10000

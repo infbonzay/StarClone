@@ -289,6 +289,7 @@ playmission:				GAMETYPE = MAP_GAMETYPE_USEMAPSETTINGS;
 					selected_id = (startmission >> 16) & 0xff;
 					campaign_id = (startmission >> 8) & 0xff;
 					mission_id  = startmission & 0xff;
+					DEBUGMESSCR("startmission=0x%x\n",startmission);
 					status = getcampaignname(campaign_id,selected_id);
 					if (status == SHOWVIDEO)
 					{
@@ -328,7 +329,7 @@ repeatmissionagain:
 					preparegameconf_ums();
 					force_slots.CreatePlayersNr();
 					selected=SINGLEGAME;
-					status=glu_briefing(gameconf.pl_race[NUMBGAMER],NETWORKGAME,testmap,SELECTMAP);
+					status=glu_briefing(gameconf.pl_race[NUMBGAMER],NETWORKGAME,testmap,SELECTMAP,startmission == 0);
 			    		unload_starmapallocated(testmap);
 					wfree(testmap);
 					testmap=NULL;
@@ -337,6 +338,12 @@ repeatmissionagain:
 					    case STARTGAME://let's play
 						gamequitstatus=letsplaygame(gameconf.pl_race[NUMBGAMER],SELECTMAP);
 						free_missionobjectives();
+					    case SKIPMISSION://go next mission
+					    	if (status == SKIPMISSION)
+					    	{
+					    	    gamestatus = WINGAME;
+					    	    gamequitstatus = QUITGAME;
+						}
 						if ( gamequitstatus==EXITGAME || gamequitstatus==QUITMISSION )
 						    break;
 //						gamestatus=WINGAME;	//for test 
@@ -409,7 +416,7 @@ gonextmission:
 						    switch(status)
 						    {
 						    case 0:
-							status=glu_briefing(gameconf.pl_race[NUMBGAMER],NETWORKGAME,testmap,NULL);
+							status=glu_briefing(gameconf.pl_race[NUMBGAMER],NETWORKGAME,testmap,NULL,0);
 			    				unload_starmapallocated(testmap);
 							wfree(testmap);
 							testmap=NULL;
@@ -514,7 +521,7 @@ gonextmission:
 						    {
 							case PLAYNETWORKGAME:
 							    printf("numbgamer=%d\n",NUMBGAMER);
-							    status=glu_briefing(gameconf.pl_race[NUMBGAMER],NETWORKGAME,NULL,NULL);
+							    status=glu_briefing(gameconf.pl_race[NUMBGAMER],NETWORKGAME,NULL,NULL,0);
 							    switch(status)
 							    {
 								case STARTGAME://let's play
@@ -551,7 +558,7 @@ gonextmission:
 					{
 					    case PLAYNETWORKGAME:
 						printf("numbgamer=%d\n",NUMBGAMER);
-						status=glu_briefing(gameconf.pl_race[NUMBGAMER],NETWORKGAME,NULL,NULL);
+						status=glu_briefing(gameconf.pl_race[NUMBGAMER],NETWORKGAME,NULL,NULL,0);
 						switch(status)
 						{
 						    case STARTGAME://let's play

@@ -297,7 +297,7 @@ int  campaignselect(void);
 int  xcampaignselect(void);
 int  glu_loadgame(void);
 int  glu_loadreplay(void);
-int  glu_briefing(int race,int networksingle,struct mapinfo *map,char *prefix_campaignpath);
+int  glu_briefing(int race,int networksingle,struct mapinfo *map,char *prefix_campaignpath, int skipmissionbutton);
 int  mainmenu(void);
 int  glu_login(void);
 int  selectmapmenu(void);
