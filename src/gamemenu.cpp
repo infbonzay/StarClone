@@ -1523,9 +1523,9 @@ void glu_score(struct mapinfo *info)
     char txt[90];
     char txt2[15];
 
-    race=info->pl_race[info->played_as_nr];
-    if (race==RACE_OBSERVER)
-	race=RACE_TERRAN;
+//    race = info->pl_race[info->played_as_nr];
+    race = gameconf.pl_race[info->played_as_nr];
+//    race = CorrectRaceType(info->pl_race[info->played_as_nr],intfo->played_as_nr);
     losewin=(map.flags & STARMAP_FLAG_WINGAME)!=0;
     
     StopMusic(MUSIC_STOPWITHFADE);
@@ -1637,9 +1637,8 @@ void glu_score(struct mapinfo *info)
     for (pl=0;pl<force_slots.realplayers;pl++)
     {
     	    i=force_slots.playernr[pl];
-	    myrace=info->pl_race[i];
-//	    if (myrace==RACE_OBSERVER)
-//		continue;
+//	    myrace = info->pl_race[i];
+	    myrace = gameconf.pl_race[i];
 	    if (GAMETYPE==MAP_GAMETYPE_USEMAPSETTINGS)
 	    {
 		    int forcenr=info->pl_force.force_nr[i];
@@ -2618,7 +2617,7 @@ void preparegameconf_ums(void)
 		j++;
 		nrplayers++;
 		gameconf.pl_race[i]=test_race[i];
-		if (gameconf.pl_race[i]==RACE_INDEPENDENT || gameconf.pl_race[i]==RACE_USER_SELECT)//random race to specific race
+		if (gameconf.pl_race[i]==RACE_INDEPENDENT)// || gameconf.pl_race[i]==RACE_USER_SELECT)//random race to specific race
 		    gameconf.pl_race[i]=myrand(3);
 		if (i==NUMBGAMER)
 		    gameconf.pl_owner[i]=OWNER_HUMAN;
@@ -3171,7 +3170,7 @@ int selectmapmenu(void)
 			strncat(SELECTMAP,&listboxstr[2],sizeof(SELECTMAP)-1);
 		    	if (GAMETYPE==MAP_GAMETYPE_USEMAPSETTINGS)
 		    	{
-			    preparegameconf_ums();
+//			    preparegameconf_ums();
 			}
 			else
 			{

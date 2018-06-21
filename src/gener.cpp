@@ -391,8 +391,10 @@ gonextmission:
 						clearplayersconfig();
 						clearplayernames();
 						setplayername(NUMBGAMER,nickname);
-						status=selectmapmenu();
+						status = selectmapmenu();
 						do{
+		    				    if (GAMETYPE == MAP_GAMETYPE_USEMAPSETTINGS)
+							preparegameconf_ums();
 						    testmap=(mapinfo *) wmalloc(sizeof(mapinfo));
 						    memset(testmap,0,sizeof(mapinfo));
         
@@ -666,9 +668,9 @@ int letsplaygame(int race,char *mypath)
     {
 	    calcsomespellinfo();
 
-	    printf("loaded %s\n",SELECTMAP);
+	    DEBUGMESSCR("loaded %s\n",SELECTMAP);
 	    if (map.flags & STARMAP_FLAG_EXPANSION)
-		printf("(EXPANSION MAP)\n",SELECTMAP);
+		DEBUGMESSCR("(EXPANSION MAP)\n",SELECTMAP);
 	    map.played_as_nr=NUMBGAMER;
 	    
 	    mytimer.ClearGameTimer();

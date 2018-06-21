@@ -965,10 +965,26 @@ void _putcells(void)
     }
 }
 //==================================
+int CorrectRaceType(int ret,int playernr)
+{
+    switch(ret)
+    {
+	case RACE_ZERG:
+	case RACE_TERRAN:
+	case RACE_PROTOSS:
+	    return(ret);
+	case RACE_INDEPENDENT:
+	case RACE_USER_SELECT:
+	    return(gameconf.pl_race[playernr]);
+	default:
+	    return(RACE_TERRAN);
+    }
+}
+//==================================
 int getplayerrace(struct mapinfo *map,int playernr)
 {
     int ret,i;
-    ret = map->pl_race[playernr];
+    ret = CorrectRaceType(map->pl_race[playernr], playernr);
     for (i=0;i<3;i++)
     {
 	xicon[i] = iconxcoord[ret][i];

@@ -1395,8 +1395,6 @@ int load_starmap( const char *mapfile,char *fname, struct mapinfo *info,GAMECONF
     }
 
     _RACE = getplayerrace(&map,NUMBGAMER);
-    if (_RACE == RACE_OBSERVER)
-	_RACE = RACE_TERRAN;
 
     if (loadbuttons(_RACE))
     {
@@ -1862,7 +1860,7 @@ void randomizerace(struct mapinfo *info,GAMECONF *conf)
     if (GAMETYPE == MAP_GAMETYPE_USEMAPSETTINGS)
 	for (int i=0;i<MAXPLAYERS;i++)
 	{
-	    if (info->pl_race[i] == RACE_INDEPENDENT || info->pl_race[i] == RACE_USER_SELECT)
+	    if (info->pl_race[i] == RACE_INDEPENDENT )//|| info->pl_race[i] == RACE_USER_SELECT)
 		info->pl_race[i] = myrand(3);
 	}
     else
