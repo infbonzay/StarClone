@@ -1558,7 +1558,7 @@ void glu_score(struct mapinfo *info)
 
 
     gluscore=LoadDialogBin("rez\\gluscore.bin",DIALOGBIN_MAINDIALOGS,IDFONT16);
-//    setmenuitem_DISABLED(gluscore,7,TRUE);
+    setmenuitem_DISABLED(gluscore,7,TRUE);		//replay button disables
     setradiobuttonstate(gluscore,2);
     menuspecialtables(gluscore,fntadr,scoregrp);
     setmenuflags(gluscore,MENUFLAGS_ALWAYSDRAW);

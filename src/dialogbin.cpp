@@ -10,7 +10,7 @@
 #include "tbl.h"
 #include "dialogbin.h"
 
-//#define SHOWMENUINFO
+#define SHOWMENUINFO
 //==========================================
 int DialogBin_GetFontNr(int flags)
 {
