@@ -2596,7 +2596,7 @@ void copytempowners(struct mapinfo *testmap)
     memcpy(test_race,testmap->pl_race,MAXPLAYERS);
     for (i=0;i<MAXPLAYERS;i++)
         if (test_race[i]>=OWNER_RESCUABLE)
-    	test_race[i]=OWNER_RESCUABLE;
+    	    test_race[i]=OWNER_RESCUABLE;
 }
 //==========================================
 void preparegameconf_ums(void)
@@ -2618,7 +2618,7 @@ void preparegameconf_ums(void)
 		j++;
 		nrplayers++;
 		gameconf.pl_race[i]=test_race[i];
-		if (gameconf.pl_race[i]==RACE_INDEPENDENT)//random race to specific race
+		if (gameconf.pl_race[i]==RACE_INDEPENDENT || gameconf.pl_race[i]==RACE_USER_SELECT)//random race to specific race
 		    gameconf.pl_race[i]=myrand(3);
 		if (i==NUMBGAMER)
 		    gameconf.pl_owner[i]=OWNER_HUMAN;

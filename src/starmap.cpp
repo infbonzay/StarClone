@@ -1862,7 +1862,7 @@ void randomizerace(struct mapinfo *info,GAMECONF *conf)
     if (GAMETYPE == MAP_GAMETYPE_USEMAPSETTINGS)
 	for (int i=0;i<MAXPLAYERS;i++)
 	{
-	    if (info->pl_race[i] == RACE_INDEPENDENT)
+	    if (info->pl_race[i] == RACE_INDEPENDENT || info->pl_race[i] == RACE_USER_SELECT)
 		info->pl_race[i] = myrand(3);
 	}
     else

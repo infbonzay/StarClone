@@ -62,6 +62,8 @@ void CreateDoodadsFromLists(mylist *mapdoodads,mapinfo *loadedmap)
 	    {
 //		doodad->playernr=NUMBGAMER;
 		a = CreateUnitsFromMAP(doodad->xpos,doodad->ypos,doodad->sprites_id,doodad->playernr,loadedmap);
+		if (!a)
+		    continue;
 		if (doodad->flags & DOODADBOTTOMSTATE)
 		{
 		    SetOrder(a,1,&SIGOrder_DoodadAfterBottom);

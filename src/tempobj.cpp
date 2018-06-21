@@ -165,17 +165,16 @@ OBJ *CreateUnitsFromMAP(struct unit_on_map *unit,struct mapinfo *loadedmap)
 	    a=CreateGeyserOnMap(unit->xpos,unit->ypos,unit->unit_type,GREYNEUTRALCOLORPLAYER,unit->resource_count,MAXGASINSTACK,loadedmap);
 	    break;
 	case SC_STARTLOC://start location
-	    if (GAMETYPE == MAP_GAMETYPE_USEMAPSETTINGS)
-	    {
-		if (unit->player==NUMBGAMER)
-		{
-		    SetVisualMapPositionCenter(unit->xpos,unit->ypos);
-		}
-		return(NULL);
-	    }
 	    playernr=GetPlayerByLocation(loadedmap,curentlocation);
 	    if (playernr!=-1)
 	    {
+		if (GAMETYPE == MAP_GAMETYPE_USEMAPSETTINGS)
+		{
+		    if (playernr == NUMBGAMER)
+		    {
+			SetVisualMapPositionCenter(unit->xpos,unit->ypos);
+		    }
+		}
 		owner = gameconf.pl_owner[playernr];
 		// do not create units for observer players
 		if (( owner == OWNER_HUMAN || owner == OWNER_COMPUTER))
@@ -229,8 +228,8 @@ OBJ *CreateUnitsFromMAP(struct unit_on_map *unit,struct mapinfo *loadedmap)
 	    else
 	    {
 #ifndef TEST
-//		if (!IsGroupNeutralFlag(unit->unit_type))
-//		    return(NULL);
+		if (!IsGroupNeutralFlag(unit->unit_type))		//in melee do not create neutral units/builds
+		    return(NULL);
 #endif
 		a = createobjfulllife(unit->xpos,unit->ypos,unit->unit_type,unit->player);
 //		a = createobjman(unit->xpos,unit->ypos,unit->unit_type,unit->player,0,1,1,1);
