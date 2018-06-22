@@ -183,7 +183,7 @@ void ShowPreviewBuff(char *cmpbuf,int sizebuf,int esckeyaction)
 		    {
     			if (!strncmp(&cmpbuf[from],cmpgn_cmd[j],strlen(cmpgn_cmd[j])))
     			{
-//            		    printf("find [%s]\n",cmpgn_cmd[j]);
+//            		    DEBUGMESSCR("find [%s]\n",cmpgn_cmd[j]);
             		    switch(j)
 			    {
 				case 0://comment
@@ -284,7 +284,7 @@ void ShowPreviewBuff(char *cmpbuf,int sizebuf,int esckeyaction)
 		    }//for
 		    if (j>=sizeof(cmpgn_cmd)/sizeof(char *))
 		    {
-	    		printf("unknown command [%s]\n",&cmpbuf[from]);
+	    		DEBUGMESSCR("unknown command [%s]\n",&cmpbuf[from]);
 		    }
 		    from = i+2;//now we can parce between commands
 		}
@@ -391,7 +391,7 @@ void PlayVideoSmk(char *smkfile)
 	wclrscr(0);
 	wscreenon();
 
-	printf("play video [%s]\n",smkfile);
+	DEBUGMESSCR("play video [%s]\n",smkfile);
 	smk = smk_open_file(hmpq,smkfile,SMK_MODE_MEMORY);//smk_mode_disk not work
 	if (smk)
 	{
@@ -461,7 +461,7 @@ void PlayVideoSmk(char *smkfile)
 			    audiostream->beginplayPCMdata();//no callback function to add to queue, we queued audio PCM data here
 			}
 		    }
-//		    printf("video frame=%d/%d audiosize=%d\n",smk->cur_frame,smk->f,audiosize);
+//		    DEBUGMESSSCR("video frame=%d/%d audiosize=%d\n",smk->cur_frame,smk->f,audiosize);
 		    palflag=0;
 		    smkpal = smk_get_palette(smk);
 		    if (smkpal)

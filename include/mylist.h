@@ -56,39 +56,20 @@ public:
     ~mylist();
 };
 //=========================================
-#define MAXCRITFUNC		2
-#define MAXELEMOFFSET		1000
-class OBJlists
-{
-private:
-    int  CritFunc;
-    int  (*AllCriteriesFunc[MAXCRITFUNC])(int elem_id);
-    int  *elems[MAXCRITFUNC];
-    int	 curelements[MAXCRITFUNC];
-    int	 maxelements[MAXCRITFUNC];
-    int  seekpos[MAXCRITFUNC];
-public:
-    int  AddCriteries(int (*func)(int elem_id),int maxelem);
-    void AddElem(int elem_id);
-    void SetFirstSeek(int criteria_id);
-    int  FindNextElem(int criteria_id);
-    void DelElem(int elem_id);
-    void ClearAll(void);
-};
-
 class  cycles
 {
-    int  totalelem;
-    int  curelem;
-    int  poselem;
-    void **elements;
+    int 	totalelem;
+    int  	firstelem;
+    int  	lastelem;
+    int 	maxelem;
+    char 	*elements;
 public:
-    cycles(int maxelems);
-    ~cycles();
-    void DelElem(int elemnr);
-    void *AddElem(int len);
-    void *GetCurElem();
-    void DelCurElem();
+		cycles(int maxelems);
+		~cycles();
+    void 	PushElem(char elem);
+    char 	PopElem(void);
+    void	Flush(void);
+    inline int  IsEmpty(void) { return( maxelem == 0); };
 };
 //=========================================
 #include <stdio.h>

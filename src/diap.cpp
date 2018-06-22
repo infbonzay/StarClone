@@ -161,29 +161,32 @@ void desenproperties(int *localprop,char *selectableicons)
 		{
 		    mouseontranspunit = mousehotpos - MOUSEONTRANSP;
 		}
-	for (i=0;i<3;i++)
-    	    for (j=0;j<3;j++)
-		if (localprop[i*3+j])
-    		{
-		    if (keyactive&&mageprop[localprop[i*3+j]].keyfororder!=255)
-		    {
-			if (mageprop[localprop[i*3+j]].keyfororder == KEYPRESSEDTABLE(rus,curentreadkey)-1
+	if (!MENUACTIVE)	//prevent activate hotkey if some menu is active
+	{
+	    for (i=0;i<3;i++)
+    		for (j=0;j<3;j++)
+		    if (localprop[i*3+j])
+    		    {
+			if (keyactive && mageprop[localprop[i*3+j]].keyfororder!=255)  //check for hotkey
+			{
+			    if (mageprop[localprop[i*3+j]].keyfororder == KEYPRESSEDTABLE(rus,curentreadkey)-1
 						&&
-			    selectableicons[i*3+j]!=FORGRAY)
+				selectableicons[i*3+j]!=FORGRAY)
+				{
+				    keyupselectedicon = i*3+j;
+				    goto selectedicon;
+				}
+			}
+			else
+			    if (keyupselectedicon!=-1)
 			    {
-				keyupselectedicon = i*3+j;
-				goto selectedicon;
+				selectedicon=keyupselectedicon;
+				keyupselectedicon=-1;
 			    }
 		    }
-		    else
-			if (keyupselectedicon!=-1)
-			{
-			    selectedicon=keyupselectedicon;
-			    keyupselectedicon=-1;
-			}
-		}
+	}
 selectedicon:
-	if (mouseonicon==-1&&mousehotpos>=MOUSEONICONSMIN&&mousehotpos<=MOUSEONICONSMAX)
+	if (mouseonicon==-1 && mousehotpos>=MOUSEONICONSMIN && mousehotpos<=MOUSEONICONSMAX)
 	{
     	    mouseonicon=mousehotpos-MOUSEONICONSMIN;
 	    if (localprop[mouseonicon])

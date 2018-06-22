@@ -14,7 +14,7 @@ MoveItem::~MoveItem(void)
 {
 }
 //=================================================================
-int MoveItem::MoveScript(void)
+int MoveItem::Move(void)
 {
     if ( IsEnabledMoveScript() )
     {

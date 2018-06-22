@@ -1,15 +1,14 @@
 #if !defined(_MYFIFO_W)
 #define _MYFIFO_W
 
-
-
 class myfifo
 {
 public:
-    int  	totalelem;	
-    int  	curelem;	
-    int  	poselem;	
-    void 	**elements;	
+    int  	totalelem;
+    int  	curelem;
+    int  	poselem;
+    void 	**elements;
+    char	flags;
     
     myfifo(int maxelems);
     ~myfifo();
@@ -22,8 +21,6 @@ public:
     void 	DelCurElem();
     int  	GetFreeElem();
     int  	GetUsedElem();
-//    inline int  GetUseBytes(void) { return(usebytes[poselem]); };
-//    inline void SetUseBytes(int bytes) { usebytes[poselem] = bytes; };
 };
 //=========================================
 

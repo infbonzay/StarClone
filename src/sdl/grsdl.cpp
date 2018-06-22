@@ -9,6 +9,7 @@
 #include "debug.h"
 #include <grplib/gr8.h>
 #include <grplib/grp.h>
+#include "mylist.h"
 #include "grsdl.h"
 
 char SHIFTKEYS[128]={
@@ -257,6 +258,8 @@ void settextmode(void)
     changemode(gameconf.grmode.x,gameconf.grmode.y,gameconf.grmode.s,0,NULL);
 }
 //==========================
+cycles keybuffer = cycles(16);
+//==========================
 char MOUSEBUTTONZZ[3]={1,2,4};
 #define MOUSEDBLCLICKTIME 8
 int eventwindowloop(void) //return 1 - on quit
@@ -290,28 +293,22 @@ int eventwindowloop(void) //return 1 - on quit
 		needrefreshatend = 1;
 		break;
 	    case SDL_KEYDOWN:
-		if (event.key.keysym.mod&KMOD_SHIFT)
+		if (event.key.keysym.mod & KMOD_SHIFT)
 		{
-		    if (event.key.keysym.sym>0&&event.key.keysym.sym<128)
+		    if (event.key.keysym.sym > 0 && event.key.keysym.sym < 128)
 		    {
-			keyactive=SHIFTKEYS[event.key.keysym.sym];
+			keyactive = SHIFTKEYS[event.key.keysym.sym];
 			if (!keyactive)
 			    keyactive = event.key.keysym.sym;
 		    }
 		}
 		else
 		    keyactive = event.key.keysym.sym;
-/*		if (lastkey==keyactive)
-		{
-		    if (tick_timer%30)
-		    keyactive=0;
-		}
-*/
-		if (keyactive==ENTERKEY2)
-		    keyactive=ENTERKEY;
-//		keyactive = toupper(event.key.keysym.sym);
-//		printf("keyactive=%d\n",keyactive);
+		if (keyactive == ENTERKEY2)
+		    keyactive = ENTERKEY;
 		lastkey = keyactive;
+		if (keyactive < 256)
+		    keybuffer.PushElem(keyactive);
 		break;
 	    case SDL_KEYUP:
 		keyactive = 0;

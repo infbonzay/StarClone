@@ -1,9 +1,4 @@
 
-#include "defs.h"
-#include "man.h"
-#include "vars.h"
-#include "load.h"
-#include "maps.h"
 #include "upgrade.h"
 
 //===================================

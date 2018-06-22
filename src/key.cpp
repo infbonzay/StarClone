@@ -216,7 +216,7 @@ void keyhandler(void)
 	    terr_menu&=~GAMEBUTTON_KEYPRESS;
 	    terr_menu|=GAMEBUTTON_KEYRELEASE;
 	}
-    if (MENUACTIVE==0&&(keyactive==ENTERKEY||keyactive==ENTERKEY2))
+    if (MENUACTIVE==0 && (keyactive == ENTERKEY || keyactive == ENTERKEY2))
     {
 	showedmenu.prepareforshowmenu(&chatboxmenu,NULL);
     }

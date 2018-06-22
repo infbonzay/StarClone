@@ -631,6 +631,7 @@ int drawmenu(MENUSTR *allmenus,int flags)
     dblclick=0;
     keyactive=0;
     eventwindowloop();
+    keybuffer.Flush();
     regmenu(allmenus->x,allmenus->y,allmenus,&getmouseonmenubar);//set menu hotcoord for mouse
     scrollportrait_menu=scrollportrait;
     clearscrollportrait();
@@ -1040,41 +1041,45 @@ void drawmenuitem(MENUSTR *allmenus,int itemnr)
 //==========================================
 int editboxaction(MENUSTR *allmenus)
 {
-    if (keyactive)
+    char keypressed;
+    if (!keybuffer.IsEmpty())
     {
 	//if keypressed and we have editbox add to edit string
-	if (allmenus->defaultbutton>=0)
+	keypressed = keybuffer.PopElem();
+	if (allmenus->defaultbutton >= 0)
 	{
-	    MENUPOS *curitem=&allmenus->menu[allmenus->defaultbutton];
-	    if (curitem->itemtype!=ISEDITBOX)
+	    MENUPOS *curitem = &allmenus->menu[allmenus->defaultbutton];
+	    if (curitem->itemtype != ISEDITBOX)
 		return(0);
-	    int curlength=curitem->item.editbox->length;
-	    if (keyactive==BACKSPACEKEY||keyactive==ENTERKEY||(keyactive>=' '&&keyactive<='~'))
+	    int curlength = curitem->item.editbox->length;
+	    if (keypressed == BACKSPACEKEY	|| 
+		keypressed == ENTERKEY		|| 
+		(keypressed >= ' ' && keypressed <= '~' ))
 	    {
-		switch(keyactive)
+		switch(keypressed)
 		{
 		    case BACKSPACEKEY:
 			if (curlength)
 			{
 			    curlength--;
-			    curitem->item.editbox->editstr[curlength]=0;
+			    curitem->item.editbox->editstr[curlength] = 0;
 			}
 			break;
 		    case ENTERKEY:
-			if (curlength>=0)
+			if (curlength >= 0)
 			    return(2);
 			break;
 		    default:
-			if (curlength<curitem->item.editbox->maxsymbols)
+			if (curlength < curitem->item.editbox->maxsymbols)
 			{
-			    curitem->item.editbox->editstr[curlength]=keyactive;
-			    curitem->item.editbox->editstr[curlength+1]=0;
+			    curitem->item.editbox->editstr[curlength] = keypressed;
+			    curitem->item.editbox->editstr[curlength+1] = 0;
 		    	    curlength++;
 			}
 			break;
 		}
-		curitem->item.editbox->length=curlength;
-		keyactive=0;
+		curitem->item.editbox->length = curlength;
+		keyactive = 0;
 		return(1);
 	    }
 	}
@@ -1090,7 +1095,7 @@ int menukeys(MENUSTR *allmenus,int *pressed,int *needredraw)
     *pressed = NOSELECTMENUBAR;
     if (keyactive)
     {
-	if (keyactive==TABKEY) //need to parce all elements to need next active and decorated and responce to mouse&key events
+	if (keyactive == TABKEY) //need to parce all elements to need next active and decorated and responce to mouse&key events
 	{
 	    for (i=allmenus->defaultbutton+1;i<allmenus->elements;i++)
 		if (!menuitem_ISDISABLED(allmenus,i)&&menuitem_ISVISIBLED(allmenus,i))
@@ -4101,6 +4106,7 @@ int drawmenu_ONETICK(MENUSTR *allmenus)
 
     if (!(allmenus->mainmenuflags&DIALOGBIN_FLAGS_ENTERSEMAPHORE))
     {
+	keybuffer.Flush();
 	MENUACTIVE++;
 	allmenus->mainmenuflags|=DIALOGBIN_FLAGS_ENTERSEMAPHORE;
 	allmenus->vars.selectedmenu = NOSELECTMENUBAR;

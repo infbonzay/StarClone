@@ -45,7 +45,7 @@
 
 #define CHECKFORINSTALLEXE
 #define STARMENUMAP_SHOWNEW
-//#define SKIPSCENARIOBUTTONACTIVE
+#define SKIPSCENARIOBUTTONACTIVE
 
 #define GLUEPAL_OFFSET		8
 char GLUEPAL_NAME[256]="glue\\Pal";
@@ -349,7 +349,7 @@ void MenuAppearDrawCycle(MENUAPPEAR *items, MENUSTR *staticmenu, TICKCOUNTER *ti
 	for (i = 0; i < items->GetMaxElements(); i++)
 	{
 	    oneitem = (MenuItemPcx *) items->GetElem(i,NULL);
-	    stopscript -= oneitem->moveaction->MoveScript();		//decrement if one script finishes
+	    stopscript -= oneitem->moveaction->Move();		//decrement if one script finishes
 	    oneitem->Draw();
 	}
 	if (staticmenu)
@@ -1298,6 +1298,7 @@ int glu_briefing(int race,int networksingle,struct mapinfo *info,char *prefix_ca
         glubrief->menu[e+15].item.textitem->rowsize=glubrief->menu[e+18].item.textitem->rowsize;
         First_Briefing_Prepare(info,e,prefix_campaignpath,framepcxs);
 	AddMenu_SomeCallback(glubrief,&BriefingTriggersCheck,info);
+	fill_missionobjectives("");
     }
     else
     {

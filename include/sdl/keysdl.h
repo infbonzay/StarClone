@@ -36,6 +36,7 @@
 #define ESCAPEKEY SDLK_ESCAPE
 
 #define KEYPRESSEDTABLE(table,scancode) (toupper((scancode)&0xff)+1)
+#define GetKeyPressed() keybuffer.PopElem();
 
 #endif
 

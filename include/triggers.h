@@ -1,6 +1,9 @@
 #ifndef _TRIGGERS_W
 #define _TRIGGERS_W
 
+
+#define CLEARSTATE		0
+#define SETSTATE		1
 //=====================================================
 #pragma pack(push,1)
 

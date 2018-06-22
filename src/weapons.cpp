@@ -86,7 +86,7 @@ int loadweapons(void)
 	{
     	    if (strid[0]=='#')
 		continue;
-    	    printf("WEAPON:error [%s] is not WEAPON DIRECTIVE\n",strid);
+    	    DEBUGMESSCR("WEAPON:error [%s] is not WEAPON DIRECTIVE\n",strid);
 	    fclose(f);
 	    return(-2);
 	}

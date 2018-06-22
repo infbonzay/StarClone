@@ -475,61 +475,47 @@ void *mylist::GetLastElem(void)
 cycles::cycles(int elems)
 {
     totalelem = elems;
-    curelem = 0;
-    poselem = 0;
-    elements = (void **) wmalloc (elems * sizeof (void *));
-    memset(elements,0,elems * sizeof( void *) );
+    this->Flush();
+    elements = (char *) wmalloc (elems);
+    memset(elements,0,elems);
 }
-//=========================================
 //=========================================
 cycles::~cycles()
 {
-    for (int i=0;i<totalelem;i++)
-    {
-	DelElem(i);
-    }
     wfree(elements);
 }
 //=========================================
-void cycles::DelElem(int i)
+void cycles::Flush(void)
 {
-    if (elements[i])
+    firstelem = 0;
+    lastelem = 0;
+    maxelem = 0;
+}
+//=========================================
+void cycles::PushElem(char elem)
+{
+    elements[firstelem++] = elem;
+    if (firstelem >= totalelem)
+	firstelem = 0;
+    if (++maxelem > totalelem)
     {
-        wfree(elements[i]);
-        elements[i]=NULL;
+	maxelem--;
+	if (++lastelem >= totalelem)
+	    lastelem = 0;
     }
 }
 //=========================================
-void *cycles::AddElem(int len)
+char cycles::PopElem(void)
 {
-    void *a;
-    if (elements[curelem])
-	return(NULL);
-    a = elements[curelem] = wmalloc(len);
-    curelem++;
-    if (curelem >= totalelem)
-	curelem = 0; 
-    return(a);
-}
-//=========================================
-void *cycles::GetCurElem(void)
-{
-    void *a;
-    a = elements[poselem];
-    return(a);
-}
-//=========================================
-void cycles::DelCurElem(void)
-{
-    void *a;
-    a = elements[poselem];
-    if (a)
+    char ret;
+    if (maxelem)
     {
-	DelElem(poselem);
-	poselem++;
-	if (poselem >= totalelem)
-	    poselem = 0;
+	maxelem--;
+	ret = elements[lastelem++];
+	if (lastelem >= totalelem)
+	    lastelem = 0;
     }
+    return(ret);
 }
 //=========================================
 mylistsimple::mylistsimple(int neededelem)

@@ -3,15 +3,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#ifdef USEWMALLOC
-    #include "wmem.h"
-
-    #define __myalloc wmalloc
-    #define __myfree  wfree
-#else
-    #define __myalloc malloc
-    #define __myfree  free
-#endif
+#include "wmem.h"
 
 #include "myfifo.h"
 
@@ -22,10 +14,9 @@ myfifo::myfifo(int elems)
     totalelem = elems;
     curelem=0;
     poselem=0;
-    elements = (void **) __myalloc (elems * sizeof (void *));
+    elements = (void **) wmalloc (elems * sizeof (void *));
     memset(elements,0,elems * sizeof( void *) );
 }
-//=========================================
 //=========================================
 myfifo::~myfifo()
 {
@@ -33,14 +24,14 @@ myfifo::~myfifo()
     {
 	DelElem(i);
     }
-    __myfree(elements);
+    wfree(elements);
 }
 //=========================================
 void myfifo::DelElem(int i)
 {
     if (elements[i])
     {
-        __myfree(elements[i]);
+        wfree(elements[i]);
         elements[i]=NULL;
     }
 }
@@ -60,7 +51,7 @@ void *myfifo::AddElem(int len)
     void *a;
     if (elements[curelem])
 	return(NULL);
-    a = elements[curelem] = __myalloc(len);
+    a = elements[curelem] = wmalloc(len);
     curelem++;
     if (curelem>=totalelem)
 	curelem=0; 
@@ -76,7 +67,7 @@ void *myfifo::InsertElem(int len)
     if (elements[newelem])
 	return(NULL);
     poselem = newelem;
-    a = elements[poselem] = __myalloc(len);
+    a = elements[poselem] = wmalloc(len);
     return(a);
 }
 //=========================================

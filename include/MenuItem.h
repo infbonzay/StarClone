@@ -32,7 +32,7 @@ public:
     inline void EnableMoveScript(void) { SetFlags(flags |= MOVEITEM_FLAG_MOVESCRIPT); };
     inline void DisableMoveScript(void) { SetFlags(flags &= ~MOVEITEM_FLAG_MOVESCRIPT); };
     inline int	IsEnabledMoveScript(void) { return flags & MOVEITEM_FLAG_MOVESCRIPT; }; 
-    int  	MoveScript(void);
+    int  	Move(void);
     void 	SetTempVars(void);
     int		SimpleMoveScript(void);
     int		SimpleScriptCalcMaxDistance(void);
@@ -59,7 +59,6 @@ public:
     inline void DisableVisible(void) { SetFlags(flags &= ~MENUITEM_FLAG_VISIBILITY); };
     inline int	IsVisibled(void) { return flags & MENUITEM_FLAG_VISIBILITY; }; 
     inline void SetXYPos(int x,int y) { xpos = x; ypos = y; };
-
 };
 //=================================================================
 class MenuItemPcx : public MenuItem

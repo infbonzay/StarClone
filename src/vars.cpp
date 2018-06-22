@@ -232,7 +232,7 @@ char    CODEFORWITHOUTTECHTREE	= 1;
 char    CODEFORPSIUNLIMIT	= 0;
 char	SHOWCELLS		= 0;
 char	NETWORKGAME		= 0;		//set to value  if network
-char	EXPANSIONSET		= 0;
+char	EXPANSIONSET		= 1;
 //==========================================================
 void inivars(void)
 {
