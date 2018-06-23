@@ -472,51 +472,6 @@ void *mylist::GetLastElem(void)
     return(find);
 }
 //=========================================
-cycles::cycles(int elems)
-{
-    totalelem = elems;
-    this->Flush();
-    elements = (char *) wmalloc (elems);
-    memset(elements,0,elems);
-}
-//=========================================
-cycles::~cycles()
-{
-    wfree(elements);
-}
-//=========================================
-void cycles::Flush(void)
-{
-    firstelem = 0;
-    lastelem = 0;
-    maxelem = 0;
-}
-//=========================================
-void cycles::PushElem(char elem)
-{
-    elements[firstelem++] = elem;
-    if (firstelem >= totalelem)
-	firstelem = 0;
-    if (++maxelem > totalelem)
-    {
-	maxelem--;
-	if (++lastelem >= totalelem)
-	    lastelem = 0;
-    }
-}
-//=========================================
-char cycles::PopElem(void)
-{
-    char ret;
-    if (maxelem)
-    {
-	maxelem--;
-	ret = elements[lastelem++];
-	if (lastelem >= totalelem)
-	    lastelem = 0;
-    }
-    return(ret);
-}
 //=========================================
 mylistsimple::mylistsimple(int neededelem)
 {

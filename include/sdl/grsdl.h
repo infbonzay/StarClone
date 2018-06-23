@@ -2,7 +2,7 @@
 #include <time.h>
 #include <SDL/SDL.h>
 
-#include "mylist.h"
+#include "mycycle.h"
 
 #if !defined(_GRSDL_W)
 #define _GRSDL_W 1
@@ -38,6 +38,6 @@ extern	int fullscreen;
 extern	SDL_Surface *sdlsurface;
 extern	int needrefreshatend;
 extern	int dblclick;
-extern	cycles keybuffer;
+extern	mycycle<uint16_t> keybuffer;
 #endif
 

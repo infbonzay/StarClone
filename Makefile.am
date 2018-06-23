@@ -73,7 +73,7 @@ else
 endif
 endif
 PROGS = bin/$(PACKAGE)
-OBJS =  obj/MenuItem.o obj/gamemenu.o \
+OBJS =  obj/MenuItem.o obj/gamemenu.o obj/mycycle.o \
 	obj/flingy.o obj/iscript.o obj/images.o obj/music.o obj/myfifo.o obj/triggers.o obj/briefing.o obj/video.o \
 	obj/network_general.o obj/network_udp.o obj/network_tcp.o obj/network_dc.o obj/network_modem.o obj/network_dedicated.o \
 	obj/netwgame.o obj/netwplay.o obj/mpqwrapper.o obj/sigorder.o \
@@ -95,6 +95,9 @@ $(PROGS): $(OBJS)
 
 obj/MenuItem.o: src/MenuItem.cpp include/*.h  Makefile
 	$(CXX) -c $(CFLAGS) src/MenuItem.cpp -o obj/MenuItem.o
+	
+obj/mycycle.o: src/mycycle.cpp include/*.h  Makefile
+	$(CXX) -c $(CFLAGS) src/mycycle.cpp -o obj/mycycle.o
 	
 obj/flingy.o: src/flingy.cpp include/*.h  Makefile
 	$(CXX) -c $(CFLAGS) src/flingy.cpp -o obj/flingy.o

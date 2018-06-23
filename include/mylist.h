@@ -56,22 +56,6 @@ public:
     ~mylist();
 };
 //=========================================
-class  cycles
-{
-    int 	totalelem;
-    int  	firstelem;
-    int  	lastelem;
-    int 	maxelem;
-    char 	*elements;
-public:
-		cycles(int maxelems);
-		~cycles();
-    void 	PushElem(char elem);
-    char 	PopElem(void);
-    void	Flush(void);
-    inline int  IsEmpty(void) { return( maxelem == 0); };
-};
-//=========================================
 #include <stdio.h>
 class mylistsimple
 {

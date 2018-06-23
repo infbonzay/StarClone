@@ -1041,7 +1041,7 @@ void drawmenuitem(MENUSTR *allmenus,int itemnr)
 //==========================================
 int editboxaction(MENUSTR *allmenus)
 {
-    char keypressed;
+    unsigned short keypressed;
     if (!keybuffer.IsEmpty())
     {
 	//if keypressed and we have editbox add to edit string

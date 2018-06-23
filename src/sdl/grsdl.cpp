@@ -9,9 +9,12 @@
 #include "debug.h"
 #include <grplib/gr8.h>
 #include <grplib/grp.h>
-#include "mylist.h"
+#include "mycycle.h"
 #include "grsdl.h"
 
+#define MOUSEDBLCLICKTIME 8
+mycycle<uint16_t> keybuffer = mycycle<uint16_t>(16);
+char MOUSEBUTTONZZ[3]={1,2,4};
 char SHIFTKEYS[128]={
 		    '\x00','\x00','\x00','\x00','\x00','\x00','\x00','\x00','\x00','\x00',
 		    '\x00','\x00','\x00','\x00','\x00','\x00','\x00','\x00','\x00','\x00',
@@ -258,14 +261,10 @@ void settextmode(void)
     changemode(gameconf.grmode.x,gameconf.grmode.y,gameconf.grmode.s,0,NULL);
 }
 //==========================
-cycles keybuffer = cycles(16);
-//==========================
-char MOUSEBUTTONZZ[3]={1,2,4};
-#define MOUSEDBLCLICKTIME 8
 int eventwindowloop(void) //return 1 - on quit
 {
     static long long prevtimer=0;
-    int exitevent = 0;
+    int exitevent = 0,UpperKeysActive;
     SDL_Event event;
     while ( SDL_PollEvent(&event))
     {
@@ -293,7 +292,13 @@ int eventwindowloop(void) //return 1 - on quit
 		needrefreshatend = 1;
 		break;
 	    case SDL_KEYDOWN:
+		UpperKeysActive = 0;
 		if (event.key.keysym.mod & KMOD_SHIFT)
+		    UpperKeysActive ^= 1;
+		if (event.key.keysym.mod & KMOD_CAPS)
+		    UpperKeysActive ^= 1;
+		printf("SHIFT=%x CAPS=%x result=%x\n",event.key.keysym.mod & KMOD_SHIFT,event.key.keysym.mod & KMOD_CAPS,UpperKeysActive);
+		if (UpperKeysActive)
 		{
 		    if (event.key.keysym.sym > 0 && event.key.keysym.sym < 128)
 		    {
@@ -307,7 +312,7 @@ int eventwindowloop(void) //return 1 - on quit
 		if (keyactive == ENTERKEY2)
 		    keyactive = ENTERKEY;
 		lastkey = keyactive;
-		if (keyactive < 256)
+//		if (keyactive < 256)
 		    keybuffer.PushElem(keyactive);
 		break;
 	    case SDL_KEYUP:
