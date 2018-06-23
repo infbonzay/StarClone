@@ -60,5 +60,4 @@ T mycycle<T>::PopElem(void)
     return(ret);
 }
 //=========================================
-
 #endif

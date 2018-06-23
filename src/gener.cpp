@@ -63,6 +63,9 @@
        #include "dos/handlers.h"
 #endif
 
+#include <stdint.h>
+#include "mycycle.h"
+
 //=================================
 DIALOGBIN_INFO *minimapmenu,*f10menu,*statbtnmenu;
 char f10_menu,terr_menu,mess_menu,dipl_menu;
