@@ -297,7 +297,7 @@ int eventwindowloop(void) //return 1 - on quit
 		    UpperKeysActive ^= 1;
 		if (event.key.keysym.mod & KMOD_CAPS)
 		    UpperKeysActive ^= 1;
-		printf("SHIFT=%x CAPS=%x result=%x\n",event.key.keysym.mod & KMOD_SHIFT,event.key.keysym.mod & KMOD_CAPS,UpperKeysActive);
+//		printf("SHIFT=%x CAPS=%x result=%x\n",event.key.keysym.mod & KMOD_SHIFT,event.key.keysym.mod & KMOD_CAPS,UpperKeysActive);
 		if (UpperKeysActive)
 		{
 		    if (event.key.keysym.sym > 0 && event.key.keysym.sym < 128)

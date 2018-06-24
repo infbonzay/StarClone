@@ -142,6 +142,7 @@ int mylist::AddList(void *elem)
     if (curent->emptyelem)
     {
 	for ( i=0; i<MAXLISTELEMENTS; i++ )
+//!!!!	for ( i=nrreturn+1; i<MAXLISTELEMENTS; i++ )
 	    if (curent->bitelements[i] == MYLIST_EMPTY)
 	    {
 		curent->firstemptyelem = i;
@@ -308,6 +309,7 @@ void *mylist::GetElemNrNoNULL(int *elemnr)
 	for (;elemcur<MAXLISTELEMENTS;elemcur++,(*elemnr)++)
 	{
 	    if (curent->elements[elemcur])
+//!!!!	    if (curent->bitelements[elemcur] != MYLIST_EMPTY)
 		return (curent->elements[elemcur]);
 	}
     }while(1); 

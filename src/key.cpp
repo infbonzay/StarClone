@@ -142,7 +142,7 @@ void keyhandler(void)
 	MAPREGENERATIONBIT=1;
 	MAPUNITSREGENERATIONBIT=1;
     }
-    if (keyactive==F1)
+/*    if (keyactive==F1)
     {
 	testmenu();
     }
@@ -154,7 +154,7 @@ void keyhandler(void)
 		dieobj(objects[i]);
 	}
     }
-/*    if (keyactive==F2)
+    if (keyactive==F2)
     {
 //	WaitingPlayersMenu(0x0fff);
 	showedmenu.prepareforshowmenu(&WaitingPlayersMenu,0xffff);

@@ -45,7 +45,7 @@
 
 #define CHECKFORINSTALLEXE
 #define STARMENUMAP_SHOWNEW
-#define SKIPSCENARIOBUTTONACTIVE
+//#define SKIPSCENARIOBUTTONACTIVE
 
 #define GLUEPAL_OFFSET		8
 char GLUEPAL_NAME[256]="glue\\Pal";
@@ -2430,7 +2430,7 @@ int glu_login(void)
 		if (singammenu->menu[7].item.listbox->selectednr==-1)
 		    break;
 		strncpy(nickname,(char *)ulist.GetElemNr(singammenu->menu[7].item.listbox->selectednr),sizeof(nickname)-1);
-		setplayername(0,(char *)ulist.GetElemNr(singammenu->menu[7].item.listbox->selectednr));
+		setplayername(NUMBGAMER,(char *)ulist.GetElemNr(singammenu->menu[7].item.listbox->selectednr));
 		getplayerinfo(getplayername(NUMBGAMER));
 		strcpy(tempname,USERS_DIRECTORY);
 		strcat(tempname,nickname);
@@ -2465,6 +2465,7 @@ int glu_login(void)
 			    if (f)
 			    {
 				err=1;
+				fclose(f);
 			    }
 			    else
 			    {
@@ -2473,6 +2474,23 @@ int glu_login(void)
 				{
 				    CreateDefaultInfoForPlayer(f);
 				    fclose(f);
+				    //lets play with created player
+				    strncpy(nickname,geteditboxtext(nplayer,3),sizeof(nickname)-1);
+				    setplayername(NUMBGAMER,geteditboxtext(nplayer,3));
+				    getplayerinfo(getplayername(NUMBGAMER));
+				    strcpy(tempname,USERS_DIRECTORY);
+				    strcat(tempname,nickname);
+				    strcat(tempname,STARCLONEEXT);
+				    if (loadandsetplayerinfo(tempname))
+				    {
+					glu_putmenu(singammenu,"rez\\glupok.bin",MYTBLSTR(MYINFO_TBL_CORRUPTCHAR),fntadr,dlg);
+					repeat = 1;
+				    }
+				    else
+				    {
+					repeat=0;
+					exitstatus=0;//go player to select map
+				    }
 				}
 				else
 				{
