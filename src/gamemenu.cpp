@@ -349,7 +349,8 @@ void MenuAppearDrawCycle(MENUAPPEAR *items, MENUSTR *staticmenu, TICKCOUNTER *ti
 	for (i = 0; i < items->GetMaxElements(); i++)
 	{
 	    oneitem = (MenuItemPcx *) items->GetElem(i,NULL);
-	    stopscript -= oneitem->moveaction->Move();		//decrement if one script finishes
+	    if (oneitem->moveaction)
+		stopscript -= oneitem->moveaction->Move();		//decrement if one script finishes
 	    oneitem->Draw();
 	}
 	if (staticmenu)
@@ -2369,7 +2370,7 @@ int glu_login(void)
     menuspecialtables(nplayer,fntadr,dlg);
     setitemrelation(nplayer,1,ITEMRELATION_DISABLE,&nplayer->menu[3].item.editbox->length,0);
     setmenuflags(nplayer,MENUFLAGS_ALWAYSDRAW);
-    changeeditboxparam(nplayer,3,"",30);
+    changeeditboxparam(nplayer,3,"",12);
     AddPrevMenuShowing(nplayer,singammenu);
 
     mousetype=NORMALMOUSE;
