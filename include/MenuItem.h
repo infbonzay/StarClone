@@ -15,7 +15,6 @@ class MoveItem
 {
 public:
     MenuItem	*parent;
-protected:
     uint8_t	flags;
     int32_t	speedx;
     int32_t	speedy;

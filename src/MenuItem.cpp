@@ -66,23 +66,18 @@ int MoveItem::SimpleMoveScript(void)
     tempval1 += tempval2;
     if (tempval1 >= MAXACCEL)
     {
-	tempval2 = -tempval2;
-	speedx = -speedx;
-	speedy = -speedy;
 	tempval1--;
-	DisableMoveScript();
-	return(1);
-    }
-    if (tempval1 < 0)
+    }else if (tempval1 < 0)
     {
-	tempval2 = -tempval2;
-	speedx = -speedx;
-	speedy = -speedy;
 	tempval1++;
-	DisableMoveScript();
-	return(1);
     }
-    return(0);
+    else
+	return(0);
+    tempval2 = -tempval2;
+    speedx = -speedx;
+    speedy = -speedy;
+    DisableMoveScript();
+    return(1);
 }
 //=================================================================
 MenuItem::MenuItem(void)
@@ -130,6 +125,37 @@ void MenuItemPcx::Draw(void)
         obj->PutPcx(xpos, ypos, holecolor, transpcolor, grdtransp);
     }
 }
+//=================================================================
+/*int SimpleMoveScript(MoveItem *item)
+{
+    item->accelerate = accelertable[ item->tempval1 ];
+    if (item->speedx > 0)
+	item->parent->xpos += item->accelerate;
+    else 
+	if (item->speedx < 0)
+	    item->parent->xpos -= item->accelerate;
+    if (item->speedy > 0)
+	item->parent->ypos += item->accelerate;
+    else 
+	if (item->speedy < 0)
+	    item->parent->ypos -= item->accelerate;
+    item->tempval1 += item->tempval2;
+    if (item->tempval1 >= MAXACCEL)
+    {
+	item->tempval1--;
+    }else if (item->tempval1 < 0)
+    {
+	item->tempval1++;
+    }
+    else
+	return(0);
+    item->tempval2 = -item->tempval2;
+    item->speedx = -item->speedx;
+    item->speedy = -item->speedy;
+    item->DisableMoveScript();
+    return(1);
+}
+*/
 //=================================================================
 
 

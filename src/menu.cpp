@@ -648,22 +648,6 @@ int drawmenu(MENUSTR *allmenus,int flags)
 	do{
 		mouse_b = mousebuttons();
 		eventwindowloop();
-/*		if (allmenus->CallBackFunc)
-		{
-		    exitcallback=(*allmenus->CallBackFunc)(allmenus,allmenus->somecallbackdata);
-		    if (exitcallback)
-		    {
-			selectedmenu=exitcallback;
-			break;
-		    }
-		}
-*/
-//		exitcallback=RunCallBackFuncs(allmenus);
-//		if (exitcallback)
-//		{
-//		    selectedmenu=exitcallback;
-//		    break;
-//		}
 		getmouseonitem(&activeitemchange,&activeitem);
 //		getmousetype(map.MAPXGLOBAL,map.MAPYGLOBAL);
 		keyrefresh();
