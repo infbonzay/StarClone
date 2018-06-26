@@ -533,7 +533,7 @@ void Triggers_Parce(mapinfo *info,int cnttrg,MAP_TRIGS *trigs,int deltatick)
 int Condition_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int trig_nr,int playernr,int playernrmask,int deltatick)
 {
     int i,j,mask,allcond,applycond,playergrp,nrofunits,nrofunits2,totalcond,conddone,nrofresources,locnr;
-    int switchnr,switchfunc,tick,ownactiononplayers;
+    int switchnr,switchfunc,tick,ownactiononplayers,opponents,remainopponents;
 
     int (*ResTypeFunc)(int (*)(int *, int),int playernr,int cnt);
     unsigned char unitnr;
@@ -634,6 +634,26 @@ int Condition_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int trig_nr,int playernr,
 //		case TRG_CONDITIONTYPE_MISSIONBRIEFING://13
 //		    applycond=1;
 //		    break;
+		case TRG_CONDITIONTYPE_OPPONENTS://14
+		    nrofunits = 0;
+		    opponents = temptrg->condition[i].unittype;
+//		    opponents = temptrg->condition[i].seconds;
+//		    opponents = temptrg->condition[i].ResourceType;
+		    ownactiononplayers = OneGroup_Prepare(info,temptrg->condition[i].actiononplayers,playernrmask);
+		    for (j=0,mask=1;j<MAXPLAYERS;j++,mask<<=1)
+		    {
+			if (!(ownactiononplayers&mask))
+			{
+			    remainopponents = 0;
+			    for (i=0;i<PLAYEDPLAYERS;i++)
+		    		if (player_aliance(j,i) == ENEMYOBJ)
+				    remainopponents++;
+			    applycond = (*comparefunc)(&remainopponents,opponents);
+			    if (!applycond)
+				return(0);
+			}
+		    }
+		    break;
 		case TRG_CONDITIONTYPE_DEATHS://15
 		    ownactiononplayers=OneGroup_Prepare(info,temptrg->condition[i].actiononplayers,playernrmask);
 		    unitnr=temptrg->condition[i].unittype;
