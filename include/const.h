@@ -39,7 +39,7 @@ struct _BE_{
 };
 struct POSINFILE
 {
-    long	int pos;
+    long long	pos;
     int		filenr;
 };
 struct UPGRTEMP

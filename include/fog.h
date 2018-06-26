@@ -1,6 +1,7 @@
 #ifndef _FOG_W
 #define _FOG_W
 
+#include "starmap.h"
 //#define WITHOUTHALFFOG //unit forgot what he see before(only current view)
 
 #define OPENCELL		4

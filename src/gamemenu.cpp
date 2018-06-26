@@ -1974,6 +1974,11 @@ int glu_conn(void)
 	    case 6://dblclick on listmenu
 	    case 13://ok
 		//check if can use this network type
+//		if (retstatus == 6 && gluconn->menu[6].item.listbox->selectednr == GATEWAYITEM)
+//		{
+//		    selconn_callback(gluconn,6,GATEWAYITEM);
+//		    break;
+//		}    
 		SetNetworkType(gluconn->menu[6].item.listbox->selectednr);
 		memset(&recvbcast,0,sizeof(NETWORK_INFO));
 		err=CallNetwork(NETWORK_INITNETWORK,&recvbcast);

@@ -2,6 +2,7 @@
 #define _FLINGY_W
 
 #include "man.h"
+#include "mylist.h"
 
 #define FLINGYMOVECONTROL_FLINGY	0
 #define FLINGYMOVECONTROL_WEAPON	1

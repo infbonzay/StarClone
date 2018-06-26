@@ -3,6 +3,8 @@
 
 #include "defs.h"
 #include "menu.h"
+#include "mylist.h"
+#include "pcx.h"
 
 
 class MENUAPPEAR : public mylistsimple

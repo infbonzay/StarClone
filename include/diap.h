@@ -2,6 +2,7 @@
 #define _DIAP_W
 
 #include "defs.h"
+#include "man.h"
 
 #define XPR 		500
 #define YPR 		362

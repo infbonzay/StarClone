@@ -998,7 +998,7 @@ checkmpq2:
 			    doodadu->xpos=tempdoodad.xpos;
 			    doodadu->ypos=tempdoodad.ypos;
 			    doodadu->playernr=tempdoodad.playernr;
-			    doodadu->flags=tempdoodad.flags&0xfffe;	//leave bit0 for open/close door(doodad)
+			    doodadu->flags=tempdoodad.flags;// & 0xfffe;	//leave bit0 for open/close door(doodad)
 			    map_doodads.AddList(doodadu);
 			    //search in DD2_section for open/close flag
 			    if (DD2_section)

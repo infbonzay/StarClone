@@ -2,6 +2,7 @@
 #define _CREEP_W
 
 #include <limits.h>
+#include "man.h"
 
 #define NOCREEPNR	-1
 #define MAXCREEPNR	36

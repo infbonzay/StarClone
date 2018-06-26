@@ -1,6 +1,8 @@
 #ifndef _DIALOGBIN_W
 #define _DIALOGBIN_W
 
+#include "menu.h"
+
 #pragma pack(push,1)
 
 struct DIALOGBIN

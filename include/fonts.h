@@ -2,6 +2,7 @@
 #if !defined(_FONTS_W)
 #define _FONTS_W
 
+#include <grplib/grp.h>
 #include "pcx.h"
 
 //colors font for title
