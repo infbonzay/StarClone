@@ -1,5 +1,8 @@
 #include <grplib/gr8.h>
 #include <grplib/usegrp.h>
+
+#include "lists.h"
+
 #include "auxil.h"
 #include "man.h"
 #include "doodad.h"

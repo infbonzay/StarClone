@@ -1,6 +1,7 @@
 #ifndef _TRIGGERS_W
 #define _TRIGGERS_W
 
+#include "mytime.h"
 
 #define CLEARSTATE		0
 #define SETSTATE		1

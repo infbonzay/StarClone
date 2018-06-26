@@ -10,7 +10,9 @@
 #include <grplib/gr8.h>
 #include <grplib/grp.h>
 #include "mycycle.h"
-#include "grsdl.h"
+
+#include "sdl/keysdl.h"
+#include "sdl/grsdl.h"
 
 #define MOUSEDBLCLICKTIME 8
 mycycle<uint16_t> keybuffer = mycycle<uint16_t>(16);

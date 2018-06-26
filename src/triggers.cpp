@@ -1,6 +1,10 @@
 
 #include <math.h>
 
+#include "mage.h"
+#include "audio.h"
+#include "putobj.h"
+#include "load.h"
 #include "auxil.h"
 #include "doodad.h"
 #include "player.h"

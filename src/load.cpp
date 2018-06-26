@@ -3,6 +3,10 @@
 #include <stdlib.h>
 #include <grplib/usegrp.h>
 #include <grplib/palette.h>
+
+#include "creep.h"
+#include "flingy.h"
+
 #include "const.h"
 #include "vars.h"
 #include "man.h"

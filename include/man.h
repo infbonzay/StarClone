@@ -2,12 +2,10 @@
 #define _MAN_W
 
 
+#include <grplib/grp.h>
 #include "defs.h"
 #include "myfifo.h"
 #include "construct.h"
-#include "audio.h"
-#include "mylist.h"
-#include "creep.h"
 #include "mpq.h"
 
 #define MAXRANDOMSPR		3

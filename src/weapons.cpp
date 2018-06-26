@@ -6,6 +6,9 @@
 #include <grplib/grp.h>
 #include <math.h>
 
+#include "audio.h"
+#include "objs.h"
+
 #include "vars.h"
 #include "auxil.h"
 #include "scripts.h"

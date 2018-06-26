@@ -1,9 +1,6 @@
 #if !defined(_PCX_W)
 #define _PCX_W
 
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
 #include "mpq.h"
 
 #define PCX_EMPTYCOLOR1		0

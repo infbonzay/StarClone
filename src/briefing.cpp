@@ -1,3 +1,5 @@
+
+#include "scripts.h"
 #include "auxil.h"
 #include "player.h"
 #include "maps.h"

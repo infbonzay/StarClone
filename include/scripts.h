@@ -3,10 +3,10 @@
 
 //=================================
 
-#include "man.h"
-#include "mpq.h"
-#include "starmap.h"
+#include <grplib/grp.h>
 #include "loadlo.h"
+#include "defs.h"
+#include "portrait.h"
 
 #define ORDERS_NONE		0
 #define ORDERS_MODEMOVE		1

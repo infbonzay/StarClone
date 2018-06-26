@@ -2,7 +2,10 @@
 #if !defined(_LIST_W)
 #define _LIST_W
 
-#include "man.h"
+#include "tbl.h"
+#include "vars.h"
+#include "defs.h"
+
 #define UNITSOUND_READY		0
 #define UNITSOUND_WHATFIRST	1
 #define UNITSOUND_WHATLAST	2
@@ -10,12 +13,7 @@
 #define UNITSOUND_PISSLAST	4
 #define UNITSOUND_YESFIRST	5
 #define UNITSOUND_YESLAST	6
-/*
-struct OBJ *foundobjman(int x,int y);
-struct OBJ *foundobjbuild(struct OBJ *a);
-void delobjxykart(struct OBJ *a);
-void putobjxykart(struct OBJ *a);
-*/
+
 void UnitsMAPRefresh(void);
 void addobjlist(struct OBJ *a);
 void delobjlist(struct OBJ *a);
@@ -57,7 +55,6 @@ int  IfAtackCoolDown(struct OBJ *a);
 void ClearAtackCoolDown(struct OBJ *a);
 void SetAtackCoolDownAction(struct OBJ *a,int x,int y,struct OBJ *destobj,int mode);
 int  SetCloakedFlag(OBJ *a,int flag);
-char *getmapSTR(struct mapinfo *testmap,int nrofstr);
 struct OBJ *SearchUnit(int playernr,SCUNIT SC_Unit,int shieldp,int lifep,int energyp);
 struct OBJ *SearchUnitFunc(int playernr,int (*funccheckunit)(SCUNIT SC_Unit),int nearx,int neary,int dist);
 OBJ *SearchObjs(int x,int y,int range,int *array,int arraydim);

@@ -2,10 +2,7 @@
 #define _PLAYER_W
 
 #include <arpa/inet.h>
-#include <sys/socket.h>
-#include <unistd.h>
-
-#include "vars.h"
+#include <stdio.h>
 
 #define SETMAXPAUSE		3
 

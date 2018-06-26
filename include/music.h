@@ -2,7 +2,6 @@
 #define _MUSIC_W
 
 #include "audiolowlevel.h"
-#include "mpq.h"
 #include "myfifo.h"
 
 #define MUSIC_STOP		0

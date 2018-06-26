@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
+
+#include "vars.h"
 #include "auxil.h"
 #include "key.h"
 #include "wmem.h"

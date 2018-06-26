@@ -1,4 +1,7 @@
 
+#include "wmem.h"
+#include "audio.h"
+
 #include "defs.h"
 #include "vars.h"
 #include "load.h"

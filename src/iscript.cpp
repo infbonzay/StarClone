@@ -3,13 +3,14 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "defsunits.h"
 #include "debug.h"
 #include "auxil.h"
-#include "scripts.h"
-#include "gr.h"
+#include "audio.h"
+#include "loadlo.h"
+#include "wmem.h"
 #include "rand.h"
 #include "mylist.h"
-#include "lists.h"
 #include "objinfo.h"
 #include "load.h"
 #include "maps.h"

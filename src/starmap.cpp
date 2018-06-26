@@ -2,6 +2,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+#include "mpqwrapper.h"
+#include "maps.h"
+#include "creep.h"
+#include "audio.h"
+#include "pylon.h"
+
 #include "defs.h"
 #include "vars.h"
 #include "auxil.h"
@@ -2202,5 +2209,17 @@ void ShowCountDownTimer(struct mapinfo *info,int x,int y)
 }
 
 //=================================================
+char *getmapSTR(struct mapinfo *testmap,int nrofstr)
+{
+    char *str,*buf;
+    int offset;
+    MAPStrings *strs;
+    strs=(MAPStrings *)testmap->STR;
+    buf=testmap->STR;
+    offset=strs->offset[nrofstr];
+    str=buf+offset;
+    return(str);
+}
+//==========================================
 
 

@@ -611,16 +611,3 @@ int SetBurrowFlag(OBJ *a,int flag)
     }
 }
 //==================================
-char *getmapSTR(struct mapinfo *testmap,int nrofstr)
-{
-    char *str,*buf;
-    int offset;
-    MAPStrings *strs;
-    strs=(MAPStrings *)testmap->STR;
-    buf=testmap->STR;
-    offset=strs->offset[nrofstr];
-    str=buf+offset;
-    return(str);
-}
-//==========================================
-//==========================================

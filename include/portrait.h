@@ -3,8 +3,7 @@
 
 #define _PORTRAIT_W
 
-#include "man.h"
-#include "mpq.h"
+#include "defs.h"
 #include "smacker/smacker.h"
 
 #define HOLDPORTRAIT		0x01

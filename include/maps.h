@@ -1,6 +1,7 @@
 #if !defined(_MAPS_W)
 #define _MAPS_W
 
+#include "vars.h"
 #include "starmap.h"
 
 void CreateMiniMapPixels(struct mapinfo *map);

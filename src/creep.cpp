@@ -1,4 +1,6 @@
 
+#include "wmem.h"
+
 #include "vars.h"
 #include "man.h"
 #include "diap.h"

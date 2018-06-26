@@ -1,11 +1,9 @@
 #if !defined(_GAMEMENU_W)
 #define _GAMEMENU_W
 
-#include "grplib/grp.h"
+#include "defs.h"
 #include "menu.h"
-#include "network_general.h"
 
-#include "mylist.h"
 
 class MENUAPPEAR : public mylistsimple
 {

@@ -1,20 +1,20 @@
 #if !defined(_MOUSE_W)
 #define _MOUSE_W
 
+#include <grplib/grp.h>
 #include "defs.h"
-#include "const.h"
-#include "grplib/grp.h"
 
+/*
 #ifdef WITHSDL
-       #include "sdl/mousesdl.h"
+       //#include "sdl/mousesdl.h"
 #endif
 #ifdef UNDERDOS
        #define WMLEFTKEY  1
        #define WMRIGHTKEY 2
        void savelog(char *mes,int i);
-       #include "dos/mousedos.h"
+       //#include "dos/mousedos.h"
 #endif
-
+*/
 struct mouse_cursors
 {
     GRPFILE *mousegrp;

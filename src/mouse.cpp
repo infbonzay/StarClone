@@ -19,11 +19,13 @@
 #include "mouse.h"
 
 #ifdef WITHSDL
-       #include "sdl/grsdl.h"
+#	include "sdl/grsdl.h"
+#	include "sdl/mousesdl.h"
+#	include "sdl/keysdl.h"
 #endif
 
 #ifdef UNDERDOS
-       #include "dos/handlers.h"
+#	include "dos/handlers.h"
 #endif
 
 int 	mousetype,grm,factorscrollkey,mousehotpos;

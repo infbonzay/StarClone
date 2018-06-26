@@ -2,7 +2,6 @@
 #if !defined(_OVERLAY_W)
 #define _OVERLAY_W
 
-#include <grplib/grp.h>
 #include "images.h"
 
 //functions for special draw additional to useputgrp

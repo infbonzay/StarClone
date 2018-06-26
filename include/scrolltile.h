@@ -1,7 +1,6 @@
 #ifndef _SCROLLTILE_W
 #define _SCROLLTILE_W
 
-#include "starmap.h"
 
 void scrollbadlands(unsigned int *pal);
 void scrollspace(unsigned int *pal);

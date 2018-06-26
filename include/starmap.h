@@ -1,12 +1,13 @@
 #ifndef _STARMAP_W
 #define _STARMAP_W
 
-#include <grplib/grp.h>
-
 #include "defs.h"
+#include "defsmodes.h"
+#include "defsunits.h"
 #include "vars.h"
-#include "mylist.h"
+#include "const.h"
 #include "triggers.h"
+#include "tbl.h"
 #include "gamemenu.h"
 
 #define MAXTERRAINTYPES			8
@@ -535,6 +536,7 @@ LEADERBOARD *AddLeaderBoard(int leaderboardnr,int leaderboardtype,struct mapinfo
 void CalcLeaderBoards(struct mapinfo *info);
 void ShowLeaderBoards(struct mapinfo *info,int x,int y);
 void ShowCountDownTimer(struct mapinfo *info,int x,int y);
+char *getmapSTR(struct mapinfo *testmap,int nrofstr);
 
 
 extern mylist map_units,map_doodads;

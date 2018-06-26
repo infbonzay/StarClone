@@ -1,4 +1,6 @@
 /* This file contains definitions for Heads-On Display */
+
+#include "defsunits.h" 
 #include "hod.h" 
 
 short mage_descriptions_hod[MAXMAGEATR] =

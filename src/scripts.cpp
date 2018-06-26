@@ -1,6 +1,10 @@
 #include <stdio.h>
 #include <grplib/usegrp.h>
 
+#include "mpqwrapper.h"
+#include "defsunits.h"
+#include "creep.h"
+
 #include "auxil.h"
 #include "man.h"
 #include "vars.h"

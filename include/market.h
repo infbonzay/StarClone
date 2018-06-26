@@ -1,10 +1,6 @@
 #if !defined(_MARKET_W)
 #define _MARKET_W
 
-#include "defs.h"
-#include "vars.h"
-#include "mylist.h"
-
 #define CHECKRES_OK		0
 #define CHECKRES_MIN		1
 #define CHECKRES_GAS		2

@@ -1,17 +1,20 @@
 #if !defined(_DEFS_W)
 #define _DEFS_W
+
 //#define DEBUGOUTPUT
 
+/*
 #ifdef WITHSDL
-        #include "sdl/keysdl.h"
+        //#include "sdl/keysdl.h"
 #endif
 #ifdef UNDERDOS
-        #include "dos/keydos.h"
+        //#include "dos/keydos.h"
 #endif
+*/
 
 typedef unsigned char SCUNIT;
 
-#include "wmem.h"
+//#include "wmem.h"
 
 #define SOUNDONCAST		0
 #define SOUNDONHIT		1
@@ -68,8 +71,8 @@ typedef unsigned char SCUNIT;
 //=============================
 #define GREYNEUTRALCOLORPLAYER	11		//player 12 is neutral - minerals, gas, etc
 //=============================
-#include "defsunits.h"
-#include "defsmodes.h"
+//#include "defsunits.h"
+//#include "defsmodes.h"
 
 #define MAXPLAYERS		12
 #define PLAYEDPLAYERS		8

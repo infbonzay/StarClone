@@ -1,8 +1,6 @@
 #if !defined(_DOODAD_W)
 #define _DOODAD_W
 
-#include "defs.h"
-
 #define DOODADMIRROR		0x4000
 #define DOODADINCRSPR		0x1000
 #define DOODADMIRRORTHENDECRSPR	0x0002		//my own bit

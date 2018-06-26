@@ -1,12 +1,9 @@
 #if !defined(_OBJINFO_W)
 #define _OBJINFO_W
 
-#include "defs.h"
-#include "man.h"
+#include "vars.h"
 //=================================
 
-#define ATACKUP		0
-#define ATACKDOWN	1
 void AdditionalProperties(OBJ *a);
 int  GetSpeed(OBJ *a,int speed);
 int  GetDistances(int x,int y,int x2,int y2);

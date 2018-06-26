@@ -2,7 +2,6 @@
 #ifndef _HOD_W
 #define _HOD_W
  
-#include <stdlib.h>
 #include "defs.h"
 
 extern short mage_descriptions_hod[MAXMAGEATR];

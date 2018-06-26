@@ -56,7 +56,6 @@ public:
     ~mylist();
 };
 //=========================================
-#include <stdio.h>
 class mylistsimple
 {
 public:

@@ -1,4 +1,8 @@
 
+#include "mage.h"
+#include "loadlo.h"
+#include "unitaction.h"
+
 #include "debug.h"
 #include "man.h"
 #include "auxil.h"

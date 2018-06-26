@@ -3,13 +3,15 @@
 #include <string.h>
 #include <stdlib.h>
 
+#include <grplib/gr8.h>
+#include <grplib/grp.h>
+
 #include "auxil.h"
 #include "wmem.h"
+#include "mpqwrapper.h"
 #include "mpq.h"
 #include "pcx.h"
 
-#include <grplib/gr8.h>
-#include <grplib/grp.h>
 //==================
 PCX::PCX(void)
 {

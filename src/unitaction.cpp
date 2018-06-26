@@ -1,4 +1,10 @@
 
+#include "diap.h"
+#include "lists.h"
+#include "audio.h"
+#include "action.h"
+#include "objs.h"
+
 #include "auxil.h"
 #include "doodad.h"
 #include "maps.h"

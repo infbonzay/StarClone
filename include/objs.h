@@ -1,7 +1,7 @@
 #if !defined(_OBJS_W)
 #define _OBJS_W
 
-#include "mytime.h"
+#include "images.h"
 
 #define TANKSIEGESIDE		(12*8)
 #define TANKNORMALSIDE		(28*8)

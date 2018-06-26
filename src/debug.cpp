@@ -3,8 +3,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "debug.h"
+#include "vars.h"
 #include "auxil.h"
+#include "debug.h"
+
 #define DEBUGPREFIXSTRING	"DEBUG : "
 char DEBUGFLAGS;
 char DEBUGOUTFILE[1024];

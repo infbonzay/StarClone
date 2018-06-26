@@ -3,12 +3,14 @@
 #define _GENER_W
 
 #ifdef WITHSDL
-       #include "sdl/grsdl.h"
+#	include "sdl/grsdl.h"
 #endif
 
-#include "netwgame.h"
-#include "netwplay.h"
 #include "gamemenu.h"
+#include "netwplay.h"
+#include "menu.h"
+#include "queue.h"
+#include "dialogbin.h"
 
 #define GAMEBUTTON_CLEARALL	0x00
 #define GAMEBUTTON_KEYPRESS	0x01
@@ -86,11 +88,7 @@
 #define MENUBUTTON_ENABLED		1
 #define MENUBUTTON_CLICKED		2
 
-#include "menu.h"
-#include "dialogbin.h"
-#include "queue.h"
 
-extern Queue QueueGame;
 
 void FreeQueues(void);
 void transfto(int table);
@@ -143,5 +141,7 @@ extern MENUDRAW		showedmenu;
 extern int 		menustatus;
 extern int		startmission;
 extern int		campaign_id;
+extern Queue QueueGame;
+
 #endif /*_GENER_W*/
 

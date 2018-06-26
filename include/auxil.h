@@ -1,8 +1,8 @@
 #if !defined(_AUXIL_W)
 #define _AUXIL_W
 
+#include <stdio.h>
 #include "const.h"
-#include "man.h"
 
 #ifdef  UNDERDOS
         #define _int3h() _asm{ int 3h}

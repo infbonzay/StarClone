@@ -21,8 +21,8 @@
     #define MPQOPENPARAM SFILE_OPEN_HARD_DISK_FILE
 #endif
 
-#include "mpqwrapper.h"
 #include "mylist.h"
+
 struct MPQIDS
 {
     HANDLE	hmpq;

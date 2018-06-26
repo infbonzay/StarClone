@@ -1,5 +1,8 @@
 
 #include <string.h>
+
+#include "load.h"
+
 #include "auxil.h"
 #include "audio.h"
 #include "doodad.h"

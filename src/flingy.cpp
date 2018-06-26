@@ -3,16 +3,15 @@
 #include <stdlib.h>
 #include <math.h>
 
-#include "auxil.h"
-#include "man.h"
-#include "mylist.h"
-#include "iscript.h"
-#include "images.h"
-#include "lists.h"
-#include "objs.h"
-#include "objinfo.h"
 #include "mage.h"
 #include "weapons.h"
+#include "objinfo.h"
+#include "objs.h"
+#include "auxil.h"
+#include "lists.h"
+#include "iscript.h"
+#include "vars.h"
+#include "images.h"
 #include "flingy.h"
 
 FLINGYLIST weaponflingy(3000);

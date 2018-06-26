@@ -25,6 +25,7 @@
 
 #ifdef  WITHSDL
         #include "sdl/grsdl.h"
+        #include "sdl/mousesdl.h"
 #endif
 #ifdef UNDERDOS
         #include "dos/handlers.h"

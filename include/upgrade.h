@@ -1,9 +1,6 @@
 #if !defined(_UPGRADE_W)
 #define _UPGRADE_W
 
-#include "man.h"
-#include "maps.h"
-
 #define ADDUPGRADE 1
 #define DELUPGRADE -1
 

@@ -5,11 +5,13 @@
 //====================
 #ifndef USEWMALLOC
 
+    #include <stdlib.h>
+    
     #define wmalloc(x) malloc(x)
     #define wfree(x)   free(x)
 
 #else
-    #include <string.h>
+    //#include <stdlib.h>
     
     #define TESTMALLOC
     #define CHECKALLMALLOC

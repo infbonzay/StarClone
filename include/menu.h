@@ -1,12 +1,11 @@
 #if !defined(_MENU_W)
 #define _MENU_W
 
-#include "const.h"
-#include "mylist.h"
-#include "network_general.h"
-#include "pcx.h"
 #include <grplib/grp.h>
 
+#include "mylist.h"
+#include "mpq.h"
+#include "pcx.h"
 #include "smacker/smacker.h"
 
 #ifndef FALSE
@@ -15,14 +14,16 @@
 #ifndef TRUE
     #define TRUE 1
 #endif
+
+/*
 #ifdef WITHSDL
-       #include "sdl/grsdl.h"
+       //#include "sdl/grsdl.h"
 #endif
 #ifdef UNDERDOS
-       #include "dos/gr8dos.h"
-       #include "dos/handlers.h"
+       //#include "dos/gr8dos.h"
+       //#include "dos/handlers.h"
 #endif
-
+*/
 
 #define ITEMSHOW_DISABLED	0
 #define ITEMSHOW_NOFOCUS	1
@@ -463,7 +464,6 @@ void checkanddrawmenu(MENUSTR *allmenus,int ItemChanges,int saveunder);
 void drawmenuitem(MENUSTR *allmenus,int itemnr);
 int  menukeys(MENUSTR *allmenus,int *pressed,int *redraw);
 int  editboxaction(MENUSTR *allmenus);
-void puthelpfromgame(void);
 void puttransptilebox(int x,int y,int sizex,int sizey,GRPFILE *tilegrp);
 
 void setitemrelation(MENUSTR *allmenus,int itemnr,int relation_type,int *address,int addressvalue);

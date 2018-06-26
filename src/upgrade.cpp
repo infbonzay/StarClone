@@ -1,4 +1,5 @@
 
+#include "starmap.h"
 #include "upgrade.h"
 
 //===================================

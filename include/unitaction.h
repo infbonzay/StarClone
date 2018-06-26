@@ -2,20 +2,8 @@
 #if !defined(_UNITACTION_W)
 #define _UNITACTION_W
 
-#include "defs.h"
-#include "vars.h"
-#include "lists.h"
 #include "man.h"
-#include "objs.h"
-#include "putobj.h"
-#include "audio.h"
-#include "load.h"
-#include "mage.h"
-#include "wmem.h"
-#include "diap.h"
-#include "action.h"
-
-//=================================
+#include "defs.h"
 
 int  GhostNUKEAction(OBJ *a);
 void GhostNUKECancel(OBJ *a,int mode);

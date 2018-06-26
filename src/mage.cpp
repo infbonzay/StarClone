@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <math.h>
 
+#include "unitaction.h"
+
 #include "vars.h"
 #include "man.h"
 #include "putobj.h"

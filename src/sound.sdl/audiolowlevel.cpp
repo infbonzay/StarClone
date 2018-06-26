@@ -1,5 +1,7 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_mixer.h>
+
+#include "mpqwrapper.h"
 #include "audiolowlevel.h"
 #include "mpq.h"
 

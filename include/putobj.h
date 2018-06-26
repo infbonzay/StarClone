@@ -2,6 +2,7 @@
 #if !defined(_PUTOBJ_W)
 #define _PUTOBJ_W
 
+#include <grplib/usegrp.h>
 #include "mylist.h"
 
 #define NORAMKA		0
@@ -42,7 +43,6 @@
 #define IMAGES_DAT_FIRSTCIRCLENORMAL	561
 #define IMAGES_DAT_FIRSTCIRCLEDASHED	571
 
-#include <grplib/usegrp.h>
 //========================================
 void desenlife(int x,int y,
                int sizex,int statusplayer,

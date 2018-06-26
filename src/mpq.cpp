@@ -1,5 +1,7 @@
 
 #include <grplib/grp.h>
+#include "mpqwrapper.h"
+
 #include "auxil.h"
 #include "wmem.h"
 #include "mylist.h"

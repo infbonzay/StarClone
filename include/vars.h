@@ -2,17 +2,14 @@
 #define _VARS_W
 
 #include <grplib/usegrp.h>
-#include "defs.h"
-#include "audio.h"
+#include "version.hxx"
+#include "player.h"
+#include "man.h"
+#include "defsmodes.h"
 #include "const.h"
-#include "mylist.h"
-#include "mytime.h"
-#include "pcx.h"
 #include "fonts.h"
 #include "tbl.h"
 #include "messages.h"
-#include "version.hxx"
-#include "player.h"
 
 #define  SC_CONFIGFILE	GAMENAME".conf"
 //=============================

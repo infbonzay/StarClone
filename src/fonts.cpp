@@ -3,6 +3,8 @@
 #include <string.h>
 #include <grplib/gr8.h>
 
+#include "wmem.h"
+
 #include "auxil.h"
 #include "vars.h"
 #include "mpq.h"

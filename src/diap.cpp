@@ -3,6 +3,9 @@
 #include <grplib/usegrp.h>
 #include <math.h>
 
+#include "action.h"
+#include "lists.h"
+
 #include "auxil.h"
 #include "mouse.h"
 #include "man.h"
@@ -34,6 +37,7 @@
 #ifdef WITHSDL
        #include "sdl/grsdl.h"
        #include "sdl/keysdl.h"
+       #include "sdl/mousesdl.h"
 #endif
 #ifdef UNDERDOS
        #include "dos/handlers.h"

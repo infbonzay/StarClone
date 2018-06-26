@@ -2,7 +2,6 @@
 #define _GR_W
 
 #include <grplib/grp.h>
-#include "defs.h"
 //==========================
 
 int  setmode(int x,int y,int bpp,int fullscreen);

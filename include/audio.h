@@ -4,7 +4,7 @@
 
 #include "defs.h"
 #include "mpq.h"
-#include "mylist.h"
+#include "man.h"
 #include "audiolowlevel.h"
 
 

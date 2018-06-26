@@ -2,14 +2,7 @@
 #if !defined(_MAGE_W)
 #define _MAGE_W
 
-/*
-#define SPLASHPICTUREMAGE	0	//put the mage(begin splash ex.plague)
-#define BEGINPICTUREMAGE	1	//apear the mage(swarm appear)
-#define DESENPICTUREMAGE	2	//swarm work
-#define ENDPICTUREMAGE		3	//swarm go out
-#define	DESENPICTUREDAMAGE	4	//
-#define	AFTERPICTUREDAMAGE	5	//
-*/
+#include "man.h"
 
 #define DELTAMANAONCYCLE	7	//add mana in 1 cycle
 #define ADDMATRIXHP		(250<<8) //temprary defence matrix hp

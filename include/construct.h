@@ -2,7 +2,6 @@
 #define _CONSTRUCT_W
 
 #include "defs.h"
-#include "scripts.h"
 
 #define CONSTR_STEP_ALLBUILDSEXACT100	0
 

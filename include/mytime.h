@@ -1,8 +1,6 @@
 #if !defined(_MYTIME_W)
 #define _MYTIME_W
 
-#include "pcx.h"
-
 //=================================
 #define	SLOWESTSPEED_TICKS	6
 #define	SLOWERSPEED_TICKS	9

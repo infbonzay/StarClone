@@ -1,6 +1,8 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include "defsunits.h"
+
 #include "vars.h"
 #include "wmem.h"
 #include "mpq.h"

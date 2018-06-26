@@ -3,6 +3,8 @@
 #include <string.h>
 #include <stdio.h>
 
+#include "audio.h"
+
 #include "man.h"
 #include "vars.h"
 #include "maps.h"

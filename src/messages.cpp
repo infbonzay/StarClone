@@ -1,6 +1,8 @@
 #include <string.h>
 #include <stdlib.h>
 
+#include "wmem.h"
+
 #include "vars.h"
 #include "fonts.h"
 #include "mouse.h"

@@ -1,7 +1,7 @@
 
 #include <stdlib.h>
 
-#include "auxil.h"
+//#include "auxil.h"
 #include "pcx.h"
 #include "MenuItem.h"
 

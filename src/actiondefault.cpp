@@ -1,4 +1,12 @@
 
+#include "load.h"
+#include "mage.h"
+#include "diap.h"
+#include "audio.h"
+#include "action.h"
+#include "lists.h"
+#include "putobj.h"
+
 #include "auxil.h"
 #include "maps.h"
 #include "walk.h"

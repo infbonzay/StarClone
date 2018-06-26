@@ -6,6 +6,8 @@
 	#include "sdl/grsdl.h"
 #endif
 
+#include "gener.h"
+#include "audio.h"
 #include "auxil.h"
 #include "mylist.h"
 #include "wmem.h"

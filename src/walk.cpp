@@ -1,4 +1,6 @@
 
+#include "lists.h"
+
 #include "defs.h"
 #include "auxil.h"
 #include "vars.h"

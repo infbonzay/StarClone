@@ -1,4 +1,7 @@
 
+#include "diap.h"
+#include "maps.h"
+
 #include "defs.h"
 #include "auxil.h"
 #include "objinfo.h"

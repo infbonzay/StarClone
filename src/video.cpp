@@ -5,8 +5,11 @@
 #include <grplib/grp.h>
 #include <grplib/gr8.h>
 
+#include "sdl/keysdl.h"
+#include "sdl/mousesdl.h"
 #include "smacker/smacker.h"
 #include "auxil.h"
+#include "mpqwrapper.h"
 #include "mpq.h"
 #include "mytime.h"
 #include "fonts.h"

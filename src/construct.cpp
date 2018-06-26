@@ -5,6 +5,8 @@
 #include <dirent.h>
 
 
+#include "wmem.h"
+
 #include "man.h"
 #include "vars.h"
 #include "diap.h"

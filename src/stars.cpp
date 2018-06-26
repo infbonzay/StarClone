@@ -1,5 +1,7 @@
 
 #include <grplib/grp.h>
+#include "wmem.h"
+
 #include "starmap.h"
 #include "maps.h"
 #include "gr.h"

@@ -1,4 +1,8 @@
 
+#include "objs.h"
+#include "scripts.h"
+#include "load.h"
+
 #include "auxil.h"
 #include "gener.h"
 #include "diap.h"

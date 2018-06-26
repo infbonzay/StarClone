@@ -1,4 +1,15 @@
-#include "math.h"
+
+
+#include <math.h>
+
+#include "load.h"
+#include "mage.h"
+#include "wmem.h"
+#include "putobj.h"
+#include "defsunits.h"
+#include "maps.h"
+#include "objs.h"
+
 #include "defs.h"
 #include "man.h"
 #include "auxil.h"

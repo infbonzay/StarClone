@@ -3,7 +3,7 @@
 #define _LOAD_W
 
 #include <stdio.h>
-
+#include "man.h"
 #include "tbl.h"
 
 int loadznak(void);

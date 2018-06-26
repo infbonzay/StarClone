@@ -1,8 +1,6 @@
 #if !defined(_WALK_W)
 #define _WALK_W
 
-#include "starmap.h"
-
 #define SETWALK		0
 #define CLEARWALK	1
 

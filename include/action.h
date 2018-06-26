@@ -3,16 +3,8 @@
 #define _ACTION_W
 
 #include "defs.h"
-#include "vars.h"
-#include "lists.h"
 #include "man.h"
-#include "objs.h"
-#include "putobj.h"
-#include "audio.h"
-#include "load.h"
-#include "mage.h"
-#include "maps.h"
-#include "unitaction.h"
+#include "starmap.h"
 
 #define CREATELARVAEACTION	1
 #define WAITSOMETIMEACTION	2

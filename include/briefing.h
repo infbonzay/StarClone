@@ -2,7 +2,8 @@
 #define _BRIEFING_W
 
 #include "portrait.h"
-#include "mpq.h"
+#include "gamemenu.h"
+#include "starmap.h"
 //=====================================================
 
 #define TRG_CONDITIONTYPE_NONE			0

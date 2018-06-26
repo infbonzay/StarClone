@@ -1,6 +1,8 @@
 #if !defined(_FLINGY_W)
 #define _FLINGY_W
 
+#include "man.h"
+
 #define FLINGYMOVECONTROL_FLINGY	0
 #define FLINGYMOVECONTROL_WEAPON	1
 #define FLINGYMOVECONTROL_ISCRIPT	2
@@ -11,6 +13,7 @@
 #define FLINGY_FLAG_BOUNCEATACK				0x08
 #define FLINGY_FLAG_AFTERLAUNCHCHANGEELEVATION		0x10
 #define FLINGY_IMG_NULL					0x20
+
 //===================================================
 class SC_FLINGY
 {

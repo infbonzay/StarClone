@@ -9,6 +9,8 @@
 #include <grplib/gr8.h>
 #include <grplib/usegrp.h>
 
+#include "vars.h"
+
 #include "debug.h"
 #include "auxil.h"
 #include "mouse.h"
@@ -57,6 +59,7 @@
 
 #ifdef WITHSDL
        #include "sdl/grsdl.h"
+       #include "sdl/mousesdl.h"
 #endif
 #ifdef UNDERDOS
        #include "dos/gr8dos.h"

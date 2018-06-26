@@ -1,7 +1,8 @@
 #if !defined(_TEMPOBJ_W)
 #define _TEMPOBJ_W
 
-#include "vars.h"
+#include "defs.h"
+#include "mylist.h"
 #include "starmap.h"
 
 #define FIRSTBUILD	0

@@ -1,10 +1,7 @@
 #ifndef _IMAGES_W
 #define _IMAGES_W
 
-#include <grplib/grp.h>
 #include "man.h"
-#include "mylist.h"
-
 //============================================
 #define WARPBUILDWHITEMULFACTOR			2
 #define EVERYUNITRAWIMAGENR			0

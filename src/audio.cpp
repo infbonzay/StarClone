@@ -1,6 +1,9 @@
 
 #include <math.h>
-#include "mpq.h"
+
+#include "wmem.h"
+#include "mpqwrapper.h"
+
 #include "auxil.h"
 #include "debug.h"
 #include "man.h"

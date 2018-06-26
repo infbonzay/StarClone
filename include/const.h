@@ -1,7 +1,6 @@
 #if !defined(_CONST_W)
 #define _CONST_W
 
-#include "defs.h"
 //====================
 struct DISPLAY{
        int	x;
