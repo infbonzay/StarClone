@@ -1,6 +1,11 @@
 #ifndef _IMAGES_W
 #define _IMAGES_W
 
+#include <grplib/grp.h>
+
+#include "debug.h"
+#include "mylist.h"
+#include "loadlo.h"
 #include "man.h"
 //============================================
 #define WARPBUILDWHITEMULFACTOR			2

@@ -3,6 +3,7 @@
 
 #include "defs.h"
 #include "mylist.h"
+#include "man.h"
 #include "starmap.h"
 
 #define FIRSTBUILD	0

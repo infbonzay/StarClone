@@ -5,6 +5,7 @@
 
 #include "mylist.h"
 #include "mpq.h"
+#include "menu.h"
 #include "pcx.h"
 #include "smacker/smacker.h"
 
@@ -185,8 +186,9 @@ struct ALLSMKS
     char		totalsmks;
     SMKONEITEM		smkid[];
 };
-	struct LISTBOXBAR
-	{
+
+struct LISTBOXBAR
+{
 	    short int 	xt_1;		//top
 	    short int 	xt_2;		
 
@@ -207,16 +209,16 @@ struct ALLSMKS
 	    short int	buttonbary2;	//y-bottom-position of buttonbar
 	    short int   buttonbarymax;	//maximal y pos for buttonbar
 	    char	showbutton;	//
-	};
-	struct BUTTON
-	{
+};
+struct BUTTON
+{
 	    TEXTS menustr;		// menu strings for this button
 	    char buttonsize;		//size in sprites (not pixels), if 0 no decoration under button, put nothing
 	    char buttontype;
 	    char buttonflags;
-	};
-	struct LISTBOX
-	{
+};
+struct LISTBOX
+{
 	    mylist *flist;
 	    int  from;
 	    int  to;
@@ -228,22 +230,22 @@ struct ALLSMKS
 	    char scrollbar;		//0 or 1
 	    int  sizexarea;
 	    LISTBOXBAR	*bar;
-	};
-	struct EDITBOX
-	{
+};
+struct EDITBOX
+{
 	    char *editstr;
 	    int length;
 	    int cursorpos;
 	    int maxsymbols;
-	};
-	struct TEXTLABEL
-	{
+};
+struct TEXTLABEL
+{
 	    char 	*textstr;
 	    short 	rowsize;
 	    short	skiplinepixels;
-	};
-	struct EXPANDBOX
-	{
+};
+struct EXPANDBOX
+{
 	    MENUSTR *showlist;		//menu for expand
 	    int  hoty;
 	    int  selectednr;
@@ -253,14 +255,14 @@ struct ALLSMKS
 	    char arrowbottom[4];
 	    char *array[4];		//first 2 byte of every elem is x,y size of expand
 	    char **items;
-	};
-	struct CHECKBOX
-	{
+};
+struct CHECKBOX
+{
 	    TEXTS textstr;
 	    int state;			//on-off
-	};
-	struct RADIOBUTTON
-	{
+};
+struct RADIOBUTTON
+{
 	    TEXTS textstr;
 	    int state;
 	    int nextradiobutton;	//itemnr of next radiobutton in this stack or -1
@@ -269,9 +271,9 @@ struct ALLSMKS
 	    PCX *pcx2;
 	    int deltax;
 	    int deltay;
-	};
-	struct HORIZBUTTON
-	{
+};
+struct HORIZBUTTON
+{
 	    int metric;			//metric is number of positions in bar
 	    int value;
 	    int barxposition;		//from 8 to hotsizex-8
@@ -283,18 +285,18 @@ struct ALLSMKS
 	    int minxvalue;
 	    int maxxvalue;
 	    void (*onselectitem_callback)(MENUSTR *allmenus,int menuitemnr,int horizpos);	//function run, if select/move+click on hozributton
-	};
-	struct SMKVIDEO
-	{
+};
+struct SMKVIDEO
+{
     	    struct BUTTON 	*smkbutton;
     	    char		buttonalign;
     	    short    int	smkbuttonxpos;
     	    short    int	smkbuttonypos;
 	    HANDLE		hmpq;
 	    struct ALLSMKS	*smks;
-	};
-	struct IMAGE
-	{
+};
+struct IMAGE
+{
 	    HANDLE		hmpq;
 	    PCX			*pcx;
 	    GRPFILE		*grp;
@@ -307,7 +309,7 @@ struct ALLSMKS
 	    char 		transvalue;
 	    char 		flags;		//bit0 - 1 - GRP image , 0 -pcx image 
 						//bit1 - 0- topalign  1 - bottom-alighn
-	};
+};
 
 struct MENUPOS
 {

@@ -1,20 +1,16 @@
 #if !defined(_WMEM_W)
 #define _WMEM_W
 
+#include <stdlib.h>
+
 //#define USEWMALLOC
 //====================
 #ifndef USEWMALLOC
-
-    #include <stdlib.h>
-    
-    #define wmalloc(x) malloc(x)
-    #define wfree(x)   free(x)
-
+#	define wmalloc(x) malloc(x)
+#	define wfree(x)   free(x)
 #else
-    //#include <stdlib.h>
-    
-    #define TESTMALLOC
-    #define CHECKALLMALLOC
+#	define TESTMALLOC
+#	define CHECKALLMALLOC
 
     void *wmalloc(int memsize);
     void wfree(void *buf);

@@ -2,7 +2,8 @@
 #if !defined(_PUTOBJ_W)
 #define _PUTOBJ_W
 
-#include <grplib/usegrp.h>
+#include <grplib/grp.h>
+#include "man.h"
 #include "mylist.h"
 
 #define NORAMKA		0

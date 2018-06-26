@@ -1,6 +1,7 @@
 #if !defined(_LOADLO_W)
 #define _LOADLO_W
 
+//#include "man.h"
 //===============================================
 struct LOFILE
 {
@@ -9,12 +10,12 @@ struct LOFILE
     int offseteachline[];
 };
 //===============================================
-LOFILE *loadlo(char *filename);
-void unloadlo(LOFILE *temp);
+//LOFILE *loadlo(char *filename);
+//void unloadlo(LOFILE *temp);
 signed char *GetLoXY(LOFILE *temp,int nr_side,int nr_pos);
-void SetLoXY(LOFILE *temp,int nr_side,int count,int deltax,int deltay);
-LOFILE *createlo(int count,int deltax,int deltay);
-void GetXYFromLO(struct OBJstruct *b,int mode,int line,int *x,int *y);
+//void SetLoXY(LOFILE *temp,int nr_side,int count,int deltax,int deltay);
+//LOFILE *createlo(int count,int deltax,int deltay);
+//void GetXYFromLO(struct OBJstruct *b,int mode,int line,int *x,int *y);
 //===============================================
 //DESCRIPTION OF .LO* FILES
 //lof - 'F'ire or blood if build/unit have damaged

@@ -2,6 +2,7 @@
 #if !defined(_PYLON_W)
 #define _PYLON_W
 
+#include "man.h"
 #include "starmap.h"
 
 #define PYLONAREAX		16

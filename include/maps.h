@@ -2,6 +2,7 @@
 #define _MAPS_W
 
 #include "vars.h"
+#include "man.h"
 #include "starmap.h"
 
 void CreateMiniMapPixels(struct mapinfo *map);

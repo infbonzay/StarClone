@@ -3,6 +3,7 @@
 #define _OVERLAY_W
 
 #include "images.h"
+#include "man.h"
 
 //functions for special draw additional to useputgrp
 #define WARPTEXTURE		6

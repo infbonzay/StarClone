@@ -2,6 +2,7 @@
 #define _RULES_W
 
 /* status display rules */
+#include "man.h"
 
 char allow_display_unitstatus( struct OBJ *a,
 	int nr_player );

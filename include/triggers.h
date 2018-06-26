@@ -2,6 +2,9 @@
 #define _TRIGGERS_W
 
 #include "mytime.h"
+#include "const.h"
+#include "man.h"
+#include "starmap.h"
 
 #define CLEARSTATE		0
 #define SETSTATE		1

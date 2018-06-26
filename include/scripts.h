@@ -3,7 +3,9 @@
 
 //=================================
 
+#include <stdio.h>
 #include <grplib/grp.h>
+#include "mpq.h"
 #include "loadlo.h"
 #include "defs.h"
 #include "portrait.h"

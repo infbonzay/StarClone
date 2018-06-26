@@ -23,7 +23,7 @@ void unloadlo(LOFILE *temp)
 }
 */
 //===============================================
-void GetLoXY(LOFILE *temp,int nr_side,int nr_pos,signed char *xdelta,signed char *ydelta)
+/*void GetLoXY(LOFILE *temp,int nr_side,int nr_pos,signed char *xdelta,signed char *ydelta)
 {
 	signed char *adr;
         if (nr_side>=temp->CountSides)
@@ -39,6 +39,7 @@ void GetLoXY(LOFILE *temp,int nr_side,int nr_pos,signed char *xdelta,signed char
 	*xdelta = adr[0];
 	*ydelta = adr[1];
 }
+*/
 //===============================================
 signed char *GetLoXY(LOFILE *temp,int nr_side,int nr_pos)
 {

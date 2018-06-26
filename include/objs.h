@@ -2,6 +2,8 @@
 #define _OBJS_W
 
 #include "images.h"
+#include "defs.h"
+#include "man.h"
 
 #define TANKSIEGESIDE		(12*8)
 #define TANKNORMALSIDE		(28*8)

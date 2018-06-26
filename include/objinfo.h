@@ -2,6 +2,8 @@
 #define _OBJINFO_W
 
 #include "vars.h"
+#include "defs.h"
+#include "man.h"
 //=================================
 
 void AdditionalProperties(OBJ *a);

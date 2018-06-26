@@ -5,7 +5,9 @@
 #include "defsmodes.h"
 #include "defsunits.h"
 #include "vars.h"
+#include "man.h"
 #include "const.h"
+#include "mylist.h"
 #include "triggers.h"
 #include "tbl.h"
 #include "gamemenu.h"
@@ -532,7 +534,8 @@ void randomizecolor(void);
 int  GetPlayableGameNumber(mapinfo *info);
 void free_missionobjectives(void);
 void fill_missionobjectives(char *missiontxt);
-LEADERBOARD *AddLeaderBoard(int leaderboardnr,int leaderboardtype,struct mapinfo *info,int actiononplayer,int unittype,int nrofunits,int stringID);
+LEADERBOARD *AddLeaderBoard(int leaderboardnr,int leaderboardtype,struct mapinfo *info,\
+			    int actiononplayer,int unittype,int nrofunits,int stringID);
 void CalcLeaderBoards(struct mapinfo *info);
 void ShowLeaderBoards(struct mapinfo *info,int x,int y);
 void ShowCountDownTimer(struct mapinfo *info,int x,int y);

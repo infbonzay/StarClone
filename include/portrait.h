@@ -4,6 +4,7 @@
 #define _PORTRAIT_W
 
 #include "defs.h"
+#include "man.h"
 #include "smacker/smacker.h"
 
 #define HOLDPORTRAIT		0x01

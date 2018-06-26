@@ -7,16 +7,17 @@
 #include "myfifo.h"
 #include "construct.h"
 #include "mpq.h"
+//#include "images.h"
 
 #define MAXRANDOMSPR		3
-#define MAXSKMTYPEOFPORTRAITS	4
+#define MAXSMKTYPEOFPORTRAITS	4
 //=======================================
 struct SMKPORTRAITS
 {
 	HANDLE hmpq;
 	unsigned char maxscrollSMKNORMAL;
-	unsigned char max[MAXSKMTYPEOFPORTRAITS];
-	unsigned short int mpqfilenr[MAXSKMTYPEOFPORTRAITS][4];
+	unsigned char max[MAXSMKTYPEOFPORTRAITS];
+	unsigned short int mpqfilenr[MAXSMKTYPEOFPORTRAITS][4];
 };
 //=======================================
 struct SFXPLAY
@@ -28,11 +29,7 @@ struct SFXPLAY
 	unsigned char	nrselectplayed;			//nr select play need for pss play
 };
 
-struct CHILDS
-{
-	signed	char	nrofchildunits;			//nr of childs
-	struct	OBJ	*parentof[MAXCHILDS];		//parent of MAXCHILDS units
-};
+struct CHILDS;
 //=======================================
 struct LOADED
 {
@@ -249,6 +246,12 @@ struct OBJ
 #define OBJ_VAR_SET(a,TYPEPARAM,playernr) OBJ_VAR_MASK_SET(a,TYPEPARAM,(1<<playernr))
 #define OBJ_VAR_CLR(a,TYPEPARAM,playernr) OBJ_VAR_MASK_CLR(a,TYPEPARAM,(1<<playernr))
 #define OBJ_VAR_CHK(a,TYPEPARAM,playernr) OBJ_VAR_MASK_CHK(a,TYPEPARAM,(1<<playernr))
+//=======================================
+struct CHILDS
+{
+	signed	char	nrofchildunits;			//nr of childs
+	struct	OBJ	*parentof[MAXCHILDS];		//parent of MAXCHILDS units
+};
 //=======================================
 struct ONEMODEMOVE
 {

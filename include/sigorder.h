@@ -1,6 +1,7 @@
 #if !defined(_SIGORDER_W)
 #define _SIGORDER_W
 
+#include "man.h"
 
 #define ADDBUILD_AIR_ELEVATIONLEVEL	10
 int  SIGOrder_NULL(OBJ *a);

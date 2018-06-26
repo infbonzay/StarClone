@@ -5,6 +5,7 @@
 #include "tbl.h"
 #include "vars.h"
 #include "defs.h"
+#include "man.h"
 
 #define UNITSOUND_READY		0
 #define UNITSOUND_WHATFIRST	1

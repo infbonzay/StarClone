@@ -2,6 +2,7 @@
 #define _WEAPONS_W
 
 #include <grplib/grp.h>
+#include "man.h"
 #include "images.h"
 
 #define WEAPONRANGEFROM		(3*16)	//define if range of weapon is large than 3 it is range atack else melee atack
