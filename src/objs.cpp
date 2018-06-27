@@ -3854,7 +3854,7 @@ void setpropertiestounit(struct OBJ *a,int special_props,int state_flags)
 //		mask=1;
 //	    else
 //	    {
-		SetInvisibleUnit(a);
+//		SetInvisibleUnit(a);
 //		a->mainimage->newgrpmethod = DISTORTION;
         	addmage(a,ATRINVISIBLE,a->mana);
         	a->prop |= VARDECRMAGE;
