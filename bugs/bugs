@@ -424,6 +424,8 @@
 *188 defiler & queen has no mana at birth
 *189 custom play menu wrong
  190 if dest resource is dissapear drone stops
+*191 ghost created cloaked do not decrease energy & buttons wrong
+*192 minimap showed for all player (need  to be for current only)
     if interceptors kill destobj return to carrier but carrier in atackmode & interceptors dont launch again
     interceptors fly to atack far then carrier range
     carrier stop move if atack to ground and stops to atack somebody

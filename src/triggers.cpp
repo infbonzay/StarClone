@@ -636,16 +636,14 @@ int Condition_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int trig_nr,int playernr,
 //		    break;
 		case TRG_CONDITIONTYPE_OPPONENTS://14
 		    nrofunits = 0;
-		    opponents = temptrg->condition[i].unittype;
-//		    opponents = temptrg->condition[i].seconds;
-//		    opponents = temptrg->condition[i].ResourceType;
+		    opponents = temptrg->condition[i].seconds;
 		    ownactiononplayers = OneGroup_Prepare(info,temptrg->condition[i].actiononplayers,playernrmask);
-		    for (j=0,mask=1;j<MAXPLAYERS;j++,mask<<=1)
+		    for (j=0,mask=1;j<PLAYEDPLAYERS;j++,mask<<=1)
 		    {
-			if (!(ownactiononplayers&mask))
+			if (!(ownactiononplayers & mask))
 			{
 			    remainopponents = 0;
-			    for (i=0;i<PLAYEDPLAYERS;i++)
+			    for (i=j+1;i<PLAYEDPLAYERS;i++)
 		    		if (player_aliance(j,i) == ENEMYOBJ)
 				    remainopponents++;
 			    applycond = (*comparefunc)(&remainopponents,opponents);
@@ -1131,12 +1129,16 @@ int Action_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int trig_nr,int playernr,int
 		    triggset=1;
 		    break;
 		case TRG_ACTIONTYPE_MINIMAPPING://28
-		    locnr=temptrg->action[i].locationnr-1;
-		    CenterXYArea(&info->gamelocations[locnr].coords,&xobj,&yobj);
+		    //show minimap ping only for current player
+		    if (playernr == NUMBGAMER)
+		    {
+			locnr = temptrg->action[i].locationnr-1;
+			CenterXYArea(&info->gamelocations[locnr].coords,&xobj,&yobj);
 
-		    getminimapcoord(info,xobj,yobj,&grpposx,&grpposy);
+			getminimapcoord(info,xobj,yobj,&grpposx,&grpposy);
 
-		    ShowBlink(grpposx,grpposy,5);
+			ShowBlink(grpposx,grpposy,5);
+		    }
 
 		    triggset=1;
 		    break;

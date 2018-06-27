@@ -590,7 +590,7 @@ int  SIGOrder_NukeLanding(OBJ *a)
     //ghost leave wait state
     ghostobj = a->doubleunit;
     GhostNUKECancel(ghostobj,GHOSTRELEASENUKE);
-    if (a->prop & VARINCRMAGE)	//decreasing mage (now is cloaked)
+    if (a->prop & VARDECRMAGE)	//decreasing mage (now is cloaked)
         ChangeTypeOfProp(ghostobj,PROPNORMAL2);
     else
         ChangeTypeOfProp(ghostobj,PROPNORMAL1);//or normal2

@@ -189,7 +189,7 @@ typedef unsigned char SCUNIT;
 #define VARNOTHERE      		0x00000002
 #define VARINTRANSPORT  		0x00000004
 #define VARREADY        		0x00000008
-#define VARINCRMAGE     		0x00000010 	//1-decr,0-incr
+#define VARDECRMAGE     		0x00000010 	//1-decr,0-incr
 #define VARPYLONAREAACTIVE		0x00000020	//obj have 4 imageoverlays with pylon areas
 #define VARBURROW			0x00000040
 #define VARPOWEROFF			0x00000080

@@ -322,7 +322,7 @@ void DecrementOBJAtr(struct OBJ *a)
     {
 	if (GetMageAtr(&a->atrobj,ATRSTASIS)==0)
 	{
-    	    if ((a->prop&VARINCRMAGE) && GetMageAtr(&a->atrobj,ATRINVISIBLE)!=WRAITHEPODARBITEROM)
+    	    if ((a->prop&VARDECRMAGE) && GetMageAtr(&a->atrobj,ATRINVISIBLE)!=WRAITHEPODARBITEROM)
     	    {
     		if (a->mana>0)//decrement mage
         	{
@@ -331,7 +331,7 @@ void DecrementOBJAtr(struct OBJ *a)
 		else
     		{
     		    addmage(a,ATRINVISIBLE,0);
-    		    a->prop&=~VARINCRMAGE;
+    		    a->prop&=~VARDECRMAGE;
 		    ChangeTypeOfProp(a,PROPNORMAL1);
 		}
 	    }

@@ -1670,7 +1670,7 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int modemovef
     	    break;
         case MODECANCELNUKE:
 	    GhostNUKECancel(a,GHOSTCANCELNUKE);
-	    if (a->prop & VARINCRMAGE)	//if decreasing mage (ghost is cloaked)
+	    if (a->prop & VARDECRMAGE)	//if decreasing mage (ghost is cloaked)
 	        ChangeTypeOfProp(a,b,PROPNORMAL2);
 	    else
 	        ChangeTypeOfProp(a,b,PROPNORMAL1);
@@ -2201,13 +2201,13 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int modemovef
 		}
 		DecrMana(a,needmana);
         	addmage(a,ATRINVISIBLE,a->mana);
-        	a->prop |= VARINCRMAGE;
+        	a->prop |= VARDECRMAGE;
 		ChangeTypeOfProp(a,b,PROPNORMAL2);
             }
 	    return(MOVEOBJ_DONE);
 	case MODEDECLOAK:
             addmage(a,ATRINVISIBLE,0);
-            a->prop &= ~VARINCRMAGE;
+            a->prop &= ~VARDECRMAGE;
 	    ChangeTypeOfProp(a,b,PROPNORMAL1);
 	    return(MOVEOBJ_DONE);
         case MODEESCAPE1:	//escape slots in construct mode
@@ -3849,14 +3849,17 @@ void setpropertiestounit(struct OBJ *a,int special_props,int state_flags)
 	if (special_props&UNITONMAP_STATEFLAGS_CLOAK)
 	{
 	    //check if cloak is evolved
-	    mask=0;
-	    if (IsHeroUnit(a->SC_Unit))
-		mask=1;
-	    else
-	    {
+//	    mask=0;
+//	    if (IsHeroUnit(a->SC_Unit))
+//		mask=1;
+//	    else
+//	    {
 		SetInvisibleUnit(a);
-		a->mainimage->newgrpmethod = DISTORTION;
-	    }
+//		a->mainimage->newgrpmethod = DISTORTION;
+        	addmage(a,ATRINVISIBLE,a->mana);
+        	a->prop |= VARDECRMAGE;
+		ChangeTypeOfProp(a,PROPNORMAL2);
+//	    }
 	}
     if (state_flags&UNITONMAP_STATEFLAGS_BURROW)
 	if (special_props&UNITONMAP_STATEFLAGS_BURROW)
