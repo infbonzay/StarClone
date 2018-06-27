@@ -80,6 +80,7 @@ int  IfCanClickOBJ(SCUNIT SC_Unit);
 void SetTriggeredUnitState(struct OBJ *a,int state);
 int  GetTriggeredUnitState(struct OBJ *a);
 
+inline int GetUnitUnknownFlags(SCUNIT SC_Unit) { return(alldattbl.units_dat->Unknown1[SC_Unit]); };
 inline int GetUnitSublabel(SCUNIT SC_Unit) { return(alldattbl.units_dat->Sublabel[SC_Unit]); };
 inline int GetTargetAcquisitionRange(SCUNIT SC_Unit) { return(alldattbl.units_dat->TargetAcquisitionRange[SC_Unit]); };
 inline int IsShieldEnable(SCUNIT SC_Unit) { return(alldattbl.units_dat->ShieldEnable[SC_Unit]); };

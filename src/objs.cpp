@@ -4027,7 +4027,7 @@ struct OBJ* BunkerAtackFunc(OBJ *aa,unsigned char wm,unsigned char gw,unsigned c
 //=================================
 int CheckMineSpecialUnit(SCUNIT SC_Unit)
 {
-    return(IsBuild(SC_Unit));
+    return( (GetUnitUnknownFlags(SC_Unit) & 0x80) || IsBuild(SC_Unit));//mine safe or build
 }
 //=================================
 struct OBJ* VultureMineUnitAtackFunc(OBJ *a,unsigned char weaponmask,unsigned char groundweapon,unsigned char airweapon)

@@ -118,7 +118,7 @@ struct UNITS_STRUCT
 unsigned short ShieldAmount[MAX_UNITS_ELEM];
 unsigned int  HitPoints[MAX_UNITS_ELEM];
 	unsigned char ElevationLevel[MAX_UNITS_ELEM];
-	char  Unknown1[MAX_UNITS_ELEM];
+unsigned char Unknown1[MAX_UNITS_ELEM];
 	char  Sublabel[MAX_UNITS_ELEM];
 	char  CompAIIdle[MAX_UNITS_ELEM];
 	char  HumanAIIdle[MAX_UNITS_ELEM];
