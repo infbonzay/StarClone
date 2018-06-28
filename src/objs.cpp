@@ -723,16 +723,31 @@ void ifselectTRANSPORTS(struct OBJ *a)
 //=====================================
 int IfUnitIsSelectable(OBJ *a)
 {
-    if (OBJ_VAR_CHK(a,obj_notdetect,NUMBGAMER))
-    {
-	if (OBJ_VAR_CHK(a,obj_invsee,NUMBGAMER))
-	    return(1);
-    }
-    else
-    {
-	if (OBJ_VAR_CHK(a,obj_see,NUMBGAMER))
-	    return(1);
-    }
+	    if (OBJ_VAR_MASK_CHK(a,obj_notdetect,map.pl_visionbits[NUMBGAMER]))
+	    {
+		if (OBJ_VAR_MASK_CHK(a,obj_invsee,map.pl_visionbits[NUMBGAMER]))
+		    return(1);
+	    }
+	    else
+	    {
+		if (OBJ_VAR_MASK_CHK(a,obj_see,map.pl_visionbits[NUMBGAMER]))
+		    return(1);
+	    }
+    return(0);
+}
+//=====================================
+int IfUnitIsSelectable2(OBJ *a)
+{
+	    if (OBJ_VAR_CHK(a,obj_notdetect,NUMBGAMER))
+	    {
+		if (OBJ_VAR_CHK(a,obj_invsee,NUMBGAMER))
+		    return(1);
+	    }
+	    else
+	    {
+		if (OBJ_VAR_CHK(a,obj_see,NUMBGAMER))
+		    return(1);
+	    }
     return(0);
 }
 //=====================================

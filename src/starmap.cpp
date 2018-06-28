@@ -79,7 +79,7 @@ void add_unit_stat(struct mapinfo *info,int stattype,int playernr,SCUNIT SC_Unit
 		info->units_stat.stattype[stattype][playernr][SC_FACTORYUNIT]++;
 	}
 	else
-	    DEBUGMES("!!!!!!! stattype=%d player=%d unit=%d\n",stattype,playernr,SC_Unit);
+	    DEBUGMES(" stattype=%d player=%d unit=%d\n",stattype,playernr,SC_Unit);
     }
 }
 //=====================================================
@@ -99,7 +99,7 @@ void sub_unit_stat(struct mapinfo *info,int stattype,int playernr,SCUNIT SC_Unit
 		info->units_stat.stattype[stattype][playernr][SC_FACTORYUNIT]--;
 	}
 	else
-	    DEBUGMES("!!!!!!! stattype=%d player=%d unit=%d\n",stattype,playernr,SC_Unit);
+	    DEBUGMES(" stattype=%d player=%d unit=%d\n",stattype,playernr,SC_Unit);
     }
 }
 //=====================================================
@@ -1689,7 +1689,7 @@ int CreateBitsVision(struct mapinfo *info,int player)
 //=================================================
 void CreateVision(struct mapinfo *info,int player,int seeplayer2,int flag)
 {
-    unsigned char bits=0;
+//    unsigned char bits=0;
     info->pl_vision[player][seeplayer2]=flag;
     info->pl_visionbits[player]=CreateBitsVision(info,player);
 }

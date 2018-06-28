@@ -302,15 +302,15 @@ struct TECHNOLOGY_SETTINGS
 //=====================================================
 struct UNITFOGSTRUCT
 {
+	    GRPFILE   		*grp;
+	    unsigned short 	x;
+	    unsigned short 	y;
 	    unsigned short 	nrpicture;
 	    unsigned char  	flags;
 	    unsigned char  	colortable;
 	    unsigned char  	format;
 	    unsigned char  	maxcolor;
 	    unsigned char 	grcolor;
-	    GRPFILE   		*grp;
-	    unsigned short 	x;
-	    unsigned short 	y;
 };
 //=====================================================
 #define FOGMAXPICTURESLOTS	6

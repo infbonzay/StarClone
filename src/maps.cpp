@@ -913,7 +913,7 @@ void calcfullinvandseeobj(OBJ *a)
     }
     for (i=0,plmask=1;i<PLAYEDPLAYERS;i++,plmask<<=1)
     {
-        if (map.pl_vision[i][a->playernr]			||
+        if (map.pl_vision[i][a->playernr]			||		//if player i see OBJ or OBJaliance or OBJparasite
     	    player_aliance(i,a->playernr) == ALLIANCEOBJ	||
     	    existparasitebit(a,i))
         {

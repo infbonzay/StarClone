@@ -33,7 +33,7 @@ void PickupObj(OBJ *a,OBJ *pickupobj)
 	    
     pickupobj->mainimage->side = a->mainimage->side;
     pickupobj->mainimage->neededside = a->mainimage->side;
-
+    //!!!! need to destroy images and send init message
 }
 //=================================
 //callback function for queue
