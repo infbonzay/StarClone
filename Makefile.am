@@ -3,8 +3,6 @@ prefix=@prefix@
 exec_prefix=@exec_prefix@
 INSTDIR=@INSTDIR@
 CXX=@CXX@
-#CXX=clang
-LNK=@CXX@
 if HAVEDEBUG
     DEBUG = -g3 -O0 -DDEBUG
 else
@@ -93,7 +91,7 @@ OBJS =  obj/MenuItem.o obj/gamemenu.o obj/mycycle.o \
 	obj/player.o obj/debug.o obj/smacker.o obj/smk_bitstream.o obj/smk_hufftree.o
 
 $(PROGS): $(OBJS) 
-	$(LNK) -o $(PROGS) $(OBJS) $(LFLAGS)
+	$(CXX) -o $(PROGS) $(OBJS) $(LFLAGS)
 
 obj/MenuItem.o: src/MenuItem.cpp include/*.h  Makefile
 	$(CXX) -c $(CFLAGS) src/MenuItem.cpp -o obj/MenuItem.o

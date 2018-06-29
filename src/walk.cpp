@@ -398,8 +398,8 @@ void SetMapWalk8(int x,int y,int sx,int sy,int flag)//coords and size divided by
 		break;
 	    if (x+j>=MAXXMAP8)
 		break;
-	    if ( (map.mapwalk[(y+i)*MAXXMAP8+x+j] & 1) == SETWALK)
-		printf("x=%d,y=%d,j=%d,i=%d\n",x,y,j,i);
+//	    if ( (map.mapwalk[(y+i)*MAXXMAP8+x+j] & 1) == SETWALK)
+//		printf("x=%d,y=%d,j=%d,i=%d\n",x,y,j,i);
 	    map.mapwalk[(y+i)*MAXXMAP8+x+j] = flag;
 	}
     }
@@ -422,7 +422,7 @@ int GetMapWalk8(int x,int y,int sx,int sy)//coords and size divided by 8
 		return(0);
 	    if (x+j>=MAXXMAP8)
 		return(0);
-	    ret &= (map.mapwalk[(y+i)*MAXXMAP8+x+j]&1);
+	    ret &= (map.mapwalk[(y+i)*MAXXMAP8+x+j] & 1);
 //	    ret &= (map.buildswalk[(y+i)*MAXXMAP8+x+j]&1);
 	}
     }
