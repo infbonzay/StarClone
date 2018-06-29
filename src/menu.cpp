@@ -273,11 +273,13 @@ void checkanddrawmenu(MENUSTR *allmenus,int ItemChanges,int saveunder)
     int itemselected,i,showtype,inv;
     for (i=0;i<allmenus->elements;i++)
     {
-	if (allmenus->menu[i].relation.address[ITEMRELATION_DISABLE]!=NULL)
+	if (allmenus->menu[i].relation.address[ITEMRELATION_DISABLE] != NULL)
+	{
 	    if (*allmenus->menu[i].relation.address[ITEMRELATION_DISABLE]==allmenus->menu[i].relation.value[ITEMRELATION_DISABLE])
 		setmenuitem_DISABLED(allmenus,i,TRUE);
 	    else
 		setmenuitem_DISABLED(allmenus,i,FALSE);
+	}
     }
     for (i=0;i<allmenus->elements;i++)
     {
@@ -1114,14 +1116,16 @@ int menukeys(MENUSTR *allmenus,int *pressed,int *needredraw)
 	    switch(keyactive)
 	    {
 		case ENTERKEY:
-	    	    if (allmenus->menu[allmenus->defaultbutton].itemtype==ISBUTTON||
+	    	    if (allmenus->menu[allmenus->defaultbutton].itemtype==ISBUTTON ||
 	    		allmenus->menu[allmenus->defaultbutton].itemtype==ISLISTBOX)
+	    	    {
 			if (menuitem_ISENABLED(allmenus,allmenus->defaultbutton))
 			{
 	    		    *pressed=allmenus->defaultbutton;
 	    		}
 	    		else
 	    		    prevkey=0;
+		    }
 		    break;
 		case TABKEY: //need to parce all elements to need next active and decorated and responce to mouse&key events
 		    for (i=allmenus->defaultbutton+1;i<allmenus->elements;i++)
@@ -1201,15 +1205,15 @@ int menukeys(MENUSTR *allmenus,int *pressed,int *needredraw)
 		    return CANCELFROMMENU;
 		    break;
 		case ENTERKEY:
-		    if (allmenus->menu[allmenus->defaultbutton].dialogbin_flags&DIALOGBIN_FLAGS_ITEMDISABLED)
+		    if (allmenus->menu[allmenus->defaultbutton].dialogbin_flags & DIALOGBIN_FLAGS_ITEMDISABLED)
 			break;
 		    else
-			if (!allmenus->menu[allmenus->defaultbutton].dialogbin_flags&DIALOGBIN_FLAGS_ITEMVISIBLED)
+			if (!(allmenus->menu[allmenus->defaultbutton].dialogbin_flags & DIALOGBIN_FLAGS_ITEMVISIBLED))
 			    break;
 		    return (allmenus->defaultbutton);
 		case UPKEY:
 	    	    if (allmenus->defaultbutton>=0)
-	    		if (allmenus->menu[allmenus->defaultbutton].itemtype==ISLISTBOX)
+	    		if (allmenus->menu[allmenus->defaultbutton].itemtype == ISLISTBOX)
 	    		{
 			    if (allmenus->menu[allmenus->defaultbutton].item.listbox->bar)
 				allmenus->menu[allmenus->defaultbutton].item.listbox->bar->showtypet=ITEMSHOW_NOFOCUS;
@@ -1414,9 +1418,10 @@ void setitemrelation(MENUSTR *allmenus,int itemnr,int relation_type,int *address
 //==========================================
 int getexpandbox_selecteditem(MENUSTR *allmenus,int nr)
 {
-    if (allmenus->menu[nr].itemtype==ISEXPANDBOX)
+    if (allmenus->menu[nr].itemtype == ISEXPANDBOX)
 	return(allmenus->menu[nr].item.expandbox->selectednr);
     DEBUGMESSCR("leak detected!\n");
+    return(-1);
 }
 //==========================================
 void selectdecorobj(MENUSTR *allmenus,int nr,unsigned int colors4)
@@ -1581,6 +1586,7 @@ char *geteditboxtext(MENUSTR *allmenus,int nr)
     }
     else
 	DEBUGMESSCR("leak detected!\n");
+    return(NULL);
 }
 //==========================================
 int geteditboxtextsize(MENUSTR *allmenus,int nr)
@@ -1592,6 +1598,7 @@ int geteditboxtextsize(MENUSTR *allmenus,int nr)
     }
     else
         DEBUGMESSCR("leak detected!\n");
+    return(0);
 }
 //==========================================
 void changeeditboxtext(MENUSTR *allmenus,int nr,char *newstr)
@@ -1658,7 +1665,7 @@ void draweditboxitem(MENUSTR *allmenus,int itemnr)
     strcpy(tempstr,menuitem->item.editbox->editstr);
     vis=visiblerighttext(menuitem->fontnr,menuitem->hotxsize,tempstr);
     len=strlen(tempstr);
-    if (allmenus->defaultbutton==itemnr&getcursorblinktype())
+    if (allmenus->defaultbutton == itemnr && getcursorblinktype())
     	strcat(tempstr,"|");
     putmessage( menuitem->xtextpos,menuitem->ytextpos,
 		menuitem->fontnr,tempstr+len-vis,GETITEMCOLOR(menuitem->colors4,menuitem->typeofshow),
@@ -2010,8 +2017,9 @@ void drawexpanditem(MENUSTR *allmenus,int itemnr)
     int colors4=menuitem->colors4;
 
 //    if (showtype!=ITEMSHOW_CLICK)
-    {
-	if (menuitem->item.expandbox->array)
+//    {
+//    if (menuitem->item.expandbox->array)
+//    {
 	if (menuitem->item.expandbox->array[showtype])
 	{
 	    x=menuitem->item.expandbox->array[showtype][0];
@@ -2036,7 +2044,8 @@ void drawexpanditem(MENUSTR *allmenus,int itemnr)
 	    color=GETITEMCOLOR(colors4,ITEMSHOW_NOFOCUS);
 	    putmessage(menuitem->hotdeltax+4,menuitem->hotdeltay,menuitem->fontnr,mes,color,fonttable,dlggrp);
 	}
-    }
+//    }
+//    }
 //    else
 //	mes[0]=0;
 }
@@ -2127,6 +2136,7 @@ int getcheckboxstate(MENUSTR *allmenus,int nr)
         return(allmenus->menu[nr].item.checkbox->state);
     else
 	DEBUGMESSCR("leak detected!\n");
+    return(0);
 }
 //==========================================
 char CHECKBOXTYPES[2][4]={
@@ -2180,7 +2190,7 @@ int addradiobuttonimg(MENUSTR *allmenus,int nr,PCX *pcx1,PCX *pcx2,int deltax,in
     }
     else
 	DEBUGMESSCR("leak detected!\n");
-
+    return(0);
 }
 //==========================================
 int addradiobuttonitem(MENUSTR *allmenus,int nr,int hotx,int hoty,int hotsizex,int hotsizey,int textx,int texty,char hotkey,
@@ -2234,6 +2244,7 @@ int addradiobuttonitem(MENUSTR *allmenus,int nr,int hotx,int hoty,int hotsizex,i
     }
     if (curitem!=nr)
 	allmenus->menu[curitem].item.radiobutton->nextradiobutton=nr;
+    return(0);
 }
 //==========================================
 char RADIOBUTTONTYPES[2][4]={
@@ -2475,6 +2486,7 @@ int gethorizvalue(MENUSTR *allmenus,int nr)
     }
     else
 	DEBUGMESSCR("leak detected!\n");
+    return(0);
 }
 //==========================================
 void sethorizbuttonposfrommouse(MENUSTR *allmenus,int itemnr,int value)
@@ -2804,10 +2816,12 @@ void drawsmkvideo(MENUSTR *allmenus,int itemnr)
 		}
 		else
 		    if (smk_next(smk,SMK_FULL_DECODE)==SMK_DONE)
+		    {
 			if (menuitem->dialogbin_smk_flags[i]&DIALOGBIN_SMKFLAGS_LOOPANIMATION)
 			    smk_first(smk,SMK_FULL_DECODE);
 			else
 			    menuitem->dialogbin_smk_flags[i]|=DIALOGBIN_SMKFLAGS_NODRAW;
+		    }
 	    }
 	}
     }
@@ -3103,7 +3117,7 @@ void changegrpitem(MENUSTR *allmenus,int nr,GRPFILE *grp,int grpnr)
     menuitem->item.image->flags|=IMAGEFLAGS_GRPIMAGE;
 }
 //==========================================
-void setimgtranslucencyvalue(MENUSTR *allmenus,int nr,char trans)
+void setimgtranslucencyvalue(MENUSTR *allmenus,int nr,unsigned char trans)
 {
     if (allmenus->menu[nr].itemtype==ISIMAGE)
 	allmenus->menu[nr].item.image->transvalue=trans;
@@ -3111,7 +3125,7 @@ void setimgtranslucencyvalue(MENUSTR *allmenus,int nr,char trans)
 	DEBUGMESSCR("leak detected!\n");
 }
 //==========================================
-void setimgtransparentcolors(MENUSTR *allmenus,int nr,char color1,char color2)
+void setimgtransparentcolors(MENUSTR *allmenus,int nr,unsigned char color1,unsigned char color2)
 {
     if (allmenus->menu[nr].itemtype==ISIMAGE)
     {

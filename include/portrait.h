@@ -70,7 +70,7 @@ public:
 void GetINOUTsmk(void);
 int  loadSMK(SMKPLAY *tempplay,int smkflags);
 void unloadSMK(SMKPLAY *templay);
-int  unloadstaticsmk(void);
+void unloadstaticsmk(void);
 int  loadstaticsmk(void);
 void changeunitportrait(HANDLE hmpq,int smknr,SCUNIT SC_Unit);
 
@@ -78,7 +78,7 @@ void showportrait(void);
 void drawmainportrait(int x,int y,unsigned char *pixelsbuff);
 void mergepixels(int iteration,unsigned char *outbuf,unsigned char *buf,unsigned char *buf2);
 int  SetPortrait(SCUNIT SC_Unit,int typeofport,int soundfilenr,int showedtime);
-int  SetPortraitFromSound(SCUNIT SC_Unit,int soundmode,int soundfilenr);
+void SetPortraitFromSound(SCUNIT SC_Unit,int soundmode,int soundfilenr);
 void ShowAdvisorPortrait(void);
 void SetPortraitOBJ(OBJ *a);
 OBJ *GetPortraitOBJ(void);

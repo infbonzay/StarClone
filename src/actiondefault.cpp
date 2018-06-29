@@ -124,6 +124,7 @@ int CritterAction(struct OBJ *a,MAIN_IMG *img)
 	    moveobj(a,NULL,MODEMOVE,a->startx + myrand(-CRITTERRANGE,CRITTERRANGE),a->starty + myrand(-CRITTERRANGE,CRITTERRANGE),NOSHOWERROR);
 	}
     }
+    return(1);
 }
 //=================================
 void SCVConstructAction(OBJ *a,MAIN_IMG *img)
@@ -404,7 +405,7 @@ int AirBuildings(struct OBJ *a,MAIN_IMG *img)
 	    if (img->childlists)
 	    {
 		img->childlists->EnumListInit();
-		while(tempimg = (MAIN_IMG *) img->childlists->GetNextListElem(NULL))
+		while( (tempimg = (MAIN_IMG *) img->childlists->GetNextListElem(NULL)) )
 		{
 		    if (tempimg->flags & SC_IMAGE_FLAG_IMGUNDER)
 			tempimg->ydelta--;
@@ -421,6 +422,7 @@ int AirBuildings(struct OBJ *a,MAIN_IMG *img)
 		a->prop &= ~VARDONOTAPPLYNEXTMOVE;
 		ApplyNextModeMove(a);
     	    }
+	    return(1);
     }
     else if (a->modemove == MODELIFTOFF)
     {
@@ -431,7 +433,7 @@ int AirBuildings(struct OBJ *a,MAIN_IMG *img)
 	    if (img->childlists)
 	    {
 		img->childlists->EnumListInit();
-		while(tempimg = (MAIN_IMG *) img->childlists->GetNextListElem(NULL))
+		while( (tempimg = (MAIN_IMG *) img->childlists->GetNextListElem(NULL)) )
 		{
 		    if (tempimg->flags & SC_IMAGE_FLAG_IMGUNDER)
 		        tempimg->ydelta++;
@@ -443,7 +445,9 @@ int AirBuildings(struct OBJ *a,MAIN_IMG *img)
 		a->prop &= ~VARDONOTAPPLYNEXTMOVE;
 		ApplyNextModeMove(a);
 	    }
+	    return(1);
     }
+    return(0);
 }
 //=================================
 int LarvaeAction(struct OBJ *a,MAIN_IMG *img)
@@ -746,6 +750,10 @@ int CarryActionUnit(OBJ *a,MAIN_IMG *img)
     }
     return(0);
 }
+//=================================
+//=================================
+//return 0 - object do not do something
+//return 1 - object do some work and not need to interrupt further
 //=================================
 //228 units
 int (*UnitActionDefaults[MAX_UNITS_ELEM])(struct OBJ *a,MAIN_IMG *img)=

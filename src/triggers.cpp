@@ -178,36 +178,43 @@ int Condition_IsCleared(int *var1,int var2)
 int Switch_Set(int *var1,int var2)
 {
     *((char *)var1)=1;
+    return(1);
 }
 //=================================================
 int Switch_Clear(int *var1,int var2)
 {
     *((char *)var1)=0;
+    return(1);
 }
 //=================================================
 int Switch_Toggle(int *var1,int var2)
 {
     *((char *)var1)^=1;
+    return(1);
 }
 //=================================================
 int Function_Set(int *var1,int var2)
 {
     *var1=var2;
+    return(1);
 }
 //=================================================
 int Function_Add(int *var1,int var2)
 {
     *var1+=var2;
+    return(1);
 }
 //=================================================
 int Function_Sub(int *var1,int var2)
 {
     *var1-=var2;
+    return(1);
 }
 //=================================================
 int Switch_Randomize(int *var1,int var2)
 {
     *((char *)var1)=myrand(2);
+    return(1);
 }
 //=================================================
 int (*ConditionFunctions[TRG_MAXTYPEFUNC])(int *var1,int var2)=
@@ -364,7 +371,7 @@ int (*CheckResFunctions[3])(int (*ConditionFunction)(int *, int), int, int)=
 			&CheckForOreAndGas
 		    };
 //=================================================
-int AddForOre(int (*ConditionFunction)(int *, int),int actiononplayers,int cnt)
+void AddForOre(int (*ConditionFunction)(int *, int),int actiononplayers,int cnt)
 {
     for (int i=0;i<MAXPLAYERS;i++)
 	if (actiononplayers&(1<<i))
@@ -375,7 +382,7 @@ int AddForOre(int (*ConditionFunction)(int *, int),int actiononplayers,int cnt)
 	}
 }
 //=================================================
-int AddForGas(int (*ConditionFunction)(int *, int),int actiononplayers,int cnt)
+void AddForGas(int (*ConditionFunction)(int *, int),int actiononplayers,int cnt)
 {
     for (int i=0;i<MAXPLAYERS;i++)
 	if (actiononplayers&(1<<i))
@@ -386,7 +393,7 @@ int AddForGas(int (*ConditionFunction)(int *, int),int actiononplayers,int cnt)
 	}
 }
 //=================================================
-int AddForOreAndGas(int (*ConditionFunction)(int *, int),int actiononplayers,int cnt)
+void AddForOreAndGas(int (*ConditionFunction)(int *, int),int actiononplayers,int cnt)
 {
     for (int i=0;i<MAXPLAYERS;i++)
 	if (actiononplayers&(1<<i))
@@ -400,7 +407,7 @@ int AddForOreAndGas(int (*ConditionFunction)(int *, int),int actiononplayers,int
 	}
 }
 //=================================================
-int (*AddResFunctions[3])(int (*ConditionFunction)(int *, int), int, int)=
+void (*AddResFunctions[3])(int (*ConditionFunction)(int *, int), int, int)=
 		    {
 			&AddForOre,
 			&AddForGas,
@@ -735,7 +742,7 @@ int Action_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int trig_nr,int playernr,int
     struct triggerunit *triggerunitprop;
 
     int (*comparefunc)(int *,int );
-    int (*ResTypeFunc)(int (*)(int *, int),int playernr,int cnt);
+    void (*ResTypeFunc)(int (*)(int *, int),int playernr,int cnt);
     LEADERBOARD *leaderboard;
     OBJ *newobj;
     OBJstruct *b;
@@ -1678,6 +1685,7 @@ int TRG_RunAIScriptAtLocation(mapinfo *info,int aiscriptnr,int playernr,int play
 	    if (nrofunits != nrofunits2)
 		if (mageprop[magenr].sound_id[SOUNDONHIT])
 		    Play_sfxdata(xpos,ypos,mageprop[magenr].sound_id[SOUNDONHIT],2);
+	    return(1);
 	    break;
 	case TRG_AISCRIPT_ENTERCLOSESTBUNKER://107
 //	    DEBUGMESSCR("enterclostestbunker:aiscript=0x%04x\n",aiscriptnr);
@@ -1722,13 +1730,13 @@ int TRG_RunAIScriptAtLocation(mapinfo *info,int aiscriptnr,int playernr,int play
 				findbunker=NULL;
 				bunkerlist->EnumListInit();
 				mindistance=256*SIZESPRLANSHX*2;
-				while(bunkerobj=(struct OBJ *)bunkerlist->GetNextListElem())
+				while( (bunkerobj = (struct OBJ *)bunkerlist->GetNextListElem()) )
 				{
-				    dist=hypot(GetOBJx(objects[j])-GetOBJx(bunkerobj),GetOBJy(objects[j])-GetOBJy(bunkerobj));
-				    if (dist<mindistance)
+				    dist = hypot(GetOBJx(objects[j])-GetOBJx(bunkerobj),GetOBJy(objects[j])-GetOBJy(bunkerobj));
+				    if (dist < mindistance)
 				    {
-					mindistance=dist;
-					findbunker=bunkerobj;
+					mindistance = dist;
+					findbunker = bunkerobj;
 				    }
 				}
 			    }
@@ -1789,6 +1797,7 @@ int TRG_RunAIScriptAtLocation(mapinfo *info,int aiscriptnr,int playernr,int play
 		    CreateAliance(info,playernr,i,ENEMYOBJ);
 		    CreateAliance(info,i,playernr,ENEMYOBJ);
 		}    
+	    return(1);
 	    break;
 	case TRG_AISCRIPT_SETPLAYERTOALLIESHERE://????
 //	    DEBUGMESSCR("setplayertoenemyhere:aiscript=0x%04x\n",aiscriptnr);
@@ -1812,6 +1821,7 @@ int TRG_RunAIScriptAtLocation(mapinfo *info,int aiscriptnr,int playernr,int play
 		    CreateAliance(info,playernr,i,ALLIANCEOBJ);
 		    CreateAliance(info,i,playernr,ALLIANCEOBJ);
 		}    
+	    return(1);
 	    break;
 	case TRG_AISCRIPT_SETALLUNITSTORANDOMSUICIDEMISSION:
 	    //!!!!!need to check how player is weak and go where, no  numbgamer!!!!!
@@ -1821,6 +1831,7 @@ int TRG_RunAIScriptAtLocation(mapinfo *info,int aiscriptnr,int playernr,int play
 		{
     		    a = objects[j];
 		    if (a->playernr == playernr && a->modemove == MODESTOP)
+		    {
 			if (IsOBJBurrowed(objects[j]))
 			{
 			    if (moveobj(a,NULL,MODEUNBURROW,NOSHOWERROR) == MOVEOBJ_DONE)
@@ -1830,13 +1841,15 @@ int TRG_RunAIScriptAtLocation(mapinfo *info,int aiscriptnr,int playernr,int play
 			{
 			    moveobj(a,NULL,MODEATACK,xpos,ypos,NOSHOWERROR);
 			}
+		    }
 		}
 	    }
+	    return(1);
 	    break;
 	default:
 showdefaulterror:
 	    DEBUGMESSCR("unknown aiscriptnr=0x%04x (pl=%d) at [%s]\n",aiscriptnr,playernr,TRIG_commentstr);
-	    return(0);
     }
+    return(0);
 }
 //=================================================

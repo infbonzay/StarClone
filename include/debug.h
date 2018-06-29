@@ -5,8 +5,8 @@
 #define DEBUGFILE	"/output.log"
 
 void DEBUG_INIT(int flags);
-int dprintf(const char *prefix,const char *format, ...);
-int dfprintf(const char *prefix,const char *format, ...);
+void dprintf(const char *prefix,const char *format, ...);
+void dfprintf(const char *prefix,const char *format, ...);
 
 #ifdef DEBUGOUTPUT
     #define DEBUGMES(...) dfprintf(__FUNCTION__,__VA_ARGS__)

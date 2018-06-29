@@ -54,7 +54,7 @@ void Briefing_ScrollText(struct MENUSTR *allmenus);
 void StopTransmission(struct MENUSTR *allmenus,int slotnr);
 void Reload_Briefing(struct mapinfo *info,struct MENUSTR *allmenus);
 void drawportraitinslot(struct MENUSTR *allmenus,int slotnr);
-int  Brief_SetPortrait(int slotnr,int typeofport);
+void Brief_SetPortrait(int slotnr,int typeofport);
 void Brief_ShowPortrait(int slotnr,int typeofportrait);
 void mixbriefframes(struct MENUSTR *allmenus,int menunr,int slotnr,int framenr,char *pixbuff);
 

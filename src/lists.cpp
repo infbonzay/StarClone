@@ -415,8 +415,6 @@ int GetUnitSoundID(SCUNIT SC_Unit,unsigned char sndtype)
 {
     switch(sndtype)
     {
-	case UNITSOUND_READY:
-	    return(alldattbl.units_dat->ReadySound[SC_Unit]);
 	case UNITSOUND_WHATFIRST:
 	    return(alldattbl.units_dat->WhatSoundStart[SC_Unit]);
 	case UNITSOUND_WHATLAST:
@@ -429,6 +427,9 @@ int GetUnitSoundID(SCUNIT SC_Unit,unsigned char sndtype)
 	    return(alldattbl.units_dat->YesSoundStart[SC_Unit]);
 	case UNITSOUND_YESLAST:
 	    return(alldattbl.units_dat->YesSoundStart[SC_Unit]);
+	case UNITSOUND_READY:
+	default:
+	    return(alldattbl.units_dat->ReadySound[SC_Unit]);
     }    
 }
 //=================================
@@ -544,7 +545,7 @@ int GetUnitRace(SCUNIT SC_Unit)
     return(NEUTRALRACE);
 }
 //==================================
-int SetCloakedFlag(OBJ *a,int flag)
+void SetCloakedFlag(OBJ *a,int flag)
 {
     if (flag)
 	a->prop |= UNITPROP_PREVCLOAK;
@@ -595,7 +596,7 @@ int GetBirthDirection(SCUNIT SC_Unit)
     return(birthdir);
 }
 //==================================
-int SetBurrowFlag(OBJ *a,int flag)
+void SetBurrowFlag(OBJ *a,int flag)
 {
     if (flag)
     {

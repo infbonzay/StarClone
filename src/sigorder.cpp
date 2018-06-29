@@ -40,6 +40,7 @@ void AfterConstruct(OBJ *a)
 int SIGOrder_NULL(OBJ *a)
 {
     DEBUGMESSCR("NULL order\n");
+    return(1);
 }
 //==================================
 void SetOrder(OBJ *a,int signal,int (*func)(OBJ *a))
@@ -77,7 +78,7 @@ int  SIGOrder_TerranBuildLastConstructSprite(OBJ *a)
     iscriptinfo.ExecuteScript(a->mainimage);
 
     a->mainimage->childlists->EnumListInit();
-    while(img = (OVERLAY_IMG *) a->mainimage->childlists->GetNextListElem(NULL))
+    while( (img = (OVERLAY_IMG *) a->mainimage->childlists->GetNextListElem(NULL)) )
     {
 	if (img->flags & SC_IMAGE_FLAG_IMGUNDER)
 	    iscriptinfo.ExecuteScript(img);
@@ -296,7 +297,7 @@ int  SIGOrder_LiftOff(OBJ *a)
     if (a->mainimage->childlists)
     {
 	a->mainimage->childlists->EnumListInit();
-	while(tempimg = (OVERLAY_IMG *) a->mainimage->childlists->GetNextListElem(NULL))
+	while( (tempimg = (OVERLAY_IMG *) a->mainimage->childlists->GetNextListElem(NULL)) )
 	{
     	    if (tempimg->flags & SC_IMAGE_FLAG_IMGOVER)
     	    {
@@ -319,7 +320,7 @@ int  SIGOrder_Landing(OBJ *a)
     if (a->mainimage->childlists)
     {
 	a->mainimage->childlists->EnumListInit();
-	while(tempimg = (OVERLAY_IMG *) a->mainimage->childlists->GetNextListElem(NULL))
+	while( (tempimg = (OVERLAY_IMG *) a->mainimage->childlists->GetNextListElem(NULL)) )
 	{
     	    if (tempimg->flags & SC_IMAGE_FLAG_IMGOVER)
     	    {
@@ -647,6 +648,7 @@ int  SIGOrder_AfterCastHeal(OBJ *a)
 int  SIGOrder_UnitDies(OBJ *a)
 {
     dieobj(a);
+    return(1);
 }
 //==================================
 int  SIGOrder_InterceptorAfterAtack(OBJ *a)

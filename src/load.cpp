@@ -1159,6 +1159,7 @@ int loadbeforestarmap(int race)
         printf("error loading pcx icons\n");
     }
     loadtexturegrp();
+    return(1);
 }
 //==========================
 void unloadafterstarmap(void)

@@ -63,7 +63,7 @@ struct DIALOGBIN_ITEMINFO
     short int 	xsize;
     short int 	ysize;
     int	  	Flags;
-    char	hotkey;
+    unsigned char hotkey;
     signed char	fontnr;
     char	*text;
 };
@@ -149,7 +149,7 @@ void DialogBin_Save(MENUSTR *menu,char *label,char *filename);
 void DialogBin_Save(MENUSTR *menu,char *label,char *filename,int *sortedarray);
 MENUSTR *DialogBin_ShowPermanent(char *dialogbinfilename,int dialog_opt,int addforreserv,
 				void (*refreshfunc)(void *,int));
-int DialogBin_ClosePermanent(MENUSTR *menu);
+void DialogBin_ClosePermanent(MENUSTR *menu);
 
 
 #endif

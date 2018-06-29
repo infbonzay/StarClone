@@ -89,7 +89,7 @@ void BARMESSAGES::showallmessages(int x,int y,int sizexbar,int heightoneline)
     if (!this->barmes.GetMaxElements())
 	return;
     barmes.EnumListInit();
-    while(bm=(BARMES *)barmes.GetNextListElem(&i))
+    while( (bm = (BARMES *)barmes.GetNextListElem(&i)) )
     {
 	if (mytimer.GetCurrentGameTimeTick()>bm->dissapeartime)
 	{
@@ -101,7 +101,7 @@ void BARMESSAGES::showallmessages(int x,int y,int sizexbar,int heightoneline)
 //    this->barmes.Shift();
     maxelems=this->barmes.GetMaxElements();
     barmes.EnumListInit();
-    while(bm=(BARMES *)barmes.GetNextListElem())
+    while( (bm = (BARMES *)barmes.GetNextListElem()) )
     {
 	    if (bm->flags&BF_SPLITLINES)
 		flags=MESINRECT_COLORS|MES_SPLITTONEXTLINE;

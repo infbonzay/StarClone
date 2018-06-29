@@ -429,7 +429,7 @@ int ISCRIPT::CompilePass2(FILE *f)
     		}
 		labels.EnumListInit();
 		findlabel=0;
-		while(labelname=(char *)labels.GetNextListElem(&labelelemnr))
+		while( (labelname = (char *)labels.GetNextListElem(&labelelemnr)) )
 		{
 		    if (!strcmp(strid,labelname))
 		    {
@@ -457,7 +457,7 @@ endcompilepass2:
 	cmdlabeloffs = (long) needtoaddoffs.GetElemNr(i);
 	labels.EnumListInit();
 	findlabel=0;
-	while(labelname=(char *)labels.GetNextListElem(&labelelemnr))
+	while( (labelname = (char *)labels.GetNextListElem(&labelelemnr)) )
 	{
 	    if (!strcmp(cmdlabel,labelname))
 	    {
@@ -621,35 +621,35 @@ void AllImages_ExecuteIScript(void)
     MAIN_IMG *img;
     OVERLAY_IMG *oimg;
     mainimageslist.EnumListInit();
-    while(img = (MAIN_IMG *) mainimageslist.GetABSNextListElem(&deleteflag))
+    while( (img = (MAIN_IMG *) mainimageslist.GetABSNextListElem(&deleteflag)) )
     {
 	if (!deleteflag)
 	    iscriptinfo.ExecuteScript(img);
 	if (img->childlists)
 	{
 	    img->childlists->EnumListInit();
-	    while(oimg = (OVERLAY_IMG *) img->childlists->GetNextListElem(NULL))
+	    while( (oimg = (OVERLAY_IMG *) img->childlists->GetNextListElem(NULL)) )
 	    {
 		iscriptinfo.ExecuteScript(oimg);
 	    }
 	}
     }
     imageslist_doodads.EnumListInit();
-    while(img = (MAIN_IMG *) imageslist_doodads.GetABSNextListElem(&deleteflag))
+    while( (img = (MAIN_IMG *) imageslist_doodads.GetABSNextListElem(&deleteflag)) )
     {
 	if (!deleteflag)
 	    iscriptinfo.ExecuteScript(img);
 	if (img->childlists)
 	{
 	    img->childlists->EnumListInit();
-	    while(oimg = (OVERLAY_IMG *) img->childlists->GetNextListElem(NULL))
+	    while( (oimg = (OVERLAY_IMG *) img->childlists->GetNextListElem(NULL)) )
 	    {
 		iscriptinfo.ExecuteScript(oimg);
 	    }
 	}
     }
     imageslist_minimap.EnumListInit();
-    while(img = (MAIN_IMG *) imageslist_minimap.GetNextListElem(NULL))
+    while( (img = (MAIN_IMG *) imageslist_minimap.GetNextListElem(NULL)) )
     {
 	iscriptinfo.ExecuteScript(img);
     }

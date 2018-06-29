@@ -379,8 +379,11 @@ int activatesound(struct OBJ *a,int soundmode,int addfactor,int stopprevsound)
     else
         needadd=1;
     if (soundmode == MODESOUNDSELECT)
+    {
         if (a->sfxplay.sfxtypeplayed == MODESOUNDPSS)
+        {
 	    soundmode = MODESOUNDPSS;
+	}
 	else
 	    if (player_aliance(NUMBGAMER,a->playernr) == MYOBJ &&
 	        a->sfxplay.nrselectplayed >= MAXSELECTPLAY     && 
@@ -389,6 +392,7 @@ int activatesound(struct OBJ *a,int soundmode,int addfactor,int stopprevsound)
 		    soundmode = MODESOUNDPSS;
 		    a->sfxplay.nrselectplayed = 0;
 	    }
+    }
     getsoundIDfromunitdat(a->SC_Unit,soundmode,&sndfrom,&sndto);
     maxmusnr = sndto - sndfrom+1;
     if (!sndfrom)

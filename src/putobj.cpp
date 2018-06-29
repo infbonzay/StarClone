@@ -353,7 +353,7 @@ void minimap_showobjs(void)
     int i,max;
     OBJ *a;
     minimap_showedobjs.EnumListInit();
-    while(a=(OBJ *)minimap_showedobjs.GetNextListElem())
+    while( (a = (OBJ *)minimap_showedobjs.GetNextListElem()) )
     {
 	minimap_showobj(a);
     }

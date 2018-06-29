@@ -170,7 +170,7 @@ public:
     void ForceSetIScript(int scriptnr);
 
     inline void SetPos(int x,int y) { xpos = x; ypos = y; };
-    inline int IsRotate(void) { flags & SC_IMAGE_FLAG_NEEDROTATIONTODIRECTION; } ;
+    inline int IsRotate(void) { return(flags & SC_IMAGE_FLAG_NEEDROTATIONTODIRECTION); } ;
 
 };
 

@@ -555,7 +555,7 @@ void IncreaseCreep(void)
     signed char deltax,deltay;
     CreepAddRemoveTables *tempcreeptable;
     creepbuilds.EnumListInit();
-    while(tempcreeptable=(CreepAddRemoveTables *)creepbuilds.GetNextListElem())
+    while( (tempcreeptable=(CreepAddRemoveTables *)creepbuilds.GetNextListElem()) )
     {
 	    if (tempcreeptable->growthcreepflag&FLAG_CREEP_INCREASE)
 	    {
@@ -598,7 +598,7 @@ void DecreaseCreep(void)
     signed char deltax,deltay;
     CreepAddRemoveTables *tempcreeptable;
     creepbuilds.EnumListInit();
-    while(tempcreeptable=(CreepAddRemoveTables *)creepbuilds.GetNextListElem())
+    while( (tempcreeptable=(CreepAddRemoveTables *)creepbuilds.GetNextListElem()) )
     {
 	    if (!(tempcreeptable->growthcreepflag&FLAG_CREEP_INCREASE))
 	    {

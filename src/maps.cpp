@@ -402,17 +402,19 @@ void AutoMoveMap(void)
 			mapmovedone = 1;
 		}
 	if (!mapmovedone)
+	{
 	    if (map.deltay < 0)
 	    {
 		if (map.totaldeltay >= 0)
 		    mapmovedone = 1;
 	    }
-	    else 
+	    else
 		if (map.deltay > 0)
 		{
 		    if (map.totaldeltay <= 0)
 			mapmovedone = 1;
 		}
+	}
 	if (mapmovedone)
 	{
 	    //finish automove
@@ -643,8 +645,9 @@ void makeopenseeKarta(int beginobj,int endobj)
                if (a->SC_Unit!=SC_ARBITEROBJ&&a->SC_Unit!=SC_HERO_DANIMOTHOBJ)
                {
 		  if (a->playernr<PLAYEDPLAYERS)
-                  if (map.mapbits.arbiterfield[a->ykart*MAXXMAP+a->xkart]&(1<<a->playernr))
-                  {
+		  {
+                    if (map.mapbits.arbiterfield[a->ykart*MAXXMAP+a->xkart]&(1<<a->playernr))
+                    {
                         if (GetMageAtr(&a->atrobj,ATRINVISIBLE)<=MAXATRMAGE)
 			{
                     	    if (GetMageAtr(&a->atrobj,ATRINVISIBLE)>0)
@@ -654,8 +657,9 @@ void makeopenseeKarta(int beginobj,int endobj)
                                 //esli drug iuniti pod arbiterom
                     		addmage(a,ATRINVISIBLE,NEWRAITHEPODARBITEROM);
 			}
-                  }
-                  else
+                    }
+                    else
+                    {
                          if (GetMageAtr(&a->atrobj,ATRINVISIBLE)==NEWRAITHEPODARBITEROM)
                              addmage(a,ATRINVISIBLE,0);//prostoi obj pod arbit
                          else
@@ -665,6 +669,8 @@ void makeopenseeKarta(int beginobj,int endobj)
                                 if (GetMageAtr(&a->atrobj,ATRINVISIBLE)>MAXATRMAGE&&
                                     GetMageAtr(&a->atrobj,ATRINVISIBLE)<ATRMAGEINFINITE)
                                     addmage(a,ATRINVISIBLE,0);//others obj
+                    }
+            	  }    
                }
     }//for
 }
@@ -861,7 +867,7 @@ void makeoneobjseeopen(OBJ *a,OBJstruct *b)
 void opentempmap(int playernr,int xkart,int ykart,int sizex,int sizey)
 {
     int i,j,fromx,fromy,tox,toy;
-    if (playernr>=PLAYEDPLAYERS || !map.mapbits.whitefog )
+    if (playernr >= PLAYEDPLAYERS || !map.mapbits.whitefog[playernr] )
 	return;
     fromx = xkart - sizex/2;
     if (fromx<0)

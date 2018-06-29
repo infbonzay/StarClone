@@ -143,6 +143,7 @@ int wMUSIC::StopPCMPlay(void)
 	wFreeChunk(musicsample);
 	musicsample = NULL;
     }
+    return(0);
 }
 //=======================================
 #define	MUSIC_AUDIOBUFFERS	8

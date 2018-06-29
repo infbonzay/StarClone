@@ -149,6 +149,7 @@ int FORCE_SLOTS::GetPlayerNr(int player)
     for (i=0;i<MAXPLAYERS;i++)
 	if (playernr[i]==player)
 	    return(i);
+    return(0);
 }
 //==========================================
 int parselistfiles(mylist *flist)
@@ -277,11 +278,11 @@ void listusers(char *path,mylist *flist)
     dir = opendir (path);
     if (dir != NULL) 
     {
-        while ((ent = readdir (dir)) != NULL) 
+        while( (ent = readdir (dir)) != NULL) 
         {
 	    if (ent->d_type==DT_REG)
 	    {
-		if (tempstr=strstr(ent->d_name,STARCLONEEXT))
+		if ( (tempstr = strstr(ent->d_name,STARCLONEEXT)) )
 		{
 		    tempstr[0]=0;
 		    flist->AllocAndAddList(ent->d_name,strlen(ent->d_name)+1);
@@ -5746,6 +5747,7 @@ int loadgame(MENUDRAW *menudraw,MENUPARAMS *menuparams)
 int loadgamefromfile_error1(MENUSTR *allmenus,int menuitem)
 {
     menustatus=CONTINUEGAME;
+    return(1);
 }
 //==========================================
 void loadgamefromfile(void)
@@ -5872,6 +5874,7 @@ int savegametofile_replace(MENUSTR *allmenus,int menuitem)
 int savegametofile_err1(MENUSTR *allmenus,int menuitem)
 {
     menustatus=CONTINUEGAME;
+    return(1);
 }
 //==========================================
 void savegametofile_err2(void)

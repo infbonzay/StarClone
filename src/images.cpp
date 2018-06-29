@@ -160,7 +160,7 @@ void MAIN_IMG::ForceSetIScript(int scriptnr)
     if (childlists)
     {
 	childlists->EnumListInit();
-	while(tempimg = (OVERLAY_IMG *)childlists->GetNextListElem(NULL))
+	while( (tempimg = (OVERLAY_IMG *)childlists->GetNextListElem(NULL)) )
 	{
 	    tempimg->iscriptnr = scriptnr;
 	}
@@ -178,9 +178,9 @@ int MAIN_IMG::SetIScriptNrAll(int scriptnr,int executeflag)
     if (childlists)
     {
 	childlists->EnumListInit();
-	while(tempimg = (OVERLAY_IMG *)childlists->GetNextListElem(NULL))
+	while( (tempimg = (OVERLAY_IMG *)childlists->GetNextListElem(NULL)) )
 	{
-	    if (tempimg->SetIScriptNr(scriptnr)==0 && executeflag == ISCRIPTNR_EXECUTE)
+	    if (tempimg->SetIScriptNr(scriptnr) == 0 && executeflag == ISCRIPTNR_EXECUTE)
 		iscriptinfo.ExecuteScript(tempimg);
 	}
     }
@@ -668,7 +668,7 @@ void MAIN_IMG::DeleteChilds(int flags)
     if (childlists)
     {
         childlists->EnumListInit();
-        while(tempimg = (OVERLAY_IMG *) childlists->GetNextListElem(&elemnr))
+        while( (tempimg = (OVERLAY_IMG *) childlists->GetNextListElem(&elemnr)) )
         {
     	    if (tempimg->flags & flags)
     	    {
@@ -698,7 +698,7 @@ void OVERLAY_IMG::DeleteChildImg(void)
     if (parentimg->childlists)
     {
 	parentimg->childlists->EnumListInit();
-	while(tempimg = (OVERLAY_IMG *) parentimg->childlists->GetNextListElem(&elemnr))
+	while( (tempimg = (OVERLAY_IMG *) parentimg->childlists->GetNextListElem(&elemnr)) )
 	{
 	    if (tempimg == this)
 	    {
@@ -717,7 +717,7 @@ void MAIN_IMG::HideChildsImgFlag(void)
     if (childlists)
     {
 	childlists->EnumListInit();
-	while(tempimg = (OVERLAY_IMG *) childlists->GetNextListElem(NULL))
+	while( (tempimg = (OVERLAY_IMG *) childlists->GetNextListElem(NULL)) )
 	{
 	    tempimg->HideImgFlag();
 	}
@@ -730,7 +730,7 @@ void MAIN_IMG::ShowChildsImgFlag(void)
     if (childlists)
     {
 	childlists->EnumListInit();
-	while(tempimg = (OVERLAY_IMG *) childlists->GetNextListElem(NULL))
+	while( (tempimg = (OVERLAY_IMG *) childlists->GetNextListElem(NULL)) )
 	{
 	    tempimg->ShowImgFlag();
 	}
@@ -1044,7 +1044,7 @@ void MinimapImages_Draw(void)
 {
     MAIN_IMG *img;
     imageslist_minimap.EnumListInit();
-    while(img = (MAIN_IMG *) imageslist_minimap.GetNextListElem(NULL))
+    while( (img = (MAIN_IMG *) imageslist_minimap.GetNextListElem(NULL)) )
     {
 	img->DrawOnScreenImage();
     }
@@ -1141,7 +1141,7 @@ void AddRemoveBloodFlameOverlays(OBJ *a)
 		{
 //		    change image to imageid
 		    img->childlists->EnumListInit();
-		    while(tempimg = (OVERLAY_IMG *) img->childlists->GetNextListElem(NULL))
+		    while( (tempimg = (OVERLAY_IMG *) img->childlists->GetNextListElem(NULL)) )
 		    {
 			if (tempimg->imageid == a->damageoverlayid[overlaynr])			//found image
 			{
@@ -1366,7 +1366,7 @@ void ChangeSporeImage(OBJ *a,int prevspores,int nextspores)
 	    flags = 0;
 	    image_idto = image_idfrom + 3;
 	    img->childlists->EnumListInit();
-	    while(tempimg = (OVERLAY_IMG *) img->childlists->GetNextListElem(NULL))
+	    while( (tempimg = (OVERLAY_IMG *) img->childlists->GetNextListElem(NULL)) )
 	    {
 		if (tempimg->imageid >= image_idfrom && tempimg->imageid <= image_idto)			//found image
 		{
@@ -1425,7 +1425,7 @@ void SaveOBJImagesToFogTable(OBJ *a)
     if (img->childlists)
     {
 	img->childlists->EnumListInit();
-	while(tempimg = (OVERLAY_IMG *) img->childlists->GetNextListElem(NULL))
+	while( (tempimg = (OVERLAY_IMG *) img->childlists->GetNextListElem(NULL)) )
 	{
 	    saveinfogtable(x-tempimg->grp->SizeX/2,y-tempimg->grp->SizeY/2,POSINMAP,tempimg->grp,SHADOW,BLACKTABLE,
 			    img->invisiblecolors,img->imageusercolor,0,tempimg->flags);
@@ -1454,7 +1454,7 @@ int CheckForSpecificChildsImageID(MAIN_IMG *img,short image_idfrom,short image_i
     if (img->childlists)
     {
 	img->childlists->EnumListInit();
-	while(tempimg = (OVERLAY_IMG *) img->childlists->GetNextListElem(NULL))
+	while( (tempimg = (OVERLAY_IMG *) img->childlists->GetNextListElem(NULL)) )
 	{
 	    if (tempimg->imageid >= image_idfrom && tempimg->imageid <= image_idto)			//found image
 	    {
@@ -1471,7 +1471,7 @@ void DelSpecificChildsImageID(MAIN_IMG *img,short image_idfrom,short image_idto)
     if (img->childlists)
     {
 	img->childlists->EnumListInit();
-	while(tempimg = (OVERLAY_IMG *) img->childlists->GetNextListElem(NULL))
+	while( (tempimg = (OVERLAY_IMG *) img->childlists->GetNextListElem(NULL)) )
 	{
 	    if (tempimg->imageid >= image_idfrom && tempimg->imageid <= image_idto)			//found image
 	    {
@@ -1505,18 +1505,18 @@ void AllImages_Sort(void)
     MAIN_IMG *img;
     OVERLAY_IMG *img2;
     mainimageslist.EnumListInit();
-    while(img = (MAIN_IMG *) mainimageslist.GetABSNextListElem(&deleteflag))
+    while( (img = (MAIN_IMG *) mainimageslist.GetABSNextListElem(&deleteflag)) )
     {
 	visible = 1;
 	if (!(img->flags & (SC_IMAGE_FLAG_DISABLEDRAW | SC_IMAGE_FLAG_MARKFORDELETE)))
 	{
-	    if (visible = img->CheckForVisibility())
+	    if ( (visible = img->CheckForVisibility()) )
 		img->AddToDraw();
 	}
 	if (visible && img->childlists)
 	{
 	    img->childlists->EnumListInit();
-	    while(img2 = (OVERLAY_IMG *) img->childlists->GetNextListElem(NULL))
+	    while( (img2 = (OVERLAY_IMG *) img->childlists->GetNextListElem(NULL)) )
 	    {
 	        if (!(img2->flags & (SC_IMAGE_FLAG_DISABLEDRAW | SC_IMAGE_FLAG_MARKFORDELETE)))
 		    img2->AddToDraw();
@@ -1524,18 +1524,18 @@ void AllImages_Sort(void)
 	}
     }
     imageslist_doodads.EnumListInit();
-    while(img = (MAIN_IMG *) imageslist_doodads.GetABSNextListElem(&deleteflag))
+    while( (img = (MAIN_IMG *) imageslist_doodads.GetABSNextListElem(&deleteflag)) )
     {
 	visible = 1;
 	if (!(img->flags & (SC_IMAGE_FLAG_DISABLEDRAW | SC_IMAGE_FLAG_MARKFORDELETE)))
 	{
-	    if (visible = img->CheckForVisibility())
+	    if ( (visible = img->CheckForVisibility()) )
 		img->AddToDraw();
 	}
 	if (visible && img->childlists)
 	{
 	    img->childlists->EnumListInit();
-	    while(img2 = (OVERLAY_IMG *) img->childlists->GetNextListElem(NULL))
+	    while( (img2 = (OVERLAY_IMG *) img->childlists->GetNextListElem(NULL)) )
 	    {
 	        if (!(img2->flags & (SC_IMAGE_FLAG_DISABLEDRAW | SC_IMAGE_FLAG_MARKFORDELETE)))
 		    img2->AddToDraw();
@@ -1571,7 +1571,7 @@ void AllImages_Draw(void)
     for (i=0;i<MAXIMAGELEVELS;i++)
     {
 	elevationIMG[i].EnumListInit();
-	while(img = (OVERLAY_IMG *) elevationIMG[i].GetNextListElem(NULL))
+	while( (img = (OVERLAY_IMG *) elevationIMG[i].GetNextListElem(NULL)) )
 	{
 	    img->DrawImage();
 	}

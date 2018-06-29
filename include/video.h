@@ -25,8 +25,8 @@ void PlayVideoSmk(char *smkfile);
 int  queuePCMdata(unsigned char *audiobuff,int audiosize);
 int  playPCMdata(int firstrun);
 void smkaudiofinish(int channel);
-inline int beginplayPCMdata(void) { playPCMdata(0); };
-inline int nextplayPCMdata(void) { playPCMdata(1); };
+inline int beginplayPCMdata(void) { return(playPCMdata(0)); };
+inline int nextplayPCMdata(void) { return(playPCMdata(1)); };
 
 
 

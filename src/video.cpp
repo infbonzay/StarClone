@@ -354,14 +354,16 @@ void FadeScreen(int fadespeed,char *pal,int typeoffade)	//0-fadetoimage 1-fadeto
 char *gettextfrombuf(char *buf,int sizebuf,int textnr)
 {
     int i;
-    if (!textnr)
-	return(buf);
-    for (i=0;i<sizebuf;i++)
+    if (textnr)
     {
-	if (buf[i]<=' ')
-	    if (--textnr==0)
-		return(&buf[i+1]);
+	for (i=0;i<sizebuf;i++)
+	{
+	    if (buf[i]<=' ')
+		if (--textnr==0)
+		    return(&buf[i+1]);
+	}
     }
+    return(buf);
 }
 //==========================================
 void PlayCampaignVideo(int campaignnr,int missionnr)

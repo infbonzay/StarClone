@@ -375,10 +375,12 @@ struct OBJ *createobjlowlevel(OBJ *workerobj,int x,int y,SCUNIT SC_Unit,int play
     if (GetMageAtr(&a->atrobj,ATRHALLUCINATION)==0)
     {
     	if (TRIG_ChangeStat)
+    	{
 	    if (IsBuild(a->SC_Unit))
     		PLAYER[playernr].statplayer.stat[STATPLAYER_BUILDSCONSTRUCTED]+=GetBuildUnitScore(a->SC_Unit);
 	    else
     		PLAYER[playernr].statplayer.stat[STATPLAYER_UNITSPRODUCED]+=GetBuildUnitScore(a->SC_Unit);
+	}
     }
     a->atackernr=-1;
     a->whoatack=NULL;
@@ -715,10 +717,12 @@ void ifselectTEMPLARS(int player)
 void ifselectTRANSPORTS(struct OBJ *a)
 {
     if (a)
+    {
 	if (GetSpaceProvided(a->SC_Unit))
 	    AnalizeAllTransportUnits(a,transportplace,&transportplaceobj);
 	else
 	    transportplaceobj=NULL;
+    }
 }
 //=====================================
 int IfUnitIsSelectable(OBJ *a)
@@ -767,18 +771,19 @@ void selectMAN(int x1,int y1,int x2,int y2,int mode)
         swap(&x1,&x2);
     if (y2<y1) 
         swap(&y1,&y2);
-    x1=x1+map.MAPXGLOBAL;
-    x2=x2+map.MAPXGLOBAL;
-    y1=y1+map.MAPYGLOBAL;
-    y2=y2+map.MAPYGLOBAL;
+    x1 = x1+map.MAPXGLOBAL;
+    x2 = x2+map.MAPXGLOBAL;
+    y1 = y1+map.MAPYGLOBAL;
+    y2 = y2+map.MAPYGLOBAL;
     int ctrl=(KEYPRESS(CTRLLKEY)|(KEYPRESS(CTRLRKEY)))||mousedoubleclick;
-    if ((x2-x1<=MINHAP)&&(y2-y1<=MINHAP)||ctrl)
+    if ( ((x2-x1 <= MINHAP) && (y2-y1<=MINHAP)) || ctrl)
     {
 	a=founduniqueobj((x1+x2)/2,(y1+y2)/2);
         firstobj = a;
         if (a)
         {
     	    if (IfCanClickOBJ(a->SC_Unit))
+    	    {
         	if (ctrl)
         	{
             	    u = foundonetypeobj(a);
@@ -788,6 +793,7 @@ void selectMAN(int x1,int y1,int x2,int y2,int mode)
             	    doselectedOBJbit(a,NUMBGAMER,1);
             	    u++;
         	}
+    	    }
         }
     }
     else
@@ -1400,7 +1406,7 @@ int moveobj_addonmode(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int
 //	printf("deltax=%d deltay=%d\n",x-GetOBJx(a),y-GetOBJy(a));
 	//far position
     }
-
+    return(MOVEOBJ_DONE);
 }
 //==================================
 int moveobj_buildmode(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int modemoveflags)
@@ -1567,7 +1573,7 @@ short TARGETERROR[3]={SFXDATA_ERRORTARGET_ZERG,SFXDATA_ERRORTARGET_TERRAN,SFXDAT
 //==================================
 int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int modemoveflags)
 {
-    moveobj(a,destobj,mode,0,0,modemoveflags|XYNOTCOORDS);
+    return(moveobj(a,destobj,mode,0,0,modemoveflags|XYNOTCOORDS));
 }
 //==================================
 int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int modemoveflags)
@@ -1819,10 +1825,12 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int modemovef
 		    moveobj(a,newobj,MODEGATHER,NOSHOWERROR);
 		else
 	    	    if (resval)
-	    		if (SC_res_type = SC_MINERAL1OBJ)
+	    	    {
+	    		if (SC_res_type == SC_MINERAL1OBJ)
 	    		    moveobj(a,NULL,MODEWAITHARVESTMINERAL,NOSHOWERROR);
 	    		else
 	    		    moveobj(a,NULL,MODEWAITHARVESTGAS,NOSHOWERROR);
+	    	    }
 	    	    else
 	    		moveobj(a,NULL,MODESTOP,NOSHOWERROR);
 	    }
@@ -3489,6 +3497,7 @@ void dieobj(struct OBJ *a)
 	if (a->atackernr!=-1)
 	{
     	    if (TRIG_ChangeStat)
+    	    {
 		if (IsBuild(a->SC_Unit))
 		{
     		    PLAYER[a->playernr].statplayer.stat[STATPLAYER_BUILDSLOST]+=GetBuildUnitScore(a->SC_Unit);
@@ -3499,6 +3508,7 @@ void dieobj(struct OBJ *a)
     		    PLAYER[a->playernr].statplayer.stat[STATPLAYER_UNITSLOST]+=GetBuildUnitScore(a->SC_Unit);
     		    PLAYER[a->atackernr].statplayer.stat[STATPLAYER_UNITSKILLED]+=GetDestroyUnitScore(a->SC_Unit);
     		}
+    	    }
     	    if (a->whoatack)
     		a->whoatack->kills++;
     	}
@@ -3570,6 +3580,7 @@ void WakeUpInterceptors(OBJ *a,OBJ *destobj)
     if (a->childs)
 	for (int i=0;i<MAXCHILDS;i++)
 	    if (a->childs->parentof[i])
+	    {
 		if (a->childs->parentof[i]->prop & VARINBASE)
 		{
 		    WakeUpOneInterceptor(a,a->childs->parentof[i],destobj,i);
@@ -3578,6 +3589,7 @@ void WakeUpInterceptors(OBJ *a,OBJ *destobj)
 		{
 		    moveobj(a->childs->parentof[i],destobj,MODEMOVEFORWARD,1,0,NOSHOWERROR|XYNOTCOORDS);
 		}
+	    }
 }
 //=================================
 void ReturnedToBase(struct OBJ *a)//after moved to base
@@ -3899,16 +3911,19 @@ void setpropertiestounit(struct OBJ *a,int special_props,int state_flags)
     	    }
 	}
     if (state_flags&UNITONMAP_STATEFLAGS_HALLUCINATION)
+    {
 	if (special_props&UNITONMAP_STATEFLAGS_HALLUCINATION)
 	{
 	    SetHallucinationOBJ(a);
 	}
+    }
     if (state_flags&UNITONMAP_STATEFLAGS_BUILDINTRANSIT)
+    {
 	if (special_props&UNITONMAP_STATEFLAGS_BUILDINTRANSIT)
 	{
 	    SIGOrder_LiftOff(a);
 	    a->mainimage->childlists->EnumListInit();
-	    while(tempimg = (OVERLAY_IMG *) a->mainimage->childlists->GetNextListElem(NULL))
+	    while( (tempimg = (OVERLAY_IMG *) a->mainimage->childlists->GetNextListElem(NULL)) )
 	    {
 	        if (tempimg->flags & SC_IMAGE_FLAG_IMGUNDER)	//if this is shadow image
 	        {
@@ -3918,11 +3933,14 @@ void setpropertiestounit(struct OBJ *a,int special_props,int state_flags)
 	    }
     	    SetOBJIScriptNr(a,ISCRIPTNR_SPECIALSTATE1,ISCRIPTNR_EXECUTE);	//air state
 	}
+    }
     if (state_flags&UNITONMAP_STATEFLAGS_INVINCIBLE)
+    {
 	if (special_props&UNITONMAP_STATEFLAGS_INVINCIBLE)
 	{
 	    SetInvincibleOBJ(a,1);
 	}
+    }
 }
 //==================================
 struct OBJ *createunitwithproperties(int xpos,int ypos,int unit_id,int playernr,

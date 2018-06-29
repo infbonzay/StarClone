@@ -97,7 +97,7 @@ int UpdateAllGamesTime(void)
     int i,max,maxnr,updatelists=0;
     NETGAME *crgame;
     newgames.EnumListInit();
-    while(crgame=(NETGAME *)newgames.GetNextListElem(&i))
+    while( (crgame = (NETGAME *)newgames.GetNextListElem(&i)) )
     {
 	    if (--crgame->timeout<=0)
 	    {
@@ -117,7 +117,7 @@ int AddListCreatedGame(NETWORK_JOIN_PACKET *mypacket,struct sockaddr_in *Addr)
     int i,max,maxnr;
     NETGAME *crgame;
     newgames.EnumListInit();
-    while(crgame=(NETGAME *)newgames.GetNextListElem())
+    while( (crgame = (NETGAME *)newgames.GetNextListElem()) )
     {
 	    if (crgame->PCID==mypacket->PCID)
 	    {
@@ -167,7 +167,7 @@ void UpdateGamesList(MENUSTR *allmenus,int listitem)
     gamelist.FlushList();
     NETGAME *crgame;
     newgames.EnumListInit();
-    while(crgame=(NETGAME *)newgames.GetNextListElem())
+    while( (crgame = (NETGAME *)newgames.GetNextListElem()) )
     {
 	gamelist.AddList(crgame->gametitle);
 	max++;
@@ -199,7 +199,7 @@ void UpdateGameInfo(MENUSTR *allmenus,int listnr,int selectnr)
     }
     gametitle=(char *)allmenus->menu[listnr].item.listbox->flist->GetElemNr(selectnr);
     newgames.EnumListInit();
-    while(crgame=(NETGAME *)newgames.GetNextListElem())
+    while( (crgame = (NETGAME *)newgames.GetNextListElem()) )
     {
 	    if (!strcmp(crgame->gametitle,gametitle))
 	    {
@@ -239,7 +239,7 @@ int GetGameId(int sellist,char *gametitle)
     int maxnr,max,i;
     NETGAME *crgame;
     newgames.EnumListInit();
-    while(crgame=(NETGAME *)newgames.GetNextListElem())
+    while( (crgame = (NETGAME *)newgames.GetNextListElem()) )
     {
 	    if (!strcmp(crgame->gametitle,gametitle))
 	    {
@@ -256,7 +256,7 @@ int CheckForGameName(char *gametitle)
     if (max==MAXCREATEDGAMES)
 	return(3);
     newgames.EnumListInit();
-    while(crgame=(NETGAME *)newgames.GetNextListElem())
+    while( (crgame = (NETGAME *)newgames.GetNextListElem()) )
     {
 	    if (!strcmp(crgame->gametitle,gametitle))
 	    {
@@ -365,7 +365,7 @@ int CheckForDublicateName(char *newname)
 	return(CANNOTJOINMENAMEEXISTS);
     //check for connected player names
     connectedplayers.EnumListInit();
-    while(pl=(NETWPLAYERINFO *)connectedplayers.GetNextListElem())
+    while( (pl = (NETWPLAYERINFO *)connectedplayers.GetNextListElem()) )
     {
 	if (!strcmp(pl->playername,newname))
 	{
@@ -381,7 +381,7 @@ void AddToBanList(int playerslot)
     NETWPLAYERINFO *pl;
     BANNEDIPS *tempip;
     connectedplayers.EnumListInit();
-    while(pl=(NETWPLAYERINFO *)connectedplayers.GetNextListElem())
+    while( (pl = (NETWPLAYERINFO *)connectedplayers.GetNextListElem()) )
     {
 	if (pl->playernr==playerslot)
 	{
@@ -399,7 +399,7 @@ int CheckForBan(struct sockaddr_in *newaddr)
     int i,max,maxnr;
     BANNEDIPS *tempip;
     bannedips.EnumListInit();
-    while(tempip=(BANNEDIPS *)bannedips.GetNextListElem())
+    while( (tempip = (BANNEDIPS *)bannedips.GetNextListElem()) )
     {
 	if (tempip->Addr.sin_addr.s_addr==newaddr->sin_addr.s_addr)
 	{
@@ -439,7 +439,7 @@ int Master_CheckJoinPacket(MENUSTR *allmenus,NETWORK_INFO *sendsock,NETWORK_INFO
 		RACESLOT=GetINTFromArray(mypacket->data,PI_SECONDSLOT,0);
 		MAPSEND=GetINTFromArray(mypacket->data,PI_NEEDMAPSEND,0);
 		connectedplayers.EnumListInit();
-		while(pl=(NETWPLAYERINFO *)connectedplayers.GetNextListElem())
+		while( (pl = (NETWPLAYERINFO *)connectedplayers.GetNextListElem()) )
 		{
 		    if (pl->playernr==SLOT)
 		    {
@@ -465,13 +465,13 @@ int Master_CheckJoinPacket(MENUSTR *allmenus,NETWORK_INFO *sendsock,NETWORK_INFO
 		SLOT=GetINTFromArray(mypacket->data,PI_PLAYERNR,0);
 		GetSTRFromArray(TXTCHAT,mypacket->data,PI_TEXTCHAT,0);
 		connectedplayers.EnumListInit();
-		while(pl=(NETWPLAYERINFO *)connectedplayers.GetNextListElem())
+		while( (pl = (NETWPLAYERINFO *)connectedplayers.GetNextListElem()) )
 		{
 		    if (pl->playernr==SLOT)
 		    {
     			memcpy(info,pl,sizeof(NETWPLAYERINFO));
     			pl->timeout=TIMEOUT_NETWORK_PACKETS;
-			if (TXTCHAT&&TXTCHAT[0])
+			if ( TXTCHAT[0] )
 			{
 			    SendTextToChatItem(allmenus,10,TXTCHAT);
 			    SendTextToConnectedPlayers(pl->playernr,TXTCHAT,sendsock,recvsock);
@@ -485,9 +485,9 @@ int Master_CheckJoinPacket(MENUSTR *allmenus,NETWORK_INFO *sendsock,NETWORK_INFO
     	    case STARCLONE_NETWORKJOIN_COMMAND_LEAVEGAME:
 		SLOT=GetINTFromArray(mypacket->data,PI_PLAYERNR,0);
 		connectedplayers.EnumListInit();
-		while(pl=(NETWPLAYERINFO *)connectedplayers.GetNextListElem())
+		while( (pl = (NETWPLAYERINFO *)connectedplayers.GetNextListElem()) )
 		{
-		    if (pl->playernr==SLOT)
+		    if (pl->playernr == SLOT)
 		    {
 			pl->timeout=1;
 			pl->flag|=FLAGS_PLAYERLEAVEDBYCOMMAND;
@@ -769,7 +769,7 @@ int FillNetworkAddr(NETWORK_INFO *info,int PCID)
     int i,max,maxnr,updatelists=0;
     NETGAME *crgame;
     newgames.EnumListInit();
-    while(crgame=(NETGAME *)newgames.GetNextListElem(&i))
+    while( (crgame = (NETGAME *)newgames.GetNextListElem(&i)) )
     {
 	    if (crgame->PCID==PCID)
 	    {
@@ -851,7 +851,7 @@ int UpdatePlayersInfo(MENUSTR *allmenus,NETWORK_INFO *sendsock,NETWORK_INFO *rec
     NETWPLAYERINFO *pl;
     char txt1[100];
     connectedplayers.EnumListInit();
-    while(pl=(NETWPLAYERINFO *)connectedplayers.GetNextListElem(&i))
+    while( (pl = (NETWPLAYERINFO *)connectedplayers.GetNextListElem(&i)) )
     {
 	    if (--pl->timeout<=0)
 	    {
@@ -921,7 +921,7 @@ int GetPlayerPCID(int playerslot)
 	return(MY_PCID);
     }
     connectedplayers.EnumListInit();
-    while(pl=(NETWPLAYERINFO *)connectedplayers.GetNextListElem())
+    while( (pl = (NETWPLAYERINFO *)connectedplayers.GetNextListElem()) )
     {
 	if (pl->playernr==playerslot)
 	{
@@ -936,7 +936,7 @@ int CheckForPlayersReady(void)
     int i,max,maxnr;
     NETWPLAYERINFO *pl;
     connectedplayers.EnumListInit();
-    while(pl=(NETWPLAYERINFO *)connectedplayers.GetNextListElem())
+    while( (pl = (NETWPLAYERINFO *)connectedplayers.GetNextListElem()) )
     {
 	    if (pl->flag&FLAGS_PLAYERNEEDUPLOADMAP)
 		return(1);
@@ -986,7 +986,7 @@ int SendTextToConnectedPlayers(int playernr,char *txt,NETWORK_INFO *sendsock,NET
     int i,max,maxnr,updateplayers=0,err;
     NETWPLAYERINFO *pl;
     connectedplayers.EnumListInit();
-    while(pl=(NETWPLAYERINFO *)connectedplayers.GetNextListElem())
+    while( (pl = (NETWPLAYERINFO *)connectedplayers.GetNextListElem()) )
     {
 		if (pl->playernr!=playernr)			//do not send to player who send
 		{
@@ -1008,7 +1008,7 @@ int SendCommandToPlayer(MENUSTR *allmenus,int playernr,int command,NETWORK_INFO 
     int i,max,maxnr,updateplayers=0,err;
     NETWPLAYERINFO *pl;
     connectedplayers.EnumListInit();
-    while(pl=(NETWPLAYERINFO *)connectedplayers.GetNextListElem())
+    while( (pl = (NETWPLAYERINFO *)connectedplayers.GetNextListElem()) )
     {
 		if (pl->playernr==playernr)
 		{
@@ -1084,14 +1084,14 @@ int SendCommandToAll(MENUSTR *allmenus,int command,NETWORK_INFO *sendsock,NETWOR
     int i,max,maxnr;
     NETWPLAYERINFO *pl;
     connectedplayers.EnumListInit();
-    while(pl=(NETWPLAYERINFO *)connectedplayers.GetNextListElem())
+    while( (pl = (NETWPLAYERINFO *)connectedplayers.GetNextListElem()) )
     {
 	    SendCommandToPlayer(allmenus,pl->playernr,command,sendsock,recvsock);
     }
     return(0);
 }
 //==========================================
-int RequestFileParts(MENUSTR *allmenus,NETWORK_INFO *sendsock,NETWORK_INFO *recvsock)
+void RequestFileParts(MENUSTR *allmenus,NETWORK_INFO *sendsock,NETWORK_INFO *recvsock)
 {
     if (MAPUPLOAD)
     {
@@ -1133,7 +1133,7 @@ void Master_CopyPlayersAddr(void)
     NETWPLAYERINFO *pl;
     memset(&PLAYER[0].Addr,0,sizeof(struct sockaddr_in));
     connectedplayers.EnumListInit();
-    while(pl=(NETWPLAYERINFO *)connectedplayers.GetNextListElem())
+    while( (pl = (NETWPLAYERINFO *)connectedplayers.GetNextListElem()) )
     {
 	    memcpy(&PLAYER[pl->playernr].Addr,&pl->Addr,sizeof(struct sockaddr_in));
 	    PLAYER[pl->playernr].Addr.sin_port=htons(STARCLONE_UDP_PLAYPORT);

@@ -164,7 +164,7 @@ int main(int c,char **parm,char **env)
     	    if (!i)
 	    {
 		printf("cannot initialize %dx%dx%d video mode\n",
-    	                gameconf.grmode.x,gameconf.grmode.y,gameconf.grmode.s,i);
+    	                gameconf.grmode.x,gameconf.grmode.y,gameconf.grmode.s);
     		exit(-1);
 	    }
 	    gameconf.grmode.emulationmode=i-1;
@@ -1684,7 +1684,7 @@ void logend(void)
     }	    
     fclose(f);
 
-/*    f=fopen("screep.txt","wb");
+    f=fopen("screep.txt","wb");
     for (i=0;i<MAXYMAP;i++)
     {
 	for (j=0;j<MAXXMAP;j++)

@@ -602,7 +602,7 @@ void NETW_PLAY::Make_PlayerNetCmdsBRIEF(int playernr)
     if (Check_IfServerPlayer())
     {
 	tick_t[curticknr].queue_cmdstr[playernr].EnumListInit();
-	while(cmdbuf=(char *)tick_t[curticknr].queue_cmdstr[playernr].GetNextListElem())
+	while( (cmdbuf = (char *)tick_t[curticknr].queue_cmdstr[playernr].GetNextListElem()) )
 	{
 		netwspeed=GetINTFromArray(cmdbuf,PI_NETWSPEED,0);
 		gamespeed=GetINTFromArray(cmdbuf,PI_GAMESPEED,0);
@@ -664,7 +664,7 @@ void NETW_PLAY::PrepareNetworkCommands(int playernr,mylist *cmdslist)
     int nspeed,pausegame,i;
     char *received_cmds,cmds[512];
     cmdslist->EnumListInit();
-    while(received_cmds=(char *)cmdslist->GetNextListElem())
+    while( (received_cmds = (char *)cmdslist->GetNextListElem()) )
     {
 	nspeed=GetINTFromArray(received_cmds,PG_NSPEED_STR,0);
 	if (nspeed>=0 && nspeed<=2)

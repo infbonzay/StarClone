@@ -59,10 +59,10 @@ void UnitConstrTech(struct OBJ *a,int tech_id,int icon_nr,int stattxt_nr);
 void DoOrder(int playernr,struct OBJ *a,int x,int y,int type_id,int obj_id,int icon_nr,int stattxt_nr,int modemove,int showerrorflag);
 void DoOrder(int playernr,OBJ *a,int x,int y,int modemove,int showerrorflag);
 
-int TickBuildMakeConstruct(struct OBJ *a,int *doneobj_id);
-int TickUnderConstruct(struct OBJ *a);
-int SetBeginSelfConstruct(struct OBJ *a);
-int GetSelfConstrComplete(struct OBJ *a,int percent);
+int  TickBuildMakeConstruct(struct OBJ *a,int *doneobj_id);
+int  TickUnderConstruct(struct OBJ *a);
+void SetBeginSelfConstruct(struct OBJ *a);
+int  GetSelfConstrComplete(struct OBJ *a,int percent);
 //=======================================
 
 #define STARTBUILDSHIELD	(10<<8)

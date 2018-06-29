@@ -289,6 +289,7 @@ int savebuff(const char *fn,void *address,int bufsize)
 	return(-1);
     fwrite(address,bufsize,1,f);
     fclose(f);
+    return(0);
 }
 //=================================
 unsigned int mkchecksumm(char *filename)

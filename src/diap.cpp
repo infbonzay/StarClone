@@ -508,6 +508,7 @@ int CreateUnitProperties(struct OBJ *a,struct OBJstruct *b,int *prop,int playern
     constraddon = IfConstructAddon(a);
     underc = GetConstructNR(a);
     if (!constraddon)
+    {
 	if (underc)
 	    ChangeTypeOfProp(a,b,PROPDEUPGRADE);
 	else
@@ -515,6 +516,7 @@ int CreateUnitProperties(struct OBJ *a,struct OBJstruct *b,int *prop,int playern
 		a->SC_Unit==SC_CARRIEROBJ||a->SC_Unit==SC_REAVEROBJ||
 		a->SC_Unit==SC_HERO_GANTRITHOROBJ||a->SC_Unit==SC_HERO_WARBRINGEROBJ)
 		ChangeTypeOfProp(a,b,PROPNORMAL1);
+    }
     for (i=0;i<MAXUNITPROPERTIES;i++)
     {
 	prop[i] = b->modemove[a->typeofprop][i];	//copy properties
@@ -785,7 +787,7 @@ int ChangeTypeOfProp(struct OBJ *a,struct OBJstruct *b,int typeofprop)
 	return(-1);
     if (typeofprop < b->maxlineprop)
     {
-	a->typeofprop = typeofprop;
+	ChangeUnitIconProp(a,typeofprop);
 	return 0;
     }
     return -1;
@@ -806,10 +808,9 @@ int ExistProp(struct OBJstruct *b,int verifymode)
     return 0;
 }
 //================================================================
-/*================================================================
-/*================================
-fill properties of unit depend were he stand on map and what atributes he have
-==================================*/
+//================================
+//fill properties of unit depend were he stand on map and what atributes he have
+//==================================
 //   return x and y new position of build unit
 //      		  xxxxx
 //      		y aaaaa     x,y is form one coordinates of (a)

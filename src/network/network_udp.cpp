@@ -17,7 +17,7 @@
 #include "network_general.h"
 
 //=============================================
-int closesock(NETWORK_INFO *info)
+void closesock(NETWORK_INFO *info)
 {
     if (info->socketnr>0)
     {

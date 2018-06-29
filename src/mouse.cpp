@@ -142,13 +142,16 @@ void putmouseonscreen(void)
 {
   int deltax,deltay;
 //  mousetype = NORMALMOUSE;
-    if (!MENUACTIVE)
+  if (!MENUACTIVE)
+  {
     if (patrate)
     {
 	mousetype = SELECTIONMOUSE;
     }
     else
+    {
 	if (!grm)
+	{
 	    if (waitforleftbuton)
 	    {
 		if (DestMouseOBJ)
@@ -180,6 +183,7 @@ void putmouseonscreen(void)
 		    mousetype = TARGGREENMOUSE;
 	    }//waitforleftbuton
 	    else
+	    {
 		if ((DestMouseOBJ)&&select_aria&&!patrate)
 		{
 		    switch(DestMouseType)
@@ -209,13 +213,17 @@ void putmouseonscreen(void)
 		{
 	    	    mousetype = NORMALMOUSE;
 		}
-    if (mouses[mousetype].mousegrp)
-    {
+	    }
+	}
+    }
+  }
+  if (mouses[mousetype].mousegrp)
+  {
 	deltax=-mouses[mousetype].mousegrp->SizeX/2;
 	deltay=-mouses[mousetype].mousegrp->SizeY/2;
 	putgrpspr(mouse_x+deltax,mouse_y+deltay,mouses[mousetype].mousegrp,NORMAL,
-                0,0,NULL,mouses[mousetype].curentposition);
-    }
+        	    0,0,NULL,mouses[mousetype].curentposition);
+  }
 }
 //==========================
 void desenpatr(void)
@@ -400,14 +408,17 @@ void getmousetype(int xk,int yk)
      if (!(mouse_b&WMLEFTKEY))
         waitfordownleftbuton=0;
      if (!waitfordownleftbuton)
+     {
       if (!waitforleftbuton)
       {
 	 buildconstr=SC_NOUNITNR;
          if ((mouse_b&WMLEFTKEY)&&(select_aria)&&!(karta_aria))
+         {
              if (mouseprevy<GRP_screensizey-YDECICONS)
                 patr=1;
              else
                 patr=0;
+         }
          if (!mouse_b)
          {
             mouseclear=0;
@@ -439,6 +450,7 @@ void getmousetype(int xk,int yk)
               waitforleftbuton--;
         waitfordownleftbuton=1;
      }
+    } 
     if (waitforleftbuton==1&&select_aria)
     {
       if (mouse_b&WMLEFTKEY)

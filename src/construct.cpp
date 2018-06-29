@@ -512,7 +512,7 @@ int TickUnderConstruct(OBJ *a)
     return(0);
 }
 //==================================
-int SetBeginSelfConstruct(OBJ *a)
+void SetBeginSelfConstruct(OBJ *a)
 {
     int fromshield,fromlife;
     SCUNIT SC_Unit=a->SC_Unit;

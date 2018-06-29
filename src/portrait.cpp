@@ -53,7 +53,7 @@ void unloadSMK(SMKPLAY *tempplay)
 	smk_close(tempplay->smk);
 }
 //===================================
-int unloadstaticsmk(void)
+void unloadstaticsmk(void)
 {
     if (staticport.mergepixels)
     {
@@ -372,7 +372,7 @@ int SetPortrait(SCUNIT SC_Unit,int typeofport,int soundfilenr,int showedtime)
 char soundtypetosmktype[MAXTYPESOFSOUND]={
 			    SMKNORMAL,SMKTALK,SMKTALK,SMKTALK,SMKTALK};
 //===================================
-int SetPortraitFromSound(SCUNIT SC_Unit,int soundmode,int soundfilenr)
+void SetPortraitFromSound(SCUNIT SC_Unit,int soundmode,int soundfilenr)
 {
     if (soundmode>=0&&soundmode<MAXTYPESOFSOUND)
     {

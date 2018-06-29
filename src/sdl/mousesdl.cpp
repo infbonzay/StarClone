@@ -27,7 +27,6 @@ void SetMousePos(int x,int y)
 //==========================
 int mouseinit(void)
 {
-    mousedetect = 255;
-    return(mousedetect); //mouse exist
+    return(1); //mouse exist
 }
 //==========================

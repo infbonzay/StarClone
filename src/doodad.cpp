@@ -56,7 +56,7 @@ void CreateDoodadsFromLists(mylist *mapdoodads,mapinfo *loadedmap)
     doodad_on_map *doodad;
     DEBUGMESSCR("total doodads = %d \n",mapdoodads->GetMaxElements());
     mapdoodads->EnumListInit();
-    while(doodad=(doodad_on_map *)mapdoodads->GetNextListElem())
+    while( (doodad = (doodad_on_map *)mapdoodads->GetNextListElem()) )
     {
 //	    printf("%i.nrd=%d x=%d y=%d spr=%d flagunit=0x%x playernr=%d\n",i,
 //		doodad->sprites_id,doodad->xpos,doodad->ypos,doodad->sprpos,doodad->flags,doodad->playernr);

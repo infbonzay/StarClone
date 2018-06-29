@@ -54,7 +54,7 @@ void FLINGYLIST::FreeAndEmptyAll(void)					//mark all,delete all,empty all
     int i;
     SC_FLINGY *flingy;
     weaponflingy.EnumListInit();
-    while(flingy = (SC_FLINGY *) weaponflingy.GetNextListElem(NULL))
+    while( (flingy = (SC_FLINGY *) weaponflingy.GetNextListElem(NULL)) )
     {
 	flingy->DelFlingy();
     }    
@@ -71,7 +71,7 @@ void FLINGYLIST::RemoveOBJFromFlingyobj(OBJ *obj,OBJ *newatacker)
 {
     SC_FLINGY *flingy;
     weaponflingy.EnumListInit();
-    while(flingy = (SC_FLINGY *) weaponflingy.GetNextListElem(NULL))
+    while( (flingy = (SC_FLINGY *) weaponflingy.GetNextListElem(NULL)) )
     {
 	if (flingy->destobj == obj)
 	{
@@ -88,7 +88,7 @@ void FLINGYLIST::MoveAllWeaponFlingy(void)
 {
     SC_FLINGY *flingy;
     EnumListInit();
-    while(flingy = (SC_FLINGY *) GetNextListElem(NULL))
+    while( (flingy = (SC_FLINGY *) GetNextListElem(NULL)) )
     {
 	if (flingy->flags & FLINGY_FLAG_STAYANDWAITTIME)
 	    flingy->StayAndWaitTime();
@@ -103,11 +103,12 @@ int SC_FLINGY::DieFlingy(void)
     if (--nroftargets <= 1)
     {
 	if (flags & FLINGY_FLAG_AFTERLAUNCHCHANGEELEVATION)
+	{
 	    if (destobj)
 		img->elevationlevel = destobj->mainimage->elevationlevel + 1;
 	    else
 		img->elevationlevel += 2;
-	
+	}
 	flags &= ~FLINGY_FLAG_ACCELERATIONBIT;
 	img->SetIScriptNrAll(ISCRIPTNR_DEATH,ISCRIPTNR_EXECUTE);
 	return(1);
@@ -125,10 +126,12 @@ int SC_FLINGY::DieFlingy(void)
 	if (!newdestobj)
 	{
 	    if (flags & FLINGY_FLAG_AFTERLAUNCHCHANGEELEVATION)
+	    {
 		if (destobj)
 		    img->elevationlevel = destobj->mainimage->elevationlevel + 1;
 		else
 		    img->elevationlevel += 2;
+	    }
 	    flags &= ~FLINGY_FLAG_ACCELERATIONBIT;
 	    img->SetIScriptNrAll(ISCRIPTNR_DEATH,ISCRIPTNR_EXECUTE);
 	    return(1);
@@ -335,7 +338,6 @@ SC_FLINGY *CreateWeaponFlingy(OBJ *a,OBJ *destobj,int xstart256,int ystart256,in
     if (!alldattbl.sprites_dat->is_visible[sprites_id])
         flags |= SC_IMAGE_FLAG_DISABLEDRAW;
     images_id = alldattbl.sprites_dat->images_id[sprites_id];
-    alldattbl.weapons_dat->WeaponBehavior[weapon_id];
     CalcXYOffsets(launchside,alldattbl.weapons_dat->ForwardOffset[weapon_id],alldattbl.weapons_dat->UpwardOffset[weapon_id],&weaponxoffs,&weaponyoffs);
     if (destobj)
     {

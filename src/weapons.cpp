@@ -997,6 +997,8 @@ int GetDeltaWeaponElevationLevel(unsigned char weapon_id)
 	case WEFFECT_PARASITE:
 	case WEFFECT_EMPSHOCKWAVE:
 	    return(-1);
+	default:
+	    return(0);
     }
 }
 //===========================================

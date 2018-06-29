@@ -473,7 +473,7 @@ void mixbriefframes(MENUSTR *allmenus,int menunr,int slotnr,int framenr,char *pi
     wfree(newbufpixels);
 }
 //===================================
-int Brief_SetPortrait(int slotnr,int typeofport)
+void Brief_SetPortrait(int slotnr,int typeofport)
 {
     int smkid;
     switch(typeofport)

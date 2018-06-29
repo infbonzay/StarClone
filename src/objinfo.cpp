@@ -107,11 +107,13 @@ int GetUnitSightRange(OBJ *a,OBJstruct *b)
     char seerange = alldattbl.units_dat->SightRange[a->SC_Unit];
     if (GetMageAtr(&a->atrobj,ATRBLIND)>0)
 	return(MINSEERANGE);
-    if (b->sightupgnr!=-1)
+    if (b->sightupgnr != -1)
+    {
 	if (IsHeroUnit(a->SC_Unit))
 	    seerange += 2;
 	else
 	    seerange += GetUpgradeTree(&map,a->playernr,b->sightupgnr)*2;//each upgrade add +2 to sight range 
+    }
     return(seerange);
 }
 //=================================
@@ -184,10 +186,12 @@ int GetRangeWeaponInPixels(OBJ *a,int weapon_id,int playernr)
 {
     int maxdist = alldattbl.weapons_dat->MaximumRange[weapon_id];
     if (weapons[weapon_id].rangeupgnr != 255)
+    {
 	if (IsHeroUnit(a->SC_Unit))
 	    maxdist += weapons[weapon_id].rangeupgaddfactor;
 	else
 	    maxdist += GetUpgradeTree(&map,playernr,weapons[weapon_id].rangeupgnr)*weapons[weapon_id].rangeupgaddfactor;
+    }
     if (a->prop & VARINTRANSPORT)
 	maxdist += 48;
     return(maxdist);
@@ -208,10 +212,12 @@ int CheckWeaponRange(OBJ *a,OBJ *destobj,int weapon_id,int playernr)
     maxrange = GetRangeWeaponInPixels(base,weapon_id,a->playernr);
 //    printf("deltaz=%d maxrange=%d\n",deltaz,maxrange);
     if (deltaz < maxrange)
+    {
 	if (deltaz >= minrange)
 	    return(0);//in atack range;
 	else
 	    return(2);//to close
+    }
     return(1);//too far
 }
 //====================================
@@ -699,10 +705,12 @@ int  GetTriggeredUnitState(struct OBJ *a)
 int GetSubUnitType(OBJ *a)
 {
     if (a->subunit)
+    {
 	if (IsSubUnit(a->SC_Unit))
 	    return(SUBUNITTURRET);
 	else
 	    return(SUBUNITBASE);
+    }
     return(NOSUBUNIT);
 }
 //=======================================

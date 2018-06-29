@@ -450,7 +450,7 @@ void putgrp_nopacked2(int x,int y,int onlyx,int onlyy,GRPFILE *grp,int pictnr)
 {
     int addx,addy,j,sizex,sizey,decrx;
     char *vidadr,*bytes;
-    char colorbyte;
+    unsigned char colorbyte;
     if (!onlyx)
 	return;
     if (!onlyy)
@@ -475,7 +475,7 @@ void putgrp_nopacked2(int x,int y,int onlyx,int onlyy,GRPFILE *grp,int pictnr)
 	    j=sizex=grp->Picture[pictnr].PixelPerLine;
 	    do{
 		colorbyte = *bytes++;
-		if (colorbyte>0&&colorbyte<254)
+		if (colorbyte > 0 && colorbyte < 254)
 		    *vidadr = colorbyte;
 		vidadr++;
 	    }while(--decrx);

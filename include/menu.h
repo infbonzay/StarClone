@@ -304,10 +304,10 @@ struct IMAGE
 	    char		*pcxfilename;
 	    int 		visiblex;
 	    int 		visibley;
-	    char 		color1;
-	    char 		color2;
-	    char 		transvalue;
-	    char 		flags;		//bit0 - 1 - GRP image , 0 -pcx image 
+	    unsigned char	color1;
+	    unsigned char 	color2;
+	    unsigned char 	transvalue;
+	    unsigned char	flags;		//bit0 - 1 - GRP image , 0 -pcx image 
 						//bit1 - 0- topalign  1 - bottom-alighn
 };
 
@@ -527,8 +527,8 @@ void setcheckboxstate(MENUSTR *allmenus,int itemnr,int value);
 int  getcheckboxstate(MENUSTR *allmenus,int itemnr);
 void drawcheckboxitem(MENUSTR *allmenus,int itemnr);
 
-int addradiobuttonimg(MENUSTR *allmenus,int nr,PCX *pcx1,PCX *pcx2,int deltax,int deltay);
-int addradiobuttonitem(MENUSTR *allmenus,int nr,int hotx,int hoty,int hotsizex,int hotsizey,int textx,int texty,char hotkey,
+int  addradiobuttonimg(MENUSTR *allmenus,int nr,PCX *pcx1,PCX *pcx2,int deltax,int deltay);
+int  addradiobuttonitem(MENUSTR *allmenus,int nr,int hotx,int hoty,int hotsizex,int hotsizey,int textx,int texty,char hotkey,
 		    char *textstr,int fontnr,unsigned int colors4,int firstinstack);
 void drawradiobuttonitem(MENUSTR *allmenus,int itemnr);
 void setradiobuttonstate(MENUSTR *allmenus,int itemnr);
@@ -573,8 +573,8 @@ void updateimageitem(MENUSTR *allmenus,int nr,char *bufpixels);
 void delimageitem(MENUSTR *allmenus,int i,int fullempty);
 void addimagearray(MENUSTR *allmenus,int nr,int hotx,int hoty,int sizex,int sizey);
 void changegrpitem(MENUSTR *allmenus,int nr,GRPFILE *grp,int grpnr);
-void setimgtranslucencyvalue(MENUSTR *allmenus,int nr,char trans);
-void setimgtransparentcolors(MENUSTR *allmenus,int nr,char color1,char color2);
+void setimgtranslucencyvalue(MENUSTR *allmenus,int nr,unsigned char trans);
+void setimgtransparentcolors(MENUSTR *allmenus,int nr,unsigned char color1,unsigned char color2);
 void setimageitem_visibilityxy(MENUSTR *allmenus,int nr,int visiblex,int visibley);
 void addmenupalette(MENUSTR *allmenus,unsigned char *palette);
 int  MenuFindFirstElem(MENUSTR *allmenus,int typeelem);

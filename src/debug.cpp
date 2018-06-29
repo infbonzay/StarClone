@@ -11,7 +11,7 @@
 char DEBUGFLAGS;
 char DEBUGOUTFILE[1024];
 //===========================================
-int MAKEDEBUGOUTFILE(void)
+void MAKEDEBUGOUTFILE(void)
 {
 #ifdef DEBUGOUTPUT
     strcpy(DEBUGOUTFILE,GAMEPATH);
@@ -29,7 +29,7 @@ void DEBUG_INIT(int flags)
 #endif
 }
 //===========================================
-int dfprintf(const char *prefix,const char *format, ...)
+void dfprintf(const char *prefix,const char *format, ...)
 {
 #ifdef DEBUGOUTPUT
     va_list args;
@@ -46,7 +46,7 @@ int dfprintf(const char *prefix,const char *format, ...)
 #endif
 }
 //===========================================
-int dprintf(const char *prefix,const char *format, ...)
+void dprintf(const char *prefix,const char *format, ...)
 {
 #ifdef DEBUGOUTPUT
     va_list args;

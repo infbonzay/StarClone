@@ -257,17 +257,17 @@ void AddToMinimapNeutralObjs(mylist *units,struct mapinfo *loadedmap,int playort
     int i,j,sx,sy;
     struct unit_on_map *unit;
     units->EnumListInit();
-    while(unit=(unit_on_map *)units->GetNextListElem())
+    while( (unit = (unit_on_map *)units->GetNextListElem()) )
     {
 	sx=GetUnitBoxWidth(unit->unit_type);
 	sy=GetUnitBoxHeight(unit->unit_type);
-	if (unit->unit_type==SC_STARTLOC&&playortest==STARMAP_LOADFORINFO)
+	if (unit->unit_type == SC_STARTLOC && playortest == STARMAP_LOADFORINFO)
 	{
 //	    if (GAMETYPE != MAP_GAMETYPE_USEMAPSETTINGS)
 		ObjOnMiniMap(unit->xpos/32-sx/64,unit->ypos/32-sy/64,sx,sy,MINIMAP_COLORFORSTARTLOC,loadedmap->minimap);
 	}
 	else
-	    if (unit->player>=PLAYEDPLAYERS)
+	    if (unit->player >= PLAYEDPLAYERS)
 	    {
 		if (IsBuild(unit->unit_type))
 		{
@@ -284,9 +284,9 @@ void CreateUnitsFromLists(mylist *units,struct mapinfo *loadedmap)
     int i,j;
     struct unit_on_map *unit;
     units->EnumListInit();
-    while(unit=(unit_on_map *)units->GetNextListElem())
+    while( (unit = (unit_on_map *)units->GetNextListElem()) )
     {
-	    if (unit->unit_type!=SC_STARTLOC)
+	    if (unit->unit_type != SC_STARTLOC)
 	    {
 		CreateUnitsFromMAP(unit,loadedmap);
 //		wfree(unit);
@@ -294,16 +294,16 @@ void CreateUnitsFromLists(mylist *units,struct mapinfo *loadedmap)
     }
     //parse all base builds, because we need to know all resources before place creep
     units->EnumListInit();
-    while(unit=(unit_on_map *)units->GetNextListElem())
+    while( (unit=(unit_on_map *)units->GetNextListElem()) )
     {
-	    if (unit->unit_type==SC_STARTLOC)
+	    if (unit->unit_type == SC_STARTLOC)
 	    {
 		CreateUnitsFromMAP(unit,loadedmap);
 //		wfree(unit);
 	    }
     }
     units->EnumListInit();
-    while(unit=(unit_on_map *)units->GetNextListElem(&i))
+    while( (unit=(unit_on_map *)units->GetNextListElem(&i)) )
     {
 	wfree(unit);
 	units->DelList(i);

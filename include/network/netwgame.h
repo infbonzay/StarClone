@@ -67,7 +67,7 @@ int  SendCommandToAll(MENUSTR *allmenus,int command,NETWORK_INFO *sendsock,NETWO
 int  CheckForDublicateName(char *newname);
 void AddToBanList(int playerslot);
 int  CheckForBan(struct sockaddr_in *newaddr);
-int  RequestFileParts(MENUSTR *allmenus,NETWORK_INFO *sendsock,NETWORK_INFO *recvsock);
+void RequestFileParts(MENUSTR *allmenus,NETWORK_INFO *sendsock,NETWORK_INFO *recvsock);
 void BuffPrepareForSend(char *fn,long pos,int size,char *buff);
 void BuffPrepareForWrite(char *fn,long pos,int size,char *buff);
 int  CheckForPlayersReady(void);

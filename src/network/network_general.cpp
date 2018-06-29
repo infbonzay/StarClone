@@ -28,12 +28,12 @@ void DEBUG_packet(int inout,NETWORK_JOIN_PACKET *mypacket,struct sockaddr_in *sk
 //=============================================
 int DecodeBuffer(unsigned char *buff,int size)
 {
-    
+    return(1);    
 }
 //=============================================
 int CodeBuffer(unsigned char *buff,int size)
 {
-
+    return(1);    
 }
 //=============================================
 int CreateCRC(unsigned char *buff,int size,int codedecode)

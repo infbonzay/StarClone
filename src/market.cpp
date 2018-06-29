@@ -207,13 +207,13 @@ void GetCostUpgr(int upgr_id,int playernr,int *mcost,int *gcost)
     int upgr_level=GetUpgradeTree(&map,playernr,upgr_id);
     if (map.upgr_settings.use_defaults[upgr_id])
     {
-	*mcost=alldattbl.upgrades_dat->BaseMineralCost[upgr_id]+alldattbl.upgrades_dat->FactorMineralCost[upgr_id]*upgr_level;
-	*gcost=alldattbl.upgrades_dat->BaseVespeneCost[upgr_id]+alldattbl.upgrades_dat->FactorVespeneCost[upgr_id]*upgr_level;
+	*mcost = alldattbl.upgrades_dat->BaseMineralCost[upgr_id] + alldattbl.upgrades_dat->FactorMineralCost[upgr_id] * upgr_level;
+	*gcost = alldattbl.upgrades_dat->BaseVespeneCost[upgr_id] + alldattbl.upgrades_dat->FactorVespeneCost[upgr_id] * upgr_level;
     }
     else
     {
-	*mcost=map.upgr_settings.basecostminerals[upgr_id]+map.upgr_settings.upgradecostminerals[upgr_id]*upgr_level>>8;
-	*gcost=map.upgr_settings.basecostgas[upgr_id]+map.upgr_settings.upgradecostgas[upgr_id]*upgr_level>>8;
+	*mcost = (map.upgr_settings.basecostminerals[upgr_id] + map.upgr_settings.upgradecostminerals[upgr_id] * upgr_level) >> 8;
+	*gcost = (map.upgr_settings.basecostgas[upgr_id] + map.upgr_settings.upgradecostgas[upgr_id] * upgr_level) >> 8;
     }
 }
 //=======================================
@@ -381,6 +381,7 @@ int LowLevelDamage(OBJ *atacker,OBJ *a,int weapon_id,int typedamage,int totaldam
     totaldamage += (GetCorrosiveAcidValue(a)<<8);
     remaindamage = totaldamage;
     if (IsRangeWeapon(weapon_id) && !UniqueWeapon(weapon_id))
+    {
 	if (directorsplash & DAMAGE_SPLASH)
 	{
 	    if (!IsBuild(a->SC_Unit))
@@ -398,7 +399,7 @@ int LowLevelDamage(OBJ *atacker,OBJ *a,int weapon_id,int typedamage,int totaldam
 		    return(0);
 		}
 	}
-    //need to check if scarab do damage
+    }
     myparent = atacker;
     if (atacker && a)
     {

@@ -686,7 +686,7 @@ int IScriptCmd_gotorepeatattk(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
     {
 	a = img->parentimg->creator.objcreator.obj;
     	if (a)
-    	    if (ApplyNextModeMove(a));
+    	    ApplyNextModeMove(a);
     }
 
     img->offsetcmdinbuf += cmdsize;

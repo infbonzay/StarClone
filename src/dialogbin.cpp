@@ -98,8 +98,9 @@ MENUSTR *LoadDialogBin(char *dialogbinfilename,int dialog_opt,int addforreserv,i
     DIALOGBIN_SMK *tempsmk[10],*smkarray;
 
     
-    char zerostring=0,transparentcolor,translucencycolor;
-    char *dialogdata,*text,hotkey;
+    char zerostring=0;
+    char *dialogdata,*text;
+    unsigned char hotkey,transparentcolor,translucencycolor;
     DIALOGBIN *tempdialog,*tempdialog2;
     MENUSTR *menu;
     if (mpqloadfile(dialogbinfilename,(char **)&dialogdata))
@@ -407,11 +408,11 @@ DIALOGBIN_INFO *DialogBin_GetItemCoords(char *dialogbinfilename)
 	    alldialogcoords->iteminfo[elemnr].fontnr=GetFontNrFromYSize(tempdialog->Height);
 	if (tempdialog->Flags&(DIALOGBIN_FLAGS_HOTKEYFIRSTCHARACTER|DIALOGBIN_FLAGS_VIRTHOTKEY))
 	{
-	    alldialogcoords->iteminfo[elemnr].hotkey=text[0];
+	    alldialogcoords->iteminfo[elemnr].hotkey = text[0];
 	    text++;
 	}
 	else
-	    alldialogcoords->iteminfo[elemnr].hotkey=255;
+	    alldialogcoords->iteminfo[elemnr].hotkey = 255;
 	len=strlen(text);
 	if (len)
 	{
@@ -728,7 +729,7 @@ MENUSTR *DialogBin_ShowPermanent(char *dialogbinfilename,int dialog_opt,int addf
     return(dialog);
 }
 //==========================================
-int DialogBin_ClosePermanent(MENUSTR *menu)
+void DialogBin_ClosePermanent(MENUSTR *menu)
 {
     if (menu)
 	mytimer.ClearMyTimerFunc();

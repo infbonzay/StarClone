@@ -49,13 +49,13 @@ int  GetUnitRace(SCUNIT SC_Unit);
 int  GetBirthDirection(SCUNIT SC_Unit);
 
 void ChangeSC_Unit(struct OBJ *a,int playernr,SCUNIT SC_Unit,int flagready);
-int  SetBurrowFlag(struct OBJ *a,int flag);
+void SetBurrowFlag(struct OBJ *a,int flag);
 int  IsHallucination(struct OBJ *a);
 int  IsUnitBaseBuild(struct OBJ *a);
 int  IfAtackCoolDown(struct OBJ *a);
 void ClearAtackCoolDown(struct OBJ *a);
 void SetAtackCoolDownAction(struct OBJ *a,int x,int y,struct OBJ *destobj,int mode);
-int  SetCloakedFlag(OBJ *a,int flag);
+void SetCloakedFlag(OBJ *a,int flag);
 struct OBJ *SearchUnit(int playernr,SCUNIT SC_Unit,int shieldp,int lifep,int energyp);
 struct OBJ *SearchUnitFunc(int playernr,int (*funccheckunit)(SCUNIT SC_Unit),int nearx,int neary,int dist);
 OBJ *SearchObjs(int x,int y,int range,int *array,int arraydim);
@@ -75,7 +75,7 @@ void freeforrestart(void);
 
 inline int  IsOBJUnderConstruct(struct OBJ *a) { return(!(a->prop & VARREADY)); };
 inline int  IsReadyOBJ(struct OBJ *a) { return( a->prop & VARREADY); };
-inline int  ChangeUnitIconProp(OBJ *a,int typeofprop) { a->typeofprop = typeofprop; };
+inline void ChangeUnitIconProp(OBJ *a,int typeofprop) { a->typeofprop = typeofprop; };
 inline int  IsCloaked(OBJ *a) { return(a->prop & UNITPROP_PREVCLOAK); };
 inline int  IsBattleReactions(SCUNIT SC_Unit){ return((alldattbl.units_dat->SpecialAbilityFlags[SC_Unit] & SPECIAL_BATTLEREACTIONS)!=0); };
 inline int  IsFullAutoAttack(SCUNIT SC_Unit){ return((alldattbl.units_dat->SpecialAbilityFlags[SC_Unit] & SPECIAL_FULLAUTOATTACK)!=0);};
