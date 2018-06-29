@@ -901,6 +901,8 @@ void WeaponDoDamage(OBJ *atacker,OBJ *destobj,int x256,int y256,SCUNIT SC_Unit,
 	    }
 	    break;
 	case WEFFECT_CORROSIVEACID:
+	    if (!destobj)
+		break;
 	    if (atacker && IsHallucination(atacker))
 		break;
 	    realdamage = GetWeaponDamage(SC_Unit,playernr,weapon_id) << 8;

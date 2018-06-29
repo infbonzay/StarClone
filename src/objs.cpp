@@ -1219,10 +1219,12 @@ void invisiblestick(void)
         a = objects[i];
         if (a->modemove == MODEDIE || IsInvincibleUnit(a->SC_Unit))
     	    continue;
-	if (IsDoodadState(a->SC_Unit) || a->prop & VARNOTHERE)
+	if (IsDoodadState(a->SC_Unit))
 	    continue;
         if (GetMageAtr(&a->atrobj,ATRSTASIS)==0 )
         {
+	    if (a->prop & VARNOTHERE)
+		continue;
     	    if (makeinvisibles(a))
     	    {
 	        if (OBJ_VAR_CHK(a,obj_invsee,NUMBGAMER))
@@ -1245,6 +1247,10 @@ void invisiblestick(void)
 	    	SetCloakedFlag(a,0);
 		a->mainimage->newgrpmethod = NORMAL;
     	    }
+    	}
+    	else
+    	{
+	    a->mainimage->newgrpmethod = TRANSPARENT;
     	}
     }
 }

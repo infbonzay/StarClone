@@ -742,7 +742,7 @@ void makeoneobjseeopen(OBJ *a,OBJstruct *b)
 	a->prop &= ~VARKARTCHANGES;
     else
 	return;
-    if (a->prop & VARNOTHERE)
+    if ((a->prop & VARNOTHERE) && GetMageAtr(&a->atrobj,ATRSTASIS)==0)
 	return;
     if (a->in_transport)//in buncker/transport
 	return;
@@ -836,9 +836,9 @@ void makeoneobjseeopen(OBJ *a,OBJstruct *b)
 			    continue;
                     	a->visibleby=opn;
     	    }//codeforscreen
-    	    if ((!(a->prop&VARNOTWORK)) && !IsOBJUnderConstruct(a) && (a->prop|VARPOWEROFF))//esli dvigaetsea
+    	    if (IsDetector(a->SC_Unit) && GetMageAtr(&a->atrobj,ATRBLIND) == 0)
     	    {
-    	    	if (IsDetector(a->SC_Unit)&&GetMageAtr(&a->atrobj,ATRBLIND)==0)
+    		if ((!(a->prop & VARNOTWORK)) && !IsOBJUnderConstruct(a) && !(a->prop & VARPOWEROFF))//esli dvigaetsea
 		{
                         	if  (opn)//esli alienseobj|parasite
 				{
@@ -910,7 +910,13 @@ void calcfullinvandseeobj(OBJ *a)
 	OBJ_VAR_MASK_SET(a,obj_notdetect,0xff);
 	decloaked = existatrdecloak(a);
 	if (decloaked)
+	{
     	    OBJ_VAR_MASK_SET(a,obj_invsee,0xff);
+//    	    OBJ_VAR_MASK_CLR(a,obj_notdetect,0xff);
+//    	    OBJ_VAR_MASK_SET(a,obj_see,0xff);
+    	    cloaked = 0;
+//    	    return;
+    	}
     }
     else
     {
