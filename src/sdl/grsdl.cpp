@@ -103,8 +103,7 @@ int installvectors(void)
 //==========================
 void uninstallvectors(void)
 {
-//    if (SDL_MUSTLOCK(sdlsurface))
-//        SDL_LockSurface(sdlsurface);
+//    SDL_FreeSurface(sdlsurface);
     SDL_Quit();
 }
 //==========================

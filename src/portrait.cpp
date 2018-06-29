@@ -36,7 +36,7 @@ int loadSMK(SMKPLAY *tempplay,int smkflags)
 {
     //if loaded some previous clean
     unloadSMK(tempplay);
-    tempplay->smk=smk_open_file(tempplay->smkfile.hmpq,(const char *)tempplay->smkfile.mpqfilenr,SMK_MODE_MEMORY);
+    tempplay->smk=smk_open_file(tempplay->smkfile.hmpq,(const char *)(long)tempplay->smkfile.mpqfilenr,SMK_MODE_MEMORY);
     if (tempplay->smk)
     {
 	smk_enable_video(tempplay->smk,1);

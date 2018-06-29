@@ -224,7 +224,8 @@ int comparestrings(char *str,char *strarray[],int nrofstrarray)
 #define MAXCOMPILEBUFSIZE	65535
 int ISCRIPT::CompilePass1(FILE *f)
 {
-    int i,k,stridlen,compilebufoffs,retcmd,retstatus=0,intval,isheader,nrparams;
+    int i,k,stridlen,retcmd,retstatus=0,intval,isheader,nrparams;
+    long compilebufoffs;
     unsigned char cmdsize,subcmdsize;
     signed char cmd;
     char *compilebuf;
