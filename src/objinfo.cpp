@@ -509,7 +509,7 @@ int IsActiveUnitForAtack(OBJ *a)
 //	return(0);
 //    if (IsGroupNeutralFlag(a->SC_Unit))
 //	return(0);
-    if ((a->prop & (VARINTRANSPORT|VARNOTHERE|VARINVINCIBILITY)) || GetMageAtr(&a->atrobj,ATRSTASIS))
+    if ((a->prop & (VARINTRANSPORT|VARNOTHERE|VARINVINCIBILITY)) )// || GetMageAtr(&a->atrobj,ATRSTASIS))
 	return(0);
     return(1);
 }
@@ -526,7 +526,7 @@ int IsActiveUnit(OBJ *a)
 	if (a->in_transport->SC_Unit != SC_BUNKEROBJ)
 	    intransport=1;
     }
-    if (intransport || ( a->prop & (VARNOTHERE | VARINVINCIBILITY) ) || GetMageAtr(&a->atrobj,ATRSTASIS))
+    if (intransport || ( a->prop & (VARNOTHERE | VARINVINCIBILITY) ) )// || GetMageAtr(&a->atrobj,ATRSTASIS))
 	return(0);
     return(1);
 }
@@ -537,7 +537,7 @@ int IsAtackerActiveUnit(OBJ *a)
 	return(0);
     if (!IsReadyOBJ(a))
 	return(0);
-    if ((a->prop & (VARINTRANSPORT | VARNOTHERE)) || GetMageAtr(&a->atrobj,ATRSTASIS))
+    if ((a->prop & (VARINTRANSPORT | VARNOTHERE)) ) //|| GetMageAtr(&a->atrobj,ATRSTASIS))
 	return(0);
     return(1);
 }

@@ -252,10 +252,10 @@ void DecrementOBJAtr(struct OBJ *a)
     int prevsporecnt,newx256,newy256;
     for (int i=1;i<MAXMAGEATR;i++)
     {
-	if ((i==ATRSTASIS)||(GetMageAtr(&a->atrobj,ATRSTASIS)==0))
+	if ( (i == ATRSTASIS) || (GetMageAtr(&a->atrobj,ATRSTASIS) == 0) )
 	{
-    	    if ( GetMageAtr(&a->atrobj,i)<TERMINATEATRMAGE)
-        	if (GetMageAtr(&a->atrobj,i)>0)
+    	    if ( GetMageAtr(&a->atrobj,i) < TERMINATEATRMAGE)
+        	if (GetMageAtr(&a->atrobj,i) > 0)
         	{
 		    if (i == ATRCORROSIVEACID)
 		    {
@@ -320,18 +320,18 @@ void DecrementOBJAtr(struct OBJ *a)
     }
     if (IsSpellCaster(a->SC_Unit) && !IsOBJUnderConstruct(a))
     {
-	if (GetMageAtr(&a->atrobj,ATRSTASIS)==0)
+	if (GetMageAtr(&a->atrobj,ATRSTASIS) == 0)
 	{
-    	    if ((a->prop&VARDECRMAGE) && GetMageAtr(&a->atrobj,ATRINVISIBLE)!=WRAITHEPODARBITEROM)
+    	    if ((a->prop & VARDECRMAGE) && GetMageAtr(&a->atrobj,ATRINVISIBLE) != WRAITHEPODARBITEROM)
     	    {
-    		if (a->mana>0)//decrement mage
+    		if (a->mana > 0)//decrement mage
         	{
 		    DecrManaBITS(a,DELTAMANAONCYCLE);
     		}
 		else
     		{
     		    addmage(a,ATRINVISIBLE,0);
-    		    a->prop&=~VARDECRMAGE;
+    		    a->prop &= ~VARDECRMAGE;
 		    ChangeTypeOfProp(a,PROPNORMAL1);
 		}
 	    }
@@ -352,7 +352,7 @@ int decrresourceobj(struct OBJ *a,int minus)
 	case SC_MINERAL1OBJ:
 	case SC_MINERAL2OBJ:
 	case SC_MINERAL3OBJ:	
-	    if (minus>=a->data.resource.resource_count)
+	    if (minus >= a->data.resource.resource_count)
 	    {
 		resret = a->data.resource.resource_count;
 		dieobj(a);
@@ -367,7 +367,7 @@ int decrresourceobj(struct OBJ *a,int minus)
 	case SC_EXTRACTOROBJ:
 	case SC_ASSIMILATOROBJ:
 	case SC_REFINERYOBJ:
-	    if (minus>=a->data.resource.resource_count)
+	    if (minus >= a->data.resource.resource_count)
 	    {
 		//then message appear at first time reach to 0
 		if (a->data.resource.resource_count != 0)
@@ -405,7 +405,7 @@ int existatrdecloak(struct OBJ *a)
 {
     for (int i=0;i<MAXMAGEATR;i++)
     {
-	if (GetMageAtr(&a->atrobj,i)>0)
+	if (GetMageAtr(&a->atrobj,i) > 0)
 	    if (decloakatr[i])
 	        return(1);
     }
@@ -489,7 +489,7 @@ void MakeMindControl(OBJ *a,int playernr,int ncolor)
 int ifcanworkatr_onothers(OBJ *a,int atr,int typemage)
 {
     //if stasis do not do atribute things
-    if (GetMageAtr(&a->atrobj,ATRSTASIS)>0)
+    if (GetMageAtr(&a->atrobj,ATRSTASIS) > 0)
     	return(0);
     switch(atr)
     {
@@ -507,13 +507,13 @@ int ifcanworkatr_onme(OBJ *a,int atr,int typemage)
     switch(atr)
     {
 	case ATRPLAGUE:
-	    if (GetMageAtr(&a->atrobj,ATRSTASIS)>0)
+	    if ( GetMageAtr(&a->atrobj,ATRSTASIS) > 0)
 		return(0);
 	    break;
 	case ATRIRRADIATE:
 	    if (!IsOrganic(a->SC_Unit))
 		return(0);
-	    if (GetMageAtr(&a->atrobj,ATRSTASIS)>0)
+	    if (GetMageAtr(&a->atrobj,ATRSTASIS) > 0)
 	        return(0);
 	    break;
     }

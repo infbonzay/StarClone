@@ -2164,7 +2164,7 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int modemovef
 //	    if (a->movelist)
 //		a->movelist->EmptyElemFifo();
 	    a->modemove = mode;
-	    if (GetMageAtr(&a->atrobj,ATRHALLUCINATION)!=0)
+	    if (GetMageAtr(&a->atrobj,ATRHALLUCINATION) != 0)
 	    {
 		a->mainimage->SetGrpFunc(IMAGEID_HALLUCINATIONDIE1);
 		Play_sfxdata(a->mainimage->xpos>>8,a->mainimage->ypos>>8,SFXDATA_HALLUCINATIONDIE,2);

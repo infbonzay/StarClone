@@ -811,7 +811,7 @@ int (*UnitActionDefaults[MAX_UNITS_ELEM])(struct OBJ *a,MAIN_IMG *img)=
 //=================================
 int AdditionalUnitProceed(OBJ *a,MAIN_IMG *img)
 {
-    if ((a->prop & (VARNOTWORK | VARPOWEROFF))||GetMageAtr(&a->atrobj,ATRSTASIS)>0)
+    if ((a->prop & (VARNOTWORK | VARPOWEROFF)) || GetMageAtr(&a->atrobj,ATRSTASIS) > 0)
 	return 0;
     if (a->atackcooldowntime && !(a->mainimage->flags & SC_IMAGE_FLAG_NEEDROTATIONTODIRECTION))
 	if (--a->atackcooldowntime == 0)

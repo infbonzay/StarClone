@@ -106,8 +106,10 @@ void freeMAGEstructs(void)
 int isrechargebleobj(struct OBJ *a)
 {
     if (IsShieldEnable(a->SC_Unit))
-	if ((a->shield<GetUnitMaxShield(a->SC_Unit))&&!(a->prop&VARNOTHERE)&&!IsOBJUnderConstruct(a)&&
-	    GetMageAtr(&a->atrobj,ATRSTASIS)==0)
+	if ( (a->shield < GetUnitMaxShield(a->SC_Unit)) && 
+	    !(a->prop & VARNOTHERE) 			&&
+	    !IsOBJUnderConstruct(a) ) //			&&
+//	    GetMageAtr(&a->atrobj,ATRSTASIS) == 0 )
 	    if (!IsBuild(a->SC_Unit))
 		return 1;
     return 0;
@@ -115,8 +117,11 @@ int isrechargebleobj(struct OBJ *a)
 //==========================================
 int ishealingobj(struct OBJ *a)
 {
-    if (IsOrganic(a->SC_Unit)&&!(a->prop&VARNOTHERE)&&!IsOBJUnderConstruct(a)&&
-	    GetMageAtr(&a->atrobj,ATRSTASIS)==0 && a->health<GetUnitMaxHealth(a->SC_Unit))
+    if (IsOrganic(a->SC_Unit)				&&
+	!(a->prop & VARNOTHERE)				&&
+	!IsOBJUnderConstruct(a)				&&
+	a->health < GetUnitMaxHealth(a->SC_Unit) ) //	&&
+//	GetMageAtr(&a->atrobj,ATRSTASIS)==0 )
 	if (!IsOnSkyOBJ(a))
 	    return 1;
     return 0;
@@ -124,7 +129,7 @@ int ishealingobj(struct OBJ *a)
 //==========================================
 int isobjtobeinfest(struct OBJ *a)
 {
-    if (a->SC_Unit==SC_COMMCENTEROBJ && (a->health < GetUnitMaxHealth(a->SC_Unit)/2) && !IsOBJUnderConstruct(a))
+    if ( a->SC_Unit == SC_COMMCENTEROBJ && (a->health < GetUnitMaxHealth(a->SC_Unit) / 2) && !IsOBJUnderConstruct(a))
 	    return 1;
     return 0;
 }

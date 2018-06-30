@@ -1034,13 +1034,13 @@ void FindLineOfProp(struct OBJ *a,struct OBJstruct *b)
 		if ( IsOnSkyOBJ(a) && (IsBuild(a->SC_Unit)) )
 		    ChangeTypeOfProp(a,b,PROPONAIR);
 		else
-		    if (IsOBJBurrowed(a)||
-			    (GetMageAtr(&a->atrobj,ATRINVISIBLE)>0&&
-			    (ExistProp(b,MODECLOAKFIELD)||ExistProp(b,MODEPERSONNELCLOAK))))
+		    if (IsOBJBurrowed(a) ||
+			    ( GetMageAtr(&a->atrobj,ATRINVISIBLE)>0&&
+			     (ExistProp(b,MODECLOAKFIELD) || ExistProp(b,MODEPERSONNELCLOAK)) ) )
 			ChangeTypeOfProp(a,b,PROPNORMAL2);
 		    else
-			if (a->typeofprop!=PROPBUILDSIMPLE&&
-			    a->typeofprop!=PROPBUILDADVANCED)
+			if (a->typeofprop != PROPBUILDSIMPLE &&
+			    a->typeofprop != PROPBUILDADVANCED)
 			    ChangeTypeOfProp(a,b,PROPNORMAL1);
 	    }
 	    else
