@@ -692,7 +692,7 @@ void arbitermakewarpfield(OBJ *a,OBJstruct *b)
 	return;
     if (PLAYER[a->playernr].isobserverflag)
 	return;
-    see=GetCloakRange(a,b);
+    see = GetUnitCloakRange(b);
     objxysize = GetRangeObjSize(a->SC_Unit,NULL,NULL);
 
     xcenter=a->xkart-xypos[0][objxysize];

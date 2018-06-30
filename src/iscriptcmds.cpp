@@ -279,7 +279,7 @@ int IScriptCmd_end(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)		//16
 	    case SC_IMAGE_OBJ_CREATOR:
 		if (img->parentimg->creator.objcreator.obj)
 		{
-		    MarkForDestroy(img->parentimg->creator.objcreator.obj);
+		    OBJMarkForDestroy(img->parentimg->creator.objcreator.obj);
 		    img->parentimg->whocreate = SC_IMAGE_UNKNOWN_CREATOR;
 		    img->parentimg->creator.objcreator.obj = NULL;
     		}

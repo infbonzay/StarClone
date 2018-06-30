@@ -258,11 +258,6 @@ unsigned char GetNewWeaponType(OBJ *a,OBJ *destobj,int newatackerunitusedweapon)
     return(weapon_id);
 }
 //====================================
-int GetCloakRange(OBJ *a,OBJstruct *b)
-{
-    return(b->cloakrange);
-}
-//====================================
 int GetAddManaFactor(SCUNIT SC_Unit,int playernr)
 {
     OBJstruct *b=loadobj(SC_Unit);
@@ -476,12 +471,6 @@ char *getOBJname(SCUNIT SC_Unit)
     return(NULL);
 }
 //=================================
-//marking for later destroy
-void MarkForDestroy(OBJ *a)
-{
-    a->prop|=(VARNOTHERE|VARNOTWORK|VARNOTSEEPROP|VARCANTSELECT|VARMARKFORDESTROY);
-}
-//=================================
 void DestroyMarked(void)
 {
     OBJ *a;
@@ -690,16 +679,6 @@ int IfCanClickOBJ(SCUNIT SC_Unit)
     sprites_id=alldattbl.flingy_dat->sprites_id[flingy_id];
     images_id=alldattbl.sprites_dat->images_id[sprites_id];
     return(alldattbl.images_dat->Clickable[images_id]);
-}
-//=======================================
-void SetTriggeredUnitState(struct OBJ *a,int state)
-{
-    a->triggerstate=state;
-}
-//=======================================
-int  GetTriggeredUnitState(struct OBJ *a)
-{
-    return(a->triggerstate);
 }
 //=======================================
 int GetSubUnitType(OBJ *a)

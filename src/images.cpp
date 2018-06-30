@@ -1489,7 +1489,7 @@ void ForceDestroyAllOBJsImages(OBJ *a)
     //remove those images
     mainimageslist.DeleteMarked();
     //remove object
-    MarkForDestroy(a);
+    OBJMarkForDestroy(a);
 }
 //============================================
 int MAIN_IMG::CheckForVisibility(void)

@@ -32,14 +32,12 @@ int  GetWeaponDamage(SCUNIT SC_Unit,int playernr,int weapon_id);
 
 int  GetArmor(OBJ *a,int armorupgnr,int *upgradenr,int *upgarmor);
 int  GetShieldArmor(OBJ *a,int *upgradenr);
-int  GetCloakRange(OBJ *a,OBJstruct *b);
 
 int  GetNrSomeObjects(OBJ *a,int *newunit,char **countmes);
 
 void SetInertionObj(OBJ *a,int setclear);
 int  IfInertionObj(OBJ *a);
 char *getOBJname(SCUNIT SC_Unit);
-void MarkForDestroy(OBJ *a);
 void DestroyMarked(void);
 int  GetKvadrant(int storonasveta);
 int  IsActiveUnit(OBJ *a);
@@ -77,8 +75,6 @@ int  GetDeltaDirection(OBJ *a);
 void AlignMAPXYCoordLU(int *l,int *u);
 void AlignMAPXYCoordRD(int *r,int *d);
 int  IfCanClickOBJ(SCUNIT SC_Unit);
-void SetTriggeredUnitState(struct OBJ *a,int state);
-int  GetTriggeredUnitState(struct OBJ *a);
 
 inline int GetUnitUnknownFlags(SCUNIT SC_Unit) { return(alldattbl.units_dat->Unknown1[SC_Unit]); };
 inline int GetUnitSublabel(SCUNIT SC_Unit) { return(alldattbl.units_dat->Sublabel[SC_Unit]); };
@@ -140,6 +136,12 @@ inline void SetUnitShield(OBJ *a,int shield) { a->shield=shield; };
 inline int GetBuildUnitScore(SCUNIT SC_Unit) { return(alldattbl.units_dat->BuildScore[SC_Unit]); };
 inline int GetDestroyUnitScore(SCUNIT SC_Unit) { return(alldattbl.units_dat->DestroyScore[SC_Unit]); };
 inline unsigned char GetUnitElevationLevel(SCUNIT SC_Unit) { return(alldattbl.units_dat->ElevationLevel[SC_Unit]); };
+inline void SetTriggeredOBJState(OBJ *a,int state) { a->triggerstate = state; };
+inline int  GetTriggeredOBJState(OBJ *a) { return(a->triggerstate); };
+inline int  GetUnitCloakRange(OBJstruct *b) { return(b->cloakrange); };
+inline void OBJMarkForDestroy(OBJ *a) { a->prop |= (VARNOTHERE|VARNOTWORK|VARNOTSEEPROP|VARCANTSELECT|VARMARKFORDESTROY); };
+//=================================
+
 //=====================================================
 
 

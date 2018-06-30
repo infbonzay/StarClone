@@ -312,7 +312,7 @@ int CheckForUnit(int (*ConditionFunction)(int *, int),
 		    nrofunits++;
 		    if (retlast)
 		    {
-			SetTriggeredUnitState(a, SETSTATE);
+			SetTriggeredOBJState(a, SETSTATE);
 //			objlist->AddElem(a);
 			last = a;
 			if (--cntunits==0)
@@ -870,8 +870,8 @@ int Action_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int trig_nr,int playernr,int
 		    nrofunits=CheckForUnit(NULL,TRIGGER_ALLPLAYERSBITMASK,unitnr,1,&newobj,&info->gamelocations[locnr].coords);
 		    if (newobj)
 		    {
-			if (GetTriggeredUnitState(newobj))
-		    	    SetTriggeredUnitState(newobj, CLEARSTATE);
+			if (GetTriggeredOBJState(newobj))
+		    	    SetTriggeredOBJState(newobj, CLEARSTATE);
 			SetBlinkOBJ(newobj);
 		    }
 
@@ -1006,9 +1006,9 @@ int Action_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int trig_nr,int playernr,int
 		    {
 			for (j=0;j<MaxObjects;j++)
 			{
-			    if (GetTriggeredUnitState(objects[j]))
+			    if (GetTriggeredOBJState(objects[j]))
 			    {
-				SetTriggeredUnitState(objects[j], CLEARSTATE);
+				SetTriggeredOBJState(objects[j], CLEARSTATE);
 				oldsnd = UnBlockSoundToPlay();
 				dieobj(objects[j]);
 				RestoreSoundToPlay(oldsnd);
@@ -1037,10 +1037,10 @@ int Action_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int trig_nr,int playernr,int
 		    {
 			for (j=0;j<MaxObjects;j++)
 			{
-			    if (GetTriggeredUnitState(objects[j]))
+			    if (GetTriggeredOBJState(objects[j]))
 			    {
 				//done by previous trigger
-				SetTriggeredUnitState(objects[j], CLEARSTATE);
+				SetTriggeredOBJState(objects[j], CLEARSTATE);
 				oldsnd = UnBlockSoundToPlay();
 				dieobj(objects[j]);
 				RestoreSoundToPlay(oldsnd);
@@ -1069,9 +1069,9 @@ int Action_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int trig_nr,int playernr,int
 		    {
 			for (j=0;j<MaxObjects;j++)
 			{
-			    if (GetTriggeredUnitState(objects[j]))
+			    if (GetTriggeredOBJState(objects[j]))
 			    {
-				SetTriggeredUnitState(objects[j], CLEARSTATE);
+				SetTriggeredOBJState(objects[j], CLEARSTATE);
 			        oldsnd=BlockSoundToPlay();
 				dieobj_silently(objects[j]);
 				RestoreSoundToPlay(oldsnd);
@@ -1102,10 +1102,10 @@ int Action_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int trig_nr,int playernr,int
 		    {
 			for (j=0;j<MaxObjects;j++)
 			{
-			    if (GetTriggeredUnitState(objects[j]))
+			    if (GetTriggeredOBJState(objects[j]))
 			    {
 				//done by previous trigger
-				SetTriggeredUnitState(objects[j], CLEARSTATE);
+				SetTriggeredOBJState(objects[j], CLEARSTATE);
 			        oldsnd=BlockSoundToPlay();
 				dieobj_silently(objects[j]);
 				RestoreSoundToPlay(oldsnd);
@@ -1185,7 +1185,7 @@ int Action_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int trig_nr,int playernr,int
 		    CheckForUnit(NULL,ownedactiononplayers,unitnr,1,&newobj,&info->gamelocations[searchloc].coords);
 		    if (newobj)
 		    {
-			SetTriggeredUnitState(newobj, CLEARSTATE);
+			SetTriggeredOBJState(newobj, CLEARSTATE);
 			CenterXYArea(&info->gamelocations[locnr].coords,&sx,&sy);
 			//deltax deltay delta moved location
 			deltax = GetOBJx(newobj) - sx;
@@ -1216,10 +1216,10 @@ int Action_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int trig_nr,int playernr,int
 		    {
 			for (j=0;j<MaxObjects;j++)
 			{
-			    if (GetTriggeredUnitState(objects[j]))
+			    if (GetTriggeredOBJState(objects[j]))
 			    {
 				//done by previous trigger
-				SetTriggeredUnitState(objects[j], CLEARSTATE);
+				SetTriggeredOBJState(objects[j], CLEARSTATE);
 				b=loadobj(objects[j]->SC_Unit);
 				//teleport to other location
 //				CenterXYArea(&info->gamelocations[searchloc].coords,&xobj,&yobj);
@@ -1258,7 +1258,7 @@ int Action_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int trig_nr,int playernr,int
 		    CheckForUnit(NULL,ownedactiononplayers,unitnr,1,&newobj,&info->gamelocations[searchloc].coords);
 		    if (newobj)
 		    {
-			SetTriggeredUnitState(newobj, CLEARSTATE);
+			SetTriggeredOBJState(newobj, CLEARSTATE);
 			movestate = GetDoodadMoveDirection(newobj);
 			if (movestate == DOODAD_MOVE_NONE)
 			    moveobj(newobj,NULL,MODEDOODADCHANGESTATE,openstate,0,NOSHOWERROR|XYNOTCOORDS);
@@ -1278,10 +1278,10 @@ int Action_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int trig_nr,int playernr,int
 		    {
 			for (j=0;j<MaxObjects;j++)
 			{
-			    if (GetTriggeredUnitState(objects[j]))
+			    if (GetTriggeredOBJState(objects[j]))
 			    {
 				//done by previous trigger
-				SetTriggeredUnitState(objects[j], CLEARSTATE);
+				SetTriggeredOBJState(objects[j], CLEARSTATE);
 				switch(openstate)
 				{
 				    case TRG_TYPEFUNC_SWITCHSET:
@@ -1369,10 +1369,10 @@ creationwithoutproperties:
 		    {
 			for (j=0;j<MaxObjects;j++)
 			{
-			    if (GetTriggeredUnitState(objects[j]))
+			    if (GetTriggeredOBJState(objects[j]))
 			    {
 				//done by previous trigger
-				SetTriggeredUnitState(objects[j], CLEARSTATE);
+				SetTriggeredOBJState(objects[j], CLEARSTATE);
 				//order unburrow if needed, after then move,atack,...
 				deltax=0;
 				deltay=0;
@@ -1436,10 +1436,10 @@ creationwithoutproperties:
 		    {
 			for (j=0;j<MaxObjects;j++)
 			{
-			    if (GetTriggeredUnitState(objects[j]))
+			    if (GetTriggeredOBJState(objects[j]))
 			    {
 				//done by previous trigger
-				SetTriggeredUnitState(objects[j], CLEARSTATE);
+				SetTriggeredOBJState(objects[j], CLEARSTATE);
 				MakeMindControl(objects[j],playernr,PLAYER[playernr].colorRACE);
 				moveobj(objects[j],NULL,MODESTOP,NOSHOWERROR);
 		    		SetBlinkOBJ(objects[j]);
@@ -1468,10 +1468,10 @@ creationwithoutproperties:
 		    {
 			for (j=0;j<MaxObjects;j++)
 			{
-			    if (GetTriggeredUnitState(objects[j]))
+			    if (GetTriggeredOBJState(objects[j]))
 			    {
 				//done by previous trigger
-				SetTriggeredUnitState(objects[j], CLEARSTATE);
+				SetTriggeredOBJState(objects[j], CLEARSTATE);
 				SetUnitPercentHealth(objects[j],state);
 				//need to add fireblood images
 				AddRemoveBloodFlameOverlays(objects[j]);
@@ -1500,10 +1500,10 @@ creationwithoutproperties:
 		    {
 			for (j=0;j<MaxObjects;j++)
 			{
-			    if (GetTriggeredUnitState(objects[j]))
+			    if (GetTriggeredOBJState(objects[j]))
 			    {
 				//done by previous trigger
-				SetTriggeredUnitState(objects[j], CLEARSTATE);
+				SetTriggeredOBJState(objects[j], CLEARSTATE);
 				SetUnitPercentMana(objects[j],state);
 				if (--nrofunits==0)
 				    break;
@@ -1530,10 +1530,10 @@ creationwithoutproperties:
 		    {
 			for (j=0;j<MaxObjects;j++)
 			{
-			    if (GetTriggeredUnitState(objects[j]))
+			    if (GetTriggeredOBJState(objects[j]))
 			    {
 				//done by previous trigger
-				SetTriggeredUnitState(objects[j], CLEARSTATE);
+				SetTriggeredOBJState(objects[j], CLEARSTATE);
 				SetUnitPercentShield(objects[j],state);
 				if (--nrofunits==0)
 				    break;
@@ -1643,10 +1643,10 @@ int TRG_RunAIScriptAtLocation(mapinfo *info,int aiscriptnr,int playernr,int play
 	    {
 		for (j=0;j<MaxObjects;j++)
 		{
-		    if (GetTriggeredUnitState(objects[j]))
+		    if (GetTriggeredOBJState(objects[j]))
 		    {
 			//done by previous trigger
-			SetTriggeredUnitState(objects[j], CLEARSTATE);
+			SetTriggeredOBJState(objects[j], CLEARSTATE);
 			a = CreateUnitInUnit(objects[j],SC_NUKEOBJ,0,GetOBJx(objects[j]),GetOBJy(objects[j]));
 			ChangeSupply(a->playernr,a->SC_Unit,PLUSFACTOR);
 			if (--nrofunits==0)
@@ -1672,10 +1672,10 @@ int TRG_RunAIScriptAtLocation(mapinfo *info,int aiscriptnr,int playernr,int play
 	    {
 		for (j=0;j<MaxObjects;j++)
 		{
-		    if (GetTriggeredUnitState(objects[j]))
+		    if (GetTriggeredOBJState(objects[j]))
 		    {
 			//done by previous trigger
-			SetTriggeredUnitState(objects[j], CLEARSTATE);
+			SetTriggeredOBJState(objects[j], CLEARSTATE);
 			AddOverlayAtrImages(objects[j],magenr,IMAGEOVERLAY_NOTDEPENDONMAINIMG);
 			if (--nrofunits==0)
 			    break;
@@ -1697,7 +1697,7 @@ int TRG_RunAIScriptAtLocation(mapinfo *info,int aiscriptnr,int playernr,int play
 		    return(1);
 		case 1:
 		    //onlyone bunker
-		    SetTriggeredUnitState(a, CLEARSTATE);
+		    SetTriggeredOBJState(a, CLEARSTATE);
 		    findbunker=a;
 		    break;
 		default:
@@ -1705,10 +1705,10 @@ int TRG_RunAIScriptAtLocation(mapinfo *info,int aiscriptnr,int playernr,int play
 		    bunkerlist = new mylist;
 		    for (j=0;j<MaxObjects;j++)
 		    {
-			if (GetTriggeredUnitState(objects[j]))
+			if (GetTriggeredOBJState(objects[j]))
 			{
 			    //done by previous trigger
-		    	    SetTriggeredUnitState(objects[j], CLEARSTATE);
+		    	    SetTriggeredOBJState(objects[j], CLEARSTATE);
 			    bunkerlist->AddList(objects[j]);
 			    if (--nrofunits2==0)
 				break;
