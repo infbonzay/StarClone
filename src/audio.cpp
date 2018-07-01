@@ -146,8 +146,8 @@ int loadandplaywav(HANDLE mpq,struct OBJ *a,char *filesound,int repeatedflag,int
     MPQIDS fileaudioID;
     HANDLE f;
     wCHUNK *sample;
-    if (MayPlaySounds<=0&&a)
-	return(i);
+    if (MayPlaySounds <=0 && a)
+	return(-1);
     if (unitsound)
     {
 	if (GetMPQFileID(mpq,filesound,&fileaudioID)==-1)
@@ -674,7 +674,7 @@ int canplaysound(OBJ *a,int soundmode,int statuspl)
 //====================================================
 int getchannelplaylength(int channel)
 {
-    if (channel!=-1)
+    if (channel != -1)
 	return(unitsound[channel].length);
     else
 	return(0);

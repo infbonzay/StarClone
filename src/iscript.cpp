@@ -514,6 +514,7 @@ int ISCRIPT::CompileIScripts(char *filename)
 	    }
     }
     fclose(f);
+    DEBUGMESSCR("compiled iscript size = %d\n",compilediscriptssize);
 //        savebuff("iscript.bin",compilediscripts,compilediscriptssize);
 	//remove all label & offset lists
 /*	for (i=0;i<labels.GetMaxElements();i++)

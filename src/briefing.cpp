@@ -156,8 +156,11 @@ int BAction_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int actiononplayers,int con
 		    }
 		    strcat(FULLFILENAME,getmapSTR(info,waveid));
 		    soundid = loadandplaywav(info->mpqid,NULL,FULLFILENAME,1,0);
-		    brief_slots[slotnr].talkingtime = getchannelplaylength(soundid);
-		    Briefing_SetPause(-1,brief_slots[slotnr].talkingtime);
+		    if (soundid >= 0)
+		    {
+			brief_slots[slotnr].talkingtime = getchannelplaylength(soundid);
+			Briefing_SetPause(-1,brief_slots[slotnr].talkingtime);
+		    }
 		    triggset=1;
 		    needbreakparce=1;
 		    break;
@@ -262,11 +265,13 @@ int BAction_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int actiononplayers,int con
 		    }
 		    strcat(FULLFILENAME,getmapSTR(info,waveid));
 		    soundid = loadandplaywav(info->mpqid,NULL,FULLFILENAME,1,0);
-//		    playtime = getchannelplaylength(soundid);
-		    playtime = temptrg->action[i].pauseatime;
-		    (*comparefunc)(&playtime,deltapaused);
-		    brief_slots[slotnr].talkingtime = playtime;
-		    Briefing_SetPause(slotnr,brief_slots[slotnr].talkingtime);
+		    if (soundid >= 0)
+		    {
+			playtime = temptrg->action[i].pauseatime;
+			(*comparefunc)(&playtime,deltapaused);
+			brief_slots[slotnr].talkingtime = playtime;
+			Briefing_SetPause(slotnr,brief_slots[slotnr].talkingtime);
+		    }
 //		    printf("playtime = %d talkingtime = %d\n",playtime,brief_slots[slotnr].talkingtime);
 		    triggset=1;
 		    needbreakparce=1;

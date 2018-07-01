@@ -3,7 +3,7 @@
 
 AC_PREREQ(2.59)
 AC_INIT(src/gener.cpp)
-AM_INIT_AUTOMAKE(StarClone,0.2.2)
+AM_INIT_AUTOMAKE(StarClone,0.3.3)
 
 # Checks for programs.
 AC_PROG_CXX

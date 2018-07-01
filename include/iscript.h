@@ -67,26 +67,26 @@ struct ISCRIPTID
 //============================================
 class ISCRIPT
 {
-    mylist	labels;				//labelname
-    mylist	labeloffsets;			//adress of labelname in compilediscripts 
+    mylist		labels;				//labelname
+    mylist		labeloffsets;			//adress of labelname in compilediscripts 
 
-    mylist	needtoaddoffs;			//adress where need to put adress of label
-    mylist	nameoflabels;			//namelabel needed to put
-    unsigned char *compilediscripts;
-    short	compilediscriptssize;
-    int  	CompilePass1(FILE *f);
-    int  	CompilePass2(FILE *f);
+    mylist		needtoaddoffs;			//adress where need to put adress of label
+    mylist		nameoflabels;			//namelabel needed to put
+    unsigned char	*compilediscripts;
+    unsigned short	compilediscriptssize;
+    int  		CompilePass1(FILE *f);
+    int  		CompilePass2(FILE *f);
 public:
 
-    ISCRIPTID	iscriptsid[ISCRIPTID_MAXVALUE];
+    ISCRIPTID		iscriptsid[ISCRIPTID_MAXVALUE];
 
-    ISCRIPT(void);
-    ~ISCRIPT();
-    int  	CompileIScripts(char *iscriptfile);
-    void 	AddCompiledCode(int iscriptid,int iscriptnr,char *cmdbuf,int bufsize);
-    void	SaveCmdToBuff(char *buf,int offs,int sizedata,int data);
-    int		ExecuteScript(MAIN_IMG *img);
-    int		ExecuteScript(OVERLAY_IMG *img);
+			ISCRIPT(void);
+			~ISCRIPT();
+    int  		CompileIScripts(char *iscriptfile);
+    void 		AddCompiledCode(int iscriptid,int iscriptnr,char *cmdbuf,int bufsize);
+    void		SaveCmdToBuff(char *buf,int offs,int sizedata,int data);
+    int			ExecuteScript(MAIN_IMG *img);
+    int			ExecuteScript(OVERLAY_IMG *img);
 
 };
 
