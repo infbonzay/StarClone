@@ -28,12 +28,12 @@ struct IMAGES_STRUCT
 
 struct SPRITES_STRUCT
 {
-    short	images_id[MAX_SPRITES_ELEM1];				//pointer to images.dat
-    char	health_bar[MAX_SPRITES_ELEM2];				//from 130-516 ids
-    char	unknown1[MAX_SPRITES_ELEM1];
-    char	is_visible[MAX_SPRITES_ELEM1];
-    char	sel_circle_image[MAX_SPRITES_ELEM2];			//from 130-516 ids
-    char	sel_circle_offset[MAX_SPRITES_ELEM2];			//from 130-516 ids
+    short		images_id[MAX_SPRITES_ELEM1];			//pointer to images.dat
+    unsigned char	health_bar[MAX_SPRITES_ELEM2];			//from 130-516 ids
+    char		unknown1[MAX_SPRITES_ELEM1];
+    char		is_visible[MAX_SPRITES_ELEM1];
+    char		sel_circle_image[MAX_SPRITES_ELEM2];			//from 130-516 ids
+    char		sel_circle_offset[MAX_SPRITES_ELEM2];			//from 130-516 ids
 
 };
 //===========================================
@@ -117,7 +117,7 @@ struct UNITS_STRUCT
 	char  ShieldEnable[MAX_UNITS_ELEM];
 unsigned short ShieldAmount[MAX_UNITS_ELEM];
 unsigned int  HitPoints[MAX_UNITS_ELEM];
-	unsigned char ElevationLevel[MAX_UNITS_ELEM];
+unsigned char ElevationLevel[MAX_UNITS_ELEM];
 unsigned char Unknown1[MAX_UNITS_ELEM];
 	char  Sublabel[MAX_UNITS_ELEM];
 	char  CompAIIdle[MAX_UNITS_ELEM];
@@ -152,7 +152,7 @@ unsigned short StarEditPlacementBoxWidthAndHeight[MAX_UNITS_ELEM][2];
 	short VespeneCost[MAX_UNITS_ELEM];
 	short BuildTime[MAX_UNITS_ELEM];
 	short Unknown2[MAX_UNITS_ELEM];
-	char  StarEditGroupFlags[MAX_UNITS_ELEM];
+	unsigned char  StarEditGroupFlags[MAX_UNITS_ELEM];
 	unsigned char SupplyProvided[MAX_UNITS_ELEM];
 	unsigned char SupplyRequired[MAX_UNITS_ELEM];
 	signed char SpaceRequired[MAX_UNITS_ELEM];
@@ -160,8 +160,8 @@ unsigned short StarEditPlacementBoxWidthAndHeight[MAX_UNITS_ELEM][2];
 	short BuildScore[MAX_UNITS_ELEM];
 	short DestroyScore[MAX_UNITS_ELEM];
 	short UnitMapString[MAX_UNITS_ELEM];
-	char  BroodWarUnitFlag[MAX_UNITS_ELEM];
-	short StarEditAvailabilityFlags[MAX_UNITS_ELEM];
+	unsigned char  BroodWarUnitFlag[MAX_UNITS_ELEM];
+	unsigned short StarEditAvailabilityFlags[MAX_UNITS_ELEM];
 };
 //===========================================
 #define MAX_FLINGY_ELEM		209
@@ -349,18 +349,18 @@ struct TBL_FILE
 
 class TBL
 {
-    TBL_FILE *tbl;
+		TBL_FILE *tbl;
 public:
-    int  loadTBL(char *filenr);
-    int  get_TBL_STRINGS(int stringnr);
-    char *get_TBL_STR(int stringnr);
-    char *get_TBL_SUBSTR(int stringnr,int substrnr);
-    int get_TBL_STRSize(int stringnr);
-    int  get_STRS(void);
-    void log_STRS(void);
-    void saveTBL(int strnr,char *filenr,char *arrayofstrs[]);
+    int		loadTBL(char *filenr);
+    int		get_TBL_STRINGS(int stringnr);
+    char	*get_TBL_STR(int stringnr);
+    char	*get_TBL_SUBSTR(int stringnr,int substrnr);
+    int		get_TBL_STRSize(int stringnr);
+    int		get_STRS(void);
+    void	log_STRS(void);
+    void	saveTBL(int strnr,char *filenr,char *arrayofstrs[]);
     
-    ~TBL();
+		~TBL();
 };
 
 int checkfordublicate(char *textdata,int sizex,char *textcmp);

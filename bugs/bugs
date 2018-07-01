@@ -431,6 +431,7 @@
 *195 stasis do not decloak units
 *196 corrosive acid atack if destobj dies terminate the program
 *197 cloked unit do not show map
+*198 at xp8 temple have 5000 health and see infinite line on screen
     if interceptors kill destobj return to carrier but carrier in atackmode & interceptors dont launch again
     interceptors fly to atack far then carrier range
     carrier stop move if atack to ground and stops to atack somebody
