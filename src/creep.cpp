@@ -124,11 +124,11 @@ int GetCreepAroundWithFog(int x,int y,int indextile32)
     {
 	newx=x+CREEPAROUND[i][0];
 	newy=y+CREEPAROUND[i][1];
-	if (newx<0||newy<0||newx>=MAXXMAP||newy>=MAXYMAP)
+        if (CHECKFORMAPBORDERS(newx,newy))
 	    continue;
-	if (mapSEE(newx,newy)>1)
+	if (mapSEE(newx,newy) > 1)
 	{
-	    if (map.creepflagplace[newy*MAXXMAP+newx]>=1)
+	    if (map.creepflagplace[newy*MAXXMAP+newx] >= 1)
 	    {
 		creepbits |= allcreepbits[i];
 		mycreepbits++;
@@ -136,9 +136,9 @@ int GetCreepAroundWithFog(int x,int y,int indextile32)
 	}
 	else
 	{
-	    if (mapOPEN(newx,newy)>1)
+	    if (mapOPEN(newx,newy) > 1)
 	    {
-		if (map.mapbits.savedcreep[NUMBGAMER]&&map.mapbits.savedcreep[NUMBGAMER][newy*MAXXMAP+newx]>=1)
+		if (map.mapbits.savedcreep[NUMBGAMER]&&map.mapbits.savedcreep[NUMBGAMER][newy*MAXXMAP+newx] >= 1)
 		{
 		    creepbits |= allcreepbits[i];
 		    mycreepbits++;

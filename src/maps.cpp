@@ -145,7 +145,7 @@ int checkaroundtile(int x,int y)
     {
 	newx=x+MAPAROUND[i][0];
 	newy=y+MAPAROUND[i][1];
-	if (newx<0||newy<0||newx>=MAXXMAP||newy>=MAXYMAP)
+	if (CHECKFORMAPBORDERS(newx,newy))
 	    continue;
 	if (mapSEE(newx,newy)>0||mapOPEN(newx,newy)>0)
 	    ret+=1;
