@@ -64,12 +64,9 @@ int MoveItem::SimpleMoveScript(void)
 	if (speedy < 0)
 	    parent->ypos -= accelerate;
     tempval1 += tempval2;
-    if (tempval1 >= MAXACCEL)
+    if (tempval1 >= MAXACCEL || tempval1 < 0)
     {
-	tempval1--;
-    }else if (tempval1 < 0)
-    {
-	tempval1++;
+	tempval1 -= tempval2;
     }
     else
 	return(0);
@@ -89,7 +86,10 @@ MenuItem::MenuItem(void)
 MenuItem::~MenuItem()
 {
     if (moveaction)
+    {
 	delete moveaction;				//delet move obj
+	moveaction = NULL;
+    }
 }
 //=================================================================
 void MenuItem::AddMoveAction(void)
