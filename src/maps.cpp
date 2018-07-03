@@ -1016,8 +1016,8 @@ int mapSEE(int xkart,int ykart,int player)
 {
     if (!map.mapbits.whitefog[player])
 	return 0;
-    if (ykart<0||xkart<0||ykart>=MAXYMAP||xkart>=MAXXMAP)
-	return 0;
+//    if (ykart<0||xkart<0||ykart>=MAXYMAP||xkart>=MAXXMAP)
+//	return 0;
     return(map.mapbits.whitefog[player][ykart*MAXXMAP+xkart]);
 }
 //=============================================
@@ -1025,8 +1025,8 @@ int mapSEE2(int xkart,int ykart,int player)
 {
     if (!map.mapbits.whitefog2[player])
 	return 0;
-    if (ykart<0||xkart<0||ykart>=MAXYMAP||xkart>=MAXXMAP)
-	return 0;
+//    if (ykart<0||xkart<0||ykart>=MAXYMAP||xkart>=MAXXMAP)
+//	return 0;
     return(map.mapbits.whitefog2[player][ykart*MAXXMAP+xkart]);
 }
 //=============================================
@@ -1041,8 +1041,8 @@ int mapOPEN(int xkart,int ykart,int player)
 {
     if (!map.mapbits.blackfog[player])
 	return 0;
-    if (ykart<0||xkart<0||ykart>=MAXYMAP||xkart>=MAXXMAP)
-	return 0;
+//    if (ykart<0||xkart<0||ykart>=MAXYMAP||xkart>=MAXXMAP)
+//	return 0;
     return(map.mapbits.blackfog[player][ykart*MAXXMAP+xkart]);
 }
 //=============================================
@@ -1050,8 +1050,8 @@ int mapSEE(int xkart,int ykart)
 {
     int i;
     unsigned char fogvalue=0;
-    if (ykart<0||xkart<0||ykart>=MAXYMAP||xkart>=MAXXMAP)
-	return 0;
+//    if (ykart<0||xkart<0||ykart>=MAXYMAP||xkart>=MAXXMAP)
+//	return 0;
     for (i=0;i<PLAYEDPLAYERS;i++)
     {
     	if (IfPlayerHaveStartLocation(&map,i)!=-1)
@@ -1068,8 +1068,8 @@ int mapOPEN(int xkart,int ykart)
 {
     int i;
     unsigned char fogvalue=0;
-    if (ykart<0||xkart<0||ykart>=MAXYMAP||xkart>=MAXXMAP)
-	return 0;
+//    if (ykart<0||xkart<0||ykart>=MAXYMAP||xkart>=MAXXMAP)
+//	return 0;
     for (i=0;i<PLAYEDPLAYERS;i++)
     {
 	if (IfPlayerHaveStartLocation(&map,i)!=-1)
@@ -1098,6 +1098,8 @@ int CreateAlianceBitsPlayer(int playernr)
 //================================================
 int GetMapFog(int x,int y)
 {
+    if (CHECKFORMAPBORDERS(x/32,y/32))
+	return(0);
     if (mapSEE(x/32,y/32)>1)
 	return(2);
     else
