@@ -164,7 +164,7 @@ void saveoldtileandcreep(void)
     unsigned char wf,bf;
     signed char creepnr;
     for (i=0;i<MAXYMAP;i++)
-	for (j=0;j<MAXYMAP;j++)
+	for (j=0;j<MAXXMAP;j++)
 	{
 	    nosave=0;
 	    wf=mapSEE(j,i);
@@ -912,10 +912,7 @@ void calcfullinvandseeobj(OBJ *a)
 	if (decloaked)
 	{
     	    OBJ_VAR_MASK_SET(a,obj_invsee,0xff);
-//    	    OBJ_VAR_MASK_CLR(a,obj_notdetect,0xff);
-//    	    OBJ_VAR_MASK_SET(a,obj_see,0xff);
     	    cloaked = 0;
-//    	    return;
     	}
     }
     else

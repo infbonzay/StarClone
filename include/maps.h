@@ -5,6 +5,9 @@
 #include "man.h"
 #include "starmap.h"
 
+#define CHECKFORMAPBORDERS(xkart,ykart) ( (ykart) < 0 || (xkart) < 0 || (ykart) >= MAXYMAP || (xkart) >= MAXXMAP ) 
+
+
 void CreateMiniMapPixels(struct mapinfo *map);
 void minimap_showobj(struct OBJ *a);
 void ObjOnMiniMap(int x,int y,int sizex,int sizey,char color,char *minimapadr);
