@@ -134,7 +134,9 @@ int Play_sfxdata_id(OBJ *a,int sfxdata_id,int repeatflag,int distance)
 //=======================================
 int Play_sfxdata(int x,int y,int sfxdata_id,int repeatedsongs)
 {
-    if (mapSEE(x/32,y/32)>1)
+    if (CHECKFORMAPBORDERS(x/32,y/32))
+	return(-1);
+    if (mapSEE(x/32,y/32) > 1)
 	return( Play_sfxdata_id(NULL,sfxdata_id,repeatedsongs,DistanceForAudio(x,y)));
     return(-1);
 }
@@ -319,7 +321,7 @@ int activatesound(struct OBJ *a,int soundmode,int addfactor,int stopprevsound)
     if (a->prop & VARNOTWORK)
 	return -1;
     if (a)
-	if (mapSEE(a->xkart,a->ykart)<=1)
+	if (mapSEE(a->xkart,a->ykart) <= 1)
 	    return -1;
     getsoundIDfromunitdat(a->SC_Unit,soundmode,&sndfrom,&sndto);
 

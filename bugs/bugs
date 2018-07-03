@@ -272,7 +272,7 @@
 *35 mine burrowed drawed as not burrowed
 *36 iradiates over burrowed units
 *37 tank seage under arbiter decloak them
-*38 consumehero 
+*38 consume hero 
 *39 probe 9 icon error & infsarah 5 icon error
 *40 morph to lurker if hydralist underground 
 *41 lockdown in this time obj die
@@ -433,6 +433,7 @@
 *197 cloked unit do not show map
 *198 at xp8 temple have 5000 health and see infinite line on screen
 *199 remove some weapon range upgrades for HERO units
+ 200 increase decrement music volume then messaging
     if interceptors kill destobj return to carrier but carrier in atackmode & interceptors dont launch again
     interceptors fly to atack far then carrier range
     carrier stop move if atack to ground and stops to atack somebody

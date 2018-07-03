@@ -498,7 +498,7 @@ void Triggers_Parce(mapinfo *info,int cnttrg,MAP_TRIGS *trigs,int deltatick)
 	    //restore music volume
 	    TRIG_MusicQuieter = 0;
 	    Triggers_RestoreMusicVolume();
-	    Triggers_RestoreSoundVolume();
+//	    Triggers_RestoreSoundVolume();
 	    //check if the same portrait -> show main portrait
 	    staticport.UnHoldPortrait();
 	    if (staticport.GetShowedPortrait() == TRIG_Portrait)
@@ -858,7 +858,7 @@ int Action_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int trig_nr,int playernr,int
 		    if (!TRIG_MusicQuieter)
 		    {
 			Triggers_ReduceMusicVolume();
-			Triggers_ReduceSoundVolume(soundid);
+//			Triggers_ReduceSoundVolume(soundid);
 			staticport.HoldPortrait();
 		    }
 		    TRIG_MusicQuieter += TRIG_pause;

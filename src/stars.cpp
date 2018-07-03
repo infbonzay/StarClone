@@ -59,6 +59,8 @@ void showStars(int screenx,int screeny)
 	    {
 		xkart=(xpos+screenx)/SIZESPRLANSHX;
 		ykart=(ypos+screeny)/SIZESPRLANSHY;
+		if (CHECKFORMAPBORDERS(xkart,ykart))
+		    continue;
 		if (gameconf.videoconf.visiblemap || mapSEE(xkart,ykart)>1)
 		{
 		    offset=star->image;

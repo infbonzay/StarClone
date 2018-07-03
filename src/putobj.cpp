@@ -233,7 +233,7 @@ void ifselectedDAMAGEDBUILD(OBJ *a)
 //	0 - close & notsee
 //	1 - open  & notsee
 //	2 - open  & see
-int GetMapFogUnderOBJ(OBJ *a,OBJstruct *b)
+/*int GetMapFogUnderOBJ(OBJ *a)
 {
     if (mapSEE(a->xkart,a->ykart)>1)
 	return(2);
@@ -243,6 +243,7 @@ int GetMapFogUnderOBJ(OBJ *a,OBJstruct *b)
         else
 	    return(0);
 }
+*/
 //==============================================
 void NewUnitPlace(OBJ *a,SCUNIT SC_Unit,int *first_xpos,int *first_ypos)
 {

@@ -167,8 +167,10 @@ int GetCreepNr(int x,int y,int *myret)
     {
 	newx=x+CREEPAROUND[i][0];
 	newy=y+CREEPAROUND[i][1];
-	if (newx<0||newy<0||newx>=MAXXMAP||newy>=MAXYMAP)
+	if (CHECKFORMAPBORDERS(newx,newy))
 	    continue;
+//	if (newx<0||newy<0||newx>=MAXXMAP||newy>=MAXYMAP)
+//	    continue;
 	if (map.creepflagplace[newy*MAXXMAP+newx]>=1)
 	{
 	    creepbits |= allcreepbits[i];
