@@ -120,7 +120,8 @@ void AddBuildsInPower(unsigned char *pylonarea,int playernr)
 	    continue;
 	if (a->prop & VARPOWEROFF)
 	{
-	    if (GetUnitRace(a->SC_Unit)==PROTOSSRACE)
+	    if (RequiresPylonEnergy(a->SC_Unit))
+//	    if (GetUnitRace(a->SC_Unit)==PROTOSSRACE)
 	    {
 		nrofpower=0;
 		xp = (GetOBJx(a) - GetUnitWidthAndHeight(a->SC_Unit,UNITDIM_WIDTH)/2)/SIZESPRLANSHX;

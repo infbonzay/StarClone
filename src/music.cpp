@@ -87,11 +87,12 @@ void wMUSIC::ChangeMusicVolume(int volume)
 //=======================================
 int wMUSIC::playPCMdata(int firstrun)
 {
+    wCHUNK	*endmusicsample;
     AUDIOPACKET *apacket;
     apacket = (AUDIOPACKET *) musicbuffers->GetCurElem();
     if (apacket)
     {
-	if (fade)
+/*	if (fade)
 	{
 	    if (fade)
 		return(-1);
@@ -110,13 +111,15 @@ int wMUSIC::playPCMdata(int firstrun)
 	    }
 	    fade = 0;
 	}
-	if (musicsample)
-	{
-	    //free previous music sample
-	    wFreeChunk(musicsample);
-	}
+*/
+	endmusicsample = musicsample;
 	musicsample = PlayRAWMem(apacket->packetdata,apacket->len);
 	chunkplay = wPlayChannel(chunkplay,musicsample,0);
+	if (endmusicsample)
+	{
+	    //free previous music sample
+	    wFreeChunk(endmusicsample);
+	}
 
 	if (chunkplay == -1)//can't play no free channels
 	{
@@ -165,23 +168,20 @@ void LoadNextAudioData(void *info)
 	}
 	if (stream->audio.remainbytes==0)
 	{
-	//reach end of music data
-	    if (stream->audio.repeatplay == 0)
-		return;
-	    if (stream->audio.repeatplay == -1 || stream->audio.repeatplay > 0)
+	    //reach end of music data
+	    if (stream->audio.repeatplay)
 	    {
 		if (stream->audio.repeatplay > 0)
-		    stream->audio.repeatplay--;
+	    	    stream->audio.repeatplay--;
 		//go to the begining of audio data (repeat play)
 		result = rwops->seek(rwops,sizeof(WAVHEADER), SEEK_SET);
-	        if (result == -1)
+		if (result == -1)
 		    return;
 		audiostream->audio.remainbytes = audiostream->audio.alen;
-//	    	DEBUGMESSCR("repeat play\n");
+//	   	DEBUGMESSCR("repeat play\n");
 	    }
 	    else
 	    {
-		//not play again
 		return;
 	    }
 	}
@@ -216,6 +216,7 @@ void LoadNextAudioData(void *info)
 	}
 	wfree(buff);
 	stream->audio.remainbytes -= nextbuffersize;
+//    	DEBUGMESSCR("load next audio data\n");
     }while(1);
 }
 //=======================================
@@ -295,10 +296,10 @@ int PlayMusic(char *filename,int repeatflag, void (*onfinishplay)(void))
     //fill audio buffers
     audiostream->AddPCMDataFunc = &LoadNextAudioData;
     audiostream->OnFinishPlay = onfinishplay;
-//    for (i=0;i<MUSIC_AUDIOBUFFERS;i++)
-//    {
+    for (i=0;i<MUSIC_AUDIOBUFFERS;i++)
+    {
 	LoadNextAudioData(audiostream);
-//    }
+    }
     audiostream->beginplayPCMdata();
     return(0);
 }

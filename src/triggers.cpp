@@ -854,14 +854,17 @@ int Action_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int trig_nr,int playernr,int
 
 		    //show transmission smk portrait
 		    TRIG_Portrait = unitnr;
-		    SetPortrait(unitnr,SMKTALK,NOSOUNDFILENR,TRIG_pause);
-		    if (!TRIG_MusicQuieter)
+		    if (TRIG_pause)
 		    {
-			Triggers_ReduceMusicVolume();
-//			Triggers_ReduceSoundVolume(soundid);
-			staticport.HoldPortrait();
+			SetPortrait(unitnr,SMKTALK,NOSOUNDFILENR,TRIG_pause);
+			if (!TRIG_MusicQuieter)
+			{
+			    Triggers_ReduceMusicVolume();
+//			    Triggers_ReduceSoundVolume(soundid);
+    			    staticport.HoldPortrait();
+			}
+			TRIG_MusicQuieter += TRIG_pause;
 		    }
-		    TRIG_MusicQuieter += TRIG_pause;
 		    //blink transmission unit
 //		    ownedactiononplayers=OneGroup_Prepare(info,temptrg->action[i].actiononplayers,playernrmask);
 //		    nrofunits = 1;
@@ -878,7 +881,7 @@ int Action_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int trig_nr,int playernr,int
 		    //show transmission text
 		    if (playernr==NUMBGAMER && temptrg->action[i].stringID)
 			chatbar.addbarmessage(getmapSTR(info,temptrg->action[i].stringID-1),IDFONT10,GWHITECOLORFONT,waittime,BF_ALLOCBUF|BF_FORCEADD);
-//		    printf("transmission pause=%d waivelength=%d\n",temptrg->action[i].pauseatime,waittime);
+//		    printf("transmission pause=%d wavelength=%d\n",temptrg->action[i].pauseatime,waittime);
 		    triggset=1;
 		    break;
 		case TRG_ACTIONTYPE_PLAYWAV://8
