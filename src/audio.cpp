@@ -34,12 +34,15 @@ int maxunitsounds,ReducedVolume;
 //==============================================
 void ReduceVolume(int boolflag)
 {
-    ReducedVolume = boolflag * 2;
+    ReducedVolume += boolflag;
 }
 //==============================================
 int SetChannelVolume(int channel, int volume)
 {
-    return( wChannelVolume(channel,volume/(1 + ReducedVolume)) );
+    if (ReducedVolume)
+        return( wChannelVolume(channel,volume/3) );
+    else
+        return( wChannelVolume(channel,volume/1) );
 }
 //==============================================
 #define MINDIST 10
@@ -104,6 +107,7 @@ int initsoundengine(int maxsounds)
 	wOnChannelFinish(ChannelFinished);
 	maxunitsounds = maxsounds;
 	UnBlockSoundToPlay();
+	ReducedVolume = 0;
     }
     return 0;
 }
@@ -493,7 +497,7 @@ void stopallsounds(void)
         	StopPlayChannel(i);
     	    }
     }
-    ReduceVolume(0);
+    ReducedVolume = 0;
 }
 
 //==============================================

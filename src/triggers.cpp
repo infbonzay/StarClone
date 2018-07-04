@@ -445,7 +445,7 @@ void Triggers_ReduceSoundVolume(void)
 //=================================================
 void Triggers_RestoreSoundVolume(void)
 {
-    ReduceVolume(0);
+    ReduceVolume(-1);
 }
 //=================================================
 void Init_Triggers_Variables(int cnttrg)
@@ -498,8 +498,8 @@ void Triggers_Parce(mapinfo *info,int cnttrg,MAP_TRIGS *trigs,int deltatick)
 	{
 	    //restore music volume
 	    TRIG_MusicQuieter = 0;
-	    Triggers_RestoreMusicVolume();
 	    Triggers_RestoreSoundVolume();
+	    Triggers_RestoreMusicVolume();
 	    //check if the same portrait -> show main portrait
 	    staticport.UnHoldPortrait();
 	    if (staticport.GetShowedPortrait() == TRIG_Portrait)
@@ -842,7 +842,9 @@ int Action_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int trig_nr,int playernr,int
 			strcat(FULLFILENAME,"\\");
 		    }
 		    strcat(FULLFILENAME,getmapSTR(info,waveid));
+		    ReduceVolume(-1);
 		    soundid = loadandplaywav(info->mpqid,NULL,FULLFILENAME,1,0);
+		    ReduceVolume(1);
 //		    DEBUGMESSCR("sountid=%d\n",soundid);
 //		    waittime=getchannelplaylength(soundid);
 		    TRIG_pause = temptrg->action[i].pauseatime;
