@@ -376,14 +376,20 @@ int CreateWeaponID(OBJ *a,OBJ *destobj,int xdest256,int ydest256,unsigned char w
 		flingy->destobj = destobj;
 		break;
     	    case WB_ATACK_AND_SELF_DESTRUCT:		//6
-    		CreateFlingyID(a,destobj,GetOBJx256(destobj),GetOBJy256(destobj),GetOBJx256(destobj),GetOBJy256(destobj),weapon_id,flingy_id,elevationdelta);
+    		if (destobj)
+    		{
+    		    CreateFlingyID(a,destobj,GetOBJx256(destobj),GetOBJy256(destobj),GetOBJx256(destobj),GetOBJy256(destobj),weapon_id,flingy_id,elevationdelta);
+    		}
     		dieobj_silently(a);
     		return(1);
     		break;
     	    case WB_BOUNCE:				//7
-    		flingy = CreateFlingyID(a,destobj,GetOBJx256(a),GetOBJy256(a),GetOBJx256(destobj),GetOBJy256(destobj),weapon_id,flingy_id,elevationdelta);
-    		flingy->flags |= FLINGY_FLAG_BOUNCEATACK;
-    		flingy->nroftargets = 4;
+    		if (destobj)
+    		{
+    		    flingy = CreateFlingyID(a,destobj,GetOBJx256(a),GetOBJy256(a),GetOBJx256(destobj),GetOBJy256(destobj),weapon_id,flingy_id,elevationdelta);
+    		    flingy->flags |= FLINGY_FLAG_BOUNCEATACK;
+    		    flingy->nroftargets = 4;
+    		}
     		break;
     	    case WB_ATACK_3X3_AREA:			//8
     		if (destobj)
@@ -942,16 +948,6 @@ void WeaponDoDamage(OBJ *atacker,OBJ *destobj,int x256,int y256,SCUNIT SC_Unit,
 	    DEBUGMESSCR("damage not developed\n");
 	    break;
     }
-/*    int totaldamage = GetWeaponDamage(SC_Unit,playernr,weapon_id);
-    if (totaldamage)
-    {
-	DEBUGMESSCR("damage not developed\n");
-    }
-    else
-    {
-    
-    }
-*/
 }
 //===========================================
 void AddOverlayAtrImages(OBJ *destobj,int castmagenr,int independentofmain)
