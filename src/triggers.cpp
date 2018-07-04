@@ -471,11 +471,12 @@ void First_Triggers_Prepare(mapinfo *info,int cnttrg,MAP_TRIGS *trigs)
     int i,j;
     MAP_TRIGS	*trg;
     MAP_TRIGS	*temptrg;
-    MAP_TRIGS	(*alltrigs)[]=(MAP_TRIGS (*)[]) trigs;
+//    MAP_TRIGS	(*alltrigs)[]=(MAP_TRIGS (*)[]) trigs;
     //allocation memory for all triggers pause 1 int (4 bytes) for each trigger;
     for (i=0;i<cnttrg;i++)
     {
-	temptrg=&(*alltrigs)[i];
+//	temptrg=&(*alltrigs)[i];
+	temptrg = &trigs[i];
 	temptrg->groupinfo.playersmask=AllGroups_Prepare(info,temptrg);
     }
     Init_Triggers_Variables(cnttrg);
@@ -486,7 +487,7 @@ void Triggers_Parce(mapinfo *info,int cnttrg,MAP_TRIGS *trigs,int deltatick)
     int i,j,mask;
     MAP_TRIGS	*trg;
     MAP_TRIGS	*temptrg;
-    MAP_TRIGS	(*alltrigs)[]=(MAP_TRIGS (*)[]) trigs;
+//    MAP_TRIGS	(*alltrigs)[]=(MAP_TRIGS (*)[]) trigs;
     TRIG_active=1;
     TRIG_inittriggers = 1;
 
@@ -510,7 +511,8 @@ void Triggers_Parce(mapinfo *info,int cnttrg,MAP_TRIGS *trigs,int deltatick)
     }
     for (i=0;i<cnttrg;i++)
     {
-	temptrg=&(*alltrigs)[i];
+//	temptrg=&(*alltrigs)[i];
+	temptrg = &trigs[i];
         if (temptrg->groupinfo.playersmask)
         {
 	    for (j=0,mask=1;j<MAXPLAYERS;j++,mask<<=1)
