@@ -82,7 +82,7 @@ int wMUSIC::queuePCMdata(unsigned char *audiobuff,int audiosize)
 void wMUSIC::ChangeMusicVolume(int volume)
 {
     if (chunkplay!=-1)
-	wChannelVolume(chunkplay,volume*MIX_MAX_VOLUME/100);
+	SetChannelVolume(chunkplay,volume*MIX_MAX_VOLUME/100);
 }
 //=======================================
 int wMUSIC::playPCMdata(int firstrun)
@@ -149,7 +149,7 @@ int wMUSIC::StopPCMPlay(void)
     return(0);
 }
 //=======================================
-#define	MUSIC_AUDIOBUFFERS	8
+#define	MUSIC_AUDIOBUFFERS	16
 #define SIZEONEAUDIOBUFFER	(1024*2*4)
 //=======================================
 void LoadNextAudioData(void *info)

@@ -76,7 +76,7 @@ int  unloadwav(int channel);
 int  activatesound(struct OBJ *a,int soundmode,int addfactor,int stopprevsound);
 void stopcurrentsound(struct OBJ *a);
 void volumeallsfx(int volume);
-void setreducevolumeallsfx(int action,int exceptchannelid);
+void setreducevolumeallsfx(int action,int exceptsfxchannelid,int exceptmusicchannelid);
 int  GetSoundsPlay(void);
 int  BlockSoundToPlay(void);
 int  UnBlockSoundToPlay(void);
@@ -94,6 +94,9 @@ int  getsoundIDfromunitsfx(int unitnr,int soundmode);
 void WaitUntilAllAudioStops(int maxwait);
 int  FileWavePlayLength(HANDLE mpq,char *filesound);
 void getsoundIDfromunitdat(SCUNIT SC_Unit,int soundmode,short *from,short *to);
+void ReduceVolume(int boolflag);
+int  SetChannelVolume(int channel, int volume);
+
 
 #define PLAYADVISOR_ONLYTEXT		0
 #define PLAYADVISOR_TEXTANDSOUND	1

@@ -30,8 +30,17 @@
 
 int MayPlaySounds;
 AUDIOUNIT *unitsound;
-int maxunitsounds;
-//static char sound_tempfile[MAX_PATH];
+int maxunitsounds,ReducedVolume;
+//==============================================
+void ReduceVolume(int boolflag)
+{
+    ReducedVolume = boolflag * 2;
+}
+//==============================================
+int SetChannelVolume(int channel, int volume)
+{
+    return( wChannelVolume(channel,volume/(1 + ReducedVolume)) );
+}
 //==============================================
 #define MINDIST 10
 #define MAXDIST 128
@@ -107,6 +116,7 @@ void deinitsoundengine(void)
 	wfree(unitsound);
 	unitsound = NULL;
 	MayPlaySounds = 0;
+	ReducedVolume = 0;
     }
 }
 //==============================================
@@ -191,7 +201,7 @@ int loadandplaywav(HANDLE mpq,struct OBJ *a,char *filesound,int repeatedflag,int
         {
     	    return -5;
         }
-        wChannelVolume(i,chunkvolume);
+        SetChannelVolume(i,chunkvolume);
 	unitsound[i].length = sndlength;
 	unitsound[i].sample = sample;
 	
@@ -233,51 +243,20 @@ int unloadwav(int channel)
     	unitsound[i].prevdistance = 0;
     	ClearMPQFileID(&unitsound[i].fileID);
     	unitsound[i].sample=NULL;
-	if (!(unitsound[i].presence&OBJADREMPTY))
+	if (!(unitsound[i].presence & OBJADREMPTY))
 	    TerminateAudioObj(unitsound[i].obj);
     	unitsound[i].obj = NULL;
     }
     return 0;
 }
 //==============================================
-void volumeallsfx(int volume)   //volume in %
+void volumeallsfx(int volume)//volume in %
 {
     int i;
     if (unitsound)
     {
 	for (i=0;i<maxunitsounds;i++)
-	{
-    	    unitsound[i].volume = MIX_MAX_VOLUME * volume / 100;
-    	}
-    }
-}
-//==============================================
-void setreducevolumeallsfx(int action,int exceptchannelid)
-{
-    int i;
-    if (unitsound)
-    {
-	switch(action)
-	{
-	    case 0:
-		for (i=0;i<maxunitsounds;i++)
-		{
-    		    unitsound[i].prevvolume = unitsound[i].volume;
-    		    if (exceptchannelid != i)
-    		    {
-    			unitsound[i].volume = unitsound[i].volume / 3;
-			wChannelVolume(i,unitsound[i].volume);
-		    }
-    		}
-		break;
-	    case 1:
-		for (i=0;i<maxunitsounds;i++)
-		{
-    		    unitsound[i].volume = unitsound[i].prevvolume;
-		    wChannelVolume(i,unitsound[i].volume);
-    		}
-		break;
-	}
+    	    unitsound[i].volume = MIX_MAX_VOLUME*volume/100;
     }
 }
 //==============================================
@@ -510,10 +489,11 @@ void stopallsounds(void)
 	for (int i=0;i<maxunitsounds;i++)
     	    if (checkifplay(i))
     	    {
-        	unitsound[i].presence|=STOPSOUND;
+        	unitsound[i].presence |= STOPSOUND;
         	StopPlayChannel(i);
     	    }
     }
+    ReduceVolume(0);
 }
 
 //==============================================
@@ -559,7 +539,7 @@ void ChangeAllVolume(void)
 		distance = (int) hypot(GetOBJx(unitsound[i].obj)-map.MAPXGLOBAL,
 			               GetOBJy(unitsound[i].obj)-map.MAPYGLOBAL);
 		volume = CalculateVolume(distance,0,MIX_MAX_VOLUME,unitsound[i].volume);
-		wChannelVolume(i,volume);
+		SetChannelVolume(i,volume);
 	    }
     }
 }
