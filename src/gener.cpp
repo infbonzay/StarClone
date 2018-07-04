@@ -1054,7 +1054,7 @@ int gogame(struct mapinfo *info)
     		    	    makeopenseeKarta(diapazone[NrObjRegen].begin,diapazone[NrObjRegen].end);//open map by some of units
 			}
 			IfTimeForTrigger(info,&prevgameticks);
-			if (!PAUSEGAME&&!PAUSEINTRIG)
+			if (!PAUSEGAME && !PAUSEINTRIG)
 			{
         	    	    AddObjsRevealMap();							//open map by moved units
     			    if (MAPREGENERATIONBIT)

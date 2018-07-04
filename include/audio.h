@@ -95,6 +95,7 @@ void WaitUntilAllAudioStops(int maxwait);
 int  FileWavePlayLength(HANDLE mpq,char *filesound);
 void getsoundIDfromunitdat(SCUNIT SC_Unit,int soundmode,short *from,short *to);
 void ReduceVolume(int boolflag);
+int  GetReduceVolume(void);
 int  SetChannelVolume(int channel, int volume);
 
 

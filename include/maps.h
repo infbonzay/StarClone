@@ -47,8 +47,6 @@ int  mapOPEN(int xkart,int ykart,int player);
 int  mapEFFECT(int xkart,int ykart,int effectmage);
 int  CreateAlianceBitsPlayer(int playernr);
 int  GetVisionBitsPlayer(int playernr);
-int  player_aliance(int whopl,int pl);
-int  player_vision(int whopl,int pl);
 void opentempmap(int playernr,int xkart,int ykart,int sizex,int sizey);
 int  GetMapFog(int x,int y);
 void ClearFinalOBJ(OBJ *a0);

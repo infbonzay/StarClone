@@ -1217,7 +1217,7 @@ void invisiblestick(void)
     for (i=0;i<MaxObjects;i++)
     {
         a = objects[i];
-        if (a->modemove == MODEDIE || IsInvincibleUnit(a->SC_Unit))
+        if (a->modemove == MODEDIE || IsInvincibleOBJ(a))
     	    continue;
 	if (IsDoodadState(a->SC_Unit))
 	    continue;

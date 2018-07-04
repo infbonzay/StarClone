@@ -445,7 +445,7 @@ void Triggers_ReduceSoundVolume(void)
 //=================================================
 void Triggers_RestoreSoundVolume(void)
 {
-    ReduceVolume(-1);
+    ReduceVolume(0);
 }
 //=================================================
 void Init_Triggers_Variables(int cnttrg)
@@ -842,9 +842,16 @@ int Action_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int trig_nr,int playernr,int
 			strcat(FULLFILENAME,"\\");
 		    }
 		    strcat(FULLFILENAME,getmapSTR(info,waveid));
-		    ReduceVolume(-1);
-		    soundid = loadandplaywav(info->mpqid,NULL,FULLFILENAME,1,0);
-		    ReduceVolume(1);
+		    if (GetReduceVolume())
+		    {
+			ReduceVolume(0);
+			soundid = loadandplaywav(info->mpqid,NULL,FULLFILENAME,1,0);
+			ReduceVolume(1);
+		    }
+		    else
+		    {
+			soundid = loadandplaywav(info->mpqid,NULL,FULLFILENAME,1,0);
+		    }
 //		    DEBUGMESSCR("sountid=%d\n",soundid);
 //		    waittime=getchannelplaylength(soundid);
 		    TRIG_pause = temptrg->action[i].pauseatime;

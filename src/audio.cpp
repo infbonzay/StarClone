@@ -34,7 +34,12 @@ int maxunitsounds,ReducedVolume;
 //==============================================
 void ReduceVolume(int boolflag)
 {
-    ReducedVolume += boolflag;
+    ReducedVolume = boolflag;
+}
+//==============================================
+int GetReduceVolume(void)
+{
+    return( ReducedVolume );
 }
 //==============================================
 int SetChannelVolume(int channel, int volume)
