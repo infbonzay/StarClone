@@ -170,7 +170,8 @@ void SC_FLINGY::StayAndWaitTime(void)
     	    {
 	        if ( GetDistances(xdest256,ydest256,GetOBJx256(a),GetOBJy256(a)) <= mindist )
 		{
-		    if (GetMageAtr(&a->atrobj,ATRHALLUCINATION))
+		    if (IsHallucination(a))
+//		    if (GetMageAtr(&a->atrobj,ATRHALLUCINATION))
 		    {
 			dieobj(a);
 			continue;

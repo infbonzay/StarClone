@@ -335,7 +335,7 @@ struct OBJ *createobjlowlevel(OBJ *workerobj,int x,int y,SCUNIT SC_Unit,int play
     if (IsAirUnit(a->SC_Unit))
 	SetOnSkyOBJ(a,1);
     a->playernr=playernr;
-    if (IsSpellCaster(a->SC_Unit))//&&(GetMageAtr(&a->atrobj,ATRHALLUCINATION)==0))
+    if (IsSpellCaster(a->SC_Unit))//&&(!IsHallucination(a)) )
     {
 	SetUnitPercentMana(a, MANAATBIRTH);
     }
@@ -372,7 +372,8 @@ struct OBJ *createobjlowlevel(OBJ *workerobj,int x,int y,SCUNIT SC_Unit,int play
 	SetMageAtr(&a->atrobj,ATRINVISIBLE,ATRMAGEINFINITE);
     if (IsDetector(a->SC_Unit))
 	SetMageAtr(&a->atrobj,ATRDETECTOR,ATRMAGEINFINITE);
-    if (GetMageAtr(&a->atrobj,ATRHALLUCINATION)==0)
+    if (!IsHallucination(a))
+//    if (GetMageAtr(&a->atrobj,ATRHALLUCINATION)==0)
     {
     	if (TRIG_ChangeStat)
     	{
@@ -1071,7 +1072,8 @@ int ApplyDamageToUnit(struct OBJ *a)
     lifechange=0;
     if (a->psistormdamage)
     {
-	if (GetMageAtr(&a->atrobj,ATRHALLUCINATION)>0)
+        if (IsHallucination(a))
+//	if (GetMageAtr(&a->atrobj,ATRHALLUCINATION)>0)
 	{
 	    dieobj(a);
 	    return(2);
@@ -1599,7 +1601,7 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int modemovef
     }
     if (a->modemove == MODEDIE)
     {
-	DEBUGMESSCR("moveobj <mode=%d> than died\n",mode);
+	DEBUGMESSCR(" [%s][%d] set <mode=[%s][%d]> then died\n",getOBJname(a->SC_Unit),a->SC_Unit,mageprop[mode].namemage,mode);
         return(MOVEOBJ_NOACT);
     }
     if (mageprop[a->modemove].atr & ORDER_CANNOTBEINTERRUPTED)
@@ -2164,7 +2166,8 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int modemovef
 //	    if (a->movelist)
 //		a->movelist->EmptyElemFifo();
 	    a->modemove = mode;
-	    if (GetMageAtr(&a->atrobj,ATRHALLUCINATION) != 0)
+	    if (IsHallucination(a))
+//	    if (GetMageAtr(&a->atrobj,ATRHALLUCINATION) != 0)
 	    {
 		a->mainimage->SetGrpFunc(IMAGEID_HALLUCINATIONDIE1);
 		Play_sfxdata(a->mainimage->xpos>>8,a->mainimage->ypos>>8,SFXDATA_HALLUCINATIONDIE,2);
@@ -2696,7 +2699,8 @@ void CheckIfGotoTransport(OBJ *a,OBJ *destobj)
     //check if can enter tarnsport
     if (GetSpaceRequired(a->SC_Unit) == 255)
 	return;
-    if (GetMageAtr(&destobj->atrobj,ATRHALLUCINATION))
+    if (IsHallucination(destobj))
+//    if (GetMageAtr(&destobj->atrobj,ATRHALLUCINATION))
 	return;
     switch(destobj->SC_Unit)
     {
@@ -2768,7 +2772,8 @@ void delADVobj(struct OBJ *a)
 int accesstomove(struct OBJ *a,struct OBJstruct *b,int mode,int player)
 {
     int j,prop;
-    if (GetMageAtr(&a->atrobj,ATRHALLUCINATION)>0)
+    if (IsHallucination(a))
+//    if (GetMageAtr(&a->atrobj,ATRHALLUCINATION)>0)
 	if (!(mageprop[mode].atr & ORDER_SHOWHALLUCINATED))
 	    return(0);
 
@@ -3440,7 +3445,8 @@ void dieobj(struct OBJ *a)
 	SC_Unit = a->SC_ConstrUnit;
     if (SC_Unit != SC_NOUNITNR)
     {
-	if (GetMageAtr(&a->atrobj,ATRHALLUCINATION)==0)
+	if (!IsHallucination(a))
+//	if (GetMageAtr(&a->atrobj,ATRHALLUCINATION)==0)
 	{
 	    if (IsReadyOBJ(a))
 	    {
@@ -3498,7 +3504,8 @@ void dieobj(struct OBJ *a)
 	buildconstr=0;
 	cbuild=NULL;
     }
-    if (GetMageAtr(&a->atrobj,ATRHALLUCINATION)==0)
+    if (!IsHallucination(a))
+//    if (GetMageAtr(&a->atrobj,ATRHALLUCINATION)==0)
     {
 	if (a->atackernr!=-1)
 	{
@@ -4751,7 +4758,8 @@ void ShowCircleAndBar(OBJ *a)
     	    	    maxshield = 0;
 		if (a->playernr==NUMBGAMER)
 		{
-		    if (GetMageAtr(&a->atrobj,ATRHALLUCINATION))
+		    if (IsHallucination(a))
+//		    if (GetMageAtr(&a->atrobj,ATRHALLUCINATION))
         		timeleft = mageprop[MODEHALLUCINATION].timemageactive;
     		    else
         		timeleft = b->maxtimeleft;

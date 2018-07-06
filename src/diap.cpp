@@ -543,7 +543,8 @@ int CreateUnitProperties(struct OBJ *a,struct OBJstruct *b,int *prop,int playern
 	    }
     }
     //if galiutination clear mage properties
-    if (GetMageAtr(&a->atrobj,ATRHALLUCINATION)>0)
+    if (IsHallucination(a))
+//    if (GetMageAtr(&a->atrobj,ATRHALLUCINATION)>0)
     {
 	for (i=0;i<MAXUNITPROPERTIES;i++)
 	    if (!(mageprop[prop[i]].atr & ORDER_SHOWHALLUCINATED))

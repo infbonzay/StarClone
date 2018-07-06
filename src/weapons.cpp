@@ -491,7 +491,8 @@ void WeaponDoDamage(OBJ *atacker,OBJ *destobj,int x256,int y256,SCUNIT SC_Unit,
 		{
 		    if ( GetDistanceTo256(a,x256,y256) <= mindist[0] )
 		    {
-			if (GetMageAtr(&a->atrobj,ATRHALLUCINATION))
+			if (IsHallucination(a))
+//			if (GetMageAtr(&a->atrobj,ATRHALLUCINATION))
 			{
 			    dieobj(a);
 			    continue;
@@ -511,7 +512,8 @@ void WeaponDoDamage(OBJ *atacker,OBJ *destobj,int x256,int y256,SCUNIT SC_Unit,
 		    return;
     		if (IsActiveUnit(destobj) && destobj != atacker && playernr != destobj->playernr)
     		{
-		    if (GetMageAtr(&destobj->atrobj,ATRHALLUCINATION))
+		    if (IsHallucination(destobj))
+//		    if (GetMageAtr(&destobj->atrobj,ATRHALLUCINATION))
 		    {
 			dieobj(destobj);
 			break;
@@ -544,7 +546,8 @@ void WeaponDoDamage(OBJ *atacker,OBJ *destobj,int x256,int y256,SCUNIT SC_Unit,
 		    return;
     		if (IsActiveUnit(destobj) && destobj != atacker)
     		{
-		    if (GetMageAtr(&destobj->atrobj,ATRHALLUCINATION))
+		    if (IsHallucination(destobj))
+//		    if (GetMageAtr(&destobj->atrobj,ATRHALLUCINATION))
 		    {
 			dieobj(destobj);
 			break;
@@ -570,7 +573,8 @@ void WeaponDoDamage(OBJ *atacker,OBJ *destobj,int x256,int y256,SCUNIT SC_Unit,
 		{
 		    if ( GetDistanceTo256(a,x256,y256) <= mindist[0] )
 		    {
-			if (GetMageAtr(&a->atrobj,ATRHALLUCINATION))
+			if (IsHallucination(a))
+//			if (GetMageAtr(&a->atrobj,ATRHALLUCINATION))
 			{
 			    dieobj(a);
 			    continue;
@@ -589,7 +593,8 @@ void WeaponDoDamage(OBJ *atacker,OBJ *destobj,int x256,int y256,SCUNIT SC_Unit,
 	    {
 		if (destobj->modemove == MODEDIE)
 		    return;
-		if (GetMageAtr(&destobj->atrobj,ATRHALLUCINATION))
+		if (IsHallucination(destobj))
+//		if (GetMageAtr(&destobj->atrobj,ATRHALLUCINATION))
 		{
 		    dieobj(destobj);
 		    break;
@@ -624,7 +629,8 @@ void WeaponDoDamage(OBJ *atacker,OBJ *destobj,int x256,int y256,SCUNIT SC_Unit,
     		{
 		    if ( GetDistanceTo256(a,x256,y256) <= mindist[0] )
 		    {
-		        if (GetMageAtr(&a->atrobj,ATRHALLUCINATION))
+			if (IsHallucination(a))
+//		        if (GetMageAtr(&a->atrobj,ATRHALLUCINATION))
 		        {
 		    	    dieobj(a);
 			    continue;
@@ -681,7 +687,8 @@ void WeaponDoDamage(OBJ *atacker,OBJ *destobj,int x256,int y256,SCUNIT SC_Unit,
 		    return;
     		if (IsActiveUnit(destobj))
     		{
-		    if (GetMageAtr(&destobj->atrobj,ATRHALLUCINATION))
+		    if (IsHallucination(destobj))
+//		    if (GetMageAtr(&destobj->atrobj,ATRHALLUCINATION))
 		    {
 			dieobj(destobj);
 			break;
@@ -702,7 +709,8 @@ void WeaponDoDamage(OBJ *atacker,OBJ *destobj,int x256,int y256,SCUNIT SC_Unit,
 		    return;
     		if (IsActiveUnit(destobj) && destobj != atacker)
     		{
-		    if (GetMageAtr(&destobj->atrobj,ATRHALLUCINATION))
+		    if (IsHallucination(destobj))
+//		    if (GetMageAtr(&destobj->atrobj,ATRHALLUCINATION))
 		    {
 			dieobj(destobj);
 			break;
@@ -735,7 +743,8 @@ void WeaponDoDamage(OBJ *atacker,OBJ *destobj,int x256,int y256,SCUNIT SC_Unit,
     		{
 		    if ( GetDistanceTo256(a,x256,y256) <= mindist[0] )
 		    {
-		        if (GetMageAtr(&a->atrobj,ATRHALLUCINATION))
+			if (IsHallucination(a))
+//		        if (GetMageAtr(&a->atrobj,ATRHALLUCINATION))
 		        {
 		    	    dieobj(a);
 			    continue;
@@ -756,7 +765,8 @@ void WeaponDoDamage(OBJ *atacker,OBJ *destobj,int x256,int y256,SCUNIT SC_Unit,
 		    return;
     		if (IsActiveUnit(destobj) && destobj != atacker)
     		{
-		    if (GetMageAtr(&destobj->atrobj,ATRHALLUCINATION))
+		    if (IsHallucination(destobj))
+//		    if (GetMageAtr(&destobj->atrobj,ATRHALLUCINATION))
 		    {
 			dieobj(destobj);
 			break;
@@ -779,7 +789,8 @@ void WeaponDoDamage(OBJ *atacker,OBJ *destobj,int x256,int y256,SCUNIT SC_Unit,
 		    return;
     		if (IsActiveUnit(destobj) && destobj != atacker)
     		{
-		    if (GetMageAtr(&destobj->atrobj,ATRHALLUCINATION))
+		    if (IsHallucination(destobj))
+//		    if (GetMageAtr(&destobj->atrobj,ATRHALLUCINATION))
 		    {
 			dieobj(destobj);
 			break;
@@ -806,7 +817,8 @@ void WeaponDoDamage(OBJ *atacker,OBJ *destobj,int x256,int y256,SCUNIT SC_Unit,
     		{
 		    if ( GetDistanceTo256(a,x256,y256) <= mindist[0] )
 		    {
-			if (GetMageAtr(&a->atrobj,ATRHALLUCINATION))
+			if (IsHallucination(a))
+//			if (GetMageAtr(&a->atrobj,ATRHALLUCINATION))
 			{
 			    dieobj(a);
 			    continue;
@@ -922,7 +934,8 @@ void WeaponDoDamage(OBJ *atacker,OBJ *destobj,int x256,int y256,SCUNIT SC_Unit,
 		if (IsOnSkyOBJ(a) && (player_aliance(playernr,a->playernr) == ENEMYOBJ )) //&& IsActiveUnit(a) && || a == destobj))
     		if (WeaponCanApplyOnUnit(a,playernr,weapon_id))
 		{
-		    if (GetMageAtr(&a->atrobj,ATRHALLUCINATION)!=0)
+		    if (IsHallucination(a))
+//		    if (GetMageAtr(&a->atrobj,ATRHALLUCINATION)!=0)
 		    {
 			dieobj(a);
 			continue;

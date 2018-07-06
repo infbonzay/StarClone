@@ -571,7 +571,8 @@ void CastSpellWithOutWeaponnr(OBJ *casterobj,int castmagenr)
 		{
 		    if ( GetDistanceTo256(a,casterobj->finalx,casterobj->finaly) <= mindist )
 		    {
-			if (GetMageAtr(&a->atrobj,ATRHALLUCINATION))
+			if (IsHallucination(a))
+//			if (GetMageAtr(&a->atrobj,ATRHALLUCINATION))
 			{
 			    dieobj(a);
 			    continue;
@@ -600,7 +601,8 @@ void CastSpellWithOutWeaponnr(OBJ *casterobj,int castmagenr)
 	    {
     		if (IsActiveUnit(destobj) && destobj != casterobj)
     		{
-		    if (GetMageAtr(&destobj->atrobj,ATRHALLUCINATION))
+		    if (IsHallucination(destobj))
+//		    if (GetMageAtr(&destobj->atrobj,ATRHALLUCINATION))
 		    {
 			dieobj(destobj);
 			break;

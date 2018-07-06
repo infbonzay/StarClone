@@ -273,12 +273,6 @@ int (*CheckUnit[5])(SCUNIT)=
 int CheckForUnit(int (*ConditionFunction)(int *, int),
 		 int actiononplayers,int unitid,int cntunits,OBJ **retlast,struct XY *searcharea)
 {
-    return(CheckForUnit(ConditionFunction,actiononplayers,unitid,cntunits,retlast,searcharea,0));
-}
-//=================================================
-int CheckForUnit(int (*ConditionFunction)(int *, int),
-		 int actiononplayers,int unitid,int cntunits,OBJ **retlast,struct XY *searcharea,int modemove)
-{
     int i,nrofunits=0,checkready=0;
     int (*UnitTypeFunc) (SCUNIT);
     struct OBJ *a,*last=NULL;
@@ -297,9 +291,8 @@ int CheckForUnit(int (*ConditionFunction)(int *, int),
     for (i=0;i<MaxObjects;i++)
     {
 	a = objects[i];
-	if (modemove)// && a->modemove != MODEDIE)
-	    if (a->modemove != modemove)
-		continue;
+	if (a->modemove == MODEDIE)
+	    continue;
 	if (actiononplayers & (1<<a->playernr))
 	{
 		if (checkready && !IsReadyOBJ(a))
@@ -1022,6 +1015,7 @@ int Action_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int trig_nr,int playernr,int
 			{
 			    if (GetTriggeredOBJState(objects[j]))
 			    {
+				//done by previous trigger
 				SetTriggeredOBJState(objects[j], CLEARSTATE);
 				oldsnd = UnBlockSoundToPlay();
 				dieobj(objects[j]);
@@ -1046,7 +1040,7 @@ int Action_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int trig_nr,int playernr,int
 		    locnr=temptrg->action[i].locationnr-1;
 		    ownedactiononplayers=OneGroup_Prepare(info,temptrg->action[i].actiononplayers,playernrmask);
 		    newobj=NULL;
-		    nrofunits=CheckForUnit(NULL,ownedactiononplayers,unitnr,nrofunits,&newobj,&info->gamelocations[locnr].coords);
+		    nrofunits = CheckForUnit(NULL,ownedactiononplayers,unitnr,nrofunits,&newobj,&info->gamelocations[locnr].coords);
 		    if (nrofunits)
 		    {
 			for (j=0;j<MaxObjects;j++)

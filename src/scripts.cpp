@@ -4,6 +4,7 @@
 #include "mpqwrapper.h"
 #include "defsunits.h"
 #include "creep.h"
+#include "debug.h"
 
 #include "auxil.h"
 #include "man.h"
@@ -875,7 +876,9 @@ while(!feof(f))
 		mageprop[whatobj].depend.type_id[1]=ORDERS_NONE;
 		mageprop[whatobj].depend.type_id[2]=ORDERS_NONE;
 
-//             strcpy(mageprop[whatobj].namemage,strvalue);
+#ifdef DEBUGOUTPUT
+		strcpy(mageprop[whatobj].namemage,strvalue);
+#endif
         	fscanf(f,"%s \n",strvalue);
         	intvalue = atoi(strvalue);
 		if (intvalue>=MAXMAGEATR)

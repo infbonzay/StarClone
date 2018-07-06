@@ -374,7 +374,10 @@ int LowLevelDamage(OBJ *atacker,OBJ *a,int weapon_id,int typedamage,int totaldam
     OBJstruct *b;
     int remaindamage,armor,upgnr,upgarmor,shieldarmor;
     if (atacker && IsHallucination(atacker))
+    {
+	//!!!! need to atack back
 	return(0);
+    }
 //    if (IsInvincibleUnit(a->SC_Unit))
 //	return(0);
     //10 point for every of acid spore (9-max);

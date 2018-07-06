@@ -399,7 +399,9 @@ void ShowBaseBuildMessage(int XWINPOS,int YWINPOS,OBJ *a)
     if (a->playernr!=NUMBGAMER||GetConstructNR(a))
 	return;
     int base = IsUnitBaseBuild(a);
-    if (!IsOBJUnderConstruct(a)&&(!GetMageAtr(&a->atrobj,ATRHALLUCINATION))&&
+    if (!IsOBJUnderConstruct(a) 	&&
+        !IsHallucination(a) 		&&
+//        (!GetMageAtr(&a->atrobj,ATRHALLUCINATION))&&
 	(base==1 || base==2 || IsPsiUnit(a->SC_Unit)) && (!a->loaded))
     {
 	int race=GetUnitRace(a->SC_Unit);
@@ -662,7 +664,7 @@ void printobjparam(void)
 		        for( int attr=0; attr<MAXMAGEATR; attr++ )
 		        {
 			    //don't display hallucination on enemy unit
-			    if (attr==ATRHALLUCINATION&&player_aliance(fordeselect[0]->playernr,NUMBGAMER)==ENEMYOBJ)
+			    if (attr == ATRHALLUCINATION && player_aliance(fordeselect[0]->playernr,NUMBGAMER)==ENEMYOBJ)
 			        continue;
 			    if(mage_descriptions_hod[attr]==-1)
 				continue;
@@ -764,7 +766,8 @@ void printobjparam(void)
     	}
         if (player_aliance(NUMBGAMER,a->playernr)==MYOBJ&&a->timeleft)
         {
-            if (GetMageAtr(&a->atrobj,ATRHALLUCINATION)>0)
+	    if (IsHallucination(a))
+//            if (GetMageAtr(&a->atrobj,ATRHALLUCINATION)>0)
         	maxtimeleft=mageprop[MODEHALLUCINATION].timemageactive;
             else
         	maxtimeleft=b->maxtimeleft;
@@ -1128,7 +1131,8 @@ void drawunitsintransport(int XWINPOS,int YWINPOS,struct OBJ *a)
 	if (IsHeroUnit(a1->SC_Unit))
 	    objtype=1;
 	else
-	    if (GetMageAtr(&a1->atrobj,ATRHALLUCINATION)==0)
+	    if (!IsHallucination(a1))
+//	    if (GetMageAtr(&a1->atrobj,ATRHALLUCINATION)==0)
 		if (GetMageAtr(&a1->atrobj,ATRBLIND)==0)
 		    if (GetMageAtr(&a1->atrobj,ATRPARASITEFROM)==0)
 			objtype = 0;
@@ -1220,7 +1224,8 @@ void drawallunitsinbar(int XWINPOS,int YWINPOS,struct OBJ *a[],int count)
 	    if (IsHeroUnit(a1->SC_Unit))
 		objtype=1;
 	    else
-	        if (GetMageAtr(&a1->atrobj,ATRHALLUCINATION)==0)
+		if (!IsHallucination(a1))
+//	        if (GetMageAtr(&a1->atrobj,ATRHALLUCINATION)==0)
 		    if (GetMageAtr(&a1->atrobj,ATRBLIND)==0)
 			if (GetMageAtr(&a1->atrobj,ATRPARASITEFROM)==0)
 			    objtype = 0;

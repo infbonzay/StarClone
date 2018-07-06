@@ -115,24 +115,23 @@ void AddBuildsInPower(unsigned char *pylonarea,int playernr)
     OBJ *a;
     for (k=0;k<MaxObjects;k++)
     {
-	a=objects[k];
+	a = objects[k];
 	if (a->playernr != playernr)
 	    continue;
 	if (a->prop & VARPOWEROFF)
 	{
 	    if (RequiresPylonEnergy(a->SC_Unit))
-//	    if (GetUnitRace(a->SC_Unit)==PROTOSSRACE)
 	    {
-		nrofpower=0;
+		nrofpower = 0;
 		xp = (GetOBJx(a) - GetUnitWidthAndHeight(a->SC_Unit,UNITDIM_WIDTH)/2)/SIZESPRLANSHX;
 		yp = (GetOBJy(a) - GetUnitWidthAndHeight(a->SC_Unit,UNITDIM_HEIGHT)/2)/SIZESPRLANSHY;
-		xs=GetUnitWidthAndHeight(a->SC_Unit,UNITDIM_WIDTH)/SIZESPRLANSHX;
-		ys=GetUnitWidthAndHeight(a->SC_Unit,UNITDIM_HEIGHT)/SIZESPRLANSHY;
+		xs = GetUnitWidthAndHeight(a->SC_Unit,UNITDIM_WIDTH)/SIZESPRLANSHX;
+		ys = GetUnitWidthAndHeight(a->SC_Unit,UNITDIM_HEIGHT)/SIZESPRLANSHY;
 		for (i=0;i<ys;i++)
 		    for (j=0;j<xs;j++)
 			if (pylonarea[(i+yp)*MAXXMAP+j+xp])
 			    nrofpower++;
-		if (nrofpower>=xs*ys/2)
+		if (nrofpower >= xs*ys/2)
 		{
 		    moveobj(a,NULL,MODEPOWERON,NOSHOWERROR);
 		}
@@ -147,10 +146,10 @@ void DelBuildsFromPower(unsigned char *pylonarea,int playernr)
     OBJ *a;
     for (k=0;k<MaxObjects;k++)
     {
-	a=objects[k];
-	if (a->playernr!=playernr)
+	a = objects[k];
+	if (a->playernr != playernr)
 	    continue;
-	if (!(a->prop & VARPOWEROFF))
+	if ( !(a->prop & VARPOWEROFF) && a->modemove != MODEDIE )
 	{
 	    if (!IsOBJUnderConstruct(a))
 		if (RequiresPylonEnergy(a->SC_Unit))
@@ -164,9 +163,9 @@ void DelBuildsFromPower(unsigned char *pylonarea,int playernr)
 		        for (j=0;j<xs;j++)
 		    	if (pylonarea[(i+yp)*MAXXMAP+j+xp])
 		    	    nrofpower++;
-		    if (nrofpower<xs*ys/2)
+		    if (nrofpower < xs*ys/2)
 		    {
-		        if (gameconf.audioconf.buildsounds&&a->playernr==NUMBGAMER)
+		        if (gameconf.audioconf.buildsounds && a->playernr == NUMBGAMER)
 			    Play_sfxdata_id(a,sfx_powerdown[PROTOSSRACE],2,0);
 			moveobj(a,NULL,MODEPOWEROFF,NOSHOWERROR);
 		    }
@@ -180,11 +179,11 @@ void CheckBuildForPower(struct mapinfo *mymap,OBJ *a,int playernr)
     int i,j,nrofpower,xp,yp,xs,ys;
     unsigned char *parea=mymap->pylonarea[playernr];
     if (!parea)
-	parea=CreatePylonAreaArray(mymap,playernr);
-    if (IsReadyOBJ(a))
+	parea = CreatePylonAreaArray(mymap,playernr);
+    if (IsReadyOBJ(a) && !(a->modemove & MODEDIE) )
 	if (RequiresPylonEnergy(a->SC_Unit))
 	{
-    	    nrofpower=0;
+    	    nrofpower = 0;
 	    xp = (GetOBJx(a) - GetUnitWidthAndHeight(a->SC_Unit,UNITDIM_WIDTH)/2)/SIZESPRLANSHX;
 	    yp = (GetOBJy(a) - GetUnitWidthAndHeight(a->SC_Unit,UNITDIM_HEIGHT)/2)/SIZESPRLANSHY;
 	    xs = GetUnitWidthAndHeight(a->SC_Unit,UNITDIM_WIDTH)/SIZESPRLANSHX;
@@ -193,7 +192,7 @@ void CheckBuildForPower(struct mapinfo *mymap,OBJ *a,int playernr)
     	        for (j=0;j<xs;j++)
     		    if (parea[(i+yp)*MAXXMAP+j+xp])
 		        nrofpower++;
-    	    if (nrofpower<xs*ys/2)
+    	    if (nrofpower < xs*ys/2)
 	    {
 		moveobj(a,NULL,MODEPOWEROFF,NOSHOWERROR);
 	    }

@@ -3,6 +3,7 @@
 
 
 #include <grplib/grp.h>
+#include "debug.h"
 #include "defs.h"
 #include "myfifo.h"
 #include "construct.h"
@@ -332,7 +333,9 @@ struct MAGEP
 	unsigned char   weapon_elevation;	//elevation nr
 
 	DEPENDONTYPE	depend;
-//    	char		namemage[50];
+#ifdef DEBUGOUTPUT
+    	char		namemage[50];
+#endif
 };
 
 //extern struct MAGEARRAY *firstmage;
