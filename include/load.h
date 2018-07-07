@@ -67,6 +67,7 @@ void unloadafterstarmap(void);
 int  getcampaignname(int campaign_id,int mission_id);
 int  openmission(int campaign_id,int mission_id);
 void getmissionidformmissionname(char *missionname,int *mission_id);
+int  CheckForCheats(char *txt1);
 
 
 //=======================================

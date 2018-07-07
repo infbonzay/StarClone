@@ -10,6 +10,7 @@
 #include <grplib/usegrp.h>
 
 #include "vars.h"
+#include "market.h"
 
 #include "debug.h"
 #include "auxil.h"
@@ -662,6 +663,16 @@ void GoPlayNextMusic(void)
 int letsplaygame(int race,char *mypath)
 {
     int status,i;
+
+    CHEATERBIT = 1;
+    CODEFORSCREEN = 0;
+    CODEFORGOD = 0;
+    CODEFORQUICKMAKE = 1;
+    CODEFORWITHOUTGOODS	= 0;
+    CODEFORWITHOUTTECHTREE = 0;
+    CODEFORPSIUNLIMIT = 0;
+    SHOWCELLS = 0;
+    
     if (race==RACE_OBSERVER)
 	race=RACE_TERRAN;
 	
@@ -1852,4 +1863,56 @@ void ShowFirstRunVideo(int ignorefirstrunbit)
     }
 }    
 //===================================================
+void ActivateCheat(int cheatid)
+{
+    int i;
+    CHEATERBIT = 1;
+    DEBUGMESSCR("cheat nr %d\n",cheatid);
+    switch(cheatid)
+    {
+	case 0:
+	    break;
+	case 1:		//showall
+	    CODEFORSCREEN = CODEFORSCREEN ^ 1;
+    	    changegoods = 1;
+    	    map.clearfog[NUMBGAMER] = 1;
+	    bitsplayer = GetVisionBitsPlayer(NUMBGAMER);
+	    MAPREGENERATIONBIT = 1;
+	    MAPUNITSREGENERATIONBIT = 1;
+	    break;
+	case 2:		//givemin
+    	    changegoods = 1;
+	    ChangeResourcePlayer(NUMBGAMER,PLUSFACTOR,1000,0);
+	    break;
+	case 3:		//givegas
+    	    changegoods = 1;
+	    ChangeResourcePlayer(NUMBGAMER,PLUSFACTOR,0,1000);
+	    break;
+	case 4:		//quickmake
+	    CODEFORQUICKMAKE = 32;
+	    break;
+	case 5:		//nogoods
+	    CODEFORWITHOUTGOODS = 1;
+	    break;
+	case 6:		//notech
+	    CODEFORWITHOUTTECHTREE = 1;
+	    break;
+	case 7:		//nopsi
+	    CODEFORPSIUNLIMIT = 1;
+	    break;
+	case 8:		//showcells
+	    SHOWCELLS = SHOWCELLS ^ 1;
+	    break;
+	case 9:		//kill
+	    for (i=0; i < MAXSELECTMAN; i++)
+		if ( fordeselect[i] )
+		{
+		    dieobj(fordeselect[i]);
+		}
+	    break;
+	case 10:	//quit
+	    menustatus = EXITGAME;
+	    break;
+    }
+}
 

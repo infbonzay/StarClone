@@ -14,6 +14,7 @@
 #include "objs.h"
 #include "rand.h"
 #include "auxil.h"
+#include "load.h"
 #include "mouse.h"
 #include "music.h"
 #include "scripts.h"
@@ -4800,7 +4801,7 @@ int WaitingPlayersMenu(MENUDRAW *menudraw,MENUPARAMS *menuparams)
 
 int chatboxmenu(MENUDRAW *menudraw,MENUPARAMS *menuparams)
 {
-    int messageto=0,lenx,leny;
+    int messageto=0,lenx,leny,cheatid;
     char txt1[200];
     if (!menudraw->menutodraw)
     {
@@ -4850,7 +4851,16 @@ int chatboxmenu(MENUDRAW *menudraw,MENUPARAMS *menuparams)
 		if (NETWORKGAME)
 	    	    netplay.SendGame_NetworkText(txt1);
 		else
-		    ShowChatMessage(txt1);
+		{
+		    if ( (cheatid = CheckForCheats(geteditboxtext(menudraw->menutodraw,0))) < 0 )	//show message if no cheats
+		    {
+			ShowChatMessage(txt1);
+		    }
+		    else
+		    {
+			ActivateCheat(cheatid);
+		    }
+		}
 	    }
 	    return(1);
 	    break;

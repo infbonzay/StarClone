@@ -70,26 +70,6 @@ void pausekey(void)
      keyup();
 }
 //==================================
-void charup(char *a)
-{
-    if ((*a>='a')&&(*a<='z')) (*a)-=0x20;
-    else if (*a==0x1e) *a=0x20;
-}
-//====================================
-void chardown(char *a)
-{
-    if ((*a>='A')&&(*a<='Z')) (*a)+=0x20;
-       else if (*a==0x20) *a=0x1e;
-}
-//====================================
-void charupdown(char *a,int mode)
-{
-  if (mode)
-     chardown(a);
-  else
-     charup(a);
-}
-//====================================
 int readkey(void)
 {
     static int timeoldkey=0;

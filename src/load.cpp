@@ -827,6 +827,7 @@ void savelog(char *mes,int i)
 #define SC_MYINFO_TBL		"rez\\myinfo.tbl"
 #define SC_CAMPAIGN_TBL		"rez\\campaign.tbl"
 #define SC_MAPDATA_TBL		"arr\\mapdata.tbl"
+#define SC_MYCHEATS_TBL		"rez\\mycheats.tbl"
 //============================================
 int LoadDatTblFiles(DATTBLSTRUCT *dattbl)
 {
@@ -881,6 +882,10 @@ int LoadDatTblFiles(DATTBLSTRUCT *dattbl)
     
     dattbl->campaign_tbl = new TBL;
     dattbl->campaign_tbl->loadTBL(SC_CAMPAIGN_TBL);
+
+    dattbl->mycheats_tbl = new TBL;
+    dattbl->mycheats_tbl->loadTBL(SC_MYCHEATS_TBL);
+    
     
     return(0);
 }
@@ -990,6 +995,12 @@ void UnloadDatTblFiles(DATTBLSTRUCT *dattbl)
 	delete dattbl->myinfo_tbl;
 	dattbl->myinfo_tbl=NULL;
     }
+    if (dattbl->mycheats_tbl)
+    {
+	dattbl->mycheats_tbl->~TBL();
+	delete dattbl->mycheats_tbl;
+	dattbl->mycheats_tbl=NULL;
+    }
     if (dattbl->campaign_tbl)
     {
 	dattbl->campaign_tbl->~TBL();
@@ -1000,17 +1011,16 @@ void UnloadDatTblFiles(DATTBLSTRUCT *dattbl)
 //================================================
 void LoadPatchTbl(void)
 {
-    alldattbl.weapons_dat->MaximumRange[WEAPONID_SCARAB] = 15;		//scarab need to be melee atack
-    alldattbl.weapons_dat->WeaponCooldown[WEAPONID_SCARAB] = 60;	//reaver cooldown
-    alldattbl.weapons_dat->WeaponCooldown[WEAPONID_PULSECANNON] = 10;	//interceptor cooldown
-    alldattbl.units_dat->ElevationLevel[SC_REAVEROBJ] += 1;	//reaver elevation
-    alldattbl.units_dat->ElevationLevel[SC_HERO_WARBRINGEROBJ] += 1;	//warbringer elevation
+    alldattbl.weapons_dat->MaximumRange[WEAPONID_SCARAB] = 15;					//scarab need to be melee atack
+    alldattbl.weapons_dat->WeaponCooldown[WEAPONID_SCARAB] = 60;				//reaver cooldown
+    alldattbl.weapons_dat->WeaponCooldown[WEAPONID_PULSECANNON] = 10;				//interceptor cooldown
+    alldattbl.units_dat->ElevationLevel[SC_REAVEROBJ] += 1;					//reaver elevation
+    alldattbl.units_dat->ElevationLevel[SC_HERO_WARBRINGEROBJ] += 1;				//warbringer elevation
     alldattbl.flingy_dat->MoveControl[FLINGYID_GOLIATHTURRET] = FLINGYMOVECONTROL_ISCRIPT;	//goliath turret has flingy move control (why?)
-    alldattbl.flingy_dat->TurnRadius[FLINGYID_HALOROCKETS] *= 2;	//doubel rotation speed to prevent freeze around
-    alldattbl.units_dat->SpecialAbilityFlags[SC_SCANNERSWEEP] |= SPECIAL_INVINCIBLE;	//prevent attack sweep
-    alldattbl.units_dat->SpecialAbilityFlags[SC_BUNKEROBJ] |= SPECIAL_FULLAUTOATTACK;	//units inside bunker can atack
-    alldattbl.units_dat->SpecialAbilityFlags[SC_MAPREVEALEROBJ] |= SPECIAL_INVINCIBLE;	//prevent attack sweep
-    
+    alldattbl.flingy_dat->TurnRadius[FLINGYID_HALOROCKETS] *= 2;				//doubel rotation speed to prevent freeze around
+    alldattbl.units_dat->SpecialAbilityFlags[SC_SCANNERSWEEP] |= SPECIAL_INVINCIBLE;		//prevent attack sweep
+    alldattbl.units_dat->SpecialAbilityFlags[SC_BUNKEROBJ] |= SPECIAL_FULLAUTOATTACK;		//units inside bunker can atack
+    alldattbl.units_dat->SpecialAbilityFlags[SC_MAPREVEALEROBJ] |= SPECIAL_INVINCIBLE;		//prevent attack maprevealer
 }
 //============================================
 void *imagesreftogrpdata[MAX_IMAGES_ELEM];
@@ -1275,6 +1285,19 @@ int openmission(int campaignnr,int nextmission_id)
     }
     saveplayerinfo();
     return(retvalue);
+}
+//==========================
+int CheckForCheats(char *txt1)
+{
+    char *tbltxt;
+    int maxtblnr = alldattbl.mycheats_tbl->get_STRS();
+    for (int i = 0; i < maxtblnr; i++)
+    {
+	tbltxt = alldattbl.mycheats_tbl->get_TBL_STR(i);
+	if ( !strcmp(txt1,tbltxt) )
+	    return(i);
+    }
+    return(-1);
 }
 //==========================
 

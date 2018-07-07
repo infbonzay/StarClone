@@ -115,6 +115,7 @@ int  IfTimeForTrigger(struct mapinfo *info,int *prevgameticks);
 void ShowFirstRunVideo(int ignorefirstrunbit);
 void GoPlayNextMusic(void);
 void ShowGameStatusMenu(int *prevticks);
+void ActivateCheat(int cheatid);
 
 
 

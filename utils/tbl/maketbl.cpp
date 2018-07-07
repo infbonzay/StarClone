@@ -38,7 +38,7 @@ int main(int argc,char *argv[])
     fseek(f,0,SEEK_END);
     filesize = ftell(f);
     fseek(f,0,SEEK_SET);
-    printf("filesize==%lld\n",filesize);
+    printf("filesize=%lld\n",filesize);
     char *memstr=(char *)malloc(filesize);
     fread(memstr,1,filesize,f);
     char *str=memstr;

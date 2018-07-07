@@ -389,6 +389,7 @@ struct DATTBLSTRUCT
     TBL			*mapdata_tbl;
     TBL			*myinfo_tbl;
     TBL			*campaign_tbl;
+    TBL			*mycheats_tbl;
 };
 //==========================================
 

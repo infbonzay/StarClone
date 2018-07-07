@@ -8861,7 +8861,7 @@ ArchonEnergyInit:
 	wait           	2
 	imgol          	135 0 0	# ArchonBeing (protoss\archonT.grp)
 	imgol          	136 0 0	# ArchonTeamColors (protoss\archonT2.grp)
-	sigorder       	4
+#	sigorder       	4
 	nobrkcodeend   	
 	wait           	2
 ArchonEnergyGndAttkInit:
@@ -18738,7 +18738,7 @@ DarkArchonEnergyInit:
 	wait           	2
 	imgol          	926 0 0	# DarkArchonBeing (protoss\darchnT.grp)
 	imgol          	927 0 0	# DarkArchonTeamColors (protoss\darchnT2.grp)
-	sigorder       	4
+#	sigorder       	4
 	nobrkcodeend   	
 	wait           	2
 DarkArchonEnergyGndAttkInit:

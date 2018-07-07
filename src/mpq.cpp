@@ -33,7 +33,7 @@ int loadfilefrommpq(HANDLE hmpq,char *filename,char **mem,int *fsize)
         err = wr_SFileOpenFileEx(hmpq,filename,SFILE_OPEN_FROM_MPQ,&f);
     if (!err)
     {
-        DEBUGMESSCR("loadfilefrommpq: %s not found\n",filename);
+        DEBUGMESSCR("%s not found\n",filename);
         return -1;
     }
     filesize = SFileGetFileSize(f,NULL);

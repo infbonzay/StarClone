@@ -278,9 +278,7 @@ extern int irradiatedamagepertick,plaguedamagepertick;
 
 //============================CHEAT CODES===================
 extern char	CODEFORSCREEN;
-extern char	CODEFORGODMODE;
-extern char	CODEFORMINERALS;
-extern char	CODEFORGAZ;
+extern char	CODEFORGOD;
 extern char	CODEFORQUICKMAKE;
 extern char	CHEATERBIT;
 extern char	CODEFORWITHOUTGOODS;
