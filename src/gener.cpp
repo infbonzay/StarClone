@@ -1865,7 +1865,7 @@ void ShowFirstRunVideo(int ignorefirstrunbit)
 //===================================================
 void ActivateCheat(int cheatid)
 {
-    int i;
+    int i,fogvalue;
     CHEATERBIT = 1;
     DEBUGMESSCR("cheat nr %d\n",cheatid);
     switch(cheatid)
@@ -1879,6 +1879,23 @@ void ActivateCheat(int cheatid)
 	    bitsplayer = GetVisionBitsPlayer(NUMBGAMER);
 	    MAPREGENERATIONBIT = 1;
 	    MAPUNITSREGENERATIONBIT = 1;
+	    if (CODEFORSCREEN)
+	    {
+		fogvalue = 0x04;
+	    }
+	    else
+	    {
+		fogvalue = 0x00;
+	    }
+	    for (i=0;i<PLAYEDPLAYERS;i++)
+	    {
+    		if (IfPlayerHaveStartLocation(&map,i)!=-1)
+    		{
+    		    memset(map.mapbits.whitefog[i],fogvalue,map.map_width*map.map_height);
+    		    memset(map.mapbits.whitefog2[i],fogvalue,map.map_width*map.map_height);
+    		    memset(map.mapbits.blackfog[i],fogvalue,map.map_width*map.map_height);
+    		}
+	    }
 	    break;
 	case 2:		//givemin
     	    changegoods = 1;
