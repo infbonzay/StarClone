@@ -1,0 +1,80 @@
+[NEWMAGE] = NR_order ordername NR_pict_in_icons_grp NR_mageatribute
+
+	    NR_order - number of mage
+	    ordername - name of mage
+	    NR_pict_inicon_grp - picture number from icons.grp
+	    NR_mageatribute - index in ATROBJ
+	    
+MINDISTANCE = distance
+
+	    distance - distance in pixels between destination and OBJ to apply that order (mage)
+
+DIAPAZONE = radius
+	    
+	    radius - in pixels of area effect of order (mage)
+	    
+RIGHTWAY = bool where  n  type-1 type-2 ... type-n
+
+	    bool 
+		 YES - ( type of order that executes directly then clicked on icon (ex. cloak,stimpack,stop,holdposition,...)
+		 NO - ( executes after select destination area or object (ex - move,attack,plague,...)
+	    where
+		ONTERRAIN - order applied on terrain and unit
+		ONUNIT	  - order applied on unit only
+	    n
+		what type of units can be applied
+	    type-1
+	    type-2
+	    ...
+	    type-n
+		ONSPELLCASTER - applied on spellcaster units
+		NONBUILD - to non builds
+		ONAIR - on units in air
+		ONGROUND - on ground units
+		ONORGANIC
+		MECHANICALORORGANIC
+		OWN - on own units
+		NOUNITDESTINATION - cast on place where unit was in time of casting (landing order)
+
+IGNOREREQ = bool
+	    YES - ignore cost of minerals,gas; ignore increase psi limit and decrease mana
+	    NO
+TIMEMAGEACTIVE = time
+		time - time in gameticks*256
+IMAGES_ID = image_id_small image_id_medium image_id_large
+	    image_id_small - image_id from tbl file applyed on small units
+	    image_id_medium - image_id from tbl file applyed on medium units
+	    image_id_large - image_id from tbl file applyed on large units
+ORDERID = nr
+	    nr - ???
+DEPENDONTYPEID = NR type1 ID_1 ... typeNR ID_NR
+		type1...typen
+		    UNIT - depend on unit 
+		    UPGRADE - depend on upgrade 
+		    TECHNOLOGY - depend on technology
+		    UNITANDADDON id1 id2 - depend on 2 units nr 
+		    
+CREATEWEAPON = weapon_nr
+	    order will create weapon nr
+QUEUEDTOMOVELIST = bool
+		YES - orders ca be queued
+		NO
+CANNOTBEINTERRUPTED = bool
+		YES - cannot interrupt (land,liftoff,...)
+		NO -
+SOUNDONCASTANDHIT = soundid1 soundid2
+		if 0 - not play sound
+		soundid1 - cast sound 
+		soundid2 - hit sound
+RACE = ZERG|TERRAN|PROTOSS
+
+SHOWHALLUCINATED = bool
+		YES - hallucinated units can do this order (mage)  
+		NO - 
+ORDERTYPE = typeoforder ...
+	    typeoforder
+		ORDER orderid - 
+		UNIT unitnr - order to create unitnr
+		UPGRADE upgradeid disabledtxt1 disabledtxt2 disabledtxt3 enabledtxt1
+		disabletxt1-3,enabledtxt1  - stattxt_id (text a needs for upgrade to 1,2,3 levels and no need to upgrade text) 
+	    
