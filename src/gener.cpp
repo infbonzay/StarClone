@@ -1904,11 +1904,13 @@ void ActivateCheat(int cheatid)
 	    SHOWCELLS = SHOWCELLS ^ 1;
 	    break;
 	case 9:		//kill
-	    for (i=0; i < MAXSELECTMAN; i++)
+	    for (i = MAXSELECTMAN-1;i>=0; i--)
+	    {
 		if ( fordeselect[i] )
 		{
 		    dieobj(fordeselect[i]);
 		}
+	    }
 	    break;
 	case 10:	//quit
 	    menustatus = EXITGAME;
