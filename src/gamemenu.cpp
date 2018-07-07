@@ -2367,7 +2367,7 @@ int glu_login(void)
     menuspecialtables(nplayer,fntadr,dlg);
     setitemrelation(nplayer,1,ITEMRELATION_DISABLE,&nplayer->menu[3].item.editbox->length,0);
     setmenuflags(nplayer,MENUFLAGS_ALWAYSDRAW);
-    changeeditboxparam(nplayer,3,"",12);
+    changeeditboxparam(nplayer,3,"",MAXPLAYERNAMESYMBOLS);
     AddPrevMenuShowing(nplayer,singammenu);
 
     mousetype=NORMALMOUSE;

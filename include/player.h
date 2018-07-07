@@ -31,6 +31,19 @@
 #define STATPLAYER_TOTALSPENT		8
 #define STATPLAYER_MAX			9
 
+#define IDPLAYERFILE 0x57434852		//"WCHR"
+
+#define IDPLAYERFILE_0	 ((IDPLAYERFILE >> 24) & 0xff)
+#define IDPLAYERFILE_1	 ((IDPLAYERFILE >> 16) & 0xff)
+#define IDPLAYERFILE_2	 ((IDPLAYERFILE >> 8) & 0xff)
+#define IDPLAYERFILE_3	 ((IDPLAYERFILE >> 0) & 0xff)
+
+union IdPlayerFile
+{
+	uint32_t	i_id;
+	uint8_t		c_id[4];
+};
+
 struct	STATPLAYER
 {
 	int stat[STATPLAYER_MAX];

@@ -19,6 +19,7 @@ void clearplayernames(void)
 void setplayername(int playernr,char *playername)
 {
     strncpy(curplayer[playernr].nickname,playername,MAXPLAYERNAMESYMBOLS);
+    curplayer[playernr].nickname[MAXPLAYERNAMESYMBOLS] = 0;
 }
 //=============================================
 char *getplayername(int playernr)
@@ -44,6 +45,9 @@ void resetinfoplayers(void)
 //=============================================
 void CreateDefaultInfoForPlayer(FILE *f)
 {
+    IdPlayerFile pl_id = { .c_id={IDPLAYERFILE_0,IDPLAYERFILE_1,IDPLAYERFILE_2,IDPLAYERFILE_3} };
+    fwrite(&pl_id,sizeof(IdPlayerFile),1,f);
+
     curplayer[0].missions[STAR_ZERG_CAMPAIGN].campaigndone=0;
     curplayer[0].missions[STAR_ZERG_CAMPAIGN].fromlineinhisttbl=31;
     curplayer[0].missions[STAR_ZERG_CAMPAIGN].nrlinesinhisttbl=14;
@@ -75,31 +79,44 @@ void CreateDefaultInfoForPlayer(FILE *f)
     curplayer[0].missions[BROOD_PROTOSS_CAMPAIGN].nrlinesinhisttbl=9;
     memcpy(curplayer[0].missions[BROOD_PROTOSS_CAMPAIGN].seq_missions,DEFAULT_XPROTOSS_MISSION,MAXMISSIONSVIDEOS);
     memcpy(curplayer[0].missions[BROOD_PROTOSS_CAMPAIGN].next_missions,DEFAULT_XPROTOSS_NEXT,MAXMISSIONSVIDEOS);
+
     fwrite(&curplayer[0].missions,1,sizeof(struct MISSIONHIST)*TOTALCAMPAIGNS,f);
 }
 //=============================================
-char lastplayerfile[1024];
+static char lastplayerfile[MAXFILENAMESYMBOLS+1];
+//=============================================
 int loadandsetplayerinfo(char *player_filename)
 {
+    int readed;
+    IdPlayerFile pl_id = { .i_id = 0x00000000 };
     FILE *f=fopen(player_filename,"r");
     if (f)
     {
 	strcpy(lastplayerfile,player_filename);
-	fread(&curplayer[0].missions,1,sizeof(struct MISSIONHIST)*TOTALCAMPAIGNS,f);
+	readed = fread(&pl_id,sizeof(IdPlayerFile),1,f);
+	if (pl_id.c_id[0] == IDPLAYERFILE_0 &&
+	    pl_id.c_id[1] == IDPLAYERFILE_1 &&
+	    pl_id.c_id[2] == IDPLAYERFILE_2 &&
+	    pl_id.c_id[3] == IDPLAYERFILE_3 )
+	{
+	    readed = fread(&curplayer[0].missions,sizeof(struct MISSIONHIST)*TOTALCAMPAIGNS,1,f);
+	}
+	else
+	    readed = 0;
 	fclose(f);
-	return(0);
+	if (readed == 1)
+	    return(0);
     }
-    else
-    {
-	return(-1);
-    }
+    return(-1);
 }
 //=============================================
 void saveplayerinfo(void)
 {
-    FILE *f=fopen(lastplayerfile,"w");
+    IdPlayerFile pl_id = { .c_id={IDPLAYERFILE_0,IDPLAYERFILE_1,IDPLAYERFILE_2,IDPLAYERFILE_3} };
+    FILE *f = fopen(lastplayerfile,"w");
     if (f)
     {
+	fwrite(&pl_id,sizeof(IdPlayerFile),1,f);
 	fwrite(&curplayer[0].missions,1,sizeof(struct MISSIONHIST)*TOTALCAMPAIGNS,f);
 	fclose(f);
     }

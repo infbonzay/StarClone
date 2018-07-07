@@ -16,6 +16,7 @@ typedef unsigned char SCUNIT;
 
 //#include "wmem.h"
 
+#define MAXFILENAMESYMBOLS	1024
 #define SOUNDONCAST		0
 #define SOUNDONHIT		1
 
