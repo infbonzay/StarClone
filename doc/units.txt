@@ -1,0 +1,51 @@
+[NEWOBJECT] = SCUNITNR unitname
+
+
+PROPERTIES = N	order1_1 order1_2 order1_3 order1_4 order1_5 order1_6 order1_7 order1_8 order1_9
+		...
+		orderN_1 orderN_2 orderN_3 orderN_4 orderN_5 orderN_6 orderN_7 orderN_8 orderN_9
+
+	    N - number of lines properties
+		1 - normal icons
+		2 - burrowed or cloaked
+		3 - deconstruct
+		4 - deupgrade
+		5 - buildsimple
+		6 - buildadvanced
+		7 - nuke cancel
+		8 - empty all icons ( usually nydus cancal) if sets this set of icons it cannot be changed any more.
+ENDOBJ = 1
+	    end of object
+
+SIGHTUPG = upradeid
+MANAUPG = upgrade_id
+SPEEDUPG = upgrade_id percentage
+	    percentage - increase speed by this percentage
+	    ex. 50 - will increase speed by 50%
+
+CREEP = TYPECREEP 
+
+	0 for hatchery,lair,hive
+	1 for creep colony
+	2 for zerg builds with creep under
+
+NOADDSTATSATCONSTR = 1
+	1 - in constructing time no increasing health,mana,shield
+	
+ULTRALISKSECONDARMOR = 52
+	upgrade_id = 52 second ultralisk upgrade
+	
+TIMELEFT = timeticks
+	remain ticks before object die
+
+CREATEFROMUNIT = objid
+	objid - this unit creates from unit objid
+	
+ATACKSPEEDUPG = upgrade_id
+
+CLOAKRANGE = range_in_cells  (1 cell 32x32)
+
+ADDITIONALTEXT = stattxt_id
+	    stattxt_id - text for resource
+
+

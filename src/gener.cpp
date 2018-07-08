@@ -1893,7 +1893,8 @@ void ActivateCheat(int cheatid)
     		{
     		    memset(map.mapbits.whitefog[i],fogvalue,map.map_width*map.map_height);
     		    memset(map.mapbits.whitefog2[i],fogvalue,map.map_width*map.map_height);
-    		    memset(map.mapbits.blackfog[i],fogvalue,map.map_width*map.map_height);
+		    if (fogvalue)
+    			memset(map.mapbits.blackfog[i],fogvalue,map.map_width*map.map_height);
     		}
 	    }
 	    break;

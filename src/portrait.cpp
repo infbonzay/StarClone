@@ -105,12 +105,12 @@ int loadstaticsmk(void)
 void changeunitportrait(HANDLE hmpq,int smknr,SCUNIT SC_Unit,int smkscroll)
 {
     int newunit;
-    if (staticport.flags & HOLDPORTRAIT )
-	return;
     if (SC_Unit != staticport.SC_Unit)
 	newunit=1;
     else
 	newunit=0;
+    if ( (staticport.flags & HOLDPORTRAIT) && newunit )
+	return;
     staticport.smkplay.smkscroll=smkscroll;
     staticport.nextplaynormal2=0;
     if (newunit)
@@ -135,7 +135,7 @@ void changeunitportrait(HANDLE hmpq,int smknr,SCUNIT SC_Unit,int smkscroll)
     return;
 }
 //===================================
-unsigned char playbuffer[SMKSIZEPORTRAITX*SMKSIZEPORTRAITY];
+static unsigned char playbuffer[SMKSIZEPORTRAITX*SMKSIZEPORTRAITY];
 //===================================
 void showportrait(void)
 {
@@ -269,7 +269,7 @@ void drawmainportrait(int w,int h,unsigned char *pixbuff)
     showiconramka();
 }
 //===================================
-unsigned char ITERPIXELS[5]={0,50,70,80,100};
+static unsigned char ITERPIXELS[5]={0,50,70,80,100};
 //===================================
 void mergepixels(int iteration,unsigned char *outbuf,unsigned char *mixbuf,unsigned char *origbuffer)
 {
@@ -358,19 +358,11 @@ int SetPortrait(SCUNIT SC_Unit,int typeofport,int soundfilenr,int showedtime)
     return(-1);
 }
 //===================================
-//		   atack      death  err       work   workdone  
-//		   hit       pss    mage5     mage6   mage7   
-//		     mage8 ready    select    action  modein 
-//		 modeout   bconstr  construct  warp   move     deconstruct
-/*char soundtypetosmktype[MAXTYPESOFSOUND]={
-			    SMKNONE,SMKRETURNTOADVISOR,SMKTALK,SMKNONE,SMKTALK,
-			    SMKNONE,SMKTALK,SMKNONE,SMKNONE,SMKNONE,
-			    SMKNONE,SMKNORMAL,SMKTALK,SMKTALK,SMKNONE,
-			    SMKNONE,SMKNORMAL,SMKNORMAL,SMKNORMAL,SMKNONE,SMKNORMAL};
-*/
 //ready,action,select,pss,error
-char soundtypetosmktype[MAXTYPESOFSOUND]={
-			    SMKNORMAL,SMKTALK,SMKTALK,SMKTALK,SMKTALK};
+static char soundtypetosmktype[MAXTYPESOFSOUND]=
+{
+    SMKNORMAL,SMKTALK,SMKTALK,SMKTALK,SMKTALK
+};
 //===================================
 void SetPortraitFromSound(SCUNIT SC_Unit,int soundmode,int soundfilenr)
 {

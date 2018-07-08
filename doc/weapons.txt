@@ -1,0 +1,10 @@
+
+[WEAPON] = starcraft_weapon_id 
+	starcraft_weapon_id1-starcraft_weapon_idn or
+	starcraft_weapon_id1,starcraft_weapon_id2,...
+		weapon_id from weapon.dat
+RANGEUPGNR = upgrade_id addrange
+	upgrade_id - upgrade_id
+	addrange - increase range by addrange pixels (1 cell is 32x32),
+		    so 64 will increase +2 to weapon range
+		    

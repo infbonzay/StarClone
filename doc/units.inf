@@ -1,175 +1,0 @@
-[NEWOBJECT] = NROBJ name RASE SIZE [CYBORG|TECHNIC|LIFE|NONDIE|OTHER|MYSTERY|...],
-              RASE - 0,1,2,3 terran,zerg,protoss,unknown
-              SIZE - xx  - (SMALL|MEDIUM|LARGE) размер обьекта
-
-HAVECHILD = YES|NO n M1 M2 M3 ... Mn
-RECHARGETIME = countofatacksbeforerecharge timerecharging timeflybeforeneedtorecharge
-
-yes - if parent die, child die after parent's die
-n   - max of paralelmode  -  it is used for paralel construct 
-M1 .. Mn - mode		     example carrier move to destination and make interceptors on this way
-
-READYDECONSTR = YES|NO
-MAXSIDES = nr - kolvo storon
-FLY = YES|NO EXTERNSHADOWYES
-
- 1. объект типа (воздух/земля) YES-воздух,
- 2. externshadow
-COUNTS = NR { [+-X,+-Y] [VISOTA] [FISSTSTORONASVETA|-1], ...}
-NR = 1 | 2
-
-UPDOWN = X -  X - factor kaciania
-DAMAGEUP = 1 4 2 - (max,med,min)objs  (1-25%,2-50%,3-75%,4-100%)
-                            проценты дамаджа в воздушные obj
-DAMAGEDOWN = 1 4 2 - (max,med,min)objs  (1-25%,2-50%,3-75%,4-100%)
-                            проценты дамаджа в земные obj
-BUILD = NO|(YES BFB) NOFULLLIFE ROTATION|NONROTATION - объект является - (YES-зданием/NO-юнитом)
-                                      NOFULLLIFE - jizni rastet po 4iuti-4iuti
-                                      ROTATION - avtomatom incrementing storonasveta
-
-SPEED = YES YES SP[UPG] - (YES-esti uscorenie vnacale,NO-net),
-                      (YES-esti inertia v kontse,NO-net)
-		     SP - speed 
-		     [UPG] - upgrade id for icrease speed
-		      
-LIFE = X Y - полная плазменная броня объекта X полная жизнь объекта Y
-POWERARMOR = DUP[UPG] DDOWN[UPG] ARMOR[UPG] - damageup damagedown armor
-RISING = X Y Y2 Z -   x - na kakoe rastoianie vidit,y-mo4itvverh,y1mojitvhiz,z-min rastoianie mo4enia
-COST = X Y   X - стоимость, Y- стоимость
-MAGIES = 250 - max кол-во магии 250,если 0 то нет магии
-TIMECONSTRUCT = 200 - время конструирования
-TIMELEFT = 0 - время для жизни,если 0 то живой пока не убьют
-PROPERTIES = NRLINES 1 2 3 0 0 0 0 0 0 - 9 опций объекта \
-                     1 2 3 0 0 0 0 0 0 - 9 опций объекта  |
-                     1 2 3 0 0 0 0 0 0 - 9 опций объекта   } --NRLINES
-                     ...                                  |
-                     1 2 3 0 0 0 0 0 0 - 9 опций объекта /
-
-ATRPROPERTIES         = X YES YES NO YES ... - X опций ATROBJ объекта
-                                              (его атрибуты)
-                                              (невидимость,детектор,плаг,...)
-COOLDOWN = a b - (a-movecooldown,b-atackcooldown)
-
-1.   ANDTABLE = YES L R U D
-      L,R,U,D - scolico pustoti vokrug zdania
-2.   ANDTABLE = NO
-                net pustoti vokrug zdania
-
-ROCKETINFO = MAKER|DESTINATION NRrockets +-deltarocket1 +-deltarocket2 ... nratrmageoffset
-
-ENDOBJ = 1 - конец objecta
-
-FILES	= nrofgrpfiles
-		    grp-file 1
-		    grp-file 2
-		    ...
-		    grp-file n
-RANDOMPICT = FROMTYPEOFPUTGRP1 FROMTYPEOFPUTGRP2 FROMLINENR COUNTOFRANDOMPICT FROM TO
-
-fromtypeofputgrp2 - for geyser if depleted
-
-FROM
-TO  diapazone of random activate the randompicture
-
-
-
-TYPEOFPUTGRP	= typeofspritestoproceed UNITPICT or UNITPICTPLUSEFFECT nr_normalpict nr_shadowspict [nr_effects]
-
- ->	nr_of_sides image_id maxpicts firstoffsetpict all-sprites-movement wait-delay typeofplace
-|	nr_of_sides image_id maxpicts firstoffsetpict all-sprites-movement wait-delay typeofplace
-|	nr_of_sides image_id maxpicts firstoffsetpict all-sprites-movement wait-delay typeofplace
-|	...
-|	...
- ->    	nr times of nr_normalpict
-
- ->	nr_of_sides image_id  maxpicts firstoffsetpict all-sprites-movement wait-delay typeofplace
-|	nr_of_sides image_id  maxpicts firstoffsetpict all-sprites-movement wait-delay typeofplace
-|	nr_of_sides image_id  maxpicts firstoffsetpict all-sprites-movement wait-delay typeofplace
-|	...
-|	...
- ->    	nr times of nr_shadowpict
-
-typeofspritestoproceed - is number from type of move see below:
-
-00MOVE						move
-01UPFIRE						fireup,repair,liftup
-02DOWNFIRE						atackdown,heal,rechargeshield,
-03HOLD|STOP						stop
-04BEGINCONSTRUCT					beginconstruct
-05CONSTRUCT1/4					construction
-06CONSTRUCT2/4					construction
-07CONSTRUCT3/4					construction
-08CONSTRUCT4/4					construction
-09DECONSTRUCT						deconstruction
-10BEGINWARP						beginwarp
-11DONE	equivalent power on action		done
-12MAKEUNIT						factorywork
-13DIEOBJ1						die
-14DIEOBJ2						remnants
-15DIEOBJ3GARBAGE					notused!!!!
-16ZERGBURROW						burrow,on battery is the shield sprites apears on unit
-17ZERGUNBURROW					unburrow,on battery is the recharge shield sprites on unit
-18LIFTUP						liftup,modegaliundie,dooropen
-19LIFTDOWN						liftdown,doorclose
-20MAGECASTING						cast,taken(draw resources or some object taken)
-21UNDONE						equivalent power off action
-22POWEROFF						equivalent power off
-23BEFOREFIRE						cannon,dragoon use this
-24AFTERFIRE						cannon,dragoon use this
-25GATHERMINERALS					gather resources
-
-
-
-UNITPICT 	  nr_normalpict nr_shadowspict
-UNITPICPLUSEFFECT nr_normalpict nr_shadowspict nr_effects
-
-nr_normalpict
-    maximal nr of normal sprites    
-
- nr_shadowspict
-    maximal nr of shadow sprites
-
- nr_shadowspict
-    maximal nr of effect sprites
-
-nr_of_sides - nr of sides in this type of move
-FROMME|nr_obj_from - from what obj we need to get grp's
-fromgrp_nr - from grp nr
-maxpicts - max sprites to proceed scroll of them
-firstoffsetpict - offset of first sprite in grp
-all-sprites-movement - all sprites(ex:0,1,2-4,5:6,6-0)
-wait-delay typeofplace - delay factor
-
-LOXAPPLY	= N	    (lox-file,typeofmove,lines in typeofmove)1
-			    (lox-file,typeofmove,lines in typeofmove)2
-			    (lox-file,typeofmove,lines in typeofmove)3
-					    ...
-			    (lox-file,typeofmove,lines in typeofmove)N
-N	-	nr of defines
-lox-file	lox-file nr from grpfiles (begin from first lox-file)
-		first lox-file = 0
-typeofmove	0-20
-lines in type of move
-
-	example:
-	LOXAPPLY = 1	0,20,1,2,3
-	
-	apply this on first lox-file with typeofmove=20MAGECASTING on
-	    lines 1,2,3 (may applying on shadow or glow ,depend on defining in TYPEOFPUTGRP) 
-
-effectsprites line
-	FROMUNITNR FROMGRPNR TRIGERATSPRITENR SPRITESTOSHOW FROMSPRITENR INCREMENTVALUEFORSPRITE TICKSTOSHOWONESPRITE
-	
-	
-
-CREEP = TYPECREEP 
-
-	0 for hatchery,lair,hive
-	1 for creep colony
-	2 for zerg builds with creep under
-DEPEND = nrbuild
-BACKEFFECTS = sides (FROMME | nrobj ) grpnr nr_of_sprites first_sprite timetoscrollsrite timetoputnexteffect TABLE
-SOUNDACTIVATION = actiontype (FROMME | nrunit) nrsofsounds (0,1,4-5 (soundfiles) ) (if hit we have here from what sprite begins sound)
-	actiontype is HIT READY DEATH ,....
-	IF HIT after nrofsouns
-DAMAGEONDIE = YES | NO

@@ -87,8 +87,6 @@ void SetPortraitShowedTime(int showedtime);
 //===================================
 extern char scrollportrait,mixportrait;
 extern PORTRAIT staticport;
-
-extern unsigned char playbuffer[];
 extern MPQIDS	smkin,smkout;
 
 

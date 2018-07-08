@@ -424,13 +424,6 @@ while(1)
                 }
                 break;
             case  8://i TIMELEFT
-                if (intvalue<0)
-                {
-                    printf("%d\n",intvalue);
-                    fscanf(f,"%s \n",strvalue);//rechargeble factor
-                    intvalue = atoi(strvalue);
-            	    intvalue = 0;
-                }
                 adr->maxtimeleft=intvalue;
             	break;
             case  9://CREATEFROMUNIT

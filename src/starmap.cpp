@@ -2198,13 +2198,10 @@ void ShowLeaderBoards(struct mapinfo *info,int x,int y)
 void ShowCountDownTimer(struct mapinfo *info,int x,int y)
 {
     char timer[10];
-    int i,rowsize,fontnr;
     if (info->flags & STARMAP_FLAG_HAVECOUNTDOWN)
     {
-	fontnr=IDFONT16;
-	getmaxsymbolsize(fontnr,NULL,&rowsize);
 	sprintf(timer,"%02d:%02d",info->CountDownTimer/MAXGAMECYCLESPERSECOND/60,(info->CountDownTimer/MAXGAMECYCLESPERSECOND)%60);
-	putmessage(x,y,fontnr,timer,GWHITECOLORFONT,tfontgamp,gamedlggrp);
+	putmessage(x,y,IDFONT16,timer,GWHITECOLORFONT,tfontgamp,gamedlggrp);
     }
 }
 

@@ -351,6 +351,8 @@ void FadeScreen(int fadespeed,char *pal,int typeoffade)	//0-fadetoimage 1-fadeto
     }
 }
 //==========================================
+//get address of textnr-word in buf textnr = (1-...)
+//==========================================
 char *gettextfrombuf(char *buf,int sizebuf,int textnr)
 {
     int i;
@@ -358,8 +360,8 @@ char *gettextfrombuf(char *buf,int sizebuf,int textnr)
     {
 	for (i=0;i<sizebuf;i++)
 	{
-	    if (buf[i]<=' ')
-		if (--textnr==0)
+	    if (buf[i] <= ' ')
+		if (--textnr == 0)
 		    return(&buf[i+1]);
 	}
     }
