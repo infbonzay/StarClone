@@ -29,7 +29,7 @@ void DEBUG_INIT(int flags)
 #endif
 }
 //===========================================
-void dfprintf(const char *prefix,const char *format, ...)
+void dfprintf(const int prefixlinenr,const char *prefixfunc,const char *format, ...)
 {
 #ifdef DEBUGOUTPUT
     va_list args;
@@ -38,7 +38,7 @@ void dfprintf(const char *prefix,const char *format, ...)
     FILE *f=fopen(DEBUGOUTFILE,"a");
     if (f)
     {
-	fprintf(f,DEBUGPREFIXSTRING "%s:",prefix);
+	fprintf(f,DEBUGPREFIXSTRING "Line %d:%s:",prefixlinenr,prefixfunc);
 	vfprintf(f,format, args);
 	fclose(f);
     }
@@ -46,13 +46,13 @@ void dfprintf(const char *prefix,const char *format, ...)
 #endif
 }
 //===========================================
-void dprintf(const char *prefix,const char *format, ...)
+void dprintf(const int prefixlinenr,const char *prefixfunc,const char *format, ...)
 {
 #ifdef DEBUGOUTPUT
     va_list args;
     va_start(args, format);
 
-    printf(DEBUGPREFIXSTRING "%s:",prefix);
+    printf(DEBUGPREFIXSTRING "Line %d:%s:",prefixlinenr,prefixfunc);
     vprintf(format, args);
     va_end(args);
 #endif

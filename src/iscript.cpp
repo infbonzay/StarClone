@@ -224,7 +224,7 @@ int comparestrings(char *str,char *strarray[],int nrofstrarray)
 #define MAXCOMPILEBUFSIZE	65535
 int ISCRIPT::CompilePass1(FILE *f)
 {
-    int i,k,stridlen,retcmd,retstatus=0,intval,isheader,nrparams;
+    int i,k,stridlen,retcmd,retstatus = 0,intval,isheader,nrparams;
     long compilebufoffs;
     unsigned char cmdsize,subcmdsize;
     signed char cmd;
@@ -238,8 +238,9 @@ int ISCRIPT::CompilePass1(FILE *f)
     compilebuf = (char *)wmalloc(MAXCOMPILEBUFSIZE);
     memset(compilebuf,0,MAXCOMPILEBUFSIZE);
     isheader=0;
-    compilebuf[0x0000] = ISCRIPTCMD_UNKNOWN;			//unknown command
-    compilebufoffs=0x0001;		//lets compile the code from offset 0x0001, offset 0x0000 is reserved for BUGS
+    //lets put compiled code to offset from 0x0001, offset 0x0000 is reserved for BUGS
+    compilebufoffs = 0;
+    compilebuf[compilebufoffs++] = ISCRIPTCMD_UNKNOWN;			//unknown command
     while(1)
     {
 	strid[0]=0;
@@ -304,6 +305,7 @@ int ISCRIPT::CompilePass1(FILE *f)
 		    SaveCmdToBuff(compilebuf,compilebufoffs,1,nrparams);		//save nr of params
 		    if (++compilebufoffs >= MAXCOMPILEBUFSIZE)
 		    {
+			DEBUGMESSCR("compiled script large than %s bytes\n",MAXCOMPILEBUFSIZE);
     			retstatus=-1;
     			goto endcompilepass1;
 		    }

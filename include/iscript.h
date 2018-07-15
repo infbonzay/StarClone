@@ -2,6 +2,7 @@
 #define _ISCRIPT_W
 
 #include <stdio.h>
+#include "mylist.h"
 #include "images.h"
 
 #define ISCRIPTID_BLINK			254
