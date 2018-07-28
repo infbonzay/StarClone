@@ -201,7 +201,7 @@ selectedicon:
 		if (selectableicons[i*3+j]==FORGRAY)
 		{
 		    iconmessagecolor=GGREYCOLORFONT;
-		    if (mp->type_id==ORDERS_UPGRADE)
+		    if (mp->type_id == ORDERS_UPGRADE)
 		    {
 			upg=GetUpgradeTree(&map,NUMBGAMER,mp->obj_id);
 			strcpy(iconstr,alldattbl.stattxt_tbl->get_TBL_STR(mp->stattxt_id_disable[upg]));

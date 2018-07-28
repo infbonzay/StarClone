@@ -1105,7 +1105,7 @@ while(!feof(f))
 		for (i=0;i<intvalue;i++)
 		{
             	    fscanf(f,"%s \n",strvalue);
-		    mageprop[whatobj].stattxt_id_disable[i]=atoi(strvalue);
+		    mageprop[whatobj].stattxt_id_disable[i] = atoi(strvalue);
 		}
             	fscanf(f,"%s \n",strvalue);
 	    	mageprop[whatobj].stattxt_id_enable=atoi(strvalue);
