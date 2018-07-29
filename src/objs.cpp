@@ -4004,6 +4004,7 @@ void SetAtackTick(OBJ *a)
 #define UNITATACKFUNCTYPE_CARRIERS		5
 #define UNITATACKFUNCTYPE_VULTUREMINES		6
 #define UNITATACKFUNCTYPE_INTERCEPTORS		7
+#define UNITATACKFUNCTYPE_NOTATACKINCLOAKEDMODE	8
 //=================================
 int GetOBJAtackWithoutWeapons(SCUNIT SC_Unit)
 {
@@ -4022,6 +4023,8 @@ int GetOBJAtackWithoutWeapons(SCUNIT SC_Unit)
 	case SC_INTERCEPTOROBJ:
 	    return(UNITATACKFUNCTYPE_INTERCEPTORS);
 	default:
+	    if (IsGroundUnit(SC_Unit) && IsCloakable(SC_Unit))
+		return(UNITATACKFUNCTYPE_NOTATACKINCLOAKEDMODE);
 	    if (IsDoodadState(SC_Unit) && !IsInvincibleUnit(SC_Unit))
 	    {
 		//doodad traps
@@ -4124,7 +4127,20 @@ struct OBJ* InterceptorUnitAtackFunc(OBJ *a,unsigned char weaponmask,unsigned ch
     return(a2);
 }
 //=================================
-struct OBJ* (*Atack_IDFunc[8])(OBJ *a,unsigned char weaponmask,unsigned char groundweapon,unsigned char airweapon)=
+struct OBJ* GroundCloakableUnitAtackFunc(OBJ *a,unsigned char weaponmask,unsigned char groundweapon,unsigned char airweapon)
+{
+    OBJ *a2;
+    if (IsCloaked(a))
+	return(NULL);
+    if (weaponmask)
+    {
+        a2 = FindObjForAtack(a,weaponmask,groundweapon,airweapon,NULL);
+	unitprepareforatack(a,a2);
+    }
+    return(a2);
+}
+//=================================
+struct OBJ* (*Atack_IDFunc[9])(OBJ *a,unsigned char weaponmask,unsigned char groundweapon,unsigned char airweapon)=
 			{
 			    NULL,
 			    &EveryUnitAtackFunc,
@@ -4133,7 +4149,8 @@ struct OBJ* (*Atack_IDFunc[8])(OBJ *a,unsigned char weaponmask,unsigned char gro
 			    &EveryUnitAtackFunc,
 			    &CarrierUnitAtackFunc,
 			    &VultureMineUnitAtackFunc,
-			    &InterceptorUnitAtackFunc
+			    &InterceptorUnitAtackFunc,
+			    &GroundCloakableUnitAtackFunc
 			};
 //=================================
 struct OBJ* OneUnitSearchGoal(OBJ *a,int ignoremodes,int facedirectionatackonly)
@@ -4177,6 +4194,8 @@ struct OBJ* OneUnitSearchGoal(OBJ *a,int ignoremodes,int facedirectionatackonly)
 			break;
 		    case UNITATACKFUNCTYPE_NONE:	//base/turret
 			return(NULL);
+		    case UNITATACKFUNCTYPE_NOTATACKINCLOAKEDMODE:
+			break;
 		}
 		weaponmask |= facedirectionatackonly;
 		return ((*Atack_IDFunc[unitatack_id])(a,weaponmask ,groundweapon,airweapon));
