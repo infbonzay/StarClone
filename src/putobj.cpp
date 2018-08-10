@@ -401,7 +401,6 @@ void ShowBaseBuildMessage(int XWINPOS,int YWINPOS,OBJ *a)
     int base = IsUnitBaseBuild(a);
     if (!IsOBJUnderConstruct(a) 	&&
         !IsHallucination(a) 		&&
-//        (!GetMageAtr(&a->atrobj,ATRHALLUCINATION))&&
 	(base==1 || base==2 || IsPsiUnit(a->SC_Unit)) && (!a->loaded))
     {
 	int race=GetUnitRace(a->SC_Unit);
@@ -767,7 +766,6 @@ void printobjparam(void)
         if (player_aliance(NUMBGAMER,a->playernr)==MYOBJ&&a->timeleft)
         {
 	    if (IsHallucination(a))
-//            if (GetMageAtr(&a->atrobj,ATRHALLUCINATION)>0)
         	maxtimeleft=mageprop[MODEHALLUCINATION].timemageactive;
             else
         	maxtimeleft=b->maxtimeleft;
@@ -1132,7 +1130,6 @@ void drawunitsintransport(int XWINPOS,int YWINPOS,struct OBJ *a)
 	    objtype=1;
 	else
 	    if (!IsHallucination(a1))
-//	    if (GetMageAtr(&a1->atrobj,ATRHALLUCINATION)==0)
 		if (GetMageAtr(&a1->atrobj,ATRBLIND)==0)
 		    if (GetMageAtr(&a1->atrobj,ATRPARASITEFROM)==0)
 			objtype = 0;
@@ -1225,7 +1222,6 @@ void drawallunitsinbar(int XWINPOS,int YWINPOS,struct OBJ *a[],int count)
 		objtype=1;
 	    else
 		if (!IsHallucination(a1))
-//	        if (GetMageAtr(&a1->atrobj,ATRHALLUCINATION)==0)
 		    if (GetMageAtr(&a1->atrobj,ATRBLIND)==0)
 			if (GetMageAtr(&a1->atrobj,ATRPARASITEFROM)==0)
 			    objtype = 0;

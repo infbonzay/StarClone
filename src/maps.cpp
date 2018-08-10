@@ -689,7 +689,6 @@ void arbitermakewarpfield(OBJ *a,OBJstruct *b)
     if (a->prop&VARNOTWORK)
 	return;
     if (IsHallucination(a))
-//    if (GetMageAtr(&a->atrobj,ATRHALLUCINATION)!=0)
 	return;
     if (PLAYER[a->playernr].isobserverflag)
 	return;

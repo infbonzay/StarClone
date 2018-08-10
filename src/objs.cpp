@@ -373,7 +373,6 @@ struct OBJ *createobjlowlevel(OBJ *workerobj,int x,int y,SCUNIT SC_Unit,int play
     if (IsDetector(a->SC_Unit))
 	SetMageAtr(&a->atrobj,ATRDETECTOR,ATRMAGEINFINITE);
     if (!IsHallucination(a))
-//    if (GetMageAtr(&a->atrobj,ATRHALLUCINATION)==0)
     {
     	if (TRIG_ChangeStat)
     	{
@@ -1073,7 +1072,6 @@ int ApplyDamageToUnit(struct OBJ *a)
     if (a->psistormdamage)
     {
         if (IsHallucination(a))
-//	if (GetMageAtr(&a->atrobj,ATRHALLUCINATION)>0)
 	{
 	    dieobj(a);
 	    return(2);
@@ -2167,7 +2165,6 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int modemovef
 //		a->movelist->EmptyElemFifo();
 	    a->modemove = mode;
 	    if (IsHallucination(a))
-//	    if (GetMageAtr(&a->atrobj,ATRHALLUCINATION) != 0)
 	    {
 		a->mainimage->SetGrpFunc(IMAGEID_HALLUCINATIONDIE1);
 		Play_sfxdata(a->mainimage->xpos>>8,a->mainimage->ypos>>8,SFXDATA_HALLUCINATIONDIE,2);
@@ -2700,7 +2697,6 @@ void CheckIfGotoTransport(OBJ *a,OBJ *destobj)
     if (GetSpaceRequired(a->SC_Unit) == 255)
 	return;
     if (IsHallucination(destobj))
-//    if (GetMageAtr(&destobj->atrobj,ATRHALLUCINATION))
 	return;
     switch(destobj->SC_Unit)
     {
@@ -2773,7 +2769,6 @@ int accesstomove(struct OBJ *a,struct OBJstruct *b,int mode,int player)
 {
     int j,prop;
     if (IsHallucination(a))
-//    if (GetMageAtr(&a->atrobj,ATRHALLUCINATION)>0)
 	if (!(mageprop[mode].atr & ORDER_SHOWHALLUCINATED))
 	    return(0);
 
@@ -3446,7 +3441,6 @@ void dieobj(struct OBJ *a)
     if (SC_Unit != SC_NOUNITNR)
     {
 	if (!IsHallucination(a))
-//	if (GetMageAtr(&a->atrobj,ATRHALLUCINATION)==0)
 	{
 	    if (IsReadyOBJ(a))
 	    {
@@ -3505,7 +3499,6 @@ void dieobj(struct OBJ *a)
 	cbuild=NULL;
     }
     if (!IsHallucination(a))
-//    if (GetMageAtr(&a->atrobj,ATRHALLUCINATION)==0)
     {
 	if (a->atackernr!=-1)
 	{
@@ -4778,7 +4771,6 @@ void ShowCircleAndBar(OBJ *a)
 		if (a->playernr==NUMBGAMER)
 		{
 		    if (IsHallucination(a))
-//		    if (GetMageAtr(&a->atrobj,ATRHALLUCINATION))
         		timeleft = mageprop[MODEHALLUCINATION].timemageactive;
     		    else
         		timeleft = b->maxtimeleft;
