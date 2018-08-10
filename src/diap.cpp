@@ -198,12 +198,12 @@ selectedicon:
 		i = mouseonicon / 3;
 		j = mouseonicon % 3;
 		mp=&mageprop[localprop[i*3+j]];
-		if (selectableicons[i*3+j]==FORGRAY)
+		if (selectableicons[i*3+j] == FORGRAY)
 		{
-		    iconmessagecolor=GGREYCOLORFONT;
+		    iconmessagecolor = GGREYCOLORFONT;
 		    if (mp->type_id == ORDERS_UPGRADE)
 		    {
-			upg=GetUpgradeTree(&map,NUMBGAMER,mp->obj_id);
+			upg = GetUpgradeTree(&map,NUMBGAMER,mp->obj_id);
 			strcpy(iconstr,alldattbl.stattxt_tbl->get_TBL_STR(mp->stattxt_id_disable[upg]));
     		    }
 		    else
@@ -213,40 +213,42 @@ selectedicon:
 		}
 		else
 		{
-		    iconmessagecolor=GBLUECOLORFONT;
+		    iconmessagecolor = GBLUECOLORFONT;
 		    switch(mp->type_id)
 		    {
 			case ORDERS_NONE:
-			    iconstr[0]=0;
-    			    need[NEED_MINERALS]=0;
-			    need[NEED_GAS]=0;
-			    need[NEED_MANA]=0;
-			    need[NEED_PSI]=0;
+			    iconstr[0] = 0;
+    			    need[NEED_MINERALS] = 0;
+			    need[NEED_GAS] = 0;
+			    need[NEED_MANA] = 0;
+			    need[NEED_PSI] = 0;
 			    break;
 			case ORDERS_MODEMOVE:
 			    strcpy(iconstr,alldattbl.stattxt_tbl->get_TBL_STR(mp->stattxt_id_enable)+2);
-    			    need[NEED_MINERALS]=0;
-			    need[NEED_GAS]=0;
-			    if (mp->obj_id!=-1)
-				need[NEED_MANA]=GetTechEnergyCost(mp->obj_id);
+    			    need[NEED_MINERALS] = 0;
+			    need[NEED_GAS] = 0;
+			    if (mp->obj_id != -1)
+				need[NEED_MANA] = GetTechEnergyCost(mp->obj_id);
 			    else
-				need[NEED_MANA]=0;
-			    need[NEED_PSI]=0;
+				need[NEED_MANA] = 0;
+			    need[NEED_PSI] = 0;
 			    break;
 			case ORDERS_UNIT:
 			    strcpy(iconstr,alldattbl.stattxt_tbl->get_TBL_STR(mp->stattxt_id_enable)+2);
 			    GetCostUnit(mp->obj_id,&need[NEED_MINERALS],&need[NEED_GAS]);
-			    need[NEED_MANA]=0;
-			    if (mp->orderdatid<MAX_ORDERS_ELEM)
-			    {
-				techdata_id=alldattbl.orders_dat->techdata_id[mp->orderdatid];
-				if (techdata_id<MAX_TECHDATA_ELEM)
-				    need[NEED_MANA]=GetTechEnergyCost(techdata_id);
-			    }
+			    need[NEED_MANA] = 0;
+			    if (mp->techid < MAX_TECHDATA_ELEM)
+				need[NEED_MANA] = GetTechEnergyCost(mp->techid);
+//			    if (mp->orderdatid<MAX_ORDERS_ELEM)
+//			    {
+//				techdata_id=alldattbl.orders_dat->techdata_id[mp->orderdatid];
+//				if (techdata_id<MAX_TECHDATA_ELEM)
+//				    need[NEED_MANA]=GetTechEnergyCost(techdata_id);
+//			    }
 			    if (GetInEgg(mp->obj_id))
-				need[NEED_PSI]=GetSupplyUnit(mp->obj_id);
+				need[NEED_PSI] = GetSupplyUnit(mp->obj_id);
 			    else
-				need[NEED_PSI]=GetSupplyUnit(mp->obj_id)/2;
+				need[NEED_PSI] = GetSupplyUnit(mp->obj_id)/2;
 			    break;
 			case ORDERS_UPGRADE:
 			    upg=GetUpgradeTree(&map,NUMBGAMER,mp->obj_id);
@@ -257,12 +259,12 @@ selectedicon:
 				strcat(iconstr,"\n");
 				strcat(iconstr,alldattbl.stattxt_tbl->get_TBL_STR(STATTXT_TBL_NEXTLEVELTEXT));
 				int len=strlen(iconstr);
-				iconstr[len]='1'+upg;
-				iconstr[len+1]=0x0;//END STRING
+				iconstr[len] = '1'+upg;
+				iconstr[len+1] = 0x0;//END STRING
 			    }
 			    GetCostUpgr(mp->obj_id,NUMBGAMER,&need[NEED_MINERALS],&need[NEED_GAS]);
-			    need[NEED_MANA]=0;
-			    need[NEED_PSI]=0;
+			    need[NEED_MANA] = 0;
+			    need[NEED_PSI] = 0;
 			    break;
 			case ORDERS_TECHNOLOGY:
 			    strcpy(iconstr,alldattbl.stattxt_tbl->get_TBL_STR(mp->stattxt_id_enable)+2);
