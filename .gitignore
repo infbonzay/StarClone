@@ -1,13 +1,24 @@
-# Ignore everything in this directory
-*
-# Except this file
-!.gitignore
-!AUTHORS
-!COPYING
-!Changelog
-!INSTALL
-!Makefile.am
-!NEWS
-!README
-!bootstrap
-!configure.ac
+autom4te.cache/
+bin/characters/*
+bin/StarClone
+bin/StarClone.conf
+bin/temp/*
+bin/StarDat.mpq
+bin/BrooDat.mpq
+bin/starinstall.exe
+bin/broodinstall.exe
+bin/debug
+bin/memleaks
+obj/*
+
+Makefile
+Makefile.in
+aclocal.m4
+config.log
+config.status
+configure
+install-sh
+missing
+compile
+
+

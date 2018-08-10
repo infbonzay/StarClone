@@ -237,9 +237,9 @@ selectedicon:
 			    strcpy(iconstr,alldattbl.stattxt_tbl->get_TBL_STR(mp->stattxt_id_enable)+2);
 			    GetCostUnit(mp->obj_id,&need[NEED_MINERALS],&need[NEED_GAS]);
 			    need[NEED_MANA]=0;
-			    if (mp->order_id<MAX_ORDERS_ELEM)
+			    if (mp->orderdatid<MAX_ORDERS_ELEM)
 			    {
-				techdata_id=alldattbl.orders_dat->techdata_id[mp->order_id];
+				techdata_id=alldattbl.orders_dat->techdata_id[mp->orderdatid];
 				if (techdata_id<MAX_TECHDATA_ELEM)
 				    need[NEED_MANA]=GetTechEnergyCost(techdata_id);
 			    }

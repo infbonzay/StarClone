@@ -858,7 +858,7 @@ while(!feof(f))
                 fscanf(f,"%s \n",strval2);
                 mageprop[whatobj].icon_id=atoi(strval2);
                 mageprop[whatobj].keyfororder=255;
-		mageprop[whatobj].order_id=255;
+		mageprop[whatobj].orderdatid=255;
 		mageprop[whatobj].createweapon=255;
 
 //		parsespecialtext(mageprop[whatobj].namemage,strvalue);
@@ -994,8 +994,8 @@ while(!feof(f))
                     fscanf(f,"%s \n",strvalue);
 		    mageprop[whatobj].images_id[2]=atoi(strvalue);
 		    break;
-	    case 7://ORDERID
-		    mageprop[whatobj].order_id=intvalue;
+	    case 7://USEDTECHNOLOGY
+		    mageprop[whatobj].orderdatid=intvalue;
 		    break;
 	    case 8://DEPENDONTYPEID = NRsOFDEPEND [dependtypeid1 dependobjid1 ... ]
 		    mageprop[whatobj].depend.maxdepend=intvalue;

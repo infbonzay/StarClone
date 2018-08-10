@@ -316,7 +316,7 @@ struct MAGEP
 		 short		stattxt_id_disable[3];	//disabled 3 strings(for every level of upgrade)
 		 short		stattxt_id_enable;	///enabled string
 	
-	unsigned char		order_id;		//point to orders.dat
+	unsigned char		orderdatid;		//point to orders.dat
 	signed   char 		race;			//race if mage is create unit
         signed 	 char		atronobj;		//or -1 if no atr offset
         signed	 char		soundmode;
