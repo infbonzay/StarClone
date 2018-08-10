@@ -1,0 +1,10 @@
+*
+!.gitignore
+!Makefile
+!Makefile.mpqlib
+!Makefile.stormlib
+!dompq
+!makelist
+!makempq.cpp
+!mpqextractall.cpp
+!mpqextractlistfile.cpp

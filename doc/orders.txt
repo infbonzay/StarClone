@@ -45,8 +45,8 @@ IMAGES_ID = image_id_small image_id_medium image_id_large
 	    image_id_small - image_id from tbl file applyed on small units
 	    image_id_medium - image_id from tbl file applyed on medium units
 	    image_id_large - image_id from tbl file applyed on large units
-ORDERID = nr
-	    nr - ???
+USETECHID = nr
+	    nr - this order refer to tech id ( to display mana cost at menu)
 DEPENDONTYPEID = NR type1 ID_1 ... typeNR ID_NR
 		type1...typen
 		    UNIT - depend on unit 
