@@ -20,5 +20,6 @@ configure
 install-sh
 missing
 compile
+backup
 
 

@@ -1,0 +1,11 @@
+
+/showall
+/givemin
+/givegas
+/quickmake
+/nogoods
+/notech
+/nopsi
+/showcells
+/kill
+/quit

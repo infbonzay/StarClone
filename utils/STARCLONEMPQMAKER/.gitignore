@@ -1,5 +1,6 @@
 *
 !.gitignore
+!(listfile)
 !Makefile
 !Makefile.mpqlib
 !Makefile.stormlib
