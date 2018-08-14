@@ -931,7 +931,7 @@ void loadandputimage(int POSINMAP)
 	    switch(format)
 	    {
 		case WARPTEXTURE:
-		    putgrpwarpfromtext(x-xk,y-yk,grppict,nrpicture,grptexture+GRP_sizexwarppict*GRP_sizeywarppict*maxcolor);
+		    putgrpwarpfromtext(x-xk,y-yk,grppict,nrpicture,0,grptexture+GRP_sizexwarppict*GRP_sizeywarppict*maxcolor);
 		    break;
 		case WARPFROMWHITE:
 		    putgrpspr(x-xk,y-yk,grppict,TOTABLE,maxcolor,grcolor,adrtabls[colortable],nrpicture);
@@ -965,7 +965,7 @@ void saveandputimage(int x,int y,int xdelta,int ydelta,GRPFILE *grppict,int form
     {
 	case WARPTEXTURE:
 	    maxcolor = buildwhite;
-	    putgrpwarpfromtext(x-xk,y-yk,grppict,nrpicture,grptexture+GRP_sizexwarppict*GRP_sizeywarppict*maxcolor);
+	    putgrpwarpfromtext(x-xk,y-yk,grppict,nrpicture,0,grptexture+GRP_sizexwarppict*GRP_sizeywarppict*maxcolor);
 	    break;
 	case WARPFROMWHITE:
 	    maxcolor = buildwhite/WARPBUILDWHITEMULFACTOR + 48;
