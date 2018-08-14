@@ -106,7 +106,7 @@ int mbuttonpress;
 void desenproperties(int *localprop,char *selectableicons)
 {
     static int oldmouseonicon=-1,plusfactor,keyupselectedicon=-1;
-    int i,j,k,i1,mbuttonpress,iconstrlen;
+    int i,j,k,i1,mbuttonpress,iconstrlen,grpplayernr;
     int need[NEED_MAX];//mineral,gas,mana,psi
     int iconmessagecolor,magedepend,needmana,err;
     int sizex,sizey,simbrace,race;
@@ -126,18 +126,19 @@ void desenproperties(int *localprop,char *selectableicons)
                 int sizey=znakgrp->Picture[mageprop[localprop[i*3+j]].icon_id].LinesPerPicture;
                 uu.x1=xicon[j]+XADDICONS+DELTASCREENX;
                 uu.y1=yicon[i]+YADDICONS-2;
-                GRP_gr_gamernr = selectableicons[i*3+j];
+                grpplayernr = selectableicons[i*3+j] << 8;
 		if ((oldmouseonicon!=-1&&oldmouseonicon==i*3+j)||
 		    (keyupselectedicon==i*3+j))
 	        {
-            	    putgrp(uu.x1+1,uu.y1+1,grpicons,1);
+            	    putgrp(uu.x1+1,uu.y1+1,grpicons,1,grpplayernr);
 	    	    uu.x1+=1;
 	    	    uu.y1+=1;
 	        }
 	        else
-            	    putgrp(uu.x1+1,uu.y1+1,grpicons,0);
+            	    putgrp(uu.x1+1,uu.y1+1,grpicons,0,grpplayernr);
 	    	putgrp(uu.x1+(38-sizex)/2,uu.y1+(36-sizey)/2,
-                	znakgrp,mageprop[localprop[i*3+j]].icon_id);
+                	znakgrp,mageprop[localprop[i*3+j]].icon_id,
+                	grpplayernr);
     	    }//if local
   if (!patrate)
   {
