@@ -126,19 +126,26 @@ void desenproperties(int *localprop,char *selectableicons)
                 int sizey=znakgrp->Picture[mageprop[localprop[i*3+j]].icon_id].LinesPerPicture;
                 uu.x1=xicon[j]+XADDICONS+DELTASCREENX;
                 uu.y1=yicon[i]+YADDICONS-2;
-                grpplayernr = selectableicons[i*3+j] << 8;
+                grpplayernr = selectableicons[i*3+j];
 		if ((oldmouseonicon!=-1&&oldmouseonicon==i*3+j)||
 		    (keyupselectedicon==i*3+j))
 	        {
-            	    putgrp(uu.x1+1,uu.y1+1,grpicons,1,grpplayernr);
+		    putgrpspr(uu.x1+1,uu.y1+1,grpicons,NORMAL,255,grpplayernr,NULL,1);
+//            	    putgrp(uu.x1+1,uu.y1+1,grpicons,1,grpplayernr);
 	    	    uu.x1+=1;
 	    	    uu.y1+=1;
 	        }
 	        else
-            	    putgrp(uu.x1+1,uu.y1+1,grpicons,0,grpplayernr);
-	    	putgrp(uu.x1+(38-sizex)/2,uu.y1+(36-sizey)/2,
-                	znakgrp,mageprop[localprop[i*3+j]].icon_id,
-                	grpplayernr);
+		    putgrpspr(uu.x1+1,uu.y1+1,grpicons,NORMAL,255,grpplayernr,NULL,0);
+//            	    putgrp(uu.x1+1,uu.y1+1,grpicons,0,grpplayernr);
+	    	putgrpspr(uu.x1+(38-sizex)/2,uu.y1+(36-sizey)/2,
+	    		znakgrp,NORMAL,255,grpplayernr,NULL,
+	    		mageprop[localprop[i*3+j]].icon_id);
+
+//	    	putgrp(uu.x1+(38-sizex)/2,uu.y1+(36-sizey)/2,
+//                	znakgrp,mageprop[localprop[i*3+j]].icon_id,
+//                	grpplayernr);
+
     	    }//if local
   if (!patrate)
   {

@@ -556,7 +556,8 @@ void putlansh(int xglob,int yglob,int x,int y,int indextile32,char wfog,char bfo
         if (creepnr<MAXCREEPNR)
         {
     	    putspr32x32(xglob,yglob,adrspr);
-	    putgrp(xglob,yglob,creepgrp,creepnr,0);
+	    putgrpspr(xglob,yglob,creepgrp,NORMAL,255,0,NULL,creepnr);
+//	    putgrp(xglob,yglob,creepgrp,creepnr,0);
 	}
 	else
 	{
