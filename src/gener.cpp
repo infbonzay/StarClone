@@ -477,7 +477,7 @@ gonextmission:
 					gamequitstatus=CONTINUEGAME;
 					break;
 				}//gametype
-				if (gamequitstatus!=EXITGAME)
+				if (gamequitstatus != EXITGAME)
 				    PlayMusic("music\\title.wav",-1);
 			    }while(gamequitstatus==PREVIOUSMENU);
 			    break;
@@ -552,7 +552,10 @@ gonextmission:
 					    }
 				    }while(gamequitstatus!=PREVIOUSMENU&&gamequitstatus!=EXITGAME);
 				    if (gamequitstatus!=EXITGAME)
+				    {
+					PlayMusic("music\\title.wav",-1);
 				        gamequitstatus=CONTINUEGAME;
+				    }
 				    break;
 				    case JOINGAME:
 //					printf("joined slot=%d\n",JOINSLOT);
@@ -588,8 +591,11 @@ gonextmission:
 					break;
 				    }
 				}while(gamequitstatus!=PREVIOUSMENU&&gamequitstatus!=EXITGAME);
-				if (gamequitstatus!=EXITGAME)
+				if (gamequitstatus != EXITGAME)
+				{
+				    PlayMusic("music\\title.wav",-1);
 				    gamequitstatus=CONTINUEGAME;
+				}
 				break;
 			    default:
 			        gamequitstatus=PREVIOUSMENU;

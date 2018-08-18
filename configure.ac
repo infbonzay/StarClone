@@ -173,8 +173,8 @@ if test "$locallibs" = "no" ; then
 	     [grpcurver="0" COMPILEVER="no"]
 	    )
     LIBS=$_libs
-    NEEDVER="0.4.18"
-    echo -n "checking for libgrp >= $NEEDVER..."
+    NEEDVER="0.4.20"
+    echo -n "checking for libgrp [$curver] >= $NEEDVER..."
     if test "$COMPILEVER" = "yes"; then
 	checkver $NEEDVER $grpcurver 256
 	result="$?"
