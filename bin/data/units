@@ -324,7 +324,8 @@ ENDOBJ           = 1
 
 [NEWOBJECT] = 63 Protoss_Dark_Archon
 MANAUPG          = 49
-PROPERTIES       = 1	256 257 0   0   267 0   292 294 293
+PROPERTIES       = 2	256 257 0   0   267 0   292 294 293
+			0   0   0   0   0   0   0   0   0
 ENDOBJ           = 1
 
 [NEWOBJECT] = 64 Protoss_Probe
@@ -354,7 +355,8 @@ ENDOBJ           = 1
 
 [NEWOBJECT] = 68 Protoss_Archon
 NOADDSTATSATCONSTR = 1
-PROPERTIES       = 1	256 257 333 258 267 0   0   0   0
+PROPERTIES       = 2	256 257 333 258 267 0   0   0   0
+			0   0   0   0   0   0   0   0   0
 ENDOBJ           = 1
 
 [NEWOBJECT] = 69 Protoss_Shuttle
@@ -395,7 +397,8 @@ ENDOBJ           = 1
 
 [NEWOBJECT] = 76 Tassadar_Zeratul_Archon
 NOADDSTATSATCONSTR = 1
-PROPERTIES       = 1	256 257 333   258 267 0   0   0   0
+PROPERTIES       = 2	256 257 333   258 267 0   0   0   0
+			0   0   0   0   0   0   0   0   0
 ENDOBJ           = 1
 
 [NEWOBJECT] = 77 Fenix_Zealot

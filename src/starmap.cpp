@@ -1422,7 +1422,7 @@ int load_starmap( const char *mapfile,char *fname, struct mapinfo *info,GAMECONF
     wclrscr(0);
     
     palchange(info->palette,gameconf.videoconf.gamma,gameconf.videoconf.saturate);
-    if (!gameconf.grmode.emulationmode)
+    if (!(gameconf.grmode.flags & DISPLAYFLAGS_EMULATIONMODE))
 	wscreenon();
     if (loadstaticsmk())
     {

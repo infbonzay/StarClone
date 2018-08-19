@@ -136,10 +136,10 @@ int changemode(int x,int y,int bpp,int fullscreen,char *pal)
     if (SDL_MUSTLOCK(sdlsurface))
         SDL_UnlockSurface(sdlsurface);
 
-    realbpp=SDL_VideoModeOK(x,y, bpp, flags);
-    if (realbpp==0)
+    realbpp = SDL_VideoModeOK(x,y, bpp, flags);
+    if (realbpp == 0)
 	return(0);
-    if (realbpp!=bpp)
+    if (realbpp != bpp)
     {
 	emul=1;
     }
@@ -150,13 +150,14 @@ int changemode(int x,int y,int bpp,int fullscreen,char *pal)
     if (SDL_MUSTLOCK(sdlsurface))
         SDL_LockSurface(sdlsurface);
     SetVideoBuffer(sdlsurface->pixels);
+    gameconf.grmode.videobuff = (unsigned char *)sdlsurface->pixels;
     memcpy(GRP_vidmem,tempvid,x*y);
     if (pal)
 	activatepalette(pal);
     if (!(pal && emul))
 	wscreenon();
     wfree(tempvid);
-    gameconf.grmode.windowactive=1;
+    gameconf.grmode.flags |= DISPLAYFLAGS_WINDOWACTIVE;
     return(1+emul);
 }
 //==========================
@@ -190,7 +191,9 @@ int detectmode(int x,int y,int bpp,int fullscreen)
     SDL_ShowCursor(SDL_DISABLE);
     if (SDL_MUSTLOCK(sdlsurface))
         SDL_LockSurface(sdlsurface);
-    gameconf.grmode.windowactive=1;
+    SetVideoBuffer(sdlsurface->pixels);
+    gameconf.grmode.videobuff = (unsigned char *)sdlsurface->pixels;
+    gameconf.grmode.flags |= DISPLAYFLAGS_WINDOWACTIVE;
     return (1+emul);
 }
 //==========================
@@ -203,7 +206,7 @@ void wscreenonregions(int nrregions,SCREEN_REGION regions[])
 {
     int nodraw=1;
     mytimer.CallTimer(MYTIMER_SINCHRONMODE);
-    if (gameconf.grmode.windowactive)
+    if (gameconf.grmode.flags & DISPLAYFLAGS_WINDOWACTIVE)
     {
 	SDL_UpdateRects(sdlsurface,nrregions,regions);
 	nodraw=0;
@@ -323,9 +326,9 @@ int eventwindowloop(void) //return 1 - on quit
                 if ( event.active.state & SDL_APPACTIVE )
                 {
                     if ( event.active.gain )
-            		gameconf.grmode.windowactive=1;
+			gameconf.grmode.flags |= DISPLAYFLAGS_WINDOWACTIVE;
                     else
-            		gameconf.grmode.windowactive=0;
+		        gameconf.grmode.flags &= DISPLAYFLAGS_WINDOWACTIVE;
                 }
                 break;
             case SDL_QUIT:

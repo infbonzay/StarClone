@@ -259,7 +259,7 @@ void ShowPreviewBuff(char *cmpbuf,int sizebuf,int esckeyaction)
 					FadeScreen(fadespeed,pal,FADE_SHOW);
 				    }
 				    palchange(pal,gameconf.videoconf.gamma,gameconf.videoconf.saturate);
-			    	    if (!gameconf.grmode.emulationmode)
+			    	    if (!(gameconf.grmode.flags & DISPLAYFLAGS_EMULATIONMODE))
 					wscreenon();
 				    tick=mytimer.GetCurrentTimerTick();
 				    keyactive=0;
@@ -328,7 +328,7 @@ void FadeScreen(int fadespeed,char *pal,int typeoffade)	//0-fadetoimage 1-fadeto
 	    {
 		prevgamma = gamma;
 		palchange(pal,(int )gamma,gameconf.videoconf.saturate);
-		if (!gameconf.grmode.emulationmode)
+		if (!(gameconf.grmode.flags & DISPLAYFLAGS_EMULATIONMODE))
 	    	    wscreenon();
 	    }
 	    deltatick = (mytimer.GetCurrentTimerTick()-tick)*1000/TICKS_RES;
@@ -343,7 +343,7 @@ void FadeScreen(int fadespeed,char *pal,int typeoffade)	//0-fadetoimage 1-fadeto
 	    {
 		prevgamma = gamma;
 		palchange(pal,(int )gamma,gameconf.videoconf.saturate);
-		if (!gameconf.grmode.emulationmode)
+		if (!(gameconf.grmode.flags & DISPLAYFLAGS_EMULATIONMODE))
 	    	    wscreenon();
 	    }
 	    deltatick = (mytimer.GetCurrentTimerTick()-tick)*1000/TICKS_RES;
@@ -515,7 +515,7 @@ void PlayVideoSmk(char *smkfile)
 		if (palflag)
 		{
     		    activatepalette256x3(smkpal);
-		    if (!gameconf.grmode.emulationmode)
+		    if (!(gameconf.grmode.flags & DISPLAYFLAGS_EMULATIONMODE))
 			wscreenonregion(xpos,ypos,w*2,h);
 		}
 		else

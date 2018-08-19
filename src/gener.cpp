@@ -161,14 +161,15 @@ int main(int c,char **parm,char **env)
 	printf("set graph mode...\n");
 	if (!videook)
 	{
-	    i = setmode(gameconf.grmode.x,gameconf.grmode.y,gameconf.grmode.s,gameconf.grmode.fullscreen);
+	    i = setmode(gameconf.grmode.x,gameconf.grmode.y,gameconf.grmode.s,gameconf.grmode.flags & DISPLAYFLAGS_FULLSCREENMODE);
     	    if (!i)
 	    {
 		printf("cannot initialize %dx%dx%d video mode\n",
     	                gameconf.grmode.x,gameconf.grmode.y,gameconf.grmode.s);
     		exit(-1);
 	    }
-	    gameconf.grmode.emulationmode=i-1;
+	    if (i == 2)
+		gameconf.grmode.flags |= DISPLAYFLAGS_EMULATIONMODE;
 	    SetMousePos(GRP_screensizex/2,GRP_screensizey/2);
 	    SetMousePos(GRP_screensizex/2,GRP_screensizey/2);
 	    mouse_x=GRP_screensizex/2;
@@ -1590,7 +1591,7 @@ void wscreenonmem(int nrregions,SCREEN_REGION regions[])
     {
 	palchange(map.palette,gameconf.videoconf.gamma,gameconf.videoconf.saturate);
 	map.palettechanges=0;
-	if (!gameconf.grmode.emulationmode)
+	if (!(gameconf.grmode.flags & DISPLAYFLAGS_EMULATIONMODE))
 	    wscreenonregions(nrregions,regions);
     }
     else

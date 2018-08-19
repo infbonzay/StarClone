@@ -138,6 +138,7 @@ OBJ *CreateArchon(OBJ *a,OBJ *a2)
     dieobj_silently(a);
     dieobj_silently(a2);
     SetOBJIScriptNr(newobj,ISCRIPTNR_SPECIALSTATE1,ISCRIPTNR_EXECUTE);	//set warping archon
+    ChangeTypeOfProp(newobj,PROPNORMAL2);
     SetBeginSelfConstruct(newobj);
     newobj->selfconstruct.currentconstrstep = CONSTR_STEP_WARPARCHONS;
     return(newobj);

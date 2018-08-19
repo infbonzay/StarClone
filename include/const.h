@@ -2,13 +2,19 @@
 #define _CONST_W
 
 //====================
+#define DISPLAYFLAGS_FULLSCREENMODE	0x01
+#define DISPLAYFLAGS_EMULATIONMODE	0x02
+#define DISPLAYFLAGS_WINDOWACTIVE	0x04
+
 struct DISPLAY{
-       int	x;
-       int	y;
-       char	s;
-       char	fullscreen;
-       char	emulationmode;
-       char	windowactive;
+    unsigned char *videobuff;
+    int		x;
+    int		y;
+    char	s;
+    char	flags;
+//    char	fullscreen;
+//    char	emulationmode;
+//    char	windowactive;
 };
 //====================
 struct XYcoord

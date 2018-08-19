@@ -3,11 +3,11 @@
 #include <mpqlib/StormLib.h>
 
 //#define MPQFileName1 "StarDat.mpq"
-//#define MPQFileName1 "BrooDat.mpq"
+#define MPQFileName1 "BrooDat.mpq"
 //#define MPQFileName1 "starinstall.exe"
 //#define MPQFileName1 "broodinstall.exe"
 //#define MPQFileName1 "Patch_rt.mpq"
-#define MPQFileName1 "StarClone.mpq"
+//#define MPQFileName1 "StarClone.mpq"
 
 #define OUTDIR "./EXTRACTED/"
 //#define EXTRACTBYNUMBER
@@ -15,7 +15,7 @@
 HANDLE mpq[1];
 char filename[500];
 char buffdir[500];
-char mask[]="";
+char mask[]="sound\\";
 //=========================================
 int maskequal(char *filename,char *mask)
 {
@@ -91,10 +91,13 @@ int main(void)
 		    strcat(buffdir,filename+i);
 		err=SFileExtractFile(mpq[0],filename,buffdir);
 		if (!err)
-		    ;//printf("%s -> %s FAILED\n",filename,buffdir);
+		    printf("%s -> %s FAILED\n",filename,buffdir);
 		else
 		    printf("%s -> %s OK\n",filename,buffdir);
 	    }
+	    else
+		printf("%s -> %s FAILED\n",filename,buffdir);
+
 	}
 #else
 	sprintf(filename2,"%s/file%05u.dat",OUTDIR,filenr);

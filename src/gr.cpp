@@ -173,12 +173,6 @@ int setmode(int x,int y,int bpp,int fullscreen)
 	
 	if (a)			//video mode not set if return =0
 	{
-#ifdef WITHSDL
-	    SetVideoBuffer(sdlsurface->pixels);
-#endif
-#ifdef UNDERDOS
-	    SetVideoBuffer(getGRP_vidmem());
-#endif
             SetPitchAndChunk();
 	    mouse_x=0;
     	    mouse_y=0;

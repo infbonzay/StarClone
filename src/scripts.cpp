@@ -492,7 +492,7 @@ void saveconf(void)
     fprintf(f,"%s = 2 ./starinstall.exe ./broodinstall.exe\n",rezo[21]);
     fprintf(f,"%s = 3 ./StarDat.mpq 50 ./BrooDat.mpq 90 ./StarClone.mpq 100\n",rezo[14]);
 
-    fprintf(f,"%s = %d %d %d %d\n",rezo[15],gameconf.grmode.x,gameconf.grmode.y,gameconf.grmode.s,gameconf.grmode.fullscreen);
+    fprintf(f,"%s = %d %d %d %d\n",rezo[15],gameconf.grmode.x,gameconf.grmode.y,gameconf.grmode.s,gameconf.grmode.flags & DISPLAYFLAGS_FULLSCREENMODE);
     fprintf(f,"%s = %d\n",rezo[16],gameconf.speedconf.mousescroll);
     fprintf(f,"%s = %d\n",rezo[17],gameconf.speedconf.keyscroll);
     fprintf(f,"%s = %s\n",rezo[18],YESNO[gameconf.speedconf.cputhrottling]);
@@ -522,7 +522,7 @@ void loaddefcfg(void)
     gameconf.grmode.x = 640;
     gameconf.grmode.y = 480;
     gameconf.grmode.s = 8;
-    gameconf.grmode.fullscreen = 0;
+    gameconf.grmode.flags = 0;
     gameconf.videoconf.visiblemap = 0;
     gameconf.networkconf.networklatency = 0;
     gameconf.videoconf.preview = 0;
@@ -733,7 +733,8 @@ int loadcfg(char *filename,int *mpqresult)
                     fscanf(f,"%s \n",strvalue);
                     gameconf.grmode.s=atoi(strvalue);
                     fscanf(f,"%s \n",strvalue);
-                    gameconf.grmode.fullscreen=atoi(strvalue);
+                    if (atoi(strvalue))
+                	gameconf.grmode.flags |= DISPLAYFLAGS_FULLSCREENMODE;
 		    err=0;
             	    break;
             case  16://I MOUSESCROLLSPEED

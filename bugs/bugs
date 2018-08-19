@@ -438,6 +438,8 @@
  202 sound of duran comsuming is lockdownsound 2 sound of consume (init,death iscripts )
 *203 ghost atack in cloaked mode 
 *204 music after ends multiplayer no play
+*205 archon,dark archon move then morth,  died wth wrong sound
+ 206 feedback on no spellcaster or build,
     if interceptors kill destobj return to carrier but carrier in atackmode & interceptors dont launch again
     interceptors fly to atack far then carrier range
     carrier stop move if atack to ground and stops to atack somebody

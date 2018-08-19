@@ -58,12 +58,12 @@ struct GAMECONF
 {
 	struct VIDEO
 	{
-	    int  gamma;		// from 0 , to 99
-	    int  saturate;	//from 0 to 99
-	    char animation;	// 0/1	no,yes
-	    char portraits;	// 0/1/2 yes,static,no
-	    char visiblemap;	//show no visible map under fog
-	    char preview;	//bit 0 - star ,bit 1 expansion is set if played intro
+	    unsigned char gamma;	// from 0 , to 99
+	    unsigned char saturate;	//from 0 to 99
+	    unsigned char animation;	// 0/1	no,yes
+	    unsigned char portraits;	// 0/1/2 yes,static,no
+	    unsigned char visiblemap;	//show no visible map under fog
+	    unsigned char preview;	//bit 0 - star ,bit 1 expansion is set if played intro
 	}videoconf;
 	struct AUDIO
 	{
