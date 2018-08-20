@@ -210,7 +210,8 @@ GRPFILE *fullc[10],*puncc[10];
 char 	*transpadr;
 mylist	mousehotspot;
 char	networkresend,networkreceive,networkgametick,menutimerupdate;
-signed char waittimeremain;
+signed  char waittimeremain;
+int 	oneWarpPictureSize;
 
 
 GAMECONF gameconf;
@@ -246,23 +247,23 @@ void addvars(void)
 {
     Xkart=5+DELTASCREENX;
     Ykart=348+DELTASCREENY;
-    widthkart=GRP_screensizex/SIZESPRLANSHX;
-    hightkart=(GRP_screensizey-32*3)/SIZESPRLANSHY;
+    widthkart=gameconf.grmode.x/SIZESPRLANSHX;
+    hightkart=(gameconf.grmode.y-32*3)/SIZESPRLANSHY;
     SCRFOGX=widthkart+2+1;
     SCRFOGY=hightkart+2+1;
     mouse=0;
     mouser[MOUSEMODE1].x1=0;
     mouser[MOUSEMODE1].y1=0;
-    mouser[MOUSEMODE1].x2=GRP_screensizex-1;
-    mouser[MOUSEMODE1].y2=GRP_screensizey-1;
+    mouser[MOUSEMODE1].x2=gameconf.grmode.x-1;
+    mouser[MOUSEMODE1].y2=gameconf.grmode.y-1;
     mouser[MOUSEMODE2].x1=0;
     mouser[MOUSEMODE2].y1=0;
-    mouser[MOUSEMODE2].x2=GRP_screensizex-1;
-    mouser[MOUSEMODE2].y2=GRP_screensizey-1;
+    mouser[MOUSEMODE2].x2=gameconf.grmode.x-1;
+    mouser[MOUSEMODE2].y2=gameconf.grmode.y-1;
     mouser[MOUSEMODE3].x1=0;
     mouser[MOUSEMODE3].y1=0;
-    mouser[MOUSEMODE3].x2=GRP_screensizex-1;
-    mouser[MOUSEMODE3].y2=GRP_screensizey-110;
+    mouser[MOUSEMODE3].x2=gameconf.grmode.x-1;
+    mouser[MOUSEMODE3].y2=gameconf.grmode.y-110;
     
     screenfog=(unsigned char *)wmalloc(SCRFOGX*SCRFOGY);
     screenmapused=(unsigned char *)wmalloc((hightkart+1)*(widthkart+1));

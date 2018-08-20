@@ -414,7 +414,7 @@ void getmousetype(int xk,int yk)
 	 buildconstr=SC_NOUNITNR;
          if ((mouse_b&WMLEFTKEY)&&(select_aria)&&!(karta_aria))
          {
-             if (mouseprevy<GRP_screensizey-YDECICONS)
+             if (mouseprevy<gameconf.grmode.y-YDECICONS)
                 patr=1;
              else
                 patr=0;
@@ -609,10 +609,10 @@ void getmousetype(int xk,int yk)
         patrate=1;
         addscrx=0;
         addscry=0;
-        if (mouseprevx>GRP_screensizex) 
-	    mouseprevx=GRP_screensizex;
-        if (mouseprevy>GRP_screensizey) 
-	    mouseprevy=GRP_screensizey;
+        if (mouseprevx > gameconf.grmode.x) 
+	    mouseprevx = gameconf.grmode.x;
+        if (mouseprevy > gameconf.grmode.y) 
+	    mouseprevy = gameconf.grmode.y;
       }
     }
     else
@@ -620,7 +620,7 @@ void getmousetype(int xk,int yk)
 	patrate=0;
         if (!GAME)
 	    mousetype = NORMALMOUSE;
-        if (mouse_b==WMLEFTKEY)
+        if (mouse_b == WMLEFTKEY)
         {
 	    mousetype = NORMALMOUSE;
         }
@@ -674,78 +674,6 @@ void saveundermouse(void)
 	memmousepossizey = GRP_wmaxy-memmouseposy+1;
     CGetImage8(memmouseposx,memmouseposy,memmousepossizex,memmousepossizey,pixundermouse);
 }
-//==========================
-/*#define GRP_VIDMEM_OFFSET(x,y) (GRP_scanlineoffsets[y]+x)
-//==========================
-static char memunderpatr[4][1024];
-void saveunderpatr(void)
-{
-    if (patrate)
-    {
-	int x1,y1,x2,y2,sx,sy;
-	if (mouseprevx>mouse_x)
-	{
-	    x1 = mouse_x ;
-	    x2 = mouseprevx ;
-	}
-	else
-	{
-	    x2 = mouse_x ;
-	    x1 = mouseprevx ;
-	}
-	if (mouseprevy>mouse_y)
-	{
-	    y1 = mouse_y ;
-	    y2 = mouseprevy;
-	}
-	else
-	{
-	    y2 = mouse_y ;
-	    y1 = mouseprevy ;
-	}
-	sx = x2 - x1 + 1;
-	sy = y2 - y1 + 1;
-	memcpy(memunderpatr[0],GRP_vidmem+GRP_VIDMEM_OFFSET(x1+1,y1),sx - 2);
-	CGetImage8(x1,y1+1,1,sy-2,memunderpatr[1]);
-	memcpy(memunderpatr[2],GRP_vidmem+GRP_VIDMEM_OFFSET(x1+1,y2),sx - 2);
-	CGetImage8(x2,y1+1,1,sy-2,memunderpatr[3]);
-    }
-}
-//==========================
-void loadunderpatr(void)
-{
-    if (patrate)
-    {
-	int x1,y1,x2,y2,sx,sy;
-	if (mouseprevx>mouse_x)
-	{
-	    x1 = mouse_x ;
-	    x2 = mouseprevx ;
-	}
-	else
-	{
-	    x2 = mouse_x ;
-	    x1 = mouseprevx ;
-	}
-	if (mouseprevy>mouse_y)
-	{
-	    y1 = mouse_y ;
-	    y2 = mouseprevy ;
-	}
-	else
-	{
-	    y2 = mouse_y ;
-	    y1 = mouseprevy ;
-	}
-	sx = x2 - x1 + 1;
-	sy = y2 - y1 + 1;
-	memcpy(GRP_vidmem+GRP_VIDMEM_OFFSET(x1+1,y1),memunderpatr[0],sx - 2);
-	CPutImage8(x1,y1+1,1,sy-2,memunderpatr[1]);
-	memcpy(GRP_vidmem+GRP_VIDMEM_OFFSET(x1+1,y2),memunderpatr[2],sx - 2);
-	CPutImage8(x2,y1+1,1,sy-2,memunderpatr[3]);
-    }
-}
-*/
 //==========================
 void loadundermouse(void)
 {

@@ -622,7 +622,7 @@ int drawmenu(MENUSTR *allmenus,int flags)
     MENUACTIVE=1;
     if (allmenus->prevmenu)
     {
-	prev_entire_screen=savepartscreen(0,0,GRP_screensizex,GRP_screensizey);
+	prev_entire_screen=savepartscreen(0,0,gameconf.grmode.x,gameconf.grmode.y);
 	updateunder=ITEM_NOSAVELOADUNDER;
     }
     else
@@ -807,7 +807,7 @@ int drawmenu(MENUSTR *allmenus,int flags)
 		    clearscrollportrait();
 		    if (allmenus->prevmenu)//if exist prev menu need to show it only
 		    {
-			restorepartscreen(0,0,GRP_screensizex,GRP_screensizey,prev_entire_screen);
+			restorepartscreen(0,0,gameconf.grmode.x,gameconf.grmode.y,prev_entire_screen);
     			checkanddrawmenu(allmenus->prevmenu,ITEMALLDISABLED,updateunder);
 			RunCallBackFuncs(allmenus->prevmenu);
 //			if (allmenus->prevmenu->CallBackFunc)
@@ -833,7 +833,7 @@ int drawmenu(MENUSTR *allmenus,int flags)
     unregmenucallbacks();
     mymousemoveevent(mouse_x,mouse_y);
     if (allmenus->prevmenu)
-	loadpartscreen(0,0,GRP_screensizex,GRP_screensizey,prev_entire_screen);
+	loadpartscreen(0,0,gameconf.grmode.x,gameconf.grmode.y,prev_entire_screen);
     MENUACTIVE=0;
     return(selectedmenu);
 }

@@ -708,7 +708,7 @@ int loadramka(int needrace)	//0-z,1-t,2-p
 	return -1;
 
     packedconsole = CreatePackedConsoleMenu(consoleraw.GetPcxRawBytes(),
-		    consoleraw.xsizePcx(),consoleraw.ysizePcx(),GRP_screensizex,GRP_screensizey,0);
+		    consoleraw.xsizePcx(),consoleraw.ysizePcx(),gameconf.grmode.x,gameconf.grmode.y,0);
     //read upgrade-empty positions of needed race
 
     strcpy(filename,"game\\");
@@ -719,7 +719,7 @@ int loadramka(int needrace)	//0-z,1-t,2-p
 	return -2;
 
     packedconsoleover = CreatePackedConsoleMenu(consoleover.GetPcxRawBytes(),
-		    consoleover.xsizePcx(),consoleover.ysizePcx(),GRP_screensizex,SMKICONPOSY+consoleover.ysizePcx(),SMKICONPOSX);
+		    consoleover.xsizePcx(),consoleover.ysizePcx(),gameconf.grmode.x,SMKICONPOSY+consoleover.ysizePcx(),SMKICONPOSX);
 
     //read upgrade-full positions of needed race
 
@@ -1102,20 +1102,19 @@ void unloadtexturegrp(void)
 void loadtexturegrp(void)
 {
     GRPFILE *grpmem2;
-    int images_tbl,muls,listnr,i;
+    int images_tbl,listnr,i;
     if (!grptexture)
     {
 	images_tbl = alldattbl.images_dat->images_tbl[IMAGEID_TEXTURE];
 	listnr = GetLoadedImage(images_tbl,(void **)&grpmem2);
-	GRP_sizexwarppict=grpmem2->SizeX;
-	GRP_sizeywarppict=grpmem2->SizeY;
-	muls=GRP_sizexwarppict*GRP_sizeywarppict;
-	ctextures=grpmem2->CountPictures;
-	muls*=ctextures;
-	grptexture=(char *)wmalloc(muls);
+	GRP_sizexwarppict = grpmem2->SizeX;
+	GRP_sizeywarppict = grpmem2->SizeY;
+	oneWarpPictureSize = grpmem2->SizeX*grpmem2->SizeY;
+	ctextures = grpmem2->CountPictures;
+	grptexture = (char *)wmalloc(oneWarpPictureSize * ctextures);
 	for (i=0;i<ctextures;i++)
 	{
-	    unpackgrp(0,0,grpmem2,i,grptexture+GRP_sizexwarppict*GRP_sizeywarppict*i);
+	    unpackgrp(0,0,grpmem2,i,grptexture + oneWarpPictureSize*i);
         }
 //	SC_Images_List.FreeAndDelList(listnr,&FreeImagesListData);//no needed packed texture.grp from now
     }

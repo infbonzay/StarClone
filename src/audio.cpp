@@ -55,7 +55,7 @@ int SetChannelVolume(int channel, int volume)
 int CalculateVolume(int distance,int minvolume,int maxvolume,int globalvol)
 {
     int retvalue;
-    distance = abs(distance-(GRP_screensizex+GRP_screensizey)/2)/8;
+    distance = abs(distance-(gameconf.grmode.x+gameconf.grmode.y)/2)/8;
     if (distance<MINDIST)
 	retvalue = maxvolume;
     else

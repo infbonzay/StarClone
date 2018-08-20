@@ -61,7 +61,7 @@ int putfntsymbol(int x,int y,int fontnr,int symbolnr,char *offsettable,int skipu
 	if (!font->Offset[symbolnr-font->LowIndex])
 	    return 0;
 	letter = (SC_FontLetterRaw *) (font->Offset[symbolnr-font->LowIndex] + (long) font);
-	ypart = (y+letter->YOffset)*GRP_screensizex+letter->XOffset+x;
+	ypart = (y+letter->YOffset)*gameconf.grmode.x+letter->XOffset+x;
 	
 	j=0;
 	i=letter->Height;
@@ -79,12 +79,12 @@ int putfntsymbol(int x,int y,int fontnr,int symbolnr,char *offsettable,int skipu
 		if (i<=skipdownlines)
 		    break;
 		j=j%letter->Width;
-		ypart+=GRP_screensizex*linesskip;
+		ypart+=gameconf.grmode.x*linesskip;
 	    }
 	    if (skipuplines>=0)
 	    {
 		color = offsettable[color];
-		GRP_vidmem[ypart+j] = color;
+		gameconf.grmode.videobuff[ypart+j] = color;
 	    }
 	    j++;
 	}while(1);

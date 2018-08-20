@@ -61,7 +61,7 @@ void horizline( int color,int x1,int x2,int y)
     sx=x2-x1;
     if (!sx)
 	return;
-    vm1=GRP_vidmem+(y*GRP_screensizex+x1);
+    vm1=gameconf.grmode.videobuff+(y*gameconf.grmode.x+x1);
     vm=(unsigned char *)vm1;
     do{
 	*vm=(char)color;
@@ -92,11 +92,11 @@ void vertline(  int color,int x,int y1,int y2)
     sy=y2-y1;
     if (!sy)
 	return;
-    vm1=GRP_vidmem+(y1*GRP_screensizex+x);
+    vm1=gameconf.grmode.videobuff+(y1*gameconf.grmode.x+x);
     vm=(unsigned char *)vm1;
     do{
         *vm=(char)color;
-        vm+=GRP_screensizex;
+        vm+=gameconf.grmode.x;
 	y1++;
     }while(y1<=y2);
 }
@@ -144,12 +144,12 @@ void lines(int x1,int x2,int y1,int n,int modes)
         if (!modes)
         {
            for (int i=x1;i<=x2;i++)
-               GRP_vidmem[i+adr] = (char)n;
+               gameconf.grmode.videobuff[i+adr] = (char)n;
         }
         else
         {
            for (int i=x1;i<=x2;i++)
-               GRP_vidmem[i+adr] = GRP_transpcolors[GRP_vidmem[i+adr]*256+n];
+               gameconf.grmode.videobuff[i+adr] = GRP_transpcolors[gameconf.grmode.videobuff[i+adr]*256+n];
         }
      }
 }
@@ -165,9 +165,9 @@ int setmode(int x,int y,int bpp,int fullscreen)
 
 	InitGrpLib(x,y);
 	
-	DELTASCREENX=(GRP_screensizex-640)/2;
-	DELTASCREENY=GRP_screensizey-480;
-	DELTASCREENY2=(GRP_screensizey-480)/2;
+	DELTASCREENX=(gameconf.grmode.x-640)/2;
+	DELTASCREENY=gameconf.grmode.y-480;
+	DELTASCREENY2=(gameconf.grmode.y-480)/2;
 
         a=detectmode(x,y,bpp,fullscreen);
 	
@@ -176,8 +176,8 @@ int setmode(int x,int y,int bpp,int fullscreen)
             SetPitchAndChunk();
 	    mouse_x=0;
     	    mouse_y=0;
-    	    mousemaxx=GRP_screensizex;
-    	    mousemaxy=GRP_screensizey;
+    	    mousemaxx=gameconf.grmode.x;
+    	    mousemaxy=gameconf.grmode.y;
 	}
     	return(a);
 }
@@ -185,12 +185,12 @@ int setmode(int x,int y,int bpp,int fullscreen)
 void putcube(int x,int y,int sizex,int sizey,char color)
 {
     int i,j;
-    char *vidbuf;
-    vidbuf=GRP_vidmem+GRP_scanlineoffsets[y]+x;
+    unsigned char *vidbuf;
+    vidbuf = gameconf.grmode.videobuff + GRP_scanlineoffsets[y] + x;
     for (i=0;i<sizey;i++)
     {
 	memset(vidbuf,color,sizex);
-	vidbuf+=GRP_screensizex;
+	vidbuf+=gameconf.grmode.x;
     }
 }
 //==========================
@@ -199,7 +199,7 @@ void puttranslucencyrow(int x,int y,int sizex,int sizey,unsigned char *buff,int 
     int i,j;
     unsigned char *vidbuf,*tr_table;
     unsigned char pixel;
-    vidbuf=(unsigned char *)GRP_vidmem+GRP_scanlineoffsets[y]+x;
+    vidbuf = gameconf.grmode.videobuff+GRP_scanlineoffsets[y] + x;
     switch(grdnr)
     {
 	case 0:		//25%
@@ -215,7 +215,7 @@ void puttranslucencyrow(int x,int y,int sizex,int sizey,unsigned char *buff,int 
 		    }
 		    vidbuf++;
 		}
-		vidbuf+=GRP_screensizex-sizex;
+		vidbuf+=gameconf.grmode.x-sizex;
     	    }
 	    break;
 	case 1:		//50%
@@ -231,7 +231,7 @@ void puttranslucencyrow(int x,int y,int sizex,int sizey,unsigned char *buff,int 
 		    }
 		    vidbuf++;
 		}
-		vidbuf+=GRP_screensizex-sizex;
+		vidbuf+=gameconf.grmode.x-sizex;
     	    }
 	    break;
 	case 2:		//75%
@@ -247,7 +247,7 @@ void puttranslucencyrow(int x,int y,int sizex,int sizey,unsigned char *buff,int 
 		    }
 		    vidbuf++;
 		}
-		vidbuf+=GRP_screensizex-sizex;
+		vidbuf+=gameconf.grmode.x-sizex;
     	    }
 	    break;
 	case 3:		//100%
@@ -259,14 +259,14 @@ void puttranslucencyrow(int x,int y,int sizex,int sizey,unsigned char *buff,int 
 void putrowwithtable(int x,int y,int sizex,int sizey,unsigned char *buff,char *table)
 {
     int i,j;
-    char *vidbuf;
+    unsigned char *vidbuf;
     unsigned char pixel;
-    vidbuf=GRP_vidmem+GRP_scanlineoffsets[y]+x;
+    vidbuf = gameconf.grmode.videobuff + GRP_scanlineoffsets[y] + x;
     for (i=0;i<sizey;i++)
     {
 //	memcpy(vidbuf,buff,sizex);
 //	buff+=sizex;
-//	vidbuf+=GRP_screensizex;
+//	vidbuf+=gameconf.grmode.x;
 	for (j=0;j<sizex;j++)
 	{
 	    pixel=*buff++;
@@ -278,7 +278,7 @@ void putrowwithtable(int x,int y,int sizex,int sizey,unsigned char *buff,char *t
 		vidbuf++;
 	}
 /*	buff+=sizex-sizex;*/
-	vidbuf+=GRP_screensizex-sizex;
+	vidbuf+=gameconf.grmode.x-sizex;
     }
 }
 //==========================
@@ -287,12 +287,12 @@ void putrow(int x,int y,int sizex,int sizey,unsigned char *buff)
     int i,j;
     unsigned char *vidbuf;
     unsigned char pixel;
-    vidbuf=(unsigned char *)GRP_vidmem+GRP_scanlineoffsets[y]+x;
+    vidbuf = gameconf.grmode.videobuff + GRP_scanlineoffsets[y] + x;
     for (i=0;i<sizey;i++)
     {
 //	memcpy(vidbuf,buff,sizex);
 //	buff+=sizex;
-//	vidbuf+=GRP_screensizex;
+//	vidbuf+=gameconf.grmode.x;
 	for (j=0;j<sizex;j++)
 	{
 	    pixel=*buff++;
@@ -304,7 +304,7 @@ void putrow(int x,int y,int sizex,int sizey,unsigned char *buff)
 		vidbuf++;
 	}
 /*	buff+=sizex-sizex;*/
-	vidbuf+=GRP_screensizex-sizex;
+	vidbuf+=gameconf.grmode.x-sizex;
     }
 }
 //==========================
@@ -312,7 +312,7 @@ void putrow2x2(int x,int y,int sizex,int sizey,unsigned char *buff)
 {
     int i,j,posx;
     unsigned char *vidbuf;
-    vidbuf=(unsigned char *)GRP_vidmem+GRP_scanlineoffsets[y]+x;
+    vidbuf = gameconf.grmode.videobuff + GRP_scanlineoffsets[y] + x;
     posx=0;
     sizey*=2;
     for (i=0;i<sizey;i++)
@@ -320,7 +320,7 @@ void putrow2x2(int x,int y,int sizex,int sizey,unsigned char *buff)
 	if (i&1)
 	{
 	    memset(vidbuf+posx,0,sizex*2);
-	    posx+=GRP_screensizex;
+	    posx+=gameconf.grmode.x;
 	}
 	else
 	{
@@ -329,7 +329,7 @@ void putrow2x2(int x,int y,int sizex,int sizey,unsigned char *buff)
 		vidbuf[posx++]=*buff;
 		vidbuf[posx++]=*buff++;
 	    }
-	    posx+=GRP_screensizex-sizex*2;
+	    posx+=gameconf.grmode.x-sizex*2;
 	}
     }
 }
@@ -339,7 +339,7 @@ void putrow2x1(int x,int y,int sizex,int sizey,unsigned char *buff)
     int i,j;
     unsigned char pixel;
     unsigned char *vidbuf;
-    vidbuf=(unsigned char *)GRP_vidmem+GRP_scanlineoffsets[y]+x;
+    vidbuf = gameconf.grmode.videobuff + GRP_scanlineoffsets[y] + x;
     for (i=0;i<sizey;i++)
     {
 	for (j=0;j<sizex;j++)
@@ -347,7 +347,7 @@ void putrow2x1(int x,int y,int sizex,int sizey,unsigned char *buff)
 	    *vidbuf++=*buff;
 	    *vidbuf++=*buff++;
 	}
-	vidbuf+=GRP_screensizex-sizex*2;
+	vidbuf+=gameconf.grmode.x-sizex*2;
     }
 }
 /*==========================*/
@@ -393,89 +393,89 @@ void palettemono(char *palette,const char *origpalette,int factor)		// palette 2
 
     for (i=0;i<256;i++)
     {
-	r=(unsigned char)origpalette[i*4+0];
-	g=(unsigned char)origpalette[i*4+1];
-	b=(unsigned char)origpalette[i*4+2];
-	grey=(r+g+b)/3;
+	r = (unsigned char)origpalette[i*4+0];
+	g = (unsigned char)origpalette[i*4+1];
+	b = (unsigned char)origpalette[i*4+2];
+	grey = (r + g + b) / 3;
 	
-	newr = grey+(r-grey)*factor/(MAXSATURATE/2);
-	newg = grey+(g-grey)*factor/(MAXSATURATE/2);
-	newb = grey+(b-grey)*factor/(MAXSATURATE/2);
-	if (newr<0) 
-	    newr=0;
-	if (newg<0) 
-	    newg=0;
-	if (newb<0) 
-	    newb=0;
-	if (newr>255) 
-	    newr=255;
-	if (newg>255) 
-	    newg=255;
-	if (newb>255) 
-	    newb=255;
-	palette[i*4+0]=newr;
-	palette[i*4+1]=newg;
-	palette[i*4+2]=newb;
+	newr = grey + (r-grey) * factor/(MAXSATURATE/2);
+	newg = grey + (g-grey) * factor/(MAXSATURATE/2);
+	newb = grey + (b-grey) * factor/(MAXSATURATE/2);
+	if (newr < 0) 
+	    newr = 0;
+	if (newg < 0) 
+	    newg = 0;
+	if (newb < 0) 
+	    newb = 0;
+	if (newr > 255) 
+	    newr = 255;
+	if (newg > 255) 
+	    newg = 255;
+	if (newb > 255) 
+	    newb = 255;
+	palette[i*4+0] = newr;
+	palette[i*4+1] = newg;
+	palette[i*4+2] = newb;
     }
 }
 //==========================
 void pal3to4(char *pal4,const char *pal3)
 {
-    for (int i=0;i<256;i++)
+    for (int i=0 ;i < 256 ; i++)
     {
-	pal4[i*4+0]=pal3[i*3+0];
-	pal4[i*4+1]=pal3[i*3+1];
-	pal4[i*4+2]=pal3[i*3+2];
-	pal4[i*4+3]=0;
+	pal4[i*4+0] = pal3[i*3+0];
+	pal4[i*4+1] = pal3[i*3+1];
+	pal4[i*4+2] = pal3[i*3+2];
+	pal4[i*4+3] = 0;
     }
 }
 //==========================
 void pal4to3(char *pal3,const char *pal4)
 {
-    for (int i=0;i<256;i++)
+    for (int i=0 ; i < 256 ; i++)
     {
-	pal3[i*3+0]=pal4[i*4+0];
-	pal3[i*3+1]=pal4[i*4+1];
-	pal3[i*3+2]=pal4[i*4+2];
+	pal3[i*3+0] = pal4[i*4+0];
+	pal3[i*3+1] = pal4[i*4+1];
+	pal3[i*3+2] = pal4[i*4+2];
     }
 }
 //==========================
 void putgrp_nopacked2(int x,int y,int onlyx,int onlyy,GRPFILE *grp,int pictnr)
 {
     int addx,addy,j,sizex,sizey,decrx;
-    char *vidadr,*bytes;
+    unsigned char *vidadr,*bytes;
     unsigned char colorbyte;
     if (!onlyx)
 	return;
     if (!onlyy)
 	return;
-    if (grp->SizeX>255)//the only way to check if nopacked grp it is.
-    if (pictnr<grp->CountPictures)
+    if (grp->SizeX > 255)//the only way to check if nopacked grp it is.
+    if (pictnr < grp->CountPictures)
     {
-	vidadr=GRP_vidmem;
-	bytes=(char *)grp;
-	addx=grp->Picture[pictnr].SkipLeft;
-	addy=grp->Picture[pictnr].SkipUp;
-	sizey=grp->Picture[pictnr].LinesPerPicture;
-	sizex=grp->Picture[pictnr].PixelPerLine;
-	vidadr+=GRP_scanlineoffsets[y+addy]+x+addx;
-	bytes+=grp->Picture[pictnr].OffsetForLine;
-	if (onlyy>sizey)
-	    onlyy=sizey;
-	if (onlyx>sizex)
-	    onlyx=sizex;
+	vidadr = gameconf.grmode.videobuff;
+	bytes = (unsigned char *)grp;
+	addx = grp->Picture[pictnr].SkipLeft;
+	addy = grp->Picture[pictnr].SkipUp;
+	sizey = grp->Picture[pictnr].LinesPerPicture;
+	sizex = grp->Picture[pictnr].PixelPerLine;
+	vidadr += GRP_scanlineoffsets[y+addy] + x + addx;
+	bytes += grp->Picture[pictnr].OffsetForLine;
+	if (onlyy > sizey)
+	    onlyy = sizey;
+	if (onlyx > sizex)
+	    onlyx = sizex;
 	do{
-	    decrx=onlyx;
-	    j=sizex=grp->Picture[pictnr].PixelPerLine;
+	    decrx = onlyx;
+	    j=sizex = grp->Picture[pictnr].PixelPerLine;
 	    do{
 		colorbyte = *bytes++;
 		if (colorbyte > 0 && colorbyte < 254)
 		    *vidadr = colorbyte;
 		vidadr++;
 	    }while(--decrx);
-	    vidadr+=sizex-onlyx;
-	    bytes+=sizex-onlyx;
-	    vidadr+=GRP_screensizex-sizex;
+	    vidadr += sizex-onlyx;
+	    bytes += sizex-onlyx;
+	    vidadr += gameconf.grmode.x - sizex;
 	}while(--onlyy);
     }
 }
@@ -486,20 +486,20 @@ void drawmonoifpaused(void)
     if (PAUSEGAME && NETWORKGAME)
     {
 	for (i=0;i<screensize;i++)
-	    GRP_vidmem[i]=tomono[GRP_vidmem[i]];
+	    gameconf.grmode.videobuff[i] = tomono[gameconf.grmode.videobuff[i]];
     }
 }
 //====================================
 char *savescreen(void)
 {
     char *scr = (char *)wmalloc(GRP_wmaxdwordwritel * 4);
-    memcpy(scr, GRP_vidmem, GRP_wmaxdwordwritel * 4);
+    memcpy(scr, gameconf.grmode.videobuff, GRP_wmaxdwordwritel * 4);
     return(scr);
 }
 //====================================
 void restorescreen(char *scr)
 {
-    memcpy(GRP_vidmem, scr, GRP_wmaxdwordwritel * 4);
+    memcpy(gameconf.grmode.videobuff, scr, GRP_wmaxdwordwritel * 4);
 }
 //====================================
 

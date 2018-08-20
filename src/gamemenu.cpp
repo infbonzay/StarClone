@@ -468,7 +468,7 @@ int campaignselect(void)
 
     backgnd.openMpqPcx(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,CAMPAIGN_STR[0],CAMPAIGN_STR[1],BACKGND_STR));
     backgnd.readPalFromPcx(pal,0);//readfourbytepalette
-    memcpy(GRP_vidmem,backgnd.GetPcxRawBytes(),backgnd.xsizePcx()*backgnd.ysizePcx());
+    memcpy(gameconf.grmode.videobuff,backgnd.GetPcxRawBytes(),backgnd.xsizePcx()*backgnd.ysizePcx());
 //    backgnd.PutPcx(DELTASCREENX,DELTASCREENY2,PCX_EMPTYCOLOR1);
     fontpcx.openMpqPcx(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,CAMPAIGN_STR[0],CAMPAIGN_STR[1],FNT_STR));
     fntadr=fontpcx.GetPcxRawBytes();//for glowtext
@@ -618,7 +618,7 @@ int campaignselect(void)
 
     installmousemoveevent(&mymousemoveevent);
 
-    memcpy(GRP_vidmem,backgnd.GetPcxRawBytes(),backgnd.xsizePcx()*backgnd.ysizePcx());
+    memcpy(gameconf.grmode.videobuff,backgnd.GetPcxRawBytes(),backgnd.xsizePcx()*backgnd.ysizePcx());
     MenuDisappear(raceselection,items,NULL);
 
     uninstallmousemoveevent();
@@ -648,7 +648,7 @@ int xcampaignselect(void)
     mpqloadfile(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,CAMPAIGN_STR[0],CAMPAIGN_STR[1],DLGGRP_STR),(char **)&dlg);
     backgnd.openMpqPcx(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,CAMPAIGN_STR[0],CAMPAIGN_STR[1],BACKGND_STR));
     backgnd.readPalFromPcx(pal,0);//readfourbytepalette
-    memcpy(GRP_vidmem,backgnd.GetPcxRawBytes(),backgnd.xsizePcx()*backgnd.ysizePcx());
+    memcpy(gameconf.grmode.videobuff,backgnd.GetPcxRawBytes(),backgnd.xsizePcx()*backgnd.ysizePcx());
 //    backgnd.PutPcx(DELTASCREENX,DELTASCREENY2,PCX_EMPTYCOLOR1);
     fontpcx.openMpqPcx(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,CAMPAIGN_STR[0],CAMPAIGN_STR[1],FNT_STR));
     fntadr=fontpcx.GetPcxRawBytes();//for glowtext
@@ -798,7 +798,7 @@ int xcampaignselect(void)
     }while(repeat);
 
     installmousemoveevent(&mymousemoveevent);
-    memcpy(GRP_vidmem,backgnd.GetPcxRawBytes(),backgnd.xsizePcx()*backgnd.ysizePcx());
+    memcpy(gameconf.grmode.videobuff,backgnd.GetPcxRawBytes(),backgnd.xsizePcx()*backgnd.ysizePcx());
     MenuDisappear(raceselection, items, NULL);
 
     uninstallmousemoveevent();
@@ -828,7 +828,7 @@ int glu_loadgame(void)
     mpqloadfile(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,SINGLEGAME_STR[0],SINGLEGAME_STR[1],DLGGRP_STR),(char **)&dlg);
     backgnd.openMpqPcx(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,SINGLEGAME_STR[0],SINGLEGAME_STR[1],BACKGND_STR));
     backgnd.readPalFromPcx(pal,0);
-    memcpy(GRP_vidmem,backgnd.GetPcxRawBytes(),backgnd.xsizePcx()*backgnd.ysizePcx());
+    memcpy(gameconf.grmode.videobuff,backgnd.GetPcxRawBytes(),backgnd.xsizePcx()*backgnd.ysizePcx());
 //    backgnd.PutPcx(DELTASCREENX,DELTASCREENY2,PCX_EMPTYCOLOR1);
     palchange(pal,gameconf.videoconf.gamma,gameconf.videoconf.saturate);
     if (!gameconf.grmode.flags & DISPLAYFLAGS_EMULATIONMODE)
@@ -949,7 +949,7 @@ int glu_loadreplay(void)
     mpqloadfile(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,SINGLEGAME_STR[0],SINGLEGAME_STR[1],DLGGRP_STR),(char **)&dlg);
     backgnd.openMpqPcx(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,SINGLEGAME_STR[0],SINGLEGAME_STR[1],BACKGND_STR));
     backgnd.readPalFromPcx(pal,0);
-    memcpy(GRP_vidmem,backgnd.GetPcxRawBytes(),backgnd.xsizePcx()*backgnd.ysizePcx());
+    memcpy(gameconf.grmode.videobuff,backgnd.GetPcxRawBytes(),backgnd.xsizePcx()*backgnd.ysizePcx());
 //    backgnd.PutPcx(DELTASCREENX,DELTASCREENY2,PCX_EMPTYCOLOR1);
     palchange(pal,gameconf.videoconf.gamma,gameconf.videoconf.saturate);
     if (!gameconf.grmode.flags & DISPLAYFLAGS_EMULATIONMODE)
@@ -1155,7 +1155,7 @@ int glu_briefing(int race,int networksingle,struct mapinfo *info,char *prefix_ca
 
     backgnd.openMpqPcx(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,'R',RACE_CHAR[race],BACKGND_STR));
     backgnd.readPalFromPcx(pal,0);
-    memcpy(GRP_vidmem,backgnd.GetPcxRawBytes(),backgnd.xsizePcx()*backgnd.ysizePcx());
+    memcpy(gameconf.grmode.videobuff,backgnd.GetPcxRawBytes(),backgnd.xsizePcx()*backgnd.ysizePcx());
 //    backgnd.PutPcx(DELTASCREENX,DELTASCREENY2,PCX_EMPTYCOLOR1);
     palchange(pal,gameconf.videoconf.gamma,gameconf.videoconf.saturate);
     if (!gameconf.grmode.flags & DISPLAYFLAGS_EMULATIONMODE)
@@ -1280,7 +1280,7 @@ int glu_briefing(int race,int networksingle,struct mapinfo *info,char *prefix_ca
     else
 	items = MenuAppear(glubrief,totalpcx,menushow,NULL);
 
-    memcpy(GRP_vidmem,backgnd.GetPcxRawBytes(),backgnd.xsizePcx()*backgnd.ysizePcx());
+    memcpy(gameconf.grmode.videobuff,backgnd.GetPcxRawBytes(),backgnd.xsizePcx()*backgnd.ysizePcx());
 //    backgnd.PutPcx(DELTASCREENX,DELTASCREENY2,PCX_EMPTYCOLOR1);
 
     if (info&&info->BRIEFS_NR&&!networksingle&&GAMETYPE==MAP_GAMETYPE_USEMAPSETTINGS)
@@ -1548,7 +1548,7 @@ void glu_score(struct mapinfo *info)
     backgnd.openMpqPcx(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,RACE_CHAR[race],LOSEWIN_STR[losewin],BACKGND_STR));
 
     backgnd.readPalFromPcx(pal,0);
-    memcpy(GRP_vidmem,backgnd.GetPcxRawBytes(),backgnd.xsizePcx()*backgnd.ysizePcx());
+    memcpy(gameconf.grmode.videobuff,backgnd.GetPcxRawBytes(),backgnd.xsizePcx()*backgnd.ysizePcx());
 //    backgnd.PutPcx(DELTASCREENX,DELTASCREENY2,PCX_EMPTYCOLOR1);
     palchange(pal,gameconf.videoconf.gamma,gameconf.videoconf.saturate);
     if (!gameconf.grmode.flags & DISPLAYFLAGS_EMULATIONMODE)
@@ -1607,7 +1607,7 @@ void glu_score(struct mapinfo *info)
 			    };
 
     MENUAPPEAR *items = MenuAppear(gluscore,1,menushow,NULL);
-    memcpy(GRP_vidmem,backgnd.GetPcxRawBytes(),backgnd.xsizePcx()*backgnd.ysizePcx());
+    memcpy(gameconf.grmode.videobuff,backgnd.GetPcxRawBytes(),backgnd.xsizePcx()*backgnd.ysizePcx());
 //    backgnd.PutPcx(DELTASCREENX,DELTASCREENY2,PCX_EMPTYCOLOR1);
 
 
@@ -1742,7 +1742,7 @@ int mainmenu(void)
     char *fntadr;
     backgnd.openMpqPcx(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,MAINMENU_STR[0],MAINMENU_STR[1],BACKGND_STR));
     backgnd.readPalFromPcx(newpal,0);//readfourbytepalette
-    memcpy(GRP_vidmem,backgnd.GetPcxRawBytes(),backgnd.xsizePcx()*backgnd.ysizePcx());
+    memcpy(gameconf.grmode.videobuff,backgnd.GetPcxRawBytes(),backgnd.xsizePcx()*backgnd.ysizePcx());
 //    backgnd.PutScaledPcx(DELTASCREENX,DELTASCREENY2,0);
     fontpcx.openMpqPcx(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,MAINMENU_STR[0],MAINMENU_STR[1],FNT_STR));
     fntadr=fontpcx.GetPcxRawBytes();//for glowtext
@@ -1900,7 +1900,7 @@ int glu_conn(void)
     mpqloadfile(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,SINGLEGAME_STR[0],SINGLEGAME_STR[1],DLGGRP_STR),(char **)&dlg);
     backgnd.openMpqPcx(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,SINGLEGAME_STR[0],SINGLEGAME_STR[1],BACKGND_STR));
     backgnd.readPalFromPcx(pal,0);
-    memcpy(GRP_vidmem,backgnd.GetPcxRawBytes(),backgnd.xsizePcx()*backgnd.ysizePcx());
+    memcpy(gameconf.grmode.videobuff,backgnd.GetPcxRawBytes(),backgnd.xsizePcx()*backgnd.ysizePcx());
 //    backgnd.PutPcx(DELTASCREENX,DELTASCREENY2,PCX_EMPTYCOLOR1);
     palchange(pal,gameconf.videoconf.gamma,gameconf.videoconf.saturate);
     if (!gameconf.grmode.flags & DISPLAYFLAGS_EMULATIONMODE)
@@ -2119,7 +2119,7 @@ int glu_join(FORCE_SLOTS *fslots)
     mpqloadfile(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,SINGLEGAME_STR[0],SINGLEGAME_STR[1],DLGGRP_STR),(char **)&dlg);
     backgnd.openMpqPcx(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,SINGLEGAME_STR[0],SINGLEGAME_STR[1],BACKGND_STR));
     backgnd.readPalFromPcx(pal,0);
-    memcpy(GRP_vidmem,backgnd.GetPcxRawBytes(),backgnd.xsizePcx()*backgnd.ysizePcx());
+    memcpy(gameconf.grmode.videobuff,backgnd.GetPcxRawBytes(),backgnd.xsizePcx()*backgnd.ysizePcx());
 //    backgnd.PutPcx(DELTASCREENX,DELTASCREENY2,PCX_EMPTYCOLOR1);
     palchange(pal,gameconf.videoconf.gamma,gameconf.videoconf.saturate);
     if (!gameconf.grmode.flags & DISPLAYFLAGS_EMULATIONMODE)
@@ -2339,7 +2339,7 @@ int glu_login(void)
 
     backgnd.openMpqPcx(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,SINGLEGAME_STR[0],SINGLEGAME_STR[1],BACKGND_STR));
     backgnd.readPalFromPcx(pal,0);
-    memcpy(GRP_vidmem,backgnd.GetPcxRawBytes(),backgnd.xsizePcx()*backgnd.ysizePcx());
+    memcpy(gameconf.grmode.videobuff,backgnd.GetPcxRawBytes(),backgnd.xsizePcx()*backgnd.ysizePcx());
 //    backgnd.PutPcx(DELTASCREENX,DELTASCREENY2,PCX_EMPTYCOLOR1);
     palchange(pal,gameconf.videoconf.gamma,gameconf.videoconf.saturate);
     if (!gameconf.grmode.flags & DISPLAYFLAGS_EMULATIONMODE)
@@ -3017,7 +3017,7 @@ int selectmapmenu(void)
     mpqloadfile(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,SINGLEGAME_STR[0],SINGLEGAME_STR[1],DLGGRP_STR),(char **)&dlg);
     backgnd.openMpqPcx(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,SINGLEGAME_STR[0],SINGLEGAME_STR[1],BACKGND_STR));
     backgnd.readPalFromPcx(pal,0);
-    memcpy(GRP_vidmem,backgnd.GetPcxRawBytes(),backgnd.xsizePcx()*backgnd.ysizePcx());
+    memcpy(gameconf.grmode.videobuff,backgnd.GetPcxRawBytes(),backgnd.xsizePcx()*backgnd.ysizePcx());
 //    backgnd.PutPcx(DELTASCREENX,DELTASCREENY2,PCX_EMPTYCOLOR1);
     palchange(pal,gameconf.videoconf.gamma,gameconf.videoconf.saturate);
     if (!gameconf.grmode.flags & DISPLAYFLAGS_EMULATIONMODE)
@@ -3336,7 +3336,7 @@ int glu_creat(FORCE_SLOTS *fslots)
     mpqloadfile(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,SINGLEGAME_STR[0],SINGLEGAME_STR[1],DLGGRP_STR),(char **)&dlg);
     backgnd.openMpqPcx(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,SINGLEGAME_STR[0],SINGLEGAME_STR[1],BACKGND_STR));
     backgnd.readPalFromPcx(pal,0);
-    memcpy(GRP_vidmem,backgnd.GetPcxRawBytes(),backgnd.xsizePcx()*backgnd.ysizePcx());
+    memcpy(gameconf.grmode.videobuff,backgnd.GetPcxRawBytes(),backgnd.xsizePcx()*backgnd.ysizePcx());
 //    backgnd.PutPcx(DELTASCREENX,DELTASCREENY2,PCX_EMPTYCOLOR1);
     palchange(pal,gameconf.videoconf.gamma,gameconf.videoconf.saturate);
     if (!gameconf.grmode.flags & DISPLAYFLAGS_EMULATIONMODE)
@@ -3843,7 +3843,7 @@ int glu_chat(int masterjoin,int playernr,FORCE_SLOTS *fslots)
     backgnd.openMpqPcx(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,SINGLEGAME_STR[0],SINGLEGAME_STR[1],BACKGND_STR));
     backgnd.readPalFromPcx(pal,0);
 //    Gimp_SavePal("palnl.gpl","starcraft-palnl",pal,4);
-    memcpy(GRP_vidmem,backgnd.GetPcxRawBytes(),backgnd.xsizePcx()*backgnd.ysizePcx());
+    memcpy(gameconf.grmode.videobuff,backgnd.GetPcxRawBytes(),backgnd.xsizePcx()*backgnd.ysizePcx());
 //    backgnd.PutPcx(DELTASCREENX,DELTASCREENY2,PCX_EMPTYCOLOR1);
     palchange(pal,gameconf.videoconf.gamma,gameconf.videoconf.saturate);
     if (!gameconf.grmode.flags & DISPLAYFLAGS_EMULATIONMODE)
@@ -4981,12 +4981,12 @@ int DownloadMpqMenu(int mpqcfgresult)
 
     mouser[MOUSEMODE1].x1=0;
     mouser[MOUSEMODE1].y1=0;
-    mouser[MOUSEMODE1].x2=GRP_screensizex-1;
-    mouser[MOUSEMODE1].y2=GRP_screensizey-1;
+    mouser[MOUSEMODE1].x2=gameconf.grmode.x-1;
+    mouser[MOUSEMODE1].y2=gameconf.grmode.y-1;
     
     backgnd.openMpqPcx(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,DLNDMENU_STR[0],DLNDMENU_STR[1],BACKGND_STR));
     backgnd.readPalFromPcx(newpal,0);//readfourbytepalette
-    memcpy(GRP_vidmem,backgnd.GetPcxRawBytes(),backgnd.xsizePcx()*backgnd.ysizePcx());
+    memcpy(gameconf.grmode.videobuff,backgnd.GetPcxRawBytes(),backgnd.xsizePcx()*backgnd.ysizePcx());
 //    backgnd.PutPcx(DELTASCREENX,DELTASCREENY2,PCX_EMPTYCOLOR1);
     
     fontpcx.openMpqPcx(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,MAINMENU_STR[0],MAINMENU_STR[1],FNT_STR));

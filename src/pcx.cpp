@@ -6,6 +6,7 @@
 #include <grplib/gr8.h>
 #include <grplib/grp.h>
 
+#include "vars.h"
 #include "auxil.h"
 #include "wmem.h"
 #include "mpqwrapper.h"
@@ -266,7 +267,7 @@ void PCX::PutPcx(int x,int y,int showx,int fromline,int nroflines,unsigned char 
 	    return;
     } 
     bytes += (skipy+fromline)*sizex+skipx;
-    adrvid = (unsigned char *)GRP_vidmem+GRP_scanlineoffsets[y]+x;
+    adrvid = gameconf.grmode.videobuff + GRP_scanlineoffsets[y] + x;
     switch(grdnr)
     {
 	case PCXSHOW_25:	//25%
@@ -283,7 +284,7 @@ void PCX::PutPcx(int x,int y,int showx,int fromline,int nroflines,unsigned char 
 			else
 		    	    adrvid[j]=bytes[j];
 		}
-		adrvid+=GRP_screensizex;
+		adrvid+=gameconf.grmode.x;
 		bytes+=sizex;
             }
 	    break;
@@ -301,7 +302,7 @@ void PCX::PutPcx(int x,int y,int showx,int fromline,int nroflines,unsigned char 
 			else
 		    	    adrvid[j]=bytes[j];
 		}
-		adrvid+=GRP_screensizex;
+		adrvid+=gameconf.grmode.x;
 		bytes+=sizex;
             }
 	    break;
@@ -319,7 +320,7 @@ void PCX::PutPcx(int x,int y,int showx,int fromline,int nroflines,unsigned char 
 			else
 		    	    adrvid[j]=bytes[j];
 		}
-		adrvid+=GRP_screensizex;
+		adrvid+=gameconf.grmode.x;
 		bytes+=sizex;
             }
 	    break;
@@ -331,7 +332,7 @@ void PCX::PutPcx(int x,int y,int showx,int fromline,int nroflines,unsigned char 
 		    if (bytes[j]!=emptycolor)
 		        adrvid[j]=bytes[j];
 		}
-		adrvid+=GRP_screensizex;
+		adrvid+=gameconf.grmode.x;
 		bytes+=sizex;
             }
 	    break;
@@ -343,18 +344,18 @@ void PCX::PutScaledPcx(int x,int y,char emptycolor)
     int i,j,offsofbyte,deltay,prevdeltay;
     unsigned char *bytes=(unsigned char *)adrpict;
     unsigned char *adrvid;
-    adrvid = (unsigned char *)GRP_vidmem+GRP_scanlineoffsets[0]+0;
+    adrvid = gameconf.grmode.videobuff + GRP_scanlineoffsets[0] + 0;
     deltay=prevdeltay=0;
-    for (i=0;i<GRP_screensizey;i++)
+    for (i=0;i<gameconf.grmode.y;i++)
     {
-	for (j=0;j<GRP_screensizex;j++)
+	for (j=0;j<gameconf.grmode.x;j++)
 	{
-	    offsofbyte=j*xsize/GRP_screensizex;
+	    offsofbyte=j*xsize/gameconf.grmode.x;
 	    if (bytes[offsofbyte]!=emptycolor)
 	        adrvid[j]=bytes[offsofbyte];
 	}
-	adrvid+=GRP_screensizex;
-	deltay=(i*ysize/GRP_screensizey);
+	adrvid+=gameconf.grmode.x;
+	deltay=(i*ysize/gameconf.grmode.y);
 	if (deltay!=prevdeltay)
 	{
 	    prevdeltay=deltay;

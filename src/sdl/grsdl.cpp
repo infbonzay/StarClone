@@ -128,7 +128,7 @@ int changemode(int x,int y,int bpp,int fullscreen,char *pal)
 {
     int flags,realbpp,emul;
     char *tempvid=(char *)wmalloc(x*y);
-    memcpy(tempvid,GRP_vidmem,x*y);
+    memcpy(tempvid,gameconf.grmode.videobuff,x*y);
     if (fullscreen)
         flags = SDL_HWSURFACE|SDL_FULLSCREEN|SDL_HWPALETTE;
     else
@@ -151,7 +151,7 @@ int changemode(int x,int y,int bpp,int fullscreen,char *pal)
         SDL_LockSurface(sdlsurface);
     SetVideoBuffer(sdlsurface->pixels);
     gameconf.grmode.videobuff = (unsigned char *)sdlsurface->pixels;
-    memcpy(GRP_vidmem,tempvid,x*y);
+    memcpy(gameconf.grmode.videobuff,tempvid,x*y);
     if (pal)
 	activatepalette(pal);
     if (!(pal && emul))

@@ -162,7 +162,7 @@ void ShowPreviewBuff(char *cmpbuf,int sizebuf,int esckeyaction)
 			//now text between from and i
 			prevchar=cmpbuf[i];
 			cmpbuf[i]=0;
-			memcpy(GRP_vidmem,backgnd.GetPcxRawBytes(),backgnd.xsizePcx()*backgnd.ysizePcx());
+			memcpy(gameconf.grmode.videobuff,backgnd.GetPcxRawBytes(),backgnd.xsizePcx()*backgnd.ysizePcx());
 			if (texttype==0)
 			    putmessageinrectangleL(textxpos,textypos,textxsize,textysize,rowsize,&cmpbuf[from],fontnr,MYELLOWCOLORFONT,fntadr,NULL,0,0);
 			else
@@ -216,7 +216,7 @@ void ShowPreviewBuff(char *cmpbuf,int sizebuf,int esckeyaction)
 					    break;
 				    }	
 				    backgnd.readPalFromPcx(pal,0);//readfourbytepalette
-//				    memcpy(GRP_vidmem,backgnd.GetPcxRawBytes(),backgnd.xsizePcx()*backgnd.ysizePcx());
+//				    memcpy(gameconf.grmode.videobuff,backgnd.GetPcxRawBytes(),backgnd.xsizePcx()*backgnd.ysizePcx());
 				    break;
 				case 4://fontcolor
 				    if (fontpcx.IfPcxIsReady())

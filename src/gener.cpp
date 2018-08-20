@@ -170,10 +170,10 @@ int main(int c,char **parm,char **env)
 	    }
 	    if (i == 2)
 		gameconf.grmode.flags |= DISPLAYFLAGS_EMULATIONMODE;
-	    SetMousePos(GRP_screensizex/2,GRP_screensizey/2);
-	    SetMousePos(GRP_screensizex/2,GRP_screensizey/2);
-	    mouse_x=GRP_screensizex/2;
-	    mouse_y=GRP_screensizey/2;
+	    SetMousePos(gameconf.grmode.x/2,gameconf.grmode.y/2);
+	    SetMousePos(gameconf.grmode.x/2,gameconf.grmode.y/2);
+	    mouse_x=gameconf.grmode.x/2;
+	    mouse_y=gameconf.grmode.y/2;
 	    if (installvectors())
 	    {
 		gameend("Problem with install interrupts(may be timer interrupt)");
@@ -775,7 +775,7 @@ void setmainscreenmouseevents(void)
 		    minimapmenu->iteminfo[MINIMAPDIALOG_DIPLOMACYBUTTON].xsize,
 		    minimapmenu->iteminfo[MINIMAPDIALOG_DIPLOMACYBUTTON].ysize,
 		    &minimapmenu->iteminfo[MINIMAPDIALOG_DIPLOMACYBUTTON].Flags);
-    addmousehotpos(0,0,GRP_screensizex,GRP_screensizey-YDECICONS-13,NULL);
+    addmousehotpos(0,0,gameconf.grmode.x,gameconf.grmode.y-YDECICONS-13,NULL);
     incrcallbackwork();
 }
 //==========================

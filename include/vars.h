@@ -245,6 +245,7 @@ extern int 	ctextures;
 extern mylist	mousehotspot;
 extern char	networkresend,networkreceive,networkgametick,menutimerupdate;
 extern signed char waittimeremain;
+extern int 	oneWarpPictureSize;
 
 
 extern unsigned char actionsvars[][MAXIMMODE];
