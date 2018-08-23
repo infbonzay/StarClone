@@ -8,12 +8,18 @@
 template <typename T>
 mycycle<T>::mycycle(T elems)
 {
+    mycycle<T>(elems,MYCYCLE_INFINITE);
+}
+//=========================================
+template <typename T>
+mycycle<T>::mycycle(T elems, int flg)
+{
     if (elems > 0)
     {
+	flags = flg;
 	totalelem = elems;
 	this->Flush();
 	elements = (T *) wmalloc (elems * sizeof( T ));
-//	memset(elements,0,elems * sizeof(T));
     }
 }
 //=========================================
@@ -33,8 +39,11 @@ void mycycle<T>::Flush(void)
 }
 //=========================================
 template <typename T>
-void mycycle<T>::PushElem(T elem)
+int mycycle<T>::PushElem(T elem)
 {
+    if ( (flags & MYCYCLE_STOPTHENFULL) && IsFull())
+        return MYCYCLE_FAILED;
+	
     elements[firstelem++] = elem;
     if (firstelem >= totalelem)
 	firstelem = 0;
@@ -44,6 +53,7 @@ void mycycle<T>::PushElem(T elem)
 	if (++lastelem >= totalelem)
 	    lastelem = 0;
     }
+    return MYCYCLE_SUCCESS;
 }
 //=========================================
 template <typename T>
