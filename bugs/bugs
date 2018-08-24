@@ -440,6 +440,7 @@
 *204 music after ends multiplayer no play
 *205 archon,dark archon move then morth,  died wth wrong sound
  206 feedback on no spellcaster or build,
+ 207 bug land build with attach
     if interceptors kill destobj return to carrier but carrier in atackmode & interceptors dont launch again
     interceptors fly to atack far then carrier range
     carrier stop move if atack to ground and stops to atack somebody

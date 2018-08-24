@@ -6,12 +6,6 @@
 
 //=========================================
 template <typename T>
-mycycle<T>::mycycle(int elems)
-{
-    mycycle<T>(elems,MYCYCLE_INFINITE);
-}
-//=========================================
-template <typename T>
 mycycle<T>::mycycle(int elems, int flg)
 {
     if (elems > 0)

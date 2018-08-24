@@ -15,7 +15,7 @@
 #include "sdl/grsdl.h"
 
 #define MOUSEDBLCLICKTIME 8
-mycycle<uint16_t> keybuffer = mycycle<uint16_t>(16);
+mycycle<uint16_t> keybuffer = mycycle<uint16_t>(16,MYCYCLE_INFINITE);
 char MOUSEBUTTONZZ[3]={1,2,4};
 char SHIFTKEYS[128]={
 		    '\x00','\x00','\x00','\x00','\x00','\x00','\x00','\x00','\x00','\x00',
