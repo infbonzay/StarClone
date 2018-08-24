@@ -2,6 +2,7 @@
 #include "wmem.h"
 #include "queue.h"
 #include "mycycle.h"
+#include "objs.h"
 #include "commandqueue.h"
 
 //==========================================
@@ -62,10 +63,17 @@ int CommandQueue::QueueMain(long tickNr)
 //==========================================
 void CommandQueueAction(COMMANDQUEUEELEMENT *queueelem)
 {
-    printf("Perform action:\n obj:%d destobj:%d x,y=%d,%d,mode=%d\n",
-	    ((OBJ *)queueelem->queueaction.obj)->SC_Unit,
-	    ((OBJ *)queueelem->queueaction.destobj)->SC_Unit,
-	    queueelem->queueaction.param0,
-	    queueelem->queueaction.param1,
-	    queueelem->queueaction.actiontype);
+    OBJ *a,*destobj;
+    int mode,locx,locy,modemoveflags;
+    a = (OBJ *)queueelem->queueaction.obj;
+    destobj =(OBJ *)queueelem->queueaction.destobj;
+    locx = queueelem->queueaction.param0;
+    locy = queueelem->queueaction.param1;
+    mode = queueelem->queueaction.actiontype;
+    modemoveflags = queueelem->queueaction.param2;
+    
+    printf("Perform action:\n obj:%d destobj:%d mode=%d x,y=%d,%d\n",a->SC_Unit,destobj->SC_Unit,mode,locx,locy);
+    DelAllModeMoves(a,0);
+    moveobj(a,destobj,mode,locx,locy,modemoveflags);
+
 }
