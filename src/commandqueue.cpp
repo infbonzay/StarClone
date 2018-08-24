@@ -72,7 +72,7 @@ void CommandQueueAction(COMMANDQUEUEELEMENT *queueelem)
     mode = queueelem->queueaction.actiontype;
     modemoveflags = queueelem->queueaction.param2;
     
-    printf("Perform action:\n obj:%d destobj:%p mode=%d x,y=%d,%d\n",a->SC_Unit,destobj,mode,locx,locy);
+//    printf("Perform action:\n obj:%d destobj:%p mode=%d x,y=%d,%d\n",a->SC_Unit,destobj,mode,locx,locy);
     DelAllModeMoves(a,0);
     moveobj(a,destobj,mode,locx,locy,modemoveflags);
 

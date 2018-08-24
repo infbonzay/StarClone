@@ -2838,6 +2838,7 @@ int movefrommouse(struct OBJ *a)
 //==================================
 int makemove(struct OBJ *a,struct OBJ *destobj,int locx,int locy,int mode,int player,int modemoveflags)
 {
+    COMMANDQUEUEELEMENT cqe;
     struct OBJstruct *b;
     b=loadobj(a->SC_Unit);
     if (mode >= MODEACTIVATE && mode <= MODEESCAPE5)
@@ -2860,10 +2861,9 @@ int makemove(struct OBJ *a,struct OBJ *destobj,int locx,int locy,int mode,int pl
     if (mode != MODEHOLDPOS)
 	a->prop &= ~VARHOLDPOSBIT;
 //==========
-    DelAllModeMoves(a,0);
-    moveobj(a,destobj,mode,locx,locy,modemoveflags | PLAYERDOMOVE);
+    //DelAllModeMoves(a,0);
+    //moveobj(a,destobj,mode,locx,locy,modemoveflags | PLAYERDOMOVE);
 //===========
-    COMMANDQUEUEELEMENT cqe;
     cqe.queueaction.obj = a;
     cqe.queueaction.destobj = destobj;
     cqe.queueaction.actiontype = mode;
