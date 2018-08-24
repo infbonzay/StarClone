@@ -9,6 +9,7 @@ bin/starinstall.exe
 bin/broodinstall.exe
 bin/debug
 bin/memleaks
+bin/output.log
 obj/*
 
 Makefile

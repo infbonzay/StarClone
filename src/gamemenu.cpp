@@ -1584,8 +1584,11 @@ void glu_score(struct mapinfo *info)
     gluscore->menu[4].dialogbin_flags|=DIALOGBIN_FLAGS_NODLGGRP;
     gluscore->menu[5].dialogbin_flags|=DIALOGBIN_FLAGS_NODLGGRP;
     
-    changetextitem(gluscore,1,GLUALLSTR(GLUALL_TBL_LOSEWIN+losewin));
-    if (info->secondsplayed/3600)
+    if (losewin && CHEATERBIT)
+        changetextitem(gluscore,1,MYTBLSTR(MYINFO_TBL_CHEATER_TEXT));
+    else
+        changetextitem(gluscore,1,GLUALLSTR(GLUALL_TBL_LOSEWIN+losewin));
+    if (info->secondsplayed / (60 * 60))
     {
 	sprintf(txt2,"%02d:%02d:%02d",info->secondsplayed/3600,(info->secondsplayed/60)%60,info->secondsplayed%60);
     }
@@ -1611,16 +1614,6 @@ void glu_score(struct mapinfo *info)
 //    backgnd.PutPcx(DELTASCREENX,DELTASCREENY2,PCX_EMPTYCOLOR1);
 
 
-//	only for test how it works random numbers
-
-/*    for (pl=0;pl<force_slots.realplayers;pl++)
-    {
-        i=force_slots.playernr[pl];
-	for (j=3;j<12;j++)
-//	    info->score[i][j]=myrand(20000)+1000;
-	    info->score[i][j]=(i+1)*1+j;
-    }
-*/    
     for (pl=0;pl<force_slots.realplayers;pl++)
     {
         i=force_slots.playernr[pl];
@@ -1646,7 +1639,6 @@ void glu_score(struct mapinfo *info)
     for (pl=0;pl<force_slots.realplayers;pl++)
     {
     	    i=force_slots.playernr[pl];
-//	    myrace = info->pl_race[i];
 	    myrace = gameconf.pl_race[i];
 	    if (GAMETYPE==MAP_GAMETYPE_USEMAPSETTINGS)
 	    {

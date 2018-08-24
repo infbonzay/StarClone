@@ -239,6 +239,7 @@ struct MENUINFO_SMKS
 #define MYINFO_TBL_GATEWAY2_DESCR	61
 #define MYINFO_TBL_GATEWAY3_DESCR	62
 #define MYINFO_TBL_GATEWAY4_DESCR	63
+#define MYINFO_TBL_CHEATER_TEXT		64
 
 
 #define GLUALLSTR(strnr)		alldattbl.gluall_tbl->get_TBL_STR(strnr)

@@ -11,21 +11,22 @@
 template <typename T> 
 class  mycycle
 {
-    T		totalelem;
-    T		firstelem;
-    T		lastelem;
-    T		maxelem;
+    int		totalelem;
+    int		firstelem;
+    int		lastelem;
+    int		maxelem;
     T		*elements;
     char	flags;
 public:
-		mycycle(T elems);
-		mycycle(T elems,int flg);
+		mycycle<T>(int elems);
+		mycycle<T>(int elems,int flg);
 		~mycycle();
     int 	PushElem(T elem);
     T		PopElem(void);
     void	Flush(void);
     inline int	IsEmpty(void){ return( maxelem == 0); };
     inline int	IsFull(void){ return( maxelem == totalelem); };
+    inline T	GetNextElem(void) { return elements[lastelem]; };
 };
 //=========================================
 #include "../src/mycycle.cpp"

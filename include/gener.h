@@ -6,6 +6,7 @@
 #	include "sdl/grsdl.h"
 #endif
 
+#include "commandqueue.h"
 #include "gamemenu.h"
 #include "netwplay.h"
 #include "menu.h"
@@ -61,7 +62,9 @@
 #define SKIPMISSION	5
 
 
-#define MAXQUEUEEDELEM	10000
+#define MAXQUEUEDELEM		1000
+
+#define MAXCOMMANDELEM		(1000 * 24)
 
 #define MOUSEONNONE		-2
 #define MOUSEONMINIMAP		0
@@ -142,7 +145,11 @@ extern MENUDRAW		showedmenu;
 extern int 		menustatus;
 extern int		startmission;
 extern int		campaign_id;
-extern Queue QueueGame;
+
+extern Queue 		QueueGame;
+
+extern long 		commandtick;
+extern CommandQueue 	UnitsCommandQueue;
 
 #endif /*_GENER_W*/
 

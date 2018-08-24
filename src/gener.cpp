@@ -12,6 +12,7 @@
 #include "vars.h"
 #include "market.h"
 
+#include "commandqueue.h"
 #include "debug.h"
 #include "auxil.h"
 #include "mouse.h"
@@ -94,7 +95,6 @@ int main(int c,char **parm,char **env)
     struct stat statpath;
     mapinfo *testmap;
     char temppath[1024];
-
 #ifdef TESTMALLOC
     char *testmem = (char *)wmalloc(16);
     wfree(testmem);
@@ -297,7 +297,7 @@ playmission:				GAMETYPE = MAP_GAMETYPE_USEMAPSETTINGS;
 					selected_id = (startmission >> 16) & 0xff;
 					campaign_id = (startmission >> 8) & 0xff;
 					mission_id  = startmission & 0xff;
-					DEBUGMESSCR("startmission=0x%x\n",startmission);
+					//DEBUGMESSCR("startmission=0x%x\n",startmission);
 					status = getcampaignname(campaign_id,selected_id);
 					if (status == SHOWVIDEO)
 					{
@@ -671,7 +671,7 @@ int letsplaygame(int race,char *mypath)
 {
     int status,i;
 
-    CHEATERBIT = 1;
+    CHEATERBIT = 0;
     CODEFORSCREEN = 0;
     CODEFORGOD = 0;
     CODEFORQUICKMAKE = 1;
@@ -853,7 +853,9 @@ void redesenscreen(void)
 }
 //==========================
 int totable,bitsplayer;
-Queue QueueGame(&QueueAction,MAXQUEUEEDELEM);
+Queue QueueGame(&QueueAction,MAXQUEUEDELEM);
+long commandtick=0;
+CommandQueue UnitsCommandQueue(&CommandQueueAction,MAXCOMMANDELEM);
 //==========================
 void FreeQueues(void)
 {

@@ -4,6 +4,8 @@
 
 
 #define QUEUEFULL		-1
+#define QUEUEEMPTY		1
+#define QUEUEOK			0
 #define INCREMENTTICKS		1
 
 #define NORMALPASSQUEUE		0
@@ -11,24 +13,26 @@
 
 struct QUEUEELEMENT
 {
-    void *ID;
-    int timetoexecute;
+    void 	*ID;
+    long 	executeTick;
 };
 
 class Queue
 {
-    long PlayTicks;
-    int MaxElements;
-    int QueueElements;
-    struct QUEUEELEMENT *Elements;
-    void (*EndQueueCallBackFunction)(void *,int );
-    void DestroyAllElements(void);
-    
-    int InsertInQueue(int absolutegameticks);
+protected:
+    long	currentTick;
+    int		maxElements;
+    int		queuedElements;
+    struct QUEUEELEMENT *allElements;
+
+    void	(*EndQueueCallBackFunction)(void *,int );
+    void	DestroyAllElements(void);
+    int 	InsertInQueue(int absolutegameticks);
+
 public:
-    Queue();
-    Queue(void (*func)(void *,int ),int maxelements);
-    ~Queue(void);
+	 Queue();
+	 Queue(void (*func)(void *,int ),int maxelements);
+	~Queue(void);
     void EmptyQueue(void);
     int  AddToQueue(void *IDqueue,int waitgameticks);
     int  QueueMain(int addticks);
@@ -38,17 +42,17 @@ public:
     //========================
     inline int GetPlayTicks(void)
     {
-	return PlayTicks;
+	return currentTick;
     }
     //========================
     inline int GetQueueElements(void)
     {
-	return QueueElements;
+	return queuedElements;
     }
     //========================
     inline struct QUEUEELEMENT *GetElemNr(int nr)
     {
-	return &Elements[nr];
+	return &allElements[nr];
     }
 //==========================================
 };

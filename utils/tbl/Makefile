@@ -1,4 +1,4 @@
-CC = clang++
+CC = g++ #clang++
 PROGS = maketbl
 OBJ  = maketbl.o
 OBJS  = $(OBJ) ../../obj/tbl.o ../../obj/debug.o ../../obj/wmem.o ../../obj/auxil.o ../../obj/mpqwrapper.o \

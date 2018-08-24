@@ -38,6 +38,11 @@ void PickupObj(OBJ *a,OBJ *pickupobj)
 //=================================
 //callback function for queue
 //=================================
+void CommandQueueAction(void *IDQueueAction)
+{
+
+}
+//=================================
 void QueueAction(void *IDQueueAction,int DestroyQueue)
 {
     int *regen,i,randd;

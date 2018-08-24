@@ -39,6 +39,9 @@ void PickupObj(OBJ *a,OBJ *pickupobj);
 int  GetMinDistanceBetweenUnits(OBJ *a1,OBJ *a2);
 int  getminmovedistobj(struct OBJ *a1,struct OBJstruct *b1,struct OBJ *a2);
 int  getminmovedistance(struct OBJ *a,struct OBJstruct *b);
+
+void CommandQueueAction(void *IDQueueAction);
+
 void QueueAction(void *IDQueueAction,int DestroyQueue);
 void MakeQueueAction(int actiontype,void *a,void *destobj,
 		    int param0,int param1,int param2,int afterexpiriedticks);
