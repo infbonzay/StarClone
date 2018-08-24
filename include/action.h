@@ -31,6 +31,7 @@ struct QUEUEACTION
     int param1;
     int param2;
 };
+
 //=================================
 #define ADDON_ERROR_ATTACH	0
 #define ADDON_SUCCESS_ATTACH	1
@@ -39,8 +40,6 @@ void PickupObj(OBJ *a,OBJ *pickupobj);
 int  GetMinDistanceBetweenUnits(OBJ *a1,OBJ *a2);
 int  getminmovedistobj(struct OBJ *a1,struct OBJstruct *b1,struct OBJ *a2);
 int  getminmovedistance(struct OBJ *a,struct OBJstruct *b);
-
-void CommandQueueAction(void *IDQueueAction);
 
 void QueueAction(void *IDQueueAction,int DestroyQueue);
 void MakeQueueAction(int actiontype,void *a,void *destobj,

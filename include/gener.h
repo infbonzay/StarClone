@@ -148,7 +148,7 @@ extern int		campaign_id;
 
 extern Queue 		QueueGame;
 
-extern long 		commandtick;
+extern long 		commandqueuetick;
 extern CommandQueue 	UnitsCommandQueue;
 
 #endif /*_GENER_W*/

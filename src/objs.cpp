@@ -1385,6 +1385,8 @@ int moveobj_addonmode(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int
 	//the near position
 	DoOrder(a->playernr,a,x,y,mageprop[mode].type_id,mageprop[mode].obj_id,
 				mageprop[mode].obj_id,mageprop[mode].stattxt_id_enable,mode,modemoveflags);
+//	moveobj(a,NULL,x,y,a->playernr,mode,modemoveflags);
+
 	newobj = createobjman(x,y,mageprop[mode].obj_id,a->playernr);
 	newobj->health=STARTBUILDLIFE;
 	newobj->shield=STARTBUILDSHIELD;
@@ -2854,12 +2856,25 @@ int makemove(struct OBJ *a,struct OBJ *destobj,int locx,int locy,int mode,int pl
     	    return(0);
 	}
     }
-    DelAllModeMoves(a,0);
-//    if (a->movelist)
-//	a->movelist->EmptyElemFifo();
+
     if (mode != MODEHOLDPOS)
 	a->prop &= ~VARHOLDPOSBIT;
+//==========
+    DelAllModeMoves(a,0);
     moveobj(a,destobj,mode,locx,locy,modemoveflags | PLAYERDOMOVE);
+//===========
+    COMMANDQUEUEELEMENT cqe;
+    cqe.queueaction.obj = a;
+    cqe.queueaction.destobj = destobj;
+    cqe.queueaction.actiontype = mode;
+    cqe.queueaction.param0 = locx;
+    cqe.queueaction.param1 = locy;
+    cqe.queueaction.param2 = modemoveflags | PLAYERDOMOVE;
+    if (!NETWORKGAME)
+        cqe.executeTick = commandqueuetick + 0;
+    else
+        cqe.executeTick = commandqueuetick + 0;//TODO need to change 
+    UnitsCommandQueue.AppendToQueue(&cqe);
     return(1);
 }
 //==================================

@@ -5,7 +5,7 @@
 #include "commandqueue.h"
 
 //==========================================
-CommandQueue::CommandQueue(void (*callBackFunc)(void *),int maxElements):
+CommandQueue::CommandQueue(void (*callBackFunc)(COMMANDQUEUEELEMENT *),int maxElements):
 mycycle(maxElements,MYCYCLE_STOPTHENFULL)
 {
     EndQueueCallBackFunction = callBackFunc;
@@ -14,10 +14,10 @@ mycycle(maxElements,MYCYCLE_STOPTHENFULL)
 //==========================================
 CommandQueue::~CommandQueue(void)
 {
-    FlushQueue();
+    EmptyQueue();
 }
 //==========================================
-void CommandQueue::FlushQueue(void)
+void CommandQueue::EmptyQueue(void)
 {
     do{
 	if (IsEmpty())
@@ -27,33 +27,45 @@ void CommandQueue::FlushQueue(void)
     Flush();
 }
 //==========================================
-int CommandQueue::AppendToQueue(void *idQueue,int atTickNr)
+int CommandQueue::AppendToQueue(COMMANDQUEUEELEMENT *idQueue)
 {
     if (IsFull())
 	return QUEUEFULL;
-    QUEUEELEMENT *newelem = (QUEUEELEMENT *) wmalloc(sizeof(QUEUEELEMENT));
-    newelem->ID = idQueue;
-    newelem->executeTick = atTickNr;
+    COMMANDQUEUEELEMENT *newelem = (COMMANDQUEUEELEMENT *) wmalloc(sizeof(COMMANDQUEUEELEMENT));
+    newelem->queueaction = {
+	.actiontype = idQueue->queueaction.actiontype,
+	.obj = idQueue->queueaction.obj,
+	.destobj = idQueue->queueaction.destobj,
+	.param0 = idQueue->queueaction.param0,
+	.param1 = idQueue->queueaction.param1,
+	.param2 = idQueue->queueaction.param2
+    };
+    newelem->executeTick = idQueue->executeTick;
     PushElem(newelem);
     return(QUEUEOK);
 }
 //==========================================
-void CommandQueue::SetExecuteTick(long ticknr)
-{
-    currentTick = ticknr;
-}
-//==========================================
-int CommandQueue::QueueMain()
+int CommandQueue::QueueMain(long tickNr)
 {
     int queuedProceed = 0;
-    QUEUEELEMENT *tempqueue;
+    COMMANDQUEUEELEMENT *tempqueue;
     do{
 	if (IsEmpty())
 	    return(queuedProceed);
-	if (GetNextElem()->executeTick != currentTick)
+	if (GetNextElem()->executeTick != tickNr)
 	    return(queuedProceed);
         tempqueue = PopElem();
-	(*EndQueueCallBackFunction)(tempqueue->ID);
+	(*EndQueueCallBackFunction)(tempqueue);
 	queuedProceed++;
     }while(1);
+}
+//==========================================
+void CommandQueueAction(COMMANDQUEUEELEMENT *queueelem)
+{
+    printf("Perform action:\n obj:%d destobj:%d x,y=%d,%d,mode=%d\n",
+	    ((OBJ *)queueelem->queueaction.obj)->SC_Unit,
+	    ((OBJ *)queueelem->queueaction.destobj)->SC_Unit,
+	    queueelem->queueaction.param0,
+	    queueelem->queueaction.param1,
+	    queueelem->queueaction.actiontype);
 }

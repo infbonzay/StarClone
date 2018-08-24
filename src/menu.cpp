@@ -655,9 +655,7 @@ int drawmenu(MENUSTR *allmenus,int flags)
 		mouse_b = mousebuttons();
 		eventwindowloop();
 		getmouseonitem(&activeitemchange,&activeitem);
-//		getmousetype(map.MAPXGLOBAL,map.MAPYGLOBAL);
 		keyrefresh();
-//		getmousetype(map.MAPXGLOBAL,map.MAPYGLOBAL);
 		saveundermouse();
 		putmouseonscreen();
 		wscreenon();
@@ -861,14 +859,12 @@ int showlistmenu(MENUSTR *allmenus)
     getmousetype(map.MAPXGLOBAL,map.MAPYGLOBAL);
     do{
 	mouse_b = mousebuttons();
-//	getmousetype(map.MAPXGLOBAL,map.MAPYGLOBAL);
 	getmouseonitem(&activeitemchange,&activeitem);
 	eventwindowloop();
 	if (allmenus->prevmenu)
 	    RunCallBackFuncs(allmenus->prevmenu);
 //	    if (allmenus->prevmenu->CallBackFunc)
 //		(*allmenus->prevmenu->CallBackFunc)(allmenus->prevmenu,allmenus->prevmenu->somecallbackdata);
-//	getmousetype(map.MAPXGLOBAL,map.MAPYGLOBAL);
 	saveundermouse();
 	putmouseonscreen();
 	wscreenon();

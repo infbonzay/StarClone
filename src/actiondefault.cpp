@@ -452,36 +452,11 @@ int AirBuildings(struct OBJ *a,MAIN_IMG *img)
 //=================================
 int LarvaeAction(struct OBJ *a,MAIN_IMG *img)
 {
-/*    int x,y;
-    if (a->modemove==MODESTOP)
+    if (!map.creepflagplace[a->ykart*MAXXMAP+a->xkart])
     {
-	if (!a->deltaconstrx)
-	{
-	    a->deltaconstrx = NEXTLARVAEMOVETICK;
-	    if (a->myparent)
-	    {
-		getcoordofnewunit(a->myparent,LARVAEOBJ,&x,&y);
-		makemove(a,NULL,x,y,MODEMOVE,a->playernr);
-	    }
-	    else//if no parent move arround
-	    {
-		x = myrand(LARVAEMOVEDELTA-LARVAEMOVEDELTA/2);
-		y = myrand(LARVAEMOVEDELTA-LARVAEMOVEDELTA/2);
-		makemove(a,NULL,(int)a->prevx+x,
-				(int)a->prevy+y,
-				MODEMOVE,a->playernr);
-	    }
-	}
-	else
-	    a->deltaconstrx--;
+	dieobj(a);
+	return(1);
     }
-*/
-//    if (!a->myparent)
-	if (!map.creepflagplace[a->ykart*MAXXMAP+a->xkart])
-	{
-    	    dieobj(a);
-	    return(1);
-	}
     return 0;
 }
 //=================================

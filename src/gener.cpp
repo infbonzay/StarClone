@@ -854,12 +854,21 @@ void redesenscreen(void)
 //==========================
 int totable,bitsplayer;
 Queue QueueGame(&QueueAction,MAXQUEUEDELEM);
-long commandtick=0;
+long commandqueuetick;
 CommandQueue UnitsCommandQueue(&CommandQueueAction,MAXCOMMANDELEM);
 //==========================
 void FreeQueues(void)
 {
     QueueGame.EmptyQueue();
+    UnitsCommandQueue.EmptyQueue();
+}
+//==========================
+void GoNextCommandTick()
+{
+    if (!NETWORKGAME)
+	commandqueuetick += 1;
+    else
+	commandqueuetick += 1;//TODO need to add something else
 }
 //==========================
 void pregameQUEUE(void)
@@ -899,6 +908,7 @@ int gogame(struct mapinfo *info)
     PAUSEGAME = 0;
     PAUSEINTRIG=0;
     needclearmap=0;
+    commandqueuetick = 0;
     for (i=0;i<PLAYEDPLAYERS;i++)
 	map.clearfog[i]=1;
 //    clearopenseeKarta();
@@ -1024,7 +1034,10 @@ int gogame(struct mapinfo *info)
 			{
 //			    printf("aloc=%d max=%d maxmark=%d\nn",mainimageslist.allocatedelem,mainimageslist.totalelem,mainimageslist.totalmarked);
 			    QueueGame.QueueMain(INCREMENTTICKS);
-			    
+
+			    UnitsCommandQueue.QueueMain(commandqueuetick);
+			    GoNextCommandTick();
+
 			    weaponflingy.MoveAllWeaponFlingy();
 
 			    AllImages_ExecuteIScript();

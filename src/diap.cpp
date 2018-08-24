@@ -412,12 +412,13 @@ selectedicon:
                 {
         	    if (!probeconstruct(oldselectbuton))
             	    {
-                	if (localprop[i*3+j]!=MODEWARPARCHON &&
-			    localprop[i*3+j]!=MODEWARPDARCHON)
+                	if (localprop[i*3+j] != MODEWARPARCHON &&
+			    localprop[i*3+j] != MODEWARPDARCHON)
 			{
 			    for (k=0;k<MAXSELECTMAN;k++)
                     		if (fordeselect[k])
                     		{
+//				    makemove(fordeselect[k],NULL,0,0,oldselectbutton,NUMBGAMER,SHOWERRORTEXT);
 				    DoOrder(NUMBGAMER,fordeselect[k],0,0,
 					    mp->type_id,mp->obj_id,mp->icon_id,mp->stattxt_id_enable,
 					    oldselectbuton,SHOWERRORTEXT);
@@ -437,8 +438,10 @@ selectedicon:
 				    }
 				    else
 				    {
-                        		moveobj(obj,obj2,localprop[i*3+j],NOSHOWERROR);
-                        		moveobj(obj2,obj,localprop[i*3+j],NOSHOWERROR);
+            				makemove(obj,obj2,0,0,localprop[i*3+j],obj->playernr,NOSHOWERROR);
+            				makemove(obj2,obj,0,0,localprop[i*3+j],obj2->playernr,NOSHOWERROR);
+//                        		moveobj(obj,obj2,localprop[i*3+j],NOSHOWERROR);
+//                        		moveobj(obj2,obj,localprop[i*3+j],NOSHOWERROR);
 					obj2 = NULL;
 				    }
 				}//if obj
@@ -479,7 +482,9 @@ selectedicon:
     }
     if (selectedunloadunit!=-1)
     {
-	moveobj(transportplaceobj,NULL,MODEUNLOADUNITNR,selectedunloadunit,0,NOSHOWERROR);
+	//				  x is  nr of unloaded unit, y is 0
+	makemove(transportplaceobj,NULL,selectedunloadunit,0,MODEUNLOADUNITNR,transportplaceobj->playernr,NOSHOWERROR);
+	//moveobj(transportplaceobj,NULL,MODEUNLOADUNITNR,selectedunloadunit,0,NOSHOWERROR);
     }
   }//if !patrate
 }
