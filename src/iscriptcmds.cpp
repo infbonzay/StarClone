@@ -424,7 +424,7 @@ int IScriptCmd_attackmelee(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
     	if (a && a->finalOBJ)
 	    CreateWeaponID( a,a->finalOBJ,img->parentimg->xpos,img->parentimg->ypos,alldattbl.units_dat->GroundWeapon[a->SC_Unit],0);
     }
-    img->offsetcmdinbuf += nrofrandomsnds * 2+1;
+    img->offsetcmdinbuf += nrofrandomsnds*2 + 1;
     return(0);
 }
 //============================================
@@ -1008,8 +1008,8 @@ int IScriptCmd_dogrddamage(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
 int IScriptCmd_errorcmd(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
 {
     unsigned char cmd = (int ) (*(buf-1));
-    img->offsetcmdinbuf--;
-    printf("img[%d] cmd[0x%02x][%s]-special error, offset cmd buffer is [0x%04x]\n",img->imageid,cmd,iscriptcmdstr[cmd],img->offsetcmdinbuf);
+    //img->offsetcmdinbuf--;
+    printf("img[%d] cmd[0x%02x][%s]-special error, offset cmd buffer is [0x%04x]\n",img->imageid,cmd,iscriptcmdstr[cmd],img->offsetcmdinbuf-1);
     return(1);
 }
 //============================================

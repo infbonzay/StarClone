@@ -238,9 +238,9 @@ int ISCRIPT::CompilePass1(FILE *f)
     compilebuf = (char *)wmalloc(MAXCOMPILEBUFSIZE);
     memset(compilebuf,0,MAXCOMPILEBUFSIZE);
     isheader=0;
-    //lets put compiled code to offset from 0x0001, offset 0x0000 is reserved for BUGS
     compilebufoffs = 0;
-    compilebuf[compilebufoffs++] = ISCRIPTCMD_UNKNOWN;			//unknown command
+    //lets put compiled code to offset from 0x0001, offset 0x0000 is reserved for BUGS
+//    compilebuf[compilebufoffs++] = ISCRIPTCMD_UNKNOWN;			//unknown command
     while(1)
     {
 	strid[0]=0;
@@ -567,6 +567,8 @@ void ISCRIPT::SaveCmdToBuff(char *buf,int offs,int sizedata,int data)
 //============================================
 #include "iscriptcmds.cpp"
 //============================================
+void ShowCommand(MAIN_IMG *img,OVERLAY_IMG *img2,uint8_t iscriptcmd,uint8_t *cmdbuf);
+
 int ISCRIPT::ExecuteScript(MAIN_IMG *img)
 {
     unsigned char iscriptcmd,iscriptcmdsize;
@@ -586,6 +588,7 @@ int ISCRIPT::ExecuteScript(MAIN_IMG *img)
 	img->waitticks = 0;
 	do{
 	    iscriptcmd = compilediscripts[img->offsetcmdinbuf++];
+//	    ShowCommand(img,NULL,iscriptcmd,compilediscripts+img->offsetcmdinbuf);
 	    iscriptcmdsize = iscriptcmdsizeparam[iscriptcmd][0];
 	    status = (*IScriptCmd[iscriptcmd])(img,compilediscripts+img->offsetcmdinbuf,iscriptcmdsize);
 	}while(!status);
@@ -608,6 +611,7 @@ int ISCRIPT::ExecuteScript(OVERLAY_IMG *img)
 	img->waitticks = 0;
 	do{
 	    iscriptcmd = compilediscripts[img->offsetcmdinbuf++];
+//	    ShowCommand(NULL,img,iscriptcmd,compilediscripts+img->offsetcmdinbuf);
 	    iscriptcmdsize = iscriptcmdsizeparam[iscriptcmd][0];
 	    status = (*IScriptCmd[iscriptcmd])(img,compilediscripts+img->offsetcmdinbuf,iscriptcmdsize);
 	}while(!status);
@@ -659,7 +663,102 @@ void AllImages_ExecuteIScript(void)
     }
 }
 //============================================
-
-
-
-
+void ShowCommand(MAIN_IMG *img,OVERLAY_IMG *img2,uint8_t iscriptcmd,uint8_t *cmdbuf)
+{
+    char *typeimg;
+    int param[MAXCMDSIZE];
+    int paramnr = 0,parametersize;
+    int iscriptscmdsize = iscriptcmdsizeparam[iscriptcmd][paramnr++];
+    if (iscriptscmdsize & 0x80)
+    {
+	iscriptscmdsize = 0;	//TODO variable parameters
+    }
+    while (iscriptscmdsize)
+    {
+	parametersize = iscriptcmdsizeparam[iscriptcmd][paramnr++];
+	if (parametersize & 0x80)	//this is address
+	    parametersize &= ~0x80;
+	switch(parametersize)
+	{
+	    case 1:
+		param[paramnr-2] = *cmdbuf;
+		break;
+	    case 2:
+		param[paramnr-2] = *((short int *)cmdbuf);
+		break;
+	    default:
+		break;
+	}
+	cmdbuf += parametersize;
+	iscriptscmdsize -= parametersize;
+    }
+    int whocreate;
+    if (img == NULL)
+    {
+	typeimg = "Overlay";
+    	whocreate = img2->parentimg->whocreate;
+	img = (MAIN_IMG *)img2;
+    }
+    else
+    {
+	typeimg = "Main";
+	whocreate = img->whocreate;
+    }
+    if (whocreate == SC_IMAGE_OBJ_CREATOR)
+    {
+	//OBJADR SCUNIT IMAGEID cmd [parameter0 ... parametern]
+        FILE *f = fopen("/home/vasya/devel/iscripts.cmd","a");
+	if (!f)
+	    return;
+	switch(paramnr-1)
+	{
+	    case 0:
+		fprintf(f,"%s %p %d %d %s\n",typeimg,
+			img->parentimg->creator.objcreator.obj,
+			img->parentimg->creator.objcreator.obj->SC_Unit,
+			img->imageid,
+			iscriptcmdstr[iscriptcmd]);
+		break;
+	    case 1:
+		fprintf(f,"%s %p %d %d %s %d\n",typeimg,
+			img->parentimg->creator.objcreator.obj,
+			img->parentimg->creator.objcreator.obj->SC_Unit,
+			img->imageid,
+			iscriptcmdstr[iscriptcmd],
+			param[0]);
+		break;
+	    case 2:
+		fprintf(f,"%s %p %d %d %s %d %d\n",typeimg,
+			img->parentimg->creator.objcreator.obj,
+			img->parentimg->creator.objcreator.obj->SC_Unit,
+			img->imageid,
+			iscriptcmdstr[iscriptcmd],
+			param[0],
+			param[1]);
+		break;
+	    case 3:
+		fprintf(f,"%s %p %d %d %s %d %d %d\n",typeimg,
+			img->parentimg->creator.objcreator.obj,
+			img->parentimg->creator.objcreator.obj->SC_Unit,
+			img->imageid,
+			iscriptcmdstr[iscriptcmd],
+			param[0],
+			param[1],
+			param[2]);
+		break;
+	    case 4:
+		fprintf(f,"%s %p %d %d %s %d %d %d %d\n",typeimg,
+			img->parentimg->creator.objcreator.obj,
+			img->parentimg->creator.objcreator.obj->SC_Unit,
+			img->imageid,
+			iscriptcmdstr[iscriptcmd],
+			param[0],
+			param[1],
+			param[2],
+			param[3]
+			);
+		break;
+	}
+	fclose(f);
+    }
+}

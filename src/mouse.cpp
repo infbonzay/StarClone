@@ -273,10 +273,13 @@ void putdestination(struct OBJ *destobj,int xm,int ym,int modemove,int posibleco
 	    {
 		xm = xpointconstr+map.MAPXGLOBAL;
 		ym = ypointconstr+map.MAPYGLOBAL;
-		race=GetUnitRace(fordeselect[0]->SC_Unit);
 		if (gameconf.audioconf.buildsounds)
 		    if (IsBuild(buildconstr))
-			Play_sfxdata_id(fordeselect[0],sfx_buildplace[race],2,0);
+			if (fordeselect[0])
+			{
+			    race = GetUnitRace(fordeselect[0]->SC_Unit);
+			    Play_sfxdata_id(fordeselect[0],sfx_buildplace[race],2,0);
+			}
 	    }
 	    else
 	    {
@@ -286,15 +289,20 @@ void putdestination(struct OBJ *destobj,int xm,int ym,int modemove,int posibleco
 errbuildonminimap:
 		    if (gameconf.audioconf.buildsounds)
 		    {
-			if (IsWorkerUnit(fordeselect[0]->SC_Unit))
-			    activatesound(fordeselect[0],MODESOUNDERROR,2,NOSTOPCURRENTSOUNDS);
-			else
+			if (fordeselect[0])
 			{
-			    if (modemove==MODELANDING)
+			    if (IsWorkerUnit(fordeselect[0]->SC_Unit))
 			    {
-				posibleconstr=TOBELAND_CANTLANDHERE;
+				activatesound(fordeselect[0],MODESOUNDERROR,2,NOSTOPCURRENTSOUNDS);
 			    }
-			    Play_sfxdata_id(fordeselect[0],PUTLIFTDOWNERROR,2,0);
+			    else
+			    {
+				if (modemove==MODELANDING)
+				{
+				    posibleconstr=TOBELAND_CANTLANDHERE;
+				}
+				Play_sfxdata_id(fordeselect[0],PUTLIFTDOWNERROR,2,0);
+			    }
 			}
 		    }
 		    putbuildplacemessage(-posibleconstr);

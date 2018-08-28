@@ -94,6 +94,13 @@ void FLINGYLIST::MoveAllWeaponFlingy(void)
 	    flingy->StayAndWaitTime();
 	else
 	    flingy->MoveFlingy();
+	if (flingy->timer)
+	{
+	    if (--flingy->timer == 0)
+	    {
+		flingy->DieFlingy();
+	    }
+	}
     }    
 }
 //=========================================
@@ -180,10 +187,6 @@ void SC_FLINGY::StayAndWaitTime(void)
 		    a->psistormdamage=dmgpertick;
 		}
 	    }
-	}
-	if (--timer == 0)
-	{
-	    DieFlingy();
 	}
 }
 //=========================================
@@ -333,6 +336,7 @@ SC_FLINGY *CreateWeaponFlingy(OBJ *a,OBJ *destobj,int xstart256,int ystart256,in
     SC_FLINGY *flingy;
     launchside = a->mainimage->side + launchspin;
     flingy = new SC_FLINGY(a,destobj,xdest256,ydest256,flingy_id);
+    flingy->timer = alldattbl.weapons_dat->RemoveAfter[weapon_id];
     weaponflingy.AddElem(flingy);
     sprites_id = alldattbl.flingy_dat->sprites_id[flingy_id];
     if (!alldattbl.sprites_dat->is_visible[sprites_id])

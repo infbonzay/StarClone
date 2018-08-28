@@ -1,4 +1,11 @@
 # ----------------------------------------------------------------------------- #
+# to prevent 0x0000 execute
+
+scriptstart:
+	unknowncmd
+	end
+
+# ----------------------------------------------------------------------------- #
 # This header is used by images.dat entries:
 # 000 Scourge (zerg\avenger.grp)
 .headerstart

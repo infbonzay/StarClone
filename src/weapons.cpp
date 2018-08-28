@@ -919,7 +919,7 @@ void WeaponDoDamage(OBJ *atacker,OBJ *destobj,int x256,int y256,SCUNIT SC_Unit,
 	    for (i=0;i<MaxObjects;i++)
 	    {
 		a=objects[i];
-		if (IsOnSkyOBJ(a) && (player_aliance(playernr,a->playernr) == ENEMYOBJ )) //&& IsActiveUnit(a) && || a == destobj))
+		if (IsOnSkyOBJ(a) && ( (player_aliance(playernr,a->playernr) == ENEMYOBJ ) || a == destobj ) )
     		if (WeaponCanApplyOnUnit(a,playernr,weapon_id))
 		{
 		    if (IsHallucination(a))
