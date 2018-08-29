@@ -50,10 +50,11 @@ void getmaxsymbolsize(int fontnr,int *sizex,int *sizey)
 //================================
 int putfntsymbol(int x,int y,int fontnr,int symbolnr,char *offsettable,int skipuplines,int skipdownlines)
 {
-    int i,j=0,pos=0,ypart,linesskip;
+    int i,j=0,ypart,linesskip;
     SC_FontHeader *font = fonts[fontnr];
     SC_FontLetterRaw *letter;
-    unsigned char byte,color;
+    uint8_t byte,color;
+    uint8_t *letterbytes;
     if (!font)
 	return 0;
     if (symbolnr>=font->LowIndex&&symbolnr<=font->HighIndex)
@@ -61,35 +62,43 @@ int putfntsymbol(int x,int y,int fontnr,int symbolnr,char *offsettable,int skipu
 	if (!font->Offset[symbolnr-font->LowIndex])
 	    return 0;
 	letter = (SC_FontLetterRaw *) (font->Offset[symbolnr-font->LowIndex] + (long) font);
-	ypart = (y+letter->YOffset)*gameconf.grmode.x+letter->XOffset+x;
-	
-	j=0;
-	i=letter->Height;
-	if (i>skipdownlines)
+	ypart = GRP_scanlineoffsets[y + letter->YOffset] + letter->XOffset + x;
+	letterbytes = letter->bytes;
+	j = 0;
+	i = letter->Height;
+	if (i > skipdownlines)
 	do
 	{
-	    byte = letter->bytes[pos++];
-	    color = byte&0x7;
+	    byte = *letterbytes++;
+	    color = byte & 0x7;
 	    j += byte >> 3;
-	    if (j>=letter->Width)
+/*	    if (j >= letter->Width)
 	    {
-		linesskip=j/letter->Width;
-		skipuplines+=linesskip;
-		i-=linesskip;
-		if (i<=skipdownlines)
+		linesskip = j/letter->Width;
+		skipuplines += linesskip;
+		i -= linesskip;
+		if (i <= skipdownlines)
 		    break;
-		j=j%letter->Width;
-		ypart+=gameconf.grmode.x*linesskip;
+		j = j % letter->Width;
+		ypart += gameconf.grmode.x * linesskip;
 	    }
-	    if (skipuplines>=0)
+*/
+	    while(j >= letter->Width)
+	    {
+		if (--i <= skipdownlines)
+		    return (letter->XOffset + letter->Width);
+		skipuplines++;
+		j -= letter->Width;
+		ypart += gameconf.grmode.x;
+	    }
+	    if (skipuplines >= 0)
 	    {
 		color = offsettable[color];
-		gameconf.grmode.videobuff[ypart+j] = color;
+		gameconf.grmode.videobuff[ypart + j] = color;
 	    }
 	    j++;
 	}while(1);
     }
-    return (letter->XOffset+letter->Width);
 }
 //================================
 int putglowtext(int x,int y,int fontnr,char *str,int fromcolor,char *table,int glowfactor)
