@@ -48,7 +48,7 @@ void getmaxsymbolsize(int fontnr,int *sizex,int *sizey)
 	*sizey=fonts[fontnr]->MaxHeight;
 }
 //================================
-int putfntsymbol(int x,int y,int fontnr,int symbolnr,char *offsettable,int skipuplines,int skipdownlines)
+int putfntsymbol2(int x,int y,int fontnr,int symbolnr,char *offsettable,int skipuplines,int skipdownlines)
 {
     int i,j=0,ypart,linesskip;
     SC_FontHeader *font = fonts[fontnr];

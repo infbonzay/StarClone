@@ -95,29 +95,10 @@
 #define EMPTYCUBE14X14CHAR	"\x13"
 #define TOTALCOMMANDSYMBS	20
 
-struct SC_FontHeader
-{
-    int			Name;		//Always is "FONT"
-    unsigned char	LowIndex;	//nr of first letter in file
-    unsigned char	HighIndex;	//nr of the last letter in file
-    unsigned char	MaxWidth;	//Maximum width of letters
-    unsigned char	MaxHeight;	//Maximum height of letters
-    int			Offset[];	//offset of each letter SC_FontLetterRaw from begin of file
-};
-
-struct  SC_FontLetterRaw
-{
-    unsigned char	Width;		//Width of the letter
-    unsigned char	Height;		//Height of the letter
-    unsigned char	XOffset;	//X Offset for the topleft corner of the letter.
-    unsigned char	YOffset;	//Y Offset for the topleft corner of the letter.
-    unsigned char	bytes[];	//this is all bytes for this letter
-};
-
 SC_FontHeader *loadfont(char *filename);
 
 void unloadfont(SC_FontHeader *font);
-int  putfntsymbol(int x,int y,int fontnr,int symbolnr,char *offsettable,int skupup,int skipdown);
+int  putfntsymbol2(int x,int y,int fontnr,int symbolnr,char *offsettable,int skupup,int skipdown);
 int  putglowtext(int x,int y,int fontnr,char *str,int fromcolor,char *table,int glowfactor);
 int  putmessage(int x,int y,int fontnr,char *str,int fromcolor,char *table,GRPFILE *dlggrp);
 int  getlinesintext(int fontnr,char *mes,int meslen,int sizexrect);
