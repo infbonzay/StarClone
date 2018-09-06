@@ -2,6 +2,8 @@
 #define _VARS_W
 
 #include <grplib/usegrp.h>
+#include <grplib/font.h>
+
 #include "version.hxx"
 #include "player.h"
 #include "man.h"

@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <grplib/gr8.h>
+#include <grplib/font.h>
 
 #include "wmem.h"
 
@@ -46,59 +47,6 @@ void getmaxsymbolsize(int fontnr,int *sizex,int *sizey)
 	*sizex=fonts[fontnr]->MaxWidth;
     if (sizey)
 	*sizey=fonts[fontnr]->MaxHeight;
-}
-//================================
-int putfntsymbol2(int x,int y,int fontnr,int symbolnr,char *offsettable,int skipuplines,int skipdownlines)
-{
-    int i,j=0,ypart,linesskip;
-    SC_FontHeader *font = fonts[fontnr];
-    SC_FontLetterRaw *letter;
-    uint8_t byte,color;
-    uint8_t *letterbytes;
-    if (!font)
-	return 0;
-    if (symbolnr>=font->LowIndex&&symbolnr<=font->HighIndex)
-    {
-	if (!font->Offset[symbolnr-font->LowIndex])
-	    return 0;
-	letter = (SC_FontLetterRaw *) (font->Offset[symbolnr-font->LowIndex] + (long) font);
-	ypart = GRP_scanlineoffsets[y + letter->YOffset] + letter->XOffset + x;
-	letterbytes = letter->bytes;
-	j = 0;
-	i = letter->Height;
-	if (i > skipdownlines)
-	do
-	{
-	    byte = *letterbytes++;
-	    color = byte & 0x7;
-	    j += byte >> 3;
-/*	    if (j >= letter->Width)
-	    {
-		linesskip = j/letter->Width;
-		skipuplines += linesskip;
-		i -= linesskip;
-		if (i <= skipdownlines)
-		    break;
-		j = j % letter->Width;
-		ypart += gameconf.grmode.x * linesskip;
-	    }
-*/
-	    while(j >= letter->Width)
-	    {
-		if (--i <= skipdownlines)
-		    return (letter->XOffset + letter->Width);
-		skipuplines++;
-		j -= letter->Width;
-		ypart += gameconf.grmode.x;
-	    }
-	    if (skipuplines >= 0)
-	    {
-		color = offsettable[color];
-		gameconf.grmode.videobuff[ypart + j] = color;
-	    }
-	    j++;
-	}while(1);
-    }
 }
 //================================
 int putglowtext(int x,int y,int fontnr,char *str,int fromcolor,char *table,int glowfactor)
@@ -147,9 +95,9 @@ int putglowtext(int x,int y,int fontnr,char *str,int fromcolor,char *table,int g
 	    }
 	    else
 		if (color==maincolor&&changes!=1)
-		    sizex += putfntsymbol(x+sizex,y+sizey,fontnr,symb,table+color*8+glowfactor,0,0)+spaceletters[fontnr];
+		    sizex += putfntsymbol(x+sizex,y+sizey,fonts[fontnr],symb,table+color*8+glowfactor,0,0)+spaceletters[fontnr];
 		else
-		    sizex += putfntsymbol(x+sizex,y+sizey,fontnr,symb,table+color*8+0,0,0)+spaceletters[fontnr];
+		    sizex += putfntsymbol(x+sizex,y+sizey,fonts[fontnr],symb,table+color*8+0,0,0)+spaceletters[fontnr];
 		
     }
     return(sizex);
@@ -215,7 +163,7 @@ void putrowtext(int x,int y,int sizewinx,int fontnr,int flags,char *str,int from
 	    sizex += spacesize[fontnr] + spaceletters[fontnr];
 	}
 	else
-	    sizex += putfntsymbol(x+sizex,y,fontnr,symbolnr,table+offset,0,0)+spaceletters[fontnr];
+	    sizex += putfntsymbol(x+sizex,y,fonts[fontnr],symbolnr,table+offset,0,0)+spaceletters[fontnr];
     }
 }
 //================================
@@ -343,7 +291,7 @@ int putmessage(int x,int y,int fontnr,char *str,int fromcolor,char *table,GRPFIL
 		sizex += spacesize[fontnr] + spaceletters[fontnr];
 	    }
 	    else
-		sizex += putfntsymbol(x+sizex,y+sizey,fontnr,symb,table+color*8,0,0)+spaceletters[fontnr];
+		sizex += putfntsymbol(x+sizex,y+sizey,fonts[fontnr],symb,table+color*8,0,0)+spaceletters[fontnr];
     }
     return(sizex);
 }
@@ -510,7 +458,7 @@ int putmessage(int x,int y,int fontnr,char *str,int fromcolor,char *table,GRPFIL
 		sizex += spacesize[fontnr] + spaceletters[fontnr];
 	    }
 	    else
-		sizex += putfntsymbol(x+sizex,y+sizey,fontnr,symb,table+color*8,skipup,skipdown)+spaceletters[fontnr];
+		sizex += putfntsymbol(x+sizex,y+sizey,fonts[fontnr],symb,table+color*8,skipup,skipdown)+spaceletters[fontnr];
     }
     return(sizex);
 }

@@ -4,6 +4,7 @@
 #include <string.h>
 #include <grplib/grp.h>
 #include <grplib/gr8.h>
+#include <grplib/font.h>
 
 #include "sdl/keysdl.h"
 #include "sdl/mousesdl.h"
