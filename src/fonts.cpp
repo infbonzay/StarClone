@@ -286,12 +286,14 @@ int putmessage(int x,int y,int fontnr,char *str,int fromcolor,char *table,GRPFIL
     	    sizex+=14;
 	}
 	else
+	{
 	    if (symb==' ')
 	    {
 		sizex += spacesize[fontnr] + spaceletters[fontnr];
 	    }
 	    else
 		sizex += putfntsymbol(x+sizex,y+sizey,fonts[fontnr],symb,table+color*8,0,0)+spaceletters[fontnr];
+	}
     }
     return(sizex);
 }
