@@ -206,7 +206,7 @@ int main(int c,char **parm,char **env)
 
     PlayMusic("music\\title.wav",-1);
     
-    MENUSTR *title=showtitle();
+    MENUSTR *title = showtitle();
     if (LoadDatTblFiles(&alldattbl))
     {
 //        gameend("Problem with loading dat,tbl files");
@@ -237,6 +237,11 @@ int main(int c,char **parm,char **env)
     if (iscriptinfo.CompileIScripts("data/iscript"))
 	return(-1);
 
+    int sleepNr = gameconf.videoconf.titledelay + 1;
+    do{
+	mytimer.CallTimer(MYTIMER_ASINCHRONMODE);
+	usleep(125000);
+    }while(--sleepNr);
     cleartitle(title);
 
     GetINOUTsmk();

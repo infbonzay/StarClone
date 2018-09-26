@@ -499,6 +499,7 @@ void saveconf(void)
     fprintf(f,"%s = %s\n",rezo[19],YESNO[gameconf.videoconf.visiblemap]);
     fprintf(f,"%s = %d\n",rezo[20],gameconf.networkconf.networklatency);
     fprintf(f,"%s = %d\n",rezo[22],gameconf.videoconf.preview);
+    fprintf(f,"%s = %d\n",rezo[23],gameconf.videoconf.titledelay);
     fclose(f);
 }
 //=================================
@@ -526,6 +527,7 @@ void loaddefcfg(void)
     gameconf.videoconf.visiblemap = 0;
     gameconf.networkconf.networklatency = 0;
     gameconf.videoconf.preview = 0;
+    gameconf.videoconf.titledelay = 5;
     saveconf();
 }
 //=================================
@@ -805,6 +807,10 @@ int loadcfg(char *filename,int *mpqresult)
             	    break;
 	    case 22://firstrun
                     gameconf.videoconf.preview = intvalue;
+		    err=0;
+		    break;
+	    case 23://titledelay
+                    gameconf.videoconf.titledelay = intvalue;
 		    err=0;
 		    break;
 	    	}//switch

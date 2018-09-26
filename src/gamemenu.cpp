@@ -4442,7 +4442,7 @@ void titlerefresh(void *param1,int param2)
 	}
 	else
 	{
-            if (tick_timer-prev_tick>=TIMETOSCROLLTITLE)
+            if (tick_timer-prev_tick >= TIMETOSCROLLTITLE)
 //            if (!(tick_timer%TIMETOSCROLLTITLE))
             {
 		prev_tick=tick_timer;

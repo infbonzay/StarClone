@@ -66,6 +66,7 @@ struct GAMECONF
 	    unsigned char portraits;	// 0/1/2 yes,static,no
 	    unsigned char visiblemap;	//show no visible map under fog
 	    unsigned char preview;	//bit 0 - star ,bit 1 expansion is set if played intro
+	    unsigned char titledelay;	//show title seconds
 	}videoconf;
 	struct AUDIO
 	{
@@ -155,7 +156,7 @@ extern short    int maxway;
 
 extern char	*cmpgn_cmd[12];
 extern char	*rezu[14];
-extern char	*rezo[23];
+extern char	*rezo[24];
 extern char    	*rezmp[16];
 extern char	*rezwp[2];
 

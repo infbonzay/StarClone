@@ -12,9 +12,6 @@ struct DISPLAY{
     int		y;
     char	s;
     char	flags;
-//    char	fullscreen;
-//    char	emulationmode;
-//    char	windowactive;
 };
 //====================
 struct XYcoord
