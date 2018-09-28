@@ -1,7 +1,6 @@
 autom4te.cache/
 bin/characters/*
-bin/StarClone
-bin/StarClone.conf
+bin/StarClone*
 bin/temp/*
 bin/StarDat.mpq
 bin/BrooDat.mpq
