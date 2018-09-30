@@ -1,0 +1,2 @@
+#!/bin/bash
+ddd --args ./mkfont tFont.pcx 8 8
