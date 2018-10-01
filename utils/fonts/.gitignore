@@ -1,0 +1,7 @@
+*
+!.gitignore
+!Makefile
+!debug
+!mkfont.cpp
+!mkfont.h
+!myfont.pcx

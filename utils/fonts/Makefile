@@ -1,6 +1,6 @@
 PROGS = mkfont
 OBJ  = mkfont.o 
-OBJS  = $(OBJ) ../../obj/mpqwrapper.o ../../obj/mpq.o ../../obj/pcx.o ../../obj/mylist.o ../../obj/auxil.o
+OBJS  = $(OBJ) ../../obj/mpqwrapper.o ../../obj/mpq.o ../../obj/pcx.o ../../obj/mylist.o ../../obj/auxil.o ../../obj/debug.o
 SOURCES = mkfont.cpp
 
 INCLUDE = -I../../include

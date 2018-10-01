@@ -10,13 +10,13 @@
 #include "mkfont.h"
 
 #define HOLEBYTE	0
-#define FIRSTSYMB	'A'
 //=============================================
 SC_FontHeader fontHeader;
 SC_FontLetterRaw (*letters)[];
 unsigned char *letterBytes;
 int *letterOffsets;
 char *TEMPDIR;
+char *GAMEPATH;
 struct GAMECONF
 {
 
@@ -91,9 +91,9 @@ unsigned char YROffsetInLetter( unsigned char *pcxbytes,int pcxsizex,int pcxsize
 //=============================================
 int main(int argc,char *argv[])
 {
-    if (argc != 4)
+    if (argc != 5)
     {
-	printf("usage: %s font.pcx lettersizex lettersizey\n",argv[0]);
+	printf("usage: %s font.pcx firstasciicode(firstletter in font) lettersizex lettersizey\n",argv[0]);
 	return (-1);
     }
     FILE *f = fopen("out.fnt","wb");
@@ -102,8 +102,9 @@ int main(int argc,char *argv[])
 	printf("error create font file \n");
 	return(-2);
     }
-    int lettersizex = atoi(argv[2]);
-    int lettersizey = atoi(argv[3]);
+    int lettersizex = atoi(argv[3]);
+    int lettersizey = atoi(argv[4]);
+    int firstsymb = atoi(argv[4]);
 
     PCX *pcx = new PCX();
     int result = pcx->openMpqPcx(argv[1]);
@@ -120,7 +121,7 @@ int main(int argc,char *argv[])
     int totalLetters = totalLettersx * totalLettersy;
     
     fontHeader.Name = 0x544E4F46;	//'FONT';
-    fontHeader.LowIndex = FIRSTSYMB;
+    fontHeader.LowIndex = firstsymb;
     fontHeader.HighIndex = fontHeader.LowIndex + totalLetters - 1;
     fontHeader.MaxWidth = lettersizex;
     fontHeader.MaxHeight = lettersizey;
@@ -135,13 +136,19 @@ int main(int argc,char *argv[])
     fwrite(&fontHeader,sizeof(fontHeader),1,f);
     fwrite(letterOffsets,4,totalLetters,f);
     int k=0;
+    int totalletterbytes;
     for (int y=0;y<totalLettersy;y++)
     {
 	for (int x=0;x<totalLettersx;x++)
 	{
-    	    int totalletterbytes = 0;
+    	    totalletterbytes = 0;
+	    if (firstsymb + k == ' ')
+	    {
+    		letterOffsets[k] = 0;
+    		continue;
+	    }
 	    int xl,yl,xr,yr,xs,ys;
-	    xl = XLOffsetInLetter(pcxbytes,pcxsizex,pcxsizey,x,y,lettersizex,lettersizey);
+    	    xl = XLOffsetInLetter(pcxbytes,pcxsizex,pcxsizey,x,y,lettersizex,lettersizey);
 	    yl = YLOffsetInLetter(pcxbytes,pcxsizex,pcxsizey,x,y,lettersizex,lettersizey);
 	    xr = XROffsetInLetter(pcxbytes,pcxsizex,pcxsizey,x,y,lettersizex,lettersizey);
 	    yr = YROffsetInLetter(pcxbytes,pcxsizex,pcxsizey,x,y,lettersizex,lettersizey);
@@ -156,29 +163,30 @@ int main(int argc,char *argv[])
 	    int save = 0;
 	    for (int i=0;i<ys;i++)
 	    {
-		for (int j=0;j<xs;j++)
-		{
-		    prevbyte = nextbyte;
-		    nextbyte = pcxbytes[(y*lettersizey+i+yl)*pcxsizex + x*lettersizex+j+xl];
-		    if (nextbyte == HOLEBYTE)
+		    for (int j=0;j<xs;j++)
 		    {
-			cnt++;
-			if (cnt >= 0x1f )
+			prevbyte = nextbyte;
+			nextbyte = pcxbytes[(y*lettersizey+i+yl)*pcxsizex + x*lettersizex+j+xl];
+			if (nextbyte == HOLEBYTE)
 			{
-			    save = 1;
+			    cnt++;
+			    if (cnt >= 0x1f )
+			    {
+				save = 1;
+			    }
+			}
+			if (nextbyte != HOLEBYTE || save)
+			{
+			    int gradationcolor = 1;//calculate from pcxbytes
+			    letterBytes[totalletterbytes++] = (cnt<<3) | gradationcolor;
+			    cnt=0;
 			}
 		    }
-		    if (nextbyte != HOLEBYTE || save)
-		    {
-			int gradationcolor = 1;//calculate from pcxbytes
-			letterBytes[totalletterbytes++] = (cnt<<3) | gradationcolor;
-			cnt=0;
-		    }
-		}
 	    }
 	    letterOffsets[k] = ftell(f);
 	    fwrite(&(*letters)[k],sizeof(SC_FontLetterRaw),1,f);
-	    fwrite(letterBytes,totalletterbytes,1,f);
+	    if (totalletterbytes)
+    	    fwrite(letterBytes,totalletterbytes,1,f);
 	    k++;
 	}
     }

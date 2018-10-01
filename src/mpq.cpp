@@ -33,7 +33,7 @@ int loadfilefrommpq(HANDLE hmpq,char *filename,char **mem,int *fsize)
         err = wr_SFileOpenFileEx(hmpq,filename,SFILE_OPEN_FROM_MPQ,&f);
     if (!err)
     {
-        printf("%s not found\n",filename);
+        DEBUGMESSCR("%s not found\n",filename);
         return -1;
     }
     filesize = SFileGetFileSize(f,NULL);
@@ -239,7 +239,7 @@ int SFileOpenFileTryAllMpqs(char *filename,HANDLE *f)
     }
     else
     {
-	printf("SFileOpenFileTryAllMpqs: %s found on local filesystem\n",filename);
+	DEBUGMESSCR("SFileOpenFileTryAllMpqs: %s found on local filesystem\n",filename);
     }
     return(0);
 }
