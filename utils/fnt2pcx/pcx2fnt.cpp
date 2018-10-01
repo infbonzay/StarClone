@@ -47,7 +47,6 @@ SC_FontHeader *loadfont(char *filename)
 //=============================================
 PCXH pcxh;
 
-unsigned char C1 = 0xc1;
 char pal[256*3];
 int main(int argc,char *argv[])
 {
@@ -69,13 +68,14 @@ int main(int argc,char *argv[])
 	printf("error open pcx %s\n",argv[2]);
 	return(-3);
     }
-    InitGrpLib(myfont->MaxWidth*16,1024);
+    int height = (myfont->HighIndex - myfont->LowIndex + 1) * myfont->MaxHeight / 16;
+    InitGrpLib(myfont->MaxWidth*16,height);
     GRP_vidmem = (char *) malloc(GRP_screensizex*GRP_screensizey);
     memset(GRP_vidmem,0,GRP_screensizex*GRP_screensizey);
     int x=0,y=0;
     for (int i=myfont->LowIndex;i<=myfont->HighIndex;i++)
     {
-	putfntsymbol(x,y,myfont,i,pcx->GetPcxRawBytes(),0,0);
+	putfntsymbol(x,y,myfont,i,pcx->GetPcxRawBytes()+40,0,0);
 	x += myfont->MaxWidth;
 	if (x >= myfont->MaxWidth*16)
 	{
@@ -83,6 +83,7 @@ int main(int argc,char *argv[])
 	    y += myfont->MaxHeight;
 	}
     }
+
     memcpy(pal,pcx->GetRawPal768(),3*256);
     FILE *f = fopen("out.pcx","wb");
     if (!f)
@@ -91,28 +92,28 @@ int main(int argc,char *argv[])
 	return(-4);
     }
     pcxh.Flag = 0x0a;
-    pcxh.Version = 2;
+    pcxh.Version = 5;
     pcxh.Encoding = 1;
     pcxh.BitsPerPixel = 8;
     pcxh.NPlanes = 1;
     pcxh.xmax = myfont->MaxWidth*16-1;
-    pcxh.ymax = 1024-1;
+    pcxh.ymax = height-1;
     pcxh.HDPI = 300;
     pcxh.VDPI = 300;
     pcxh.BytesPerLine = myfont->MaxWidth*16;
-    pcxh.PaletteInfo = 2;
-    pcxh.HscreenSize = myfont->MaxWidth*16;
-    pcxh.VscreenSize = 1024;
+    pcxh.PaletteInfo = 1;
     fwrite(&pcxh,sizeof(PCXH),1,f);
-    for (int y=0;y<1024;y++)
+    for (int y=0;y<height;y++)
     {
 	for (int x=0;x<myfont->MaxWidth*16;x++)
 	{
-	    fwrite(&C1,1,1,f);
-	    fwrite(&GRP_vidmem[y * myfont->MaxWidth + x],1,1,f);
+	    char a = 0xc1;
+	    fwrite(&a,1,1,f);
+	    a = GRP_vidmem[y * myfont->MaxWidth*16 + x];
+	    fwrite(&a,1,1,f);
 	}
     }
-    //fwrite(&pal,1,1,f);
+    fwrite(&pal,1,1,f);
     fwrite(&pal,3*256,1,f);
     fclose(f);
     QuitGrpLib();

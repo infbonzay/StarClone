@@ -178,6 +178,7 @@ int main(int argc,char *argv[])
 	    if (firstsymb + k == ' ')
 	    {
     		letterOffsets[k] = 0;
+    		k++;
     		continue;
 	    }
 	    int xl,yl,xr,yr,xs,ys;
@@ -223,10 +224,16 @@ int main(int argc,char *argv[])
 			}
 		    }
 	    }
-	    letterOffsets[k] = ftell(f);
-	    fwrite(&(*letters)[k],sizeof(SC_FontLetterRaw),1,f);
 	    if (totalletterbytes)
-    	    fwrite(letterBytes,totalletterbytes,1,f);
+	    {
+		letterOffsets[k] = ftell(f);
+	        fwrite(&(*letters)[k],sizeof(SC_FontLetterRaw),1,f);
+    		fwrite(letterBytes,totalletterbytes,1,f);
+    	    }
+    	    else
+    	    {
+		letterOffsets[k] = 0;
+    	    }
 	    k++;
 	}
     }

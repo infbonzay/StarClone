@@ -1,2 +1,3 @@
 #!/bin/bash
 ddd --args ./mkfont myfont.pcx 65 8 8
+#ddd --args ./mkfont out.pcx 32 18 18
