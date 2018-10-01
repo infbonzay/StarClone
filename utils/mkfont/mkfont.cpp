@@ -7,8 +7,6 @@
 #include <grplib/font.h>
 #include "../../include/pcx.h"
 
-#include "mkfont.h"
-
 #define HOLEBYTE		0
 #define MAXFONTCOLORGRADATIONS	8
 

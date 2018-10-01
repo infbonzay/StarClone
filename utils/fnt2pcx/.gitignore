@@ -1,0 +1,8 @@
+*
+!.gitignore
+!Makefile
+!debug
+!pcx2fnt.cpp
+!tFontGam.pcx
+!font16.fnt
+
