@@ -9,7 +9,16 @@
 
 #include "mkfont.h"
 
-#define HOLEBYTE	0
+#define HOLEBYTE		0
+#define MAXFONTCOLORGRADATIONS	8
+
+#define NRELEM(buf,elem,nr)	buf[(elem)*3+nr]
+
+#define REDELEM(buf,elem) 	NRELEM(buf,elem,0)
+#define GREENELEM(buf,elem) 	NRELEM(buf,elem,1)
+#define BLUEELEM(buf,elem)	NRELEM(buf,elem,2)
+
+
 //=============================================
 SC_FontHeader fontHeader;
 SC_FontLetterRaw (*letters)[];
@@ -89,8 +98,32 @@ unsigned char YROffsetInLetter( unsigned char *pcxbytes,int pcxsizex,int pcxsize
     }
 }
 //=============================================
+
+float getMaximalColorIntencity(PCX *pcx)
+{
+    char *buf = pcx->GetPcxRawBytes();
+    int size = pcx->sizePcx();
+    char *pal = pcx->GetRawPal768();
+    float maxintencity=0,intencity;
+    float absr, absg, absb;
+
+    for (int i=0;i<size;i++)
+    {
+	absr = REDELEM(pal,buf[i]) * 30;			//r-percentage RED in any color
+    	absg = GREENELEM(pal,buf[i]) * 59;	//g-percentage GREEN in any color
+    	absb = BLUEELEM(pal,buf[i]) * 11;	//b-percentage BLUE in any color
+	intencity = sqrt(absr*absr + absg*absg + absb*absb);
+	if  (intencity > maxintencity)//found best equality
+	{
+	    maxintencity = intencity;
+	}
+    }
+    return maxintencity;
+}
+//=============================================
 int main(int argc,char *argv[])
 {
+    float absr, absg, absb;
     if (argc != 5)
     {
 	printf("usage: %s font.pcx firstasciicode(firstletter in font) lettersizex lettersizey\n",argv[0]);
@@ -102,9 +135,9 @@ int main(int argc,char *argv[])
 	printf("error create font file \n");
 	return(-2);
     }
+    int firstsymb = atoi(argv[2]);
     int lettersizex = atoi(argv[3]);
     int lettersizey = atoi(argv[4]);
-    int firstsymb = atoi(argv[4]);
 
     PCX *pcx = new PCX();
     int result = pcx->openMpqPcx(argv[1]);
@@ -113,6 +146,8 @@ int main(int argc,char *argv[])
 	printf("error open pcx %s\n",argv[1]);
 	return(-2);
     }
+    float maxintencity = getMaximalColorIntencity(pcx);
+    char *pal = pcx->GetRawPal768();
     unsigned char *pcxbytes = (unsigned char *)pcx->GetPcxRawBytes();
     int pcxsizex = pcx->xsizePcx();
     int pcxsizey = pcx->ysizePcx(); 
@@ -177,7 +212,14 @@ int main(int argc,char *argv[])
 			}
 			if (nextbyte != HOLEBYTE || save)
 			{
-			    int gradationcolor = 1;//calculate from pcxbytes
+			    absr = REDELEM(pal,nextbyte) * 30;
+			    absg = GREENELEM(pal,nextbyte) * 59;
+			    absb = BLUEELEM(pal,nextbyte) * 11;
+			    float intencity = sqrt(absr*absr + absg*absg + absb*absb);
+			    int gradationcolor = intencity * MAXFONTCOLORGRADATIONS / maxintencity - 1;
+			    if (gradationcolor < 0)
+				gradationcolor = 0;
+			    gradationcolor = MAXFONTCOLORGRADATIONS - gradationcolor;
 			    letterBytes[totalletterbytes++] = (cnt<<3) | gradationcolor;
 			    cnt=0;
 			}
