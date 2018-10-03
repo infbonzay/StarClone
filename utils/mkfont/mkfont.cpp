@@ -7,7 +7,7 @@
 #include <grplib/font.h>
 #include "../../include/pcx.h"
 
-#define HOLEBYTE		0
+#define HOLEBYTE		255
 #define MAXFONTCOLORGRADATIONS	8
 
 #define NRELEM(buf,elem,nr)	buf[(elem)*3+nr]
@@ -107,7 +107,9 @@ float getMaximalColorIntencity(PCX *pcx)
 
     for (int i=0;i<size;i++)
     {
-	absr = REDELEM(pal,buf[i]) * 30;			//r-percentage RED in any color
+	if (buf[i] == HOLEBYTE)
+	    continue;
+	absr = REDELEM(pal,buf[i]) * 30;	//r-percentage RED in any color
     	absg = GREENELEM(pal,buf[i]) * 59;	//g-percentage GREEN in any color
     	absb = BLUEELEM(pal,buf[i]) * 11;	//b-percentage BLUE in any color
 	intencity = sqrt(absr*absr + absg*absg + absb*absb);
@@ -175,12 +177,6 @@ int main(int argc,char *argv[])
 	for (int x=0;x<totalLettersx;x++)
 	{
     	    totalletterbytes = 0;
-	    if (firstsymb + k == ' ')
-	    {
-    		letterOffsets[k] = 0;
-    		k++;
-    		continue;
-	    }
 	    int xl,yl,xr,yr,xs,ys;
     	    xl = XLOffsetInLetter(pcxbytes,pcxsizex,pcxsizey,x,y,lettersizex,lettersizey);
 	    yl = YLOffsetInLetter(pcxbytes,pcxsizex,pcxsizey,x,y,lettersizex,lettersizey);
@@ -223,6 +219,11 @@ int main(int argc,char *argv[])
 			    cnt=0;
 			}
 		    }
+	    }
+	    if (cnt)
+	    {
+		letterBytes[totalletterbytes++] = (cnt<<3) | 0;
+		cnt=0;
 	    }
 	    if (totalletterbytes)
 	    {

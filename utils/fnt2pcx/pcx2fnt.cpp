@@ -9,6 +9,8 @@
 #include <grplib/grp.h>
 #include <grplib/font.h>
 
+#define HOLEBYTE	255
+
 char *TEMPDIR;
 char *GAMEPATH;
 struct GAMECONF
@@ -68,16 +70,19 @@ int main(int argc,char *argv[])
 	printf("error open pcx %s\n",argv[2]);
 	return(-3);
     }
-    int height = (myfont->HighIndex - myfont->LowIndex + 1) * myfont->MaxHeight / 16;
-    InitGrpLib(myfont->MaxWidth*16,height);
+    int nrsymbols = myfont->HighIndex - myfont->LowIndex + 1;
+    int symbperline = (nrsymbols < 16) ? nrsymbols : 16;
+    int height = nrsymbols * myfont->MaxHeight / symbperline;
+
+    InitGrpLib(myfont->MaxWidth*symbperline,height);
     GRP_vidmem = (char *) malloc(GRP_screensizex*GRP_screensizey);
-    memset(GRP_vidmem,0,GRP_screensizex*GRP_screensizey);
+    memset(GRP_vidmem,HOLEBYTE,GRP_screensizex*GRP_screensizey);
     int x=0,y=0;
     for (int i=myfont->LowIndex;i<=myfont->HighIndex;i++)
     {
 	putfntsymbol(x,y,myfont,i,pcx->GetPcxRawBytes()+40,0,0);
 	x += myfont->MaxWidth;
-	if (x >= myfont->MaxWidth*16)
+	if (x >= myfont->MaxWidth*symbperline)
 	{
 	    x = 0;
 	    y += myfont->MaxHeight;
@@ -96,20 +101,20 @@ int main(int argc,char *argv[])
     pcxh.Encoding = 1;
     pcxh.BitsPerPixel = 8;
     pcxh.NPlanes = 1;
-    pcxh.xmax = myfont->MaxWidth*16-1;
+    pcxh.xmax = myfont->MaxWidth*symbperline-1;
     pcxh.ymax = height-1;
     pcxh.HDPI = 300;
     pcxh.VDPI = 300;
-    pcxh.BytesPerLine = myfont->MaxWidth*16;
+    pcxh.BytesPerLine = myfont->MaxWidth*symbperline;
     pcxh.PaletteInfo = 1;
     fwrite(&pcxh,sizeof(PCXH),1,f);
     for (int y=0;y<height;y++)
     {
-	for (int x=0;x<myfont->MaxWidth*16;x++)
+	for (int x=0;x<myfont->MaxWidth*symbperline;x++)
 	{
 	    char a = 0xc1;
 	    fwrite(&a,1,1,f);
-	    a = GRP_vidmem[y * myfont->MaxWidth*16 + x];
+	    a = GRP_vidmem[y * myfont->MaxWidth*symbperline + x];
 	    fwrite(&a,1,1,f);
 	}
     }

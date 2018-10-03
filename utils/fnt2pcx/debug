@@ -1,2 +1,2 @@
 #!/bin/bash
-ddd --args ./pcx2fnt font16.fnt tFontGam.pcx
+ddd --args ./pcx2fnt out.fnt tFontGam.pcx
