@@ -21,7 +21,7 @@ HANDLE install1mpq,install2mpq;			//install files for star & brood disks
     }
 #endif
 //============================================
-int loadfilefrommpq(HANDLE hmpq,char *filename,char **mem,int *fsize)
+int loadfilefrommpq(HANDLE hmpq,const char *filename,char **mem,int *fsize)
 {
     int err;
     HANDLE f;
@@ -64,7 +64,7 @@ void unloadfilefrommpq(void *mem)
     }
 }
 //============================================
-HANDLE MpqsFindFile(char *filename)
+HANDLE MpqsFindFile(const char *filename)
 {
     int nrmpqfiles = allmpq.GetMaxElements();
     for (int i=0;i<nrmpqfiles;i++)		//find file with priority
@@ -106,7 +106,7 @@ void UnLoadAllMpqs(void)
     }
 }
 //============================================
-int mpqloadfile(char *filename,char **mem)
+int mpqloadfile(const char *filename,char **mem)
 {
     HANDLE retmpqnr = MpqsFindFile(filename);
 //    if (!retmpqnr)
@@ -212,7 +212,7 @@ void ClearMPQFileID(MPQIDS *fileid1)
     fileid1->mpqfilenr = -1;
 }
 //============================================
-HANDLE FindFileTryAllMpqs(char *filename)
+HANDLE FindFileTryAllMpqs(const char *filename)
 {
     if (SFileHasFile(install2mpq,filename))
 	return(install2mpq);
@@ -221,7 +221,7 @@ HANDLE FindFileTryAllMpqs(char *filename)
     return(MpqsFindFile(filename));
 }
 //============================================
-int SFileOpenFileTryAllMpqs(char *filename,HANDLE *f)
+int SFileOpenFileTryAllMpqs(const char *filename,HANDLE *f)
 {
     HANDLE hmpq;
     int result;

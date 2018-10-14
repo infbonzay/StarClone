@@ -43,7 +43,7 @@ void ShowPreviewMission(int campaignnr,int missionnr,int prevafterflag)
     ShowPreviewFile(FULLFILENAME,ANYKEYNOTQUITSHOWTITLES);
 }
 //==========================================
-void ShowPreviewFile(char *filename,int esckeyaction)
+void ShowPreviewFile(const char *filename,int esckeyaction)
 {
     HANDLE f,hmpq;
     char *cmpbuf=NULL;
@@ -267,8 +267,7 @@ void ShowPreviewBuff(char *cmpbuf,int sizebuf,int esckeyaction)
 				    unpressmouse=2;
 				    eventwindowloop();//to clear all events
 				    do{
-				    	mouse_b = mousebuttons();
-				    	if (mouse_b)
+				    	if (LowMouse.GetButtonStatus())
 				    	    unpressmouse=1;
 				    	else
 				    	    if (unpressmouse!=2)
@@ -279,7 +278,6 @@ void ShowPreviewBuff(char *cmpbuf,int sizebuf,int esckeyaction)
 				    }while( unpressmouse!=0 && !keyactive && deltatick<displaytime);
 				    if (keyactive==ESCAPEKEY && esckeyaction)
 					goto exitshowtitles;
-				    mouse_b=0;
 				    keyactive=0;
 				    break;
 			    }//switch
@@ -309,6 +307,7 @@ exitshowtitles:
 	FadeScreen(fadespeed,pal,FADE_HIDE);
 	backgnd.closePcx();
     }
+    LowMouse.FlushPos();
 }
 //==========================================
 void FadeScreen(int fadespeed,char *pal,int typeoffade)	//0-fadetoimage 1-fadetoblackscreen
@@ -380,7 +379,7 @@ void PlayCampaignVideo(int campaignnr,int missionnr)
 #define SMKAUDIOCHANNEL		0
 #define MAX_SMKAUDIOBUFFERS	32
 //==========================================
-void PlayVideoSmk(char *smkfile)
+void PlayVideoSmk(const char *smkfile)
 {
     unsigned int xpos,ypos,w,h,audiosize,audio_rate[7],newbitdepth;
     unsigned char nextimage,endsmk,palflag,scalemode,trackmask,audiochannels[7],bitdepth[7],firstframe;
@@ -495,8 +494,7 @@ void PlayVideoSmk(char *smkfile)
 		}
 		if (vidbuff)
 		    putrow2x1(xpos,ypos,w,h,vidbuff);
-	    	mouse_b = mousebuttons();
-	    	if (mouse_b)
+	    	if (LowMouse.GetButtonStatus())
 	    	    unpressmouse=1;
 	    	else
 	    	    if (unpressmouse!=2)

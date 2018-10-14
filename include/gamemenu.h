@@ -328,10 +328,10 @@ int  savegametofile_do(void);
 
 void palchange(const char *pal,int gamma,int saturate);
 
-int  glu_putmenu(MENUSTR *prevmenu,char *dialogbinfile,char *errormessage,char *fonttable,GRPFILE *dlg,
+int  glu_putmenu(MENUSTR *prevmenu,const char *dialogbinfile,char *errormessage,char *fonttable,GRPFILE *dlg,
 		int (*callbackfunc)(MENUSTR *,void *info),void *somecallbackdata,int sound);
-int  glu_putmenu(MENUSTR *prevmenu,char *dialogbinfile,char *errormessage,char *fonttable,GRPFILE *dlg);
-int  glu_putmenu(MENUSTR *prevmenu,char *dialogbinfile,char *errormessage,char *fonttable,GRPFILE *dlg,int sound);
+int  glu_putmenu(MENUSTR *prevmenu,const char *dialogbinfile,char *errormessage,char *fonttable,GRPFILE *dlg);
+int  glu_putmenu(MENUSTR *prevmenu,const char *dialogbinfile,char *errormessage,char *fonttable,GRPFILE *dlg,int sound);
 void putokmenu(char *errormessage);
 int  putokcancelmenu(char *errormessage);
 int  glu_selectmission(MENUSTR *prevmenu,int campaign_race,char *fonttable,GRPFILE *dlg);

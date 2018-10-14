@@ -9,7 +9,7 @@
 #include "debug.h"
 #include "tbl.h"
 //===========================================
-int TBL::loadTBL(char *filename)
+int TBL::loadTBL(const char *filename)
     {
 	tbl=NULL;
 	if (mpqloadfile(filename,(char **)&tbl))
@@ -106,7 +106,7 @@ int checkfordublicate(char *textdata,int sizex,char *textcmp)
     return(-1);
 }
 //==========================================
-void saveTBL(int strnr,char *filename,char *arrayofstrs[])
+void saveTBL(int strnr,const char *filename,char *arrayofstrs[])
 {
     int tbloffset,i,len,firstnull=-1;
     char *tbldata;

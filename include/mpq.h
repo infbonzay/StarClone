@@ -35,12 +35,12 @@ struct MPQPRIO
     char mpqfilename[MAX_PATH];
 };
 //============================================
-int  loadfilefrommpq(HANDLE mpq,char *filename,char **mem,int *fsize);
+int  loadfilefrommpq(HANDLE mpq,const char *filename,char **mem,int *fsize);
 void unloadfilefrommpq(void *mem);
-HANDLE MpqsFindFile(char *filename);
+HANDLE MpqsFindFile(const char *filename);
 HANDLE LoadMpq(char *MPQFileName);
 void UnLoadAllMpqs(void);
-int  mpqloadfile(char *filename,char **mem);
+int  mpqloadfile(const char *filename,char **mem);
 int  GetMpqFilesNr(HANDLE hmpq);
 HANDLE GetFilePosInArchive(HANDLE mpq,char *filename,int *nr);
 int  SFileEOF(HANDLE f);
@@ -48,8 +48,8 @@ int  GetMPQFileID(HANDLE mpq,char *filesound,MPQIDS *fileid);
 int  CmpMPQFileID(MPQIDS *fileid1,MPQIDS *fileid2);
 void SetMPQFileID(MPQIDS *fileid1,MPQIDS *fileid2);
 void ClearMPQFileID(MPQIDS *fileid1);
-HANDLE FindFileTryAllMpqs(char *filename);
-int  SFileOpenFileTryAllMpqs(char *filename,HANDLE *f);
+HANDLE FindFileTryAllMpqs(const char *filename);
+int  SFileOpenFileTryAllMpqs(const char *filename,HANDLE *f);
 //==========================================
 extern mylist allmpq;
 extern HANDLE install1mpq,install2mpq;

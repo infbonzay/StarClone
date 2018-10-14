@@ -52,8 +52,8 @@ public:
 
 };
 
-int  PlayMusic(char *filename,int repeatflag);
-int  PlayMusic(char *filename,int repeatflag, void (*onfinishplay)(void));
+int  PlayMusic(const char *filename,int repeatflag);
+int  PlayMusic(const char *filename,int repeatflag, void (*onfinishplay)(void));
 void StopMusic(int fade);
 
 extern wMUSIC *audiostream;

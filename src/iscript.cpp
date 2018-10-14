@@ -26,7 +26,7 @@
 
 ISCRIPT iscriptinfo;
 //============================================
-char	*iscriptnrstr[ISCRIPTNR_MAXVALUE+2] = 
+const char	*iscriptnrstr[ISCRIPTNR_MAXVALUE+2] = 
 {
 	"Init",
 	"Death",
@@ -60,7 +60,7 @@ char	*iscriptnrstr[ISCRIPTNR_MAXVALUE+2] =
 	"Type"
 };
 //============================================
-char	*iscriptcmdstr[ISCRIPTCMD_MAXVALUE] = 
+const char	*iscriptcmdstr[ISCRIPTCMD_MAXVALUE] = 
 			    {   
 				"playfram",		//0x00
 				"playframtile",		//0x01
@@ -209,7 +209,7 @@ unsigned char	iscriptcmdsizeparam[ISCRIPTCMD_MAXVALUE][MAXCMDSIZE]=
                         { 0}						//0x45 unknown cmd, special for see any errors
 		};
 //============================================
-int comparestrings(char *str,char *strarray[],int nrofstrarray)
+int comparestrings(char *str,const char *strarray[],int nrofstrarray)
 {
     int i;
     for (i=0;i<nrofstrarray;i++)
@@ -486,7 +486,7 @@ ISCRIPT::ISCRIPT(void)
     memset(iscriptsid,0,sizeof(iscriptsid));
 }
 //============================================
-int ISCRIPT::CompileIScripts(char *filename)
+int ISCRIPT::CompileIScripts(const char *filename)
 {
     int i,j,retcode=0;
     FILE *f = fopen(filename,"r");
@@ -665,7 +665,7 @@ void AllImages_ExecuteIScript(void)
 //============================================
 void ShowCommand(MAIN_IMG *img,OVERLAY_IMG *img2,uint8_t iscriptcmd,uint8_t *cmdbuf)
 {
-    char *typeimg;
+    const char *typeimg;
     int param[MAXCMDSIZE];
     int paramnr = 0,parametersize;
     int iscriptscmdsize = iscriptcmdsizeparam[iscriptcmd][paramnr++];

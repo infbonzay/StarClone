@@ -9,9 +9,9 @@ else
     DEBUG = -O2
 endif
 if HAVEWARNING
-    WARN = -Wno-write-strings
+    WARN = -Werror
 else
-    WARN = -Wno-write-strings
+    WARN = 
 endif
 if SYS64
 if FORCE32BIT

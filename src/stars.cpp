@@ -16,7 +16,7 @@ starRef *star;
 starBmap *img;
 
 //===========================================================
-int loadStars(char *starfn)
+int loadStars(const char *starfn)
 {
     return(mpqloadfile(starfn,(char **)&spacestars));
 }

@@ -62,7 +62,7 @@ char CAMPAIGN_STR[]="Cs";
 char SINGLEGAME_STR[]="Nl";
 char MAINMENU_STR[]="Mm";
 char DLNDMENU_STR[]="Dn";
-char *PCXFRAME_STR[8]={"1.pcx","2.pcx","3.pcx","4.pcx",
+const char *PCXFRAME_STR[8]={"1.pcx","2.pcx","3.pcx","4.pcx",
 			"H1.pcx","H2.pcx","H3.pcx","H4.pcx"};
 
 
@@ -166,7 +166,7 @@ int parselistfiles(mylist *flist)
     return(0);
 }
 //==========================================
-void listfiles(char *fromdir,mylist *flist,char *mask,char *rootdir,char *removeext,int flags)
+void listfiles(const char *fromdir,mylist *flist,const char *mask,char *rootdir,const char *removeext,int flags)
 {
     int isdir,needaddtolist,levelup,istoplevel,nroffiles=0;
     char templistname[512];
@@ -271,7 +271,7 @@ void listfiles(char *fromdir,mylist *flist,char *mask,char *rootdir,char *remove
     } 
 }
 //==========================================
-void listusers(char *path,mylist *flist)
+void listusers(const char *path,mylist *flist)
 {
     char *tempstr;
     DIR *dir;
@@ -302,7 +302,7 @@ void LoadTransPal(char *filename,char *palette,char *menutranspcolors,float fact
 void LoadTransPal(char *filename,char *palette,char *menutranspcolors,float factor,int creationflag)
 {
 //    char *filename2=filename2unix(filename);
-    char *filename2=filename2temp(filename);
+    char *filename2 = filename2temp(filename);
     FILE *f=fopen(filename2,"r");
     if (!f)
     {
@@ -4260,22 +4260,22 @@ void gluchat_initmenus(MENUSTR *menu,int masterjoin,int playernr,FORCE_SLOTS *fs
     SetGameConnectedSlot(playernr,GAMEPLAYERSLOT);
 }
 //==========================================
-char *myhelpmenutext[1]=
+const char *myhelpmenutext[1]=
 {
 	GWHITECOLORFONTCHAR GAMENAME " Demo " GAMEVERSION
 };
 //==========================================
-int glu_putmenu(MENUSTR *prevmenu,char *dialogbinfile,char *errormessage,char *fonttable,GRPFILE *dlg)
+int glu_putmenu(MENUSTR *prevmenu,const char *dialogbinfile,char *errormessage,char *fonttable,GRPFILE *dlg)
 {
     return(glu_putmenu(prevmenu,dialogbinfile,errormessage,fonttable,dlg,NULL,NULL,1));
 }
 //==========================================
-int glu_putmenu(MENUSTR *prevmenu,char *dialogbinfile,char *errormessage,char *fonttable,GRPFILE *dlg,int sounds)
+int glu_putmenu(MENUSTR *prevmenu,const char *dialogbinfile,char *errormessage,char *fonttable,GRPFILE *dlg,int sounds)
 {
     return(glu_putmenu(prevmenu,dialogbinfile,errormessage,fonttable,dlg,NULL,NULL,sounds));
 }
 //==========================================
-int glu_putmenu(MENUSTR *prevmenu,char *dialogbinfile,char *errormessage,
+int glu_putmenu(MENUSTR *prevmenu,const char *dialogbinfile,char *errormessage,
 		char *fonttable,GRPFILE *dlg,int (*callbackfunc)(MENUSTR *,void *info),
 		void *somecallbackdata,int sounds)
 {
@@ -4367,7 +4367,7 @@ int glu_selectmission(MENUSTR *prevmenu,int campaignnr,char *fonttable,GRPFILE *
     return(exitvalue);
 }
 //==========================================
-int glu_editmenu(MENUSTR *prevmenu,char *dialogbinfile,char *errormessage,char *fonttable,GRPFILE *dlg,char *str,int maxstrlen)
+int glu_editmenu(MENUSTR *prevmenu,const char *dialogbinfile,char *errormessage,char *fonttable,GRPFILE *dlg,char *str,int maxstrlen)
 {
     int ret;
     MENUSTR *menu=LoadDialogBin(dialogbinfile,DIALOGBIN_MAINDIALOGS,IDFONT16);
@@ -4967,9 +4967,9 @@ int DownloadMpqMenu(int mpqcfgresult)
     char newpal[256*4];
     char *fntadr;
     WGET_DOWNLOAD mpqfile;
-    files[0]="";
-    files[1]="";
-    files[2]="";
+    *files[0] = 0;
+    *files[1] = 0;
+    *files[2] = 0;
 
     mouser[MOUSEMODE1].x1=0;
     mouser[MOUSEMODE1].y1=0;

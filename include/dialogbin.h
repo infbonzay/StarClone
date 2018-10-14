@@ -141,13 +141,13 @@ int  DialogBin_GetFontNr(int flags);
 int  GetDialogElements(char *dialogdata,int *groupofbuttons);
 void ShowMenuEdge(MENUSTR *menu);
 void UnloadDialogBin(MENUSTR *menu);
-MENUSTR *LoadDialogBin(char *dialogbinfilename,int dialog_opt,int defaultfontnr);
-MENUSTR *LoadDialogBin(char *dialogbinfilename,int dialog_opt,int addforreserv,int defaultfontnr);
-DIALOGBIN_INFO *DialogBin_GetItemCoords(char *dialogbinfilename);
+MENUSTR *LoadDialogBin(const char *dialogbinfilename,int dialog_opt,int defaultfontnr);
+MENUSTR *LoadDialogBin(const char *dialogbinfilename,int dialog_opt,int addforreserv,int defaultfontnr);
+DIALOGBIN_INFO *DialogBin_GetItemCoords(const char *dialogbinfilename);
 void DialogBin_FreeItemCoords(DIALOGBIN_INFO *allcoords);
-void DialogBin_Save(MENUSTR *menu,char *label,char *filename);
-void DialogBin_Save(MENUSTR *menu,char *label,char *filename,int *sortedarray);
-MENUSTR *DialogBin_ShowPermanent(char *dialogbinfilename,int dialog_opt,int addforreserv,
+void DialogBin_Save(MENUSTR *menu,char *label,const char *filename);
+void DialogBin_Save(MENUSTR *menu,char *label,const char *filename,int *sortedarray);
+MENUSTR *DialogBin_ShowPermanent(const char *dialogbinfilename,int dialog_opt,int addforreserv,
 				void (*refreshfunc)(void *,int));
 void DialogBin_ClosePermanent(MENUSTR *menu);
 

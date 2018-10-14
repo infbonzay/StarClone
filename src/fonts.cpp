@@ -23,7 +23,7 @@ int COMMANDSYMB_SIZES[TOTALCOMMANDSYMBS]={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,1,3,
 PCX dlgfilediriconspcx[5];
 
 //================================
-SC_FontHeader *loadfont(char *filename)
+SC_FontHeader *loadfont(const char *filename)
 {
     char *mem = NULL;
     mpqloadfile(filename,&mem);

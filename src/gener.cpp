@@ -86,7 +86,6 @@ MAIN_IMG *mousedestimg;
 ======================================================
 ======================================================*/
 int main(int c,char **parm,char **env)
-
 {
     long usec;
     int i,err,statusgame,firsttimelaunch=0,videook=0;
@@ -102,7 +101,7 @@ int main(int c,char **parm,char **env)
 
     inivars();
     fflush(stdout);
-    if(!mouseinit())
+    if(!LowMouse.Init())
     {
        printf("Warning: Mouse Not Detected!\n");
        fflush(stdout);
@@ -170,8 +169,8 @@ int main(int c,char **parm,char **env)
 	    }
 	    if (i == 2)
 		gameconf.grmode.flags |= DISPLAYFLAGS_EMULATIONMODE;
-	    SetMousePos(gameconf.grmode.x/2,gameconf.grmode.y/2);
-	    SetMousePos(gameconf.grmode.x/2,gameconf.grmode.y/2);
+	    LowMouse.SetPos(gameconf.grmode.x/2,gameconf.grmode.y/2);
+	    LowMouse.SetPos(gameconf.grmode.x/2,gameconf.grmode.y/2);
 	    mouse_x=gameconf.grmode.x/2;
 	    mouse_y=gameconf.grmode.y/2;
 	    if (installvectors())
@@ -1315,7 +1314,7 @@ int gogame(struct mapinfo *info)
 	    showedmenu.EndShowMenu();
 	}
 //	DEBUGMESSCR("%d\n",MENUACTIVE);
-	mouse_b = mousebuttons();
+	mouse_b = LowMouse.GetButtonStatus();
 	if (needrefreshatend&scrnew)
 	{
 	    needrefreshatend = 0;
@@ -1620,7 +1619,7 @@ void wscreenonmem(int nrregions,SCREEN_REGION regions[])
 //    printf("windowactive=%d\n",gameconf.grmode.windowactive);
 }
 //===================================================
-void gameend(char *mes)
+void gameend(const char *mes)
 {
     logend();
     printf("%s\n",mes);

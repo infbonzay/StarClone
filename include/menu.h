@@ -496,15 +496,15 @@ void drawbuttonitem(MENUSTR *allmenus,int itemnr);
 
 int  geteditboxtextsize(MENUSTR *allmenus,int nr);
 char *geteditboxtext(MENUSTR *allmenus,int nr);
-void changeeditboxtext(MENUSTR *allmenus,int nr,char *newstr);
-void changeeditboxparam(MENUSTR *allmenus,int nr,char *beginstr,int maxsizestr);
+void changeeditboxtext(MENUSTR *allmenus,int nr,const char *newstr);
+void changeeditboxparam(MENUSTR *allmenus,int nr,const char *beginstr,int maxsizestr);
 void addeditboxitem(MENUSTR *allmenus,int nr,int hotx,int hoty,
 				  int hotsizex,int hotsizey,int textx,int texty,
-				  int fontnr,char *beginstr,int maxsizestr,unsigned int colors4);
+				  int fontnr,const char *beginstr,int maxsizestr,unsigned int colors4);
 void draweditboxitem(MENUSTR *allmenus,int itemnr);
 
 
-void changetextitem(MENUSTR *allmenus,int nr,char *textstr);
+void changetextitem(MENUSTR *allmenus,int nr,const char *textstr);
 void changetextskiplinepixels(MENUSTR *allmenus,int nr,int skiplinepixels);
 void addtextitem(MENUSTR *allmenus,int nr,int labelid,int hotx,int hoty,int hotsizex,int hotsizey,int textx,int texty,
 		    char *textstr,int fontnr,int rowsize,unsigned int colors4);
@@ -551,7 +551,7 @@ void addbuttontosmk(MENUSTR *allmenus,int nr,int xpos,int ypos,int buttonareaxsi
 void drawsmkvideo(MENUSTR *allmenus,int itemnr);
 void drawsmkbuttonitem(MENUSTR *allmenus,int itemnr,BUTTON *button,int xpos,int ypos);
 void setsmkflags(MENUSTR *allmenus,int itemnr,int smknr,unsigned char smkflags);
-void changeimageitem(MENUSTR *allmenus,int nr,char *pcxfile);
+void changeimageitem(MENUSTR *allmenus,int nr,const char *pcxfile);
 void addimageitem(MENUSTR *allmenus,int nr);
 void addimageitem(MENUSTR *allmenus,int nr,int hotx,int hoty,int sizex,int sizey,char *pcxfile);
 void drawimageitem(MENUSTR *allmenus,int itemnr);
@@ -611,7 +611,7 @@ char *getlistbox_selecteditemname(MENUSTR *allmenus,int nr);
 void RemoveMenu_Callback(MENUSTR *allmenus);
 void AddMenu_SomeCallback(MENUSTR *allmenus,int (*func)(MENUSTR *,void *),void *somecallbackdata);
 void changemenuitemtype(MENUSTR *allmenus,int nr,int newitemtype,int fontnr,int colors4);
-int  glu_editmenu(MENUSTR *prevmenu,char *dialogbinfile,char *errormessage,char *fonttable,GRPFILE *dlg,char *str,int maxstrlen);
+int  glu_editmenu(MENUSTR *prevmenu,const char *dialogbinfile,char *errormessage,char *fonttable,GRPFILE *dlg,char *str,int maxstrlen);
 int  RunCallBackFuncs(MENUSTR *allmenus);
 int  drawmenu_ONETICK(MENUSTR *allmenus);
 int  drawmenu_LASTTICK(MENUDRAW *menudraw);

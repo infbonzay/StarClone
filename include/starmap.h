@@ -509,7 +509,7 @@ void add_unit_stat(struct mapinfo *info,int stattype,int playernr,SCUNIT SC_Unit
 void sub_unit_stat(struct mapinfo *info,int stattype,int playernr,SCUNIT SC_Unit);
 
 /* reads map from unpacked chk */
-int  read_starmap( const char *fname, struct mapinfo * ,int flags);
+int  read_starmap(const char *fname, struct mapinfo * ,int flags);
 /* unpacks and reads map */
 int  load_starmap( const char *mapfile,char *fname, struct mapinfo * ,GAMECONF *conf);
 void print_mapinfo( struct mapinfo *info );
@@ -533,7 +533,7 @@ void randomizecolor(void);
 
 int  GetPlayableGameNumber(mapinfo *info);
 void free_missionobjectives(void);
-void fill_missionobjectives(char *missiontxt);
+void fill_missionobjectives(const char *missiontxt);
 LEADERBOARD *AddLeaderBoard(int leaderboardnr,int leaderboardtype,struct mapinfo *info,\
 			    int actiononplayer,int unittype,int nrofunits,int stringID);
 void CalcLeaderBoards(struct mapinfo *info);

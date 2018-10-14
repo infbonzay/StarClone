@@ -125,7 +125,7 @@ void mymousemoveevent(int x,int y)
     mouse_x = x;
     mouse_y = y;
     if (mouseborder)
-	SetMousePos(x,y);
+	LowMouse.SetPos(x,y);
     if (!currentmousehottable)
 	return;
     if (!currentmousehottable->callbackwork)
@@ -652,7 +652,7 @@ int drawmenu(MENUSTR *allmenus,int flags)
     {
 	getmousetype(map.MAPXGLOBAL,map.MAPYGLOBAL);
 	do{
-		mouse_b = mousebuttons();
+		mouse_b = LowMouse.GetButtonStatus();
 		eventwindowloop();
 		getmouseonitem(&activeitemchange,&activeitem);
 		keyrefresh();
@@ -826,7 +826,7 @@ int drawmenu(MENUSTR *allmenus,int flags)
 		}
 	}while(selectedmenu==NOSELECTMENUBAR);
     }//flags
-    GetMouseMove();
+    LowMouse.GetPos();
     loadunderitems(allmenus,ITEM_ONLYFREE);
     unregmenucallbacks();
     mymousemoveevent(mouse_x,mouse_y);
@@ -858,7 +858,7 @@ int showlistmenu(MENUSTR *allmenus)
     checkanddrawmenu(allmenus,ITEMNOONEACTIVE,ITEM_RESTOREANDFREE);
     getmousetype(map.MAPXGLOBAL,map.MAPYGLOBAL);
     do{
-	mouse_b = mousebuttons();
+	mouse_b = LowMouse.GetButtonStatus();
 	getmouseonitem(&activeitemchange,&activeitem);
 	eventwindowloop();
 	if (allmenus->prevmenu)
@@ -905,7 +905,7 @@ int showlistmenu(MENUSTR *allmenus)
 	    setmouseonitem(0);
 	}
     }while(selectedmenu==NOSELECTMENUBAR);
-    GetMouseMove();
+    LowMouse.GetPos();
     loadunderitems(allmenus,ITEM_ONLYFREE);
     unregmenucallbacks();
     ret=selectedmenu;
@@ -1597,7 +1597,7 @@ int geteditboxtextsize(MENUSTR *allmenus,int nr)
     return(0);
 }
 //==========================================
-void changeeditboxtext(MENUSTR *allmenus,int nr,char *newstr)
+void changeeditboxtext(MENUSTR *allmenus,int nr,const char *newstr)
 {
     MENUPOS *menuitem=&allmenus->menu[nr];
     if (menuitem->itemtype==ISEDITBOX)
@@ -1611,7 +1611,7 @@ void changeeditboxtext(MENUSTR *allmenus,int nr,char *newstr)
 
 }
 //==========================================
-void changeeditboxparam(MENUSTR *allmenus,int nr,char *beginstr,int maxsizestr)
+void changeeditboxparam(MENUSTR *allmenus,int nr,const char *beginstr,int maxsizestr)
 {
     MENUPOS *menuitem=&allmenus->menu[nr];
     if (menuitem->itemtype==ISEDITBOX)
@@ -1628,7 +1628,7 @@ void changeeditboxparam(MENUSTR *allmenus,int nr,char *beginstr,int maxsizestr)
 //==========================================
 void addeditboxitem(MENUSTR *allmenus,int nr,int hotx,int hoty,
 				  int hotsizex,int hotsizey,int textx,int texty,
-				  int fontnr,char *beginstr,int maxsizestr,unsigned int colors4)
+				  int fontnr,const char *beginstr,int maxsizestr,unsigned int colors4)
 {
     MENUPOS *menuitem=&allmenus->menu[nr];
     menuitem->item.editbox=(EDITBOX *)wmalloc(sizeof(EDITBOX));
@@ -1683,7 +1683,7 @@ void deleditboxitem(MENUSTR *allmenus,int nr,int end)
 }
 //==========================================
 //==========================================
-void changetextitem(MENUSTR *allmenus,int nr,char *textstr)
+void changetextitem(MENUSTR *allmenus,int nr,const char *textstr)
 {
     MENUPOS *menuitem=&allmenus->menu[nr];
     if (menuitem->itemtype==ISLABELLEFT||menuitem->itemtype==ISLABELCENTER||menuitem->itemtype==ISLABELRIGHT)
@@ -2979,7 +2979,7 @@ void updateimageitem(MENUSTR *allmenus,int nr,char *bufpixels)
 	DEBUGMESSCR("leak detected!\n");
 }
 //==========================================
-void changeimageitem(MENUSTR *allmenus,int nr,char *pcxfile)
+void changeimageitem(MENUSTR *allmenus,int nr,const char *pcxfile)
 {
     MENUPOS *menuitem=&allmenus->menu[nr];
     if (menuitem->itemtype==ISIMAGE)

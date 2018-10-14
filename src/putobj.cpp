@@ -443,10 +443,13 @@ void ShowUpgradesInBar(int XWINPOS,int YWINPOS,OBJ *a,OBJstruct *b)
     int atack1,atack2,armor,sharmor,icon,icon2;
     int MESxpos=-1,MESypos,MESparam1,MESparam2;
     int newunit;
-    char *MESstr,*MESicon,*tempfinal="",*MESfinal="";
+    char *MESstr,*MESicon,*tempfinal,*MESfinal;
+    
     char *mes1,*mes2;
 
     char sname[3]={0,0,0};
+    tempfinal[0]=0;
+    MESfinal[0]=0;
     if (IsOBJUnderConstruct(a))//&&a->SC_Unit!=SC_EGGOBJ&&a->SC_Unit!=SC_LURKEREGGOBJ)
 	return;
     if (GetConstructNR(a)||a->loaded)
@@ -1211,7 +1214,7 @@ void drawallunitsinbar(int XWINPOS,int YWINPOS,struct OBJ *a[],int count)
     struct OBJ *a1;
     if (count)
     {
-	mbuttonpress=mouse_b&WMLEFTKEY;
+	mbuttonpress = LowMouse.GetButtonStatus() & WMLEFTKEY;
 	shiftpress=KEYPRESS(SHIFTLKEY)|KEYPRESS(SHIFTRKEY);
 	ctrlpress=KEYPRESS(CTRLLKEY)|KEYPRESS(CTRLRKEY);
 	for (i=0;i<MAXSELECTMAN;i++)

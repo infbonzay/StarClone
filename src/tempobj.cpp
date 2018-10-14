@@ -658,7 +658,7 @@ void testunits(int deltax,int deltay,int player,struct mapinfo *loadedmap)
 }
 //=====================================
 //=====================================
-char *CLANNAMES[3][8]=	{ { "Zerg Brood Swarm",
+const char *CLANNAMES[3][8]=	{ { "Zerg Brood Swarm",
 			    "Clatuzg Zerg Swarm",
 			    "Ghumatz Other Swarm",
 			    "Elite Overmind Broods",

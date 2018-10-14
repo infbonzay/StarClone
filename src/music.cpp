@@ -220,12 +220,12 @@ void LoadNextAudioData(void *info)
     }while(1);
 }
 //=======================================
-int PlayMusic(char *filename,int repeatflag)
+int PlayMusic(const char *filename,int repeatflag)
 {
     return(PlayMusic(filename,repeatflag,NULL));
 }
 //=======================================
-int PlayMusic(char *filename,int repeatflag, void (*onfinishplay)(void))
+int PlayMusic(const char *filename,int repeatflag, void (*onfinishplay)(void))
 {
     int result,i;
     unsigned int readed;

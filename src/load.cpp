@@ -255,7 +255,7 @@ int loadlang(void)
     return(-1);
 }
 //==============================
-int _loadlang(char *lang)
+int _loadlang(const char *lang)
 {
   int m;
   FILE *h;
@@ -452,7 +452,7 @@ int loadpcxtables(void)
     return 0;
 }
 //==============================
-char *dlgtilegrpname[4]={
+const char *dlgtilegrpname[4]={
 		"dlgs\\zerg.grp",
 		"dlgs\\terran.grp",
 		"dlgs\\protoss.grp",
@@ -784,7 +784,7 @@ void unloadcreep(void)
     }
 }
 //==============================
-void savelog(char *mes,int i)
+void savelog(const char *mes,int i)
 {
 #ifdef UNDERLINUX
     if (i)

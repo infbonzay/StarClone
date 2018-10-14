@@ -2,31 +2,35 @@
 #include "grsdl.h"
 #include "mousesdl.h"
 
-int WMouseMoveRelativX,WMouseMoveRelativY;
-char mousedetect;
 //==========================
-int mousebuttons(void)
+int lowmouse::Init(void)
 {
-//    SDL_PumpEvents();
+    return(1);
+}
+//==========================
+int lowmouse::GetButtonStatus(void)
+{
     return(SDL_GetMouseState(NULL, NULL));
 }
 //==========================
-void GetMouseMove(void)
+void lowmouse::GetPos(void)
 {
-//    SDL_PumpEvents();
-    SDL_GetRelativeMouseState(&WMouseMoveRelativX,&WMouseMoveRelativY);
+    SDL_GetRelativeMouseState(&DeltaX,&DeltaY);
 }
 //==========================
-void SetMousePos(int x,int y)
+void lowmouse::FlushPos(void)
+{
+    int x,y;
+    SDL_GetRelativeMouseState(&x,&y);
+}
+//==========================
+void lowmouse::SetPos(int x,int y)
 {
     int delx,dely;
     SDL_WarpMouse(x,y);
     SDL_PumpEvents();
-    SDL_GetRelativeMouseState(&delx,&dely);
+    FlushPos();
 }
 //==========================
-int mouseinit(void)
-{
-    return(1); //mouse exist
-}
-//==========================
+lowmouse LowMouse;
+

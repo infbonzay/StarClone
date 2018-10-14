@@ -80,12 +80,12 @@ void ShowMenuEdge(MENUSTR *menu)
 	puttransptilebox(menu->x,menu->y,menu->xsize,menu->ysize,gametilegrp);
 }
 //==========================================
-MENUSTR *LoadDialogBin(char *dialogbinfilename,int dialog_opt,int defaultfontnr)
+MENUSTR *LoadDialogBin(const char *dialogbinfilename,int dialog_opt,int defaultfontnr)
 {
     return(LoadDialogBin(dialogbinfilename,dialog_opt,0,defaultfontnr));
 }
 //==========================================
-MENUSTR *LoadDialogBin(char *dialogbinfilename,int dialog_opt,int addforreserv,int defaultfontnr)
+MENUSTR *LoadDialogBin(const char *dialogbinfilename,int dialog_opt,int addforreserv,int defaultfontnr)
 {
     int i,buttoncolor,textcolor,radiocolor,checkboxcolor,horizbarcolor,listcolor,decorselecteditem;
     int lastelem=0,elemnr=0,parcedbuttons=0,firstradioelem=-1,firsttextitem=-1,firstlistitem=-1;
@@ -359,7 +359,7 @@ MENUSTR *LoadDialogBin(char *dialogbinfilename,int dialog_opt,int addforreserv,i
     return(menu);
 }
 //==========================================
-DIALOGBIN_INFO *DialogBin_GetItemCoords(char *dialogbinfilename)
+DIALOGBIN_INFO *DialogBin_GetItemCoords(const char *dialogbinfilename)
 {
     int maxelem,i,lastelem=0,elemnr=0,len;
     int sizex,sizey;
@@ -453,7 +453,7 @@ void DialogBin_FreeItemCoords(DIALOGBIN_INFO *allcoords)
     }
 }
 //==========================================
-void DialogBin_Save(MENUSTR *menu,char *label,char *filename)
+void DialogBin_Save(MENUSTR *menu,char *label,const char *filename)
 {
     int i;
     int array[100];
@@ -462,7 +462,7 @@ void DialogBin_Save(MENUSTR *menu,char *label,char *filename)
     DialogBin_Save(menu,label,filename,array);
 }
 //==========================================
-void DialogBin_Save(MENUSTR *menu,char *label,char *filename,int *sortedarray)
+void DialogBin_Save(MENUSTR *menu,char *label,const char *filename,int *sortedarray)
 {
     int arrayelemnr,elemnr=0,menuelemnr=0,incrmenuelem,flags,alltext,previoustext,textdataoffset,sizedialog;
     int xwin,ywin,xwinsize,ywinsize,i,len,totalsmk,dialogsmksize,havetxt;
@@ -617,11 +617,10 @@ void DialogBin_Save(MENUSTR *menu,char *label,char *filename,int *sortedarray)
 		break;
 	}
 	if (!text||!text[0])
-	    text="";
-	{
-	    int havetxt=checkfordublicate(textdata,textdataoffset,text);
-	    if (havetxt==-1)
-	    {
+	    text[0]=0;
+        int havetxt=checkfordublicate(textdata,textdataoffset,text);
+        if (havetxt==-1)
+        {
 		tempdialog->MainStringOffset=textdataoffset;
 		if ((menu->menu[arrayelemnr].hotkey!=255)&&(menu->menu[arrayelemnr].hotkey!=0))
 		{
@@ -630,12 +629,11 @@ void DialogBin_Save(MENUSTR *menu,char *label,char *filename,int *sortedarray)
 		}
 		strcpy(textdata+textdataoffset,text);
 		textdataoffset+=strlen(text)+1;
-	    }
-	    else
-	    {
-		tempdialog->MainStringOffset=havetxt;
-	    }
-	}
+        }
+        else
+        {
+	    tempdialog->MainStringOffset=havetxt;
+        }
 	//set smkdata structures if any
 	dialogsmksize=0;
         if (menu->menu[arrayelemnr].itemtype==ISSMKVIDEO)
@@ -718,7 +716,7 @@ void DialogBin_Save(MENUSTR *menu,char *label,char *filename,int *sortedarray)
     wfree(dialogdata);
 }
 //==========================================
-MENUSTR *DialogBin_ShowPermanent(char *dialogbinfilename,int dialog_opt,int addforreserv,
+MENUSTR *DialogBin_ShowPermanent(const char *dialogbinfilename,int dialog_opt,int addforreserv,
 				void (*refreshfunc)(void *,int))
 {
     MENUSTR *dialog=LoadDialogBin(dialogbinfilename,dialog_opt,addforreserv);

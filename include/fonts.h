@@ -95,7 +95,7 @@
 #define EMPTYCUBE14X14CHAR	"\x13"
 #define TOTALCOMMANDSYMBS	20
 
-SC_FontHeader *loadfont(char *filename);
+SC_FontHeader *loadfont(const char *filename);
 
 void unloadfont(SC_FontHeader *font);
 int  putfntsymbol2(int x,int y,int fontnr,int symbolnr,char *offsettable,int skupup,int skipdown);

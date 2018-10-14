@@ -95,28 +95,28 @@ int	ctextures;
 //	int xk,yk;
 short   int maxway;
 
-char	*racename[3]={"Zerg","Terran","Protoss"};
+const char	*racename[3]={"Zerg","Terran","Protoss"};
 
-char    *cmpgn_cmd[12]={"/COMMENT","/FADESPEED","/DISPLAYTIME","/BACKGROUND","/FONTCOLOR",
+const char    *cmpgn_cmd[12]={"/COMMENT","/FADESPEED","/DISPLAYTIME","/BACKGROUND","/FONTCOLOR",
 			"/SCREENLOWERLEFT","/SCREENLEFT","/SCREENRIGHT","/SCREENCENTER","/SCREENTOP","/SCREENBOTTOM",
 			"/PAGE"};
 
-char    *rezu[14]={"[NEWOBJECT]","ENDOBJ","NOADDSTATSATCONSTR",
+const char    *rezu[14]={"[NEWOBJECT]","ENDOBJ","NOADDSTATSATCONSTR",
                        "SPEEDUPG","ULTRALISKSECONDARMOR","SIGHTUPG",             
                        "MANAUPG","PROPERTIES","TIMELEFT","CREATEFROMUNIT","ATACKSPEEDUPG",
                        "CREEP","CLOAKRANGE","ADDITIONALTEXT"
                        };
 
-char    *rezo[24]={  "LANG","GAMEPATH","MAPPATH","GAMESPEED","MUSICVOLUME","SOUNDVOLUME","UNITSPEACH",
+const char    *rezo[24]={  "LANG","GAMEPATH","MAPPATH","GAMESPEED","MUSICVOLUME","SOUNDVOLUME","UNITSPEACH",
             	    "ADVISORSOUND","BUILDSOUND","SUBTITLES","GAMMA","SATURATE","ANIMATION","PORTRAITS",
 	    	    "MPQFILES","GRMODE","MOUSESCROLLSPEED","KEYSCROLLSPEED","CPUTHROTTLING","VIEWENTIREMAP",
 	    	    "NETWORKLATENCY","INSTALLFILES","FIRSTRUN","TITLEDELAY"
 	    	 };
-char    *rezmp[16]={"[NEWMAGE]","MINDISTANCE","DIAPAZONE","RIGHTWAY","IGNOREREQ","TIMEMAGEACTIVE",
+const char    *rezmp[16]={"[NEWMAGE]","MINDISTANCE","DIAPAZONE","RIGHTWAY","IGNOREREQ","TIMEMAGEACTIVE",
 		  "IMAGES_ID","USETECHID","DEPENDONTYPEID","CREATEWEAPON",
 		  "QUEUEDTOMOVELIST","CANNOTBEINTERRUPTED","SOUNDONCASTANDHIT","RACE","SHOWHALLUCINATED","ORDERTYPE"
                   };
-char    *rezwp[2] = {"[WEAPON]","RANGEUPGNR"};
+const char    *rezwp[2] = {"[WEAPON]","RANGEUPGNR"};
 
 GRPFILE *gametilegrp,*gamedlggrp;
 
@@ -236,7 +236,7 @@ char	EXPANSIONSET		= 1;
 //==========================================================
 void inivars(void)
 {
-    mousedetect=0;
+    //mousedetect=0;
     GAME=0;
     keyactive=0;
     lastkey=0;

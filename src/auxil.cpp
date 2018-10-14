@@ -28,7 +28,7 @@ int CalcTotalDistance(int topspeed,int minspeed,int acceleration)
     return(distance);
 }
 //=================================
-char *filename2dos(char *fn)
+char *filename2dos(const char *fn)
 {
     char *ret;
     int i,j;
@@ -37,12 +37,12 @@ char *filename2dos(char *fn)
     memcpy(ret,fn,j);
     ret[j]=0;
     for (i=0;i<j;i++)
-	if (fn[i]=='/')
-	    fn[i]='\\';
+	if (ret[i]=='/')
+	    ret[i]='\\';
     return(ret);
 }
 //=================================
-char *filename2unix(char *fn)
+char *filename2unix(const char *fn)
 {
     char *ret;
     int i,j;
@@ -56,7 +56,7 @@ char *filename2unix(char *fn)
     return(ret);
 }
 //==================================
-char *filename2temp(char *fn)
+char *filename2temp(const char *fn)
 {
     char *ret;
     int i,j,j2;
@@ -206,7 +206,7 @@ long long FILElength(FILE *descriptor)
     return(len);
 }
 //=======================================
-long long FILElength(char *fn)
+long long FILElength(const char *fn)
 {
     struct stat st;
     memset(&st,0,sizeof(struct stat));
@@ -328,7 +328,7 @@ void Gimp_SavePal(char *fn,char *palettename,char *pal,int pixelsize)	//pixelsiz
     }
 }
 //=================================
-char *makefilename(char *firstbuf,int offsetbuf,char f1,char f2,char *f4)
+char *makefilename(char *firstbuf,int offsetbuf,char f1,char f2,const char *f4)
 {
     int add=0;
     if (f1)

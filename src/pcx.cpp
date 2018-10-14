@@ -45,7 +45,7 @@ void PCX::encgetMPQ(int *pbyt, int *pcnt, void *f)
         *pbyt = i;
 }
 //=======================================
-int PCX::openMpqPcx(char *filepcx,HANDLE hmpq)
+int PCX::openMpqPcx(const char *filepcx,HANDLE hmpq)
 {
     char *adrpict2;
     int chr,cnt;
@@ -119,7 +119,7 @@ int PCX::openMpqPcx(char *filepcx,HANDLE hmpq)
     return(OKPCX);
 }
 //=======================================
-int PCX::openMpqPcx(char *filepcx)
+int PCX::openMpqPcx(const char *filepcx)
 {
     HANDLE retmpqnr = MpqsFindFile(filepcx);
 //    if (!retmpqnr)

@@ -4,13 +4,20 @@
 #define WMLEFTKEY  (SDL_BUTTON(1))
 #define WMRIGHTKEY (SDL_BUTTON(3))
 
-int mouseinit(void);        //for dos compatibility
-int mousebuttons(void);
-void GetMouseMove(void);
-void SetMousePos(int x,int y);
+class lowmouse
+{
+public:
+    int DeltaX,DeltaY;
 
-extern int WMouseMoveRelativX,WMouseMoveRelativY;
-extern  char mousedetect;
+    int Init(void);
+    int GetButtonStatus(void);
+    void GetPos(void);
+    void FlushPos(void);
+    void SetPos(int x,int y);
+};
+
+extern lowmouse LowMouse;
+
 
 #endif
 

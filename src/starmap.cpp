@@ -538,7 +538,7 @@ int load_terrain_tiles( struct mapinfo *info,
 #define MAXBLOCK (1024*1024)
 //=================================================
 mylist map_units,map_doodads;
-int read_starmap(HANDLE mpq,char *filename, struct mapinfo *info,int flags )
+int read_starmap(HANDLE mpq,const char *filename, struct mapinfo *info,int flags )
 {
 	int i,j,err,testplay,trgfilesize;
 	HANDLE f;
@@ -2060,7 +2060,7 @@ void free_missionobjectives(void)
     }	
 }
 //=================================================
-void fill_missionobjectives(char *missiontxt)
+void fill_missionobjectives(const char *missiontxt)
 {
     free_missionobjectives();
     missionobj=(char *)wmalloc(strlen(missiontxt)+1);

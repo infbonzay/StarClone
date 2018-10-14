@@ -105,7 +105,7 @@ struct PLAYGAMER_TEMP
 
 extern PLAYGAMER curplayer[];
 void getplayerinfo(char *nickname);
-void setplayername(int playernr,char *playername);
+void setplayername(int playernr,const char *playername);
 char *getplayername(int playernr);
 char *getplayerclan(int playernr);
 void setplayerclan(int playernr,char *clanname);

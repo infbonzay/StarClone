@@ -27,9 +27,9 @@
 #define min(a,b)	(((a)<(b)) ? (a) : (b) )
 #define max(a,b)	(((a)>(b)) ? (a) : (b) )
 
-char *filename2dos(char *fn);
-char *filename2unix(char *fn);
-char *filename2temp(char *fn);
+char *filename2dos(const char *fn);
+char *filename2unix(const char *fn);
+char *filename2temp(const char *fn);
 
 void witoa(int var1,char *adr,int simb);
 char *witoa(int var,char *adr);
@@ -48,7 +48,7 @@ int CalcTotalDistance(int fromspeed,int tospeed,int acceleration);
 int  strscmps(char *strvalue,char *soundtypes[],int counttypes);
 int  rmdirrec(const char *dirname);
 long long FILElength(FILE *descriptor);
-long long FILElength(char *fn);
+long long FILElength(const char *fn);
 int  CalcGradus(int x1,int y1,int x2,int y2);
 unsigned char CalcDirection(int x1,int y1,int x2,int y2);
 //=================================
@@ -59,7 +59,7 @@ int  savebuff(const char *fn,void *adress,int bufsize);
 unsigned int mkchecksumm(char *filename);
 void Gimp_SavePal(char *fn,char *palettename,char *pal,int pixelsize);
 int  zerocmp(void *array,int nrsimb);
-char *makefilename(char *firstbuf,int offsetbuf,char f1,char f2,char *f4);
+char *makefilename(char *firstbuf,int offsetbuf,char f1,char f2,const char *f4);
 int  check_ifhavewget(void);
 
 //==========================================

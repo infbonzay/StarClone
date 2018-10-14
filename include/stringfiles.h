@@ -3,59 +3,52 @@
 
 #define GAMECURSOR_OFFSET	6
 
+extern const char    *ires[3][3];
+extern const char    *imana;
+extern const char    *iemptycube;
+extern const char    *filemans[];
+extern const char    *filemageprop;
+extern const char    *fileweaponsconf;
 
+extern const char    *tselect;
+extern const char    *tminimap;
+extern const char    *tunit;
+extern const char    *icons;
+extern const char    *TEMPDIR;
+extern const char    *transp;
+extern const char    *blackgrd;
+extern const char    *whitegrd;
+extern const char    *redgrd;
+extern const char    *greengrd;
+extern const char    *bluegrd;
+extern const char    *twire;
+extern const char    *thpbar;
+extern const char    *tfontgam;
+extern const char    *tblink;
 
+extern const char    *redtr;
+extern const char    *greentr;
+extern const char    *bluetr;
 
-extern char 	*ires[3][3];
-extern char 	*imana,*iemptycube;
-extern char    *filemans[];
+extern const char      *allfilescursors[];
+extern const char	*palettedir[];
+extern const char	*fontname[];
+extern const char      *iconsgrp;
+//unit in bar with shp&hp
+extern const char	*wire1;
+extern const char	*wire2;
+extern const char	*wire3;
+extern const char	*blinkgrpfn;
+extern const char	*GLUCHAT_DOWNLOADPROGRESSICON;
+extern const char	*MAINMENU_DOWNLOADPROGRESSICON;
+extern const char	*STAREDITCHK;
 
-extern char    filemageprop[];
-extern char    fileweaponsconf[];
+extern const char	*RACE_CHAR;
+extern const char	*LOSEWIN_STR;
+extern const char	*DEFEAT_VICTORY[];
 
-extern char	tselect[];
-extern char	tminimap[];
-
-extern char	tunit[];
-extern char	icons[];
-extern char	TEMPDIR[];
-
-extern char	transp[];
-extern char	blackgrd[];
-extern char	whitegrd[];
-extern char	redgrd[];
-extern char	greengrd[];
-extern char	bluegrd[];
-extern char	twire[];
-extern char	tfontgam[];
-extern char	tblink[];
-
-extern char	thpbar[];
-extern char	redtr[];
-extern char	greentr[];
-extern char	bluetr[];
-
-
-
-extern char 	*allfilescursors[];
-extern char 	*palettedir[];
-extern char	*fontname[];
-
-extern char	*pylonname[];
-extern char	filetextteleport[];
-extern char	iconsgrp[];
-extern char	wire1[],wire2[],wire3[];
-extern char	blinkgrpfn[];
-extern char	GLUCHAT_DOWNLOADPROGRESSICON[];
-extern char	MAINMENU_DOWNLOADPROGRESSICON[];
-extern char 	RACE_CHAR[];
-extern char	LOSEWIN_STR[];
-extern char	*DEFEAT_VICTORY[];
-
-extern char	STAREDITCHK[];
-
-extern char	GAMECURSOR_NAME[];
-extern char	ARROW_STR[];
+extern char 		GAMECURSOR_NAME[];
+extern const char 	*ARROW_STR;
 
 #define STARCLONEEXT		".scu"
 

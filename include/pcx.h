@@ -63,8 +63,8 @@ private:
 public:
     PCX(void);
     ~PCX(void);
-    int  openMpqPcx(char *filepcx,HANDLE hmpq);
-    int  openMpqPcx(char *filepcx);
+    int  openMpqPcx(const char *filepcx,HANDLE hmpq);
+    int  openMpqPcx(const char *filepcx);
     void readBytesFromPcx(char *dest);
     void readBytesFromPcx(char *dest,int lsize);
     void readPalFromPcx(char *dest);

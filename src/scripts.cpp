@@ -466,9 +466,9 @@ while(1)
 }
 }
 //=================================
-char *LANGVALUES[2]={"ENGLISH","RUSSIAN"};
-char *YESNO[2]={"NO","YES"};
-char *PORTRAITS[3]={"YES","STATIC","NO"};
+const char *LANGVALUES[2]={"ENGLISH","RUSSIAN"};
+const char *YESNO[2]={"NO","YES"};
+const char *PORTRAITS[3]={"YES","STATIC","NO"};
 //=================================
 void saveconf(void)
 {
@@ -545,7 +545,7 @@ void unloadcfg(void)
     }
 }
 //=================================
-int loadcfg(char *filename,int *mpqresult)
+int loadcfg(const char *filename,int *mpqresult)
 {
     unsigned int j,totalmpqs,i,result;
     int k=0,intvalue,err,err2,ii,jj,mpqfounded=1;

@@ -154,16 +154,16 @@ extern short    int xpoint1l,xpoint2l,wmaxcol,wmaxrow;
 //extern		int xk,yk;
 extern short    int maxway;
 
-extern char	*cmpgn_cmd[12];
-extern char	*rezu[14];
-extern char	*rezo[24];
-extern char    	*rezmp[16];
-extern char	*rezwp[2];
+extern const char	*cmpgn_cmd[12];
+extern const char	*rezu[14];
+extern const char	*rezo[24];
+extern const char    	*rezmp[16];
+extern const char	*rezwp[2];
 
 extern char	*rezl[];
 extern char	*rezd[];
 
-extern char	*racename[];
+extern const char	*racename[];
 //extern char 	*resourcefilesname[3][2];
 extern short int resource_sprites_id[3][2];
 

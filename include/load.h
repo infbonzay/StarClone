@@ -14,7 +14,7 @@ int saveallstruct(char *file,char *string1);
 int loadstage(char *file);
 void restart(void);
 int loadlang(void);
-int _loadlang(char *lang);
+int _loadlang(const char *lang);
 struct OBJstruct *loadobj(int numberobj);
 
 int loadpcxtables(void);
@@ -50,7 +50,7 @@ void savevar(FILE *h);
 void loadvar(FILE *h);
 void saveKARTA(FILE *h);
 void loadKARTA(FILE *h);
-void savelog(char *mes,int i);
+void savelog(const char *mes,int i);
 int  LoadDatTblFiles(DATTBLSTRUCT *dattbl);
 void UnloadDatTblFiles(DATTBLSTRUCT *dattbl);
 void loadallobj(void);

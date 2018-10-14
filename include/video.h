@@ -16,12 +16,12 @@
 
 void ShowPreviewMission(int campaignnr,int missionnr,int prevafterflag);
 void ShowPreviewBuff(char *cmpbuf,int sizebuf,int esckeyaction);
-void ShowPreviewFile(char *filename,int esckeyaction);
+void ShowPreviewFile(const char *filename,int esckeyaction);
 void FadeScreen(int fadespeed,char *pal,int typeoffade);
 
 char *gettextfrombuf(char *buf,int sizebuf,int textnr);
 void PlayCampaignVideo(int campaignnr,int missionnr);
-void PlayVideoSmk(char *smkfile);
+void PlayVideoSmk(const char *smkfile);
 int  queuePCMdata(unsigned char *audiobuff,int audiosize);
 int  playPCMdata(int firstrun);
 void smkaudiofinish(int channel);

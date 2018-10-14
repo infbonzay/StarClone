@@ -32,7 +32,7 @@ mylist newgames,gamelist;
 mylist connectedplayers,bannedips;		//connected players to my game,banned ips
 NEWNETWGAME newnetwgame;
 //=============================================
-int GetINTFromArray(char *allarray,char *str,int fromid)
+int GetINTFromArray(char *allarray,const char *str,int fromid)
 {
     int i;
     int len=strlen(str);
@@ -47,7 +47,7 @@ int GetINTFromArray(char *allarray,char *str,int fromid)
     return(-1);
 }
 //=============================================
-int GetHEXFromArray(char *allarray,char *str,int fromid)
+int GetHEXFromArray(char *allarray,const char *str,int fromid)
 {
     int i;
     int len=strlen(str);
@@ -62,7 +62,7 @@ int GetHEXFromArray(char *allarray,char *str,int fromid)
     return(-1);
 }
 //=============================================
-void GetSTRFromArray(char *dest,char *allarray,char *str,int fromid)
+void GetSTRFromArray(char *dest,char *allarray,const char *str,int fromid)
 {
     char *find;
     int i=0,j;
@@ -81,7 +81,7 @@ void GetSTRFromArray(char *dest,char *allarray,char *str,int fromid)
     dest[i]=0;
 }
 //=============================================
-void GetBYTESFromArray(char *destbuf,char *allarray,int buffsize,char *str)
+void GetBYTESFromArray(char *destbuf,char *allarray,int buffsize,const char *str)
 {
     char *find;
     int len=strlen(str);
@@ -944,7 +944,7 @@ int CheckForPlayersReady(void)
     return(0);
 }
 //==========================================
-int SendInfoToMaster(int command,char *txtchat,NETWORK_INFO *sendsock,NETWORK_INFO *recvsock)
+int SendInfoToMaster(int command,const char *txtchat,NETWORK_INFO *sendsock,NETWORK_INFO *recvsock)
 {
     int i,err;
     if (!SERVER_PCID)

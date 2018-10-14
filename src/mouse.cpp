@@ -116,11 +116,12 @@ int restrictmousecoords(int REGIM)
 //    if (curentREGIM==REGIM)
 //	return 1;
     curentREGIM=REGIM;
-    if (mousedetect)
+//    if (mousedetect)
+    if (0)
     {
-	GetMouseMove();
-	mouse_x += WMouseMoveRelativX;
-        mouse_y += WMouseMoveRelativY;
+	LowMouse.GetPos();
+	mouse_x += LowMouse.DeltaX;
+        mouse_y += LowMouse.DeltaY;
         if (mouse_x>mouser[REGIM].x2) 
     	    mouse_x=mouser[REGIM].x2;
         else

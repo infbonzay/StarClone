@@ -351,20 +351,19 @@ class TBL
 {
 		TBL_FILE *tbl;
 public:
-    int		loadTBL(char *filenr);
+    int		loadTBL(const char *filenr);
     int		get_TBL_STRINGS(int stringnr);
     char	*get_TBL_STR(int stringnr);
     char	*get_TBL_SUBSTR(int stringnr,int substrnr);
     int		get_TBL_STRSize(int stringnr);
     int		get_STRS(void);
     void	log_STRS(void);
-    void	saveTBL(int strnr,char *filenr,char *arrayofstrs[]);
     
 		~TBL();
 };
 
 int checkfordublicate(char *textdata,int sizex,char *textcmp);
-void saveTBL(int strnr,char *filename,char *arrayofstrs[]);
+void	saveTBL(int strnr,const char *filenr,char *arrayofstrs[]);
 
 //==========================================
 struct DATTBLSTRUCT

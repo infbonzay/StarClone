@@ -36,7 +36,7 @@ int  createmantable(void);
 int  readrecordmans(FILE *f,int objnr);
 void loaddefcfg(void);
 void unloadcfg(void);
-int  loadcfg(char *filename,int *mpqresult);
+int  loadcfg(const char *filename,int *mpqresult);
 void saveconf(void);
 int  readmageproperties(void);
 void FreeSMKInfo(struct SMKPORTRAITS *smkinfo);

@@ -48,10 +48,10 @@ int  Master_CheckJoinPacket(MENUSTR *allmenus,NETWORK_INFO *sendsock,NETWORK_INF
 int  Guest_CheckJoinPacket(MENUSTR *allmenus,NETWORK_INFO *sendsock,NETWORK_INFO *recvsock);
 int  GetPlayersMapBits(void);
 int  GetSlotsMapBits(void);
-int  GetINTFromArray(char *allarray,char *str,int fromid);
-int  GetHEXFromArray(char *allarray,char *str,int fromid);
-void GetSTRFromArray(char *dest,char *allarray,char *str,int fromid);
-void GetBYTESFromArray(char *destbuf,char *allarray,int buffsize,char *str);
+int  GetINTFromArray(char *allarray,const char *str,int fromid);
+int  GetHEXFromArray(char *allarray,const char *str,int fromid);
+void GetSTRFromArray(char *dest,char *allarray,const char *str,int fromid);
+void GetBYTESFromArray(char *destbuf,char *allarray,int buffsize,const char *str);
 int  FillNetworkAddr(NETWORK_INFO *info,int PCID);
 int  GetMapPlayers(void);
 void EmptyConnectedPlayers(void);
@@ -60,7 +60,7 @@ int  AddListConnectedPlayer(MENUSTR *allmenus,NETWORK_JOIN_PACKET *mypacket,NETW
 int  AddConnectedPlayer(MENUSTR *allmenus,NETWPLAYERINFO *newplayer);
 void setslotinfo(MENUSTR *allmenus,int nr,int masterguest,char *playername,int plslot,int rsslot);
 int  SendInfoToConnectedPlayers(int command);
-int  SendInfoToMaster(int command,char *txtchat,NETWORK_INFO *sendsock,NETWORK_INFO *recvsock);
+int  SendInfoToMaster(int command,const char *txtchat,NETWORK_INFO *sendsock,NETWORK_INFO *recvsock);
 int  SendTextToConnectedPlayers(int playernr,char *txt,NETWORK_INFO *sendsock,NETWORK_INFO *recvsock);
 int  SendCommandToPlayer(MENUSTR *allmenus,int playernr,int command,NETWORK_INFO *sendsock,NETWORK_INFO *recvsock);
 int  SendCommandToAll(MENUSTR *allmenus,int command,NETWORK_INFO *sendsock,NETWORK_INFO *recvsock);

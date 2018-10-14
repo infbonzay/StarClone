@@ -16,7 +16,7 @@ void clearplayernames(void)
 	curplayer[i].nickname[0]=0;
 }
 //=============================================
-void setplayername(int playernr,char *playername)
+void setplayername(int playernr,const char *playername)
 {
     strncpy(curplayer[playernr].nickname,playername,MAXPLAYERNAMESYMBOLS);
     curplayer[playernr].nickname[MAXPLAYERNAMESYMBOLS] = 0;

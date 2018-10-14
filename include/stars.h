@@ -23,7 +23,7 @@ struct spkFile
 //    starBmap Bitmaps[];
 };
 
-int loadStars(char *starfn);
+int loadStars(const char *starfn);
 void unloadStars(void);
 void showStars(int deltax,int deltay);
 

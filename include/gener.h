@@ -100,7 +100,7 @@ void showramka(void);
 void showiconramka(void);
 void chdirgame(char *s);
 void wscreenonmem(int nrregions,SCREEN_REGION regions[]);
-void gameend(char *mes);
+void gameend(const char *mes);
 void logend(void);
 void clearallplayerinfo(void);
 void clearplayersconfig(void);
@@ -119,8 +119,6 @@ void ShowFirstRunVideo(int ignorefirstrunbit);
 void GoPlayNextMusic(void);
 void ShowGameStatusMenu(int *prevticks);
 void ActivateCheat(int cheatid);
-
-
 
 
 #define MINIMAPDIALOG_MAIN		0
