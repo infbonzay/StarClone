@@ -87,7 +87,7 @@ const char	*GLUCHAT_DOWNLOADPROGRESSICON="icons\\dwnlmap.pcx";
 const char	*MAINMENU_DOWNLOADPROGRESSICON="icons\\dwnlbar.pcx";
 const char	*STAREDITCHK="staredit\\scenario.chk";
 
-const char	*RACE_CHAR="ZTV";
+const char	*RACE_CHAR="ZTP";
 const char	*LOSEWIN_STR="DV";
 const char	*DEFEAT_VICTORY[2]={"defeat","vict"};
 
