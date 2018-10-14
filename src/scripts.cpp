@@ -305,7 +305,6 @@ unsigned int topspeed;
 int unitpict,unitpictpluseffect,soundfrom,soundto;
 int t,t1,i,jj,ii,noerr,u,temp1,temp2,temp3,exitlo,soundtype;
 int intvalue,intvalue2,kk;
-float fvalue;
 int nr_readed,offsfirstpict,maxsprites;
 int maxsides,typesofmove,nrgrp;
 int maxnormalmove,maxshadowmove,maxmove,firsttypeofmove;
@@ -329,7 +328,6 @@ while(1)
     strupr(strid);
     strupr(strvalue);
     intvalue=atoi(strvalue);
-    fvalue=atof(strvalue);
     if (!strid[0])
         return(-1);
     for (j=0;j<sizeof(rezu)/sizeof(char *);j++)
@@ -419,7 +417,7 @@ while(1)
                     {
                 	fscanf(f,"%s \n",strvalue);
                         temp = atoi(strvalue);
-			adr->modemove[t][t1]=atoi(strvalue);
+			adr->modemove[t][t1] = temp;
                     }
                 }
                 break;
@@ -833,11 +831,10 @@ int readmageproperties(void)
     char *statstr;
     OBJstruct *adr;
     FILE *f;
-    unsigned int i,j,k,images_id,images_tbl;
-    int intvalue,whatobj,ii,whatmage,grpfirstnr,nrgrp,totalmage=0;
+    unsigned int images_id,images_tbl;
+    int i,j,k,intvalue,whatobj,ii,whatmage,grpfirstnr,nrgrp,totalmage=0;
     int grpnr;
-    float fltvalue;
-    int picttype,maxsprites,nr_readed,fileformat,maxupg;
+    int picttype,maxsprites,nr_readed,fileformat;
     char c;
     int maxnrforread[200];
     static char strid[200],strvalue[200],strval2[200],fname[200];;
@@ -851,14 +848,12 @@ while(!feof(f))
     strupr(strid);
 //      strupr(strvalue);
     intvalue=atoi(strvalue);
-    fltvalue=atof(strvalue);
     for (j=0;j<sizeof(rezmp)/sizeof(char *);j++)
 	if (!strcmp(strid,rezmp[j]))
         {
             switch(j){
             case 0://S [NEWMAGE] numbermage namemage whatpict_in_icons.grp nratrmage
         	whatobj=intvalue;
-	        maxupg=0;
 	        totalmage++;
                 fscanf(f,"%s \n",strvalue);
 //              strlwr(strvalue);

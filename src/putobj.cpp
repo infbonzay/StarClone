@@ -434,6 +434,7 @@ void PutUpgrdMes(int xpos,int ypos,char *iconmes,char *message,int param1,int pa
 //==============================================
 void ShowUpgradesInBar(int XWINPOS,int YWINPOS,OBJ *a,OBJstruct *b)
 {
+    char nullchar=0;
     int xpos=XWINPOS+104,ypos=YWINPOS+51;
     unsigned short stattxt_id;
     unsigned char  nrofhits,tech_id;
@@ -443,13 +444,15 @@ void ShowUpgradesInBar(int XWINPOS,int YWINPOS,OBJ *a,OBJstruct *b)
     int atack1,atack2,armor,sharmor,icon,icon2;
     int MESxpos=-1,MESypos,MESparam1,MESparam2;
     int newunit;
-    char *MESstr,*MESicon,*tempfinal,*MESfinal;
+    char *MESstr,*MESicon;
+    char *tempfinal=&nullchar;
+    char *MESfinal=&nullchar;
     
     char *mes1,*mes2;
 
     char sname[3]={0,0,0};
-    tempfinal[0]=0;
-    MESfinal[0]=0;
+    //tempfinal[0]=0;
+    //MESfinal[0]=0;
     if (IsOBJUnderConstruct(a))//&&a->SC_Unit!=SC_EGGOBJ&&a->SC_Unit!=SC_LURKEREGGOBJ)
 	return;
     if (GetConstructNR(a)||a->loaded)
@@ -1426,14 +1429,14 @@ int  desenbuildifconstr(void)
     xk=map.MAPXGLOBAL;
     yk=map.MAPYGLOBAL;
     struct XY a;
-    struct OBJstruct *b,*b2;
+    //struct OBJstruct *b;
     int posibletry;
     if (buildconstr==SC_NOUNITNR)
 	return(posibleconstr);
     if (IsBuild(buildconstr))
     {
 	posibleconstr=1;
-	b=loadobj(buildconstr);
+	//b=loadobj(buildconstr);
         x=POSX(GetUnitWidthAndHeight(buildconstr,UNITDIM_WIDTH));
         y=POSY(GetUnitWidthAndHeight(buildconstr,UNITDIM_HEIGHT));
         a.x1=(mouse_x/SIZESPRLANSHX)*SIZESPRLANSHX-xk%SIZESPRLANSHX;
@@ -1479,12 +1482,12 @@ int  desenbuildifconstr(void)
         {
     	    a.y1=y0+i*SIZESPRLANSHY;
     	    a.y2=a.y1+SIZESPRLANSHY-1;
-            ykk=(a.y1+yk)/SIZESPRLANSHY;
+            //ykk=(a.y1+yk)/SIZESPRLANSHY;
             for (j=0;j<x;j++)
             {
         	a.x1=x0+j*SIZESPRLANSHX;
                 a.x2=a.x1+SIZESPRLANSHX-1;
-                xkk=(a.x1+xk)/SIZESPRLANSHX;
+                //xkk=(a.x1+xk)/SIZESPRLANSHX;
         	if (returnedarray[i*x+j]==0xffff)
         	    wsetimage8x(ENABLECONSTRUCT,&a);
         	else
@@ -1510,12 +1513,12 @@ int  desenbuildifconstr(void)
     	    {
     		a.y1=y0+i*SIZESPRLANSHY;
     		a.y2=a.y1+SIZESPRLANSHY-1;
-            	ykk=(a.y1+yk)/SIZESPRLANSHY;
+            	//ykk=(a.y1+yk)/SIZESPRLANSHY;
         	for (j=0;j<x;j++)
         	{
         	    a.x1=x0+j*SIZESPRLANSHX;
             	    a.x2=a.x1+SIZESPRLANSHX-1;
-            	    xkk=(a.x1+xk)/SIZESPRLANSHX;
+            	    //xkk=(a.x1+xk)/SIZESPRLANSHX;
         	    if (returnedarray[i*x+j]==0xffff)
         		wsetimage8x(ENABLECONSTRUCT,&a);
         	    else

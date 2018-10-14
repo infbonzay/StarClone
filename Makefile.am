@@ -9,7 +9,7 @@ else
     DEBUG = -O2
 endif
 if HAVEWARNING
-    WARN = -Werror
+    WARN = -Wall
 else
     WARN = 
 endif

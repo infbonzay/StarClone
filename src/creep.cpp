@@ -574,7 +574,7 @@ void IncreaseCreep(void)
 		    x = tempcreeptable->xpos+deltax;
 		    y = tempcreeptable->ypos+deltay;
 		    creepnr=GetCreepNr(x,y,&creepbits);
-		    if (creepnr!=NOCREEPNR)
+		    if (creepnr != NOCREEPNR)
 		    {
 			place = map.creepflagplace[y*MAXXMAP+x];
 			need  = map.creepflagneeded[y*MAXXMAP+x];
@@ -596,7 +596,7 @@ void IncreaseCreep(void)
 void DecreaseCreep(void)
 {
     int maxelements,maxelemnr,i,j,err,x,y;
-    int creepbits,creepnr,needtoremovecreep,place,need,creepsremove;
+    int creepbits,needtoremovecreep,place,need;
     signed char deltax,deltay;
     CreepAddRemoveTables *tempcreeptable;
     creepbuilds.EnumListInit();
@@ -604,7 +604,6 @@ void DecreaseCreep(void)
     {
 	    if (!(tempcreeptable->growthcreepflag&FLAG_CREEP_INCREASE))
 	    {
-		creepsremove=0;
 		for (j=tempcreeptable->curnrofcreep-1;j>=0;j--)
 		{
 		    deltax=tempcreeptable->creepinfo[j*2+0];
@@ -613,7 +612,7 @@ void DecreaseCreep(void)
 		    y = tempcreeptable->ypos+deltay;
 		    place = map.creepflagplace[y*MAXXMAP+x];
 		    need  = map.creepflagneeded[y*MAXXMAP+x];
-		    creepnr=GetCreepNr(x,y,&creepbits);
+		    GetCreepNr(x,y,&creepbits);
 		    if (!place)
 		    {
 			EmptyOneElemInArray(tempcreeptable->creepinfo,j,&tempcreeptable->curnrofcreep);

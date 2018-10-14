@@ -360,7 +360,7 @@ smk_t *smk_open_memory(const unsigned char* buffer, const unsigned int size)
 		fprintf(stderr,"libsmacker::smk_open_memory(buffer,%u) - ERROR: Fatal error in smk_open_generic, returning NULL.\n",size);
 	}
 
-error:
+//error:
 	return s;
 }
 
@@ -463,7 +463,7 @@ void smk_close(smk_t *s)
 
 	free(s);
 
-error: ;
+//error: ;
 }
 
 /* tell some info about the file */
@@ -517,8 +517,8 @@ char smk_info_video(const smk_t *object, unsigned int *w, unsigned int *h, unsig
 	}
 	return 0;
 
-error:
-	return -1;
+//error:
+//	return -1;
 }
 
 char smk_info_audio(const smk_t *object, unsigned char *track_mask, unsigned char channels[7], unsigned char bitdepth[7], unsigned int audio_rate[7])
@@ -566,8 +566,8 @@ char smk_info_audio(const smk_t *object, unsigned char *track_mask, unsigned cha
 	}
 	return 0;
 
-error:
-	return -1;
+//error:
+//	return -1;
 }
 
 /* Enable-disable switches */
@@ -591,8 +591,8 @@ char smk_enable_all(smk_t *object, const unsigned char mask)
 
 	return 0;
 
-error:
-	return -1;
+//error:
+//	return -1;
 }
 
 char smk_enable_video(smk_t *object, const unsigned char enable)
@@ -604,8 +604,8 @@ char smk_enable_video(smk_t *object, const unsigned char enable)
 	object->video->enable = enable;
 	return 0;
 
-error:
-	return -1;
+//error:
+//	return -1;
 }
 
 char smk_enable_audio(smk_t *object, const unsigned char track, const unsigned char enable)
@@ -617,8 +617,8 @@ char smk_enable_audio(smk_t *object, const unsigned char track, const unsigned c
 	object->audio[track]->enable = enable;
 	return 0;
 
-error:
-	return -1;
+//error:
+//	return -1;
 }
 
 unsigned char * smk_get_palette(const smk_t *object)
@@ -628,8 +628,8 @@ unsigned char * smk_get_palette(const smk_t *object)
 
 	return object->video->palette;
 
-error:
-	return NULL;
+//error:
+//	return NULL;
 }
 unsigned char * smk_get_video(const smk_t *object)
 {
@@ -638,8 +638,8 @@ unsigned char * smk_get_video(const smk_t *object)
 
 	return object->video->frame;
 
-error:
-	return NULL;
+//error:
+//	return NULL;
 }
 unsigned char * smk_get_audio(const smk_t *object, const unsigned char t)
 {
@@ -648,8 +648,8 @@ unsigned char * smk_get_audio(const smk_t *object, const unsigned char t)
 
 	return (unsigned char *)object->audio[t]->buffer;
 
-error:
-	return NULL;
+//error:
+//	return NULL;
 }
 unsigned int smk_get_audio_size(const smk_t *object, const unsigned char t)
 {
@@ -658,8 +658,8 @@ unsigned int smk_get_audio_size(const smk_t *object, const unsigned char t)
 
 	return object->audio[t]->buffer_size;
 
-error:
-	return 0;
+//error:
+//	return 0;
 }
 
 /* Decompresses a palette-frame. */
@@ -1356,8 +1356,8 @@ char smk_next(smk_t *s,int skipflag)
 	}
 	return SMK_DONE;
 
-error:
-	return -1;
+//error:
+//	return -1;
 }
 
 /* seek to a keyframe in an smk */

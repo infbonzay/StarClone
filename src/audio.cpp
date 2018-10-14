@@ -304,7 +304,7 @@ int playOBJsound(struct OBJ *a,int soundmode,int sfxdata_id,int stopprevsound,in
 int activatesound(struct OBJ *a,int soundmode,int addfactor,int stopprevsound)
 {
     short sndfrom,sndto;
-    int repeatedsongs=3,needsong=1,distance,musnr,maxmusnr,musplay,needadd=0;
+    int repeatedsongs=3,needsong=1,musnr,maxmusnr,musplay,needadd=0;
     int err,smktype,aliance;
     if (a->prop & VARNOTWORK)
 	return -1;
@@ -361,7 +361,6 @@ int activatesound(struct OBJ *a,int soundmode,int addfactor,int stopprevsound)
 	default:
 	    break;
     }
-    distance = (int) hypot(GetOBJx(a)-map.MAPXGLOBAL,GetOBJy(a)-map.MAPYGLOBAL);
     if (a->sfxplay.sfxtypeplayed != soundmode && a->sfxplay.sfxtypeplayed != MODESOUNDPSS)
     {
         a->sfxplay.nrselectplayed = 0;

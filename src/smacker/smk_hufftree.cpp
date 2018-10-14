@@ -30,7 +30,6 @@ void smk_huff_free(struct smk_huff_t *t)
 	/* Safe-delete tree node. */
 	free(t);
 
-error: ;
 }
 
 /* safe build with built-in error jump */

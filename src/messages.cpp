@@ -24,7 +24,7 @@
 //showedtime in milliseconds
 void BARMESSAGES::addbarmessage(char *mes,int fontnr,int color,int showedtime,int flags)
 {
-    int i,meslen,from,sizexlen,nrofmes,curtick;
+    int i,meslen,from,nrofmes,curtick;
     BARMES *bm;
     BARMES *newmes;
     if (!mes)
@@ -45,7 +45,6 @@ void BARMESSAGES::addbarmessage(char *mes,int fontnr,int color,int showedtime,in
     if (flags&BF_ALLOCBUF)
     {
 	meslen=strlen(mes)+1;
-	sizexlen=0;
         for (i=0,from=0;i<meslen;i++)
         {
     	    if (mes[i]=='\n'||i==meslen-1)

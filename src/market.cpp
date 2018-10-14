@@ -312,7 +312,7 @@ int GetUnitMaxHitPoints(SCUNIT SC_Unit)
     return(hp);
 }
 //=======================================
-unsigned int GetUnitMaxHealth(SCUNIT SC_Unit)
+int GetUnitMaxHealth(SCUNIT SC_Unit)
 {
     if (map.unit_settings.use_defaults[SC_Unit])
     {
@@ -336,7 +336,7 @@ void AddUnitHealth(OBJ *a,int addhealth)
 	a->health = GetUnitMaxHealth(a->SC_Unit);
 }
 //=======================================
-unsigned int GetUnitMaxShield(SCUNIT SC_Unit)
+int GetUnitMaxShield(SCUNIT SC_Unit)
 {
 //    if (IsShieldEnable(SC_Unit))
     {

@@ -89,7 +89,7 @@ MENUSTR *LoadDialogBin(const char *dialogbinfilename,int dialog_opt,int addforre
 {
     int i,buttoncolor,textcolor,radiocolor,checkboxcolor,horizbarcolor,listcolor,decorselecteditem;
     int lastelem=0,elemnr=0,parcedbuttons=0,firstradioelem=-1,firsttextitem=-1,firstlistitem=-1;
-    int maxelem,type,flags,textxoffset,textyoffset,maxsymbx,maxsymby,groupbuttons,buttontype,unknown;
+    int maxelem,type,flags,textxoffset,textyoffset,maxsymbx,maxsymby,groupbuttons,buttontype;
     int xmin,ymin,xsize,ysize,xwin,ywin,xwinsize,ywinsize,strxlen;
     int fontnr;
 
@@ -193,7 +193,6 @@ MENUSTR *LoadDialogBin(const char *dialogbinfilename,int dialog_opt,int addforre
 	}
 	nrofsmks=i;
 	tempdialog=tempdialog2;
-    unknown=0;
 //    if (dialog_opt!=DIALOGBIN_TEST)
 //    {
 	getmaxsymbolsize(fontnr,&maxsymbx,&maxsymby);
@@ -333,7 +332,6 @@ MENUSTR *LoadDialogBin(const char *dialogbinfilename,int dialog_opt,int addforre
 		    setdefaultbutton(menu,elemnr);
 		break;
 	    default:
-		unknown=1;
 		break;
 	}
 	setitemflags(menu,elemnr,flags);
@@ -464,7 +462,7 @@ void DialogBin_Save(MENUSTR *menu,char *label,const char *filename)
 //==========================================
 void DialogBin_Save(MENUSTR *menu,char *label,const char *filename,int *sortedarray)
 {
-    int arrayelemnr,elemnr=0,menuelemnr=0,incrmenuelem,flags,alltext,previoustext,textdataoffset,sizedialog;
+    int arrayelemnr,elemnr=0,menuelemnr=0,incrmenuelem,flags,alltext,textdataoffset,sizedialog;
     int xwin,ywin,xwinsize,ywinsize,i,len,totalsmk,dialogsmksize,havetxt;
     char *dialogdata,*textdata,*text;
     DIALOGBIN *tempdialog,*newdialog;
@@ -502,7 +500,6 @@ void DialogBin_Save(MENUSTR *menu,char *label,const char *filename,int *sortedar
     tempdialog=(DIALOGBIN *)(dialogdata+sizeof(DIALOGBIN));
     elemnr++;
     menuelemnr=0;
-    previoustext=0;
     do{
 	arrayelemnr=sortedarray[menuelemnr];
 	flags=menu->menu[arrayelemnr].dialogbin_flags;

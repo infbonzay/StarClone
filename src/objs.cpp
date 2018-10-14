@@ -658,9 +658,9 @@ int yn,distx,disty,mindist=0x7fffffff;
 //	    continue;
         yn=y1;
 	nodoodad=1;
-    	if (IsDoodadState(a->SC_Unit)&&(IsInvincibleUnit(a->SC_Unit) || GetDoodadState(a)==DOODAD_BOTTOM_STATE))
+    	if (IsDoodadState(a->SC_Unit) && (IsInvincibleUnit(a->SC_Unit) || GetDoodadState(a)==DOODAD_BOTTOM_STATE))
     	    nodoodad=0;
-    	    if (IfCanClickOBJ(a->SC_Unit)  && nodoodad && (!a->carryobj || !IsPickupUnit(a->SC_Unit)))
+	if (IfCanClickOBJ(a->SC_Unit)  && nodoodad && (!a->carryobj || !IsPickupUnit(a->SC_Unit)))
         {
     	    x = GetOBJx(a);
     	    y = GetOBJy(a);

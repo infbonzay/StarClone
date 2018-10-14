@@ -35,7 +35,7 @@ struct smk_bit_t *smk_bs_init(unsigned char *b, const unsigned int size)
 	ret->bit_num = 7;
 
 	/* either way NULL is returned : ) */
-error:
+//error:
 	return ret;
 }
 
@@ -46,8 +46,8 @@ static char smk_bs_query_8(struct smk_bit_t *bs)
 //	smk_null_check(bs);
 	return (bs->byte_num + 1 < bs->size);
 
-error:
-	return -1;
+//error:
+//	return -1;
 }
 
 /* returns "any bits left?" */
@@ -57,8 +57,8 @@ static char smk_bs_query_1(struct smk_bit_t *bs)
 //	smk_null_check(bs)
 	return (bs->bit_num < 7 || smk_bs_query_8(bs));
 
-error:
-	return -1;
+//error:
+//	return -1;
 }
 
 /* Reads a bit

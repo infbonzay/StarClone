@@ -377,7 +377,7 @@ int methoddecrxy[4][2]={{1,0},{0,-1},{-1,0},{0,1}};
 //=================================
 void getcoordofnewunit(struct OBJ *a,int nrunit,int *x,int *y)
 {
-    int xbeg,ybeg,i,xx,yy,beginpos,deltax,deltay,method,x8pos,y8pos;
+    int xbeg,ybeg,i,xx,yy,beginpos,deltax,deltay,x8pos,y8pos;
     int fromoffset=0;
     if (IsAirUnit(nrunit))
     {
@@ -392,7 +392,7 @@ void getcoordofnewunit(struct OBJ *a,int nrunit,int *x,int *y)
 	    fromoffset=SIZEXB*SIZEYB+14;
 	for (i=fromoffset;i<MAXAROUNDARRAY;i++)
 	{
-	    method=GetUnitConstrMinXY(i,&xx,&yy);
+	    GetUnitConstrMinXY(i,&xx,&yy);
 	    x8pos=xbeg+xx;
 	    y8pos=ybeg+yy;
     	    if (GetMapWalk8(x8pos,y8pos,GetUnitWidthAndHeight(nrunit,UNITDIM_WIDTH)/8,GetUnitWidthAndHeight(nrunit,UNITDIM_HEIGHT)/8))
@@ -407,7 +407,7 @@ void getcoordofnewunit(struct OBJ *a,int nrunit,int *x,int *y)
 //=================================
 void getcoordofnewunit(int nrunit,int *x,int *y,struct XY *area)
 {
-    int xbeg,ybeg,i,xx,yy,beginpos,deltax,deltay,method,x8pos,y8pos;
+    int xbeg,ybeg,i,xx,yy,beginpos,deltax,deltay,x8pos,y8pos;
     OBJstruct *b2=loadobj(nrunit);
     if (IsAirUnit(nrunit))
     {
@@ -420,7 +420,7 @@ void getcoordofnewunit(int nrunit,int *x,int *y,struct XY *area)
 	ybeg=*y/8;
 	for (i=0;i<MAXAROUNDARRAY;i++)
 	{
-	    method=GetUnitConstrMinXY(i,&xx,&yy);
+	    GetUnitConstrMinXY(i,&xx,&yy);
 	    x8pos=xbeg+xx;
 	    y8pos=ybeg+yy;
     	    if (GetMapWalk8(x8pos,y8pos,GetUnitWidthAndHeight(nrunit,UNITDIM_WIDTH)/8,GetUnitWidthAndHeight(nrunit,UNITDIM_HEIGHT)/8))

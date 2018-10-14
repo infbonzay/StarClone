@@ -43,8 +43,8 @@
 //=================================================
 struct starmap_section
 {
-  char name[4];
-  int  size;
+    char name[4];
+    unsigned int size;
 };
 
 //=================================================
@@ -386,12 +386,12 @@ int load_terrain_tiles( struct mapinfo *info,
 	unsigned short *header,*megatiles;
 	terrain_cv5 *headerconf;
 	unsigned short *used_walkf,*used_tile32prop;
-	terrain_cv5_doodad *doodadconf;
+	//terrain_cv5_doodad *doodadconf;
 
 	header = (unsigned short *)calloc( 16*MAXGROUPS, sizeof(unsigned short) );
 	headerconf = (terrain_cv5 *) calloc( 16*MAXGROUPS, sizeof(headerconf) );
 	tiles8 = (char*  )calloc( 64*MAXTILES8, sizeof(char) );
-	doodadconf=(terrain_cv5_doodad *)(headerconf+1024);
+	//doodadconf=(terrain_cv5_doodad *)(headerconf+1024);
 
 	assert( header );
 	assert( tiles8 );
@@ -550,7 +550,8 @@ int read_starmap(HANDLE mpq,const char *filename, struct mapinfo *info,int flags
 	doodad_on_map *doodadu;
 	struct locations *loc;
         int maxlocations,startloc=0;
-	int maxsectionsize=0,readyloc;
+	unsigned int maxsectionsize=0;
+	int readyloc;
 	char name[5];
 	char *prevbuf=NULL,*buf=NULL;
 	char *DD2_section=NULL;
@@ -644,7 +645,7 @@ checkmpq2:
 		}
 		buf=prevbuf;
 		wr_SFileReadFile(f,buf,section.size,&readed,NULL);
-		if (section.size!=readed)
+		if (section.size != readed)
 		{
 		    return (-1);
 		}
@@ -1803,13 +1804,14 @@ void CreateDefaultVision(struct mapinfo *info)
 int TILE8POSINTILE32[4]={0*32+0,0*32+16,16*32+0,16*32+16};
 char createcolors8x8(char *bytes32x32,int pos)
 {
-    int tempcolors[256],maxcolor=0,i,j;
+    int tempcolors[256],maxcolor=0,color8x8,i,j;
     memset(tempcolors,0,256*sizeof(int));
     for (i=0;i<8;i++)
     {
 	for (j=0;j<8;j++)
 	{
-	    tempcolors[bytes32x32[TILE8POSINTILE32[pos]+i*32+j]]++;
+	    color8x8 = bytes32x32[TILE8POSINTILE32[pos]+i*32+j];
+	    tempcolors[color8x8]++;
 	}
     }
     for (i=0;i<256;i++)
