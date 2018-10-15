@@ -96,13 +96,12 @@ unsigned char YROffsetInLetter( unsigned char *pcxbytes,int pcxsizex,int pcxsize
     }
 }
 //=============================================
-
-float getMaximalColorIntencity(PCX *pcx)
+void getMinMaxColorIntencity(PCX *pcx,float *maxIntencity,float *minIntencity)
 {
     char *buf = pcx->GetPcxRawBytes();
     int size = pcx->sizePcx();
     char *pal = pcx->GetRawPal768();
-    float maxintencity=0,intencity;
+    float maxintencity=0,minintencity=655360.0,intencity;
     float absr, absg, absb;
 
     for (int i=0;i<size;i++)
@@ -113,20 +112,25 @@ float getMaximalColorIntencity(PCX *pcx)
     	absg = GREENELEM(pal,buf[i]) * 59;	//g-percentage GREEN in any color
     	absb = BLUEELEM(pal,buf[i]) * 11;	//b-percentage BLUE in any color
 	intencity = sqrt(absr*absr + absg*absg + absb*absb);
-	if  (intencity > maxintencity)//found best equality
+	if  (intencity > maxintencity)
 	{
-	    maxintencity = intencity;
+	    maxintencity = intencity;//found best equality
+	}
+	if  (intencity < minintencity)
+	{
+	    minintencity = intencity;//found best equality
 	}
     }
-    return maxintencity;
+    *maxIntencity = maxintencity;
+    *minIntencity = minintencity;
 }
 //=============================================
 int main(int argc,char *argv[])
 {
     float absr, absg, absb;
-    if (argc != 5)
+    if (argc != 6)
     {
-	printf("usage: %s font.pcx firstasciicode(firstletter in font) lettersizex lettersizey\n",argv[0]);
+	printf("usage: %s font.pcx needcolorgradation firstasciicode(firstletter in font) lettersizex lettersizey\n",argv[0]);
 	return (-1);
     }
     FILE *f = fopen("out.fnt","wb");
@@ -135,9 +139,10 @@ int main(int argc,char *argv[])
 	printf("error create font file \n");
 	return(-2);
     }
-    int firstsymb = atoi(argv[2]);
-    int lettersizex = atoi(argv[3]);
-    int lettersizey = atoi(argv[4]);
+    int colorgradations = atoi(argv[2]);
+    int firstsymb = atoi(argv[3]);
+    int lettersizex = atoi(argv[4]);
+    int lettersizey = atoi(argv[5]);
 
     PCX *pcx = new PCX();
     int result = pcx->openMpqPcx(argv[1]);
@@ -146,7 +151,10 @@ int main(int argc,char *argv[])
 	printf("error open pcx %s\n",argv[1]);
 	return(-2);
     }
-    float maxintencity = getMaximalColorIntencity(pcx);
+    float maxintencity,minintencity,deltaintencity;
+    getMinMaxColorIntencity(pcx,&maxintencity,&minintencity);
+    minintencity = 0;
+    deltaintencity = (maxintencity - minintencity) / colorgradations;
     char *pal = pcx->GetRawPal768();
     unsigned char *pcxbytes = (unsigned char *)pcx->GetPcxRawBytes();
     int pcxsizex = pcx->xsizePcx();
@@ -172,6 +180,33 @@ int main(int argc,char *argv[])
     fwrite(letterOffsets,4,totalLetters,f);
     int k=0;
     int totalletterbytes;
+    
+    unsigned char pixels[256];
+    memset(pixels,0,256);
+    for (int y=0;y<totalLettersy;y++)
+    {
+	for (int x=0;x<totalLettersx;x++)
+	{
+	    for (int i=0;i<lettersizey;i++)
+	    {
+		for (int j=0;j<lettersizex;j++)
+		{
+		    unsigned char pixel = pcxbytes[(y*lettersizey+i)*pcxsizex + x*lettersizex+j];
+		    if (pixel != HOLEBYTE)
+    			pixels[pixel]++;
+		}
+	    }
+	}
+    }
+    int totalusedcolors = 0;
+    for (int i=0;i<256;i++)
+	if (pixels[i])
+	    totalusedcolors++;
+    if (totalusedcolors > colorgradations)
+    {
+	printf("totalpcxcolor(%d) > desired colorgradation(%d))\n",totalusedcolors,colorgradations);
+	return -1;
+    }
     for (int y=0;y<totalLettersy;y++)
     {
 	for (int x=0;x<totalLettersx;x++)
@@ -210,11 +245,15 @@ int main(int argc,char *argv[])
 			    absr = REDELEM(pal,nextbyte) * 30;
 			    absg = GREENELEM(pal,nextbyte) * 59;
 			    absb = BLUEELEM(pal,nextbyte) * 11;
-			    float intencity = sqrt(absr*absr + absg*absg + absb*absb);
-			    int gradationcolor = intencity * MAXFONTCOLORGRADATIONS / maxintencity - 1;
-			    if (gradationcolor < 0)
-				gradationcolor = 0;
-			    gradationcolor = MAXFONTCOLORGRADATIONS - gradationcolor;
+			    float currentintencity = sqrt(absr*absr + absg*absg + absb*absb);
+			    float byteintencity = (maxintencity - currentintencity);
+			    int gradationcolor = byteintencity;
+			    if (deltaintencity >=1 )
+				gradationcolor /= deltaintencity;
+			    if (gradationcolor > colorgradations)
+				gradationcolor = colorgradations-1;
+			    if (!gradationcolor)
+				gradationcolor++;
 			    letterBytes[totalletterbytes++] = (cnt<<3) | gradationcolor;
 			    cnt=0;
 			}
@@ -245,5 +284,6 @@ int main(int argc,char *argv[])
     free(letterOffsets);
     free(letterBytes);
     free(letters);
+    printf("total used colors = %d\n",totalusedcolors);
     return(0);
 }
