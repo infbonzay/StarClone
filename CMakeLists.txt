@@ -110,6 +110,23 @@ set(SOURCES
 	src/smacker/smk_hufftree.cpp
     )
 
+find_package(SDL REQUIRED)
+
+if(SDL_FOUND)
+    set(ADDVARS "${ADDVARS} -DWITHSDL")
+    include_directories(include/sdl)
+    list(APPEND SOURCES src/sdl/grsdl.cpp src/sdl/mousesdl.cpp)
+endif()
+
+find_package(SDL_mixer)
+
+if(SDL_mixer_FOUND)
+    set(ADDVARS "${ADDVARS} -DWITHSDLMIXER")
+    list(APPEND SOURCES src/sdl/grsdl.cpp src/sound.sdl/audiolowlevel.cpp)
+else()
+    list(APPEND SOURCES src/sdl/grsdl.cpp src/sound.null/audiolowlevel.cpp)
+endif()
+
 find_package(grp REQUIRED)
 find_package(mpq)
 #ind_package(StormLib QUIET)
@@ -129,29 +146,6 @@ else()
     link_libraries(${mpq_LIBRARIES})
 endif()
 
-find_package(SDL REQUIRED)
-
-if(SDL_FOUND)
-	set(ADDVARS "${ADDVARS} -DWITHSDL")
-	include_directories(include/sdl)
-	set(SOURCES ${SOURCES}
-	    src/sdl/grsdl.cpp
-	    src/sdl/mousesdl.cpp
-	    )
-endif()
-
-find_package(SDL_mixer)
-
-if(SDL_mixer_FOUND)
-	set(ADDVARS "${ADDVARS} -DWITHSDLMIXER")
-	set(SOURCES ${SOURCES}
-	    src/sound.sdl/audiolowlevel.cpp
-    )
-else()
-    set(SOURCES ${SOURCES}
-	    src/sound.null/audiolowlevel.cpp
-	    )
-endif()
 
 if(CMAKE_CXX_COMPILER_ID MATCHES GNU)
     set(ADDVARS "${ADDVARS} -DUNDERLINUX")
