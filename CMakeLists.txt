@@ -110,7 +110,7 @@ set(SOURCES
 	src/smacker/smk_hufftree.cpp
     )
 
-find_package(SDL REQUIRED)
+find_package(SDL 1.2.5 REQUIRED)
 
 if(SDL_FOUND)
     set(ADDVARS "${ADDVARS} -DWITHSDL")
@@ -118,7 +118,7 @@ if(SDL_FOUND)
     list(APPEND SOURCES src/sdl/grsdl.cpp src/sdl/mousesdl.cpp)
 endif()
 
-find_package(SDL_mixer)
+find_package(SDL_mixer 1.2.5 REQUIRED)
 
 if(SDL_mixer_FOUND)
     set(ADDVARS "${ADDVARS} -DWITHSDLMIXER")
@@ -130,18 +130,16 @@ endif()
 find_package(grp REQUIRED)
 find_package(mpq)
 #ind_package(StormLib QUIET)
-find_package(zlib)
+find_package(ZLIB 1.0.2 REQUIRED)
 
 if(!mpq_FOUND)
     if(!StormLib_FOUND)
 	message("mpqlib or StormLib not found")
     else()
-	message("-- Found StormLib")
 	set(ADDVARS "${ADDVARS} -DSTORMLIB")
 	link_libraries(${StormLib_LIBRARIES})
     endif()
 else()
-    message("-- Found mpq")
     set(ADDVARS "${ADDVARS} -DMPQLIB")
     link_libraries(${mpq_LIBRARIES})
 endif()
@@ -156,8 +154,8 @@ if(CMAKE_CXX_COMPILER_ID MATCHES GNU)
 endif()
 
 link_libraries(${grp_LIBRARIES})
-link_libraries(${SDL_LIBRARIES})
-link_libraries(${SDL_mixer_LIBRARIES})
+link_libraries(${SDL_LIBRARY})
+link_libraries(${SDL_MIXER_LIBRARIES})
 link_libraries(${zlib_LIBRARIES})
 
 set (CMAKE_RUNTIME_OUTPUT_DIRECTORY bin/)
