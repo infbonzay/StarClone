@@ -633,7 +633,7 @@ void MAIN_IMG::CheckForMouseOver(OBJ *a)
 	alliance = player_aliance(NUMBGAMER,a->playernr);
 	isbuild = IsBuild(a->SC_Unit);
 	mouseobjtype = destselectionsteps[isbuild][alliance];
-	if (prevmouseobjtype>mouseobjtype && !MouseOnOBJS[mouseobjtype])
+	if (prevmouseobjtype > mouseobjtype && !MouseOnOBJS[mouseobjtype])
 	{
     	    focusonobj = mouseborder2(	(xpos>>8)-map.MAPXGLOBAL-GetUnitWidthAndHeight(a->SC_Unit,UNITDIM_WIDTH)/2,
                 		        (ypos>>8)-map.MAPYGLOBAL-GetUnitWidthAndHeight(a->SC_Unit,UNITDIM_HEIGHT)/2,

@@ -7,9 +7,6 @@
 #if !defined(_GRSDL_W)
 #define _GRSDL_W 1
 
-#define KEYPRESSED SDL_PRESSED
-#define KEYPRESS(ikey) (keystatus[ikey]==KEYPRESSED)
-
 #define SCREEN_REGION	SDL_Rect
 
         int  installvectors(void);
@@ -32,7 +29,6 @@
 //==========================
 
 
-extern	Uint8 *keystatus;
 extern	volatile short int keyactive,lastkey;
 extern	int fullscreen;
 extern	SDL_Surface *sdlsurface;

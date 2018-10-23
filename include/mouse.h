@@ -62,7 +62,7 @@ struct mouse_cursors
 extern int 	mousetype,grm,factorscrollkey;
 extern int     	mouse_x,mouse_y,mouse_b,mousehotpos;
 extern char    	curentREGIM;
-extern int     	widthkart,hightkart,xmloc,ymloc,movieminikarta,mspeed;
+extern int     	xmloc,ymloc,movieminikarta,mspeed;
 extern struct  	XY mouser[MAXMOUSEMODE];
 extern int     	patrate;
 extern int      mousemaxx,mousemaxy,doublespeed,mousedoubleclick;
@@ -70,8 +70,6 @@ extern int     	decrxx,decryy,grm;
 extern char    	select_aria,karta_aria,mode_aria;
 extern char    	waitforleftbuton,waitfordownrightbuton,waitfordownleftbuton;
 extern char    	mouse,patr,mouseclear,mloc,mousescrollflag;
-extern int     	Xkart,Ykart;
-extern short   	addscrx,addscry;
 extern unsigned	short  mouseprop;
 extern char     timemouse;
 extern struct	OBJ *MouseOnOBJS[MOUSEON_MAXVALUE];

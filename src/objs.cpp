@@ -40,6 +40,7 @@
 #include "iscript.h"
 #include "overlay.h"
 #include "sigorder.h"
+#include "key.h"
 #include "objs.h"
 
 #ifdef WITHSDL

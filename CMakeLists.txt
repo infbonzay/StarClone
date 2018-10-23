@@ -118,7 +118,7 @@ if(SDL_FOUND)
     list(APPEND SOURCES src/sdl/grsdl.cpp src/sdl/mousesdl.cpp)
 endif()
 
-find_package(SDL_mixer 1.2.5 REQUIRED)
+find_package(SDL_mixer 1.2.5)
 
 if(SDL_mixer_FOUND)
     set(ADDVARS "${ADDVARS} -DWITHSDLMIXER")
@@ -156,7 +156,7 @@ endif()
 link_libraries(${grp_LIBRARIES})
 link_libraries(${SDL_LIBRARY})
 link_libraries(${SDL_MIXER_LIBRARIES})
-link_libraries(${zlib_LIBRARIES})
+link_libraries(${ZLIB_LIBRARIES})
 
 set (CMAKE_RUNTIME_OUTPUT_DIRECTORY bin/)
 add_executable(StarClone ${SOURCES} )

@@ -60,7 +60,11 @@ inline int mapEFFECT(int xkart,int ykart,int effectmage) { return(map.mapbits.ma
 //=============================================
 
 extern float factorx,factory;
-extern int Xkartbeg,Ykartbeg,Xkartend,Ykartend;
+extern int Xkart,Ykart,Xkartbeg,Ykartbeg,Xkartend,Ykartend;
+extern int addscrx,addscry;
+extern int widthkart,hightkart;
+
+
 
 
 #endif /*_MAPS_W*/

@@ -1,6 +1,7 @@
 #if !defined(_SDLMOUSE_W)
 #define _SDLMOUSE_W 1
 
+#include <SDL/SDL.h>
 #define WMLEFTKEY  (SDL_BUTTON(1))
 #define WMRIGHTKEY (SDL_BUTTON(3))
 

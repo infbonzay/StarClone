@@ -36,7 +36,11 @@
 #endif
 
 struct mapinfo map;
-int Xkartbeg,Ykartbeg,Xkartend,Ykartend;
+int Xkart,Ykart,Xkartbeg,Ykartbeg,Xkartend,Ykartend;
+int addscrx;
+int addscry;
+int widthkart;
+int hightkart;
 float factorx,factory;
 int sizemaprectx,sizemaprecty;
 //==============================

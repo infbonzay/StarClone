@@ -37,6 +37,7 @@
 
 #define KEYPRESSEDTABLE(table,scancode) (toupper((scancode)&0xff)+1)
 #define GetKeyPressed() keybuffer.PopElem();
+#define KEYPRESSED SDL_PRESSED
 
 #endif
 

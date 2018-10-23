@@ -454,7 +454,7 @@ selectedicon:
             {
 		cbuild=fordeselect[0];
                 constrbuild(oldselectbuton);
-                mouseprop=oldselectbuton;
+                mouseprop = oldselectbuton;
         	groupmove=0;
             	waitforleftbuton=2;
             }

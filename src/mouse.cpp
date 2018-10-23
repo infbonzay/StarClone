@@ -30,15 +30,13 @@
 
 int 	mousetype,grm,factorscrollkey,mousehotpos;
 int     mouse_x,mouse_y,mousemaxx,mousemaxy,mouse_b;
-int     widthkart,hightkart,xmloc,ymloc,movieminikarta=NO,mousedoubleclick;
+int     xmloc,ymloc,movieminikarta=NO,mousedoubleclick;
 struct  XY mouser[MAXMOUSEMODE];
 int     patrate;
 int     decrxx,decryy,mouseprevx,mouseprevy;
 char    select_aria,karta_aria,mode_aria;
 char    waitforleftbuton,waitfordownrightbuton,waitfordownleftbuton;
 char    mouse,patr,mouseclear,mloc;
-int     Xkart,Ykart;
-short   addscrx,addscry;
 unsigned short  mouseprop;
 char     timemouse;
 struct OBJ *MouseOnOBJS[8];	//myunit,alianceunit,neutralunit,enemyunit,mybuild,aliancebuild,neutralbuild,enemybuild
