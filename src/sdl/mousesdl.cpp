@@ -32,5 +32,36 @@ void lowmouse::SetPos(int x,int y)
     FlushPos();
 }
 //==========================
+void lowmouse::InstallMoveEvent(PMOUSEMOVEEVENTCALLBACK eventFunc)
+{
+    MoveEventFunc = eventFunc;
+}
+//==========================
+void lowmouse::UninstallMoveEvent(void)
+{
+    MoveEventFunc = NULL;
+}
+//==========================
+void lowmouse::InstallClickEvent(PMOUSECLICKEVENTCALLBACK eventFunc)
+{
+    ClickEventFunc = eventFunc;
+}
+//==========================
+void lowmouse::UninstallClickEvent(void)
+{
+    ClickEventFunc = NULL;
+}
+//==========================
+void lowmouse::InstallDblClickEvent(PMOUSEDBLCLICKEVENTCALLBACK eventFunc)
+{
+    DblClickEventFunc = eventFunc;
+}
+//==========================
+void lowmouse::UninstallDblClickEvent(void)
+{
+    DblClickEventFunc = NULL;
+}
+//==========================
+
 lowmouse LowMouse;
 

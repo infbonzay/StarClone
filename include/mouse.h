@@ -4,10 +4,11 @@
 #include <grplib/grp.h>
 #include "defs.h"
 
-/*
+
 #ifdef WITHSDL
-       //#include "sdl/mousesdl.h"
+    #include "sdl/mousesdl.h"
 #endif
+/*
 #ifdef UNDERDOS
        #define WMLEFTKEY  1
        #define WMRIGHTKEY 2

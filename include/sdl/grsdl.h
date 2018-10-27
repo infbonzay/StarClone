@@ -22,8 +22,6 @@
         void keyrefresh(void);
         void settextmode(void);
         int  eventwindowloop(void);
-	void installmousemoveevent(void (*eventfunc)(int ,int ));
-	void uninstallmousemoveevent(void);
 	int  setpalette(SDL_Color *rememberpal);
 	int  setpalettecolors(SDL_Color rememberpal[],int fromcolor,int nrofcolors);
 //==========================

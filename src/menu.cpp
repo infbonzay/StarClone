@@ -45,7 +45,7 @@ void addnewmousehotpos(void (*func)(int),int maxspots)
     currentmousehottable->maxhotspots = maxspots;
     currentmousehottable->curenthotspots = 0;
     currentmousehottable->mousemovecallback = func;
-    installmousemoveevent(&mymousemoveevent);
+    LowMouse.InstallMoveEvent(&mymousemoveevent);
 }
 //==========================================
 void incrcallbackwork(void)
@@ -71,7 +71,7 @@ void delnewmousehotpos(void)
     if (!lastelem)
     {
 	currentmousehottable = NULL;
-        uninstallmousemoveevent();
+        LowMouse.UninstallMoveEvent();
     }
     else
 	currentmousehottable = (MOUSEALLSPOTS *) mousehotspot.GetElemNr(lastelem-1);

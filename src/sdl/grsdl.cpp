@@ -16,8 +16,7 @@
 
 #define MOUSEDBLCLICKTIME 8
 mycycle<uint16_t> keybuffer = mycycle<uint16_t>(16,MYCYCLE_INFINITE);
-char MOUSEBUTTONZZ[3]={1,2,4};
-char SHIFTKEYS[128]={
+const uint8_t SHIFTKEYS[128]={
 		    '\x00','\x00','\x00','\x00','\x00','\x00','\x00','\x00','\x00','\x00',
 		    '\x00','\x00','\x00','\x00','\x00','\x00','\x00','\x00','\x00','\x00',
 		    '\x00','\x00','\x00','\x00','\x00','\x00','\x00','\x00','\x00','\x00',
@@ -34,14 +33,12 @@ char SHIFTKEYS[128]={
 		    };
 
 volatile short int keyactive,lastkey;
-int 		ro;
-int 		fullscreen = 0;
+int 			ro;
+int 			fullscreen = 0;
 SDL_Surface 	*sdlsurface;
 Uint8       	*keystatus;
-int 		needrefreshatend;
-int		dblclick;
-void (*mousemoveevent)(int ,int );
-
+int 			needrefreshatend;
+int				dblclick;
 //==========================
 int setpalette(SDL_Color rememberpal[])
 {
@@ -85,16 +82,6 @@ int MyEventFunc(const SDL_Event *event)
     }
 }
 //===========================================
-void installmousemoveevent(void (*eventfunc)(int ,int ))
-{
-    mousemoveevent = eventfunc;
-}
-//==========================
-void uninstallmousemoveevent(void)
-{
-    mousemoveevent = NULL;
-}
-//==========================
 int installvectors(void)
 {
     mytimer.SetTickTimerFrequency(CYCLESPERSECOND);
@@ -138,24 +125,24 @@ int changemode(int x,int y,int bpp,int fullscreen,char *pal)
 
     realbpp = SDL_VideoModeOK(x,y, bpp, flags);
     if (realbpp == 0)
-	return(0);
+		return(0);
     if (realbpp != bpp)
     {
-	emul=1;
+		emul=1;
     }
 
     sdlsurface = SDL_SetVideoMode(x,y,bpp,flags);
     if ( sdlsurface == NULL )
-	return(0);
+		return(0);
     if (SDL_MUSTLOCK(sdlsurface))
         SDL_LockSurface(sdlsurface);
     SetVideoBuffer(sdlsurface->pixels);
     gameconf.grmode.videobuff = (unsigned char *)sdlsurface->pixels;
     memcpy(gameconf.grmode.videobuff,tempvid,x*y);
     if (pal)
-	activatepalette(pal);
+		activatepalette(pal);
     if (!(pal && emul))
-	wscreenon();
+		wscreenon();
     wfree(tempvid);
     gameconf.grmode.flags |= DISPLAYFLAGS_WINDOWACTIVE;
     return(1+emul);
@@ -174,15 +161,15 @@ int detectmode(int x,int y,int bpp,int fullscreen)
         return (0);
     realbpp=SDL_VideoModeOK(x,y, bpp, flags);
     if (realbpp==0)
-	return(0);
+		return(0);
     if (realbpp!=bpp)
     {
-	printf("Launching in emulated mode %dx%dx%d\n",x,y,realbpp);
-	emul=1;
+		printf("Launching in emulated mode %dx%dx%d\n",x,y,realbpp);
+		emul=1;
     }
     sdlsurface = SDL_SetVideoMode(x,y,bpp,flags);
     if ( sdlsurface == NULL )
-	return(0);
+		return(0);
     SDL_WarpMouse(0,0);
     int ver = GetGRPLibVer();
     sprintf(cap,GAMENAME " " GAMEVERSION " with GRPlib-%d.%d.%d createtime:" GAMECOMPILE,(ver>>16)&0xff,((ver>>8)&0xff),ver&0xff);
@@ -208,8 +195,8 @@ void wscreenonregions(int nrregions,SCREEN_REGION regions[])
     mytimer.CallTimer(MYTIMER_SINCHRONMODE);
     if (gameconf.grmode.flags & DISPLAYFLAGS_WINDOWACTIVE)
     {
-	SDL_UpdateRects(sdlsurface,nrregions,regions);
-	nodraw=0;
+		SDL_UpdateRects(sdlsurface,nrregions,regions);
+		nodraw=0;
     }
     if (nodraw||gameconf.speedconf.cputhrottling)
         usleep(4000);
@@ -247,10 +234,10 @@ void activatepalette256x3(unsigned char *pal3)	//4*256 bytes palette
     pal3+=3;
     for (i=1;i<255;i++)
     {
-	*pal4p++=*pal3++;
-	*pal4p++=*pal3++;
-	*pal4p++=*pal3++;
-	*pal4p++=0;
+		*pal4p++=*pal3++;
+		*pal4p++=*pal3++;
+		*pal4p++=*pal3++;
+		*pal4p++=0;
     }
     *pal4p++=255;
     *pal4p++=255;
@@ -268,73 +255,81 @@ void settextmode(void)
 int eventwindowloop(void) //return 1 - on quit
 {
     static long long prevtimer=0;
-    int exitevent = 0,UpperKeysActive;
+    int exitevent = 0;
+    int UpperKeysActive;
+    int doubleClick;
     SDL_Event event;
+    uint8_t buttons;
     while ( SDL_PollEvent(&event))
     {
         switch (event.type)
         {
-	    case SDL_MOUSEMOTION:
-		if (mousemoveevent)
-		    (*mousemoveevent)(event.motion.x,event.motion.y);
-		break;
-	    case SDL_MOUSEBUTTONDOWN:
-		mouse_b |= MOUSEBUTTONZZ[event.button.button-1];
-		if (MOUSEBUTTONZZ[event.button.button-1]==1)
-		{
-		    if (tick_timer-prevtimer<=MOUSEDBLCLICKTIME)
-		    {
-			dblclick=1;
-		    }
-		    else
-			dblclick=0;
-		    prevtimer=tick_timer;
+			case SDL_MOUSEMOTION:
+				if (LowMouse.MoveEventFunc)
+					(*LowMouse.MoveEventFunc)(event.motion.x,event.motion.y);
+				break;
+			case SDL_MOUSEBUTTONDOWN:
+				buttons = 1 << (event.button.button - 1);
+				if (LowMouse.ClickEventFunc)
+					(*LowMouse.ClickEventFunc)(buttons);
+				//mouse_b |= buttons;
+				if (buttons == 1)
+				{
+					if (tick_timer - prevtimer <= MOUSEDBLCLICKTIME)
+					{
+						doubleClick = 1;
+					}
+					else
+						doubleClick = 0;
+					prevtimer = tick_timer;
+					if (LowMouse.DblClickEventFunc)
+						(*LowMouse.DblClickEventFunc)(doubleClick);
+				}
+				break;
+			case SDL_MOUSEBUTTONUP:
+				if (LowMouse.DblClickEventFunc)
+					(*LowMouse.DblClickEventFunc)(0);
+				needrefreshatend = 1;
+				break;
+			case SDL_KEYDOWN:
+				UpperKeysActive = 0;
+				if (event.key.keysym.mod & KMOD_SHIFT)
+					UpperKeysActive ^= 1;
+				if (event.key.keysym.mod & KMOD_CAPS)
+					UpperKeysActive ^= 1;
+				//printf("SHIFT=%x CAPS=%x result=%x\n",event.key.keysym.mod & KMOD_SHIFT,event.key.keysym.mod & KMOD_CAPS,UpperKeysActive);
+				if (UpperKeysActive)
+				{
+					if (event.key.keysym.sym > 0 && event.key.keysym.sym < 128)
+					{
+						keyactive = SHIFTKEYS[event.key.keysym.sym];
+						if (!keyactive)
+							keyactive = event.key.keysym.sym;
+					}
+				}
+				else
+					keyactive = event.key.keysym.sym;
+				if (keyactive == ENTERKEY2)
+					keyactive = ENTERKEY;
+				lastkey = keyactive;
+				keybuffer.PushElem(keyactive);
+				break;
+			case SDL_KEYUP:
+				keyactive = 0;
+				break;
+			case SDL_ACTIVEEVENT:
+				if ( event.active.state & SDL_APPACTIVE )
+				{
+					if ( event.active.gain )
+						gameconf.grmode.flags |= DISPLAYFLAGS_WINDOWACTIVE;
+					else
+						gameconf.grmode.flags &= DISPLAYFLAGS_WINDOWACTIVE;
+				}
+				break;
+			case SDL_QUIT:
+				exitevent = 1;
+				break;
 		}
-		break;
-	    case SDL_MOUSEBUTTONUP:
-		dblclick=0;
-		needrefreshatend = 1;
-		break;
-	    case SDL_KEYDOWN:
-		UpperKeysActive = 0;
-		if (event.key.keysym.mod & KMOD_SHIFT)
-		    UpperKeysActive ^= 1;
-		if (event.key.keysym.mod & KMOD_CAPS)
-		    UpperKeysActive ^= 1;
-//		printf("SHIFT=%x CAPS=%x result=%x\n",event.key.keysym.mod & KMOD_SHIFT,event.key.keysym.mod & KMOD_CAPS,UpperKeysActive);
-		if (UpperKeysActive)
-		{
-		    if (event.key.keysym.sym > 0 && event.key.keysym.sym < 128)
-		    {
-			keyactive = SHIFTKEYS[event.key.keysym.sym];
-			if (!keyactive)
-			    keyactive = event.key.keysym.sym;
-		    }
-		}
-		else
-		    keyactive = event.key.keysym.sym;
-		if (keyactive == ENTERKEY2)
-		    keyactive = ENTERKEY;
-		lastkey = keyactive;
-//		if (keyactive < 256)
-		    keybuffer.PushElem(keyactive);
-		break;
-	    case SDL_KEYUP:
-		keyactive = 0;
-		break;
-            case SDL_ACTIVEEVENT:
-                if ( event.active.state & SDL_APPACTIVE )
-                {
-                    if ( event.active.gain )
-			gameconf.grmode.flags |= DISPLAYFLAGS_WINDOWACTIVE;
-                    else
-		        gameconf.grmode.flags &= DISPLAYFLAGS_WINDOWACTIVE;
-                }
-                break;
-            case SDL_QUIT:
-                exitevent = 1;
-                break;
-        }
     }
     return (exitevent);
 }
