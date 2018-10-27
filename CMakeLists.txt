@@ -61,6 +61,7 @@ set(SOURCES
 	src/menu.cpp
 	src/messages.cpp
 	src/mouse.cpp
+	src/mousenew.cpp
 	src/mpq.cpp
 	src/mpqwrapper.cpp
 	src/music.cpp

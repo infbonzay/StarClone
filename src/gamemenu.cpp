@@ -63,13 +63,13 @@ char SINGLEGAME_STR[]="Nl";
 char MAINMENU_STR[]="Mm";
 char DLNDMENU_STR[]="Dn";
 const char *PCXFRAME_STR[8]={"1.pcx","2.pcx","3.pcx","4.pcx",
-			"H1.pcx","H2.pcx","H3.pcx","H4.pcx"};
+							 "H1.pcx","H2.pcx","H3.pcx","H4.pcx"};
 
 
 #define REZBRIEF_OFFSET				10
-char REZBRIEF_NAME[]="rez\\glurdy?.bin";
+char 	REZBRIEF_NAME[]="rez\\glurdy?.bin";
 #define GLUEBRIEFMENUOK_OFFSET			11
-char GLUEBRIEFMENUOK_NAME[]="rez\\glupokR?.bin";
+char 	GLUEBRIEFMENUOK_NAME[]="rez\\glupokR?.bin";
 #define CHATBOXDIALOGFILE_OFFSET		4
 char	CHATBOXDIALOGFILE[]="rez\\?textbox.bin";
 
@@ -90,30 +90,30 @@ MENUAPPEAR::~MENUAPPEAR()
 FORCE_SLOTS::~FORCE_SLOTS()
 {
     for (int i=0;i<4;i++)
-	AddForceName(i,NULL);
+		AddForceName(i,NULL);
 }
 //==========================================
 void FORCE_SLOTS::Clear(void)
 {
     int i;
     for (i=0;i<4;i++)
-	AddForceName(i,NULL);
+		AddForceName(i,NULL);
     memset(this,0,sizeof(FORCE_SLOTS));
     for (i=0;i<MAXPLAYERS;i++)
-	playernr[i]=-1;
+		playernr[i]=-1;
 }
 //==========================================
 void FORCE_SLOTS::AddForceName(int forcenr,char *forcename)
 {
     if (forcenames[forcenr])
     {
-	wfree(forcenames[forcenr]);
-	forcenames[forcenr]=NULL;
+		wfree(forcenames[forcenr]);
+		forcenames[forcenr]=NULL;
     }
     if (forcename)
     {
-	forcenames[forcenr]=(char *) wmalloc(strlen(forcename)+1);
-	strcpy(forcenames[forcenr],forcename);
+		forcenames[forcenr]=(char *) wmalloc(strlen(forcename)+1);
+		strcpy(forcenames[forcenr],forcename);
     }
 }
 //==========================================
@@ -125,22 +125,27 @@ void FORCE_SLOTS::CreatePlayersNr(void)
     networkplayers=0;	//all network players include observers (no computers)
     for (i=0,curpl=0;i<MAXPLAYERS;i++)
     {
-	if (gameconf.pl_owner[i]==OWNER_FORCENAME)
-	    continue;
-	if (gameconf.pl_owner[i]==OWNER_COMPUTER || gameconf.pl_owner[i]==OWNER_HUMAN || gameconf.pl_race[i]==RACE_OBSERVER)
-	if (IfPlayerHaveStartLocation(&map,i)!=-1)
-	{
-	    if (gameconf.pl_race[i]!=RACE_OBSERVER)
-	    {
-		playedplayers++;
-	    }
-	    playernr[realplayers++]=curpl;
-	}
-	if (gameconf.pl_owner[i]==OWNER_HUMAN || gameconf.pl_race[i]==RACE_OBSERVER)
-	{
-	    networkplayers++;
-	}
-	curpl++;
+		if (gameconf.pl_owner[i] == OWNER_FORCENAME)
+			continue;
+		if (gameconf.pl_owner[i] == OWNER_COMPUTER	||
+			gameconf.pl_owner[i] == OWNER_HUMAN		||
+			gameconf.pl_race[i] == RACE_OBSERVER)
+		{
+			if (IfPlayerHaveStartLocation(&map,i) != -1)
+			{
+				if (gameconf.pl_race[i] != RACE_OBSERVER)
+				{
+					playedplayers++;
+				}
+				playernr[realplayers++] = curpl;
+			}
+		}
+		if (gameconf.pl_owner[i] == OWNER_HUMAN ||
+			gameconf.pl_race[i] == RACE_OBSERVER)
+		{
+			networkplayers++;
+		}
+		curpl++;
     }
 }
 //==========================================
@@ -148,8 +153,8 @@ int FORCE_SLOTS::GetPlayerNr(int player)
 {
     int i;
     for (i=0;i<MAXPLAYERS;i++)
-	if (playernr[i]==player)
-	    return(i);
+		if (playernr[i]==player)
+			return(i);
     return(0);
 }
 //==========================================
@@ -158,10 +163,10 @@ int parselistfiles(mylist *flist)
     char *oneelem;
     for (int i=0;i<flist->GetMaxElements();i++)
     {
-	oneelem=(char *)flist->GetElemNr(i);
-	if (oneelem[0]==COMMANDSYMB)
-	    if (oneelem[1]==ICONFORNOSELFILE || oneelem[1]==ICONFORSELFILE)
-		return(i);
+		oneelem=(char *)flist->GetElemNr(i);
+		if (oneelem[0]==COMMANDSYMB)
+			if (oneelem[1]==ICONFORNOSELFILE || oneelem[1]==ICONFORSELFILE)
+				return(i);
     }
     return(0);
 }
@@ -176,99 +181,99 @@ void listfiles(const char *fromdir,mylist *flist,const char *mask,char *rootdir,
     struct dirent *ent;
     getcwd(tempdir,sizeof(tempdir)-1);
     if (!strcmp(tempdir,rootdir))
-	istoplevel=1;
+		istoplevel=1;
     else
-	istoplevel=0;
+		istoplevel=0;
     dir = opendir(fromdir);
-    if (dir != NULL) 
+    if (dir != NULL)
     {
-        while ((ent = readdir (dir)) != NULL) 
+        while ((ent = readdir (dir)) != NULL)
         {
-	    needaddtolist=0;
-	    isdir=0;
-	    levelup=0;
-	    if ((ent->d_type==DT_DIR||ent->d_type==DT_REG))
-	    {
-		if (strcmp(ent->d_name,"."))
-		{
-		    if (!strcmp(ent->d_name,".."))
-		    {
-			if (istoplevel!=1)
+			needaddtolist=0;
+			isdir=0;
+			levelup=0;
+			if ((ent->d_type==DT_DIR||ent->d_type==DT_REG))
 			{
-			    needaddtolist=1;
-			    isdir=1;
-			    levelup=1;
+				if (strcmp(ent->d_name,"."))
+				{
+					if (!strcmp(ent->d_name,".."))
+					{
+						if (istoplevel!=1)
+						{
+							needaddtolist=1;
+							isdir=1;
+							levelup=1;
+						}
+					}
+					else
+					{
+						if (ent->d_type==DT_DIR)
+						{
+							needaddtolist=1;
+							isdir=1;
+						}
+						else
+						{
+						    //if (strstr(ent->d_name,mask))
+							pointposition = strrchr(ent->d_name,'.');
+							if (pointposition && !strncasecmp(pointposition,mask,strlen(mask)))
+						    //if (!strncasecmp(ent->d_name+strlen(ent->d_name)-strlen(mask)-1,mask,strlen(mask)))
+							{
+								nroffiles++;
+								needaddtolist=1;
+								isdir=0;
+							}
+						}
+					}
+				}
 			}
-		    }
-		    else
-		    {
-			if (ent->d_type==DT_DIR)
+			if (needaddtolist)
 			{
-			    needaddtolist=1;
-			    isdir=1;
+				templistname[0]=0;
+				if (isdir)
+				{
+					if (flags&NOADDDIRTOLIST)
+						continue;
+					if (flags&ADDICONSTOLIST)
+					{
+						templistname[0]=COMMANDSYMB;
+						templistname[1]=ICONFORCLOSENOSELDIR;
+						templistname[2]='[';
+						templistname[3]=0;
+					}
+					if (levelup)
+					{
+						if (flags&ADDICONSTOLIST)
+							strcat(templistname,GLUALLSTR(GLUALL_TBL_UPONELEVEL));
+						else
+							continue;
+					}
+					else
+						strcat(templistname,ent->d_name);
+					if (flags&ADDICONSTOLIST)
+						strcat(templistname,"]");
+				}
+				else
+				{
+					if (flags&ADDICONSTOLIST)
+					{
+						templistname[0]=COMMANDSYMB;
+						templistname[1]=ICONFORNOSELFILE;
+						templistname[2]=0;
+					}
+					strcat(templistname,ent->d_name);
+					if (removeext[0]!=0)
+					{
+						pos=strstr(templistname,removeext);
+						templistname[(long)pos-(long)templistname]=0;
+					}
+				}
+				flist->AllocAndAddList(templistname,strlen(templistname)+1);
 			}
-			else
-			{
-//			    if (strstr(ent->d_name,mask))
-			    pointposition = strrchr(ent->d_name,'.');
-			    if (pointposition && !strncasecmp(pointposition,mask,strlen(mask)))
-//			    if (!strncasecmp(ent->d_name+strlen(ent->d_name)-strlen(mask)-1,mask,strlen(mask)))
-			    {
-				nroffiles++;
-			        needaddtolist=1;
-				isdir=0;
-			    }
-			}
-		    }
-		}
-	    }
-	    if (needaddtolist)
-	    {
-		templistname[0]=0;
-		if (isdir)
-		{
-		    if (flags&NOADDDIRTOLIST)
-			continue;
-		    if (flags&ADDICONSTOLIST)
-		    {
-			templistname[0]=COMMANDSYMB;
-			templistname[1]=ICONFORCLOSENOSELDIR;
-			templistname[2]='[';
-			templistname[3]=0;
-		    }
-		    if (levelup)
-		    {
-			if (flags&ADDICONSTOLIST)
-			    strcat(templistname,GLUALLSTR(GLUALL_TBL_UPONELEVEL));
-			else
-			    continue;
-		    }
-		    else
-			strcat(templistname,ent->d_name);
-		    if (flags&ADDICONSTOLIST)
-			strcat(templistname,"]");
-		}
-		else
-		{
-		    if (flags&ADDICONSTOLIST)
-		    {
-			templistname[0]=COMMANDSYMB;
-			templistname[1]=ICONFORNOSELFILE;
-			templistname[2]=0;
-		    }
-		    strcat(templistname,ent->d_name);
-		    if (removeext[0]!=0)
-		    {
-			pos=strstr(templistname,removeext);
-			templistname[(long)pos-(long)templistname]=0;
-		    }
-		}
-		flist->AllocAndAddList(templistname,strlen(templistname)+1);
-	    }
         }
         closedir (dir);
-	flist->SortA();
-    } 
+		flist->SortA();
+    }
 }
 //==========================================
 void listusers(const char *path,mylist *flist)
@@ -277,9 +282,9 @@ void listusers(const char *path,mylist *flist)
     DIR *dir;
     struct dirent *ent;
     dir = opendir (path);
-    if (dir != NULL) 
+    if (dir != NULL)
     {
-        while( (ent = readdir (dir)) != NULL) 
+        while( (ent = readdir (dir)) != NULL)
         {
 	    if (ent->d_type==DT_REG)
 	    {
@@ -291,7 +296,7 @@ void listusers(const char *path,mylist *flist)
 	    }
         }
         closedir (dir);
-    } 
+    }
 }
 //==========================================
 void LoadTransPal(char *filename,char *palette,char *menutranspcolors,float factor)
@@ -306,24 +311,24 @@ void LoadTransPal(char *filename,char *palette,char *menutranspcolors,float fact
     FILE *f=fopen(filename2,"r");
     if (!f)
     {
-	CreateSpecialTranspTable(palette,menutranspcolors,factor);
-	f=fopen(filename2,"w");
-	if (f)
-	{
-	    fwrite(menutranspcolors,256,256,f);
-	    fclose(f);
+		CreateSpecialTranspTable(palette,menutranspcolors,factor);
+		f=fopen(filename2,"w");
+		if (f)
+		{
+			fwrite(menutranspcolors,256,256,f);
+			fclose(f);
+		}
+		else
+		{
+			printf("can't create %s file\n",filename2);
+			//cant create the file :((
+		}
 	}
 	else
 	{
-	    printf("can't create %s file\n",filename2);
-	    //cant create the file :((
-	}
-    }
-    else
-    {
-	if (!creationflag)
-	    fread(menutranspcolors,256,256,f);
-	fclose(f);
+		if (!creationflag)
+			fread(menutranspcolors,256,256,f);
+		fclose(f);
     }
     wfree(filename2);
 }
@@ -334,28 +339,28 @@ void MenuAppearDrawCycle(MENUAPPEAR *items, MENUSTR *staticmenu, TICKCOUNTER *ti
     MenuItemPcx *oneitem;
     char *savedscreen;
     TIMER_TICK	deltatime;
-    
+
     savedscreen = savescreen();
     do{
-	stopscript = items->GetMaxElements();
-	//draw all elements
-	for (i = 0; i < items->GetMaxElements(); i++)
-	{
-	    oneitem = (MenuItemPcx *) items->GetElem(i,NULL);
-	    if (oneitem->moveaction)
-		stopscript -= oneitem->moveaction->Move();		//decrement if one script finishes
-	    oneitem->Draw();
-	}
-	if (staticmenu)
-	    checkanddrawmenu(staticmenu,ITEMNOONEACTIVE,ITEM_NOSAVELOADUNDER);
-	eventwindowloop();
-	putmouseonscreen();
-	wscreenon();
-	restorescreen(savedscreen);
-	//calculate remain time to sleep (try to sleep MAXWAITMENUAPPEAR 'minus' time of draw entire one cycle)
-	deltatime = MAXWAITMENUAPPEAR - mytimer.GetDeltaCounter(timer) / 1000;
-	if (deltatime > 0)
-	    usleep(deltatime);
+		stopscript = items->GetMaxElements();
+		//draw all elements
+		for (i = 0; i < items->GetMaxElements(); i++)
+		{
+			oneitem = (MenuItemPcx *) items->GetElem(i,NULL);
+			if (oneitem->moveaction)
+			stopscript -= oneitem->moveaction->Move();		//decrement if one script finishes
+			oneitem->Draw();
+		}
+		if (staticmenu)
+			checkanddrawmenu(staticmenu,ITEMNOONEACTIVE,ITEM_NOSAVELOADUNDER);
+		eventwindowloop();
+		putmouseonscreen();
+		wscreenon();
+		restorescreen(savedscreen);
+		//calculate remain time to sleep (try to sleep MAXWAITMENUAPPEAR 'minus' time of draw entire one cycle)
+		deltatime = MAXWAITMENUAPPEAR - mytimer.GetDeltaCounter(timer) / 1000;
+		if (deltatime > 0)
+			usleep(deltatime);
     }while( stopscript );		//wait before all scripts are go at finish
     wfree(savedscreen);
 }
@@ -373,7 +378,7 @@ void MenuDisappear(MENUSTR *allmenus,MENUAPPEAR *items,MENUSTR *staticmenu)
     MenuItemPcx *oneitem;
     int i;
     TICKCOUNTER *time1;
-    
+
     time1 = mytimer.CreateTickCounter();
     Play_sfxdata_id(NULL,SFXDATA_SNDMENUOUT,-1,0);
     //enable move scripting
@@ -412,29 +417,29 @@ MENUAPPEAR *MenuAppear(MENUSTR *allmenus,int elems,MENUFIRSTDATA *menudata,MENUS
 	oneitem->moveaction->SetMoveScript(&MoveItem::SimpleMoveScript);
 	oneitem->moveaction->SetTempVars();
 	oneitem->SetPcxParam(allmenus->menu[e].item.image->color1,
-			     allmenus->menu[e].item.image->color2,
-			     allmenus->menu[e].item.image->transvalue);
+						 allmenus->menu[e].item.image->color2,
+						 allmenus->menu[e].item.image->transvalue);
 	switch(menudata[i].appearposition)
 	{
 		case MENUAPPEAR_FROMLEFT:
 		    oneitem->moveaction->SetParams(1, 0, 0);
 		    oneitem->SetXYPos(allmenus->menu[e].hotdeltax - oneitem->moveaction->SimpleScriptCalcMaxDistance(),
-				      allmenus->menu[e].hotdeltay);
+							  allmenus->menu[e].hotdeltay);
 		    break;
 		case MENUAPPEAR_FROMRIGHT:
 		    oneitem->moveaction->SetParams(-1, 0, 0);
 		    oneitem->SetXYPos(allmenus->menu[e].hotdeltax + oneitem->moveaction->SimpleScriptCalcMaxDistance(),
-				      allmenus->menu[e].hotdeltay);
+							  allmenus->menu[e].hotdeltay);
 		    break;
 		case MENUAPPEAR_FROMTOP:
 		    oneitem->moveaction->SetParams(0, 1, 0);
 		    oneitem->SetXYPos(allmenus->menu[e].hotdeltax,
-				      allmenus->menu[e].hotdeltay - oneitem->moveaction->SimpleScriptCalcMaxDistance());
+							  allmenus->menu[e].hotdeltay - oneitem->moveaction->SimpleScriptCalcMaxDistance());
 		    break;
 		case MENUAPPEAR_FROMBOTTOM:
 		    oneitem->moveaction->SetParams(0, -1, 0);
 		    oneitem->SetXYPos(allmenus->menu[e].hotdeltax,
-				      allmenus->menu[e].hotdeltay + oneitem->moveaction->SimpleScriptCalcMaxDistance());
+							  allmenus->menu[e].hotdeltay + oneitem->moveaction->SimpleScriptCalcMaxDistance());
 		    break;
 	}
     }
@@ -445,7 +450,7 @@ MENUAPPEAR *MenuAppear(MENUSTR *allmenus,int elems,MENUFIRSTDATA *menudata,MENUS
         oneitem = (MenuItemPcx *) items->GetElem(i,NULL);
         oneitem->moveaction->EnableMoveScript();
     }
-    mytimer.GetDeltaCounter(time1);			//reset delta time	
+    mytimer.GetDeltaCounter(time1);			//reset delta time
 
     MenuAppearDrawCycle(items,staticmenu,time1);
 
@@ -508,12 +513,12 @@ int campaignselect(void)
 	}
 
     mousetype=NORMALMOUSE;
-    loadonecursor(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,CAMPAIGN_STR[0],CAMPAIGN_STR[1],ARROW_STR),mousetype);
+    highMouse.LoadOneCursor(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,CAMPAIGN_STR[0],CAMPAIGN_STR[1],ARROW_STR),mousetype);
     mytimer.SetMyTimerFunc(&campaignselecttimer,NULL);
     restrictmousecoords(MOUSEMODE1);
     LowMouse.InstallMoveEvent(&mymousemoveevent);
-    
-    MENUFIRSTDATA menushow[2] = { 
+
+    MENUFIRSTDATA menushow[2] = {
 			    {.elemid = 0, .appearposition = MENUAPPEAR_FROMLEFT, .disabled = 0},
 			    {.elemid = 1, .appearposition = MENUAPPEAR_FROMRIGHT, .disabled = 0} };
 
@@ -623,7 +628,7 @@ int campaignselect(void)
 
     LowMouse.UninstallMoveEvent();
     mytimer.ClearMyTimerFunc();
-    unloadmousecursors();
+    highMouse.UnloadCursors();
 
     UnloadDialogBin(raceselection);
     fontpcx.closePcx();
@@ -690,15 +695,15 @@ int xcampaignselect(void)
 	}
 
     mousetype=NORMALMOUSE;
-    loadonecursor(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,CAMPAIGN_STR[0],CAMPAIGN_STR[1],ARROW_STR),mousetype);
+    highMouse.LoadOneCursor(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,CAMPAIGN_STR[0],CAMPAIGN_STR[1],ARROW_STR),mousetype);
     mytimer.SetMyTimerFunc(&campaignselecttimer,NULL);
     restrictmousecoords(MOUSEMODE1);
     LowMouse.InstallMoveEvent(&mymousemoveevent);
 
-    MENUFIRSTDATA menushow[2] = { 
+    MENUFIRSTDATA menushow[2] = {
 			    {.elemid = 0, .appearposition = MENUAPPEAR_FROMLEFT, .disabled = 0},
 			    {.elemid = 1, .appearposition = MENUAPPEAR_FROMRIGHT, .disabled = 0} };
-    
+
     MENUAPPEAR *items = MenuAppear(raceselection,2,menushow,NULL);
 
     setdefaultbutton(raceselection,-1);
@@ -803,7 +808,7 @@ int xcampaignselect(void)
 
     LowMouse.UninstallMoveEvent();
     mytimer.ClearMyTimerFunc();
-    unloadmousecursors();
+    highMouse.UnloadCursors();
 
 
     UnloadDialogBin(raceselection);
@@ -851,15 +856,15 @@ int glu_loadgame(void)
     setmenuflags(gluload,MENUFLAGS_ALWAYSDRAW);
 
     mousetype=NORMALMOUSE;
-    loadonecursor(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,SINGLEGAME_STR[0],SINGLEGAME_STR[1],ARROW_STR),mousetype);
+    highMouse.LoadOneCursor(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,SINGLEGAME_STR[0],SINGLEGAME_STR[1],ARROW_STR),mousetype);
     mytimer.SetMyTimerFunc(&menutimer,NULL);
     restrictmousecoords(MOUSEMODE1);
     LowMouse.InstallMoveEvent(&mymousemoveevent);
 
-    MENUFIRSTDATA menushow[3] = { 
+    MENUFIRSTDATA menushow[3] = {
 			    {.elemid = 0, .appearposition = MENUAPPEAR_FROMLEFT, .disabled = 0},
 			    {.elemid = 1, .appearposition = MENUAPPEAR_FROMBOTTOM, .disabled = 0},
-			    {.elemid = 2, .appearposition = MENUAPPEAR_FROMRIGHT, .disabled = 0} 
+			    {.elemid = 2, .appearposition = MENUAPPEAR_FROMRIGHT, .disabled = 0}
 			    };
 
     MENUAPPEAR *items = MenuAppear(gluload,3,menushow,NULL);
@@ -925,7 +930,7 @@ int glu_loadgame(void)
 
     LowMouse.UninstallMoveEvent();
     mytimer.ClearMyTimerFunc();
-    unloadmousecursors();
+    highMouse.UnloadCursors();
 
 
     UnloadDialogBin(gluload);
@@ -973,15 +978,15 @@ int glu_loadreplay(void)
     setmenuflags(gluloadrep,MENUFLAGS_ALWAYSDRAW);
 
     mousetype=NORMALMOUSE;
-    loadonecursor(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,SINGLEGAME_STR[0],SINGLEGAME_STR[1],ARROW_STR),mousetype);
+    highMouse.LoadOneCursor(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,SINGLEGAME_STR[0],SINGLEGAME_STR[1],ARROW_STR),mousetype);
     mytimer.SetMyTimerFunc(&menutimer,NULL);
     restrictmousecoords(MOUSEMODE1);
     LowMouse.InstallMoveEvent(&mymousemoveevent);
 
-    MENUFIRSTDATA menushow[3] = { 
+    MENUFIRSTDATA menushow[3] = {
 			    {.elemid = 0, .appearposition = MENUAPPEAR_FROMLEFT, .disabled = 0},
 			    {.elemid = 1, .appearposition = MENUAPPEAR_FROMBOTTOM, .disabled = 0},
-			    {.elemid = 2, .appearposition = MENUAPPEAR_FROMRIGHT, .disabled = 0} 
+			    {.elemid = 2, .appearposition = MENUAPPEAR_FROMRIGHT, .disabled = 0}
 			    };
     MENUAPPEAR *items = MenuAppear(gluloadrep,3,menushow,NULL);
 
@@ -1043,7 +1048,7 @@ int glu_loadreplay(void)
 
     LowMouse.UninstallMoveEvent();
     mytimer.ClearMyTimerFunc();
-    unloadmousecursors();
+    highMouse.UnloadCursors();
 
 
     UnloadDialogBin(gluloadrep);
@@ -1067,7 +1072,7 @@ int BriefingTriggersCheck(MENUSTR *allmenus,void *data)
 	info=(struct mapinfo *)data;
 	Briefing_Parce(info,allmenus,1000/(60/TIMETOMAINMENUUPDATE));
     }
-    return(0);    
+    return(0);
 }
 //==========================================
 #define NETW_WAITFORPLAYERS_DONE	1000
@@ -1148,7 +1153,7 @@ int glu_briefing(int race,int networksingle,struct mapinfo *info,char *prefix_ca
     char *menutranspcolors,*fntadr;
     char pal[256*4];
     MENUSTR *errmenu,*glubrief;
-    
+
     StopMusic(MUSIC_STOPWITHFADE);
     sprintf(FULLFILENAME,"music\\%crdyroom.wav",RACE_CHAR[race]);
     PlayMusic(FULLFILENAME,-1);
@@ -1185,7 +1190,7 @@ int glu_briefing(int race,int networksingle,struct mapinfo *info,char *prefix_ca
     setmenuflags(glubrief,MENUFLAGS_ALWAYSDRAW);
 
     mousetype=NORMALMOUSE;
-    loadonecursor(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,'R',RACE_CHAR[race],ARROW_STR),mousetype);
+    highMouse.LoadOneCursor(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,'R',RACE_CHAR[race],ARROW_STR),mousetype);
     mytimer.SetMyTimerFunc(&menutimer,NULL);
     restrictmousecoords(MOUSEMODE1);
     LowMouse.InstallMoveEvent(&mymousemoveevent);
@@ -1238,7 +1243,7 @@ int glu_briefing(int race,int networksingle,struct mapinfo *info,char *prefix_ca
     {
 	glubrief->menu[i].item.image->color2=BRIEFING_TRANSLUCENCY;
     }
-    
+
     GLUEBRIEFMENUOK_NAME[GLUEBRIEFMENUOK_OFFSET]=RACE_CHAR[race];
 
     errmenu=LoadDialogBin(GLUEBRIEFMENUOK_NAME,DIALOGBIN_MAINDIALOGS,IDFONT16);
@@ -1246,7 +1251,7 @@ int glu_briefing(int race,int networksingle,struct mapinfo *info,char *prefix_ca
     menuspecialtables(errmenu,fntadr,NULL);
     setmenuflags(errmenu,MENUFLAGS_ALWAYSDRAW);
     AddPrevMenuShowing(errmenu,glubrief);
-    
+
 //    DEBUGMES("SERVERGAMER=%d\n",SERVERGAMER);
     if (networksingle)
     {
@@ -1306,12 +1311,12 @@ int glu_briefing(int race,int networksingle,struct mapinfo *info,char *prefix_ca
     changemenuitemtype(glubrief,e+12,ISIMAGE,IDFONT8,MTEXTCOLOR1);
     changemenuitemtype(glubrief,e+13,ISIMAGE,IDFONT8,MTEXTCOLOR1);
     changemenuitemtype(glubrief,e+14,ISIMAGE,IDFONT8,MTEXTCOLOR1);
-    
+
     addimagearray(glubrief,e+11,-1,-1,-1,-1);
     addimagearray(glubrief,e+12,-1,-1,-1,-1);
     addimagearray(glubrief,e+13,-1,-1,-1,-1);
     addimagearray(glubrief,e+14,-1,-1,-1,-1);
-    
+
     setimgtransparentcolors(glubrief,e+11,0,255);
     setimgtransparentcolors(glubrief,e+12,0,255);
     setimgtransparentcolors(glubrief,e+13,0,255);
@@ -1374,7 +1379,7 @@ int glu_briefing(int race,int networksingle,struct mapinfo *info,char *prefix_ca
 
     LowMouse.UninstallMoveEvent();
     mytimer.ClearMyTimerFunc();
-    unloadmousecursors();
+    highMouse.UnloadCursors();
 
 
     UnloadDialogBin(errmenu);
@@ -1536,7 +1541,7 @@ void glu_score(struct mapinfo *info)
     race = gameconf.pl_race[info->played_as_nr];
 //    race = CorrectRaceType(info->pl_race[info->played_as_nr],intfo->played_as_nr);
     losewin=(map.flags & STARMAP_FLAG_WINGAME)!=0;
-    
+
     StopMusic(MUSIC_STOPWITHFADE);
     sprintf(FULLFILENAME,"music\\%c%s.wav",RACE_CHAR[race],DEFEAT_VICTORY[losewin]);
     PlayMusic(FULLFILENAME,-1);
@@ -1583,7 +1588,7 @@ void glu_score(struct mapinfo *info)
     gluscore->menu[3].dialogbin_flags|=DIALOGBIN_FLAGS_NODLGGRP;
     gluscore->menu[4].dialogbin_flags|=DIALOGBIN_FLAGS_NODLGGRP;
     gluscore->menu[5].dialogbin_flags|=DIALOGBIN_FLAGS_NODLGGRP;
-    
+
     if (losewin && CHEATERBIT)
         changetextitem(gluscore,1,MYTBLSTR(MYINFO_TBL_CHEATER_TEXT));
     else
@@ -1603,9 +1608,9 @@ void glu_score(struct mapinfo *info)
     restrictmousecoords(MOUSEMODE1);
     LowMouse.InstallMoveEvent(&mymousemoveevent);
     mousetype=NORMALMOUSE;
-    loadonecursor(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,RACE_CHAR[race],LOSEWIN_STR[losewin],ARROW_STR),mousetype);
+    highMouse.LoadOneCursor(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,RACE_CHAR[race],LOSEWIN_STR[losewin],ARROW_STR),mousetype);
 
-    MENUFIRSTDATA menushow[1] = { 
+    MENUFIRSTDATA menushow[1] = {
 			    {.elemid = 0, .appearposition = MENUAPPEAR_FROMLEFT, .disabled = 0}
 			    };
 
@@ -1620,11 +1625,11 @@ void glu_score(struct mapinfo *info)
 	info->score[i][3]=PLAYER[i].statplayer.stat[STATPLAYER_UNITSPRODUCED];
 	info->score[i][4]=PLAYER[i].statplayer.stat[STATPLAYER_UNITSKILLED];
 	info->score[i][5]=PLAYER[i].statplayer.stat[STATPLAYER_UNITSLOST];
-	
+
 	info->score[i][6]=PLAYER[i].statplayer.stat[STATPLAYER_BUILDSCONSTRUCTED];
 	info->score[i][7]=PLAYER[i].statplayer.stat[STATPLAYER_BUILDSRISED];
 	info->score[i][8]=PLAYER[i].statplayer.stat[STATPLAYER_BUILDSLOST];
-	
+
 	info->score[i][9]=PLAYER[i].statplayer.stat[STATPLAYER_GASMINED];
 	info->score[i][10]=PLAYER[i].statplayer.stat[STATPLAYER_MINERALSMINED];
 	info->score[i][11]=PLAYER[i].statplayer.stat[STATPLAYER_GASMINED]+PLAYER[i].statplayer.stat[STATPLAYER_MINERALSMINED];
@@ -1648,7 +1653,7 @@ void glu_score(struct mapinfo *info)
 			forcename=getmapSTR(info,forceid-1);
 		    else
 			forcename=&EMPTYSTR;
-		    
+
 		    sprintf(txt,"%s\n%c%c%c%c%c      %c%c%c%c %s",NETWSTR(races_clan[myrace]+races[myrace]),
 	    		    COMMANDSYMB,DLGGRPSYMB,myrace+3,10,10,
 			    COMMANDSYMB,CHANGEFONTSYMB,IDFONT10,
@@ -1692,10 +1697,10 @@ void glu_score(struct mapinfo *info)
 		break;
 	    case 7://save replay
 		break;
-	    
+
 	}
     }while(repeat);
-    
+
     if (gluscore_volumechannel!=-1)
     {
 	StopPlayChannel(gluscore_volumechannel);
@@ -1709,7 +1714,7 @@ void glu_score(struct mapinfo *info)
 
     LowMouse.UninstallMoveEvent();
     mytimer.ClearMyTimerFunc();
-    unloadmousecursors();
+    highMouse.UnloadCursors();
     //stop wav if not stopped
 
 
@@ -1743,7 +1748,7 @@ int mainmenu(void)
     palchange(newpal,gameconf.videoconf.gamma,gameconf.videoconf.saturate);
     if (!gameconf.grmode.flags & DISPLAYFLAGS_EMULATIONMODE)
 	wscreenon();
-    loadonecursor(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,MAINMENU_STR[0],MAINMENU_STR[1],ARROW_STR),NORMALMOUSE);
+    highMouse.LoadOneCursor(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,MAINMENU_STR[0],MAINMENU_STR[1],ARROW_STR),NORMALMOUSE);
     mytimer.SetMyTimerFunc(&mainmenutimer,NULL);
     restrictmousecoords(MOUSEMODE1);
     LowMouse.InstallMoveEvent(&mymousemoveevent);
@@ -1787,7 +1792,7 @@ int mainmenu(void)
     UnloadDialogBin(mainmenu);
     LowMouse.UninstallMoveEvent();
     mytimer.ClearMyTimerFunc();
-    unloadmousecursors();
+    highMouse.UnloadCursors();
 
     fontpcx.closePcx();
     backgnd.closePcx();
@@ -1799,7 +1804,7 @@ char CONNMAXPLAYERS[MAXCONNTYPES]={8,2,2,8,8};
     char *savedscreen;
     MENUAPPEAR *gatewayitem;
     MENUAPPEAR *menunetwitems;
-    MENUFIRSTDATA menunetw[5] = { 
+    MENUFIRSTDATA menunetw[5] = {
 				{ .elemid = 0, .appearposition = MENUAPPEAR_FROMLEFT, .disabled = 0 },
 				{ .elemid = 1, .appearposition = MENUAPPEAR_FROMRIGHT, .disabled = 0 },
 				{ .elemid = 2, .appearposition = MENUAPPEAR_FROMBOTTOM, .disabled = 0  },
@@ -1814,7 +1819,7 @@ void selconn_callback(MENUSTR *allmenus,int nr,int listnr)
     char txt[50];
     if (listnr != -1)
     {
-	
+
 	changetextitem(allmenus, 10,MYTBLSTR(MYINFO_TBL_NETTYPE1+listnr));			//connection type
 	sprintf(txt,GLUALLSTR(GLUALL_TBL_MAXPLAYERS),CONNMAXPLAYERS[listnr]);
 	changetextitem(allmenus,11,txt);							//players info
@@ -1932,7 +1937,7 @@ int glu_conn(void)
     setmenuflags(gluconn,MENUFLAGS_ALWAYSDRAW);
 
     mousetype=NORMALMOUSE;
-    loadonecursor(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,SINGLEGAME_STR[0],SINGLEGAME_STR[1],ARROW_STR),mousetype);
+    highMouse.LoadOneCursor(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,SINGLEGAME_STR[0],SINGLEGAME_STR[1],ARROW_STR),mousetype);
     mytimer.SetMyTimerFunc(&menutimer,NULL);
     restrictmousecoords(MOUSEMODE1);
     LowMouse.InstallMoveEvent(&mymousemoveevent);
@@ -1949,7 +1954,7 @@ int glu_conn(void)
     for (i=0;i<MAXGATEWAYS;i++)
 	gateways.AddList(MYTBLSTR(MYINFO_TBL_GATEWAY1+i));
     setlistbox_lists(gluconn,8,0,&gateways,&selconn_gatewaycallback);
-    
+
     repeat=1;
     do{
 	if (!saves.GetMaxElements())
@@ -1972,7 +1977,7 @@ int glu_conn(void)
 //		{
 //		    selconn_callback(gluconn,6,GATEWAYITEM);
 //		    break;
-//		}    
+//		}
 		SetNetworkType(gluconn->menu[6].item.listbox->selectednr);
 		memset(&recvbcast,0,sizeof(NETWORK_INFO));
 		err=CallNetwork(NETWORK_INITNETWORK,&recvbcast);
@@ -2015,10 +2020,10 @@ int glu_conn(void)
     }
     MenuDisappear(gluconn, menunetwitems, NULL);
     menunetwitems = NULL;
-    
+
     LowMouse.UninstallMoveEvent();
     mytimer.ClearMyTimerFunc();
-    unloadmousecursors();
+    highMouse.UnloadCursors();
 
     UnloadDialogBin(gluconn);
     fontpcx.closePcx();
@@ -2132,7 +2137,7 @@ int glu_join(FORCE_SLOTS *fslots)
     listboxlineitems(glujoin,5,11,20);
     menuspecialtables(glujoin,fntadr,dlg);
     setmenuflags(glujoin,MENUFLAGS_ALWAYSDRAW);
-    
+
     error=CallNetwork(NETWORK_INITNETWORK,&recvbcast);
     if (error>=0)
     {
@@ -2159,16 +2164,16 @@ int glu_join(FORCE_SLOTS *fslots)
     }
 
     mousetype=NORMALMOUSE;
-    loadonecursor(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,SINGLEGAME_STR[0],SINGLEGAME_STR[1],ARROW_STR),mousetype);
+    highMouse.LoadOneCursor(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,SINGLEGAME_STR[0],SINGLEGAME_STR[1],ARROW_STR),mousetype);
     mytimer.SetMyTimerFunc(&menutimerandnetwork,NULL);
     restrictmousecoords(MOUSEMODE1);
     LowMouse.InstallMoveEvent(&mymousemoveevent);
 
-    MENUFIRSTDATA menushow[4] = { 
+    MENUFIRSTDATA menushow[4] = {
 			    {.elemid = 0, .appearposition = MENUAPPEAR_FROMLEFT, .disabled = 0},
 			    {.elemid = 1, .appearposition = MENUAPPEAR_FROMRIGHT, .disabled = 0} ,
 			    {.elemid = 2, .appearposition = MENUAPPEAR_FROMBOTTOM, .disabled = 0},
-			    {.elemid = 3, .appearposition = MENUAPPEAR_FROMRIGHT, .disabled = 0} 
+			    {.elemid = 3, .appearposition = MENUAPPEAR_FROMRIGHT, .disabled = 0}
 			    };
 
     MENUAPPEAR *items;
@@ -2304,7 +2309,7 @@ int glu_join(FORCE_SLOTS *fslots)
 
     LowMouse.UninstallMoveEvent();
     mytimer.ClearMyTimerFunc();
-    unloadmousecursors();
+    highMouse.UnloadCursors();
 
     UnloadDialogBin(glujoin);
     fontpcx.closePcx();
@@ -2364,7 +2369,7 @@ int glu_login(void)
     AddPrevMenuShowing(nplayer,singammenu);
 
     mousetype=NORMALMOUSE;
-    loadonecursor(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,SINGLEGAME_STR[0],SINGLEGAME_STR[1],ARROW_STR),mousetype);
+    highMouse.LoadOneCursor(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,SINGLEGAME_STR[0],SINGLEGAME_STR[1],ARROW_STR),mousetype);
     mytimer.SetMyTimerFunc(&menutimer,NULL);
     restrictmousecoords(MOUSEMODE1);
     LowMouse.InstallMoveEvent(&mymousemoveevent);
@@ -2374,10 +2379,10 @@ int glu_login(void)
     int nrofusers=ulist.GetMaxElements();
     ulist.DeallocList();
 
-    MENUFIRSTDATA menushow[3] = { 
+    MENUFIRSTDATA menushow[3] = {
 			    {.elemid = 0, .appearposition = MENUAPPEAR_FROMLEFT, .disabled = 0},
 			    {.elemid = 1, .appearposition = MENUAPPEAR_FROMBOTTOM, .disabled = 0},
-			    {.elemid = 2, .appearposition = MENUAPPEAR_FROMRIGHT, .disabled = 0} 
+			    {.elemid = 2, .appearposition = MENUAPPEAR_FROMRIGHT, .disabled = 0}
 			    };
 
 
@@ -2512,7 +2517,7 @@ int glu_login(void)
 		    strcpy(tempname,SAVES_DIRECTORY);
 		    strcat(tempname,nickname);
 		    rmdirrec(tempname);
-		    
+
 		    //delete player account
 		    strcpy(tempname,USERS_DIRECTORY);
 		    strcat(tempname,nickname);
@@ -2535,7 +2540,7 @@ int glu_login(void)
 
     LowMouse.UninstallMoveEvent();
     mytimer.ClearMyTimerFunc();
-    unloadmousecursors();
+    highMouse.UnloadCursors();
 
     UnloadDialogBin(nplayer);
     UnloadDialogBin(singammenu);
@@ -2664,7 +2669,7 @@ void initselectmaplists(MENUSTR *allmenus)//,struct mapinfo *info)
     int i,j,find=0,forcenr;
     int gmtype;
     char playertypes[60];
-    
+
     gmtype=getexpandbox_selecteditem(allmenus,19);
     strcpy(playertypes,GLUALLSTR(GLUALL_TBL_COMPUTERLIST));
     strcat(playertypes,"\n");
@@ -2676,11 +2681,11 @@ void initselectmaplists(MENUSTR *allmenus)//,struct mapinfo *info)
 	case MAP_GAMETYPE_FREEFORALL:
 	    NUMBGAMER=0;
 	    addexpanditem_lists(allmenus,21+0,0,nickname);
-	    
+
 	    setmenuitem_DISABLED(allmenus,21+0,FALSE);
     	    setmenuitem_VISIBLED(allmenus,21+0,TRUE);
 	    changeexpanditemnr(allmenus,21+0,0);	//playertype=0
-	    
+
 	    setmenuitem_DISABLED(allmenus,29+0,FALSE);
     	    setmenuitem_VISIBLED(allmenus,29+0,TRUE);
     	    changeexpanditemnr(allmenus,29+0,3);	//racetype=0
@@ -2691,7 +2696,7 @@ void initselectmaplists(MENUSTR *allmenus)//,struct mapinfo *info)
 		setmenuitem_VISIBLED(allmenus,21+i,TRUE);
 		if (!i)
 		{
-		    
+
 		    setmenuitem_DISABLED(allmenus,29+i,FALSE);
 		    setmenuitem_VISIBLED(allmenus,29+i,TRUE);
 		}
@@ -2728,7 +2733,7 @@ void initselectmaplists(MENUSTR *allmenus)//,struct mapinfo *info)
 		    }
 		    else
 			addexpanditem_lists(allmenus,21+j,0,playertypes);
-			
+
 		    setmenuitem_VISIBLED(allmenus,21+j,TRUE);
 		    setmenuitem_VISIBLED(allmenus,29+j,FALSE);
 		    setmenuitem_DISABLED(allmenus,21+j,TRUE);
@@ -2934,7 +2939,7 @@ signed char gamecounter=0;
 int letsgamecounter(MENUSTR *allmenus,int id1,int id2)
 {
 	char txt1[30];
-	
+
 	if (gamecounter!=-2)
 	{
     	    if (--gamecounter>=0)
@@ -3001,7 +3006,7 @@ int selectmapmenu(void)
     char allraces[60];
     char playertypes[60];
     char currentpath[1024];
-    
+
     chdir(GAMEPATH);
     if (loaddlgicons())
 	return -1;
@@ -3031,17 +3036,17 @@ int selectmapmenu(void)
     setmenuflags(selmap,MENUFLAGS_ALWAYSDRAW);
 
     mousetype=NORMALMOUSE;
-    loadonecursor(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,SINGLEGAME_STR[0],SINGLEGAME_STR[1],ARROW_STR),mousetype);
+    highMouse.LoadOneCursor(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,SINGLEGAME_STR[0],SINGLEGAME_STR[1],ARROW_STR),mousetype);
     mytimer.SetMyTimerFunc(&menutimer,NULL);
     restrictmousecoords(MOUSEMODE1);
     LowMouse.InstallMoveEvent(&mymousemoveevent);
 
-    MENUFIRSTDATA menushow[5] = { 
+    MENUFIRSTDATA menushow[5] = {
 			    {.elemid = 0, .appearposition = MENUAPPEAR_FROMLEFT, .disabled = 0},
 			    {.elemid = 1, .appearposition = MENUAPPEAR_FROMTOP, .disabled = 0},
 			    {.elemid = 2, .appearposition = MENUAPPEAR_FROMBOTTOM, .disabled = 0},
 			    {.elemid = 3, .appearposition = MENUAPPEAR_FROMBOTTOM, .disabled = 0},
-			    {.elemid = 4, .appearposition = MENUAPPEAR_FROMRIGHT, .disabled = 0} 
+			    {.elemid = 4, .appearposition = MENUAPPEAR_FROMRIGHT, .disabled = 0}
 			    };
 
     MENUAPPEAR *items = MenuAppear(selmap,5,menushow,NULL);
@@ -3064,8 +3069,8 @@ int selectmapmenu(void)
     strcat(allraces,MYTBLSTR(MYINFO_TBL_FREEFORALL));
     strcat(allraces,"\n");
     strcat(allraces,MYTBLSTR(MYINFO_TBL_USEMAPSETT));
-    
-    
+
+
     addexpanditem_lists(selmap,19,2,allraces);	//usemapsettings for default
     setmenuitem_VISIBLED(selmap,19,FALSE);
     NUMBGAMER=0;
@@ -3079,14 +3084,14 @@ int selectmapmenu(void)
     strcat(allraces,NETWSTR(NETWORK_TBL_PROTOSSRACE));
     strcat(allraces,"\n");
     strcat(allraces,NETWSTR(NETWORK_TBL_RANDOMRACE));
-    
+
     addexpanditem_lists(selmap,29,3,allraces);
     NUMBGAMER=0;
 
     strcpy(playertypes,GLUALLSTR(GLUALL_TBL_COMPUTERLIST));
     strcat(playertypes,"\n");
     strcat(playertypes,GLUALLSTR(GLUALL_TBL_CLOSEDLIST));
-    
+
     for (i=1;i<PLAYEDPLAYERS;i++)
     {
 	setmenuitem_VISIBLED(selmap,21+i,FALSE);
@@ -3136,7 +3141,7 @@ int selectmapmenu(void)
 		    changelistbox_selectednr(selmap,6,elemnr);
 //			changelistbox_fromto(selmap,6,elemnr);
 		}
-	    }    
+	    }
 	    if (!filelist.GetMaxElements())
 	    {
 		setmenuitem_DISABLED(selmap,15,TRUE);
@@ -3265,7 +3270,7 @@ int selectmapmenu(void)
 
     LowMouse.UninstallMoveEvent();
     mytimer.ClearMyTimerFunc();
-    unloadmousecursors();
+    highMouse.UnloadCursors();
 
 
     UnloadDialogBin(selmap);
@@ -3350,16 +3355,16 @@ int glu_creat(FORCE_SLOTS *fslots)
     setmenuflags(glucreat,MENUFLAGS_ALWAYSDRAW);
 
     mousetype=NORMALMOUSE;
-    loadonecursor(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,SINGLEGAME_STR[0],SINGLEGAME_STR[1],ARROW_STR),mousetype);
+    highMouse.LoadOneCursor(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,SINGLEGAME_STR[0],SINGLEGAME_STR[1],ARROW_STR),mousetype);
     mytimer.SetMyTimerFunc(&menutimerandnetwork,NULL);
     restrictmousecoords(MOUSEMODE1);
     LowMouse.InstallMoveEvent(&mymousemoveevent);
 
-    MENUFIRSTDATA menushow[4] = { 
+    MENUFIRSTDATA menushow[4] = {
 			    {.elemid = 0, .appearposition = MENUAPPEAR_FROMLEFT, .disabled = 0},
 			    {.elemid = 1, .appearposition = MENUAPPEAR_FROMRIGHT, .disabled = 0},
 			    {.elemid = 2, .appearposition = MENUAPPEAR_FROMBOTTOM, .disabled = 0},
-			    {.elemid = 3, .appearposition = MENUAPPEAR_FROMRIGHT, .disabled = 0} 
+			    {.elemid = 3, .appearposition = MENUAPPEAR_FROMRIGHT, .disabled = 0}
 			    };
 
     MENUAPPEAR *items = MenuAppear(glucreat,4,menushow,NULL);
@@ -3376,7 +3381,7 @@ int glu_creat(FORCE_SLOTS *fslots)
     setmenuitem_VISIBLED(glucreat,21,FALSE);
     setmenuitem_VISIBLED(glucreat,23,TRUE);
     setmenuitem_DISABLED(glucreat,23,FALSE);
-    
+
     strcpy(listboxstr,MYTBLSTR(MYINFO_TBL_MELEE));
     strcat(listboxstr,"\n");
     strcat(listboxstr,MYTBLSTR(MYINFO_TBL_FREEFORALL));
@@ -3421,7 +3426,7 @@ int glu_creat(FORCE_SLOTS *fslots)
 		{
 		    changelistbox_selectednr(glucreat,6,elemnr);
 		}
-	    }    
+	    }
 	    changetextitem(glucreat,7,selpath);
 	}
 	retstatus=drawmenu(glucreat,MENUFLAGS_EMPTY);
@@ -3464,7 +3469,7 @@ int glu_creat(FORCE_SLOTS *fslots)
 			BASENAMEMAP=strstr(SELECTMAP,"maps")+4;
 			CHECKSUMMMAP=mkchecksumm(SELECTMAP);
 			FILESIZEMAP=FILElength(SELECTMAP);
-			
+
 			mapinfo *testmap=(mapinfo *) wmalloc(sizeof(mapinfo));
 			memset(testmap,0,sizeof(mapinfo));
 
@@ -3549,7 +3554,7 @@ int glu_creat(FORCE_SLOTS *fslots)
 
     LowMouse.UninstallMoveEvent();
     mytimer.ClearMyTimerFunc();
-    unloadmousecursors();
+    highMouse.UnloadCursors();
 
     UnloadDialogBin(glucreat);
     SetTranspTable(NULL);
@@ -3692,8 +3697,8 @@ int Master_JoinPackets(MENUSTR *allmenus,void *data)
 //???? need to check if some of players exit the game
 //	if (newplayers&&gamecounter!=2)	//somebody join cancel the game
 //	{
-//	    
-//	}    
+//
+//	}
 	if (letsgamecounter(allmenus,21,7))
 	    return(CALLBACKCANCELFROMMENU9);//go go go - lets play
     }
@@ -3711,7 +3716,7 @@ int Guest_JoinPackets(MENUSTR *allmenus,void *data)
     WAITJOIN_INFO *join;
     NETWORK_INFO sendrespond;
     join=(WAITJOIN_INFO *) data;
-    do{	
+    do{
 	err=CallNetwork(NETWORK_DATAREADY,join->sock2);
 	if (err==NETWORK_OK_RECVDATA)
 	{
@@ -3895,17 +3900,17 @@ int glu_chat(int masterjoin,int playernr,FORCE_SLOTS *fslots)
     }
 
     mousetype=NORMALMOUSE;
-    loadonecursor(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,SINGLEGAME_STR[0],SINGLEGAME_STR[1],ARROW_STR),mousetype);
+    highMouse.LoadOneCursor(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,SINGLEGAME_STR[0],SINGLEGAME_STR[1],ARROW_STR),mousetype);
     mytimer.SetMyTimerFunc(&menutimerandnetwork,NULL);
     restrictmousecoords(MOUSEMODE1);
     LowMouse.InstallMoveEvent(&mymousemoveevent);
-        
-    MENUFIRSTDATA menushow[5] = { 
+
+    MENUFIRSTDATA menushow[5] = {
 			    {.elemid = 0, .appearposition = MENUAPPEAR_FROMBOTTOM, .disabled = 0},
 			    {.elemid = 1, .appearposition = MENUAPPEAR_FROMRIGHT, .disabled = 0},
 			    {.elemid = 2, .appearposition = MENUAPPEAR_FROMLEFT, .disabled = 0},
 			    {.elemid = 3, .appearposition = MENUAPPEAR_FROMBOTTOM, .disabled = 0},
-			    {.elemid = 4, .appearposition = MENUAPPEAR_FROMRIGHT, .disabled = 0} 
+			    {.elemid = 4, .appearposition = MENUAPPEAR_FROMRIGHT, .disabled = 0}
 			    };
 
     MENUAPPEAR *items;
@@ -4154,7 +4159,7 @@ int glu_chat(int masterjoin,int playernr,FORCE_SLOTS *fslots)
 
     LowMouse.UninstallMoveEvent();
     mytimer.ClearMyTimerFunc();
-    unloadmousecursors();
+    highMouse.UnloadCursors();
 
     UnloadDialogBin(gluchat);
     fontpcx.closePcx();
@@ -4171,7 +4176,7 @@ void gluchat_initmenus(MENUSTR *menu,int masterjoin,int playernr,FORCE_SLOTS *fs
     int playslot=0;
     char txt1[50];
     char txt2[50];
-    
+
     createplayerslottabs(txt1,1);
 
     strcpy(txt2,GLUALLSTR(GLUALL_TBL_OPENLIST));
@@ -4201,7 +4206,7 @@ void gluchat_initmenus(MENUSTR *menu,int masterjoin,int playernr,FORCE_SLOTS *fs
 	addexpanditem_lists(menu,i*4+34,3,txt1);
 	changeimageitem(menu,i*4+35,GLUCHAT_DOWNLOADPROGRESSICON);
     }
-    
+
     setmenuitem_DISABLED(menu,25,TRUE);
     setmenuitem_DISABLED(menu,26,TRUE);
     changeeditboxparam(menu,9,"",MAXCHATSYMB);
@@ -4595,7 +4600,7 @@ int messagingmenu(MENUDRAW *menudraw,MENUPARAMS *menuparams)
 //==========================================
 int diplomacymenu(MENUDRAW *menudraw,MENUPARAMS *menuparams)
 {
-    static unsigned char allies[MAXPLAYERS],shared[MAXPLAYERS]; 
+    static unsigned char allies[MAXPLAYERS],shared[MAXPLAYERS];
     int i,j,pl,ret;
     char tempplayername[MAXPLAYERNAMESYMBOLS+7];	//commandsymb,cubesymbol,colorcubesymbol,sizex,sizey,space and 0-terminate string at end
     if (!menudraw->menutodraw)
@@ -4632,7 +4637,7 @@ int diplomacymenu(MENUDRAW *menudraw,MENUPARAMS *menuparams)
 		tempplayername[5]=' ';
 		strcpy(tempplayername+4,getplayername(i));
 		changetextitem(menudraw->menutodraw,25+j,tempplayername);
-    	    	
+
     	    	setmenuitem_VISIBLED(menudraw->menutodraw,2+j,TRUE);
     	    	setmenuitem_DISABLED(menudraw->menutodraw,2+j,FALSE);	//checkbox1
     	    	setmenuitem_VISIBLED(menudraw->menutodraw,11+j,TRUE);
@@ -4975,12 +4980,12 @@ int DownloadMpqMenu(int mpqcfgresult)
     mouser[MOUSEMODE1].y1=0;
     mouser[MOUSEMODE1].x2=gameconf.grmode.x-1;
     mouser[MOUSEMODE1].y2=gameconf.grmode.y-1;
-    
+
     backgnd.openMpqPcx(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,DLNDMENU_STR[0],DLNDMENU_STR[1],BACKGND_STR));
     backgnd.readPalFromPcx(newpal,0);//readfourbytepalette
     memcpy(gameconf.grmode.videobuff,backgnd.GetPcxRawBytes(),backgnd.xsizePcx()*backgnd.ysizePcx());
 //    backgnd.PutPcx(DELTASCREENX,DELTASCREENY2,PCX_EMPTYCOLOR1);
-    
+
     fontpcx.openMpqPcx(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,MAINMENU_STR[0],MAINMENU_STR[1],FNT_STR));
     fntadr=fontpcx.GetPcxRawBytes();//for glowtext
     fntadr[21]=fntadr[11];
@@ -4988,20 +4993,20 @@ int DownloadMpqMenu(int mpqcfgresult)
     palchange(newpal,gameconf.videoconf.gamma,gameconf.videoconf.saturate);
     if (!gameconf.grmode.flags & DISPLAYFLAGS_EMULATIONMODE)
 	wscreenon();
-    loadonecursor(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,MAINMENU_STR[0],MAINMENU_STR[1],ARROW_STR),NORMALMOUSE);
+    highMouse.LoadOneCursor(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,MAINMENU_STR[0],MAINMENU_STR[1],ARROW_STR),NORMALMOUSE);
     mytimer.SetMyTimerFunc(&mainmenutimer,NULL);
     restrictmousecoords(MOUSEMODE1);
     LowMouse.InstallMoveEvent(&mymousemoveevent);
 
     mpqtotal=mpqcfgresult>>8;
     mpqremain=mpqcfgresult&0xff;
-    
+
     for (i=0,j=0;i<mpqtotal;i++)
 	if (!mpqprio[i].presence)
 	{
 	    files[j++]=mpqprio[i].mpqfilename;
 	}
-    
+
     sprintf(txtlabel,MYTBLSTR(MYINFO_TBL_MISSINGMPQS),files[0],files[1]);
     ret=glu_putmenu(NULL,"rez\\gluFirstRun.bin",txtlabel,fntadr,NULL,0);
     switch(ret)
@@ -5035,7 +5040,7 @@ int DownloadMpqMenu(int mpqcfgresult)
 				    break;
 				case 2://cancel
 				case CANCELFROMMENU://ESC
-				    //need to kill 'wget' process 
+				    //need to kill 'wget' process
 				    if (mpqfile.wgetprocid)
 					kill(mpqfile.wgetprocid,SIGKILL);
 				    menu3=LoadDialogBin("rez\\gluDwnlErr.bin",DIALOGBIN_MAINDIALOGS,IDFONT16);
@@ -5088,7 +5093,7 @@ int DownloadMpqMenu(int mpqcfgresult)
     }
     LowMouse.UninstallMoveEvent();
     mytimer.ClearMyTimerFunc();
-    unloadmousecursors();
+    highMouse.UnloadCursors();
     fontpcx.closePcx();
     backgnd.closePcx();
     unlink(WGET_FILESIZE2);
@@ -5304,7 +5309,7 @@ int abrtmenu(MENUDRAW *menudraw,MENUPARAMS *menuparams)
 	if (!menudraw->menutodraw)
 	    return(-1);
 	menuspecialtables(menudraw->menutodraw,tfontgamp,gamedlggrp);
-    }	    
+    }
     ret=drawmenu_ONETICK(menudraw->menutodraw);
     switch(ret)
     {
@@ -5334,7 +5339,7 @@ int quitgame(MENUDRAW *menudraw,MENUPARAMS *menuparams)
 	if (!menudraw->menutodraw)
 	    return(-1);
 	menuspecialtables(menudraw->menutodraw,tfontgamp,gamedlggrp);
-    }	    
+    }
     ret=drawmenu_ONETICK(menudraw->menutodraw);
     switch(ret)
     {
@@ -5361,7 +5366,7 @@ int restartgame(MENUDRAW *menudraw,MENUPARAMS *menuparams)
 	if (!menudraw->menutodraw)
 	    return(-1);
 	menuspecialtables(menudraw->menutodraw,tfontgamp,gamedlggrp);
-    }	    
+    }
     ret=drawmenu_ONETICK(menudraw->menutodraw);
     switch(ret)
     {
@@ -5388,12 +5393,12 @@ int leavegame(MENUDRAW *menudraw,MENUPARAMS *menuparams)
 	if (!menudraw->menutodraw)
 	    return(-1);
 	menuspecialtables(menudraw->menutodraw,tfontgamp,gamedlggrp);
-	//if no network or you are observer or you win the game but continue to play - not show 'become observer menu' 
+	//if no network or you are observer or you win the game but continue to play - not show 'become observer menu'
 	if (!NETWORKGAME||(PLAYER[NUMBGAMER].isobserverflag)|| (map.flags & STARMAP_FLAG_WINGAME))
     	    setmenuitem_VISIBLED(menudraw->menutodraw,1,FALSE);
 	else
     	    setmenuitem_VISIBLED(menudraw->menutodraw,1,TRUE);
-    }	    
+    }
     ret=drawmenu_ONETICK(menudraw->menutodraw);
     switch(ret)
     {
@@ -5425,7 +5430,7 @@ int puthelpfromgame(MENUDRAW *menudraw,MENUPARAMS *menuparams)
 	    return(-1);
 	menuspecialtables(menudraw->menutodraw,tfontgamp,gamedlggrp);
 	changetextitem(menudraw->menutodraw,1,myhelpmenutext[0]);
-    }	    
+    }
     ret=drawmenu_ONETICK(menudraw->menutodraw);
     if (ret>=0)
     {
@@ -5446,7 +5451,7 @@ int optionsgame(MENUDRAW *menudraw,MENUPARAMS *menuparams)
 	menuspecialtables(menudraw->menutodraw,tfontgamp,gamedlggrp);
 	if (!NETWORKGAME)
 	    setmenuitem_VISIBLED(menudraw->menutodraw,4,FALSE);
-    }	    
+    }
     ret=drawmenu_ONETICK(menudraw->menutodraw);
     switch(ret)
     {
@@ -5483,7 +5488,7 @@ int networkopt(MENUDRAW *menudraw,MENUPARAMS *menuparams)
 	menuspecialtables(menudraw->menutodraw,tfontgamp,gamedlggrp);
 	firstradiobutton=MenuFindFirstElem(menudraw->menutodraw,ISRADIOBUTTON);
 	setradiobuttonstate(menudraw->menutodraw,gameconf.networkconf.networklatency+firstradiobutton);
-    }	    
+    }
     ret=drawmenu_ONETICK(menudraw->menutodraw);
     switch(ret)
     {
@@ -5533,7 +5538,7 @@ int speedopt(MENUDRAW *menudraw,MENUPARAMS *menuparams)
         setmenuitem_DISABLED(menudraw->menutodraw, 6,TRUE);
         setmenuitem_DISABLED(menudraw->menutodraw, 9,TRUE);
         setmenuitem_DISABLED(menudraw->menutodraw,12,TRUE);
-    
+
         addhorizbutton_params(menudraw->menutodraw,4,7,7,3,NULL);
         sethorizbuttonpos(menudraw->menutodraw,4,gameconf.speedconf.keyscroll);
         setmenuitem_DISABLED(menudraw->menutodraw, 4,TRUE);
@@ -5541,7 +5546,7 @@ int speedopt(MENUDRAW *menudraw,MENUPARAMS *menuparams)
         setmenuitem_DISABLED(menudraw->menutodraw,10,TRUE);
         setmenuitem_DISABLED(menudraw->menutodraw,13,TRUE);
         setcheckboxstate(menudraw->menutodraw,15,gameconf.speedconf.cputhrottling);
-    }	    
+    }
     ret=drawmenu_ONETICK(menudraw->menutodraw);
     switch(ret)
     {
@@ -5595,7 +5600,7 @@ int audioopt(MENUDRAW *menudraw,MENUPARAMS *menuparams)
 	    setmenuitem_DISABLED(menudraw->menutodraw,11,TRUE);;//sound volume min
 	    setmenuitem_DISABLED(menudraw->menutodraw,13,TRUE);;//sound volume max
 	}
-    }	    
+    }
     ret=drawmenu_ONETICK(menudraw->menutodraw);
     switch(ret)
     {
@@ -5609,7 +5614,7 @@ int audioopt(MENUDRAW *menudraw,MENUPARAMS *menuparams)
 		gameconf.audioconf.subtitles=getcheckboxstate(menudraw->menutodraw,7);
 		if (gameconf.audioconf.musicvolume<5)
 		    StopMusic(MUSIC_STOPWITHFADE);//stop play
-		else    
+		else
 		    GoPlayNextMusic();//play if not played,or not play if already playing
 		if (audiostream)
 		    audiostream->ChangeMusicVolume(gameconf.audioconf.musicvolume);
@@ -5665,7 +5670,7 @@ int videoopt(MENUDRAW *menudraw,MENUPARAMS *menuparams)
 
 	addhorizbutton_params(menudraw->menutodraw,12,MAXGAMMA,8,3,&gammachange);
 	sethorizbuttonpos( menudraw->menutodraw,12,tempconf.videoconf.saturate);
-    }	    
+    }
     ret=drawmenu_ONETICK(menudraw->menutodraw);
     switch(ret)
     {
@@ -5692,7 +5697,7 @@ int videoopt(MENUDRAW *menudraw,MENUPARAMS *menuparams)
 			case 2:
 			    gameconf.grmode.flags &= ~DISPLAYFLAGS_EMULATIONMODE;
 			    break;
-			    
+
 		    }
 		}
 		saveconf();
@@ -5724,7 +5729,7 @@ int loadgame(MENUDRAW *menudraw,MENUPARAMS *menuparams)
 	listboxlineitems(menudraw->menutodraw,2,8,19);
 	menuspecialtables(menudraw->menutodraw,tfontgamp,gamedlggrp);
 	setitemrelation(menudraw->menutodraw,0,ITEMRELATION_DISABLE,&menudraw->menutodraw->menu[2].item.listbox->selectednr,-1);
-	
+
 	strcpy(LOADPATH,SAVES_DIRECTORY);
 	mkdir(LOADPATH,0755);
 	strcat(LOADPATH,nickname);
@@ -5732,7 +5737,7 @@ int loadgame(MENUDRAW *menudraw,MENUPARAMS *menuparams)
 	mkdir(LOADPATH,0755);
         listfiles(LOADPATH,&loadlist,".sav",LOADPATH,".sav",NOADDDIRTOLIST);
         setlistbox_lists(menudraw->menutodraw,2,-1,&loadlist,NULL);
-    }	    
+    }
     ret=drawmenu_ONETICK(menudraw->menutodraw);
     switch(ret)
     {
@@ -5825,7 +5830,7 @@ int savegame(MENUDRAW *menudraw,MENUPARAMS *menuparams)
 	mkdir(SAVEPATH,0755);
         listfiles(SAVEPATH,&savelist,".sav",SAVEPATH,".sav",NOADDDIRTOLIST);
         setlistbox_lists(menudraw->menutodraw,4,-1,&savelist,NULL);
-    }	    
+    }
     ret=drawmenu_ONETICK(menudraw->menutodraw);
     switch(ret)
     {
@@ -5930,7 +5935,7 @@ int savegametofile(void)
 	menustatus=MAINMENUSTATUS_SAVEGAMEFAILED;
 	sprintf(SAVELOADFILENAME,NETWSTR(NETWORK_TBL_REPLACESAVE),fileforsaveload);
 	mp=new MENUPARAMS(&savegametofile_replace,SAVELOADFILENAME);
-	
+
 //	mp=new MENUPARAMS(&savegametofile_replace,NETWSTR(NETWORK_TBL_REPLACESAVE));
 	showedmenu.prepareforshowmenu(&xputokcancelmenu,mp);
 	return(0);
@@ -6006,7 +6011,7 @@ void createtemptables(void)
     char *menutranspcolors;
 
     menutranspcolors=(char *)wmalloc(256*256);
-    
+
     //creating palcs 25% & 50% transparency
     backgnd.openMpqPcx(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,CAMPAIGN_STR[0],CAMPAIGN_STR[1],BACKGND_STR));
     LoadTransPal(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,CAMPAIGN_STR[0],CAMPAIGN_STR[1],TRANS25_STR),

@@ -3,12 +3,12 @@
 
 #include <grplib/grp.h>
 #include "defs.h"
+#include "mousenew.h"
 
-
-#ifdef WITHSDL
+/*#ifdef WITHSDL
     #include "sdl/mousesdl.h"
 #endif
-/*
+
 #ifdef UNDERDOS
        #define WMLEFTKEY  1
        #define WMRIGHTKEY 2
@@ -16,51 +16,10 @@
        //#include "dos/mousedos.h"
 #endif
 */
-struct mouse_cursors
-{
-    GRPFILE *mousegrp;
-    unsigned char curentposition;
-    unsigned char maxpositions;
-    unsigned char flag;
-};
 
 #define	MAXSCROLLTICKS 6
-#define	SMOUTHMOUSE    1.0001
 
-#define MOUSEON_MYUNIT			0
-#define MOUSEON_ALLIANCEUNIT		1
-#define MOUSEON_ENEMYUNIT		2
-#define MOUSEON_NEUTRALUNIT		3
-#define MOUSEON_MYBUILD			4
-#define MOUSEON_ALLIANCEBUILD		5
-#define MOUSEON_ENEMYBUILD		6
-#define MOUSEON_NEUTRALBUILD		7
-#define MOUSEON_MAXVALUE		8
-
-
-#define SELECTIONMOUSE  	0
-#define MOUSEILLEGAL		1
-#define MOUSEONOBJGREEN 	2
-#define MOUSEONOBJRED	 	3
-#define MOUSEONOBJYELLOW 	4
-#define MOUSEDOWNSCROLL		5
-#define MOUSELEFTDOWNSCROLL	6
-#define MOUSERIGHTDOWNSCROLL	7
-#define MOUSELEFTSCROLL		8
-#define MOUSERIGHTSCROLL	9
-#define MOUSEUPSCROLL		10
-#define MOUSELEFTUPSCROLL	11
-#define MOUSERIGHTUPSCROLL	12
-#define TARGGREENMOUSE		13
-#define TARGNEUTRALMOUSE	14
-#define TARGREDMOUSE		15
-#define TARGYELLOWMOUSE		16
-#define TIMEMOUSE		17
-#define NORMALMOUSE		18
-
-#define TYPEOFCURSORS 		19
-
-extern int 	mousetype,grm,factorscrollkey;
+extern int 		mousetype,grm,factorscrollkey;
 extern int     	mouse_x,mouse_y,mouse_b,mousehotpos;
 extern char    	curentREGIM;
 extern int     	xmloc,ymloc,movieminikarta,mspeed;
@@ -75,14 +34,11 @@ extern unsigned	short  mouseprop;
 extern char     timemouse;
 extern struct	OBJ *MouseOnOBJS[MOUSEON_MAXVALUE];
 extern struct	OBJ *DestMouseOBJ;
-extern char	DestMouseType;
+extern char		DestMouseType;
 extern char    	timemousewait;
-extern int memmouseposx,memmouseposy;
-extern int memmousepossizex,memmousepossizey;
+extern int 		memmouseposx,memmouseposy;
+extern int 		memmousepossizex,memmousepossizey;
 
-int  loadonecursor(char *filename,int mousetype);
-int  loadmousecursors(void);
-void unloadmousecursors(void);
 int  restrictmousecoords(int REGIM);
 void putmouseonscreen(void);
 void desenpatr(void);

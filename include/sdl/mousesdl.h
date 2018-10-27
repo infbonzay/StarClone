@@ -12,10 +12,10 @@ typedef void (*PMOUSEDBLCLICKEVENTCALLBACK)(int);
 class lowmouse
 {
 public:
-    int DeltaX,DeltaY;
+    int  DeltaX,DeltaY;
 
-    int Init(void);
-    int GetButtonStatus(void);
+    int  Init(void);
+    int  GetButtonStatus(void);
     void GetPos(void);
     void FlushPos(void);
     void SetPos(int x,int y);

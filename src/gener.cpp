@@ -97,7 +97,7 @@ int main(int c,char **parm,char **env)
 #ifdef TESTMALLOC
     char *testmem = (char *)wmalloc(16);
     wfree(testmem);
-#endif    
+#endif
 
     inivars();
     fflush(stdout);
@@ -132,13 +132,13 @@ int main(int c,char **parm,char **env)
 //    getcwd(GAMEPATH,sizeof(GAMEPATH)-1);
 //    strcpy(GAMEMAPPATH,GAMEPATH);
 //    strcat(GAMEMAPPATH,"/maps");
-    
+
 	mkdir("maps",0755);
 	mkdir(USERS_DIRECTORY,0755);
 	mkdir(SAVES_DIRECTORY,0755);
 	mkdir(REPLAYS_DIRECTORY,0755);
 	mkdir(TEMPDIR,0755);
-    
+
 	if (chdir(GAMEMAPPATH))
 	{
 	    printf("WARNING: the MAP %s do not exist\n",GAMEMAPPATH);
@@ -204,7 +204,7 @@ int main(int c,char **parm,char **env)
     ShowFirstRunVideo(0);
 
     PlayMusic("music\\title.wav",-1);
-    
+
     MENUSTR *title = showtitle();
     if (LoadDatTblFiles(&alldattbl))
     {
@@ -312,7 +312,7 @@ playmission:				GAMETYPE = MAP_GAMETYPE_USEMAPSETTINGS;
 						gamequitstatus=PREVIOUSMENU;
 						break;
 					    }
-					    goto gonextmission; 
+					    goto gonextmission;
 					}
 			    		missionfrommenu=0;
 repeatmissionagain:
@@ -330,7 +330,7 @@ repeatmissionagain:
 					clearplayernames();
     					testmap=(mapinfo *) wmalloc(sizeof(mapinfo));
 					memset(testmap,0,sizeof(mapinfo));
-    					
+
 					err=starmap_info(SELECTMAP,NULL,testmap);
 					if (err)
 					{
@@ -358,7 +358,7 @@ repeatmissionagain:
 						}
 						if ( gamequitstatus==EXITGAME || gamequitstatus==QUITMISSION )
 						    break;
-//						gamestatus=WINGAME;	//for test 
+//						gamestatus=WINGAME;	//for test
 						if ( gamestatus!=WINGAME || gamequitstatus == RESTARTGAME )
 						    goto repeatmissionagain;
 gonextmission:
@@ -416,7 +416,7 @@ gonextmission:
 							preparegameconf_ums();
 						    testmap=(mapinfo *) wmalloc(sizeof(mapinfo));
 						    memset(testmap,0,sizeof(mapinfo));
-        
+
 						    err=starmap_info(NULL,SELECTMAP,testmap);
 						    if (!err)
 						    {
@@ -512,7 +512,7 @@ gonextmission:
 				{
 				    gamequitstatus=PREVIOUSMENU;
 				    break;
-				}	
+				}
 				do{
 				    status2=glu_join(&force_slots);
 				    switch(status2)
@@ -683,10 +683,10 @@ int letsplaygame(int race,char *mypath)
     CODEFORWITHOUTTECHTREE = 0;
     CODEFORPSIUNLIMIT = 0;
     SHOWCELLS = 0;
-    
+
     if (race==RACE_OBSERVER)
 	race=RACE_TERRAN;
-	
+
     clearallplayerinfo();
     loadbeforestarmap(race);
     i = load_starmap( SELECTMAP, mypath, &map,&gameconf );
@@ -707,13 +707,13 @@ int letsplaygame(int race,char *mypath)
 	    if (map.flags & STARMAP_FLAG_EXPANSION)
 		DEBUGMESSCR("(EXPANSION MAP)\n",SELECTMAP);
 	    map.played_as_nr=NUMBGAMER;
-	    
+
 	    mytimer.ClearGameTimer();
 	    clearshowgoods();
 
 	    PreparePlayGameMusic();
 	    GoPlayNextMusic();	//first start play music
-	    
+
 	    status=gogame(&map);
 	    map.secondsplayed=mytimer.GetCurrentGameTime();
 	    if (status!=EXITGAME)
@@ -903,7 +903,7 @@ int gogame(struct mapinfo *info)
     char desenonlymouseflag;
     unsigned long oldusecs=0,oldkeyscrollusecs=0,oldmousescrollusecs=0,usecs=0;
     changegoods=1;
-    loadmousecursors();
+    highMouse.LoadAllCursors();
     showedmenu.Init();
     restrictmousecoords(MOUSEMODE2);
     chatbar.clearallmessages();
@@ -926,7 +926,7 @@ int gogame(struct mapinfo *info)
     MAPUNITSREGENERATIONBIT=1;
     calculatefog(bitsplayer);			//calculate all fog
     drawMAP(1);
-    
+
     MouseOnObjClear();
     totalimgs=0;
     drawedimgs=0;
@@ -952,7 +952,7 @@ int gogame(struct mapinfo *info)
     clearopenseeKarta();
     clearopenseeKarta();
 
-    
+
     do{
 	scrregions=0;
 	needredesen = 0;
@@ -963,9 +963,9 @@ int gogame(struct mapinfo *info)
 
 	addscrx=0;
 	addscry=0;
-	
+
 	if (needredesen)
-	    redesenscreen();		
+	    redesenscreen();
 	if (!PAUSEGAME&&!PAUSEINTRIG)
 	{
 	    keyrefresh();               	//refresh array of keys
@@ -1030,7 +1030,7 @@ int gogame(struct mapinfo *info)
 	    	curentREGIM=MOUSEMODE2;//restrict mouse move on entire map
 	    movieminikarta=NO;
 	    switch(timeid)
-	    {    
+	    {
 		    case TIMETONOSLEEP:
 			break;
 		    case TIMETOACT:		//timetoprocess
@@ -1047,13 +1047,13 @@ int gogame(struct mapinfo *info)
 			    AllImages_ExecuteIScript();
 
 			    AllOBJMoving();
-			    
+
 			    AdditionalUnitsProceed();
-			    			    
+
 			    invisiblestick();
 			    if (MINIMAPREFRESHCYCLE)
         			applyrescuableunits();
-			    
+
 			    if (mousedestimg)
 				iscriptinfo.ExecuteScript(mousedestimg);
         		    if (TRIG_inittriggers)
@@ -1126,20 +1126,20 @@ int gogame(struct mapinfo *info)
 		AllImages_DeleteMarked();		//destroy images previously marked
 
     		DestroyMarked();			//destroy unit previously marked
-		
+
 		totalimgs=0;
 		drawedimgs=0;
 		MouseOnObjClear();
 		AllImages_Draw();
-		
+
 		DrawBuildPlace();
-		
+
 		GetMouseOnObj();
-		
+
 		putobjsonminimap();
 		if (MAPUNITSREGENERATIONBIT && (MAPDEF & UNITS))
 	    	    minimap_showobjs();
-		
+
     		putfog();			//show fogofwar
     		showgoods();
 		ShowLeaderBoards(&map,5,15);
@@ -1172,7 +1172,7 @@ int gogame(struct mapinfo *info)
 
 		MinimapImages_Draw();
 
-    		DetectIfAnyPylonOnSelected();	
+    		DetectIfAnyPylonOnSelected();
 		//analize properties of selected objects
     		CreateMenuProperties(properties,selectableproperties,fordeselect,NUMBGAMER);
 
@@ -1231,7 +1231,7 @@ int gogame(struct mapinfo *info)
 		showTERRAINmenu(&terr_menu);
 		showMESSAGEmenu(&mess_menu);
 	    }
-	
+
 	retmenu=0;
 	if (scrnew&&!retnet)
     	    drawmonoifpaused();
@@ -1271,7 +1271,7 @@ int gogame(struct mapinfo *info)
 			scrparts[1].y=scrparts[0].y;
 			scrparts[1].w=scrparts[0].w;
 			scrparts[1].h=scrparts[0].h;
-			
+
 			scrparts[0].x=lastmenuregion.x;
 			scrparts[0].y=lastmenuregion.y;
 			scrparts[0].w=lastmenuregion.w;
@@ -1281,7 +1281,7 @@ int gogame(struct mapinfo *info)
 	    }
 	    if (desenonlymouseflag)
 	    {
-		//if only mouse region update 
+		//if only mouse region update
 		//add and menu region update
 		if (showedmenu.menutodraw)
 		{
@@ -1330,9 +1330,9 @@ int gogame(struct mapinfo *info)
     netplay.DeInitNetworkTicks();
     deletemainscreenmouseevents();
     GAME=0;
-    unloadmousecursors();
+    highMouse.UnloadCursors();
     scrnew=0;
-    
+
     AllImages_FreeAndEmpty();
     if (mousedestimg)
     {
@@ -1415,7 +1415,7 @@ void drawGAMEMENUbutton(char *button,DIALOGBIN_INFO *menuinfo,int buttonnr,
 			    putgrp_nopacked(menuinfo->iteminfo[buttonnr].xpos+menuinfo->iteminfo[0].xpos,
 					    menuinfo->iteminfo[buttonnr].ypos+menuinfo->iteminfo[0].ypos,
 					    gamedlggrp,dlggrp_firstpict+MENUBUTTON_CLICKED);
-			    
+
 			    *button|=GAMEBUTTON_SHOW;
 			    press=1;
 			}
@@ -1625,7 +1625,7 @@ void gameend(const char *mes)
     printf("%s\n",mes);
     if (map.valid_vcode)
         unload_starmap(&map);
-    unloadmousecursors();
+    highMouse.UnloadCursors();
     deletemainscreenmouseevents();
 //    freeOBJstructs(1);
 //    freeMAGEstructs();
@@ -1668,7 +1668,7 @@ void logend(void)
 	fprintf(f,"\n");
     }
     fclose(f);
-*/    
+*/
 /*    f=fopen("pylonarea.txt","wb");
     for (i=0;i<MAXYMAP;i++)
     {
@@ -1677,7 +1677,7 @@ void logend(void)
 	    fprintf(f,"%03d ",map.pylonarea[2][i*MAXXMAP+j]);
 	}
 	fprintf(f,"\n");
-    }	    
+    }
     fclose(f);
     f=fopen("seedetector.txt","wb");
     for (i=0;i<MAXYMAP;i++)
@@ -1687,7 +1687,7 @@ void logend(void)
 	    fprintf(f,"%03d ",map.mapbits.seedetector[i*MAXXMAP+j]);
 	}
 	fprintf(f,"\n");
-    }	    
+    }
     fclose(f);
     f=fopen("whitefog.txt","wb");
     for (i=0;i<MAXYMAP;i++)
@@ -1697,7 +1697,7 @@ void logend(void)
 	    fprintf(f,"%03d ",map.mapbits.whitefog[1][i*MAXXMAP+j]);
 	}
 	fprintf(f,"\n");
-    }	    
+    }
     fclose(f);
 */
 /*    f=fopen("whitefog.txt","wb");
@@ -1708,7 +1708,7 @@ void logend(void)
 	    fprintf(f,"%02d ",map.mapbits.whitefog[1][i*MAXXMAP+j]);
 	}
 	fprintf(f,"\n");
-    }	    
+    }
     fclose(f);
     f=fopen("blackfog.txt","wb");
     for (i=0;i<MAXYMAP;i++)
@@ -1718,7 +1718,7 @@ void logend(void)
 	    fprintf(f,"%02d ",map.mapbits.blackfog[1][i*MAXXMAP+j]);
 	}
 	fprintf(f,"\n");
-    }	    
+    }
     fclose(f);
 
     f=fopen("screep.txt","wb");
@@ -1729,7 +1729,7 @@ void logend(void)
 	    fprintf(f,"%03d ",map.mapbits.savedcreep[NUMBGAMER][i*MAXXMAP+j]);
 	}
 	fprintf(f,"\n");
-    }	    
+    }
     fclose(f);
     f=fopen("txt.elevation","wb");
     for (i=0;i<MAXYMAP;i++)
@@ -1739,7 +1739,7 @@ void logend(void)
 	    fprintf(f,"%01d",map.maplevel[i*MAXXMAP+j]);
 	}
 	fprintf(f,"\n");
-    }	    
+    }
     fclose(f);
 */
 /*    f=fopen("txt.creepflagplace","wb");
@@ -1750,7 +1750,7 @@ void logend(void)
 	    fprintf(f,"%01d",map.creepflagplace[i*MAXXMAP+j]);
 	}
 	fprintf(f,"\n");
-    }	    
+    }
     fclose(f);
 */
 /*
@@ -1762,7 +1762,7 @@ void logend(void)
 	    fprintf(f,"%01d",map.creepflagneeded[i*MAXXMAP+j]);
 	}
 	fprintf(f,"\n");
-    }	    
+    }
     fclose(f);
 */
 
@@ -1774,7 +1774,7 @@ void logend(void)
 	    fprintf(f,"%01d",map.buildswalk[i*MAXXMAP+j]);
 	}
 	fprintf(f,"\n");
-    }	    
+    }
     fclose(f);
 */
 /*    f=fopen("txt.display_map.1","wb");
@@ -1785,7 +1785,7 @@ void logend(void)
 	    fprintf(f,"%04x ",map.display_map[i*MAXXMAP+j]);
 	}
 	fprintf(f,"\n");
-    }	    
+    }
     fclose(f);
 
     sprintf(fn,"txt.walk.%d",filenr++);
@@ -1819,7 +1819,7 @@ void ShowGameStatusMenu(int *prevgameticks)
     			Play_sfxdata_id(NULL,SFXDATA_YOUWIN,1,0);
 	    		showedmenu.prepareforshowmenu(&wmission,NULL);
 		    }
-    		    else 
+    		    else
 			if (gamestatus==DEFEATGAME)
 			{
     			    Play_sfxdata_id(NULL,SFXDATA_YOULOSE,1,0);
@@ -1828,7 +1828,7 @@ void ShowGameStatusMenu(int *prevgameticks)
 		}
 	    }
 	}
-    
+
 }
 //===================================================
 int IfTimeForTrigger(struct mapinfo *info,int *prevgameticks)
@@ -1887,7 +1887,7 @@ void ShowFirstRunVideo(int ignorefirstrunbit)
 	    }
 	}
     }
-}    
+}
 //===================================================
 void ActivateCheat(int cheatid)
 {

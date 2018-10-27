@@ -102,7 +102,7 @@ const char    *cmpgn_cmd[12]={"/COMMENT","/FADESPEED","/DISPLAYTIME","/BACKGROUN
 			"/PAGE"};
 
 const char    *rezu[14]={"[NEWOBJECT]","ENDOBJ","NOADDSTATSATCONSTR",
-                       "SPEEDUPG","ULTRALISKSECONDARMOR","SIGHTUPG",             
+                       "SPEEDUPG","ULTRALISKSECONDARMOR","SIGHTUPG",
                        "MANAUPG","PROPERTIES","TIMELEFT","CREATEFROMUNIT","ATACKSPEEDUPG",
                        "CREEP","CLOAKRANGE","ADDITIONALTEXT"
                        };
@@ -264,7 +264,7 @@ void addvars(void)
     mouser[MOUSEMODE3].y1=0;
     mouser[MOUSEMODE3].x2=gameconf.grmode.x-1;
     mouser[MOUSEMODE3].y2=gameconf.grmode.y-110;
-    
+
     screenfog=(unsigned char *)wmalloc(SCRFOGX*SCRFOGY);
     screenmapused=(unsigned char *)wmalloc((hightkart+1)*(widthkart+1));
     calcinert();

@@ -114,7 +114,7 @@ void keyrefresh(void)
 int changemode(int x,int y,int bpp,int fullscreen,char *pal)
 {
     int flags,realbpp,emul;
-    char *tempvid=(char *)wmalloc(x*y);
+    char *tempvid = (char *)wmalloc(x*y);
     memcpy(tempvid,gameconf.grmode.videobuff,x*y);
     if (fullscreen)
         flags = SDL_HWSURFACE|SDL_FULLSCREEN|SDL_HWPALETTE;
@@ -128,7 +128,7 @@ int changemode(int x,int y,int bpp,int fullscreen,char *pal)
 		return(0);
     if (realbpp != bpp)
     {
-		emul=1;
+		emul = 1;
     }
 
     sdlsurface = SDL_SetVideoMode(x,y,bpp,flags);
@@ -156,13 +156,13 @@ int detectmode(int x,int y,int bpp,int fullscreen)
         flags = SDL_HWSURFACE|SDL_FULLSCREEN|SDL_HWPALETTE;
     else
         flags = SDL_HWSURFACE|SDL_HWPALETTE;
-    emul=0;
+    emul = 0;
     if (SDL_Init(SDL_INIT_VIDEO|SDL_INIT_TIMER)==-1)
         return (0);
     realbpp=SDL_VideoModeOK(x,y, bpp, flags);
-    if (realbpp==0)
+    if (realbpp == 0)
 		return(0);
-    if (realbpp!=bpp)
+    if (realbpp != bpp)
     {
 		printf("Launching in emulated mode %dx%dx%d\n",x,y,realbpp);
 		emul=1;
@@ -196,19 +196,19 @@ void wscreenonregions(int nrregions,SCREEN_REGION regions[])
     if (gameconf.grmode.flags & DISPLAYFLAGS_WINDOWACTIVE)
     {
 		SDL_UpdateRects(sdlsurface,nrregions,regions);
-		nodraw=0;
+		nodraw = 0;
     }
-    if (nodraw||gameconf.speedconf.cputhrottling)
+    if (nodraw || gameconf.speedconf.cputhrottling)
         usleep(4000);
 }
 //==========================
 void wscreenonregion(int x,int y,int xsize,int ysize)
 {
     SDL_Rect scrpart;
-    scrpart.x=x;
-    scrpart.y=y;
-    scrpart.w=xsize;
-    scrpart.h=ysize;
+    scrpart.x = x;
+    scrpart.y = y;
+    scrpart.w = xsize;
+    scrpart.h = ysize;
     wscreenonregions(1,&scrpart);
 }
 //==========================
@@ -226,23 +226,23 @@ void activatepalette256x3(unsigned char *pal3)	//4*256 bytes palette
 {
     int i;
     unsigned char pal4[4*256];
-    unsigned char *pal4p=pal4;
-    *pal4p++=0;
-    *pal4p++=0;
-    *pal4p++=0;
-    *pal4p++=0;
+    unsigned char *pal4p = pal4;
+    *pal4p++ = 0;
+    *pal4p++ = 0;
+    *pal4p++ = 0;
+    *pal4p++ = 0;
     pal3+=3;
     for (i=1;i<255;i++)
     {
-		*pal4p++=*pal3++;
-		*pal4p++=*pal3++;
-		*pal4p++=*pal3++;
-		*pal4p++=0;
+		*pal4p++ = *pal3++;
+		*pal4p++ = *pal3++;
+		*pal4p++ = *pal3++;
+		*pal4p++ = 0;
     }
-    *pal4p++=255;
-    *pal4p++=255;
-    *pal4p++=255;
-    *pal4p++=0;
+    *pal4p++ = 255;
+    *pal4p++ = 255;
+    *pal4p++ = 255;
+    *pal4p++ = 0;
 
     setpalette((SDL_Color *)&pal4);
 }
@@ -254,7 +254,7 @@ void settextmode(void)
 //==========================
 int eventwindowloop(void) //return 1 - on quit
 {
-    static long long prevtimer=0;
+    static long long prevtimer = 0;
     int exitevent = 0;
     int UpperKeysActive;
     int doubleClick;
@@ -269,10 +269,8 @@ int eventwindowloop(void) //return 1 - on quit
 					(*LowMouse.MoveEventFunc)(event.motion.x,event.motion.y);
 				break;
 			case SDL_MOUSEBUTTONDOWN:
+				doubleClick = 0;
 				buttons = 1 << (event.button.button - 1);
-				if (LowMouse.ClickEventFunc)
-					(*LowMouse.ClickEventFunc)(buttons);
-				//mouse_b |= buttons;
 				if (buttons == 1)
 				{
 					if (tick_timer - prevtimer <= MOUSEDBLCLICKTIME)
@@ -285,6 +283,10 @@ int eventwindowloop(void) //return 1 - on quit
 					if (LowMouse.DblClickEventFunc)
 						(*LowMouse.DblClickEventFunc)(doubleClick);
 				}
+				if (doubleClick)
+					if (LowMouse.ClickEventFunc)
+						(*LowMouse.ClickEventFunc)(buttons);
+				//mouse_b |= buttons;
 				break;
 			case SDL_MOUSEBUTTONUP:
 				if (LowMouse.DblClickEventFunc)
@@ -334,5 +336,3 @@ int eventwindowloop(void) //return 1 - on quit
     return (exitevent);
 }
 //===========================================
-
-

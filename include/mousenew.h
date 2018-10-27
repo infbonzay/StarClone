@@ -1,5 +1,5 @@
-#if !defined(_MOUSE_W)
-#define _MOUSE_W
+#if !defined(_MOUSENEW_W)
+#define _MOUSENEW_W
 
 #include <grplib/grp.h>
 
@@ -12,10 +12,8 @@
 
 #define	SMOUTHMOUSE    			1.0001
 
-#define TYPEOFCURSORS 			19
 #define MAXMOUSESIZEX			64
 #define MAXMOUSESIZEY			64
-#define MOUSEON_MAXVALUE		8
 
 #define MOUSEON_MYUNIT			0
 #define MOUSEON_ALLIANCEUNIT	1
@@ -42,24 +40,16 @@
 #define MOUSERIGHTUPSCROLL		12
 #define TARGGREENMOUSE			13
 #define TARGNEUTRALMOUSE		14
-#define TARGREDMOUSE			5
+#define TARGREDMOUSE			15
 #define TARGYELLOWMOUSE			16
 #define TIMEMOUSE				17
 #define NORMALMOUSE				18
 
+#define TYPEOFCURSORS 			19
+
 
 class HighMouse
 {
-    OBJ 	*MouseOnOBJS[MOUSEON_MAXVALUE];	//myunit,alianceunit,neutralunit,enemyunit,mybuild,aliancebuild,neutralbuild,enemybuild
-    OBJ		*DestMouseOBJ;
-
-    int		MouseX;
-    int		MouseY;
-    int		PrevMouseX;
-    int		PrevMouseY;
-    int		MoveOnMinimap;
-    int		UnitCommandAction;
-    int		MouseButtons;
 
     struct
     {
@@ -70,55 +60,18 @@ class HighMouse
 		char	buff[MAXMOUSESIZEX*MAXMOUSESIZEY];
     }mousesavedpixels;
 
+public:
     struct
     {
 		GRPFILE			*mousegrp;
 		unsigned char	curentposition;
 		unsigned char	maxpositions;
 		unsigned char	flag;
-    }mouses[TYPEOFCURSORS];
-
-    char	MouseBitSelection;
-    char	MouseBitBorder;
-    char	WaitToPressLeftButton;
-    char	WaitForReleaseLeftButton;
-    char	WaitToPressRightButton;
-    char	WaitForReleaseRightButton;
-    char	DestMouseType;
-    char	MouseObjType;
-    struct
-    {
-		int		PosX;
-        int		PosY;
-		char	SC_BuildUnit;
-		char	CanDo;
-    }Construct;
-
-    struct
-    {
-		int		PosX;
-        int		PosY;
-		char	Presence;
-    }DestCursor;
+    }cursors[TYPEOFCURSORS];
 
     int  LoadOneCursor(char *filename,int typemouse);
     int  LoadAllCursors(void);
     void UnloadCursors(void);
-    void SetMouseOn(OBJ *mouseonobj,int desttype);
-    void DrawMouse(int MenuActive, int mainarea, int selectarea,int onborder);
-    void DrawSelectedArea(int selectarea);
-    int  CheckBorder(int x,int y,int x2,int y2);
-    void PutDestination(OBJ *destobj,int xm,int ym,int modemove,int rightclick);
-    void NextMousePict(void);
-    void GetMouseType(int xk,int yk,int menuActive,int mainArea,int minimapArea);
-    void LoadPixelsUnderMouse(void);
-    void SavePixelsUnderMouse(void);
-    void MouseOnObjClear(void);
-    void GetMouseOnObj(void);
-
-private:
-    float scrollmapx(int border,float factor);
-    float scrollmapy(int border,float factor);
 
 };
 

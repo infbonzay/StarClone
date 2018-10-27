@@ -47,64 +47,6 @@ char    curentREGIM;
 int memmouseposx,memmouseposy;
 int memmousepossizex,memmousepossizey;
 
-mouse_cursors mouses[TYPEOFCURSORS];
-
-//==============================
-int loadonecursor(char *filename,int typemouse)
-{
-    if (mpqloadfile(filename,(char **)&mouses[typemouse].mousegrp))
-    {
-	if (loadgrp(filename,&mouses[typemouse].mousegrp))
-    	    return -1;
-    	else
-    	    mouses[typemouse].flag = 1;
-
-    }
-    else
-        mouses[typemouse].flag = 2;
-
-    mouses[typemouse].curentposition = 0;
-    mouses[typemouse].maxpositions = mouses[typemouse].mousegrp->CountPictures;
-    return 0;
-}
-//==============================
-int loadmousecursors(void)
-{
-    int i;
-    for (i=0;i<TYPEOFCURSORS-1;i++)
-    {
-	if (loadonecursor(makefilename(GAMECURSOR_NAME,GAMECURSOR_OFFSET,'\\',0,allfilescursors[i]),i))
-	    return i+1;
-    }
-    if (loadonecursor(makefilename(GAMECURSOR_NAME,GAMECURSOR_OFFSET,0,0,ARROW_STR),i))
-        return i+1;
-//    i++;
-//    if (loadonecursor(allfilescursors[i],i))
-//        return i+1;
-    return 0;
-}
-//==============================
-void unloadmousecursors(void)
-{
-    for (int i=0;i<TYPEOFCURSORS;i++)
-    {
-	mouses[i].curentposition = 0;
-	mouses[i].maxpositions = 0;
-	if (mouses[i].mousegrp)
-	{
-	    if (mouses[i].flag == 1)
-		wfree(mouses[i].mousegrp);
-	    else
-	        if (mouses[i].flag == 2)
-		    wfree(mouses[i].mousegrp);
-		else
-		{
-		    printf("error mouse cursor source(grp or mpq)\n");
-		}
-	    mouses[i].mousegrp=NULL;
-	}
-    }    
-}
 //==============================
 int restrictmousecoords(int REGIM)
 {
@@ -120,15 +62,15 @@ int restrictmousecoords(int REGIM)
 	LowMouse.GetPos();
 	mouse_x += LowMouse.DeltaX;
         mouse_y += LowMouse.DeltaY;
-        if (mouse_x>mouser[REGIM].x2) 
+        if (mouse_x>mouser[REGIM].x2)
     	    mouse_x=mouser[REGIM].x2;
         else
-    	    if (mouse_x<mouser[REGIM].x1) 
+    	    if (mouse_x<mouser[REGIM].x1)
 		mouse_x=mouser[REGIM].x1;
 	if (mouse_y>mouser[REGIM].y2)
 	    mouse_y=mouser[REGIM].y2;
         else
-            if (mouse_y<mouser[REGIM].y1) 
+            if (mouse_y<mouser[REGIM].y1)
 		mouse_y=mouser[REGIM].y1;
     }
     if ((mouse_x!=mx)||(mouse_y!=my))
@@ -216,12 +158,12 @@ void putmouseonscreen(void)
 	}
     }
   }
-  if (mouses[mousetype].mousegrp)
+  if (highMouse.cursors[mousetype].mousegrp)
   {
-	deltax=-mouses[mousetype].mousegrp->SizeX/2;
-	deltay=-mouses[mousetype].mousegrp->SizeY/2;
-	putgrpspr(mouse_x+deltax,mouse_y+deltay,mouses[mousetype].mousegrp,NORMAL,
-        	    0,0,NULL,mouses[mousetype].curentposition);
+	deltax=-highMouse.cursors[mousetype].mousegrp->SizeX/2;
+	deltay=-highMouse.cursors[mousetype].mousegrp->SizeY/2;
+	putgrpspr(mouse_x+deltax,mouse_y+deltay,highMouse.cursors[mousetype].mousegrp,NORMAL,
+        	    0,0,NULL,highMouse.cursors[mousetype].curentposition);
   }
 }
 //==========================
@@ -235,9 +177,9 @@ void desenpatr(void)
 //==========================
 int mouseborder2(int x1,int y1,int x2,int y2)
 {
-    if(mouse_x>=x1&&mouse_y>=y1&&mouse_x<=x2&&mouse_y<=y2) 
+    if(mouse_x>=x1&&mouse_y>=y1&&mouse_x<=x2&&mouse_y<=y2)
 	return(1);
-    else 
+    else
 	return(0);
 }
 //==========================
@@ -251,10 +193,10 @@ int mouseborder(struct XY *m)
     if (mloc)
     {
 	int type=DESTINATIONMOUSE;
-	int deltax=-mouses[type].mousegrp->SizeX/2;
-	int deltay=-mouses[type].mousegrp->SizeY/2;
-	putgrpspr(xmloc+deltax-map.MAPXGLOBAL,ymloc+deltay-map.MAPYGLOBAL,mouses[type].mousegrp,NORMAL,
-              0,0,NULL,mouses[type].curentposition);
+	int deltax=-highMouse.cursors[type].mousegrp->SizeX/2;
+	int deltay=-highMouse.cursors[type].mousegrp->SizeY/2;
+	putgrpspr(xmloc+deltax-map.MAPXGLOBAL,ymloc+deltay-map.MAPYGLOBAL,highMouse.cursors[type].mousegrp,NORMAL,
+              0,0,NULL,highMouse.cursors[type].curentposition);
     }
 }
 */
@@ -333,16 +275,16 @@ void nextmousespos(void)
 {
     for (int i=0;i<TYPEOFCURSORS;i++)
     {
-	mouses[i].curentposition++;
-	if (mouses[i].curentposition>=mouses[i].maxpositions)
-	    mouses[i].curentposition = 0;
+	highMouse.cursors[i].curentposition++;
+	if (highMouse.cursors[i].curentposition>=highMouse.cursors[i].maxpositions)
+	    highMouse.cursors[i].curentposition = 0;
     }
 }
 //=================================
 float scrollmapx(int border,float factor)
 {
     static float ticks=0;
-//    if (MOUSESCROLLON)
+//    if (highMouse.cursorsCROLLON)
 	if (!border)
 	{
 	    if (ticks>0)
@@ -373,7 +315,7 @@ float scrollmapx(int border,float factor)
 float scrollmapy(int border,float factor)
 {
     static float ticks=0;
-//    if (MOUSESCROLLON)
+//    if (highMouse.cursorsCROLLON)
 	if (!border)
 	{
 	    if (ticks>0)
@@ -457,7 +399,7 @@ void getmousetype(int xk,int yk)
               waitforleftbuton--;
         waitfordownleftbuton=1;
      }
-    } 
+    }
     if (waitforleftbuton==1&&select_aria)
     {
       if (mouse_b&WMLEFTKEY)
@@ -476,15 +418,15 @@ void getmousetype(int xk,int yk)
      grm=0;
 //     if (WMouseMoveRelativX&&WMouseMoveRelativY)
      {
-        if ( mouse_x <= BORDERMOUSE ) 
+        if ( mouse_x <= BORDERMOUSE )
 	    c|=1;
         else
-    	    if ( mouse_x>=mousemaxx - BORDERMOUSE ) 
+    	    if ( mouse_x>=mousemaxx - BORDERMOUSE )
 		c|=2;
-        if ( mouse_y <= BORDERMOUSE  ) 
+        if ( mouse_y <= BORDERMOUSE  )
     	    c|=4;
         else
-    	    if (mouse_y>=mousemaxy- BORDERMOUSE ) 
+    	    if (mouse_y>=mousemaxy- BORDERMOUSE )
 		c|=8;
 	if (MOUSESCROLLON)
         switch(c)
@@ -616,9 +558,9 @@ void getmousetype(int xk,int yk)
         patrate=1;
         addscrx=0;
         addscry=0;
-        if (mouseprevx > gameconf.grmode.x) 
+        if (mouseprevx > gameconf.grmode.x)
 	    mouseprevx = gameconf.grmode.x;
-        if (mouseprevy > gameconf.grmode.y) 
+        if (mouseprevy > gameconf.grmode.y)
 	    mouseprevy = gameconf.grmode.y;
       }
     }
@@ -638,16 +580,16 @@ void getmousetype(int xk,int yk)
 /*void saveundermouse(void)
 {
     __type=NORMALMOUSE;
-    memmouseposx = mouse_x-mouses[__type].mousegrp->SizeX/2;
+    memmouseposx = mouse_x-highMouse.cursors[__type].mousegrp->SizeX/2;
     if (memmouseposx<0)
 	memmouseposx=0;
-    memmouseposy = mouse_y-mouses[__type].mousegrp->SizeY/2;
+    memmouseposy = mouse_y-highMouse.cursors[__type].mousegrp->SizeY/2;
     if (memmouseposy<0)
 	memmouseposy=0;
-    memmousepossizex = mouses[__type].mousegrp->SizeX*3/2;
+    memmousepossizex = highMouse.cursors[__type].mousegrp->SizeX*3/2;
     if (memmouseposx+memmousepossizex>=GRP_wmaxx)
 	memmousepossizex = GRP_wmaxx-memmouseposx+1;
-    memmousepossizey = mouses[__type].mousegrp->SizeY*3/2;
+    memmousepossizey = highMouse.cursors[__type].mousegrp->SizeY*3/2;
     if (memmouseposy+memmousepossizey>=GRP_wmaxy)
 	memmousepossizey = GRP_wmaxy-memmouseposy+1;
     __adrmouse = (char *)wmalloc(memmousepossizex*memmousepossizey);
