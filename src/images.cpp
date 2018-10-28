@@ -87,7 +87,7 @@ void MAINIMGLIST::DeleteMarked(void)
 		{
 	    	    elements[i] = elements[lastelem];			//last imaget move to deleted image
 	    	    deletemarked[i] = deletemarked[lastelem];
-	    	    ((MAIN_IMG *)(elements[i]))->imglist_elemnr = i;	//global nr of moved image also changes 
+	    	    ((MAIN_IMG *)(elements[i]))->imglist_elemnr = i;	//global nr of moved image also changes
 		}
 		deletemarked[lastelem] = 0;
 		totalelem--;
@@ -120,7 +120,7 @@ void MAINIMGLIST::FreeAndEmptyAll(void)
     EnumListInit();
 }
 //=========================================
-int CheckIscriptNr(OVERLAY_IMG *img,int scriptnr)					//check if we have function iscriptnr for scriptid 
+int CheckIscriptNr(OVERLAY_IMG *img,int scriptnr)					//check if we have function iscriptnr for scriptid
 {
     return(iscriptinfo.iscriptsid[img->iscriptid].cmdbufoffs[scriptnr]);
 }
@@ -385,7 +385,7 @@ MAIN_IMG::~MAIN_IMG()
 	case SC_IMAGE_FLINGY_CREATOR:
 	    parentimg->creator.flingycreator.flingy->DelFlingy();
 	    break;
-    }	    
+    }
 //	printf("img creator was=%d\n",parentimg->whocreate);
 }
 //============================================
@@ -433,7 +433,7 @@ void OVERLAY_IMG::DrawImageXY(int x,int y)
 	}
 	else
 	{
-	    if ((flags & SC_IMAGE_FLAG_IMGOBJMAIN) 				&& 
+	    if ((flags & SC_IMAGE_FLAG_IMGOBJMAIN) 				&&
 		!(flags & (SC_IMAGE_FLAG_IMGOVER | SC_IMAGE_FLAG_IMGUNDER)))
 	    {
 		ShowCircleAndBar(a);
@@ -443,7 +443,7 @@ void OVERLAY_IMG::DrawImageXY(int x,int y)
     if (parentimg->newgrpmethod != NORMAL)
     {
 	//if unit is burrowed and grp method is not normal - dont show the overlay
-	if (parentimg->newgrpmethod == DRAWBURROWED && grpmethod != NORMAL )	
+	if (parentimg->newgrpmethod == DRAWBURROWED && grpmethod != NORMAL )
 	    return;
         if (!alldattbl.images_dat->Draw_If_Cloaked[imageid])
     	    return;
@@ -617,7 +617,7 @@ void OVERLAY_IMG::DrawImageXY(int x,int y)
     }
 }
 //============================================
-char destselectionsteps[2][4]={ 
+char destselectionsteps[2][4]={
 		{MOUSEON_ENEMYUNIT,MOUSEON_NEUTRALUNIT,MOUSEON_ALLIANCEUNIT,MOUSEON_MYUNIT},
 		{MOUSEON_ENEMYBUILD,MOUSEON_NEUTRALBUILD,MOUSEON_ALLIANCEBUILD,MOUSEON_MYBUILD}
 				};
@@ -633,7 +633,7 @@ void MAIN_IMG::CheckForMouseOver(OBJ *a)
 	alliance = player_aliance(NUMBGAMER,a->playernr);
 	isbuild = IsBuild(a->SC_Unit);
 	mouseobjtype = destselectionsteps[isbuild][alliance];
-	if (prevmouseobjtype > mouseobjtype && !MouseOnOBJS[mouseobjtype])
+	if (highMouse.PrevMouseType  > mouseobjtype && !highMouse.MouseOnOBJS[mouseobjtype])
 	{
     	    focusonobj = mouseborder2(	(xpos>>8)-map.MAPXGLOBAL-GetUnitWidthAndHeight(a->SC_Unit,UNITDIM_WIDTH)/2,
                 		        (ypos>>8)-map.MAPYGLOBAL-GetUnitWidthAndHeight(a->SC_Unit,UNITDIM_HEIGHT)/2,
@@ -642,8 +642,8 @@ void MAIN_IMG::CheckForMouseOver(OBJ *a)
 	    if (focusonobj)
 		if (IfUnitIsSelectable(a) )
 		{
-		    prevmouseobjtype = mouseobjtype;
-		    MouseOnOBJS[mouseobjtype]=a;
+		    highMouse.PrevMouseType  = mouseobjtype;
+		    highMouse.MouseOnOBJS[mouseobjtype]=a;
 		}
 	}
     }
@@ -707,7 +707,7 @@ void OVERLAY_IMG::DeleteChildImg(void)
 		return;
 	    }
 	}
-	    
+
     }
 }
 //============================================
@@ -864,7 +864,7 @@ MAIN_IMG *OBJCreateImage(OBJ *a,int x256,int y256,unsigned char useiscriptnr,int
     else
     {
 	images_id = constr_id;
-    }    
+    }
     elevationlevel = GetUnitElevationLevel(a->SC_Unit);
     if ((IsBuild(a->SC_Unit)||IsDoodadState(a->SC_Unit)))
 	flags |= SC_IMAGE_FLAG_SAVEINFOGTABLE;
@@ -982,7 +982,7 @@ void saveandputimage(int x,int y,int xdelta,int ydelta,GRPFILE *grppict,int form
     }
     if (flags & SC_IMAGE_FLAG_SAVEINFOGTABLE)
     {
-//	if (grcolor)			//if uncomment player 0 not save build under fog 
+//	if (grcolor)			//if uncomment player 0 not save build under fog
 	    saveinfogtable(x,y,POSINMAP,grppict,format,colortable,maxcolor,grcolor,nrpicture,flags);
     }
 }
@@ -999,7 +999,7 @@ void saveinfogtable(int x,int y,int POSINMAP,GRPFILE *grppict,int format,int col
 	memset(map.mapbits.underfog[playernr][POSINMAP],0,sizeof(UNITUNDERFOG));
     }
     slotnr = map.mapbits.underfog[playernr][POSINMAP]->nrofslots;
-    if (flags & SC_IMAGE_FLAG_IMGUNDER)		
+    if (flags & SC_IMAGE_FLAG_IMGUNDER)
     {
         if (slotnr)				//shadow must be in slot 0
     	    slotnr=0;
@@ -1061,7 +1061,7 @@ int GetIDFromOverlayLayer(unsigned short imageid,unsigned char overlaylayer)
 {
     switch(overlaylayer)
     {
-	case IMAGE_OVERLAY_ATACK:	
+	case IMAGE_OVERLAY_ATACK:
 	    return(alldattbl.images_dat->Attack_Overlay[imageid]);
 	    break;
 	case IMAGE_OVERLAY_DAMAGE:
@@ -1110,7 +1110,7 @@ void AddRemoveBloodFlameOverlays(OBJ *a)
     unsigned short damagelo_id,imageid;
     signed char *adrxyoffs,xlo,ylo;
     if (IsReadyOBJ(a))//do not show bloodflame if constructing
-    {	
+    {
 	maxdamageoverlays = DamageFactor(a->health,GetUnitMaxHealth(a->SC_Unit));
 	if (a->lastdamageoverlays == maxdamageoverlays)//no need to change anything
 	    return;
@@ -1134,7 +1134,7 @@ void AddRemoveBloodFlameOverlays(OBJ *a)
 		imageid = IMAGEID_BLOODFLAMELARGE1 + i;
 	    else
 		imageid = IMAGEID_BLOODFLAMESMALL1 + i;
-	    
+
 	    if (a->damageoverlayid[overlaynr])
 	    {
 		if (a->damageoverlayid[overlaynr] != imageid)
@@ -1150,7 +1150,7 @@ void AddRemoveBloodFlameOverlays(OBJ *a)
 			    break;
 			}
 		    }
-		    
+
 		}
 	    }
 	    else
@@ -1248,7 +1248,7 @@ void CreatePylonSelectArea(void)
 		iscriptinfo.ExecuteScript(newimg);
 		drawpylonareaactive=1;
 	    }
-	}	
+	}
     }
 }
 //========================================
@@ -1270,7 +1270,7 @@ void RemovePylonSelectArea(void)
 		    a->prop &= ~VARPYLONAREAACTIVE;
 		    DelSpecificChildsImageID(a->mainimage,IMAGEID_PYLONSELECTAREA1,IMAGEID_PYLONSELECTAREA4);
 		}
-	    }	
+	    }
 	}
     }
 }

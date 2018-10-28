@@ -5,7 +5,7 @@
 #include "stringfiles.h"
 #include "auxil.h"
 #include "debug.h"
-#include "mouse.h"
+#include "gener.h"
 #include "vars.h"
 #include "mousenew.h"
 
@@ -73,7 +73,7 @@ void HighMouse::DrawMouse(void)
 {
 	if (!MENUACTIVE)
 	{
-		if (patrate)
+		if (highMouse.MouseOnSelectionMode)
 		{
 			MouseType = SELECTIONMOUSE;
 		}
@@ -81,7 +81,7 @@ void HighMouse::DrawMouse(void)
 		{
 			if (!MouseOnBorder)
 			{
-				if (waitforleftbuton)
+				if (WaitToPressLeftButton)
 				{
 					if (DestMouseOBJ)
 					{
@@ -110,10 +110,10 @@ void HighMouse::DrawMouse(void)
 					}
 					else
 						MouseType = TARGGREENMOUSE;
-				}//waitforleftbuton
+				}//highMouse.WaitToPressLeftButton
 				else
 				{
-					if ((DestMouseOBJ)&&select_aria&&!patrate)
+					if ((DestMouseOBJ) && select_aria && !MouseOnSelectionMode)
 					{
 						switch(DestMouseType)
 						{
@@ -155,17 +155,70 @@ void HighMouse::DrawMouse(void)
 	{
 		int deltax = -highMouse.cursors[MouseType].mousegrp->SizeX/2;
 		int deltay = -highMouse.cursors[MouseType].mousegrp->SizeY/2;
-		putgrpspr(mouse_x+deltax,mouse_y+deltay,highMouse.cursors[MouseType].mousegrp,NORMAL,
+		putgrpspr(PosX+deltax,PosY+deltay,highMouse.cursors[MouseType].mousegrp,NORMAL,
 				  0,0,NULL,highMouse.cursors[MouseType].curentposition);
 	}
 }
 //==========================
 void HighMouse::DrawSelectionArea(void)
 {
-    if (patrate)
+    if (highMouse.MouseOnSelectionMode)
     {
-		wrectangle(COLORHR,mouseprevx,mouseprevy,mouse_x,mouse_y);
+		wrectangle(COLORHR,PrevX,PrevY,PosX,PosY);
     }
 }
+//=================================
+void HighMouse::ScrollMouse(void)
+{
+    for (int i=0;i<TYPEOFCURSORS;i++)
+    {
+		cursors[i].curentposition++;
+		if (cursors[i].curentposition >= cursors[i].maxpositions)
+			cursors[i].curentposition = 0;
+    }
+}
+//=================================
+void HighMouse::MouseOnObjClear(void)
+{
+    for (int i=0;i<MOUSEON_MAXVALUE;i++)
+        MouseOnOBJS[i] = NULL;
+    DestMouseOBJ = NULL;
+    DestMouseType = MOUSEON_NONE;
+    PrevMouseType = MOUSEON_MAXVALUE;
+}
+//=================================
+void HighMouse::GetMouseOnObj(void)
+{
+    for (int i=0;i<MOUSEON_MAXVALUE;i++)
+    {
+        if (MouseOnOBJS[i])
+        {
+    	    DestMouseOBJ = highMouse.MouseOnOBJS[i];
+    	    DestMouseType = i;
+    	    break;
+    	}
+    }
+}
+//==================================
+void HighMouse::SaveImageUnder(void)
+{
+    SavedUnder.PosX = PosX - MAXMOUSESIZEX/2;
+    SavedUnder.PosY = PosY - MAXMOUSESIZEY/2;
+    if (SavedUnder.PosX < 0)
+		SavedUnder.PosX = 0;
+    if (SavedUnder.PosY < 0)
+		SavedUnder.PosY = 0;
+    SavedUnder.SizeX = MAXMOUSESIZEX;
+    SavedUnder.SizeY = MAXMOUSESIZEY;
+    if (SavedUnder.PosX + SavedUnder.SizeX > GRP_wmaxx)
+		SavedUnder.SizeX = GRP_wmaxx - SavedUnder.PosX + 1;
+    if (SavedUnder.PosY + SavedUnder.SizeY > GRP_wmaxy)
+		SavedUnder.SizeY = GRP_wmaxy - SavedUnder.PosY + 1;
+    CGetImage8(SavedUnder.PosX,SavedUnder.PosY,SavedUnder.SizeX,SavedUnder.SizeY,SavedUnder.SavedPixels);
+}
 //==========================
+void HighMouse::LoadImageUnder(void)
+{
+    CPutImage8(SavedUnder.PosX,SavedUnder.PosY,SavedUnder.SizeX,SavedUnder.SizeY,SavedUnder.SavedPixels);
+}
 

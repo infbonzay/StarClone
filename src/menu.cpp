@@ -122,8 +122,8 @@ void mymousemoveevent(int x,int y)
     	    y=mouser[curentREGIM].y1;
 	    mouseborder=1;
 	}
-    mouse_x = x;
-    mouse_y = y;
+    highMouse.PosX = x;
+    highMouse.PosY = y;
     if (mouseborder)
 	lowMouse.SetPos(x,y);
     if (!currentmousehottable)
@@ -351,7 +351,7 @@ int actiondblclick(MENUSTR *allmenus,int downmenu)
 		bar=item->item.listbox->bar;
 		if (bar)
 		{
-		    if (mouse_x>=bar->xt_1)
+		    if (highMouse.PosX>=bar->xt_1)
 			action=1;
 		}
 		if (!action)
@@ -360,7 +360,7 @@ int actiondblclick(MENUSTR *allmenus,int downmenu)
 		    {
 			if (!item->item.listbox->pixelsbetweenlines)
 			    return(NOSELECTMENUBAR);
-			itemselected=(mouse_y-item->hotdeltay)/item->item.listbox->pixelsbetweenlines;
+			itemselected=(highMouse.PosY-item->hotdeltay)/item->item.listbox->pixelsbetweenlines;
 			if (itemselected<item->item.listbox->lines)
 			    itemselected+=item->item.listbox->from;
 			if (itemselected<item->item.listbox->flist->GetMaxElements())
@@ -404,7 +404,7 @@ int actionmenuonpressmouse(MENUSTR *allmenus,int downmenu,int *selectedmenu)
 		bar =item->item.listbox->bar;
 		if (bar)
 		{
-		    if (mouse_x>=bar->xt_1)
+		    if (highMouse.PosX>=bar->xt_1)
 			action=1;
 		}
 		if (action)
@@ -416,11 +416,11 @@ int actionmenuonpressmouse(MENUSTR *allmenus,int downmenu,int *selectedmenu)
 		    }
 		    else
 		    {
-			if (mouse_y<=bar->yt_2)
+			if (highMouse.PosY<=bar->yt_2)
 			    action=1;
-			else if (mouse_y>=bar->yb_1)
+			else if (highMouse.PosY>=bar->yb_1)
 			    action=2;
-			else if (mouse_y>=bar->buttonbary1&&mouse_y<=bar->buttonbary2)
+			else if (highMouse.PosY>=bar->buttonbary1&&highMouse.PosY<=bar->buttonbary2)
 			    action=3;
 			else
 			    action=4;
@@ -447,13 +447,13 @@ int actionmenuonpressmouse(MENUSTR *allmenus,int downmenu,int *selectedmenu)
 			    break;
 			case 3:
 			    bar->showbutton=ITEMSHOW_CLICK;
-			    changelistbox_buttonbarpos(allmenus,downmenu,mouse_y);
+			    changelistbox_buttonbarpos(allmenus,downmenu,highMouse.PosY);
 			    break;
 			case 4:
 			    if (tick_timer-prevpresstimer>=MINBETWEENTHESAMECLICK)
 			    {
 				prevpresstimer=tick_timer;
-				changelistbox_buttonbarposdelta(allmenus,downmenu,mouse_y);
+				changelistbox_buttonbarposdelta(allmenus,downmenu,highMouse.PosY);
 			    }
 			    break;
 		    }
@@ -462,7 +462,7 @@ int actionmenuonpressmouse(MENUSTR *allmenus,int downmenu,int *selectedmenu)
 		{
 		    if (!item->item.listbox->pixelsbetweenlines)
 		        return(0);
-		    itemselected=(mouse_y-item->hotdeltay)/item->item.listbox->pixelsbetweenlines;
+		    itemselected=(highMouse.PosY-item->hotdeltay)/item->item.listbox->pixelsbetweenlines;
 		    if (itemselected<item->item.listbox->lines)
 			itemselected+=item->item.listbox->from;
 		    if (itemselected<item->item.listbox->flist->GetMaxElements())
@@ -555,7 +555,7 @@ int actionmenuonpressmouse(MENUSTR *allmenus,int downmenu,int *selectedmenu)
 	    if (tick_timer-prevpresstimer>=MINBETWEENTHESAMECLICK)
 	    {
 		prevpresstimer=tick_timer;
-    	        posx=mouse_x-(item->hotdeltax+(item->hotdeltax-item->item.horizbutton->sizexbar)/2);
+    	        posx=highMouse.PosX-(item->hotdeltax+(item->hotdeltax-item->item.horizbutton->sizexbar)/2);
 		prevvalue=gethorizvalue(allmenus,downmenu);
 		sethorizbuttonposfrommouse(allmenus,downmenu,posx);
 /*	    	curvalue=gethorizvalue(allmenus,downmenu);
@@ -646,7 +646,7 @@ int drawmenu(MENUSTR *allmenus,int flags)
         checkanddrawmenu(allmenus->prevmenu,ITEMALLDISABLED,updateunder);
     }
 //    saveunderitems(allmenus);
-    mymousemoveevent(mouse_x,mouse_y);
+    mymousemoveevent(highMouse.PosX,highMouse.PosY);
     checkanddrawmenu(allmenus,ITEMNOONEACTIVE,updateunder);
     if (!(flags&&MENUFLAGS_BYPASS))
     {
@@ -656,16 +656,16 @@ int drawmenu(MENUSTR *allmenus,int flags)
 		eventwindowloop();
 		getmouseonitem(&activeitemchange,&activeitem);
 		keyrefresh();
-		saveundermouse();
+		highMouse.SaveImageUnder();
 		highMouse.DrawMouse();
 		wscreenon();
-		loadundermouse();
+		highMouse.LoadImageUnder();
 
 		selectedmenu = menukeys(allmenus,&redrawbar,&needredraw);
 		editboxchanges = editboxaction(allmenus);
 		if (editboxchanges==2)
 		{
-    	    	    needredraw=1;
+    	    needredraw=1;
 		    selectedmenu = allmenus->defaultbutton;
 		}
 		if (selectedmenu>=0)
@@ -829,7 +829,7 @@ int drawmenu(MENUSTR *allmenus,int flags)
     lowMouse.GetPos();
     loadunderitems(allmenus,ITEM_ONLYFREE);
     unregmenucallbacks();
-    mymousemoveevent(mouse_x,mouse_y);
+    mymousemoveevent(highMouse.PosX,highMouse.PosY);
     if (allmenus->prevmenu)
 	loadpartscreen(0,0,gameconf.grmode.x,gameconf.grmode.y,prev_entire_screen);
     MENUACTIVE=0;
@@ -852,7 +852,7 @@ int showlistmenu(MENUSTR *allmenus)
     eventwindowloop();
     regmenu(allmenus->x,allmenus->y,allmenus,&getmouseonmenubar);			//set menu hotcoord for mouse
     saveunderitems(allmenus);
-    mymousemoveevent(mouse_x,mouse_y);
+    mymousemoveevent(highMouse.PosX,highMouse.PosY);
     scrollportrait_menu=scrollportrait;
     clearscrollportrait();
     checkanddrawmenu(allmenus,ITEMNOONEACTIVE,ITEM_RESTOREANDFREE);
@@ -865,10 +865,10 @@ int showlistmenu(MENUSTR *allmenus)
 	    RunCallBackFuncs(allmenus->prevmenu);
 //	    if (allmenus->prevmenu->CallBackFunc)
 //		(*allmenus->prevmenu->CallBackFunc)(allmenus->prevmenu,allmenus->prevmenu->somecallbackdata);
-	saveundermouse();
+	highMouse.SaveImageUnder();
 	highMouse.DrawMouse();
 	wscreenon();
-	loadundermouse();
+	highMouse.LoadImageUnder();
 
 	allmenus->vars.BarChanges.bar = NOSELECTMENUBAR;
 	if (activeitemchange) //move moved on other menu
@@ -3848,7 +3848,7 @@ void changelistbox_buttonbarposdelta(MENUSTR *allmenus,int nr,int mouseypos)
 	    bar=menuitem->item.listbox->bar;
 	    if (bar)
 	    {
-		if (mouse_y<bar->buttonbary1)
+		if (highMouse.PosY<bar->buttonbary1)
 		{
 		    changelistbox_buttonbarpos(allmenus,nr,bar->buttonbary1-DLGGRP_SIZEY(LISTBOX_BUTTONBAR)*3/2);
 		}
@@ -4088,7 +4088,7 @@ void MENUDRAW::EndShowMenu(void)
 	    ALLMENUS.DelList(lastelem);
 	    wfree(prevdrawmenu);
 	}
-	mymousemoveevent(mouse_x,mouse_y);
+	mymousemoveevent(highMouse.PosX,highMouse.PosY);
     }
 }
 //==========================================
@@ -4116,7 +4116,7 @@ int drawmenu_ONETICK(MENUSTR *allmenus)
 	allmenus->vars.BarChanges.color = 0;
 	regmenu(allmenus->x,allmenus->y,allmenus,&getmouseonmenubar);//set menu hotcoord for mouse
 	allmenus->vars.expanditemnr=-1;		//save id of selected expanditem for future release
-	mymousemoveevent(mouse_x,mouse_y);
+	mymousemoveevent(highMouse.PosX,highMouse.PosY);
     }
     checkanddrawmenu(allmenus,allmenus->vars.BarChanges.bar,ITEM_NOSAVELOADUNDER);
     do{
@@ -4235,7 +4235,7 @@ int drawmenu_ONETICK(MENUSTR *allmenus)
 		    removeallmenuinfo(showlist);
 		    allmenus->menu[expitem].item.expandbox->showlist=NULL;
 		    allmenus->vars.expanditemnr=-1;
-		    mymousemoveevent(mouse_x,mouse_y);
+		    mymousemoveevent(highMouse.PosX,highMouse.PosY);
 		}
 		else
 		if (allmenus->vars.downmenu!=NOSELECTMENUBAR)

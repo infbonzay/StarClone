@@ -48,7 +48,7 @@ unsigned char timewaitticks[10]=
     #include <sys/time.h>
     TIMER_TICK TIMER::gettimeticks(void)
     {
-	struct timespec ticks;
+		struct timespec ticks;
         clock_gettime(CLOCK_MONOTONIC,&ticks);
         return((TIMER_TICK) (ticks.tv_sec) * TICKS_RES + ticks.tv_nsec);
     }
@@ -89,7 +89,7 @@ unsigned char timewaitticks[10]=
 void TIMER::MyNanoSleep(long nanoseconds)
 {
     long prev = gettimeticks();
-    do{ 
+    do{
     }while(gettimeticks()-prev<nanoseconds);
 }
 //===========================================
@@ -132,18 +132,18 @@ void TIMER::CallTimer(int mode)
     tick_current = gettimeticks();
     if (tick_prev+tick_delta<=tick_current)
     {
-	if (mode==MYTIMER_ASINCHRONMODE)
-	{
-	    tick_prev+=tick_delta;
-	    tick_timer+=(tick_current-tick_prev)/tick_delta;
-	}
-	else
-	{
-	    tick_prev=tick_current;
-	    tick_timer++;
-	}
-	if (MyTimerFunc)
-	    (*MyTimerFunc)(MyTimerParam,MYTIMERFUNC_EVERYTICKENTER);//launch everytime
+		if (mode==MYTIMER_ASINCHRONMODE)
+		{
+			tick_prev+=tick_delta;
+			tick_timer+=(tick_current-tick_prev)/tick_delta;
+		}
+		else
+		{
+			tick_prev=tick_current;
+			tick_timer++;
+		}
+		if (MyTimerFunc)
+			(*MyTimerFunc)(MyTimerParam,MYTIMERFUNC_EVERYTICKENTER);//launch everytime
     }
 }
 //===========================================
@@ -158,9 +158,9 @@ void TIMER::ClearMyTimerFunc(void)
 {
     if (MyTimerFunc)
     {
-	(*MyTimerFunc)(MyTimerParam,MYTIMERFUNC_LASTTIMEENTER);//launch last time
-	MyTimerFunc=NULL;
-	MyTimerParam=NULL;
+		(*MyTimerFunc)(MyTimerParam,MYTIMERFUNC_LASTTIMEENTER);//launch last time
+		MyTimerFunc=NULL;
+		MyTimerParam=NULL;
     }
 }
 //===========================================
@@ -181,11 +181,11 @@ TIMER_TICK TIMER::GetDeltaCounter(TICKCOUNTER *t)
 void TIMER::DestroyTickCounter(TICKCOUNTER *t)
 {
     if (t)
-	wfree(t);
+		wfree(t);
 }
 //====================================================================
 //starcraft time slowest,slower,slow,normal,fast,faster,fastest
-//		  1/6s    1/9s  1/12s 1/15s 1/18s 1/21s  1/24s  
+//		  1/6s    1/9s  1/12s 1/15s 1/18s 1/21s  1/24s
 //====================================================================
 //function to synchronise everything in time on slow and fast machines
 //		       0,50,40,30,20,10
@@ -195,17 +195,23 @@ int TIMER::TimeIsCome(int gamespeed)
     long retvalue;
     TIMER_TICK microsec=GetCurrentTimerTick();
     if (microsec-prevmsec<timewaitvalue[gamespeed]-CNTTIMETOSLEEP)
+	{
 //        retvalue=TIMETOSLEEP;
         retvalue=TIMETONOSLEEP;
+    }
     else
-	if (microsec-prevmsec<timewaitvalue[gamespeed])
-	    retvalue=TIMETONOSLEEP;
-	else
 	{
-	    retvalue=TIMETOACT;
-	    prevmsec=microsec;
-	    gametick_current++;
-	}
+		if (microsec-prevmsec<timewaitvalue[gamespeed])
+		{
+			retvalue=TIMETONOSLEEP;
+		}
+		else
+		{
+			retvalue=TIMETOACT;
+			prevmsec=microsec;
+			gametick_current++;
+		}
+    }
     return(retvalue);
 }
 //====================================================================
@@ -214,7 +220,7 @@ int TIMER::TimeIsCome(int gamespeed)
 void mousescrolling(void)
 {
     if (!(tick_timer%TIMETOMOUSESCROLL))
-	nextmousespos();
+        highMouse.ScrollMouse();
 }
 //=================================
 void cursorblinkfunc(void)
@@ -222,63 +228,63 @@ void cursorblinkfunc(void)
     int tempcursorblink;
     tempcursorblink=tick_timer%CURSORBLINKTIME;
     if (tempcursorblink<CURSORBLINKTIME/2)
-	cursorblink=0;
+        cursorblink=0;
     else
-	cursorblink=1;
+	    cursorblink=1;
 }
 //=================================
 void scrollportraitfunc(int scrollticks,int mixticks)
 {
-    if (!(tick_timer%scrollticks))
-	scrollportrait=1;
-    if (!(tick_timer%mixticks))
-	mixportrait=1;
+	if (!(tick_timer%scrollticks))
+		scrollportrait=1;
+	if (!(tick_timer%mixticks))
+		mixportrait=1;
 }
 //=================================
 void fadeinouttextvideo(int scrollticks)
 {
     if (!(tick_timer%scrollticks))
-	fadeinout=1;
+	    fadeinout=1;
 }
 //=================================
 void gametimer(void *empty,int param)
 {
     if (param!=MYTIMERFUNC_EVERYTICKENTER)
-	return;
+	    return;
     mousescrolling();
     if (GAME)
     {
-	if (!PAUSEGAME)
-	{
-	    if (gameconf.videoconf.animation)
-		if ((!(tick_timer%TIMETOSCROLLPALETTE)))
+		if (!PAUSEGAME)
 		{
-		    scrollpal(&map);
+			if (gameconf.videoconf.animation)
+				if ((!(tick_timer%TIMETOSCROLLPALETTE)))
+				{
+					scrollpal(&map);
+				}
 		}
-	}
     }
     scrollportraitfunc(TIMETOSCROLLPORTRAIT,TIMETOMIXPORTRAIT);
     cursorblinkfunc();
     if ((!(tick_timer%TIMETOMENUUPDATE)))
-	menutimerupdate=1;
+		menutimerupdate=1;
     networkgametick=1;
 }
 //=================================
 void mainmenutimer(void *empty,int param)
 {
     if (param!=MYTIMERFUNC_EVERYTICKENTER)
-	return;
+		return;
     mousescrolling();
     scrollportraitfunc(TIMETOSCROLLSMKVIDEO1,TIMETOMIXPORTRAIT);
     fadeinouttextvideo(TIMETOFADETEXTVIDEO);
     if ((!(tick_timer%TIMETOMAINMENUUPDATE)))
-	menutimerupdate=1;
+		menutimerupdate=1;
 }
 //=================================
 void campaignselecttimer(void *empty,int param)
 {
     if (param!=MYTIMERFUNC_EVERYTICKENTER)
-	return;
+		return;
     mousescrolling();
     scrollportraitfunc(TIMETOSCROLLSMKVIDEO2,TIMETOMIXPORTRAIT);
     fadeinouttextvideo(TIMETOFADETEXTVIDEO);
@@ -292,32 +298,32 @@ int getcursorblinktype(void)
 void menutimer(void *empty,int param)
 {
     if (param!=MYTIMERFUNC_EVERYTICKENTER)
-	return;
+		return;
     mousescrolling();
     cursorblinkfunc();
     scrollportraitfunc(TIMETOSCROLLSMKVIDEO2,TIMETOMIXPORTRAIT);
     fadeinouttextvideo(TIMETOFADETEXTVIDEO);
     if ((!(tick_timer%TIMETOMAINMENUUPDATE)))
-	menutimerupdate=1;
+		menutimerupdate=1;
 }
 //=================================
 void scoremenutimer(void *empty,int param)
 {
     if (param!=MYTIMERFUNC_EVERYTICKENTER)
-	return;
+		return;
     menutimer(empty,param);
     if ((!(tick_timer%TIMETOCHANGESCOREMENU)))
-	updatescoremenu();
+		updatescoremenu();
 }
 //=================================
 void menutimerandnetwork(void *empty,int param)
 {
     if (param!=MYTIMERFUNC_EVERYTICKENTER)
-	return;
+		return;
     menutimer(empty,param);
     if ((!(tick_timer%TIMETOSENDDATA)))
-	networkresend=1;
+		networkresend=1;
     if ((!(tick_timer%TIMETORECVDATA)))
-	networkreceive=1;
+		networkreceive=1;
 }
 //=================================

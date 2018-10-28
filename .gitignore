@@ -14,6 +14,7 @@ bin/debug
 bin/memleaks
 bin/output.log
 obj/*
+*.o
 
 Makefile
 Makefile.in

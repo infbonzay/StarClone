@@ -16,6 +16,7 @@
 #include "putobj.h"
 #include "walk.h"
 #include "stringfiles.h"
+#include "gener.h"
 #include "mouse.h"
 
 #ifdef WITHSDL
@@ -29,19 +30,14 @@
 #endif
 
 int 	factorscrollkey,mousehotpos;
-int     mouse_x,mouse_y,mousemaxx,mousemaxy,mouse_b;
+int     mousemaxx,mousemaxy,mouse_b;
 int     xmloc,ymloc,movieminikarta=NO,mousedoubleclick;
 struct  XY mouser[MAXMOUSEMODE];
-int     patrate;
-int     decrxx,decryy,mouseprevx,mouseprevy;
-char    select_aria,karta_aria,mode_aria;
-char    waitforleftbuton,waitfordownrightbuton,waitfordownleftbuton;
+int     decrxx,decryy;
+char    waitfordownrightbuton,waitfordownleftbuton;
 char    mouse,patr,mouseclear,mloc;
 unsigned short  mouseprop;
 char     timemouse;
-struct OBJ *MouseOnOBJS[8];	//myunit,alianceunit,neutralunit,enemyunit,mybuild,aliancebuild,neutralbuild,enemybuild
-struct OBJ *DestMouseOBJ;
-char	DestMouseType,prevmouseobjtype;
 
 char    curentREGIM;
 int memmouseposx,memmouseposy;
@@ -51,8 +47,8 @@ int memmousepossizex,memmousepossizey;
 int restrictmousecoords(int REGIM)
 {
     int mx,my;
-    mx = mouse_x;
-    my = mouse_y;
+    mx = highMouse.PosX;
+    my = highMouse.PosY;
 //    if (curentREGIM==REGIM)
 //	return 1;
     curentREGIM=REGIM;
@@ -60,20 +56,20 @@ int restrictmousecoords(int REGIM)
     if (0)
     {
 	lowMouse.GetPos();
-	mouse_x += lowMouse.DeltaX;
-        mouse_y += lowMouse.DeltaY;
-        if (mouse_x>mouser[REGIM].x2)
-    	    mouse_x=mouser[REGIM].x2;
+	highMouse.PosX += lowMouse.DeltaX;
+        highMouse.PosY += lowMouse.DeltaY;
+        if (highMouse.PosX>mouser[REGIM].x2)
+    	    highMouse.PosX=mouser[REGIM].x2;
         else
-    	    if (mouse_x<mouser[REGIM].x1)
-		mouse_x=mouser[REGIM].x1;
-	if (mouse_y>mouser[REGIM].y2)
-	    mouse_y=mouser[REGIM].y2;
+    	    if (highMouse.PosX<mouser[REGIM].x1)
+		highMouse.PosX=mouser[REGIM].x1;
+	if (highMouse.PosY>mouser[REGIM].y2)
+	    highMouse.PosY=mouser[REGIM].y2;
         else
-            if (mouse_y<mouser[REGIM].y1)
-		mouse_y=mouser[REGIM].y1;
+            if (highMouse.PosY<mouser[REGIM].y1)
+		highMouse.PosY=mouser[REGIM].y1;
     }
-    if ((mouse_x!=mx)||(mouse_y!=my))
+    if ((highMouse.PosX!=mx)||(highMouse.PosY!=my))
 	return 1;
     return 0;
 
@@ -82,7 +78,7 @@ int restrictmousecoords(int REGIM)
 //==========================
 int mouseborder2(int x1,int y1,int x2,int y2)
 {
-    if(mouse_x>=x1&&mouse_y>=y1&&mouse_x<=x2&&mouse_y<=y2)
+    if(highMouse.PosX>=x1&&highMouse.PosY>=y1&&highMouse.PosX<=x2&&highMouse.PosY<=y2)
 	return(1);
     else
 	return(0);
@@ -111,7 +107,7 @@ void putdestination(struct OBJ *destobj,int xm,int ym,int modemove,int posibleco
     int race;
     if (PLAYER[NUMBGAMER].isobserverflag)
 	return;
-    if (!waitforleftbuton)
+    if (!highMouse.WaitToPressLeftButton)
     {
 	if (buildconstr != SC_NOUNITNR)
 	{
@@ -156,9 +152,9 @@ errbuildonminimap:
 	    	}
 	    	else
 	    	{
-	    	    waitforleftbuton=1;
-		    SetVisualMapPosition((int) (((mouse_x-Xkart-Xkartbeg)/factorx)-widthkart/2)*SIZESPRLANSHX,
-					 (int) (((mouse_y-Ykart-Ykartbeg)/factory)-hightkart/2)*SIZESPRLANSHY);
+	    	    highMouse.WaitToPressLeftButton=1;
+		    SetVisualMapPosition((int) (((highMouse.PosX-Xkart-Xkartbeg)/factorx)-widthkart/2)*SIZESPRLANSHX,
+					 (int) (((highMouse.PosY-Ykart-Ykartbeg)/factory)-hightkart/2)*SIZESPRLANSHY);
 	    	    return;
 //	    	    if (IsBuild(buildconstr))
 //	    		goto errbuildonminimap;
@@ -175,17 +171,7 @@ errbuildonminimap:
         }
     }
 }
-//=================================
-void nextmousespos(void)
-{
-    for (int i=0;i<TYPEOFCURSORS;i++)
-    {
-	highMouse.cursors[i].curentposition++;
-	if (highMouse.cursors[i].curentposition>=highMouse.cursors[i].maxpositions)
-	    highMouse.cursors[i].curentposition = 0;
-    }
-}
-//=================================
+
 float scrollmapx(int border,float factor)
 {
     static float ticks=0;
@@ -263,12 +249,12 @@ void getmousetype(int xk,int yk)
         waitfordownleftbuton=0;
      if (!waitfordownleftbuton)
      {
-      if (!waitforleftbuton)
+      if (!highMouse.WaitToPressLeftButton)
       {
 	 buildconstr=SC_NOUNITNR;
          if ((mouse_b&WMLEFTKEY)&&(select_aria)&&!(karta_aria))
          {
-             if (mouseprevy<gameconf.grmode.y-YDECICONS)
+             if (highMouse.PrevY<gameconf.grmode.y-YDECICONS)
                 patr=1;
              else
                 patr=0;
@@ -279,13 +265,13 @@ void getmousetype(int xk,int yk)
             if (patr)
             {
                if (KEYPRESS(SHIFTLKEY)||KEYPRESS(SHIFTRKEY))
-                  selectMAN(mouseprevx,mouseprevy,mouse_x,mouse_y,1);
+                  selectMAN(highMouse.PrevX,highMouse.PrevY,highMouse.PosX,highMouse.PosY,1);
                else
-                  selectMAN(mouseprevx,mouseprevy,mouse_x,mouse_y,0);
+                  selectMAN(highMouse.PrevX,highMouse.PrevY,highMouse.PosX,highMouse.PosY,0);
                patr=0;
             }
-            mouseprevx=mouse_x;
-            mouseprevy=mouse_y;
+            highMouse.PrevX=highMouse.PosX;
+            highMouse.PrevY=highMouse.PosY;
           }
      }
      else
@@ -293,45 +279,45 @@ void getmousetype(int xk,int yk)
         if (waitfordownrightbuton&&(!(mouse_b&WMRIGHTKEY)))
         {
             waitfordownrightbuton=0;
-            waitforleftbuton=0;
+            highMouse.WaitToPressLeftButton=0;
         }
         if (properties[8] == MODECANCEL_BB_AB && (mouse_b&WMRIGHTKEY))
         {
             waitfordownrightbuton=1;
         }
-        if (waitforleftbuton==2)
-           if (!(mouse_b&WMLEFTKEY))
-              waitforleftbuton--;
+        if (highMouse.WaitToPressLeftButton==2)
+           if (!(mouse_b & WMLEFTKEY))
+              highMouse.WaitToPressLeftButton = false;
         waitfordownleftbuton=1;
      }
     }
-    if (waitforleftbuton==1&&select_aria)
+    if (highMouse.WaitToPressLeftButton==1&&select_aria)
     {
       if (mouse_b&WMLEFTKEY)
       {
-        waitforleftbuton=0;
+        highMouse.WaitToPressLeftButton=0;
         if (karta_aria)
-           putdestination(DestMouseOBJ,
-                          (int)((mouse_x-Xkart-Xkartbeg)/factorx)*SIZESPRLANSHX,
-                          (int)((mouse_y-Ykart-Ykartbeg)/factory)*SIZESPRLANSHY,
+           putdestination(highMouse.DestMouseOBJ,
+                          (int)((highMouse.PosX-Xkart-Xkartbeg)/factorx)*SIZESPRLANSHX,
+                          (int)((highMouse.PosY-Ykart-Ykartbeg)/factory)*SIZESPRLANSHY,
                           mouseprop,0,0);
         else
-           putdestination(DestMouseOBJ,mouse_x+xk,mouse_y+yk,mouseprop,posibleconstruct,0);
+           putdestination(highMouse.DestMouseOBJ,highMouse.PosX+xk,highMouse.PosY+yk,mouseprop,posibleconstruct,0);
       }
     }
 
      highMouse.MouseOnBorder=0;
 //     if (WMouseMoveRelativX&&WMouseMoveRelativY)
      {
-        if ( mouse_x <= BORDERMOUSE )
+        if ( highMouse.PosX <= BORDERMOUSE )
 	    c|=1;
         else
-    	    if ( mouse_x>=mousemaxx - BORDERMOUSE )
+    	    if ( highMouse.PosX>=mousemaxx - BORDERMOUSE )
 		c|=2;
-        if ( mouse_y <= BORDERMOUSE  )
+        if ( highMouse.PosY <= BORDERMOUSE  )
     	    c|=4;
         else
-    	    if (mouse_y>=mousemaxy- BORDERMOUSE )
+    	    if (highMouse.PosY>=mousemaxy- BORDERMOUSE )
 		c|=8;
 	if (MOUSESCROLLON)
         switch(c)
@@ -454,24 +440,24 @@ void getmousetype(int xk,int yk)
     if ((mouse_b==WMRIGHTKEY)&&(!mouseclear)&&select_aria&&GAME&&(!waitfordownrightbuton))
     {
 	mouseclear=1;
-	putdestination(DestMouseOBJ,mouse_x+xk,mouse_y+yk,MODEMOVE,0,1);
+	putdestination(highMouse.DestMouseOBJ,highMouse.PosX+xk,highMouse.PosY+yk,MODEMOVE,0,1);
     }
     if (patr&&movieminikarta!=YES)
     {
-      if (mouse_x!=mouseprevx||mouse_y!=mouseprevy)
+      if (highMouse.PosX != highMouse.PrevX || highMouse.PosY != highMouse.PrevY)
       {
-        patrate=1;
+        highMouse.MouseOnSelectionMode=1;
         addscrx=0;
         addscry=0;
-        if (mouseprevx > gameconf.grmode.x)
-	    mouseprevx = gameconf.grmode.x;
-        if (mouseprevy > gameconf.grmode.y)
-	    mouseprevy = gameconf.grmode.y;
+        if (highMouse.PrevX > gameconf.grmode.x)
+	    highMouse.PrevX = gameconf.grmode.x;
+        if (highMouse.PrevY > gameconf.grmode.y)
+	    highMouse.PrevY = gameconf.grmode.y;
       }
     }
     else
     {
-	patrate=0;
+	highMouse.MouseOnSelectionMode=0;
         if (!GAME)
 	    highMouse.MouseType = NORMALMOUSE;
         if (mouse_b == WMLEFTKEY)
@@ -485,10 +471,10 @@ void getmousetype(int xk,int yk)
 /*void saveundermouse(void)
 {
     __type=NORMALMOUSE;
-    memmouseposx = mouse_x-highMouse.cursors[__type].mousegrp->SizeX/2;
+    memmouseposx = highMouse.PosX-highMouse.cursors[__type].mousegrp->SizeX/2;
     if (memmouseposx<0)
 	memmouseposx=0;
-    memmouseposy = mouse_y-highMouse.cursors[__type].mousegrp->SizeY/2;
+    memmouseposy = highMouse.PosY-highMouse.cursors[__type].mousegrp->SizeY/2;
     if (memmouseposy<0)
 	memmouseposy=0;
     memmousepossizex = highMouse.cursors[__type].mousegrp->SizeX*3/2;
@@ -511,51 +497,5 @@ void loadundermouse(void)
 }
 //==========================
 */
-static char pixundermouse[64*64];
-void saveundermouse(void)
-{
-    memmouseposx = mouse_x-32;
-    memmouseposy = mouse_y-32;
-    if (memmouseposx<0)
-	memmouseposx=0;
-    if (memmouseposy<0)
-	memmouseposy=0;
-    memmousepossizex = 64;
-    memmousepossizey = 64;
-    if (memmouseposx+memmousepossizex>GRP_wmaxx)
-	memmousepossizex = GRP_wmaxx-memmouseposx+1;
-    if (memmouseposy+memmousepossizey>GRP_wmaxy)
-	memmousepossizey = GRP_wmaxy-memmouseposy+1;
-    CGetImage8(memmouseposx,memmouseposy,memmousepossizex,memmousepossizey,pixundermouse);
-}
-//==========================
-void loadundermouse(void)
-{
-    CPutImage8(memmouseposx,memmouseposy,memmousepossizex,memmousepossizey,pixundermouse);
-}
-//==========================
-void MouseOnObjClear(void)
-{
-    int i;
-    for (i=0;i<MOUSEON_MAXVALUE;i++)
-        MouseOnOBJS[i]=NULL;
-    DestMouseOBJ=NULL;
-    DestMouseType=-1;
-    prevmouseobjtype=MOUSEON_MAXVALUE;
-}
-//=================================
-void GetMouseOnObj(void)
-{
-    int i;
-    for (i=0;i<MOUSEON_MAXVALUE;i++)
-    {
-        if (MouseOnOBJS[i])
-        {
-    	    DestMouseOBJ = MouseOnOBJS[i];
-    	    DestMouseType = i;
-    	    break;
-    	}
-    }
-}
-//==================================
+
 

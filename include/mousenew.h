@@ -15,6 +15,7 @@
 #define MAXMOUSESIZEX			64
 #define MAXMOUSESIZEY			64
 
+#define MOUSEON_NONE			-1
 #define MOUSEON_MYUNIT			0
 #define MOUSEON_ALLIANCEUNIT	1
 #define MOUSEON_ENEMYUNIT		2
@@ -51,18 +52,29 @@
 class HighMouse
 {
 
+private:
     struct
     {
-		int		posx;
-		int		posy;
-		int		sizex;
-		int		sizey;
-		char	buff[MAXMOUSESIZEX*MAXMOUSESIZEY];
-    }mousesavedpixels;
+		int		PosX;
+		int		PosY;
+		int		SizeX;
+		int		SizeY;
+		char	SavedPixels[MAXMOUSESIZEX*MAXMOUSESIZEY];
+    }SavedUnder;
 
 public:
+	int		PosX;
+	int		PosY;
+	int		PrevX;
+	int		PrevY;
     int		MouseType;
+    int		PrevMouseType;
+	OBJ		*MouseOnOBJS[MOUSEON_MAXVALUE];	//myunit,alianceunit,neutralunit,enemyunit,mybuild,aliancebuild,neutralbuild,enemybuild
+	OBJ		*DestMouseOBJ;
+	int		DestMouseType;
     bool	MouseOnBorder;
+    bool	MouseOnSelectionMode;
+    bool	WaitToPressLeftButton;
     struct
     {
 		GRPFILE			*mousegrp;
@@ -75,7 +87,12 @@ public:
     int  LoadAllCursors(void);
     void UnloadCursors(void);
     void DrawMouse(void);
-    void DrawSelectionArea();
+    void DrawSelectionArea(void);
+    void ScrollMouse(void);
+    void MouseOnObjClear(void);
+    void GetMouseOnObj(void);
+    void SaveImageUnder();
+    void LoadImageUnder();
 
 };
 

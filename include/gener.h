@@ -135,6 +135,7 @@ void ActivateCheat(int cheatid);
 extern int bitsplayer;
 //extern showterr,showmess,showmenu,showdipl;
 //extern int pressf10[4],pressterr[4],pressmess[4],pressdipl[4];
+extern char    	select_aria,karta_aria,mode_aria;
 extern char f10_menu,terr_menu,mess_menu,dipl_menu;
 extern DIALOGBIN_INFO *minimapmenu,*f10menu,*statbtnmenu;
 extern FORCE_SLOTS force_slots;

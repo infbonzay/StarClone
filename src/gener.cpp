@@ -79,6 +79,8 @@ NETW_PLAY	netplay;
 MENUDRAW	showedmenu;
 int menustatus,startmission,campaign_id;
 MAIN_IMG *mousedestimg;
+char    select_aria,karta_aria,mode_aria;
+
 //=================================
 /*====================================================
 ======================================================
@@ -171,8 +173,8 @@ int main(int c,char **parm,char **env)
 		gameconf.grmode.flags |= DISPLAYFLAGS_EMULATIONMODE;
 	    lowMouse.SetPos(gameconf.grmode.x/2,gameconf.grmode.y/2);
 	    lowMouse.SetPos(gameconf.grmode.x/2,gameconf.grmode.y/2);
-	    mouse_x=gameconf.grmode.x/2;
-	    mouse_y=gameconf.grmode.y/2;
+	    highMouse.PosX = gameconf.grmode.x/2;
+	    highMouse.PosY = gameconf.grmode.y/2;
 	    if (installvectors())
 	    {
 		gameend("Problem with install interrupts(may be timer interrupt)");
@@ -798,24 +800,24 @@ void mouseonkartaarea(void)
     {
 		if (mouse_b&WMLEFTKEY)
     	{
-			if (waitforleftbuton && waitfordownleftbuton)
+			if (highMouse.WaitToPressLeftButton && waitfordownleftbuton)
 			{
 		//action on leftbutton on minimap
-            waitforleftbuton=0;
+            highMouse.WaitToPressLeftButton=0;
             waitfordownleftbuton=0;
             putdestination(/*DestMouseOBJ*/NULL,
-                              (int)((mouse_x-Xkart-Xkartbeg)/factorx)*SIZESPRLANSHX,
-                              (int)((mouse_y-Ykart-Ykartbeg)/factory)*SIZESPRLANSHY,
+                              (int)((highMouse.PosX-Xkart-Xkartbeg)/factorx)*SIZESPRLANSHX,
+                              (int)((highMouse.PosY-Ykart-Ykartbeg)/factory)*SIZESPRLANSHY,
                               mouseprop,0,0);
 		//action
 	    }
 	    else
 			if (!mloc)
-        	    if (MAPDEF&&!patrate)
+        	    if (MAPDEF&&!highMouse.MouseOnSelectionMode)
         	    {
 //            		movieminikarta=YES;
-					movieminikarta = SetVisualMapPosition((int) (((mouse_x-Xkart-Xkartbeg)/factorx)-widthkart/2)*SIZESPRLANSHX,
-					 (int) (((mouse_y-Ykart-Ykartbeg)/factory)-hightkart/2)*SIZESPRLANSHY);
+					movieminikarta = SetVisualMapPosition((int) (((highMouse.PosX-Xkart-Xkartbeg)/factorx)-widthkart/2)*SIZESPRLANSHX,
+					 (int) (((highMouse.PosY-Ykart-Ykartbeg)/factory)-hightkart/2)*SIZESPRLANSHY);
         	    }
     	}
     	else
@@ -824,8 +826,8 @@ void mouseonkartaarea(void)
         	{
             	    buton2=1;
             	    putdestination(/*DestMouseOBJ*/NULL,
-                              (int)((mouse_x-Xkart-Xkartbeg)/factorx)*SIZESPRLANSHX,
-                              (int)((mouse_y-Ykart-Ykartbeg)/factory)*SIZESPRLANSHY,
+                              (int)((highMouse.PosX-Xkart-Xkartbeg)/factorx)*SIZESPRLANSHX,
+                              (int)((highMouse.PosY-Ykart-Ykartbeg)/factory)*SIZESPRLANSHY,
                               MODEMOVE,0,0);
         	}
     	}
@@ -927,7 +929,7 @@ int gogame(struct mapinfo *info)
     calculatefog(bitsplayer);			//calculate all fog
     drawMAP(1);
 
-    MouseOnObjClear();
+    highMouse.MouseOnObjClear();
     totalimgs=0;
     drawedimgs=0;
     AllImages_Draw();
@@ -1129,12 +1131,12 @@ int gogame(struct mapinfo *info)
 
 				totalimgs=0;
 				drawedimgs=0;
-				MouseOnObjClear();
+				highMouse.MouseOnObjClear();
 				AllImages_Draw();
 
 				DrawBuildPlace();
 
-				GetMouseOnObj();
+				highMouse.GetMouseOnObj();
 
 				putobjsonminimap();
 				if (MAPUNITSREGENERATIONBIT && (MAPDEF & UNITS))
@@ -1247,9 +1249,9 @@ int gogame(struct mapinfo *info)
 			select_aria = 0;
 			movieminikarta=NO;
 			mousehotpos=MOUSEONNONE;
-			waitforleftbuton=0;
-			patrate=0;
-			DestMouseOBJ=NULL;
+			highMouse.WaitToPressLeftButton=0;
+			highMouse.MouseOnSelectionMode=0;
+			highMouse.DestMouseOBJ=NULL;
 			highMouse.MouseType = NORMALMOUSE;
 			retmenu=showedmenu.ShowMenu();
 			keyactive=0;
@@ -1304,11 +1306,11 @@ int gogame(struct mapinfo *info)
 			_putcells();		//put borders
 #endif
 	//	saveunderpatr();
-		saveundermouse();
-	//	desenpatr();
+		highMouse.SaveImageUnder();
+		//	desenpatr();
 		highMouse.DrawMouse();
 		wscreenonmem(scrregions,scrparts);
-		loadundermouse();
+		highMouse.LoadImageUnder();
 	//	loadunderpatr();
 		showedmenu.EndDrawMenu();
 		if (retmenu)
@@ -1391,7 +1393,7 @@ void drawGAMEMENUbutton(char *button,DIALOGBIN_INFO *menuinfo,int buttonnr,
 		}
 		else
 		{
-            if (mousehotpos==mousehotnr&&!patrate)
+            if (mousehotpos==mousehotnr&&!highMouse.MouseOnSelectionMode)
             {
 				if (mouse_b&WMLEFTKEY)
 				{
@@ -1410,7 +1412,7 @@ void drawGAMEMENUbutton(char *button,DIALOGBIN_INFO *menuinfo,int buttonnr,
 				*button&=~GAMEBUTTON_MOUSEPRESS;
 				*button&=~GAMEBUTTON_MOUSERELEASE;
             }
-            if ((mousehotpos==mousehotnr&&!patrate)||(*button&GAMEBUTTON_KEYPRESS))
+            if ((mousehotpos==mousehotnr&&!highMouse.MouseOnSelectionMode)||(*button&GAMEBUTTON_KEYPRESS))
             {
 				if ((mouse_b&WMLEFTKEY)||(*button&GAMEBUTTON_KEYPRESS))
 				{

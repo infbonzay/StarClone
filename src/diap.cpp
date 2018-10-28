@@ -147,7 +147,7 @@ void desenproperties(int *localprop,char *selectableicons)
 //                	grpplayernr);
 
     	    }//if local
-  if (!patrate)
+  if (!highMouse.MouseOnSelectionMode)
   {
 	mouseonicon = -1;
 	selectedicon = -1;
@@ -357,7 +357,7 @@ selectedicon:
     {
         if (!fordeselect[0])
         {
-	    waitforleftbuton=0;
+			highMouse.WaitToPressLeftButton=0;
         }
         else
         {
@@ -406,7 +406,7 @@ selectedicon:
 				    ChangeTypeOfProp(fordeselect[k],PROPNORMAL1);
 			    }
                     	    groupmove=0;
-                            waitforleftbuton=0;
+                            highMouse.WaitToPressLeftButton=0;
             	}
                 else
                 {
@@ -456,7 +456,7 @@ selectedicon:
                 constrbuild(oldselectbuton);
                 mouseprop = oldselectbuton;
         	groupmove=0;
-            	waitforleftbuton=2;
+            	highMouse.WaitToPressLeftButton=2;
             }
 	}
     }
@@ -486,7 +486,7 @@ selectedicon:
 	makemove(transportplaceobj,NULL,selectedunloadunit,0,MODEUNLOADUNITNR,transportplaceobj->playernr,NOSHOWERROR);
 //	moveobj(transportplaceobj,NULL,MODEUNLOADUNITNR,selectedunloadunit,0,NOSHOWERROR);
     }
-  }//if !patrate
+  }
 }
 //=============================================
 void playadvisorerr(int playernr,int race,int retreserror)
@@ -658,7 +658,7 @@ int CreateMenuProperties(int *prop,char *selectableicons,
     int propunits[MAXSELECTMAN][MAXUNITPROPERTIES];
     struct OBJstruct *b;
     //if we select move/mage need to put only cancel mage/move button
-    if (waitforleftbuton)
+    if (highMouse.WaitToPressLeftButton)
     {
 	for (i=0;i<MAXUNITPROPERTIES-1;i++)
 	{
@@ -667,7 +667,7 @@ int CreateMenuProperties(int *prop,char *selectableicons,
         }
         prop[8] = MODECANCEL_BB_AB;
         selectableicons[8]=FORYELLOW;
-	return 0;	
+	return 0;
     }
     //create all properties for selected units
     selobj=selectobjcount();
@@ -829,7 +829,7 @@ int ExistProp(struct OBJstruct *b,int verifymode)
 //   return x and y new position of build unit
 //      		  xxxxx
 //      		y aaaaa     x,y is form one coordinates of (a)
-//		       	y a***a     if buid with (*) size 3,2 
+//		       	y a***a     if buid with (*) size 3,2
 //		       	y a***a
 //			y aaaaa
 //
@@ -840,7 +840,7 @@ int getborderbuild(int mx,int my,int *x,int *y)
 	if (a)
 	    *x = mx - 1;
 	else
-	    *x = 0;	
+	    *x = 0;
 	if (b)
 	    *y = my - 1;
 	else
@@ -849,12 +849,12 @@ int getborderbuild(int mx,int my,int *x,int *y)
 	if (a)
 	    if (b)
 		kvadrant = 1;
-	    else	
+	    else
 		kvadrant = 3;
 	else
 	    if (b)
 		kvadrant = 0;
-	    else	
+	    else
 		kvadrant = 2;
 	return(kvadrant);
 }
@@ -869,7 +869,7 @@ int CheckCoordinates(int newx256,int newy256,SCUNIT SC_Unit)
 	return(0);
     if (newy256/256 - GetUnitWidthAndHeight(SC_Unit,UNITDIM_HEIGHT)/2 > MAXYMAP*32)
 	return(0);
-    return(1);    
+    return(1);
 }
 //=====================================
 

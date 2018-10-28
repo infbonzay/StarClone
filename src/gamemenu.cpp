@@ -5190,7 +5190,7 @@ int putgamemenu(MENUDRAW *menudraw,MENUPARAMS *menuparams)
 				{
 				setmenuitem_VISIBLED(menudraw->menutodraw,3,FALSE);	//pausegame
 				setmenuitem_VISIBLED(menudraw->menutodraw,4,TRUE);	//resumegame
-				mymousemoveevent(mouse_x,mouse_y);
+				mymousemoveevent(highMouse.PosX,highMouse.PosY);
 				}
 			}
 			break;
@@ -5202,7 +5202,7 @@ int putgamemenu(MENUDRAW *menudraw,MENUPARAMS *menuparams)
 				{
 				setmenuitem_VISIBLED(menudraw->menutodraw,3,TRUE);	//pausegame
 				setmenuitem_VISIBLED(menudraw->menutodraw,4,FALSE);	//resumegame
-				mymousemoveevent(mouse_x,mouse_y);
+				mymousemoveevent(highMouse.PosX,highMouse.PosY);
 				}
 			}
 			break;
