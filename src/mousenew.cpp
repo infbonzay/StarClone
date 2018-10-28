@@ -348,8 +348,6 @@ void MouseClickEvent(bool type, int buttons)
 {
 	static long long prevtimer = 0;
 	bool doubleClick;
-	if (highMouse->ClickFunc)
-		(*highMouse->ClickFunc)(type, buttons);
 	if (type)
 	{
 		mouse_b |= buttons;
@@ -358,6 +356,8 @@ void MouseClickEvent(bool type, int buttons)
 	{
 		mouse_b &= ~buttons;
 	}
+	if (highMouse->ClickFunc)
+		(*highMouse->ClickFunc)(type, buttons);
 	if (highMouse->DblClickFunc)
 	{
 		if (buttons == 1)
@@ -371,7 +371,8 @@ void MouseClickEvent(bool type, int buttons)
 				doubleClick = false;
 			}
 			prevtimer = tick_timer;
-			(*highMouse->DblClickFunc)();
+			if (doubleClick)
+				(*highMouse->DblClickFunc)();
 		}
 	}
 }

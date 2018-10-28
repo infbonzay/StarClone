@@ -222,9 +222,9 @@ void getmousetype(int xk,int yk)
         {
             waitfordownrightbuton=1;
         }
-        if (highMouse->WaitToPressLeftButton==2)
+        if (highMouse->WaitToPressLeftButton == 2)
            if (!(mouse_b & WMLEFTKEY))
-              highMouse->WaitToPressLeftButton = 0;
+              highMouse->WaitToPressLeftButton--;
         waitfordownleftbuton=1;
      }
     }
