@@ -113,83 +113,83 @@ int main(int c,char **parm,char **env)
     printf("SIZEOF SOMEINFO UNION=%d\n",(int)sizeof(SOMEINFO));
     printf("OBJ=%d OBJstruct=%d\n",(int)sizeof(OBJ),(int)sizeof(OBJstruct));
     do{
-	printf("Loading config file " SC_CONFIGFILE "\n");
-	UnLoadAllMpqs();
-	unloadcfg();
-	i=loadcfg(SC_CONFIGFILE,&firsttimelaunch);
-	if (i)
-	{
-	    if (i==-2)
-    	    {
-	        printf(SC_CONFIGFILE " not found.\nCreate default " SC_CONFIGFILE " configuration.\n");
+		printf("Loading config file " SC_CONFIGFILE "\n");
+		UnLoadAllMpqs();
+		unloadcfg();
 		i=loadcfg(SC_CONFIGFILE,&firsttimelaunch);
-    	    }
-    	    else
-    	    {
-    	        printf("Error in line %d (" SC_CONFIGFILE ")\n",i);
-    		exit(-1);
-    	    }
-	}
-//    printf("%lld\n",gettimeticks2());
+		if (i)
+		{
+			if (i==-2)
+			{
+				printf(SC_CONFIGFILE " not found.\nCreate default " SC_CONFIGFILE " configuration.\n");
+				i=loadcfg(SC_CONFIGFILE,&firsttimelaunch);
+			}
+			else
+			{
+				printf("Error in line %d (" SC_CONFIGFILE ")\n",i);
+				exit(-1);
+			}
+		}
+	//    printf("%lld\n",gettimeticks2());
 
-//    getcwd(GAMEPATH,sizeof(GAMEPATH)-1);
-//    strcpy(GAMEMAPPATH,GAMEPATH);
-//    strcat(GAMEMAPPATH,"/maps");
+	//    getcwd(GAMEPATH,sizeof(GAMEPATH)-1);
+	//    strcpy(GAMEMAPPATH,GAMEPATH);
+	//    strcat(GAMEMAPPATH,"/maps");
 
-	mkdir("maps",0755);
-	mkdir(USERS_DIRECTORY,0755);
-	mkdir(SAVES_DIRECTORY,0755);
-	mkdir(REPLAYS_DIRECTORY,0755);
-	mkdir(TEMPDIR,0755);
+		mkdir("maps",0755);
+		mkdir(USERS_DIRECTORY,0755);
+		mkdir(SAVES_DIRECTORY,0755);
+		mkdir(REPLAYS_DIRECTORY,0755);
+		mkdir(TEMPDIR,0755);
 
-	if (chdir(GAMEMAPPATH))
-	{
-	    printf("WARNING: the MAP %s do not exist\n",GAMEMAPPATH);
-	}
-//    printf("%lld\n",gettimeticks2());
-	int readedsymb=readlink(GAMEMAPPATH,temppath,sizeof(temppath)-1);
-	if (readedsymb!=-1)
-	{
-	    getcwd(GAMEMAPPATH,sizeof(GAMEMAPPATH)-1);
-	}
-	err=chdir(GAMEPATH);
-	if (err)
-	{
-	    printf("cannot chdir %s, path not found.\n",GAMEPATH);
-	    exit(-1);
-	}
-//    printf("%lld\n",gettimeticks2());
-	loadallfonts();
-	highMouse = new HighMouse();
-	printf("set graph mode...\n");
-	if (!videook)
-	{
-	    i = setmode(gameconf.grmode.x,gameconf.grmode.y,gameconf.grmode.s,gameconf.grmode.flags & DISPLAYFLAGS_FULLSCREENMODE);
-    	    if (!i)
-	    {
-		printf("cannot initialize %dx%dx%d video mode\n",
-    	                gameconf.grmode.x,gameconf.grmode.y,gameconf.grmode.s);
-    		exit(-1);
-	    }
-	    if (i == 2)
-		gameconf.grmode.flags |= DISPLAYFLAGS_EMULATIONMODE;
-	    lowMouse.SetPos(gameconf.grmode.x / 2,gameconf.grmode.y / 2);
-	    lowMouse.SetPos(gameconf.grmode.x / 2,gameconf.grmode.y / 2);
-	    highMouse->PosX = gameconf.grmode.x / 2;
-	    highMouse->PosY = gameconf.grmode.y / 2;
-	    if (installvectors())
-	    {
-		gameend("Problem with install interrupts(may be timer interrupt)");
-	    }
-	    videook=1;
-	}
-	if (firsttimelaunch&0xff)
-	{
-	    LoadDatTblFiles(&alldattbl);
-	    if (DownloadMpqMenu(firsttimelaunch)==-1)
-		exit(-1);
-	    UnloadDatTblFiles(&alldattbl);
-	}
+		if (chdir(GAMEMAPPATH))
+		{
+			printf("WARNING: the MAP %s do not exist\n",GAMEMAPPATH);
+		}
+	//    printf("%lld\n",gettimeticks2());
+		int readedsymb=readlink(GAMEMAPPATH,temppath,sizeof(temppath)-1);
+		if (readedsymb!=-1)
+		{
+			getcwd(GAMEMAPPATH,sizeof(GAMEMAPPATH)-1);
+		}
+		err=chdir(GAMEPATH);
+		if (err)
+		{
+			printf("cannot chdir %s, path not found.\n",GAMEPATH);
+			exit(-1);
+		}
+	//    printf("%lld\n",gettimeticks2());
+		loadallfonts();
+		highMouse = new HighMouse();
+		printf("set graph mode...\n");
+		if (!videook)
+		{
+			i = setmode(gameconf.grmode.x,gameconf.grmode.y,gameconf.grmode.s,gameconf.grmode.flags & DISPLAYFLAGS_FULLSCREENMODE);
+			if (!i)
+			{
+				printf("cannot initialize %dx%dx%d video mode\n",
+						gameconf.grmode.x,gameconf.grmode.y,gameconf.grmode.s);
+				exit(-1);
+			}
+			if (i == 2)
+				gameconf.grmode.flags |= DISPLAYFLAGS_EMULATIONMODE;
+			lowMouse.SetPos(gameconf.grmode.x / 2,gameconf.grmode.y / 2);
+			lowMouse.SetPos(gameconf.grmode.x / 2,gameconf.grmode.y / 2);
+			highMouse->PosX = gameconf.grmode.x / 2;
+			highMouse->PosY = gameconf.grmode.y / 2;
+			if (installvectors())
+			{
+				gameend("Problem with install interrupts(may be timer interrupt)");
+			}
+			videook=1;
+		}
+		if (firsttimelaunch&0xff)
+		{
+			LoadDatTblFiles(&alldattbl);
+			if (DownloadMpqMenu(firsttimelaunch)==-1)
+				exit(-1);
+			UnloadDatTblFiles(&alldattbl);
+		}
     }while(firsttimelaunch&0xff);
 
     DEBUG_INIT(0);
@@ -285,209 +285,210 @@ int main(int c,char **parm,char **env)
 				status=glu_login();
 				switch(status)
 				{
-				case 0://user selected ok pressed
+					case 0://user selected ok pressed
 					do{
-					if (!EXPANSIONSET)
-						status=campaignselect();
-					else
+						if (!EXPANSIONSET)
+							status=campaignselect();
+						else
 							status=xcampaignselect();
 						missionfrommenu=1;
-					switch(status)
-					{
-						case STAR_PROTOSS:
-						case BROOD_PROTOSS:
-						case STAR_TERRAN:
-						case BROOD_TERRAN:
-						case STAR_ZERG:
-						case BROOD_ZERG:
-						StopMusic(MUSIC_STOPWITHFADE);
-playmission:				GAMETYPE = MAP_GAMETYPE_USEMAPSETTINGS;
-						selected_id = (startmission >> 16) & 0xff;
-						campaign_id = (startmission >> 8) & 0xff;
-						mission_id  = startmission & 0xff;
-						//DEBUGMESSCR("startmission=0x%x\n",startmission);
-						status = getcampaignname(campaign_id,selected_id);
-						if (status == SHOWVIDEO)
-						{
-							//show the video
-							PlayCampaignVideo(campaign_id,selected_id);
-							if (missionfrommenu)
-							{
-							gamequitstatus=PREVIOUSMENU;
-							break;
-							}
-							goto gonextmission;
-						}
-							missionfrommenu=0;
-repeatmissionagain:
-						ShowPreviewMission(campaign_id,selected_id,0);//show info before the mission
-						if (status == ENDCAMPAIGN)
-						{
-							gamequitstatus=PREVIOUSMENU;
-							break;
-						}
-						if (status == PREVIEWTEXT)
-						{
-							goto gonextmission;
-						}
-						clearplayersconfig();
-						clearplayernames();
-							testmap=(mapinfo *) wmalloc(sizeof(mapinfo));
-						memset(testmap,0,sizeof(mapinfo));
-
-						err=starmap_info(SELECTMAP,NULL,testmap);
-						if (err)
-						{
-							gamequitstatus=PREVIOUSMENU;
-							break;
-						}
-						copytempowners(testmap);
-						preparegameconf_ums();
-						force_slots.CreatePlayersNr();
-						selected=SINGLEGAME;
-						status=glu_briefing(gameconf.pl_race[NUMBGAMER],NETWORKGAME,testmap,SELECTMAP,startmission == 0);
-							unload_starmapallocated(testmap);
-						wfree(testmap);
-						testmap=NULL;
 						switch(status)
 						{
-							case STARTGAME://let's play
-							gamequitstatus=letsplaygame(gameconf.pl_race[NUMBGAMER],SELECTMAP);
-							free_missionobjectives();
-							case SKIPMISSION://go next mission
-								if (status == SKIPMISSION)
+							case STAR_PROTOSS:
+							case BROOD_PROTOSS:
+							case STAR_TERRAN:
+							case BROOD_TERRAN:
+							case STAR_ZERG:
+							case BROOD_ZERG:
+								StopMusic(MUSIC_STOPWITHFADE);
+playmission:
+								GAMETYPE = MAP_GAMETYPE_USEMAPSETTINGS;
+								selected_id = (startmission >> 16) & 0xff;
+								campaign_id = (startmission >> 8) & 0xff;
+								mission_id  = startmission & 0xff;
+								//DEBUGMESSCR("startmission=0x%x\n",startmission);
+								status = getcampaignname(campaign_id,selected_id);
+								if (status == SHOWVIDEO)
 								{
-									gamestatus = WINGAME;
-									gamequitstatus = QUITGAME;
-							}
-							if ( gamequitstatus==EXITGAME || gamequitstatus==QUITMISSION )
-								break;
-	//						gamestatus=WINGAME;	//for test
-							if ( gamestatus!=WINGAME || gamequitstatus == RESTARTGAME )
-								goto repeatmissionagain;
-gonextmission:
-							ShowPreviewMission(campaign_id,selected_id,1);//show info after mission(if exist)
-							//get the next mission
-							selected_id = curplayer[0].missions[campaign_id].next_missions[selected_id];
-							if (nextscenario)
-							{
-								runonemission = openmission(campaign_id,nextscenario);
-								selected_id = nextscenario;
-							}
-							else
-							{
-								runonemission = openmission(campaign_id,selected_id);
-							}
-							nextscenario = 0;
-							if ( runonemission )
-							{
-								//complete campaign go to the menu
-								gamequitstatus=PREVIOUSMENU;
-								break;
-							}
-							//campaign not done, go next mission;
-							mission_id = curplayer[0].missions[campaign_id].seq_missions[selected_id] & 0x7f;
-							startmission = (selected_id << 16) | (campaign_id << 8) | mission_id;
-							goto playmission;
-							break;
-							case CANCELGAME://cancel play
-							selected=SINGLEGAME;
-							gamequitstatus=PREVIOUSMENU;
-							free_missionobjectives();
-							break;
-						}
-						break;
-						case STAR_LOADSAVED:
-						case BROOD_LOADSAVED:
-						selected=SINGLEGAME;
-						gamequitstatus=glu_loadgame();
-						break;
-						case STAR_LOADREPLAY:
-						case BROOD_LOADREPLAY:
-						selected=SINGLEGAME;
-						gamequitstatus=glu_loadreplay();
-						break;
-						case STAR_PLAYCUSTOM:
-						case BROOD_PLAYCUSTOM:
-						do{
-	//						printf("single game go to SELECTMAP MENU\n");
-							clearplayersconfig();
-							clearplayernames();
-							setplayername(NUMBGAMER,nickname);
-							status = selectmapmenu();
-							do{
-									if (GAMETYPE == MAP_GAMETYPE_USEMAPSETTINGS)
-								preparegameconf_ums();
+									//show the video
+									PlayCampaignVideo(campaign_id,selected_id);
+									if (missionfrommenu)
+									{
+										gamequitstatus=PREVIOUSMENU;
+										break;
+									}
+									goto gonextmission;
+								}
+								missionfrommenu=0;
+repeatmissionagain:
+								ShowPreviewMission(campaign_id,selected_id,0);//show info before the mission
+								if (status == ENDCAMPAIGN)
+								{
+									gamequitstatus=PREVIOUSMENU;
+									break;
+								}
+								if (status == PREVIEWTEXT)
+								{
+									goto gonextmission;
+								}
+								clearplayersconfig();
+								clearplayernames();
 								testmap=(mapinfo *) wmalloc(sizeof(mapinfo));
 								memset(testmap,0,sizeof(mapinfo));
 
-								err=starmap_info(NULL,SELECTMAP,testmap);
-								if (!err)
+								err=starmap_info(SELECTMAP,NULL,testmap);
+								if (err)
 								{
-								starmap_forceslots(testmap,&force_slots,GAMETYPE);
+									gamequitstatus=PREVIOUSMENU;
+									break;
 								}
+								copytempowners(testmap);
+								preparegameconf_ums();
 								force_slots.CreatePlayersNr();
 								selected=SINGLEGAME;
-								gamequitstatus=CONTINUEGAME;
-								switch(status)
-								{
-								case 0:
-								status=glu_briefing(gameconf.pl_race[NUMBGAMER],NETWORKGAME,testmap,NULL,0);
-									unload_starmapallocated(testmap);
+								status=glu_briefing(gameconf.pl_race[NUMBGAMER],NETWORKGAME,testmap,SELECTMAP,startmission == 0);
+								unload_starmapallocated(testmap);
 								wfree(testmap);
 								testmap=NULL;
 								switch(status)
 								{
 									case STARTGAME://let's play
-									gamequitstatus=letsplaygame(gameconf.pl_race[NUMBGAMER],NULL);
-									break;
+									gamequitstatus=letsplaygame(gameconf.pl_race[NUMBGAMER],SELECTMAP);
+									free_missionobjectives();
+									case SKIPMISSION://go next mission
+										if (status == SKIPMISSION)
+										{
+											gamestatus = WINGAME;
+											gamequitstatus = QUITGAME;
+										}
+										if ( gamequitstatus==EXITGAME || gamequitstatus==QUITMISSION )
+											break;
+			//							gamestatus=WINGAME;	//for test
+										if ( gamestatus!=WINGAME || gamequitstatus == RESTARTGAME )
+											goto repeatmissionagain;
+gonextmission:
+										ShowPreviewMission(campaign_id,selected_id,1);//show info after mission(if exist)
+										//get the next mission
+										selected_id = curplayer[0].missions[campaign_id].next_missions[selected_id];
+										if (nextscenario)
+										{
+											runonemission = openmission(campaign_id,nextscenario);
+											selected_id = nextscenario;
+										}
+										else
+										{
+											runonemission = openmission(campaign_id,selected_id);
+										}
+										nextscenario = 0;
+										if ( runonemission )
+										{
+											//complete campaign go to the menu
+											gamequitstatus=PREVIOUSMENU;
+											break;
+										}
+										//campaign not done, go next mission;
+										mission_id = curplayer[0].missions[campaign_id].seq_missions[selected_id] & 0x7f;
+										startmission = (selected_id << 16) | (campaign_id << 8) | mission_id;
+										goto playmission;
+										break;
 									case CANCELGAME://cancel play
-									selected=SINGLEGAME;
-									gamequitstatus=PREVIOUSMENU;
-									break;
+										selected=SINGLEGAME;
+										gamequitstatus=PREVIOUSMENU;
+										free_missionobjectives();
+										break;
 								}
-								free_missionobjectives();
 								break;
-								case 1:
-	//				    			printf("return to menu SINGLEGAME\n");
-									unload_starmapallocated(testmap);
-								wfree(testmap);
-								testmap=NULL;
-								gamequitstatus=PREVIOUSMENU;
+							case STAR_LOADSAVED:
+							case BROOD_LOADSAVED:
 								selected=SINGLEGAME;
+								gamequitstatus=glu_loadgame();
 								break;
-								default:
-									unload_starmapallocated(testmap);
-								wfree(testmap);
-								testmap=NULL;
+							case STAR_LOADREPLAY:
+							case BROOD_LOADREPLAY:
 								selected=SINGLEGAME;
-								gamequitstatus=PREVIOUSMENU;
-								printf("Error code %d\n",status);
-								gameend("error in selectmap() menu");
+								gamequitstatus=glu_loadreplay();
 								break;
-								}
-							}while(gamequitstatus==RESTARTGAME);
-							if (gamequitstatus!=EXITGAME)
-								PlayMusic("music\\title.wav",-1);
-						}while(gamequitstatus!=PREVIOUSMENU&&gamequitstatus!=EXITGAME);
-						break;
-						case STAR_ERROR:
-						case BROOD_ERROR:
-						printf("gametype error(missed some files)\n");
-						gameend("");
-						break;
-						case STAR_CANCEL:
-						case BROOD_CANCEL:
-						selected=SINGLEGAME;
-						gamequitstatus=CONTINUEGAME;
-						break;
-						default:
-						selected=SINGLEGAME;
-						gamequitstatus=CONTINUEGAME;
-						break;
-					}//gametype
-					if (gamequitstatus != EXITGAME)
-						PlayMusic("music\\title.wav",-1);
+							case STAR_PLAYCUSTOM:
+							case BROOD_PLAYCUSTOM:
+								do{
+			//						printf("single game go to SELECTMAP MENU\n");
+									clearplayersconfig();
+									clearplayernames();
+									setplayername(NUMBGAMER,nickname);
+									status = selectmapmenu();
+									do{
+											if (GAMETYPE == MAP_GAMETYPE_USEMAPSETTINGS)
+										preparegameconf_ums();
+										testmap=(mapinfo *) wmalloc(sizeof(mapinfo));
+										memset(testmap,0,sizeof(mapinfo));
+
+										err=starmap_info(NULL,SELECTMAP,testmap);
+										if (!err)
+										{
+											starmap_forceslots(testmap,&force_slots,GAMETYPE);
+										}
+										force_slots.CreatePlayersNr();
+										selected=SINGLEGAME;
+										gamequitstatus=CONTINUEGAME;
+										switch(status)
+										{
+											case 0:
+												status=glu_briefing(gameconf.pl_race[NUMBGAMER],NETWORKGAME,testmap,NULL,0);
+												unload_starmapallocated(testmap);
+												wfree(testmap);
+												testmap=NULL;
+												switch(status)
+												{
+													case STARTGAME://let's play
+													gamequitstatus=letsplaygame(gameconf.pl_race[NUMBGAMER],NULL);
+													break;
+													case CANCELGAME://cancel play
+													selected=SINGLEGAME;
+													gamequitstatus=PREVIOUSMENU;
+													break;
+												}
+												free_missionobjectives();
+												break;
+											case 1:
+			//				    				printf("return to menu SINGLEGAME\n");
+												unload_starmapallocated(testmap);
+												wfree(testmap);
+												testmap=NULL;
+												gamequitstatus=PREVIOUSMENU;
+												selected=SINGLEGAME;
+												break;
+											default:
+												unload_starmapallocated(testmap);
+												wfree(testmap);
+												testmap=NULL;
+												selected=SINGLEGAME;
+												gamequitstatus=PREVIOUSMENU;
+												printf("Error code %d\n",status);
+												gameend("error in selectmap() menu");
+												break;
+										}
+									}while(gamequitstatus==RESTARTGAME);
+									if (gamequitstatus!=EXITGAME)
+										PlayMusic("music\\title.wav",-1);
+								}while(gamequitstatus!=PREVIOUSMENU&&gamequitstatus!=EXITGAME);
+								break;
+							case STAR_ERROR:
+							case BROOD_ERROR:
+								printf("gametype error(missed some files)\n");
+								gameend("");
+								break;
+							case STAR_CANCEL:
+							case BROOD_CANCEL:
+								selected=SINGLEGAME;
+								gamequitstatus=CONTINUEGAME;
+								break;
+							default:
+								selected=SINGLEGAME;
+								gamequitstatus=CONTINUEGAME;
+								break;
+						}//gametype
+						if (gamequitstatus != EXITGAME)
+							PlayMusic("music\\title.wav",-1);
 					}while(gamequitstatus==PREVIOUSMENU);
 					break;
 				case 2://exit to mainmenu
@@ -976,7 +977,7 @@ int gogame(struct mapinfo *info)
 
 		if (needredesen)
 			redesenscreen();
-		if (!PAUSEGAME&&!PAUSEINTRIG)
+		if (!PAUSEGAME && !PAUSEINTRIG)
 		{
 			keyrefresh();               	//refresh array of keys
 			getmousetype(map.MAPXGLOBAL,map.MAPYGLOBAL);

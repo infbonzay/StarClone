@@ -178,7 +178,7 @@ void getmousetype(int xk,int yk)
     int c;
     highMouse->MouseType = NORMALMOUSE;
     if (MENUACTIVE)
-	return;
+	    return;
     if (GAME)
     {
      c=0;
@@ -224,7 +224,7 @@ void getmousetype(int xk,int yk)
         }
         if (highMouse->WaitToPressLeftButton==2)
            if (!(mouse_b & WMLEFTKEY))
-              highMouse->WaitToPressLeftButton = false;
+              highMouse->WaitToPressLeftButton = 0;
         waitfordownleftbuton=1;
      }
     }
