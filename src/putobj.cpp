@@ -1217,7 +1217,7 @@ void drawallunitsinbar(int XWINPOS,int YWINPOS,struct OBJ *a[],int count)
     struct OBJ *a1;
     if (count)
     {
-	mbuttonpress = LowMouse.GetButtonStatus() & WMLEFTKEY;
+	mbuttonpress = lowMouse.GetButtonStatus() & WMLEFTKEY;
 	shiftpress=KEYPRESS(SHIFTLKEY)|KEYPRESS(SHIFTRKEY);
 	ctrlpress=KEYPRESS(CTRLLKEY)|KEYPRESS(CTRLRKEY);
 	for (i=0;i<MAXSELECTMAN;i++)

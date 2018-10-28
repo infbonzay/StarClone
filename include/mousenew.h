@@ -61,6 +61,7 @@ class HighMouse
     }mousesavedpixels;
 
 public:
+    int		MouseType;
     struct
     {
 		GRPFILE			*mousegrp;
@@ -72,6 +73,8 @@ public:
     int  LoadOneCursor(char *filename,int typemouse);
     int  LoadAllCursors(void);
     void UnloadCursors(void);
+    void DrawMouse(void);
+    void DrawSelectionArea();
 
 };
 

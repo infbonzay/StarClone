@@ -3,28 +3,28 @@
 #include "mousesdl.h"
 
 //==========================
-int lowmouse::Init(void)
+int LowMouse::Init(void)
 {
     return(1);
 }
 //==========================
-int lowmouse::GetButtonStatus(void)
+int LowMouse::GetButtonStatus(void)
 {
     return(SDL_GetMouseState(NULL, NULL));
 }
 //==========================
-void lowmouse::GetPos(void)
+void LowMouse::GetPos(void)
 {
     SDL_GetRelativeMouseState(&DeltaX,&DeltaY);
 }
 //==========================
-void lowmouse::FlushPos(void)
+void LowMouse::FlushPos(void)
 {
     int x,y;
     SDL_GetRelativeMouseState(&x,&y);
 }
 //==========================
-void lowmouse::SetPos(int x,int y)
+void LowMouse::SetPos(int x,int y)
 {
     int delx,dely;
     SDL_WarpMouse(x,y);
@@ -32,36 +32,36 @@ void lowmouse::SetPos(int x,int y)
     FlushPos();
 }
 //==========================
-void lowmouse::InstallMoveEvent(PMOUSEMOVEEVENTCALLBACK eventFunc)
+void LowMouse::InstallMoveEvent(PMOUSEMOVEEVENTCALLBACK eventFunc)
 {
     MoveEventFunc = eventFunc;
 }
 //==========================
-void lowmouse::UninstallMoveEvent(void)
+void LowMouse::UninstallMoveEvent(void)
 {
     MoveEventFunc = NULL;
 }
 //==========================
-void lowmouse::InstallClickEvent(PMOUSECLICKEVENTCALLBACK eventFunc)
+void LowMouse::InstallClickEvent(PMOUSECLICKEVENTCALLBACK eventFunc)
 {
     ClickEventFunc = eventFunc;
 }
 //==========================
-void lowmouse::UninstallClickEvent(void)
+void LowMouse::UninstallClickEvent(void)
 {
     ClickEventFunc = NULL;
 }
 //==========================
-void lowmouse::InstallDblClickEvent(PMOUSEDBLCLICKEVENTCALLBACK eventFunc)
+void LowMouse::InstallDblClickEvent(PMOUSEDBLCLICKEVENTCALLBACK eventFunc)
 {
     DblClickEventFunc = eventFunc;
 }
 //==========================
-void lowmouse::UninstallDblClickEvent(void)
+void LowMouse::UninstallDblClickEvent(void)
 {
     DblClickEventFunc = NULL;
 }
 //==========================
 
-lowmouse LowMouse;
+LowMouse lowMouse;
 

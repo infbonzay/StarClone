@@ -1,9 +1,12 @@
 #include <grplib/usegrp.h>
 #include <grplib/gr8.h>
 
+#include "gr.h"
 #include "stringfiles.h"
 #include "auxil.h"
 #include "debug.h"
+#include "mouse.h"
+#include "vars.h"
 #include "mousenew.h"
 
 //==============================
@@ -51,14 +54,118 @@ void HighMouse::UnloadCursors(void)
 			if (cursors[i].flag == 1)
 				freegrp(cursors[i].mousegrp);
 			else
+			{
 				if (cursors[i].flag == 2)
+				{
 					freegrp(cursors[i].mousegrp);
+				}
 				else
 				{
 					DEBUGMESSCR("error mouse cursor source(grp or mpq)\n");
 				}
+			}
 			cursors[i].mousegrp=NULL;
 		}
     }
 }
 //==============================
+void HighMouse::DrawMouse(void)
+{
+	if (!MENUACTIVE)
+	{
+		if (patrate)
+		{
+			MouseType = SELECTIONMOUSE;
+		}
+		else
+		{
+			if (!grm)
+			{
+				if (waitforleftbuton)
+				{
+					if (DestMouseOBJ)
+					{
+						switch(DestMouseType)
+						{
+							case MOUSEON_ENEMYUNIT:
+							case MOUSEON_ENEMYBUILD:
+								MouseType = TARGREDMOUSE;
+								break;
+							case MOUSEON_NEUTRALUNIT:
+							case MOUSEON_NEUTRALBUILD:
+								MouseType = TARGYELLOWMOUSE;
+								break;
+							case MOUSEON_ALLIANCEUNIT:
+							case MOUSEON_ALLIANCEBUILD:
+								MouseType = TARGYELLOWMOUSE;
+								break;
+							case MOUSEON_MYUNIT:
+							case MOUSEON_MYBUILD:
+								MouseType = TARGGREENMOUSE;
+								break;
+							default:
+								MouseType = -1;
+								break;
+						}
+					}
+					else
+						MouseType = TARGGREENMOUSE;
+				}//waitforleftbuton
+				else
+				{
+					if ((DestMouseOBJ)&&select_aria&&!patrate)
+					{
+						switch(DestMouseType)
+						{
+							case MOUSEON_ENEMYUNIT:
+							case MOUSEON_ENEMYBUILD:
+								MouseType = MOUSEONOBJRED;
+								break;
+							case MOUSEON_NEUTRALUNIT:
+							case MOUSEON_NEUTRALBUILD:
+								MouseType = MOUSEONOBJYELLOW;
+								break;
+							case MOUSEON_ALLIANCEUNIT:
+							case MOUSEON_ALLIANCEBUILD:
+								MouseType = MOUSEONOBJYELLOW;
+								break;
+							case MOUSEON_MYUNIT:
+							case MOUSEON_MYBUILD:
+								MouseType = MOUSEONOBJGREEN;
+								break;
+							default:
+								MouseType = -1;
+								break;
+						}
+					}
+					else
+					{
+						MouseType = NORMALMOUSE;
+					}
+				}
+			}
+		}
+	}
+	if (MouseType < 0 )
+	{
+		DEBUGMESSCR("MouseType < 0 ");
+		return;
+	}
+	if (highMouse.cursors[MouseType].mousegrp)
+	{
+		int deltax = -highMouse.cursors[MouseType].mousegrp->SizeX/2;
+		int deltay = -highMouse.cursors[MouseType].mousegrp->SizeY/2;
+		putgrpspr(mouse_x+deltax,mouse_y+deltay,highMouse.cursors[MouseType].mousegrp,NORMAL,
+				  0,0,NULL,highMouse.cursors[MouseType].curentposition);
+	}
+}
+//==========================
+void HighMouse::DrawSelectionArea(void)
+{
+    if (patrate)
+    {
+		wrectangle(COLORHR,mouseprevx,mouseprevy,mouse_x,mouse_y);
+    }
+}
+//==========================
+

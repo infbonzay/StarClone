@@ -28,7 +28,7 @@
 #	include "dos/handlers.h"
 #endif
 
-int 	mousetype,grm,factorscrollkey,mousehotpos;
+int 	grm,factorscrollkey,mousehotpos;
 int     mouse_x,mouse_y,mousemaxx,mousemaxy,mouse_b;
 int     xmloc,ymloc,movieminikarta=NO,mousedoubleclick;
 struct  XY mouser[MAXMOUSEMODE];
@@ -59,9 +59,9 @@ int restrictmousecoords(int REGIM)
 //    if (mousedetect)
     if (0)
     {
-	LowMouse.GetPos();
-	mouse_x += LowMouse.DeltaX;
-        mouse_y += LowMouse.DeltaY;
+	lowMouse.GetPos();
+	mouse_x += lowMouse.DeltaX;
+        mouse_y += lowMouse.DeltaY;
         if (mouse_x>mouser[REGIM].x2)
     	    mouse_x=mouser[REGIM].x2;
         else
@@ -78,102 +78,7 @@ int restrictmousecoords(int REGIM)
     return 0;
 
 }
-//==========================
-void putmouseonscreen(void)
-{
-  int deltax,deltay;
-//  mousetype = NORMALMOUSE;
-  if (!MENUACTIVE)
-  {
-    if (patrate)
-    {
-	mousetype = SELECTIONMOUSE;
-    }
-    else
-    {
-	if (!grm)
-	{
-	    if (waitforleftbuton)
-	    {
-		if (DestMouseOBJ)
-		{
-		    switch(DestMouseType)
-		    {
-			case MOUSEON_ENEMYUNIT:
-			case MOUSEON_ENEMYBUILD:
-			    mousetype = TARGREDMOUSE;
-			    break;
-			case MOUSEON_NEUTRALUNIT:
-			case MOUSEON_NEUTRALBUILD:
-			    mousetype = TARGYELLOWMOUSE;
-			    break;
-			case MOUSEON_ALLIANCEUNIT:
-			case MOUSEON_ALLIANCEBUILD:
-			    mousetype = TARGYELLOWMOUSE;
-			    break;
-			case MOUSEON_MYUNIT:
-			case MOUSEON_MYBUILD:
-			    mousetype = TARGGREENMOUSE;
-			    break;
-			default:
-			    mousetype = -1;
-			    break;
-		    }
-		}
-		else
-		    mousetype = TARGGREENMOUSE;
-	    }//waitforleftbuton
-	    else
-	    {
-		if ((DestMouseOBJ)&&select_aria&&!patrate)
-		{
-		    switch(DestMouseType)
-		    {
-			case MOUSEON_ENEMYUNIT:
-			case MOUSEON_ENEMYBUILD:
-			    mousetype = MOUSEONOBJRED;
-			    break;
-			case MOUSEON_NEUTRALUNIT:
-			case MOUSEON_NEUTRALBUILD:
-			    mousetype = MOUSEONOBJYELLOW;
-			    break;
-			case MOUSEON_ALLIANCEUNIT:
-			case MOUSEON_ALLIANCEBUILD:
-			    mousetype = MOUSEONOBJYELLOW;
-			    break;
-			case MOUSEON_MYUNIT:
-			case MOUSEON_MYBUILD:
-			    mousetype = MOUSEONOBJGREEN;
-			    break;
-			default:
-			    mousetype = -1;
-			    break;
-		    }
-		}
-		else
-		{
-	    	    mousetype = NORMALMOUSE;
-		}
-	    }
-	}
-    }
-  }
-  if (highMouse.cursors[mousetype].mousegrp)
-  {
-	deltax=-highMouse.cursors[mousetype].mousegrp->SizeX/2;
-	deltay=-highMouse.cursors[mousetype].mousegrp->SizeY/2;
-	putgrpspr(mouse_x+deltax,mouse_y+deltay,highMouse.cursors[mousetype].mousegrp,NORMAL,
-        	    0,0,NULL,highMouse.cursors[mousetype].curentposition);
-  }
-}
-//==========================
-void desenpatr(void)
-{
-    if (patrate)
-    {
-	wrectangle(COLORHR,mouseprevx,mouseprevy,mouse_x,mouse_y);
-    }
-}
+
 //==========================
 int mouseborder2(int x1,int y1,int x2,int y2)
 {
@@ -348,7 +253,7 @@ void getmousetype(int xk,int yk)
 {
     static int oldc=0;
     int c;
-    mousetype = NORMALMOUSE;
+    highMouse.MouseType = NORMALMOUSE;
     if (MENUACTIVE)
 	return;
     if (GAME)
@@ -441,106 +346,106 @@ void getmousetype(int xk,int yk)
                 if (xk)
                 {
                     grm=1;
-		    mousetype = MOUSELEFTSCROLL;
+		    highMouse.MouseType = MOUSELEFTSCROLL;
 		    if (!addscrx)
 			addscrx = (int)scrollmapx(-1,SMOUTHMOUSE);
 		    if (!addscry)
 			addscry = (int)scrollmapy(0,SMOUTHMOUSE);
                 }
                 else
-		    mousetype = NORMALMOUSE;
+		    highMouse.MouseType = NORMALMOUSE;
                 break;
     	    case 2:
                 if (xk<(MAXXMAP-widthkart)*SIZESPRLANSHX)
                 {
                     grm=1;
-		    mousetype = MOUSERIGHTSCROLL;
+		    highMouse.MouseType = MOUSERIGHTSCROLL;
 		    if (!addscrx)
 			addscrx = (int)scrollmapx(1,SMOUTHMOUSE);
 		    if (!addscry)
 			addscry = (int)scrollmapy(0,SMOUTHMOUSE);
                 }
                 else
-		    mousetype = NORMALMOUSE;
+		    highMouse.MouseType = NORMALMOUSE;
                 break;
     	    case 4:
                 if (yk)
                 {
                     grm=1;
-		    mousetype = MOUSEUPSCROLL;
+		    highMouse.MouseType = MOUSEUPSCROLL;
 		    if (!addscrx)
 			addscrx = (int)scrollmapx(0,SMOUTHMOUSE);
 		    if (!addscry)
 			addscry = (int)scrollmapy(-1,SMOUTHMOUSE);
                 }
                 else
-		    mousetype = NORMALMOUSE;
+		    highMouse.MouseType = NORMALMOUSE;
                 break;
     	    case 5:
                 if (xk||yk)
                 {
                     grm=1;
-		    mousetype = MOUSELEFTUPSCROLL;
+		    highMouse.MouseType = MOUSELEFTUPSCROLL;
 		    if (!addscrx)
 			addscrx = (int)scrollmapx(-1,SMOUTHMOUSE);
 		    if (!addscry)
 			addscry = (int)scrollmapy(-1,SMOUTHMOUSE);
                 }
                 else
-		    mousetype = NORMALMOUSE;
+		    highMouse.MouseType = NORMALMOUSE;
                 break;
     	    case 6:
                 if (xk<(MAXXMAP-widthkart)*SIZESPRLANSHX||yk)
                 {
                     grm=1;
-		    mousetype = MOUSERIGHTUPSCROLL;
+		    highMouse.MouseType = MOUSERIGHTUPSCROLL;
 		    if (!addscrx)
 			addscrx = (int)scrollmapx(1,SMOUTHMOUSE);
 		    if (!addscry)
 			addscry = (int)scrollmapy(-1,SMOUTHMOUSE);
                 }
                 else
-		    mousetype = NORMALMOUSE;
+		    highMouse.MouseType = NORMALMOUSE;
                 break;
     	    case 8:
                 if (yk<(MAXYMAP-hightkart)*SIZESPRLANSHY)
                 {
                     grm=1;
-		    mousetype = MOUSEDOWNSCROLL;
+		    highMouse.MouseType = MOUSEDOWNSCROLL;
 		    if (!addscrx)
 			addscrx = (int)scrollmapx(0,SMOUTHMOUSE);
 		    if (!addscry)
 			addscry = (int)scrollmapy(1,SMOUTHMOUSE);
                 }
                 else
-		    mousetype = NORMALMOUSE;
+		    highMouse.MouseType = NORMALMOUSE;
                 break;
     	    case 9:
                 if (xk||yk<(MAXYMAP-hightkart)*SIZESPRLANSHY)
                 {
                     grm=1;
-		    mousetype = MOUSELEFTDOWNSCROLL;
+		    highMouse.MouseType = MOUSELEFTDOWNSCROLL;
 		    if (!addscrx)
 			addscrx = (int)scrollmapx(-1,SMOUTHMOUSE);
 		    if (!addscry)
 			addscry = (int)scrollmapy(1,SMOUTHMOUSE);
                 }
                 else
-		    mousetype = NORMALMOUSE;
+		    highMouse.MouseType = NORMALMOUSE;
                 break;
     	    case 0xa:
                 if (xk<(MAXXMAP-widthkart)*SIZESPRLANSHX||
                     yk<(MAXYMAP-hightkart)*SIZESPRLANSHY)
                 {
                     grm=1;
-		    mousetype = MOUSERIGHTDOWNSCROLL;
+		    highMouse.MouseType = MOUSERIGHTDOWNSCROLL;
 		    if (!addscrx)
 			addscrx = (int)scrollmapx(1,SMOUTHMOUSE);
 		    if (!addscry)
 			addscry = (int)scrollmapy(1,SMOUTHMOUSE);
                 }
                 else
-		    mousetype = NORMALMOUSE;
+		    highMouse.MouseType = NORMALMOUSE;
                 break;
     	}//if & switch
         oldc=c;
@@ -568,10 +473,10 @@ void getmousetype(int xk,int yk)
     {
 	patrate=0;
         if (!GAME)
-	    mousetype = NORMALMOUSE;
+	    highMouse.MouseType = NORMALMOUSE;
         if (mouse_b == WMLEFTKEY)
         {
-	    mousetype = NORMALMOUSE;
+	    highMouse.MouseType = NORMALMOUSE;
         }
     }
 }

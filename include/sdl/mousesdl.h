@@ -9,7 +9,7 @@ typedef void (*PMOUSEMOVEEVENTCALLBACK)(int ,int );
 typedef void (*PMOUSECLICKEVENTCALLBACK)(int);
 typedef void (*PMOUSEDBLCLICKEVENTCALLBACK)(int);
 
-class lowmouse
+class LowMouse
 {
 public:
     int  DeltaX,DeltaY;
@@ -33,7 +33,7 @@ public:
 
 };
 
-extern lowmouse LowMouse;
+extern LowMouse lowMouse;
 
 
 #endif

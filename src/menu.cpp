@@ -38,14 +38,14 @@ MOUSEALLSPOTS *currentmousehottable;
 //==========================================
 void addnewmousehotpos(void (*func)(int),int maxspots)
 {
-    currentmousehottable = (MOUSEALLSPOTS *) 
+    currentmousehottable = (MOUSEALLSPOTS *)
 	    wmalloc(sizeof(MOUSEALLSPOTS)+maxspots*sizeof(MOUSEHOTSPOT));
     currentmousehottable->callbackwork=0;
     mousehotspot.AddList(currentmousehottable);
     currentmousehottable->maxhotspots = maxspots;
     currentmousehottable->curenthotspots = 0;
     currentmousehottable->mousemovecallback = func;
-    LowMouse.InstallMoveEvent(&mymousemoveevent);
+    lowMouse.InstallMoveEvent(&mymousemoveevent);
 }
 //==========================================
 void incrcallbackwork(void)
@@ -71,7 +71,7 @@ void delnewmousehotpos(void)
     if (!lastelem)
     {
 	currentmousehottable = NULL;
-        LowMouse.UninstallMoveEvent();
+        lowMouse.UninstallMoveEvent();
     }
     else
 	currentmousehottable = (MOUSEALLSPOTS *) mousehotspot.GetElemNr(lastelem-1);
@@ -100,7 +100,7 @@ void mymousemoveevent(int x,int y)
     int i,found=-1,mouseborder=0,flags;
     MOUSEHOTSPOT *temp;
 
-    if (x>mouser[curentREGIM].x2) 
+    if (x>mouser[curentREGIM].x2)
     {
         x=mouser[curentREGIM].x2;
 	mouseborder=1;
@@ -125,7 +125,7 @@ void mymousemoveevent(int x,int y)
     mouse_x = x;
     mouse_y = y;
     if (mouseborder)
-	LowMouse.SetPos(x,y);
+	lowMouse.SetPos(x,y);
     if (!currentmousehottable)
 	return;
     if (!currentmousehottable->callbackwork)
@@ -152,7 +152,7 @@ void mymousemoveevent(int x,int y)
     }
     if (found==-1)
 	(*currentmousehottable->mousemovecallback)(NOSELECTMENUBAR);
-	
+
 }
 //==========================================
 void puttransptilebox(int x,int y,int sizex,int sizey,GRPFILE *grp)
@@ -249,7 +249,7 @@ void loadunderitems(MENUSTR *allmenus,int restoreandfree)
 {
     MENUPOS *item;
     int i;
-	
+
     for (i=allmenus->elements-1;i>=0;i--)
     {
 	item=&allmenus->menu[i];
@@ -313,7 +313,7 @@ void checkanddrawmenu(MENUSTR *allmenus,int ItemChanges,int saveunder)
 		if (*allmenus->menu[i].relation.address[ITEMRELATION_INVISIBLE]==allmenus->menu[i].relation.value[ITEMRELATION_INVISIBLE])
 		{
 		    inv=1;
-		}	
+		}
 	}
 	if (!inv)
 	    drawmenuitem(allmenus,i);
@@ -374,7 +374,7 @@ int actiondblclick(MENUSTR *allmenus,int downmenu)
 		}
 		else
 		{
-		    
+
 		}
 		break;
 	}
@@ -588,7 +588,7 @@ void activemenuupdatevalues(MENUSTR *allmenus,int activeitem)
 		allmenus->menu[i].showvalue+=allmenus->incrementfactor;
 		if (allmenus->menu[i].showvalue>MENUITEM_TIMEACTIVE_MAXVALUE)
 		    allmenus->menu[i].showvalue=MENUITEM_TIMEACTIVE_MAXVALUE;
-	    }    
+	    }
 	    else
 		allmenus->menu[i].showvalue-=allmenus->incrementfactor;
 		if (allmenus->menu[i].showvalue<MENUITEM_TIMEACTIVE_MINVALUE)
@@ -628,7 +628,7 @@ int drawmenu(MENUSTR *allmenus,int flags)
     else
     {
 	updateunder=ITEM_RESTOREANDFREE;
-    }	
+    }
     downmenu = NOSELECTMENUBAR;
     selectedmenu = NOSELECTMENUBAR;
     prevmenuonbar = menuonbar;
@@ -652,12 +652,12 @@ int drawmenu(MENUSTR *allmenus,int flags)
     {
 	getmousetype(map.MAPXGLOBAL,map.MAPYGLOBAL);
 	do{
-		mouse_b = LowMouse.GetButtonStatus();
+		mouse_b = lowMouse.GetButtonStatus();
 		eventwindowloop();
 		getmouseonitem(&activeitemchange,&activeitem);
 		keyrefresh();
 		saveundermouse();
-		putmouseonscreen();
+		highMouse.DrawMouse();
 		wscreenon();
 		loadundermouse();
 
@@ -826,7 +826,7 @@ int drawmenu(MENUSTR *allmenus,int flags)
 		}
 	}while(selectedmenu==NOSELECTMENUBAR);
     }//flags
-    LowMouse.GetPos();
+    lowMouse.GetPos();
     loadunderitems(allmenus,ITEM_ONLYFREE);
     unregmenucallbacks();
     mymousemoveevent(mouse_x,mouse_y);
@@ -858,7 +858,7 @@ int showlistmenu(MENUSTR *allmenus)
     checkanddrawmenu(allmenus,ITEMNOONEACTIVE,ITEM_RESTOREANDFREE);
     getmousetype(map.MAPXGLOBAL,map.MAPYGLOBAL);
     do{
-	mouse_b = LowMouse.GetButtonStatus();
+	mouse_b = lowMouse.GetButtonStatus();
 	getmouseonitem(&activeitemchange,&activeitem);
 	eventwindowloop();
 	if (allmenus->prevmenu)
@@ -866,7 +866,7 @@ int showlistmenu(MENUSTR *allmenus)
 //	    if (allmenus->prevmenu->CallBackFunc)
 //		(*allmenus->prevmenu->CallBackFunc)(allmenus->prevmenu,allmenus->prevmenu->somecallbackdata);
 	saveundermouse();
-	putmouseonscreen();
+	highMouse.DrawMouse();
 	wscreenon();
 	loadundermouse();
 
@@ -905,7 +905,7 @@ int showlistmenu(MENUSTR *allmenus)
 	    setmouseonitem(0);
 	}
     }while(selectedmenu==NOSELECTMENUBAR);
-    LowMouse.GetPos();
+    lowMouse.GetPos();
     loadunderitems(allmenus,ITEM_ONLYFREE);
     unregmenucallbacks();
     ret=selectedmenu;
@@ -969,7 +969,7 @@ void regmenu(int x,int y,MENUSTR *allmenus,void (*func)(int))
     incrcallbackwork();
 }
 //==========================================
-// the buttontype 0,1,2,3 (left,full,right,middle)   
+// the buttontype 0,1,2,3 (left,full,right,middle)
 // 			  0 - 121d,122d,123d,124e,125e,126e,127c,128c,129c
 // 			  1 - 112d,113d,114d,115e,116e,117e,118c,119c,120c
 //			  2 - 103d,104d,105d,106e,107e,108e,109c,110c,111c
@@ -1038,8 +1038,8 @@ int editboxaction(MENUSTR *allmenus)
 	    if (curitem->itemtype != ISEDITBOX)
 		return(0);
 	    int curlength = curitem->item.editbox->length;
-	    if (keypressed == BACKSPACEKEY	|| 
-		keypressed == ENTERKEY		|| 
+	    if (keypressed == BACKSPACEKEY	||
+		keypressed == ENTERKEY		||
 		(keypressed >= ' ' && keypressed <= '~' ))
 	    {
 		switch(keypressed)
@@ -1185,7 +1185,7 @@ int menukeys(MENUSTR *allmenus,int *pressed,int *needredraw)
 	    prevkey=0;
 	    switch(tempkey)
 	    {
-	    
+
 		case ESCAPEKEY:
 /*		    for (i=0;i<allmenus->elements;i++)
 			if (allmenus->menu[i].dialogbin_flags&DIALOGBIN_FLAGS_RESPONDTOESCKEY)
@@ -1278,7 +1278,7 @@ MENUSTR *createmenuinfo(int xpos,int ypos,int xsize,int ysize,int nrofelems,int 
     {
 	if (xsize*ysize)
 	    menu->saveunder=savepartscreen(menu->x,menu->y,menu->xsize,menu->ysize);
-    }	
+    }
     setincrementvalue(menu,48);
     return(menu);
 }
@@ -1732,7 +1732,7 @@ void addtextitem(MENUSTR *allmenus,int nr,int labelid,int hotx,int hoty,int hots
     changetextitem(allmenus,nr,txtstr);
     menuitem->item.textitem->rowsize=rowsize;
     menuitem->item.textitem->skiplinepixels=0;
-    
+
     if (menuitem->savedscrunderitem)
     {
 	loadunderitem(allmenus,nr);
@@ -1757,7 +1757,7 @@ void drawtextitem(MENUSTR *allmenus,int itemnr)
 	    drawtextpercent(allmenus,itemnr,menuitem->item.textitem->textstr+1,menuitem->fontnr,colors4,MBLUECOLORFONT);
 	}
 	else
-	{    
+	{
 	    color=GETITEMCOLOR(colors4,showtype);
 	    switch(menuitem->itemtype)
 	    {
@@ -1841,7 +1841,7 @@ void addexpanditem_lists(MENUSTR *allmenus,int nr,int selectednr,char *charset)
 	if (selectednr!=-1)
 	    menuitem->item.expandbox->selectednr=selectednr;
 	menuitem->item.expandbox->maxitem=items;
-        
+
         len=strlen(charset);
         menuitem->item.expandbox->items=(char **)wmalloc(items*sizeof(char *));
         menuitem->item.expandbox->items[0]=(char *)wmalloc(len+1);
@@ -1877,10 +1877,10 @@ void addexpanditem_lists(MENUSTR *allmenus,int nr,int selectednr,char *charset)
         menuitem->item.expandbox->array[ITEMSHOW_NOFOCUS]=(char *)wmalloc(barxsize+3);//nofocus array
         menuitem->item.expandbox->array[ITEMSHOW_CLICK]=(char *)wmalloc(barxsize*(barysize+items)+3);//click array
         menuitem->item.expandbox->array[ITEMSHOW_FOCUS]=(char *)wmalloc(barxsize+3);//focus array
-		
+
         menuitem->item.expandbox->array[ITEMSHOW_DISABLED][0]=barxsize;	//xsize
         menuitem->item.expandbox->array[ITEMSHOW_DISABLED][1]=1;		//ysize
-        menuitem->item.expandbox->array[ITEMSHOW_DISABLED][2]=53;		
+        menuitem->item.expandbox->array[ITEMSHOW_DISABLED][2]=53;
         for (j=3;j<barxsize+1;j++)
             menuitem->item.expandbox->array[ITEMSHOW_DISABLED][j]=54;
         menuitem->item.expandbox->array[ITEMSHOW_DISABLED][j++]=55;
@@ -1888,7 +1888,7 @@ void addexpanditem_lists(MENUSTR *allmenus,int nr,int selectednr,char *charset)
 
         menuitem->item.expandbox->array[ITEMSHOW_NOFOCUS][0]=barxsize;	//xsize
         menuitem->item.expandbox->array[ITEMSHOW_NOFOCUS][1]=1;		//ysize
-        menuitem->item.expandbox->array[ITEMSHOW_NOFOCUS][2]=53;		
+        menuitem->item.expandbox->array[ITEMSHOW_NOFOCUS][2]=53;
         for (j=3;j<barxsize+1;j++)
             menuitem->item.expandbox->array[ITEMSHOW_NOFOCUS][j]=54;
         menuitem->item.expandbox->array[ITEMSHOW_NOFOCUS][j++]=55;
@@ -1896,12 +1896,12 @@ void addexpanditem_lists(MENUSTR *allmenus,int nr,int selectednr,char *charset)
 
         menuitem->item.expandbox->array[ITEMSHOW_FOCUS][0]=barxsize;		//xsize
         menuitem->item.expandbox->array[ITEMSHOW_FOCUS][1]=1;		//ysize
-        menuitem->item.expandbox->array[ITEMSHOW_FOCUS][2]=56;		
+        menuitem->item.expandbox->array[ITEMSHOW_FOCUS][2]=56;
         for (j=3;j<barxsize+1;j++)
             menuitem->item.expandbox->array[ITEMSHOW_FOCUS][j]=57;
         menuitem->item.expandbox->array[ITEMSHOW_FOCUS][j++]=58;
         menuitem->item.expandbox->array[ITEMSHOW_FOCUS][j]=0;
-		
+
         if (menuitem->item.expandbox->hoty+(barysize+items)*menuitem->hotysize<=GRP_wmaxy)		//if list greater than maxy drawpixels
 		menuitem->item.expandbox->typelistshow=1;
         else
@@ -2285,7 +2285,7 @@ void drawradiobuttonitem(MENUSTR *allmenus,int itemnr)
 		    menuitem->hotxsize,menuitem->hotysize,leny,
 		    menuitem->item.radiobutton->textstr.text[showtype],
 		    menuitem->fontnr,color,allmenus->fonttable,allmenus->dlggrp,showtype!=ITEMSHOW_DISABLED,0);
-    
+
 }
 //==========================================
 void delradiobuttonitem(MENUSTR *allmenus,int nr,int end)
@@ -2302,7 +2302,7 @@ void delradiobuttonitem(MENUSTR *allmenus,int nr,int end)
 	wfree(allmenus->menu[nr].item.radiobutton);
 	allmenus->menu[nr].item.radiobutton=NULL;
     }
-    
+
 }
 //==========================================
 void setradiobuttonstate(MENUSTR *allmenus,int itemnr)
@@ -2382,7 +2382,7 @@ void addhorizbutton_params(MENUSTR *allmenus,int nr,int maxpos,int nrofholes,
     if (menuitem->itemtype==ISHORIZBUTTON)
     {
         delhorizbuttonitem(allmenus,nr,0);
-	
+
 	menuitem->item.horizbutton->onselectitem_callback=func;
 	memset(tempbar,0,sizeof(tempbar));
 
@@ -2428,7 +2428,7 @@ void addhorizbutton_params(MENUSTR *allmenus,int nr,int maxpos,int nrofholes,
 //==========================================
 void addhorizbutton(MENUSTR *allmenus,int nr,int hotx,int hoty,int hotsizex,int hotsizey,unsigned int colors4,int maxpos,int nrofholes,
 		    void (*func)(MENUSTR *allmenus,int itemnr,int horizpos))
-{		    
+{
     MENUPOS *menuitem=&allmenus->menu[nr];
     menuitem->item.horizbutton=(struct HORIZBUTTON *)wmalloc(sizeof(struct HORIZBUTTON));
     memset(menuitem->item.horizbutton,0,sizeof(struct HORIZBUTTON));
@@ -2588,7 +2588,7 @@ void delhorizbuttonitem(MENUSTR *allmenus,int nr,int end)
 }
 //==========================================
 void addsmkvideo(MENUSTR *allmenus,int nr,int hotx,int hoty,int sizex,int sizey,int nrofsmks,SMK_ARRAY *arrayofsmks)
-{		    
+{
     int minhotx,minhoty,smknrframes,i;
     HANDLE hmpq;
     smk_t *tempsmk;
@@ -2608,7 +2608,7 @@ void addsmkvideo(MENUSTR *allmenus,int nr,int hotx,int hoty,int sizex,int sizey,
 	menuitem->item.smkvideo->smks->totalsmks=nrofsmks;
 	for (i=0;i<nrofsmks;i++)
 	{
-	
+
 	    if (arrayofsmks[i].smkfile)
 	    {
 		hmpq=MpqsFindFile(arrayofsmks[i].smkfile);
@@ -2658,7 +2658,7 @@ void addbuttontosmk(MENUSTR *allmenus,int nr,int xpos,int ypos,int smksizex,int 
     menuitem->textxsize=smksizex;
     menuitem->textysize=smksizey;
     getmessagelen(fontnr,text,&sizextext,&sizeytext);
-    
+
     menuitem->item.smkvideo->smkbutton=(struct BUTTON *)wmalloc(sizeof(BUTTON));
     memset(menuitem->item.smkvideo->smkbutton,0,sizeof(BUTTON));
 
@@ -3068,7 +3068,7 @@ void addimageitem(MENUSTR *allmenus,int nr,int hotx,int hoty,int sizex,int sizey
     }
 //    setmenuitem_DISABLED(allmenus,nr,FALSE);
     restoreflag(allmenus,nr,ITEM_RESTOREANDFREE);
-} 
+}
 //==========================================
 void addimagearray(MENUSTR *allmenus,int nr,int hotx,int hoty,int sizex,int sizey)
 {
@@ -3355,7 +3355,7 @@ void drawtextpercent(MENUSTR *allmenus,int nr,char *mes,int fontnr,int colorgrp,
     int min,total,percent;
     char *from2;
     strcpy(tempmes,mes);
-    
+
     min=atoi(tempmes);
     from2=strchr(tempmes,' ');
     from2[0]=0;
@@ -3513,7 +3513,7 @@ void calclistboxvertbar(MENUSTR *allmenus,int nr)
     bar->buttonbarymax=bar->yh_2-DLGGRP_SIZEY(LISTBOX_BUTTONBAR)-1;
 
     calclistboxbuttonbarpos(allmenus,nr);
-    
+
 }
 //==========================================
 void calclistboxbuttonbarpos(MENUSTR *allmenus,int nr)
@@ -3822,7 +3822,7 @@ void dellistboxitem(MENUSTR *allmenus,int nr,int end,int typeofdel)//0-flushlist
 		    break;
 	    }
 	    menuitem->item.listbox->flist=NULL;
-	}    
+	}
 	if (menuitem->item.listbox->bar)
 	{
 	    wfree(menuitem->item.listbox->bar);

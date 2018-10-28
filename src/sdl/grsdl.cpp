@@ -265,8 +265,8 @@ int eventwindowloop(void) //return 1 - on quit
         switch (event.type)
         {
 			case SDL_MOUSEMOTION:
-				if (LowMouse.MoveEventFunc)
-					(*LowMouse.MoveEventFunc)(event.motion.x,event.motion.y);
+				if (lowMouse.MoveEventFunc)
+					(*lowMouse.MoveEventFunc)(event.motion.x,event.motion.y);
 				break;
 			case SDL_MOUSEBUTTONDOWN:
 				doubleClick = 0;
@@ -280,17 +280,17 @@ int eventwindowloop(void) //return 1 - on quit
 					else
 						doubleClick = 0;
 					prevtimer = tick_timer;
-					if (LowMouse.DblClickEventFunc)
-						(*LowMouse.DblClickEventFunc)(doubleClick);
+					if (lowMouse.DblClickEventFunc)
+						(*lowMouse.DblClickEventFunc)(doubleClick);
 				}
 				if (doubleClick)
-					if (LowMouse.ClickEventFunc)
-						(*LowMouse.ClickEventFunc)(buttons);
+					if (lowMouse.ClickEventFunc)
+						(*lowMouse.ClickEventFunc)(buttons);
 				//mouse_b |= buttons;
 				break;
 			case SDL_MOUSEBUTTONUP:
-				if (LowMouse.DblClickEventFunc)
-					(*LowMouse.DblClickEventFunc)(0);
+				if (lowMouse.DblClickEventFunc)
+					(*lowMouse.DblClickEventFunc)(0);
 				needrefreshatend = 1;
 				break;
 			case SDL_KEYDOWN:

@@ -19,7 +19,7 @@
 
 #define	MAXSCROLLTICKS 6
 
-extern int 		mousetype,grm,factorscrollkey;
+extern int 		grm,factorscrollkey;
 extern int     	mouse_x,mouse_y,mouse_b,mousehotpos;
 extern char    	curentREGIM;
 extern int     	xmloc,ymloc,movieminikarta,mspeed;
@@ -40,8 +40,6 @@ extern int 		memmouseposx,memmouseposy;
 extern int 		memmousepossizex,memmousepossizey;
 
 int  restrictmousecoords(int REGIM);
-void putmouseonscreen(void);
-void desenpatr(void);
 int  mouseborder2(int x1,int y1,int x2,int y2);
 int  mouseborder(struct XY *m);
 void desenlocation(void);

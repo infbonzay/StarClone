@@ -101,7 +101,7 @@ int main(int c,char **parm,char **env)
 
     inivars();
     fflush(stdout);
-    if(!LowMouse.Init())
+    if(!lowMouse.Init())
     {
        printf("Warning: Mouse Not Detected!\n");
        fflush(stdout);
@@ -169,8 +169,8 @@ int main(int c,char **parm,char **env)
 	    }
 	    if (i == 2)
 		gameconf.grmode.flags |= DISPLAYFLAGS_EMULATIONMODE;
-	    LowMouse.SetPos(gameconf.grmode.x/2,gameconf.grmode.y/2);
-	    LowMouse.SetPos(gameconf.grmode.x/2,gameconf.grmode.y/2);
+	    lowMouse.SetPos(gameconf.grmode.x/2,gameconf.grmode.y/2);
+	    lowMouse.SetPos(gameconf.grmode.x/2,gameconf.grmode.y/2);
 	    mouse_x=gameconf.grmode.x/2;
 	    mouse_y=gameconf.grmode.y/2;
 	    if (installvectors())
@@ -796,25 +796,25 @@ void mouseonkartaarea(void)
 {
     if (karta_aria)
     {
-	if (mouse_b&WMLEFTKEY)
+		if (mouse_b&WMLEFTKEY)
     	{
-	    if (waitforleftbuton && waitfordownleftbuton)
-	    {
+			if (waitforleftbuton && waitfordownleftbuton)
+			{
 		//action on leftbutton on minimap
-            	waitforleftbuton=0;
-            	waitfordownleftbuton=0;
-            	putdestination(/*DestMouseOBJ*/NULL,
+            waitforleftbuton=0;
+            waitfordownleftbuton=0;
+            putdestination(/*DestMouseOBJ*/NULL,
                               (int)((mouse_x-Xkart-Xkartbeg)/factorx)*SIZESPRLANSHX,
                               (int)((mouse_y-Ykart-Ykartbeg)/factory)*SIZESPRLANSHY,
                               mouseprop,0,0);
 		//action
 	    }
 	    else
-		if (!mloc)
+			if (!mloc)
         	    if (MAPDEF&&!patrate)
         	    {
 //            		movieminikarta=YES;
-			movieminikarta = SetVisualMapPosition((int) (((mouse_x-Xkart-Xkartbeg)/factorx)-widthkart/2)*SIZESPRLANSHX,
+					movieminikarta = SetVisualMapPosition((int) (((mouse_x-Xkart-Xkartbeg)/factorx)-widthkart/2)*SIZESPRLANSHX,
 					 (int) (((mouse_y-Ykart-Ykartbeg)/factory)-hightkart/2)*SIZESPRLANSHY);
         	    }
     	}
@@ -832,28 +832,28 @@ void mouseonkartaarea(void)
     }
     if (!(mouse_b&WMRIGHTKEY))
     {
-	buton2=0;
+		buton2=0;
     }
 
 }
 //==========================
 void redesenscreen(void)
 {
-    	    calculatefog(bitsplayer);			//calculate all fog
-    	    drawMAP(0);
+    	calculatefog(bitsplayer);			//calculate all fog
+    	drawMAP(0);
 	    CreatePylonSelectArea();
 	    RemovePylonSelectArea();
-    	    putfog();			//show fogofwar
-    	    showgoods();
+    	putfog();			//show fogofwar
+    	showgoods();
 	    int pc=desenbuildifconstr();
 	    if (pc!=0)
     		posibleconstruct=pc;
-	    desenpatr();
+	    highMouse.DrawSelectionArea();
 //	    desenlocation();
-    	    showramka();
-    	    drawMINIMAP();
-    	    desenproperties(properties,selectableproperties);//draw properties of selected unit(s) on screen
-    	    printobjparam();		//draw parameters of selected objects
+    	showramka();
+    	drawMINIMAP();
+    	desenproperties(properties,selectableproperties);//draw properties of selected unit(s) on screen
+    	printobjparam();		//draw parameters of selected objects
 }
 //==========================
 int totable,bitsplayer;
@@ -914,7 +914,7 @@ int gogame(struct mapinfo *info)
     needclearmap=0;
     commandqueuetick = 0;
     for (i=0;i<PLAYEDPLAYERS;i++)
-	map.clearfog[i]=1;
+		map.clearfog[i]=1;
 //    clearopenseeKarta();
 //    clearopenseeKarta();	//clear map
     UnitsMAPRefresh();
@@ -954,378 +954,380 @@ int gogame(struct mapinfo *info)
 
 
     do{
-	scrregions=0;
-	needredesen = 0;
-	clearactionBITS();
-	int need_quiting = eventwindowloop();
-//	if (need_quiting)
-//    	    gameend("close box");
+		scrregions=0;
+		needredesen = 0;
+		clearactionBITS();
+		int need_quiting = eventwindowloop();
+	//	if (need_quiting)
+	//    	    gameend("close box");
 
-	addscrx=0;
-	addscry=0;
+		addscrx=0;
+		addscry=0;
 
-	if (needredesen)
-	    redesenscreen();
-	if (!PAUSEGAME&&!PAUSEINTRIG)
-	{
-	    keyrefresh();               	//refresh array of keys
-	    getmousetype(map.MAPXGLOBAL,map.MAPYGLOBAL);
-	    mouseonkartaarea();
-	}
-	if (PAUSEINTRIG)
-	{
-	    keyactive=0;
-	    lastkey=0;
-	    mouse_b=0;
-	    dblclick=0;
-	}
-	timeid=mytimer.TimeIsCome(gameconf.speedconf.gamespeed);
-	if (PAUSEGAME)
-	{
-	    timeid=TIMETONOSLEEP;
-	}
-	if (timeid==TIMETOACT )//|| timeid==TIMETONOSLEEP)
-	{
-	    scrnew=1;
-	}
-	else
-	{
-	    scrnew=0;
-	}
-	retnet=netplay.DoNetworkGameCycle();
-	if (retnet)
-	{
-	    //show wait menu
-	    printf("error! wait players!!!retnet=%x\n",retnet);
-/*	    if (!activatedwaittimer)
-	    {
-		//show waitingplayermenu
-		activatedwaittimer=1;
-		mp=new MENUPARAMS(NULL,resettimerforplayers|retnet);//set timer 60sec once per game
-		resettimerforplayers=0;
-		showedmenu.prepareforshowmenu(&WaitingPlayersMenu,mp);
-	    }
-*/	}
-	else
-	{
-	    if (activatedwaittimer)
-	    {
-		//close waitingplayermenu
-		activatedwaittimer=0;
-		drawmenu_LASTTICK(&showedmenu);
-	    }
-	}
-        if (movieminikarta==YES&&karta_aria)
-    	    scrnew=1;
-	if (scrnew&&!retnet)
-	{
-	    curentreadkey=readkey();	//get curent pressed key
-	    keyhandler();		//analyze if some key action
-	    karta_aria =  (mousehotpos == MOUSEONMINIMAP);
-	    select_aria = (mousehotpos == MOUSEONMAP);
-    	    if (movieminikarta==YES&&karta_aria)
-	        curentREGIM=MOUSEMODE4;//restrict mouse move on minimap only
-	    else
-	        if (curentREGIM!=MOUSEMODE2)
-	    	curentREGIM=MOUSEMODE2;//restrict mouse move on entire map
-	    movieminikarta=NO;
-	    switch(timeid)
-	    {
-		    case TIMETONOSLEEP:
-			break;
-		    case TIMETOACT:		//timetoprocess
-			if (!PAUSEGAME&&!PAUSEINTRIG)
+		if (needredesen)
+			redesenscreen();
+		if (!PAUSEGAME&&!PAUSEINTRIG)
+		{
+			keyrefresh();               	//refresh array of keys
+			getmousetype(map.MAPXGLOBAL,map.MAPYGLOBAL);
+			mouseonkartaarea();
+		}
+		if (PAUSEINTRIG)
+		{
+			keyactive=0;
+			lastkey=0;
+			mouse_b=0;
+			dblclick=0;
+		}
+		timeid=mytimer.TimeIsCome(gameconf.speedconf.gamespeed);
+		if (PAUSEGAME)
+		{
+			timeid=TIMETONOSLEEP;
+		}
+		if (timeid==TIMETOACT )//|| timeid==TIMETONOSLEEP)
+		{
+			scrnew=1;
+		}
+		else
+		{
+			scrnew=0;
+		}
+		retnet=netplay.DoNetworkGameCycle();
+		if (retnet)
+		{
+			//show wait menu
+			printf("error! wait players!!!retnet=%x\n",retnet);
+	/*	    if (!activatedwaittimer)
 			{
-//			    printf("aloc=%d max=%d maxmark=%d\nn",mainimageslist.allocatedelem,mainimageslist.totalelem,mainimageslist.totalmarked);
-			    QueueGame.QueueMain(INCREMENTTICKS);
-
-			    UnitsCommandQueue.QueueMain(commandqueuetick);
-			    GoNextCommandTick();
-
-			    weaponflingy.MoveAllWeaponFlingy();
-
-			    AllImages_ExecuteIScript();
-
-			    AllOBJMoving();
-
-			    AdditionalUnitsProceed();
-
-			    invisiblestick();
-			    if (MINIMAPREFRESHCYCLE)
-        			applyrescuableunits();
-
-			    if (mousedestimg)
-				iscriptinfo.ExecuteScript(mousedestimg);
-        		    if (TRIG_inittriggers)
-        			SearchForAtacks();	//search unit to atack unit if triggers activated
-
-			    allobjdecrmtimemage();
-
-    			    allobj_dieheal();
-
-    			    allobjconstr();
-			    if (MAPREGENERATIONBIT)
-    			    {
-        			needclearmap=1;
-    		    	    }
-    			    if (NEEDTOCHANGECREEPBIT)
-    			    {
-				RemoveAddOneCreep();
-    			    }
-    			    if (NrObjRegen>=MaxRegen)
-    			    {
-        			NrObjRegen=0;
-    			    }
-    			    else
-        			NrObjRegen++;
-			    if (MaxObjects>=1000||needclearmap)
-			    {
-				if (NrObjRegen==0)
-    				{
-        			    needclearmap=0;
-				    map.clearfog[NUMBGAMER]=1;
-        			    clearopenseeKarta();	//clear map
-        			    UnitsMAPRefresh();
-    				}
-			    }
-    		    	    makeopenseeKarta(diapazone[NrObjRegen].begin,diapazone[NrObjRegen].end);//open map by some of units
+			//show waitingplayermenu
+			activatedwaittimer=1;
+			mp=new MENUPARAMS(NULL,resettimerforplayers|retnet);//set timer 60sec once per game
+			resettimerforplayers=0;
+			showedmenu.prepareforshowmenu(&WaitingPlayersMenu,mp);
 			}
-			IfTimeForTrigger(info,&prevgameticks);
-			if (!PAUSEGAME && !PAUSEINTRIG)
+	*/	}
+		else
+		{
+			if (activatedwaittimer)
 			{
-        	    	    AddObjsRevealMap();							//open map by moved units
-    			    if (MAPREGENERATIONBIT)
-    			    {
-        			calcfullinvandsee();
-    			    }
+				//close waitingplayermenu
+				activatedwaittimer=0;
+				drawmenu_LASTTICK(&showedmenu);
 			}
-			gamecycle++;
-    			break;
-		    case TIMETOSLEEP:
-			usleep(CNTTIMETOSLEEP);
-			break;
-		    default:
-			break;
-	    }//switch timeid
-	    if (gamestatus!=NOGAMESTATUS)
-	    {
-		curentREGIM=MOUSEMODE2;
-	    }
-	    AutoMoveMap();
-	    if (!PAUSEGAME)
-	    {
-		calculatefog(bitsplayer);			//calculate all fog
-    		drawMAP(0);
-		showStars(map.MAPXGLOBAL,map.MAPYGLOBAL);//show stars if spacemap
-
-		CreatePylonSelectArea();
-		RemovePylonSelectArea();
-
-		weaponflingy.DeleteMarked();
-
-		AllImages_DeleteMarked();		//destroy images previously marked
-
-    		DestroyMarked();			//destroy unit previously marked
-
-		totalimgs=0;
-		drawedimgs=0;
-		MouseOnObjClear();
-		AllImages_Draw();
-
-		DrawBuildPlace();
-
-		GetMouseOnObj();
-
-		putobjsonminimap();
-		if (MAPUNITSREGENERATIONBIT && (MAPDEF & UNITS))
-	    	    minimap_showobjs();
-
-    		putfog();			//show fogofwar
-    		showgoods();
-		ShowLeaderBoards(&map,5,15);
-		ShowCountDownTimer(&map,290,15);
-		pc=desenbuildifconstr();
-		if (pc!=0)
-    	    	    posibleconstruct=pc;
-		desenpatr();
-		if (mloc)
-		{
-		    mloc=0;
-		    if (!mousedestimg)
-		    {
-			mousedestimg = new MAIN_IMG(IMAGEID_MOUSEDEST,xmloc<<8,ymloc<<8,MOUSEDESTELEVATION,0,0,0,0,
-						    SC_IMAGE_FLAG_NOCHECKFORFOG|SC_IMAGE_FLAG_AIRIMG,ISCRIPTNR_GNDATTKINIT);
-		    }
-		    else
-		    {
-			mousedestimg->SetPos(xmloc<<8,ymloc<<8);
-			mousedestimg->EnableExecScript();
-			mousedestimg->ShowImgFlag();
-			mousedestimg->SetIScriptNr(ISCRIPTNR_GNDATTKINIT);
-		    }
 		}
-		if (mousedestimg)
-		    mousedestimg->DrawImage();
-		showramka();
-
-    		drawMINIMAP();			//put minimap
-
-		MinimapImages_Draw();
-
-    		DetectIfAnyPylonOnSelected();
-		//analize properties of selected objects
-    		CreateMenuProperties(properties,selectableproperties,fordeselect,NUMBGAMER);
-
-    		desenproperties(properties,selectableproperties);//draw properties of selected unit(s) on screen
-	    }
-	    makeallblinking();
-	    showportrait();
-	    drawGAMEMENUbutton(&dipl_menu,minimapmenu,MINIMAPDIALOG_DIPLOMACYBUTTON,
-	    		DIPLOMACYBUTTON_PICT,MOUSEONDIPLOMACYBUTTON,STATTXT_TBL_DIPLOMACY);
-	    drawGAMEMENUbutton(&terr_menu,minimapmenu,MINIMAPDIALOG_TERRAINBUTTON,
-			TERRAINBUTTON_PICT,MOUSEONTERRAINBUTTON,STATTXT_TBL_TERRAINONTEXT);
-	    drawGAMEMENUbutton(&mess_menu,minimapmenu,MINIMAPDIALOG_MESSAGEBUTTON,
-			MESSAGEBUTTON_PICT,MOUSEONMESSAGEBUTTON,STATTXT_TBL_MESSAGING);
-	    drawGAMEMENUbutton(&f10_menu,f10menu,F10DIALOG_MENUBUTTON,
-			F10BUTTON_PICT,MOUSEONMENUBUTTON,STATTXT_TBL_GAMEMENUTEXT);
-	    if (!PAUSEGAME)
-		printobjparam();		//draw parameters of selected objects
-	    desenonlymouseflag = 0;
-	    //update entirescreen
-	    scrparts[0].x=0;
-	    scrparts[0].y=0;
-	    scrparts[0].w=gameconf.grmode.x;
-	    scrparts[0].h=gameconf.grmode.y;
-	    scrregions=1;
-	}
-	else//scrnew
-	{
-	    menustatus=CONTINUEGAME;
-	    if (PAUSEGAME)
-	    {
-		desenonlymouseflag = 0;
-		scrparts[0].x=0;
-	        scrparts[0].y=0;
-		scrparts[0].w=gameconf.grmode.x;
-		scrparts[0].h=gameconf.grmode.y;
-		scrregions=1;
-	    }
-	    else
-	    {
-		desenonlymouseflag = 1;
-		//update mousecursor
-		scrparts[0].x=memmouseposx;
-		scrparts[0].y=memmouseposy;
-		scrparts[0].w=memmousepossizex;
-		scrparts[0].h=memmousepossizey;
-		scrregions=1;
-	    }
-	}
-	ShowGameStatusMenu(&prevgameticks);
-	if (!PAUSEINTRIG)
-	    if (!activatedwaittimer)
-	    {
-		//not show any menus if waitplayermenu activated
-		showF10menu(&f10_menu);
-		showDIPLOMACYmenu(&dipl_menu);
-		showTERRAINmenu(&terr_menu);
-		showMESSAGEmenu(&mess_menu);
-	    }
-
-	retmenu=0;
-	if (scrnew&&!retnet)
-    	    drawmonoifpaused();
-
-	if (scrnew)
-	{
-	    chatbar.showallmessages(5+DELTASCREENX,125+DELTASCREENY,440,13);
-	    infobar.showallmessages(150+DELTASCREENX,290+DELTASCREENY,340,12);
-	}
-	if (showedmenu.IfCanShowMenu())
-	{
-	    karta_aria = 0;
-	    select_aria = 0;
-    	    movieminikarta=NO;
-    	    mousehotpos=MOUSEONNONE;
-	    waitforleftbuton=0;
-	    patrate=0;
-	    DestMouseOBJ=NULL;
-	    mousetype = NORMALMOUSE;
-	    retmenu=showedmenu.ShowMenu();
-	    keyactive=0;
-	    menustatus=ChangeMenuStatus(menustatus);
-	    if (retmenu)
-	    {
-		if (desenonlymouseflag)
+		if (movieminikarta==YES&&karta_aria)
+			scrnew=1;
+		if (scrnew&&!retnet)
 		{
-		    lastmenuregion.x=showedmenu.menutodraw->x;
-		    lastmenuregion.y=showedmenu.menutodraw->y;
-		    lastmenuregion.w=showedmenu.menutodraw->xsize;
-		    lastmenuregion.h=showedmenu.menutodraw->ysize;
-		}
-		retmenu=drawmenu_LASTTICK(&showedmenu);
-		if (desenonlymouseflag)
-		    if (!showedmenu.menutodraw)
-		    {
-    			scrparts[1].x=scrparts[0].x;
-			scrparts[1].y=scrparts[0].y;
-			scrparts[1].w=scrparts[0].w;
-			scrparts[1].h=scrparts[0].h;
+			curentreadkey=readkey();	//get curent pressed key
+			keyhandler();		//analyze if some key action
+			karta_aria =  (mousehotpos == MOUSEONMINIMAP);
+			select_aria = (mousehotpos == MOUSEONMAP);
+			if (movieminikarta==YES&&karta_aria)
+				curentREGIM=MOUSEMODE4;//restrict mouse move on minimap only
+			else
+				if (curentREGIM!=MOUSEMODE2)
+					curentREGIM=MOUSEMODE2;//restrict mouse move on entire map
+			movieminikarta=NO;
+			switch(timeid)
+			{
+				case TIMETONOSLEEP:
+					break;
+				case TIMETOACT:		//timetoprocess
+					if (!PAUSEGAME&&!PAUSEINTRIG)
+					{
+		//			    printf("aloc=%d max=%d maxmark=%d\nn",mainimageslist.allocatedelem,mainimageslist.totalelem,mainimageslist.totalmarked);
+						QueueGame.QueueMain(INCREMENTTICKS);
 
-			scrparts[0].x=lastmenuregion.x;
-			scrparts[0].y=lastmenuregion.y;
-			scrparts[0].w=lastmenuregion.w;
-			scrparts[0].h=lastmenuregion.h;
-		        scrregions=2;
-		    }
-	    }
-	    if (desenonlymouseflag)
-	    {
-		//if only mouse region update
-		//add and menu region update
-		if (showedmenu.menutodraw)
-		{
-		    scrparts[1].x=scrparts[0].x;
-		    scrparts[1].y=scrparts[0].y;
-		    scrparts[1].w=scrparts[0].w;
-		    scrparts[1].h=scrparts[0].h;
-		    scrparts[0].x=showedmenu.menutodraw->x;
-		    scrparts[0].y=showedmenu.menutodraw->y;
-		    scrparts[0].w=showedmenu.menutodraw->xsize;
-		    scrparts[0].h=showedmenu.menutodraw->ysize;
-		    scrregions=2;
+						UnitsCommandQueue.QueueMain(commandqueuetick);
+						GoNextCommandTick();
+
+						weaponflingy.MoveAllWeaponFlingy();
+
+						AllImages_ExecuteIScript();
+
+						AllOBJMoving();
+
+						AdditionalUnitsProceed();
+
+						invisiblestick();
+						if (MINIMAPREFRESHCYCLE)
+							applyrescuableunits();
+
+						if (mousedestimg)
+							iscriptinfo.ExecuteScript(mousedestimg);
+						if (TRIG_inittriggers)
+							SearchForAtacks();	//search unit to atack unit if triggers activated
+
+						allobjdecrmtimemage();
+
+						allobj_dieheal();
+
+						allobjconstr();
+						if (MAPREGENERATIONBIT)
+						{
+							needclearmap=1;
+						}
+						if (NEEDTOCHANGECREEPBIT)
+						{
+							RemoveAddOneCreep();
+						}
+						if (NrObjRegen>=MaxRegen)
+						{
+							NrObjRegen=0;
+						}
+						else
+							NrObjRegen++;
+						if (MaxObjects>=1000||needclearmap)
+						{
+							if (NrObjRegen==0)
+							{
+								needclearmap=0;
+								map.clearfog[NUMBGAMER]=1;
+								clearopenseeKarta();	//clear map
+								UnitsMAPRefresh();
+							}
+						}
+						makeopenseeKarta(diapazone[NrObjRegen].begin,diapazone[NrObjRegen].end);//open map by some of units
+					}
+					IfTimeForTrigger(info,&prevgameticks);
+					if (!PAUSEGAME && !PAUSEINTRIG)
+					{
+						AddObjsRevealMap();							//open map by moved units
+						if (MAPREGENERATIONBIT)
+						{
+							calcfullinvandsee();
+						}
+					}
+					gamecycle++;
+					break;
+				case TIMETOSLEEP:
+					usleep(CNTTIMETOSLEEP);
+					break;
+				default:
+					break;
+			}//switch timeid
+			if (gamestatus!=NOGAMESTATUS)
+			{
+				curentREGIM=MOUSEMODE2;
+			}
+			AutoMoveMap();
+			if (!PAUSEGAME)
+			{
+				calculatefog(bitsplayer);			//calculate all fog
+				drawMAP(0);
+				showStars(map.MAPXGLOBAL,map.MAPYGLOBAL);//show stars if spacemap
+
+				CreatePylonSelectArea();
+				RemovePylonSelectArea();
+
+				weaponflingy.DeleteMarked();
+
+				AllImages_DeleteMarked();		//destroy images previously marked
+
+				DestroyMarked();			//destroy unit previously marked
+
+				totalimgs=0;
+				drawedimgs=0;
+				MouseOnObjClear();
+				AllImages_Draw();
+
+				DrawBuildPlace();
+
+				GetMouseOnObj();
+
+				putobjsonminimap();
+				if (MAPUNITSREGENERATIONBIT && (MAPDEF & UNITS))
+					minimap_showobjs();
+
+				putfog();			//show fogofwar
+				showgoods();
+				ShowLeaderBoards(&map,5,15);
+				ShowCountDownTimer(&map,290,15);
+				pc=desenbuildifconstr();
+				if (pc!=0)
+					posibleconstruct=pc;
+				highMouse.DrawSelectionArea();
+				if (mloc)
+				{
+					mloc=0;
+					if (!mousedestimg)
+					{
+						mousedestimg = new MAIN_IMG(IMAGEID_MOUSEDEST,xmloc<<8,ymloc<<8,MOUSEDESTELEVATION,0,0,0,0,
+									SC_IMAGE_FLAG_NOCHECKFORFOG|SC_IMAGE_FLAG_AIRIMG,ISCRIPTNR_GNDATTKINIT);
+					}
+					else
+					{
+						mousedestimg->SetPos(xmloc<<8,ymloc<<8);
+						mousedestimg->EnableExecScript();
+						mousedestimg->ShowImgFlag();
+						mousedestimg->SetIScriptNr(ISCRIPTNR_GNDATTKINIT);
+					}
+				}
+				if (mousedestimg)
+					mousedestimg->DrawImage();
+				showramka();
+
+				drawMINIMAP();			//put minimap
+
+				MinimapImages_Draw();
+
+				DetectIfAnyPylonOnSelected();
+			//analize properties of selected objects
+				CreateMenuProperties(properties,selectableproperties,fordeselect,NUMBGAMER);
+
+				desenproperties(properties,selectableproperties);//draw properties of selected unit(s) on screen
+			}
+			makeallblinking();
+			showportrait();
+			drawGAMEMENUbutton(&dipl_menu,minimapmenu,MINIMAPDIALOG_DIPLOMACYBUTTON,
+					DIPLOMACYBUTTON_PICT,MOUSEONDIPLOMACYBUTTON,STATTXT_TBL_DIPLOMACY);
+			drawGAMEMENUbutton(&terr_menu,minimapmenu,MINIMAPDIALOG_TERRAINBUTTON,
+				TERRAINBUTTON_PICT,MOUSEONTERRAINBUTTON,STATTXT_TBL_TERRAINONTEXT);
+			drawGAMEMENUbutton(&mess_menu,minimapmenu,MINIMAPDIALOG_MESSAGEBUTTON,
+				MESSAGEBUTTON_PICT,MOUSEONMESSAGEBUTTON,STATTXT_TBL_MESSAGING);
+			drawGAMEMENUbutton(&f10_menu,f10menu,F10DIALOG_MENUBUTTON,
+				F10BUTTON_PICT,MOUSEONMENUBUTTON,STATTXT_TBL_GAMEMENUTEXT);
+			if (!PAUSEGAME)
+				printobjparam();		//draw parameters of selected objects
+			desenonlymouseflag = 0;
+			//update entirescreen
+			scrparts[0].x=0;
+			scrparts[0].y=0;
+			scrparts[0].w=gameconf.grmode.x;
+			scrparts[0].h=gameconf.grmode.y;
+			scrregions=1;
 		}
-	    }
-	}
+		else//scrnew
+		{
+			menustatus=CONTINUEGAME;
+			if (PAUSEGAME)
+			{
+				desenonlymouseflag = 0;
+				scrparts[0].x=0;
+				scrparts[0].y=0;
+				scrparts[0].w=gameconf.grmode.x;
+				scrparts[0].h=gameconf.grmode.y;
+				scrregions=1;
+			}
+			else
+			{
+				desenonlymouseflag = 1;
+				//update mousecursor
+				scrparts[0].x=memmouseposx;
+				scrparts[0].y=memmouseposy;
+				scrparts[0].w=memmousepossizex;
+				scrparts[0].h=memmousepossizey;
+				scrregions=1;
+			}
+		}
+		ShowGameStatusMenu(&prevgameticks);
+		if (!PAUSEINTRIG)
+			if (!activatedwaittimer)
+			{
+				//not show any menus if waitplayermenu activated
+				showF10menu(&f10_menu);
+				showDIPLOMACYmenu(&dipl_menu);
+				showTERRAINmenu(&terr_menu);
+				showMESSAGEmenu(&mess_menu);
+			}
+
+		retmenu=0;
+		if (scrnew&&!retnet)
+			drawmonoifpaused();
+
+		if (scrnew)
+		{
+			chatbar.showallmessages(5+DELTASCREENX,125+DELTASCREENY,440,13);
+			infobar.showallmessages(150+DELTASCREENX,290+DELTASCREENY,340,12);
+		}
+		if (showedmenu.IfCanShowMenu())
+		{
+			karta_aria = 0;
+			select_aria = 0;
+			movieminikarta=NO;
+			mousehotpos=MOUSEONNONE;
+			waitforleftbuton=0;
+			patrate=0;
+			DestMouseOBJ=NULL;
+			highMouse.MouseType = NORMALMOUSE;
+			retmenu=showedmenu.ShowMenu();
+			keyactive=0;
+			menustatus=ChangeMenuStatus(menustatus);
+			if (retmenu)
+			{
+				if (desenonlymouseflag)
+				{
+					lastmenuregion.x=showedmenu.menutodraw->x;
+					lastmenuregion.y=showedmenu.menutodraw->y;
+					lastmenuregion.w=showedmenu.menutodraw->xsize;
+					lastmenuregion.h=showedmenu.menutodraw->ysize;
+				}
+				retmenu=drawmenu_LASTTICK(&showedmenu);
+				if (desenonlymouseflag)
+				{
+					if (!showedmenu.menutodraw)
+					{
+						scrparts[1].x=scrparts[0].x;
+						scrparts[1].y=scrparts[0].y;
+						scrparts[1].w=scrparts[0].w;
+						scrparts[1].h=scrparts[0].h;
+
+						scrparts[0].x=lastmenuregion.x;
+						scrparts[0].y=lastmenuregion.y;
+						scrparts[0].w=lastmenuregion.w;
+						scrparts[0].h=lastmenuregion.h;
+						scrregions=2;
+					}
+				}
+			}
+			if (desenonlymouseflag)
+			{
+				//if only mouse region update
+				//add and menu region update
+				if (showedmenu.menutodraw)
+				{
+					scrparts[1].x=scrparts[0].x;
+					scrparts[1].y=scrparts[0].y;
+					scrparts[1].w=scrparts[0].w;
+					scrparts[1].h=scrparts[0].h;
+					scrparts[0].x=showedmenu.menutodraw->x;
+					scrparts[0].y=showedmenu.menutodraw->y;
+					scrparts[0].w=showedmenu.menutodraw->xsize;
+					scrparts[0].h=showedmenu.menutodraw->ysize;
+					scrregions=2;
+				}
+			}
+		}
 #ifdef DEBUG
 		if (SHOWCELLS)
-	    	    _putcells();		//put borders
+			_putcells();		//put borders
 #endif
-//	saveunderpatr();
-	saveundermouse();
-//	desenpatr();
-        putmouseonscreen();
-        wscreenonmem(scrregions,scrparts);
-        loadundermouse();
-//	loadunderpatr();
-	showedmenu.EndDrawMenu();
-	if (retmenu)
-	{
-	    showedmenu.EndShowMenu();
-	}
-//	DEBUGMESSCR("%d\n",MENUACTIVE);
-	mouse_b = LowMouse.GetButtonStatus();
-	if (needrefreshatend&scrnew)
-	{
-	    needrefreshatend = 0;
-    	    scrnew=0;
-	}
-	if (gamestatus!=NOGAMESTATUS)
-	    PAUSEGAME=1;
+	//	saveunderpatr();
+		saveundermouse();
+	//	desenpatr();
+		highMouse.DrawMouse();
+		wscreenonmem(scrregions,scrparts);
+		loadundermouse();
+	//	loadunderpatr();
+		showedmenu.EndDrawMenu();
+		if (retmenu)
+		{
+			showedmenu.EndShowMenu();
+		}
+	//	DEBUGMESSCR("%d\n",MENUACTIVE);
+		mouse_b = lowMouse.GetButtonStatus();
+		if (needrefreshatend&scrnew)
+		{
+			needrefreshatend = 0;
+				scrnew=0;
+		}
+		if (gamestatus!=NOGAMESTATUS)
+			PAUSEGAME=1;
 
     }while(menustatus==CONTINUEGAME);
     if (ALLMENUS.GetMaxElements()>0)
-	DEBUGMESSCR("REMAIN ALLMENUS lists\n");
+		DEBUGMESSCR("REMAIN ALLMENUS lists\n");
     ALLMENUS.DeallocList();
     netplay.DeInitNetworkTicks();
     deletemainscreenmouseevents();
@@ -1336,8 +1338,8 @@ int gogame(struct mapinfo *info)
     AllImages_FreeAndEmpty();
     if (mousedestimg)
     {
-	delete mousedestimg;
-	mousedestimg=NULL;
+		delete mousedestimg;
+		mousedestimg=NULL;
     }
     return(menustatus);
 }
@@ -1346,16 +1348,16 @@ int ChangeMenuStatus(int mstatus)
 {
     switch(mstatus)
     {
-	case BECOMEOBSERVER:
-    	    MakeObserver(NUMBGAMER);
-	    return(CONTINUEGAME);
-	case MAINMENUSTATUS_LOADGAMEOK:
-	    //not done yet
-	    return(CONTINUEGAME);
-	case MAINMENUSTATUS_LOADGAMEFAILED:
-	    return(CONTINUEGAME);
-	case MAINMENUSTATUS_SAVEGAMEFAILED:
-	    return(CONTINUEGAME);
+		case BECOMEOBSERVER:
+			MakeObserver(NUMBGAMER);
+			return(CONTINUEGAME);
+		case MAINMENUSTATUS_LOADGAMEOK:
+			//not done yet
+			return(CONTINUEGAME);
+		case MAINMENUSTATUS_LOADGAMEFAILED:
+			return(CONTINUEGAME);
+		case MAINMENUSTATUS_SAVEGAMEFAILED:
+			return(CONTINUEGAME);
     }
     return(mstatus);
 }
@@ -1364,8 +1366,8 @@ void clearplayersconfig(void)
 {
     for (int i=0;i<PLAYEDPLAYERS;i++)
     {
-	gameconf.pl_race[i]=RACE_INDEPENDENT;		//random
-	gameconf.pl_owner[i]=OWNER_COMPUTER;		//computer
+		gameconf.pl_race[i]=RACE_INDEPENDENT;		//random
+		gameconf.pl_owner[i]=OWNER_COMPUTER;		//computer
     }
 }
 //==========================
@@ -1380,72 +1382,72 @@ void drawGAMEMENUbutton(char *button,DIALOGBIN_INFO *menuinfo,int buttonnr,
     int color,press=0;
     if (menuinfo->iteminfo[buttonnr].Flags&DIALOGBIN_FLAGS_ITEMVISIBLED)
     {
-	if (menuinfo->iteminfo[buttonnr].Flags&DIALOGBIN_FLAGS_ITEMDISABLED)
-	{
-	    putgrp_nopacked(menuinfo->iteminfo[buttonnr].xpos+menuinfo->iteminfo[0].xpos,
-			    menuinfo->iteminfo[buttonnr].ypos+menuinfo->iteminfo[0].ypos,
-			    gamedlggrp,dlggrp_firstpict+MENUBUTTON_DISABLED);
-	    color=GGREYCOLORFONT;
-	}
-	else
-	{
-                if (mousehotpos==mousehotnr&&!patrate)
-                {
-			if (mouse_b&WMLEFTKEY)
-			{
-			    *button|=GAMEBUTTON_MOUSEPRESS;
-			    *button&=~GAMEBUTTON_MOUSERELEASE;
-			}
-			else
-			    if (*button&GAMEBUTTON_MOUSEPRESS)
-			    {
-				*button&=~GAMEBUTTON_MOUSEPRESS;
-				*button|=GAMEBUTTON_MOUSERELEASE;
-			    }
-                }
-                else
-                {
-			*button&=~GAMEBUTTON_MOUSEPRESS;
-			*button&=~GAMEBUTTON_MOUSERELEASE;
-                }
-                if ((mousehotpos==mousehotnr&&!patrate)||(*button&GAMEBUTTON_KEYPRESS))
-                {
-			if ((mouse_b&WMLEFTKEY)||(*button&GAMEBUTTON_KEYPRESS))
-			{
-			    putgrp_nopacked(menuinfo->iteminfo[buttonnr].xpos+menuinfo->iteminfo[0].xpos,
-					    menuinfo->iteminfo[buttonnr].ypos+menuinfo->iteminfo[0].ypos,
-					    gamedlggrp,dlggrp_firstpict+MENUBUTTON_CLICKED);
-
-			    *button|=GAMEBUTTON_SHOW;
-			    press=1;
-			}
-			else
-			{
-			    putgrp_nopacked(menuinfo->iteminfo[buttonnr].xpos+menuinfo->iteminfo[0].xpos,
-					    menuinfo->iteminfo[buttonnr].ypos+menuinfo->iteminfo[0].ypos,
-					    gamedlggrp,dlggrp_firstpict+MENUBUTTON_ENABLED);
-			    putboxmessage(FONTCOLOR(tfontgamp,GBLUECOLORFONT,2),
-						FONTCOLOR(tfontgamp,GBLUECOLORFONT,4),
-						menuinfo->iteminfo[buttonnr].xpos+menuinfo->iteminfo[0].xpos+menuinfo->iteminfo[buttonnr].xsize,
-						menuinfo->iteminfo[buttonnr].ypos+menuinfo->iteminfo[0].ypos+12,
-						2,IDFONT8,alldattbl.stattxt_tbl->get_TBL_STR(stattxt_nr),
-						GBLUECOLORFONT,tfontgamp,gamedlggrp);
-			}
-			color=GWHITECOLORFONT;
-                }
-                else
-                {
-			color=GYELLOWCOLORFONT;
+		if (menuinfo->iteminfo[buttonnr].Flags & DIALOGBIN_FLAGS_ITEMDISABLED)
+		{
 			putgrp_nopacked(menuinfo->iteminfo[buttonnr].xpos+menuinfo->iteminfo[0].xpos,
+					menuinfo->iteminfo[buttonnr].ypos+menuinfo->iteminfo[0].ypos,
+					gamedlggrp,dlggrp_firstpict+MENUBUTTON_DISABLED);
+			color=GGREYCOLORFONT;
+		}
+		else
+		{
+            if (mousehotpos==mousehotnr&&!patrate)
+            {
+				if (mouse_b&WMLEFTKEY)
+				{
+					*button|=GAMEBUTTON_MOUSEPRESS;
+					*button&=~GAMEBUTTON_MOUSERELEASE;
+				}
+				else
+					if (*button&GAMEBUTTON_MOUSEPRESS)
+					{
+						*button&=~GAMEBUTTON_MOUSEPRESS;
+						*button|=GAMEBUTTON_MOUSERELEASE;
+					}
+            }
+            else
+            {
+				*button&=~GAMEBUTTON_MOUSEPRESS;
+				*button&=~GAMEBUTTON_MOUSERELEASE;
+            }
+            if ((mousehotpos==mousehotnr&&!patrate)||(*button&GAMEBUTTON_KEYPRESS))
+            {
+				if ((mouse_b&WMLEFTKEY)||(*button&GAMEBUTTON_KEYPRESS))
+				{
+					putgrp_nopacked(menuinfo->iteminfo[buttonnr].xpos+menuinfo->iteminfo[0].xpos,
+							menuinfo->iteminfo[buttonnr].ypos+menuinfo->iteminfo[0].ypos,
+							gamedlggrp,dlggrp_firstpict+MENUBUTTON_CLICKED);
+
+					*button|=GAMEBUTTON_SHOW;
+					press=1;
+				}
+				else
+				{
+					putgrp_nopacked(menuinfo->iteminfo[buttonnr].xpos+menuinfo->iteminfo[0].xpos,
+							menuinfo->iteminfo[buttonnr].ypos+menuinfo->iteminfo[0].ypos,
+							gamedlggrp,dlggrp_firstpict+MENUBUTTON_ENABLED);
+					putboxmessage(FONTCOLOR(tfontgamp,GBLUECOLORFONT,2),
+							FONTCOLOR(tfontgamp,GBLUECOLORFONT,4),
+							menuinfo->iteminfo[buttonnr].xpos+menuinfo->iteminfo[0].xpos+menuinfo->iteminfo[buttonnr].xsize,
+							menuinfo->iteminfo[buttonnr].ypos+menuinfo->iteminfo[0].ypos+12,
+							2,IDFONT8,alldattbl.stattxt_tbl->get_TBL_STR(stattxt_nr),
+							GBLUECOLORFONT,tfontgamp,gamedlggrp);
+				}
+				color=GWHITECOLORFONT;
+            }
+            else
+            {
+				color=GYELLOWCOLORFONT;
+				putgrp_nopacked(menuinfo->iteminfo[buttonnr].xpos+menuinfo->iteminfo[0].xpos,
 				        menuinfo->iteminfo[buttonnr].ypos+menuinfo->iteminfo[0].ypos,
-					gamedlggrp,dlggrp_firstpict+MENUBUTTON_ENABLED);
-                }
-	}//else disabled
-	if (menuinfo->iteminfo[buttonnr].text)
-	    putmessage(menuinfo->iteminfo[buttonnr].xtextpos+menuinfo->iteminfo[0].xpos+press*2,
-		       menuinfo->iteminfo[buttonnr].ytextpos+menuinfo->iteminfo[0].ypos-press*2,
-		       menuinfo->iteminfo[buttonnr].fontnr,
-		       menuinfo->iteminfo[buttonnr].text,color,tfontgamp,gamedlggrp);
+						gamedlggrp,dlggrp_firstpict+MENUBUTTON_ENABLED);
+            }
+		}//else disabled
+		if (menuinfo->iteminfo[buttonnr].text)
+			putmessage(menuinfo->iteminfo[buttonnr].xtextpos+menuinfo->iteminfo[0].xpos+press*2,
+					menuinfo->iteminfo[buttonnr].ytextpos+menuinfo->iteminfo[0].ypos-press*2,
+					menuinfo->iteminfo[buttonnr].fontnr,
+					menuinfo->iteminfo[buttonnr].text,color,tfontgamp,gamedlggrp);
     }//visibled
 }
 //==========================
@@ -1453,9 +1455,9 @@ void showF10menu(char *button)
 {
     if ((*button&GAMEBUTTON_SHOW) && (*button&GAMEBUTTON_RELEASE))
     {
-	*button=GAMEBUTTON_CLEARALL;
-	showedmenu.prepareforshowmenu(&putgamemenu,NULL);
-//	ret=putgamemenu();
+		*button=GAMEBUTTON_CLEARALL;
+		showedmenu.prepareforshowmenu(&putgamemenu,NULL);
+	//	ret=putgamemenu();
     }
 }
 //==========================
@@ -1463,32 +1465,32 @@ void showTERRAINmenu(char *button)
 {
     if ((*button&GAMEBUTTON_SHOW) && (*button&GAMEBUTTON_RELEASE))
     {
-	*button=GAMEBUTTON_CLEARALL;
-	MAPDEF++;
+		*button=GAMEBUTTON_CLEARALL;
+		MAPDEF++;
     	if (MAPDEF>3)
-	    MAPDEF=2;
-	switch(MAPDEF)
-	{
-/*	    case 0://nomap
-    	    	    setmemd(Minimap,MAXIMSIZEMINIMAP*MAXIMSIZEMINIMAP/4,0);
-	        break;
-	    case 1://only terrain
-		    memcpy(Minimap,map.minimap,MAXXMAP*MAXYMAP);
-		break;
-            case 2://only units
-		    setmemd(Minimap,MAXIMSIZEMINIMAP*MAXIMSIZEMINIMAP/4,0);
-	    	break;
-	    case 3:// all infos
-	    	    drawMINIMAP();
-		break;
-*/
-            case 2://only units
-		    setmemd(Minimap,MAXIMSIZEMINIMAP*MAXIMSIZEMINIMAP/4,0);
-	    	break;
-	    case 3:// all infos
-	    	    drawMINIMAP();
-		break;
-	}
+			MAPDEF=2;
+		switch(MAPDEF)
+		{
+	/*	    case 0://nomap
+						setmemd(Minimap,MAXIMSIZEMINIMAP*MAXIMSIZEMINIMAP/4,0);
+				break;
+			case 1://only terrain
+				memcpy(Minimap,map.minimap,MAXXMAP*MAXYMAP);
+			break;
+				case 2://only units
+				setmemd(Minimap,MAXIMSIZEMINIMAP*MAXIMSIZEMINIMAP/4,0);
+				break;
+			case 3:// all infos
+					drawMINIMAP();
+			break;
+	*/
+			case 2://only units
+				setmemd(Minimap,MAXIMSIZEMINIMAP*MAXIMSIZEMINIMAP/4,0);
+				break;
+			case 3:// all infos
+				drawMINIMAP();
+				break;
+		}
     }
 }
 //==========================
@@ -1496,8 +1498,8 @@ void showMESSAGEmenu(char *button)
 {
     if ((*button&GAMEBUTTON_SHOW) && (*button&GAMEBUTTON_RELEASE))
     {
-	*button=GAMEBUTTON_CLEARALL;
-	showedmenu.prepareforshowmenu(&messagingmenu,NULL);
+		*button=GAMEBUTTON_CLEARALL;
+		showedmenu.prepareforshowmenu(&messagingmenu,NULL);
     }
 }
 //==========================
@@ -1505,8 +1507,8 @@ void showDIPLOMACYmenu(char *button)
 {
     if ((*button&GAMEBUTTON_SHOW) && (*button&GAMEBUTTON_RELEASE))
     {
-	*button=GAMEBUTTON_CLEARALL;
-	showedmenu.prepareforshowmenu(&diplomacymenu,NULL);
+		*button=GAMEBUTTON_CLEARALL;
+		showedmenu.prepareforshowmenu(&diplomacymenu,NULL);
     }
 }
 //==========================
@@ -1533,11 +1535,11 @@ void wscreenonmem(int nrregions,SCREEN_REGION regions[])
     cursec = mytimer.GetTimeParced();
     if (cursec != prevsec)
     {
-	prevsec = cursec;
-	clc = gamecycle - prevgamecycle;
-	prevgamecycle = gamecycle;
-	fps = frames;
-	frames = 0;
+		prevsec = cursec;
+		clc = gamecycle - prevgamecycle;
+		prevgamecycle = gamecycle;
+		fps = frames;
+		frames = 0;
     }
     strcat(s,"FPS/CYCLES:");
     itoa(fps,ss,10);
@@ -1579,39 +1581,39 @@ void wscreenonmem(int nrregions,SCREEN_REGION regions[])
 
     if (fordeselect[0])
     {
-	strcat(s," pl:");
-	itoa(fordeselect[0]->playernr,ss,10);
-	strcat(s,ss);
-	strcat(s," move:");
-	itoa(fordeselect[0]->modemove,ss,10);
-	strcat(s,ss);
-//	strcat(s,"/");
-//	itoa(fordeselect[0]->atackcooldowntime,ss,10);
-//	strcat(s,ss);
+		strcat(s," pl:");
+		itoa(fordeselect[0]->playernr,ss,10);
+		strcat(s,ss);
+		strcat(s," move:");
+		itoa(fordeselect[0]->modemove,ss,10);
+		strcat(s,ss);
+	//	strcat(s,"/");
+	//	itoa(fordeselect[0]->atackcooldowntime,ss,10);
+	//	strcat(s,ss);
     }
 /*    if (fordeselect[0])
     {
-	strcat(s,"x=");
-	itoa(fordeselect[0]->xkart,ss,10);
-	strcat(s,ss);
-	strcat(s,"y=");
-	itoa(fordeselect[0]->ykart,ss,10);
-	strcat(s,ss);
-	strcat(s," x=");
-	itoa(fordeselect[0]->sourcex,ss,10);
-	strcat(s,ss);
-	strcat(s,"y=");
-	itoa(fordeselect[0]->sourcey,ss,10);
-	strcat(s,ss);
+		strcat(s,"x=");
+		itoa(fordeselect[0]->xkart,ss,10);
+		strcat(s,ss);
+		strcat(s,"y=");
+		itoa(fordeselect[0]->ykart,ss,10);
+		strcat(s,ss);
+		strcat(s," x=");
+		itoa(fordeselect[0]->sourcex,ss,10);
+		strcat(s,ss);
+		strcat(s,"y=");
+		itoa(fordeselect[0]->sourcey,ss,10);
+		strcat(s,ss);
     }
 */
     putmessage(0,0,IDFONT16,s,GGREENCOLORFONT,tfontgamp,gamedlggrp);
     if (map.palettechanges)
     {
-	palchange(map.palette,gameconf.videoconf.gamma,gameconf.videoconf.saturate);
-	map.palettechanges=0;
-	if (!(gameconf.grmode.flags & DISPLAYFLAGS_EMULATIONMODE))
-	    wscreenonregions(nrregions,regions);
+		palchange(map.palette,gameconf.videoconf.gamma,gameconf.videoconf.saturate);
+		map.palettechanges=0;
+		if (!(gameconf.grmode.flags & DISPLAYFLAGS_EMULATIONMODE))
+			wscreenonregions(nrregions,regions);
     }
     else
         wscreenonregions(nrregions,regions);
@@ -1806,26 +1808,28 @@ void ShowGameStatusMenu(int *prevgameticks)
 	{
 	    if (gamestatusremainticks!=0)
 	    {
-		int gameticks;
+			int gameticks;
     		gameticks=mytimer.GetCurrentGameTimeTick();
-		if (gameticks==*prevgameticks)
-		    return;
-		*prevgameticks=gameticks;
-		if (--gamestatusremainticks==0)
-		{
-		    StopMusic(MUSIC_STOPWITHFADE);
-		    if (gamestatus==WINGAME)
-		    {
-    			Play_sfxdata_id(NULL,SFXDATA_YOUWIN,1,0);
-	    		showedmenu.prepareforshowmenu(&wmission,NULL);
-		    }
-    		    else
-			if (gamestatus==DEFEATGAME)
+			if (gameticks==*prevgameticks)
+				return;
+			*prevgameticks=gameticks;
+			if (--gamestatusremainticks==0)
 			{
-    			    Play_sfxdata_id(NULL,SFXDATA_YOULOSE,1,0);
-	    		    showedmenu.prepareforshowmenu(&lmission,NULL);
+				StopMusic(MUSIC_STOPWITHFADE);
+				if (gamestatus==WINGAME)
+				{
+					Play_sfxdata_id(NULL,SFXDATA_YOUWIN,1,0);
+					showedmenu.prepareforshowmenu(&wmission,NULL);
+				}
+				else
+				{
+					if (gamestatus==DEFEATGAME)
+					{
+							Play_sfxdata_id(NULL,SFXDATA_YOULOSE,1,0);
+							showedmenu.prepareforshowmenu(&lmission,NULL);
+					}
+				}
 			}
-		}
 	    }
 	}
 
@@ -1842,12 +1846,12 @@ int IfTimeForTrigger(struct mapinfo *info,int *prevgameticks)
 		{
 		    if (!(info->flags & STARMAP_FLAG_COUNTSTOPED))
 		    {
-			map.CountDownTimer-=MAXGAMECYCLESPERSECOND/2;
-			if (map.CountDownTimer<=0)
-			{
-			    map.CountDownTimer=0;
-			    info->flags &= ~STARMAP_FLAG_HAVECOUNTDOWN;
-			}
+				map.CountDownTimer-=MAXGAMECYCLESPERSECOND/2;
+				if (map.CountDownTimer<=0)
+				{
+					map.CountDownTimer=0;
+					info->flags &= ~STARMAP_FLAG_HAVECOUNTDOWN;
+				}
 		    }
 		}
 //		if (gamestatus==NOGAMESTATUS)
@@ -1865,27 +1869,27 @@ void ShowFirstRunVideo(int ignorefirstrunbit)
 {
     if (!EXPANSIONSET)
     {
-	if (!(gameconf.videoconf.preview & 0x01) || ignorefirstrunbit )
-	{
-	    PlayVideoSmk("smk\\starintr.smk");
-	    if (!ignorefirstrunbit )
-	    {
-		gameconf.videoconf.preview |= 0x01;
-		saveconf();
-	    }
-	}
+		if (!(gameconf.videoconf.preview & 0x01) || ignorefirstrunbit )
+		{
+			PlayVideoSmk("smk\\starintr.smk");
+			if (!ignorefirstrunbit )
+			{
+				gameconf.videoconf.preview |= 0x01;
+				saveconf();
+			}
+		}
     }
     else
     {
-	if (!(gameconf.videoconf.preview & 0x02) || ignorefirstrunbit )
-	{
-	    PlayVideoSmk("smk\\starxintr.smk");
-	    if (!ignorefirstrunbit )
-	    {
-		gameconf.videoconf.preview |= 0x02;
-		saveconf();
-	    }
-	}
+		if (!(gameconf.videoconf.preview & 0x02) || ignorefirstrunbit )
+		{
+			PlayVideoSmk("smk\\starxintr.smk");
+			if (!ignorefirstrunbit )
+			{
+				gameconf.videoconf.preview |= 0x02;
+				saveconf();
+			}
+		}
     }
 }
 //===================================================
@@ -1896,69 +1900,69 @@ void ActivateCheat(int cheatid)
     DEBUGMESSCR("cheat nr %d\n",cheatid);
     switch(cheatid)
     {
-	case 0:
-	    break;
-	case 1:		//showall
-	    CODEFORSCREEN = CODEFORSCREEN ^ 1;
-    	    changegoods = 1;
-    	    map.clearfog[NUMBGAMER] = 1;
-	    bitsplayer = GetVisionBitsPlayer(NUMBGAMER);
-	    MAPREGENERATIONBIT = 1;
-	    MAPUNITSREGENERATIONBIT = 1;
-	    if (CODEFORSCREEN)
-	    {
-		fogvalue = 0x04;
-	    }
-	    else
-	    {
-		fogvalue = 0x00;
-	    }
-	    for (i=0;i<PLAYEDPLAYERS;i++)
-	    {
-    		if (IfPlayerHaveStartLocation(&map,i)!=-1)
-    		{
-    		    memset(map.mapbits.whitefog[i],fogvalue,map.map_width*map.map_height);
-    		    memset(map.mapbits.whitefog2[i],fogvalue,map.map_width*map.map_height);
-		    if (fogvalue)
-    			memset(map.mapbits.blackfog[i],fogvalue,map.map_width*map.map_height);
-    		}
-	    }
-	    break;
-	case 2:		//givemin
-    	    changegoods = 1;
-	    ChangeResourcePlayer(NUMBGAMER,PLUSFACTOR,1000,0);
-	    break;
-	case 3:		//givegas
-    	    changegoods = 1;
-	    ChangeResourcePlayer(NUMBGAMER,PLUSFACTOR,0,1000);
-	    break;
-	case 4:		//quickmake
-	    CODEFORQUICKMAKE = 32;
-	    break;
-	case 5:		//nogoods
-	    CODEFORWITHOUTGOODS = 1;
-	    break;
-	case 6:		//notech
-	    CODEFORWITHOUTTECHTREE = 1;
-	    break;
-	case 7:		//nopsi
-	    CODEFORPSIUNLIMIT = 1;
-	    break;
-	case 8:		//showcells
-	    SHOWCELLS = SHOWCELLS ^ 1;
-	    break;
-	case 9:		//kill
-	    for (i = MAXSELECTMAN-1;i>=0; i--)
-	    {
-		if ( fordeselect[i] )
-		{
-		    dieobj(fordeselect[i]);
-		}
-	    }
-	    break;
-	case 10:	//quit
-	    menustatus = EXITGAME;
-	    break;
+		case 0:
+			break;
+		case 1:		//showall
+			CODEFORSCREEN = CODEFORSCREEN ^ 1;
+			changegoods = 1;
+			map.clearfog[NUMBGAMER] = 1;
+			bitsplayer = GetVisionBitsPlayer(NUMBGAMER);
+			MAPREGENERATIONBIT = 1;
+			MAPUNITSREGENERATIONBIT = 1;
+			if (CODEFORSCREEN)
+			{
+				fogvalue = 0x04;
+			}
+			else
+			{
+				fogvalue = 0x00;
+			}
+			for (i=0;i<PLAYEDPLAYERS;i++)
+			{
+				if (IfPlayerHaveStartLocation(&map,i)!=-1)
+				{
+					memset(map.mapbits.whitefog[i],fogvalue,map.map_width*map.map_height);
+					memset(map.mapbits.whitefog2[i],fogvalue,map.map_width*map.map_height);
+					if (fogvalue)
+						memset(map.mapbits.blackfog[i],fogvalue,map.map_width*map.map_height);
+				}
+			}
+			break;
+		case 2:		//givemin
+			changegoods = 1;
+			ChangeResourcePlayer(NUMBGAMER,PLUSFACTOR,1000,0);
+			break;
+		case 3:		//givegas
+			changegoods = 1;
+			ChangeResourcePlayer(NUMBGAMER,PLUSFACTOR,0,1000);
+			break;
+		case 4:		//quickmake
+			CODEFORQUICKMAKE = 32;
+			break;
+		case 5:		//nogoods
+			CODEFORWITHOUTGOODS = 1;
+			break;
+		case 6:		//notech
+			CODEFORWITHOUTTECHTREE = 1;
+			break;
+		case 7:		//nopsi
+			CODEFORPSIUNLIMIT = 1;
+			break;
+		case 8:		//showcells
+			SHOWCELLS = SHOWCELLS ^ 1;
+			break;
+		case 9:		//kill
+			for (i = MAXSELECTMAN-1;i>=0; i--)
+			{
+				if ( fordeselect[i] )
+				{
+					dieobj(fordeselect[i]);
+				}
+			}
+			break;
+		case 10:	//quit
+			menustatus = EXITGAME;
+			break;
     }
 }
 
