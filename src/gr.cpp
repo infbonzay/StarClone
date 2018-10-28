@@ -9,6 +9,7 @@
 #include "key.h"
 #include "wmem.h"
 #include "gr.h"
+#include "gener.h"
 #include "mouse.h"
 
 #ifdef WITHSDL
@@ -174,8 +175,8 @@ int setmode(int x,int y,int bpp,int fullscreen)
 	if (a)			//video mode not set if return =0
 	{
 		SetPitchAndChunk();
-	    highMouse.PosX = 0;
-    	highMouse.PosY = 0;
+	    highMouse->PosX = 0;
+    	highMouse->PosY = 0;
     	mousemaxx = gameconf.grmode.x;
     	mousemaxy = gameconf.grmode.y;
 	}

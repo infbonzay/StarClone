@@ -147,7 +147,7 @@ void desenproperties(int *localprop,char *selectableicons)
 //                	grpplayernr);
 
     	    }//if local
-  if (!highMouse.MouseOnSelectionMode)
+  if (!highMouse->MouseOnSelectionMode)
   {
 	mouseonicon = -1;
 	selectedicon = -1;
@@ -164,7 +164,7 @@ void desenproperties(int *localprop,char *selectableicons)
     		uu.y1 = xy[1][i] + YUNITCONSTR;
     		uu.x2 = uu.x1 + 36;
     		uu.y2 = uu.y1 + 36;
-			if (highMouse.CheckForBorder(uu.x1,uu.y1,uu.x2,uu.y2))
+			if (highMouse->CheckForBorder(uu.x1,uu.y1,uu.x2,uu.y2))
 				mouseonconstrunit = i;
 	    }
 	if (transportplaceobj&&transportplaceobj->playernr==NUMBGAMER)
@@ -351,7 +351,7 @@ selectedicon:
     {
         if (!fordeselect[0])
         {
-			highMouse.WaitToPressLeftButton=0;
+			highMouse->WaitToPressLeftButton = 0;
         }
         else
         {
@@ -401,7 +401,7 @@ selectedicon:
 									ChangeTypeOfProp(fordeselect[k],PROPNORMAL1);
 							}
 							groupmove=0;
-							highMouse.WaitToPressLeftButton=0;
+							highMouse->WaitToPressLeftButton=0;
 					}
 					else
 					{
@@ -451,7 +451,7 @@ selectedicon:
 					constrbuild(oldselectbuton);
 					mouseprop = oldselectbuton;
 					groupmove=0;
-					highMouse.WaitToPressLeftButton=2;
+					highMouse->WaitToPressLeftButton=2;
 				}
 			}
 		}
@@ -658,7 +658,7 @@ int CreateMenuProperties(int *prop,char *selectableicons,
     int propunits[MAXSELECTMAN][MAXUNITPROPERTIES];
     struct OBJstruct *b;
     //if we select move/mage need to put only cancel mage/move button
-    if (highMouse.WaitToPressLeftButton)
+    if (highMouse->WaitToPressLeftButton)
     {
 		for (i=0;i<MAXUNITPROPERTIES-1;i++)
 		{

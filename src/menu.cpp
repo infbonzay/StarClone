@@ -39,25 +39,25 @@ MOUSEALLSPOTS *currentmousehottable;
 void addnewmousehotpos(void (*func)(int),int maxspots)
 {
     currentmousehottable = (MOUSEALLSPOTS *)
-	    wmalloc(sizeof(MOUSEALLSPOTS)+maxspots*sizeof(MOUSEHOTSPOT));
+	wmalloc(sizeof(MOUSEALLSPOTS)+maxspots*sizeof(MOUSEHOTSPOT));
     currentmousehottable->callbackwork=0;
     mousehotspot.AddList(currentmousehottable);
     currentmousehottable->maxhotspots = maxspots;
     currentmousehottable->curenthotspots = 0;
     currentmousehottable->mousemovecallback = func;
-    lowMouse.InstallMoveEvent(&mymousemoveevent);
+    highMouse->InstallMoveEvent(&mymousemoveevent);
 }
 //==========================================
 void incrcallbackwork(void)
 {
     if (currentmousehottable)
-	currentmousehottable->callbackwork++;
+		currentmousehottable->callbackwork++;
 }
 //==========================================
 void decrcallbackwork(void)
 {
     if (currentmousehottable)
-	currentmousehottable->callbackwork--;
+		currentmousehottable->callbackwork--;
 }
 //==========================================
 void delnewmousehotpos(void)
@@ -65,16 +65,16 @@ void delnewmousehotpos(void)
     //delete current hotspot
     int lastelem;
     if (currentmousehottable)
-	wfree(currentmousehottable);
+		wfree(currentmousehottable);
     mousehotspot.DelList(currentmousehottable);
     lastelem = mousehotspot.GetMaxElements();
     if (!lastelem)
     {
-	currentmousehottable = NULL;
-        lowMouse.UninstallMoveEvent();
+		currentmousehottable = NULL;
+        highMouse->UninstallMoveEvent();
     }
     else
-	currentmousehottable = (MOUSEALLSPOTS *) mousehotspot.GetElemNr(lastelem-1);
+		currentmousehottable = (MOUSEALLSPOTS *) mousehotspot.GetElemNr(lastelem-1);
 }
 //==========================================
 void addmousehotpos(int x,int y,int sizex,int sizey,int *dialogflags)
@@ -82,16 +82,16 @@ void addmousehotpos(int x,int y,int sizex,int sizey,int *dialogflags)
     int curentspot;
     if (currentmousehottable)
     {
-	curentspot = currentmousehottable->curenthotspots;
-	if (curentspot<currentmousehottable->maxhotspots)
-	{
-	    currentmousehottable->spot[curentspot].x = x;
-	    currentmousehottable->spot[curentspot].y = y;
-	    currentmousehottable->spot[curentspot].sizex = sizex;
-	    currentmousehottable->spot[curentspot].sizey = sizey;
-	    currentmousehottable->spot[curentspot].dialogflags = dialogflags;
-	    currentmousehottable->curenthotspots++;
-	}
+		curentspot = currentmousehottable->curenthotspots;
+		if (curentspot<currentmousehottable->maxhotspots)
+		{
+			currentmousehottable->spot[curentspot].x = x;
+			currentmousehottable->spot[curentspot].y = y;
+			currentmousehottable->spot[curentspot].sizex = sizex;
+			currentmousehottable->spot[curentspot].sizey = sizey;
+			currentmousehottable->spot[curentspot].dialogflags = dialogflags;
+			currentmousehottable->curenthotspots++;
+		}
     }
 }
 //==========================================
@@ -102,7 +102,7 @@ void mymousemoveevent(int x,int y)
     int i,found=-1,flags;
     MOUSEHOTSPOT *temp;
 
-	highMouse.FixRestrict(&x, &y);
+	highMouse->FixRestrict(&x, &y);
     if (!currentmousehottable)
 		return;
     if (!currentmousehottable->callbackwork)
@@ -140,24 +140,24 @@ void puttransptilebox(int x,int y,int sizex,int sizey,GRPFILE *grp)
     sizey/=sizeygrp;
     for (i=0;i<sizey;i++)
     {
-	if (i==0)
-	    boxline=0;
-	else
-	    if (i==sizey-1)
-		boxline=2;
-	    else
-		boxline=1;
-	for (j=0;j<sizex;j++)
-	{
-	    if (j==0)
-		boxnr=boxline*3+0;
-	    else
-		if (j==sizex-1)
-		    boxnr=boxline*3+2;
+		if (i==0)
+			boxline=0;
 		else
-		    boxnr=boxline*3+1;
-	    putgrpspr(x+j*sizexgrp,y+i*sizeygrp,grp,TRANSPARENT,255,0,NULL,boxnr);
-	}
+			if (i==sizey-1)
+				boxline=2;
+			else
+				boxline=1;
+		for (j=0;j<sizex;j++)
+		{
+			if (j==0)
+				boxnr=boxline*3+0;
+			else
+				if (j==sizex-1)
+					boxnr=boxline*3+2;
+				else
+					boxnr=boxline*3+1;
+			putgrpspr(x+j*sizexgrp,y+i*sizeygrp,grp,TRANSPARENT,255,0,NULL,boxnr);
+		}
     }
 }
 //==========================================
@@ -182,8 +182,8 @@ void loadpartscreen(int x,int y,int sizex,int sizey,char *savedscreen)
 {
     if (savedscreen)
     {
-	CPutImage8(x,y,sizex,sizey,savedscreen);
-	wfree(savedscreen);
+		CPutImage8(x,y,sizex,sizey,savedscreen);
+		wfree(savedscreen);
     }
 }
 //==========================================
@@ -191,7 +191,7 @@ void restorepartscreen(int x,int y,int sizex,int sizey,char *savedscreen)
 {
     if (savedscreen)
     {
-	CPutImage8(x,y,sizex,sizey,savedscreen);
+		CPutImage8(x,y,sizex,sizey,savedscreen);
     }
 }
 //==========================================
@@ -200,7 +200,7 @@ void saveunderitem(MENUSTR *allmenus,int itemnr)
     MENUPOS *item;
     item=&allmenus->menu[itemnr];
     if (!item->savedscrunderitem)
-	item->savedscrunderitem=savepartscreen(item->hotdeltax,item->hotdeltay,item->hotxsize,item->hotysize);
+		item->savedscrunderitem=savepartscreen(item->hotdeltax,item->hotdeltay,item->hotxsize,item->hotysize);
 }
 //==========================================
 void loadunderitem(MENUSTR *allmenus,int itemnr)
@@ -217,7 +217,7 @@ void saveunderitems(MENUSTR *allmenus)
     int i;
     for (i=0;i<allmenus->elements;i++)
     {
-	saveunderitem(allmenus,i);
+		saveunderitem(allmenus,i);
     }
 }
 //==========================================
@@ -228,11 +228,11 @@ void loadunderitems(MENUSTR *allmenus,int restoreandfree)
 
     for (i=allmenus->elements-1;i>=0;i--)
     {
-	item=&allmenus->menu[i];
-	if (restoreandfree||item->restoreatexit==ITEM_RESTOREANDFREE)
-	{
-	    loadunderitem(allmenus,i);
-	}
+		item=&allmenus->menu[i];
+		if (restoreandfree||item->restoreatexit==ITEM_RESTOREANDFREE)
+		{
+			loadunderitem(allmenus,i);
+		}
     }
 }
 //==========================================
@@ -249,51 +249,51 @@ void checkanddrawmenu(MENUSTR *allmenus,int ItemChanges,int saveunder)
     int itemselected,i,showtype,inv;
     for (i=0;i<allmenus->elements;i++)
     {
-	if (allmenus->menu[i].relation.address[ITEMRELATION_DISABLE] != NULL)
-	{
-	    if (*allmenus->menu[i].relation.address[ITEMRELATION_DISABLE]==allmenus->menu[i].relation.value[ITEMRELATION_DISABLE])
-		setmenuitem_DISABLED(allmenus,i,TRUE);
-	    else
-		setmenuitem_DISABLED(allmenus,i,FALSE);
-	}
+		if (allmenus->menu[i].relation.address[ITEMRELATION_DISABLE] != NULL)
+		{
+			if (*allmenus->menu[i].relation.address[ITEMRELATION_DISABLE]==allmenus->menu[i].relation.value[ITEMRELATION_DISABLE])
+				setmenuitem_DISABLED(allmenus,i,TRUE);
+			else
+				setmenuitem_DISABLED(allmenus,i,FALSE);
+		}
     }
     for (i=0;i<allmenus->elements;i++)
     {
-	if (menuitem_ISDISABLED(allmenus,i)||(ItemChanges==ITEMALLDISABLED&&(allmenus->menu[i].itemtype==ISBUTTON||allmenus->menu[i].itemtype==ISSMKVIDEO)))
-	    showtype=ITEMSHOW_DISABLED;
-	else
-    	    if (ItemChanges == i )
-	        showtype = allmenus->vars.BarChanges.color;
-	    else
-		showtype = ITEMSHOW_NOFOCUS;
-	allmenus->menu[i].typeofshow = showtype;
+		if (menuitem_ISDISABLED(allmenus,i)||(ItemChanges==ITEMALLDISABLED&&(allmenus->menu[i].itemtype==ISBUTTON||allmenus->menu[i].itemtype==ISSMKVIDEO)))
+			showtype=ITEMSHOW_DISABLED;
+		else
+			if (ItemChanges == i )
+				showtype = allmenus->vars.BarChanges.color;
+			else
+				showtype = ITEMSHOW_NOFOCUS;
+		allmenus->menu[i].typeofshow = showtype;
     }
     if (saveunder==ITEM_RESTOREANDFREE)
     {
-	loadunderitems(allmenus,ITEM_RESTOREANDFREE);
-	saveunderitems(allmenus);
+		loadunderitems(allmenus,ITEM_RESTOREANDFREE);
+		saveunderitems(allmenus);
     }
 //    int showmin=25;
 //    int showmax=mymin(allmenus->elements,30);
 //    for (i=showmin;i<showmax;i++)
     for (i=0;i<allmenus->elements;i++)
     {
-	inv=0;
-	if (!menuitem_ISVISIBLED(allmenus,i))
-	{
-	    inv=1;
-	}
-	else
-	{
-	    if (allmenus->menu[i].relation.address[ITEMRELATION_INVISIBLE]!=NULL)
-		if (*allmenus->menu[i].relation.address[ITEMRELATION_INVISIBLE]==allmenus->menu[i].relation.value[ITEMRELATION_INVISIBLE])
+		inv=0;
+		if (!menuitem_ISVISIBLED(allmenus,i))
 		{
-		    inv=1;
+			inv=1;
 		}
-	}
-	if (!inv)
-	    drawmenuitem(allmenus,i);
-	showitemborders(allmenus,i);
+		else
+		{
+			if (allmenus->menu[i].relation.address[ITEMRELATION_INVISIBLE]!=NULL)
+				if (*allmenus->menu[i].relation.address[ITEMRELATION_INVISIBLE]==allmenus->menu[i].relation.value[ITEMRELATION_INVISIBLE])
+				{
+					inv=1;
+				}
+		}
+		if (!inv)
+			drawmenuitem(allmenus,i);
+		showitemborders(allmenus,i);
     }
 }
 //==========================================
@@ -302,10 +302,10 @@ void updateonemenuitem(MENUSTR *allmenus,int itemnr)
     MENUPOS *item=&allmenus->menu[itemnr];
     if (item->savedscrunderitem)
     {
-//	loadpartscreen(item->hotdeltax,item->hotdeltay,item->hotxsize,item->hotysize,item->savedscrunderitem);
-//	item->savedscrunderitem=savepartscreen(item->hotdeltax,item->hotdeltay,item->hotxsize,item->hotysize);
-	loadunderitem(allmenus,itemnr);
-	saveunderitem(allmenus,itemnr);
+	//	loadpartscreen(item->hotdeltax,item->hotdeltay,item->hotxsize,item->hotysize,item->savedscrunderitem);
+	//	item->savedscrunderitem=savepartscreen(item->hotdeltax,item->hotdeltay,item->hotxsize,item->hotysize);
+		loadunderitem(allmenus,itemnr);
+		saveunderitem(allmenus,itemnr);
     }
     drawmenuitem(allmenus,itemnr);
 }
@@ -318,42 +318,42 @@ int actiondblclick(MENUSTR *allmenus,int downmenu)
     int action;
     if (dblclick)
     {
-	dblclick=0;
-	item=&allmenus->menu[downmenu];
-	switch(item->itemtype)
-	{
-	    case ISLISTBOX:
-		action=0;
-		bar=item->item.listbox->bar;
-		if (bar)
+		dblclick=0;
+		item=&allmenus->menu[downmenu];
+		switch(item->itemtype)
 		{
-		    if (highMouse.PosX>=bar->xt_1)
-			action=1;
-		}
-		if (!action)
-		{
-		    if (item->item.listbox->flist)
-		    {
-			if (!item->item.listbox->pixelsbetweenlines)
-			    return(NOSELECTMENUBAR);
-			itemselected=(highMouse.PosY-item->hotdeltay)/item->item.listbox->pixelsbetweenlines;
-			if (itemselected<item->item.listbox->lines)
-			    itemselected+=item->item.listbox->from;
-			if (itemselected<item->item.listbox->flist->GetMaxElements())
+			case ISLISTBOX:
+			action=0;
+			bar=item->item.listbox->bar;
+			if (bar)
 			{
-			    item->item.listbox->selectednr=itemselected;
-			    if (allmenus->selectmenusnd)
-			        Play_sfxdata_id(NULL,allmenus->selectmenusnd,-1,0);
-			    return(downmenu);
+				if (highMouse->PosX>=bar->xt_1)
+					action=1;
 			}
-		    }
-		}
-		else
-		{
+			if (!action)
+			{
+				if (item->item.listbox->flist)
+				{
+					if (!item->item.listbox->pixelsbetweenlines)
+						return(NOSELECTMENUBAR);
+					itemselected=(highMouse->PosY-item->hotdeltay)/item->item.listbox->pixelsbetweenlines;
+					if (itemselected<item->item.listbox->lines)
+						itemselected+=item->item.listbox->from;
+					if (itemselected<item->item.listbox->flist->GetMaxElements())
+					{
+						item->item.listbox->selectednr=itemselected;
+						if (allmenus->selectmenusnd)
+							Play_sfxdata_id(NULL,allmenus->selectmenusnd,-1,0);
+						return(downmenu);
+					}
+				}
+			}
+			else
+			{
 
+			}
+			break;
 		}
-		break;
-	}
     }
     return(NOSELECTMENUBAR);
 }
@@ -375,83 +375,81 @@ int actionmenuonpressmouse(MENUSTR *allmenus,int downmenu,int *selectedmenu)
 	case ISLISTBOX:
 	    if (item->item.listbox->flist)
 	    {
-		allmenus->defaultlistitem = downmenu;
-		action=0;
-		bar =item->item.listbox->bar;
-		if (bar)
-		{
-		    if (highMouse.PosX>=bar->xt_1)
-			action=1;
-		}
-		if (action)
-		{
-		    //need to check if pressed on buttons on bar or horizontalbar
-		    if (bar->showbutton==ITEMSHOW_CLICK)
-		    {
-			action=3;//then button bar is active before depressed
-		    }
-		    else
-		    {
-			if (highMouse.PosY<=bar->yt_2)
-			    action=1;
-			else if (highMouse.PosY>=bar->yb_1)
-			    action=2;
-			else if (highMouse.PosY>=bar->buttonbary1&&highMouse.PosY<=bar->buttonbary2)
-			    action=3;
-			else
-			    action=4;
-		    }
-		    switch(action)
-		    {
-			case 1:
-			    if (tick_timer-prevpresstimer>=MINBETWEENTHESAMECLICK)
-			    {
-				prevpresstimer=tick_timer;
-			        bar->showtypet=ITEMSHOW_CLICK;
-//			    	changelistbox_selectednr(allmenus,downmenu,-1);
-				changelistbox_fromto(allmenus,downmenu,-1);
-			    }
-			    break;
-			case 2:
-			    if (tick_timer-prevpresstimer>=MINBETWEENTHESAMECLICK)
-			    {
-				prevpresstimer=tick_timer;
-				bar->showtypeb=ITEMSHOW_CLICK;
-//			    	changelistbox_selectednr(allmenus,downmenu,+1);
-				changelistbox_fromto(allmenus,downmenu,+1);
-			    }
-			    break;
-			case 3:
-			    bar->showbutton=ITEMSHOW_CLICK;
-			    changelistbox_buttonbarpos(allmenus,downmenu,highMouse.PosY);
-			    break;
-			case 4:
-			    if (tick_timer-prevpresstimer>=MINBETWEENTHESAMECLICK)
-			    {
-				prevpresstimer=tick_timer;
-				changelistbox_buttonbarposdelta(allmenus,downmenu,highMouse.PosY);
-			    }
-			    break;
-		    }
-		}
-		else
-		{
-		    if (!item->item.listbox->pixelsbetweenlines)
-		        return(0);
-		    itemselected=(highMouse.PosY-item->hotdeltay)/item->item.listbox->pixelsbetweenlines;
-		    if (itemselected<item->item.listbox->lines)
-			itemselected+=item->item.listbox->from;
-		    if (itemselected<item->item.listbox->flist->GetMaxElements())
-		    {
-			if (item->item.listbox->selectednr!=itemselected)
+			allmenus->defaultlistitem = downmenu;
+			action=0;
+			bar =item->item.listbox->bar;
+			if (bar)
 			{
-			    item->item.listbox->selectednr=itemselected;
-			    if (item->item.listbox->onselectitem_callback!=NULL)
-				item->item.listbox->onselectitem_callback(allmenus,downmenu,itemselected);
-			    return(1);
+				if (highMouse->PosX>=bar->xt_1)
+					action=1;
 			}
-		    }
-		}
+			if (action)
+			{
+				//need to check if pressed on buttons on bar or horizontalbar
+				if (bar->showbutton==ITEMSHOW_CLICK)
+				{
+					action=3;//then button bar is active before depressed
+				}
+				else
+				{
+					if (highMouse->PosY<=bar->yt_2)
+						action=1;
+					else if (highMouse->PosY>=bar->yb_1)
+						action=2;
+					else if (highMouse->PosY>=bar->buttonbary1&&highMouse->PosY<=bar->buttonbary2)
+						action=3;
+					else
+						action=4;
+				}
+				switch(action)
+				{
+				case 1:
+					if (tick_timer-prevpresstimer>=MINBETWEENTHESAMECLICK)
+					{
+						prevpresstimer=tick_timer;
+						bar->showtypet=ITEMSHOW_CLICK;
+						changelistbox_fromto(allmenus,downmenu,-1);
+					}
+					break;
+				case 2:
+					if (tick_timer-prevpresstimer>=MINBETWEENTHESAMECLICK)
+					{
+						prevpresstimer=tick_timer;
+						bar->showtypeb=ITEMSHOW_CLICK;
+						changelistbox_fromto(allmenus,downmenu,+1);
+					}
+					break;
+				case 3:
+					bar->showbutton=ITEMSHOW_CLICK;
+					changelistbox_buttonbarpos(allmenus,downmenu,highMouse->PosY);
+					break;
+				case 4:
+					if (tick_timer-prevpresstimer>=MINBETWEENTHESAMECLICK)
+					{
+						prevpresstimer=tick_timer;
+						changelistbox_buttonbarposdelta(allmenus,downmenu,highMouse->PosY);
+					}
+					break;
+				}
+			}
+			else
+			{
+				if (!item->item.listbox->pixelsbetweenlines)
+					return(0);
+				itemselected=(highMouse->PosY-item->hotdeltay)/item->item.listbox->pixelsbetweenlines;
+				if (itemselected<item->item.listbox->lines)
+					itemselected+=item->item.listbox->from;
+				if (itemselected<item->item.listbox->flist->GetMaxElements())
+				{
+					if (item->item.listbox->selectednr!=itemselected)
+					{
+						item->item.listbox->selectednr=itemselected;
+						if (item->item.listbox->onselectitem_callback!=NULL)
+							item->item.listbox->onselectitem_callback(allmenus,downmenu,itemselected);
+						return(1);
+					}
+				}
+			}
 	    }
 	    break;
 	case ISEXPANDBOX:
@@ -467,15 +465,15 @@ int actionmenuonpressmouse(MENUSTR *allmenus,int downmenu,int *selectedmenu)
 		{
 		    if (allmenus->menuflags&MENUFLAGS_ONETICKDRAW)
 		    {
-			expandboxflag=DIALOGBIN_DONOTSAVEUNDERMENU;
+				expandboxflag=DIALOGBIN_DONOTSAVEUNDERMENU;
 		    }
 		    else
 		    {
-			expandboxflag=0;
-			if (typelistshow==1)
-			    savedbeforeshowlist=savepartscreen(item->hotdeltax,item->hotdeltay,item->hotxsize,ysize*ysizegrp);
-			else
-			    savedbeforeshowlist=savepartscreen(item->hotdeltax,item->hotdeltay-(ysize*ysizegrp-1),item->hotxsize,ysize*ysizegrp);
+				expandboxflag=0;
+				if (typelistshow==1)
+					savedbeforeshowlist=savepartscreen(item->hotdeltax,item->hotdeltay,item->hotxsize,ysize*ysizegrp);
+				else
+					savedbeforeshowlist=savepartscreen(item->hotdeltax,item->hotdeltay-(ysize*ysizegrp-1),item->hotxsize,ysize*ysizegrp);
 		    }
 		    item->item.expandbox->showlist=createmenuinfo(item->hotdeltax,item->hotdeltay,0,0,item->item.expandbox->maxitem,expandboxflag);
 		    menuspecialtables(item->item.expandbox->showlist,allmenus->fonttable,allmenus->dlggrp);
@@ -483,11 +481,11 @@ int actionmenuonpressmouse(MENUSTR *allmenus,int downmenu,int *selectedmenu)
 		    item->item.expandbox->showlist->prevmenu=allmenus;
 		    for (i=0;i<item->item.expandbox->maxitem;i++)
 		    {
-			addtextitem(item->item.expandbox->showlist,i,ISLABELLEFT,4,(i+1)*ysizegrp*typelistshow,item->hotxsize,ysizegrp,
-				0,0,item->item.expandbox->items[i],item->fontnr,item->item.expandbox->rowsize,item->colors4);
-			setmenuitem_VISIBLED(item->item.expandbox->showlist,i,TRUE);
-			setmenuitem_DISABLED(item->item.expandbox->showlist,i,FALSE);
-			setmenuitem_RESPONDEVENTS(item->item.expandbox->showlist,i,TRUE);
+				addtextitem(item->item.expandbox->showlist,i,ISLABELLEFT,4,(i+1)*ysizegrp*typelistshow,item->hotxsize,ysizegrp,
+							0,0,item->item.expandbox->items[i],item->fontnr,item->item.expandbox->rowsize,item->colors4);
+				setmenuitem_VISIBLED(item->item.expandbox->showlist,i,TRUE);
+				setmenuitem_DISABLED(item->item.expandbox->showlist,i,FALSE);
+				setmenuitem_RESPONDEVENTS(item->item.expandbox->showlist,i,TRUE);
 		    }
 		}
 		fromspr=2;
@@ -518,27 +516,22 @@ int actionmenuonpressmouse(MENUSTR *allmenus,int downmenu,int *selectedmenu)
 		    item->item.expandbox->showlist=NULL;
 		    if (retstatus>=0)
 		    {
-			item->item.expandbox->selectednr=retstatus;
+				item->item.expandbox->selectednr=retstatus;
 		    }
     		    *selectedmenu=downmenu;
 		    if (typelistshow==1)
-			loadpartscreen(item->hotdeltax,item->hotdeltay,item->hotxsize,ysize*ysizegrp,savedbeforeshowlist);
+				loadpartscreen(item->hotdeltax,item->hotdeltay,item->hotxsize,ysize*ysizegrp,savedbeforeshowlist);
 		    else
-			loadpartscreen(item->hotdeltax,item->hotdeltay-(ysize*ysizegrp-1),item->hotxsize,ysize*ysizegrp,savedbeforeshowlist);
+				loadpartscreen(item->hotdeltax,item->hotdeltay-(ysize*ysizegrp-1),item->hotxsize,ysize*ysizegrp,savedbeforeshowlist);
     		}
 	    return(1);
 	case ISHORIZBUTTON:
 	    if (tick_timer-prevpresstimer>=MINBETWEENTHESAMECLICK)
 	    {
-		prevpresstimer=tick_timer;
-    	        posx=highMouse.PosX-(item->hotdeltax+(item->hotdeltax-item->item.horizbutton->sizexbar)/2);
-		prevvalue=gethorizvalue(allmenus,downmenu);
-		sethorizbuttonposfrommouse(allmenus,downmenu,posx);
-/*	    	curvalue=gethorizvalue(allmenus,downmenu);
-		if (prevvalue!=curvalue)
-		    if (item->item.horizbutton->onselectitem_callback!=NULL)
-	    		item->item.horizbutton->onselectitem_callback(allmenus,downmenu,curvalue);
-*/
+			prevpresstimer=tick_timer;
+    	    posx=highMouse->PosX-(item->hotdeltax+(item->hotdeltax-item->item.horizbutton->sizexbar)/2);
+			prevvalue=gethorizvalue(allmenus,downmenu);
+			sethorizbuttonposfrommouse(allmenus,downmenu,posx);
 	    }
 	    return(1);
 	case ISSMKVIDEO:
@@ -554,22 +547,24 @@ void activemenuupdatevalues(MENUSTR *allmenus,int activeitem)
     MENUPOS *item;
     if (fadeinout)
     {
-	fadeinout=0;
-	for (int i=0;i<allmenus->elements;i++)
-	{
-//	    if (allmenus->menu[i].showvalue)
-//		printf("%d\n",allmenus->menu[i].showvalue);
-	    if (i==activeitem)
-	    {
-		allmenus->menu[i].showvalue+=allmenus->incrementfactor;
-		if (allmenus->menu[i].showvalue>MENUITEM_TIMEACTIVE_MAXVALUE)
-		    allmenus->menu[i].showvalue=MENUITEM_TIMEACTIVE_MAXVALUE;
-	    }
-	    else
-		allmenus->menu[i].showvalue-=allmenus->incrementfactor;
-		if (allmenus->menu[i].showvalue<MENUITEM_TIMEACTIVE_MINVALUE)
-		    allmenus->menu[i].showvalue=MENUITEM_TIMEACTIVE_MINVALUE;
-	}
+		fadeinout=0;
+		for (int i=0;i<allmenus->elements;i++)
+		{
+	//	    if (allmenus->menu[i].showvalue)
+	//		printf("%d\n",allmenus->menu[i].showvalue);
+			if (i==activeitem)
+			{
+				allmenus->menu[i].showvalue+=allmenus->incrementfactor;
+				if (allmenus->menu[i].showvalue>MENUITEM_TIMEACTIVE_MAXVALUE)
+					allmenus->menu[i].showvalue=MENUITEM_TIMEACTIVE_MAXVALUE;
+			}
+			else
+			{
+				allmenus->menu[i].showvalue-=allmenus->incrementfactor;
+				if (allmenus->menu[i].showvalue<MENUITEM_TIMEACTIVE_MINVALUE)
+					allmenus->menu[i].showvalue=MENUITEM_TIMEACTIVE_MINVALUE;
+			}
+		}
     }
 }
 //==========================================
@@ -583,8 +578,8 @@ void calcmenuitemsizes(MENUSTR *allmenus)
     int i;
     for (i=0;i<allmenus->elements;i++)
     {
-	allmenus->menu[i].xtextpos = allmenus->menu[i].hotdeltax+allmenus->menu[i].xtextdelta;
-	allmenus->menu[i].ytextpos = allmenus->menu[i].hotdeltay+allmenus->menu[i].ytextdelta;
+		allmenus->menu[i].xtextpos = allmenus->menu[i].hotdeltax+allmenus->menu[i].xtextdelta;
+		allmenus->menu[i].ytextpos = allmenus->menu[i].hotdeltay+allmenus->menu[i].ytextdelta;
     }
 }
 //==========================================
@@ -598,12 +593,12 @@ int drawmenu(MENUSTR *allmenus,int flags)
     MENUACTIVE=1;
     if (allmenus->prevmenu)
     {
-	prev_entire_screen=savepartscreen(0,0,gameconf.grmode.x,gameconf.grmode.y);
-	updateunder=ITEM_NOSAVELOADUNDER;
+		prev_entire_screen=savepartscreen(0,0,gameconf.grmode.x,gameconf.grmode.y);
+		updateunder=ITEM_NOSAVELOADUNDER;
     }
     else
     {
-	updateunder=ITEM_RESTOREANDFREE;
+		updateunder=ITEM_RESTOREANDFREE;
     }
     downmenu = NOSELECTMENUBAR;
     selectedmenu = NOSELECTMENUBAR;
@@ -622,190 +617,192 @@ int drawmenu(MENUSTR *allmenus,int flags)
         checkanddrawmenu(allmenus->prevmenu,ITEMALLDISABLED,updateunder);
     }
 //    saveunderitems(allmenus);
-    mymousemoveevent(highMouse.PosX,highMouse.PosY);
+    mymousemoveevent(highMouse->PosX,highMouse->PosY);
     checkanddrawmenu(allmenus,ITEMNOONEACTIVE,updateunder);
     if (!(flags&&MENUFLAGS_BYPASS))
     {
-	getmousetype(map.MAPXGLOBAL,map.MAPYGLOBAL);
-	do{
-		mouse_b = lowMouse.GetButtonStatus();
-		eventwindowloop();
-		getmouseonitem(&activeitemchange,&activeitem);
-		keyrefresh();
-		highMouse.SaveImageUnder();
-		highMouse.DrawMouse();
-		wscreenon();
-		highMouse.LoadImageUnder();
+		getmousetype(map.MAPXGLOBAL,map.MAPYGLOBAL);
+		do{
+			mouse_b = lowMouse.GetButtonStatus();
+			eventwindowloop();
+			getmouseonitem(&activeitemchange,&activeitem);
+			keyrefresh();
+			highMouse->SaveImageUnder();
+			highMouse->DrawMouse();
+			wscreenon();
+			highMouse->LoadImageUnder();
 
-		selectedmenu = menukeys(allmenus,&redrawbar,&needredraw);
-		editboxchanges = editboxaction(allmenus);
-		if (editboxchanges==2)
-		{
-    	    needredraw=1;
-		    selectedmenu = allmenus->defaultbutton;
-		}
-		if (selectedmenu>=0)
-		{
-		    //if some key unpressed
-		    if (selectedmenu==CANCELFROMMENU)
-		    {
-			if (allmenus->selectmenusnd)
-			    Play_sfxdata_id(NULL,allmenus->selectmenusnd,-1,0);
-			break;
-		    }
-		    switch(allmenus->menu[selectedmenu].itemtype)
-		    {
-			case ISBUTTON:
-			case ISSMKVIDEO:
-			    if (allmenus->selectmenusnd)
-				Play_sfxdata_id(NULL,allmenus->selectmenusnd,-1,0);
-			    break;
-			case ISCHECKBOX:
-			    changecheckboxstate(allmenus,selectedmenu);
-			    break;
-    			case ISRADIOBUTTON:
-			    setradiobuttonstate(allmenus,selectedmenu);
-			    break;
-		    }
-		    break;
-		}
-		if (redrawbar>=0)
-		{
-		    //pressed specific key
-		    activeitemchange = 1;
-		    allmenus->vars.BarChanges.bar   = redrawbar;
-		    allmenus->vars.BarChanges.color = ITEMSHOW_CLICK;
-		}
-		else  //if from mouse action
-		{
-		    if (activeitemchange) //move moved on other menu
-		    {
-			allmenus->vars.BarChanges.bar = activeitem;
-			allmenus->vars.BarChanges.color = ITEMSHOW_FOCUS;
-			if (activeitem>=0)
+			selectedmenu = menukeys(allmenus,&redrawbar,&needredraw);
+			editboxchanges = editboxaction(allmenus);
+			if (editboxchanges==2)
 			{
-			    if (allmenus->menu[activeitem].itemtype==ISBUTTON||
-				(allmenus->menu[activeitem].itemtype==ISSMKVIDEO&&
-				    allmenus->menu[activeitem].item.smkvideo->smkbutton))
-			    {
-				if (allmenus->mouseoversnd)
-				{
-				    //prevent sound yhem mounse move on the same item
-				    if (prevactiveitem!=activeitem)
-				    {
-					prevactiveitem=activeitem;
-					Play_sfxdata_id(NULL,allmenus->mouseoversnd,-1,0);
-				    }
-				}
-			    }
-			}
-			else
-			    prevactiveitem=-1000;
-		    }
-		    if (mouse_b&WMLEFTKEY)
-		    {
-			if (activeitem>=0)
-			{
-//			    if (allmenus->menu[activeitem].dialogbin_flags&DIALOGBIN_FLAGS_KEYMOUSERESPONDEVENTS)
-//				setdefaultbutton(allmenus,activeitem);
-			    activeitemchange = 1;
-			    if (downmenu == NOSELECTMENUBAR)
-				downmenu = activeitem;
-			    else
-			    {
-				allmenus->vars.BarChanges.bar = activeitem;
-				allmenus->vars.BarChanges.color = ITEMSHOW_CLICK;
-			    }
-			}
-			if (downmenu>=0)
-			{
-			    selectedmenu=actiondblclick(allmenus,downmenu);
-			    if (activeitem==downmenu)
-				needredraw=actionmenuonpressmouse(allmenus,downmenu,&selectedmenu);
-			}
-		    }
-		    else
-		    {
-			if (downmenu!=NOSELECTMENUBAR)
-			{
-			    if (downmenu==activeitem)
-			    {
 				needredraw=1;
-				switch(allmenus->menu[activeitem].itemtype)
+				selectedmenu = allmenus->defaultbutton;
+			}
+			if (selectedmenu>=0)
+			{
+				//if some key unpressed
+				if (selectedmenu==CANCELFROMMENU)
 				{
-				    case ISBUTTON:
-				    case ISSMKVIDEO:
-					selectedmenu = activeitem;
 					if (allmenus->selectmenusnd)
-					    Play_sfxdata_id(NULL,allmenus->selectmenusnd,-1,0);
-					break;
-    				    case ISCHECKBOX:
-					selectedmenu = activeitem;
-					changecheckboxstate(allmenus,activeitem);
-					break;
-    				    case ISRADIOBUTTON:
-					selectedmenu = activeitem;
-					setradiobuttonstate(allmenus,activeitem);
-					break;
-				    case ISLISTBOX:
-					if (allmenus->menu[downmenu].item.listbox)
-					    if (allmenus->menu[downmenu].item.listbox->bar)
-					    {
-						allmenus->menu[downmenu].item.listbox->bar->showtypet=ITEMSHOW_NOFOCUS;
-						allmenus->menu[downmenu].item.listbox->bar->showtypeb=ITEMSHOW_NOFOCUS;
-						allmenus->menu[downmenu].item.listbox->bar->showbutton=ITEMSHOW_NOFOCUS;
-					    }
+						Play_sfxdata_id(NULL,allmenus->selectmenusnd,-1,0);
 					break;
 				}
-			    }
-			    else
-			    {
-				needredraw=1;
-				downmenu = NOSELECTMENUBAR;
-			    }
+				switch(allmenus->menu[selectedmenu].itemtype)
+				{
+					case ISBUTTON:
+					case ISSMKVIDEO:
+						if (allmenus->selectmenusnd)
+						Play_sfxdata_id(NULL,allmenus->selectmenusnd,-1,0);
+						break;
+					case ISCHECKBOX:
+						changecheckboxstate(allmenus,selectedmenu);
+						break;
+					case ISRADIOBUTTON:
+						setradiobuttonstate(allmenus,selectedmenu);
+						break;
+				}
+				break;
 			}
-		    }
-		}
-		if (allmenus->defaultbutton>=0)
-		    if (allmenus->menu[allmenus->defaultbutton].itemtype==ISEDITBOX)
-		    {
-			if (cursorblink!=getcursorblinktype())
+			if (redrawbar>=0)
 			{
-			    cursorblink=getcursorblinktype();
-			    updateonemenuitem(allmenus,allmenus->defaultbutton);
+				//pressed specific key
+				activeitemchange = 1;
+				allmenus->vars.BarChanges.bar   = redrawbar;
+				allmenus->vars.BarChanges.color = ITEMSHOW_CLICK;
 			}
-		    }
-		if (editboxchanges||needredraw||activeitemchange||(allmenus->menuflags&MENUFLAGS_ALWAYSDRAW))
-		{
-		    scrollportrait_menu=scrollportrait;
-		    clearscrollportrait();
-		    if (allmenus->prevmenu)//if exist prev menu need to show it only
-		    {
-			restorepartscreen(0,0,gameconf.grmode.x,gameconf.grmode.y,prev_entire_screen);
-    			checkanddrawmenu(allmenus->prevmenu,ITEMALLDISABLED,updateunder);
-			RunCallBackFuncs(allmenus->prevmenu);
-//			if (allmenus->prevmenu->CallBackFunc)
-//			    (*allmenus->prevmenu->CallBackFunc)(allmenus->prevmenu,allmenus->prevmenu->somecallbackdata);
-			//no updates showvalue if all disabled( usually previous menu showing)
-//			activemenuupdatevalues(allmenus->prevmenu,ITEMALLDISABLED);
-		    }
-		    checkanddrawmenu(allmenus,allmenus->vars.BarChanges.bar,updateunder);
-		    needredraw=0;
-		    setmouseonitem(0);
-		}
-		activemenuupdatevalues(allmenus,activeitem);
-		exitcallback=RunCallBackFuncs(allmenus);
-		if (exitcallback)
-		{
-		    selectedmenu=exitcallback;
-		    break;
-		}
-	}while(selectedmenu==NOSELECTMENUBAR);
+			else  //if from mouse action
+			{
+				if (activeitemchange) //move moved on other menu
+				{
+					allmenus->vars.BarChanges.bar = activeitem;
+					allmenus->vars.BarChanges.color = ITEMSHOW_FOCUS;
+					if (activeitem>=0)
+					{
+						if (allmenus->menu[activeitem].itemtype==ISBUTTON||
+							(allmenus->menu[activeitem].itemtype==ISSMKVIDEO&&
+							allmenus->menu[activeitem].item.smkvideo->smkbutton))
+						{
+							if (allmenus->mouseoversnd)
+							{
+								//prevent sound yhem mounse move on the same item
+								if (prevactiveitem!=activeitem)
+								{
+									prevactiveitem=activeitem;
+									Play_sfxdata_id(NULL,allmenus->mouseoversnd,-1,0);
+								}
+							}
+						}
+					}
+					else
+						prevactiveitem=-1000;
+				}
+				if (mouse_b&WMLEFTKEY)
+				{
+					if (activeitem>=0)
+					{
+		//			    if (allmenus->menu[activeitem].dialogbin_flags&DIALOGBIN_FLAGS_KEYMOUSERESPONDEVENTS)
+		//				setdefaultbutton(allmenus,activeitem);
+						activeitemchange = 1;
+						if (downmenu == NOSELECTMENUBAR)
+							downmenu = activeitem;
+						else
+						{
+							allmenus->vars.BarChanges.bar = activeitem;
+							allmenus->vars.BarChanges.color = ITEMSHOW_CLICK;
+						}
+					}
+					if (downmenu>=0)
+					{
+						selectedmenu=actiondblclick(allmenus,downmenu);
+						if (activeitem==downmenu)
+							needredraw=actionmenuonpressmouse(allmenus,downmenu,&selectedmenu);
+					}
+				}
+				else
+				{
+					if (downmenu!=NOSELECTMENUBAR)
+					{
+						if (downmenu==activeitem)
+						{
+							needredraw=1;
+							switch(allmenus->menu[activeitem].itemtype)
+							{
+								case ISBUTTON:
+								case ISSMKVIDEO:
+									selectedmenu = activeitem;
+									if (allmenus->selectmenusnd)
+										Play_sfxdata_id(NULL,allmenus->selectmenusnd,-1,0);
+									break;
+								case ISCHECKBOX:
+									selectedmenu = activeitem;
+									changecheckboxstate(allmenus,activeitem);
+									break;
+								case ISRADIOBUTTON:
+									selectedmenu = activeitem;
+									setradiobuttonstate(allmenus,activeitem);
+									break;
+								case ISLISTBOX:
+									if (allmenus->menu[downmenu].item.listbox)
+										if (allmenus->menu[downmenu].item.listbox->bar)
+										{
+											allmenus->menu[downmenu].item.listbox->bar->showtypet=ITEMSHOW_NOFOCUS;
+											allmenus->menu[downmenu].item.listbox->bar->showtypeb=ITEMSHOW_NOFOCUS;
+											allmenus->menu[downmenu].item.listbox->bar->showbutton=ITEMSHOW_NOFOCUS;
+										}
+								break;
+							}
+						}
+						else
+						{
+							needredraw=1;
+							downmenu = NOSELECTMENUBAR;
+						}
+					}
+				}
+			}
+			if (allmenus->defaultbutton>=0)
+			{
+				if (allmenus->menu[allmenus->defaultbutton].itemtype==ISEDITBOX)
+				{
+					if (cursorblink!=getcursorblinktype())
+					{
+						cursorblink=getcursorblinktype();
+						updateonemenuitem(allmenus,allmenus->defaultbutton);
+					}
+				}
+			}
+			if (editboxchanges||needredraw||activeitemchange||(allmenus->menuflags&MENUFLAGS_ALWAYSDRAW))
+			{
+				scrollportrait_menu=scrollportrait;
+				clearscrollportrait();
+				if (allmenus->prevmenu)//if exist prev menu need to show it only
+				{
+					restorepartscreen(0,0,gameconf.grmode.x,gameconf.grmode.y,prev_entire_screen);
+					checkanddrawmenu(allmenus->prevmenu,ITEMALLDISABLED,updateunder);
+					RunCallBackFuncs(allmenus->prevmenu);
+	//				if (allmenus->prevmenu->CallBackFunc)
+	//			    (*allmenus->prevmenu->CallBackFunc)(allmenus->prevmenu,allmenus->prevmenu->somecallbackdata);
+				//no updates showvalue if all disabled( usually previous menu showing)
+	//				activemenuupdatevalues(allmenus->prevmenu,ITEMALLDISABLED);
+				}
+				checkanddrawmenu(allmenus,allmenus->vars.BarChanges.bar,updateunder);
+				needredraw=0;
+				setmouseonitem(0);
+			}
+			activemenuupdatevalues(allmenus,activeitem);
+			exitcallback=RunCallBackFuncs(allmenus);
+			if (exitcallback)
+			{
+				selectedmenu=exitcallback;
+				break;
+			}
+		}while(selectedmenu==NOSELECTMENUBAR);
     }//flags
     lowMouse.GetPos();
     loadunderitems(allmenus,ITEM_ONLYFREE);
     unregmenucallbacks();
-    mymousemoveevent(highMouse.PosX,highMouse.PosY);
+    mymousemoveevent(highMouse->PosX,highMouse->PosY);
     if (allmenus->prevmenu)
 	loadpartscreen(0,0,gameconf.grmode.x,gameconf.grmode.y,prev_entire_screen);
     MENUACTIVE=0;
@@ -828,7 +825,7 @@ int showlistmenu(MENUSTR *allmenus)
     eventwindowloop();
     regmenu(allmenus->x,allmenus->y,allmenus,&getmouseonmenubar);			//set menu hotcoord for mouse
     saveunderitems(allmenus);
-    mymousemoveevent(highMouse.PosX,highMouse.PosY);
+    mymousemoveevent(highMouse->PosX,highMouse->PosY);
     scrollportrait_menu=scrollportrait;
     clearscrollportrait();
     checkanddrawmenu(allmenus,ITEMNOONEACTIVE,ITEM_RESTOREANDFREE);
@@ -841,10 +838,10 @@ int showlistmenu(MENUSTR *allmenus)
 	    RunCallBackFuncs(allmenus->prevmenu);
 //	    if (allmenus->prevmenu->CallBackFunc)
 //		(*allmenus->prevmenu->CallBackFunc)(allmenus->prevmenu,allmenus->prevmenu->somecallbackdata);
-	highMouse.SaveImageUnder();
-	highMouse.DrawMouse();
+	highMouse->SaveImageUnder();
+	highMouse->DrawMouse();
 	wscreenon();
-	highMouse.LoadImageUnder();
+	highMouse->LoadImageUnder();
 
 	allmenus->vars.BarChanges.bar = NOSELECTMENUBAR;
 	if (activeitemchange) //move moved on other menu
@@ -3824,7 +3821,7 @@ void changelistbox_buttonbarposdelta(MENUSTR *allmenus,int nr,int mouseypos)
 	    bar=menuitem->item.listbox->bar;
 	    if (bar)
 	    {
-		if (highMouse.PosY<bar->buttonbary1)
+		if (highMouse->PosY<bar->buttonbary1)
 		{
 		    changelistbox_buttonbarpos(allmenus,nr,bar->buttonbary1-DLGGRP_SIZEY(LISTBOX_BUTTONBAR)*3/2);
 		}
@@ -4064,7 +4061,7 @@ void MENUDRAW::EndShowMenu(void)
 	    ALLMENUS.DelList(lastelem);
 	    wfree(prevdrawmenu);
 	}
-	mymousemoveevent(highMouse.PosX,highMouse.PosY);
+	mymousemoveevent(highMouse->PosX,highMouse->PosY);
     }
 }
 //==========================================
@@ -4092,7 +4089,7 @@ int drawmenu_ONETICK(MENUSTR *allmenus)
 	allmenus->vars.BarChanges.color = 0;
 	regmenu(allmenus->x,allmenus->y,allmenus,&getmouseonmenubar);//set menu hotcoord for mouse
 	allmenus->vars.expanditemnr=-1;		//save id of selected expanditem for future release
-	mymousemoveevent(highMouse.PosX,highMouse.PosY);
+	mymousemoveevent(highMouse->PosX,highMouse->PosY);
     }
     checkanddrawmenu(allmenus,allmenus->vars.BarChanges.bar,ITEM_NOSAVELOADUNDER);
     do{
@@ -4211,7 +4208,7 @@ int drawmenu_ONETICK(MENUSTR *allmenus)
 		    removeallmenuinfo(showlist);
 		    allmenus->menu[expitem].item.expandbox->showlist=NULL;
 		    allmenus->vars.expanditemnr=-1;
-		    mymousemoveevent(highMouse.PosX,highMouse.PosY);
+		    mymousemoveevent(highMouse->PosX,highMouse->PosY);
 		}
 		else
 		if (allmenus->vars.downmenu!=NOSELECTMENUBAR)

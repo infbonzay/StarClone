@@ -21,6 +21,7 @@
 #include "tbl.h"
 #include "action.h"
 #include "network_general.h"
+#include "gener.h"
 #include "vars.h"
 
 #ifdef  WITHSDL
@@ -249,9 +250,9 @@ void addvars(void)
     hightkart=(gameconf.grmode.y-32*3)/SIZESPRLANSHY;
     SCRFOGX=widthkart+2+1;
     SCRFOGY=hightkart+2+1;
-    highMouse.SetRestrictCoords(MOUSEMODE1,0,0,gameconf.grmode.x-1,gameconf.grmode.y-1);
-    highMouse.SetRestrictCoords(MOUSEMODE2,0,0,gameconf.grmode.x-1,gameconf.grmode.y-1);
-    highMouse.SetRestrictCoords(MOUSEMODE3,0,0,gameconf.grmode.x-1,gameconf.grmode.y-110);
+    highMouse->SetRestrictCoords(MOUSEMODE1,0,0,gameconf.grmode.x-1,gameconf.grmode.y-1);
+    highMouse->SetRestrictCoords(MOUSEMODE2,0,0,gameconf.grmode.x-1,gameconf.grmode.y-1);
+    highMouse->SetRestrictCoords(MOUSEMODE3,0,0,gameconf.grmode.x-1,gameconf.grmode.y-110);
 
     screenfog=(unsigned char *)wmalloc(SCRFOGX*SCRFOGY);
     screenmapused=(unsigned char *)wmalloc((hightkart+1)*(widthkart+1));

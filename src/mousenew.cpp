@@ -10,9 +10,32 @@
 #include "mousenew.h"
 
 //==============================
-HighMouse highMouse;
+HighMouse::HighMouse(void)
+{
+	PosX = 0;
+	PosY = 0;
+	PrevX = 0;
+	PrevY = 0;
+    MouseType = 0;
+    PrevMouseType = 0;
+    MoveFunc = NULL;
+	ClickFunc = NULL;
+	DblClickFunc = NULL;
+	RestrictNr = 0;
+    MouseOnBorder = false;
+    MouseOnSelectionMode = false;
+    WaitToPressLeftButton = false;
+	MouseOnObjClear();
+	lowMouse.LowInMoveEvent(&MouseMoveEvent);
+	lowMouse.LowInClickEvent(&MouseClickEvent);
+}
 //==============================
-
+HighMouse::~HighMouse(void)
+{
+	lowMouse.LowUnClickEvent();
+	lowMouse.LowUnMoveEvent();
+}
+//==============================
 int HighMouse::LoadOneCursor(char *filename,int typemouse)
 {
     if (mpqloadfile(filename,(char **)&cursors[typemouse].mousegrp))
@@ -73,7 +96,7 @@ void HighMouse::DrawMouse(void)
 {
 	if (!MENUACTIVE)
 	{
-		if (highMouse.MouseOnSelectionMode)
+		if (highMouse->MouseOnSelectionMode)
 		{
 			MouseType = SELECTIONMOUSE;
 		}
@@ -110,7 +133,7 @@ void HighMouse::DrawMouse(void)
 					}
 					else
 						MouseType = TARGGREENMOUSE;
-				}//highMouse.WaitToPressLeftButton
+				}//highMouse->WaitToPressLeftButton
 				else
 				{
 					if ((DestMouseOBJ) && select_aria && !MouseOnSelectionMode)
@@ -151,18 +174,18 @@ void HighMouse::DrawMouse(void)
 		DEBUGMESSCR("MouseType < 0 ");
 		return;
 	}
-	if (highMouse.cursors[MouseType].mousegrp)
+	if (highMouse->cursors[MouseType].mousegrp)
 	{
-		int deltax = -highMouse.cursors[MouseType].mousegrp->SizeX/2;
-		int deltay = -highMouse.cursors[MouseType].mousegrp->SizeY/2;
-		putgrpspr(PosX+deltax,PosY+deltay,highMouse.cursors[MouseType].mousegrp,NORMAL,
-				  0,0,NULL,highMouse.cursors[MouseType].curentposition);
+		int deltax = -highMouse->cursors[MouseType].mousegrp->SizeX/2;
+		int deltay = -highMouse->cursors[MouseType].mousegrp->SizeY/2;
+		putgrpspr(PosX+deltax,PosY+deltay,highMouse->cursors[MouseType].mousegrp,NORMAL,
+				  0,0,NULL,highMouse->cursors[MouseType].curentposition);
 	}
 }
 //==========================
 void HighMouse::DrawSelectionArea(void)
 {
-    if (highMouse.MouseOnSelectionMode)
+    if (highMouse->MouseOnSelectionMode)
     {
 		wrectangle(COLORHR,PrevX,PrevY,PosX,PosY);
     }
@@ -193,7 +216,7 @@ void HighMouse::GetMouseOnObj(void)
     {
         if (MouseOnOBJS[i])
         {
-    	    DestMouseOBJ = highMouse.MouseOnOBJS[i];
+    	    DestMouseOBJ = highMouse->MouseOnOBJS[i];
     	    DestMouseType = i;
     	    break;
     	}
@@ -266,9 +289,9 @@ void HighMouse::FixRestrict(int *x,int *y)
     }
     else
     {
-        if (*y < highMouse.RestrictXY[RestrictNr].y1)
+        if (*y < highMouse->RestrictXY[RestrictNr].y1)
 		{
-    	    *y = highMouse.RestrictXY[RestrictNr].y1;
+    	    *y = highMouse->RestrictXY[RestrictNr].y1;
 			change = true;
 		}
 	}
@@ -280,3 +303,69 @@ void HighMouse::FixRestrict(int *x,int *y)
 	}
 }
 //==========================================
+void HighMouse::InstallMoveEvent(MOUSEMOVEFUNC *eventFunc)
+{
+    MoveFunc = eventFunc;
+}
+//==========================
+void HighMouse::UninstallMoveEvent(void)
+{
+    MoveFunc = NULL;
+}
+//==========================
+void HighMouse::InstallClickEvent(MOUSECLICKFUNC *eventFunc)
+{
+    ClickFunc = eventFunc;
+}
+//==========================
+void HighMouse::UninstallClickEvent(void)
+{
+    ClickFunc = NULL;
+}
+//==========================
+void HighMouse::InstallDblClickEvent(MOUSEDBLCLICKFUNC *eventFunc)
+{
+    DblClickFunc = eventFunc;
+}
+//==========================
+void HighMouse::UninstallDblClickEvent(void)
+{
+    DblClickFunc = NULL;
+}
+//==========================
+
+
+
+//==========================
+void MouseMoveEvent(int x, int y)
+{
+	if (highMouse->MoveFunc)
+		(highMouse->MoveFunc)(x,y);
+}
+//==========================================
+void MouseClickEvent(int buttons)
+{
+	if (highMouse->ClickFunc)
+		(*highMouse->ClickFunc)(buttons);
+	static long long prevtimer = 0;
+	bool doubleClick;
+	if (buttons == 1)
+	{
+		if (tick_timer - prevtimer <= MOUSEDBLCLICKTIME)
+		{
+			doubleClick = true;
+		}
+		else
+		{
+			doubleClick = false;
+		}
+		prevtimer = tick_timer;
+		if (highMouse->DblClickFunc)
+			(*highMouse->DblClickFunc)();
+	}
+}
+
+
+
+
+

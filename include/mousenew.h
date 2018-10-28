@@ -18,6 +18,7 @@
 #define MAXMOUSEMODE 			4
 
 #define	SMOUTHMOUSE    			1.0001
+#define MOUSEDBLCLICKTIME		8
 
 #define MAXMOUSESIZEX			64
 #define MAXMOUSESIZEY			64
@@ -55,6 +56,9 @@
 
 #define TYPEOFCURSORS 			19
 
+typedef void (MOUSEMOVEFUNC)(int ,int );
+typedef void (MOUSECLICKFUNC)(int);
+typedef void (MOUSEDBLCLICKFUNC)(void);
 
 class HighMouse
 {
@@ -76,6 +80,10 @@ public:
 		char	SavedPixels[MAXMOUSESIZEX*MAXMOUSESIZEY];
     }SavedUnder;
 
+	MOUSEMOVEFUNC 		*MoveFunc;
+	MOUSECLICKFUNC 		*ClickFunc;
+	MOUSEDBLCLICKFUNC 	*DblClickFunc;
+
 	int		RestrictNr;
 	XY		RestrictXY[MAXMOUSEMODE];
 	OBJ		*MouseOnOBJS[MOUSEON_MAXVALUE];	//myunit,alianceunit,neutralunit,enemyunit,mybuild,aliancebuild,neutralbuild,enemybuild
@@ -92,24 +100,33 @@ public:
 		unsigned char	flag;
     }cursors[TYPEOFCURSORS];
 
-    int  LoadOneCursor(char *filename,int typemouse);
-    int  LoadAllCursors(void);
-    void UnloadCursors(void);
-    void DrawMouse(void);
-    void DrawSelectionArea(void);
-    void ScrollMouse(void);
-    void MouseOnObjClear(void);
-    void GetMouseOnObj(void);
-    void SaveImageUnder();
-    void LoadImageUnder();
-    bool CheckForBorder(int x1,int y1,int x2,int y2);
-	void SetRestrictCoords(int restrictNr);
-	void SetRestrictCoords(int restrictNr,int x1,int y1,int x2,int y2);
-	void FixRestrict(int *x,int *y);
-
+			HighMouse(void);
+			~HighMouse(void);
+    int  	LoadOneCursor(char *filename,int typemouse);
+    int  	LoadAllCursors(void);
+    void 	UnloadCursors(void);
+    void 	DrawMouse(void);
+    void 	DrawSelectionArea(void);
+    void 	ScrollMouse(void);
+    void 	MouseOnObjClear(void);
+    void 	GetMouseOnObj(void);
+    void 	SaveImageUnder();
+    void 	LoadImageUnder();
+    bool 	CheckForBorder(int x1,int y1,int x2,int y2);
+	void 	SetRestrictCoords(int restrictNr);
+	void 	SetRestrictCoords(int restrictNr,int x1,int y1,int x2,int y2);
+	void 	FixRestrict(int *x,int *y);
+	void 	InstallMoveEvent(MOUSEMOVEFUNC *eventFunc);
+	void 	UninstallMoveEvent(void);
+	void 	InstallClickEvent(MOUSECLICKFUNC *eventFunc);
+	void 	UninstallClickEvent(void);
+	void 	InstallDblClickEvent(MOUSEDBLCLICKFUNC *eventFunc);
+	void 	UninstallDblClickEvent(void);
 };
 
-extern HighMouse highMouse;
+void MouseMoveEvent(int x, int y);
+void MouseClickEvent(int buttons);
+
 
 #endif /*    _MOUSE_W   */
 

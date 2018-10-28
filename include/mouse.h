@@ -20,9 +20,9 @@
 #define	MAXSCROLLTICKS 6
 
 extern int 		factorscrollkey;
-extern int     	mouse_b,mousehotpos;
+extern int     	mousehotpos;
 extern int     	xmloc,ymloc,movieminikarta,mspeed;
-extern int      mousemaxx,mousemaxy,doublespeed,mousedoubleclick;
+extern int      mousemaxx,mousemaxy,doublespeed,mousedoubleclick,mouse_b;
 extern int     	decrxx,decryy;
 extern char    	waitfordownrightbuton,waitfordownleftbuton;
 extern char    	patr,mouseclear,mloc,mousescrollflag;

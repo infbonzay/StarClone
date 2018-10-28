@@ -354,7 +354,7 @@ void MenuAppearDrawCycle(MENUAPPEAR *items, MENUSTR *staticmenu, TICKCOUNTER *ti
 		if (staticmenu)
 			checkanddrawmenu(staticmenu,ITEMNOONEACTIVE,ITEM_NOSAVELOADUNDER);
 		eventwindowloop();
-		highMouse.DrawMouse();
+		highMouse->DrawMouse();
 		wscreenon();
 		restorescreen(savedscreen);
 		//calculate remain time to sleep (try to sleep MAXWAITMENUAPPEAR 'minus' time of draw entire one cycle)
@@ -515,10 +515,10 @@ int campaignselect(void)
 		}
 	}
     mousetype=NORMALMOUSE;
-    highMouse.LoadOneCursor(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,CAMPAIGN_STR[0],CAMPAIGN_STR[1],ARROW_STR),mousetype);
+    highMouse->LoadOneCursor(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,CAMPAIGN_STR[0],CAMPAIGN_STR[1],ARROW_STR),mousetype);
     mytimer.SetMyTimerFunc(&campaignselecttimer,NULL);
-    highMouse.SetRestrictCoords(MOUSEMODE1);
-    lowMouse.InstallMoveEvent(&mymousemoveevent);
+    highMouse->SetRestrictCoords(MOUSEMODE1);
+    highMouse->InstallMoveEvent(&mymousemoveevent);
 
     MENUFIRSTDATA menushow[2] = {
 			    {.elemid = 0, .appearposition = MENUAPPEAR_FROMLEFT, .disabled = 0},
@@ -623,14 +623,14 @@ int campaignselect(void)
 		}
     }while(repeat);
 
-    lowMouse.InstallMoveEvent(&mymousemoveevent);
+    highMouse->InstallMoveEvent(&mymousemoveevent);
 
     memcpy(gameconf.grmode.videobuff,backgnd.GetPcxRawBytes(),backgnd.xsizePcx()*backgnd.ysizePcx());
     MenuDisappear(raceselection,items,NULL);
 
-    lowMouse.UninstallMoveEvent();
+    highMouse->UninstallMoveEvent();
     mytimer.ClearMyTimerFunc();
-    highMouse.UnloadCursors();
+    highMouse->UnloadCursors();
 
     UnloadDialogBin(raceselection);
     fontpcx.closePcx();
@@ -697,10 +697,10 @@ int xcampaignselect(void)
 		}
 	}
     int mousetype = NORMALMOUSE;
-    highMouse.LoadOneCursor(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,CAMPAIGN_STR[0],CAMPAIGN_STR[1],ARROW_STR),mousetype);
+    highMouse->LoadOneCursor(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,CAMPAIGN_STR[0],CAMPAIGN_STR[1],ARROW_STR),mousetype);
     mytimer.SetMyTimerFunc(&campaignselecttimer,NULL);
-    highMouse.SetRestrictCoords(MOUSEMODE1);
-    lowMouse.InstallMoveEvent(&mymousemoveevent);
+    highMouse->SetRestrictCoords(MOUSEMODE1);
+    highMouse->InstallMoveEvent(&mymousemoveevent);
 
     MENUFIRSTDATA menushow[2] = {
 			    {.elemid = 0, .appearposition = MENUAPPEAR_FROMLEFT, .disabled = 0},
@@ -804,13 +804,13 @@ int xcampaignselect(void)
 		}
     }while(repeat);
 
-    lowMouse.InstallMoveEvent(&mymousemoveevent);
+    highMouse->InstallMoveEvent(&mymousemoveevent);
     memcpy(gameconf.grmode.videobuff,backgnd.GetPcxRawBytes(),backgnd.xsizePcx()*backgnd.ysizePcx());
     MenuDisappear(raceselection, items, NULL);
 
-    lowMouse.UninstallMoveEvent();
+    highMouse->UninstallMoveEvent();
     mytimer.ClearMyTimerFunc();
-    highMouse.UnloadCursors();
+    highMouse->UnloadCursors();
 
 
     UnloadDialogBin(raceselection);
@@ -858,10 +858,10 @@ int glu_loadgame(void)
     setmenuflags(gluload,MENUFLAGS_ALWAYSDRAW);
 
     int mousetype=NORMALMOUSE;
-    highMouse.LoadOneCursor(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,SINGLEGAME_STR[0],SINGLEGAME_STR[1],ARROW_STR),mousetype);
+    highMouse->LoadOneCursor(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,SINGLEGAME_STR[0],SINGLEGAME_STR[1],ARROW_STR),mousetype);
     mytimer.SetMyTimerFunc(&menutimer,NULL);
-    highMouse.SetRestrictCoords(MOUSEMODE1);
-    lowMouse.InstallMoveEvent(&mymousemoveevent);
+    highMouse->SetRestrictCoords(MOUSEMODE1);
+    highMouse->InstallMoveEvent(&mymousemoveevent);
 
     MENUFIRSTDATA menushow[3] = {
 			    {.elemid = 0, .appearposition = MENUAPPEAR_FROMLEFT, .disabled = 0},
@@ -927,12 +927,12 @@ int glu_loadgame(void)
 		saves.DeallocList();
     }while(repeat);
 
-    lowMouse.InstallMoveEvent(&mymousemoveevent);
+    highMouse->InstallMoveEvent(&mymousemoveevent);
     MenuDisappear(gluload, items, NULL);
 
-    lowMouse.UninstallMoveEvent();
+    highMouse->UninstallMoveEvent();
     mytimer.ClearMyTimerFunc();
-    highMouse.UnloadCursors();
+    highMouse->UnloadCursors();
 
 
     UnloadDialogBin(gluload);
@@ -980,10 +980,10 @@ int glu_loadreplay(void)
     setmenuflags(gluloadrep,MENUFLAGS_ALWAYSDRAW);
 
     int mousetype=NORMALMOUSE;
-    highMouse.LoadOneCursor(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,SINGLEGAME_STR[0],SINGLEGAME_STR[1],ARROW_STR),mousetype);
+    highMouse->LoadOneCursor(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,SINGLEGAME_STR[0],SINGLEGAME_STR[1],ARROW_STR),mousetype);
     mytimer.SetMyTimerFunc(&menutimer,NULL);
-    highMouse.SetRestrictCoords(MOUSEMODE1);
-    lowMouse.InstallMoveEvent(&mymousemoveevent);
+    highMouse->SetRestrictCoords(MOUSEMODE1);
+    highMouse->InstallMoveEvent(&mymousemoveevent);
 
     MENUFIRSTDATA menushow[3] = {
 			    {.elemid = 0, .appearposition = MENUAPPEAR_FROMLEFT, .disabled = 0},
@@ -1045,12 +1045,12 @@ int glu_loadreplay(void)
 		saves.DeallocList();
     }while(repeat);
 
-    lowMouse.InstallMoveEvent(&mymousemoveevent);
+    highMouse->InstallMoveEvent(&mymousemoveevent);
     MenuDisappear(gluloadrep, items, NULL);
 
-    lowMouse.UninstallMoveEvent();
+    highMouse->UninstallMoveEvent();
     mytimer.ClearMyTimerFunc();
-    highMouse.UnloadCursors();
+    highMouse->UnloadCursors();
 
 
     UnloadDialogBin(gluloadrep);
@@ -1191,10 +1191,10 @@ int glu_briefing(int race,int networksingle,struct mapinfo *info,char *prefix_ca
     setmenuflags(glubrief,MENUFLAGS_ALWAYSDRAW);
 
     int mousetype=NORMALMOUSE;
-    highMouse.LoadOneCursor(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,'R',RACE_CHAR[race],ARROW_STR),mousetype);
+    highMouse->LoadOneCursor(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,'R',RACE_CHAR[race],ARROW_STR),mousetype);
     mytimer.SetMyTimerFunc(&menutimer,NULL);
-    highMouse.SetRestrictCoords(MOUSEMODE1);
-    lowMouse.InstallMoveEvent(&mymousemoveevent);
+    highMouse->SetRestrictCoords(MOUSEMODE1);
+    highMouse->InstallMoveEvent(&mymousemoveevent);
 
     e=BRIEFING_ELEMS[race];
 
@@ -1374,12 +1374,12 @@ int glu_briefing(int race,int networksingle,struct mapinfo *info,char *prefix_ca
 
     StopMusic(MUSIC_STOPWITHFADE);
 
-    lowMouse.InstallMoveEvent(&mymousemoveevent);
+    highMouse->InstallMoveEvent(&mymousemoveevent);
     MenuDisappear(glubrief, items, NULL);
 
-    lowMouse.UninstallMoveEvent();
+    highMouse->UninstallMoveEvent();
     mytimer.ClearMyTimerFunc();
-    highMouse.UnloadCursors();
+    highMouse->UnloadCursors();
 
 
     UnloadDialogBin(errmenu);
@@ -1607,10 +1607,10 @@ void glu_score(struct mapinfo *info)
     changetextitem(gluscore,9,txt);
 
     mytimer.SetMyTimerFunc(&scoremenutimer,NULL);
-    highMouse.SetRestrictCoords(MOUSEMODE1);
-    lowMouse.InstallMoveEvent(&mymousemoveevent);
+    highMouse->SetRestrictCoords(MOUSEMODE1);
+    highMouse->InstallMoveEvent(&mymousemoveevent);
     int mousetype=NORMALMOUSE;
-    highMouse.LoadOneCursor(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,RACE_CHAR[race],LOSEWIN_STR[losewin],ARROW_STR),mousetype);
+    highMouse->LoadOneCursor(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,RACE_CHAR[race],LOSEWIN_STR[losewin],ARROW_STR),mousetype);
 
     MENUFIRSTDATA menushow[1] = {
 			    {.elemid = 0, .appearposition = MENUAPPEAR_FROMLEFT, .disabled = 0}
@@ -1711,12 +1711,12 @@ void glu_score(struct mapinfo *info)
 
     StopMusic(MUSIC_STOPWITHFADE);
 
-    lowMouse.InstallMoveEvent(&mymousemoveevent);
+    highMouse->InstallMoveEvent(&mymousemoveevent);
     MenuDisappear(gluscore, items, NULL);
 
-    lowMouse.UninstallMoveEvent();
+    highMouse->UninstallMoveEvent();
     mytimer.ClearMyTimerFunc();
-    highMouse.UnloadCursors();
+    highMouse->UnloadCursors();
     //stop wav if not stopped
     UnloadDialogBin(gluscore);
     gluscore=NULL;
@@ -1746,10 +1746,10 @@ int mainmenu(void)
     palchange(newpal,gameconf.videoconf.gamma,gameconf.videoconf.saturate);
     if (!gameconf.grmode.flags & DISPLAYFLAGS_EMULATIONMODE)
 		wscreenon();
-    highMouse.LoadOneCursor(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,MAINMENU_STR[0],MAINMENU_STR[1],ARROW_STR),NORMALMOUSE);
+    highMouse->LoadOneCursor(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,MAINMENU_STR[0],MAINMENU_STR[1],ARROW_STR),NORMALMOUSE);
     mytimer.SetMyTimerFunc(&mainmenutimer,NULL);
-    highMouse.SetRestrictCoords(MOUSEMODE1);
-    lowMouse.InstallMoveEvent(&mymousemoveevent);
+    highMouse->SetRestrictCoords(MOUSEMODE1);
+    highMouse->InstallMoveEvent(&mymousemoveevent);
     MENUSTR *mainmenu=LoadDialogBin("rez\\glumain.bin",DIALOGBIN_MAINDIALOGS,IDFONT16X);
     menuspecialtables(mainmenu,fntadr,NULL);
     changetextitem(mainmenu,9,GAMEVERSION);
@@ -1788,9 +1788,9 @@ int mainmenu(void)
     }while(repeat);
 
     UnloadDialogBin(mainmenu);
-    lowMouse.UninstallMoveEvent();
+    highMouse->UninstallMoveEvent();
     mytimer.ClearMyTimerFunc();
-    highMouse.UnloadCursors();
+    highMouse->UnloadCursors();
 
     fontpcx.closePcx();
     backgnd.closePcx();
@@ -1935,10 +1935,10 @@ int glu_conn(void)
     setmenuflags(gluconn,MENUFLAGS_ALWAYSDRAW);
 
     int mousetype=NORMALMOUSE;
-    highMouse.LoadOneCursor(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,SINGLEGAME_STR[0],SINGLEGAME_STR[1],ARROW_STR),mousetype);
+    highMouse->LoadOneCursor(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,SINGLEGAME_STR[0],SINGLEGAME_STR[1],ARROW_STR),mousetype);
     mytimer.SetMyTimerFunc(&menutimer,NULL);
-    highMouse.SetRestrictCoords(MOUSEMODE1);
-    lowMouse.InstallMoveEvent(&mymousemoveevent);
+    highMouse->SetRestrictCoords(MOUSEMODE1);
+    highMouse->InstallMoveEvent(&mymousemoveevent);
 
     menunetw[4].disabled = 1;
     menunetwitems = MenuAppear(gluconn,5,menunetw,NULL);
@@ -2004,7 +2004,7 @@ int glu_conn(void)
     gateways.FlushList();
     saves.FlushList();
 
-    lowMouse.InstallMoveEvent(&mymousemoveevent);
+    highMouse->InstallMoveEvent(&mymousemoveevent);
 
     if (gatewayitem)
     {
@@ -2019,9 +2019,9 @@ int glu_conn(void)
     MenuDisappear(gluconn, menunetwitems, NULL);
     menunetwitems = NULL;
 
-    lowMouse.UninstallMoveEvent();
+    highMouse->UninstallMoveEvent();
     mytimer.ClearMyTimerFunc();
-    highMouse.UnloadCursors();
+    highMouse->UnloadCursors();
 
     UnloadDialogBin(gluconn);
     fontpcx.closePcx();
@@ -2162,10 +2162,10 @@ int glu_join(FORCE_SLOTS *fslots)
     }
 
     int mousetype=NORMALMOUSE;
-    highMouse.LoadOneCursor(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,SINGLEGAME_STR[0],SINGLEGAME_STR[1],ARROW_STR),mousetype);
+    highMouse->LoadOneCursor(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,SINGLEGAME_STR[0],SINGLEGAME_STR[1],ARROW_STR),mousetype);
     mytimer.SetMyTimerFunc(&menutimerandnetwork,NULL);
-    highMouse.SetRestrictCoords(MOUSEMODE1);
-    lowMouse.InstallMoveEvent(&mymousemoveevent);
+    highMouse->SetRestrictCoords(MOUSEMODE1);
+    highMouse->InstallMoveEvent(&mymousemoveevent);
 
     MENUFIRSTDATA menushow[4] = {
 			    {.elemid = 0, .appearposition = MENUAPPEAR_FROMLEFT, .disabled = 0},
@@ -2302,12 +2302,12 @@ int glu_join(FORCE_SLOTS *fslots)
 		EmptyAllGamesList();
     }
 
-    lowMouse.InstallMoveEvent(&mymousemoveevent);
+    highMouse->InstallMoveEvent(&mymousemoveevent);
     MenuDisappear(glujoin, items ,NULL);
 
-    lowMouse.UninstallMoveEvent();
+    highMouse->UninstallMoveEvent();
     mytimer.ClearMyTimerFunc();
-    highMouse.UnloadCursors();
+    highMouse->UnloadCursors();
 
     UnloadDialogBin(glujoin);
     fontpcx.closePcx();
@@ -2367,10 +2367,10 @@ int glu_login(void)
     AddPrevMenuShowing(nplayer,singammenu);
 
     int mousetype=NORMALMOUSE;
-    highMouse.LoadOneCursor(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,SINGLEGAME_STR[0],SINGLEGAME_STR[1],ARROW_STR),mousetype);
+    highMouse->LoadOneCursor(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,SINGLEGAME_STR[0],SINGLEGAME_STR[1],ARROW_STR),mousetype);
     mytimer.SetMyTimerFunc(&menutimer,NULL);
-    highMouse.SetRestrictCoords(MOUSEMODE1);
-    lowMouse.InstallMoveEvent(&mymousemoveevent);
+    highMouse->SetRestrictCoords(MOUSEMODE1);
+    highMouse->InstallMoveEvent(&mymousemoveevent);
 
     mylist ulist;
     listusers(USERS_DIRECTORY,&ulist);
@@ -2532,13 +2532,13 @@ int glu_login(void)
     }while(repeat);
 
 
-    lowMouse.InstallMoveEvent(&mymousemoveevent);
+    highMouse->InstallMoveEvent(&mymousemoveevent);
 
     MenuDisappear(singammenu, items, NULL);
 
-    lowMouse.UninstallMoveEvent();
+    highMouse->UninstallMoveEvent();
     mytimer.ClearMyTimerFunc();
-    highMouse.UnloadCursors();
+    highMouse->UnloadCursors();
 
     UnloadDialogBin(nplayer);
     UnloadDialogBin(singammenu);
@@ -3034,10 +3034,10 @@ int selectmapmenu(void)
     setmenuflags(selmap,MENUFLAGS_ALWAYSDRAW);
 
     int mousetype=NORMALMOUSE;
-    highMouse.LoadOneCursor(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,SINGLEGAME_STR[0],SINGLEGAME_STR[1],ARROW_STR),mousetype);
+    highMouse->LoadOneCursor(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,SINGLEGAME_STR[0],SINGLEGAME_STR[1],ARROW_STR),mousetype);
     mytimer.SetMyTimerFunc(&menutimer,NULL);
-    highMouse.SetRestrictCoords(MOUSEMODE1);
-    lowMouse.InstallMoveEvent(&mymousemoveevent);
+    highMouse->SetRestrictCoords(MOUSEMODE1);
+    highMouse->InstallMoveEvent(&mymousemoveevent);
 
     MENUFIRSTDATA menushow[5] = {
 			    {.elemid = 0, .appearposition = MENUAPPEAR_FROMLEFT, .disabled = 0},
@@ -3265,12 +3265,12 @@ int selectmapmenu(void)
 			filelist.DeallocList();
     }while(repeat);
 
-    lowMouse.InstallMoveEvent(&mymousemoveevent);
+    highMouse->InstallMoveEvent(&mymousemoveevent);
     MenuDisappear(selmap, items, NULL);
 
-    lowMouse.UninstallMoveEvent();
+    highMouse->UninstallMoveEvent();
     mytimer.ClearMyTimerFunc();
-    highMouse.UnloadCursors();
+    highMouse->UnloadCursors();
 
 
     UnloadDialogBin(selmap);
@@ -3355,10 +3355,10 @@ int glu_creat(FORCE_SLOTS *fslots)
     setmenuflags(glucreat,MENUFLAGS_ALWAYSDRAW);
 
     int mousetype=NORMALMOUSE;
-    highMouse.LoadOneCursor(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,SINGLEGAME_STR[0],SINGLEGAME_STR[1],ARROW_STR),mousetype);
+    highMouse->LoadOneCursor(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,SINGLEGAME_STR[0],SINGLEGAME_STR[1],ARROW_STR),mousetype);
     mytimer.SetMyTimerFunc(&menutimerandnetwork,NULL);
-    highMouse.SetRestrictCoords(MOUSEMODE1);
-    lowMouse.InstallMoveEvent(&mymousemoveevent);
+    highMouse->SetRestrictCoords(MOUSEMODE1);
+    highMouse->InstallMoveEvent(&mymousemoveevent);
 
     MENUFIRSTDATA menushow[4] = {
 			    {.elemid = 0, .appearposition = MENUAPPEAR_FROMLEFT, .disabled = 0},
@@ -3554,12 +3554,12 @@ int glu_creat(FORCE_SLOTS *fslots)
 			filelist.DeallocList();
     }while(repeat);
 
-    lowMouse.InstallMoveEvent(&mymousemoveevent);
+    highMouse->InstallMoveEvent(&mymousemoveevent);
     MenuDisappear(glucreat, items, NULL);
 
-    lowMouse.UninstallMoveEvent();
+    highMouse->UninstallMoveEvent();
     mytimer.ClearMyTimerFunc();
-    highMouse.UnloadCursors();
+    highMouse->UnloadCursors();
 
     UnloadDialogBin(glucreat);
     SetTranspTable(NULL);
@@ -3907,10 +3907,10 @@ int glu_chat(int masterjoin,int playernr,FORCE_SLOTS *fslots)
     }
 
     int mousetype=NORMALMOUSE;
-    highMouse.LoadOneCursor(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,SINGLEGAME_STR[0],SINGLEGAME_STR[1],ARROW_STR),mousetype);
+    highMouse->LoadOneCursor(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,SINGLEGAME_STR[0],SINGLEGAME_STR[1],ARROW_STR),mousetype);
     mytimer.SetMyTimerFunc(&menutimerandnetwork,NULL);
-    highMouse.SetRestrictCoords(MOUSEMODE1);
-    lowMouse.InstallMoveEvent(&mymousemoveevent);
+    highMouse->SetRestrictCoords(MOUSEMODE1);
+    highMouse->InstallMoveEvent(&mymousemoveevent);
 
     MENUFIRSTDATA menushow[5] = {
 			    {.elemid = 0, .appearposition = MENUAPPEAR_FROMBOTTOM, .disabled = 0},
@@ -4161,12 +4161,12 @@ int glu_chat(int masterjoin,int playernr,FORCE_SLOTS *fslots)
     CallNetwork(NETWORK_CLOSENETWORK,&broadcast);
     CallNetwork(NETWORK_CLOSENETWORK,&waitconn);
 
-    lowMouse.InstallMoveEvent(&mymousemoveevent);
+    highMouse->InstallMoveEvent(&mymousemoveevent);
     MenuDisappear(gluchat, items, NULL);
 
-    lowMouse.UninstallMoveEvent();
+    highMouse->UninstallMoveEvent();
     mytimer.ClearMyTimerFunc();
-    highMouse.UnloadCursors();
+    highMouse->UnloadCursors();
 
     UnloadDialogBin(gluchat);
     fontpcx.closePcx();
@@ -4985,7 +4985,7 @@ int DownloadMpqMenu(int mpqcfgresult)
     *files[1] = 0;
     *files[2] = 0;
 
-    highMouse.SetRestrictCoords(MOUSEMODE1,0,0,gameconf.grmode.x - 1,gameconf.grmode.y - 1);
+    highMouse->SetRestrictCoords(MOUSEMODE1,0,0,gameconf.grmode.x - 1,gameconf.grmode.y - 1);
 
     backgnd.openMpqPcx(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,DLNDMENU_STR[0],DLNDMENU_STR[1],BACKGND_STR));
     backgnd.readPalFromPcx(newpal,0);//readfourbytepalette
@@ -4999,10 +4999,10 @@ int DownloadMpqMenu(int mpqcfgresult)
     palchange(newpal,gameconf.videoconf.gamma,gameconf.videoconf.saturate);
     if (!(gameconf.grmode.flags & DISPLAYFLAGS_EMULATIONMODE))
 		wscreenon();
-    highMouse.LoadOneCursor(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,MAINMENU_STR[0],MAINMENU_STR[1],ARROW_STR),NORMALMOUSE);
+    highMouse->LoadOneCursor(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,MAINMENU_STR[0],MAINMENU_STR[1],ARROW_STR),NORMALMOUSE);
     mytimer.SetMyTimerFunc(&mainmenutimer,NULL);
-    highMouse.SetRestrictCoords(MOUSEMODE1);
-    lowMouse.InstallMoveEvent(&mymousemoveevent);
+    highMouse->SetRestrictCoords(MOUSEMODE1);
+    highMouse->InstallMoveEvent(&mymousemoveevent);
 
     mpqtotal=mpqcfgresult>>8;
     mpqremain=mpqcfgresult&0xff;
@@ -5099,9 +5099,9 @@ int DownloadMpqMenu(int mpqcfgresult)
 			exitstatus=-1;
 			break;
     }
-    lowMouse.UninstallMoveEvent();
+    highMouse->UninstallMoveEvent();
     mytimer.ClearMyTimerFunc();
-    highMouse.UnloadCursors();
+    highMouse->UnloadCursors();
     fontpcx.closePcx();
     backgnd.closePcx();
     unlink(WGET_FILESIZE2);
@@ -5187,7 +5187,7 @@ int putgamemenu(MENUDRAW *menudraw,MENUPARAMS *menuparams)
 				{
 					setmenuitem_VISIBLED(menudraw->menutodraw,3,FALSE);	//pausegame
 					setmenuitem_VISIBLED(menudraw->menutodraw,4,TRUE);	//resumegame
-					mymousemoveevent(highMouse.PosX,highMouse.PosY);
+					mymousemoveevent(highMouse->PosX,highMouse->PosY);
 				}
 			}
 			break;
@@ -5199,7 +5199,7 @@ int putgamemenu(MENUDRAW *menudraw,MENUPARAMS *menuparams)
 				{
 					setmenuitem_VISIBLED(menudraw->menutodraw,3,TRUE);	//pausegame
 					setmenuitem_VISIBLED(menudraw->menutodraw,4,FALSE);	//resumegame
-					mymousemoveevent(highMouse.PosX,highMouse.PosY);
+					mymousemoveevent(highMouse->PosX,highMouse->PosY);
 				}
 			}
 			break;

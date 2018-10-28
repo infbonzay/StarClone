@@ -12,6 +12,7 @@
 #include "menu.h"
 #include "queue.h"
 #include "dialogbin.h"
+#include "mousenew.h"
 
 #define GAMEBUTTON_CLEARALL	0x00
 #define GAMEBUTTON_KEYPRESS	0x01
@@ -26,24 +27,24 @@
 #define GUESTGAMER		1
 
 #define CONTINUEGAME		-2
-#define EXITGAME		-1
-#define SINGLEGAME		1
+#define EXITGAME			-1
+#define SINGLEGAME			1
 #define MULTIPLAYERGAME		2
-#define EDITORGAME		3
-#define RESTARTGAME		4
-#define QUITMISSION		5
+#define EDITORGAME			3
+#define RESTARTGAME			4
+#define QUITMISSION			5
 #define PREVIOUSMENU		5
 #define BECOMEOBSERVER		6
-#define JOINGAME		7
-#define CREATEGAME		8
-#define CREATEDGAME		9
+#define JOINGAME			7
+#define CREATEGAME			8
+#define CREATEDGAME			9
 #define EXITCREATEDGAME		10
 #define PLAYNETWORKGAME		11
-#define QUITGAME		12
-#define VIEWINTRO		13
-#define VIEWCREDITS		14
+#define QUITGAME			12
+#define VIEWINTRO			13
+#define VIEWCREDITS			14
 
-#define MAINMENUSTATUS_LOADGAMEOK	1000
+#define MAINMENUSTATUS_LOADGAMEOK		1000
 #define MAINMENUSTATUS_LOADGAMEFAILED	1001
 #define MAINMENUSTATUS_SAVEGAMEFAILED	1002
 
@@ -66,25 +67,25 @@
 
 #define MAXCOMMANDELEM		(1000 * 24)
 
-#define MOUSEONNONE		-2
-#define MOUSEONMINIMAP		0
-#define MOUSEONSTATUNIT		1
-#define MOUSEONTRANSP		5
-#define MOUSEONUPGRDICONS	6		
-#define MOUSEONICONSMIN		13
-#define MOUSEONICONSMAX		21
-#define MOUSEONMENUBUTTON	22
+#define MOUSEONNONE				-2
+#define MOUSEONMINIMAP			0
+#define MOUSEONSTATUNIT			1
+#define MOUSEONTRANSP			5
+#define MOUSEONUPGRDICONS		6
+#define MOUSEONICONSMIN			13
+#define MOUSEONICONSMAX			21
+#define MOUSEONMENUBUTTON		22
 #define MOUSEONTERRAINBUTTON	23
 #define MOUSEONMESSAGEBUTTON	24
 #define MOUSEONDIPLOMACYBUTTON	25
-#define MOUSEONMAP		26
+#define MOUSEONMAP				26
 
 
 
 
 #define F10BUTTON_PICT			0
 #define TERRAINBUTTON_PICT		3
-#define DIPLOMACYBUTTON_PICT		83
+#define DIPLOMACYBUTTON_PICT	83
 #define MESSAGEBUTTON_PICT		130
 
 #define MENUBUTTON_DISABLED		0
@@ -121,14 +122,14 @@ void ShowGameStatusMenu(int *prevticks);
 void ActivateCheat(int cheatid);
 
 
-#define MINIMAPDIALOG_MAIN		0
-#define MINIMAPDIALOG_MINIMAP		1
-#define MINIMAPDIALOG_TERRAINBUTTON	2
+#define MINIMAPDIALOG_MAIN				0
+#define MINIMAPDIALOG_MINIMAP			1
+#define MINIMAPDIALOG_TERRAINBUTTON		2
 #define MINIMAPDIALOG_DIPLOMACYBUTTON	3
-#define MINIMAPDIALOG_MESSAGEBUTTON	4
+#define MINIMAPDIALOG_MESSAGEBUTTON		4
 
-#define F10DIALOG_MAIN			0
-#define F10DIALOG_MENUBUTTON		1
+#define F10DIALOG_MAIN					0
+#define F10DIALOG_MENUBUTTON			1
 
 
 
@@ -149,6 +150,7 @@ extern Queue 		QueueGame;
 
 extern long 		commandqueuetick;
 extern CommandQueue 	UnitsCommandQueue;
+extern HighMouse *highMouse;
 
 #endif /*_GENER_W*/
 

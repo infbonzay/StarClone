@@ -5,9 +5,9 @@
 #define WMLEFTKEY  (SDL_BUTTON(1))
 #define WMRIGHTKEY (SDL_BUTTON(3))
 
-typedef void (*PMOUSEMOVEEVENTCALLBACK)(int ,int );
-typedef void (*PMOUSECLICKEVENTCALLBACK)(int);
-typedef void (*PMOUSEDBLCLICKEVENTCALLBACK)(int);
+typedef void (MOUSEMOVEEVENTCALLBACK)(int ,int );
+typedef void (MOUSECLICKEVENTCALLBACK)(int);
+typedef void (MOUSEDBLCLICKEVENTCALLBACK)(void);
 
 class LowMouse
 {
@@ -20,16 +20,13 @@ public:
     void FlushPos(void);
     void SetPos(int x,int y);
 
-    PMOUSEMOVEEVENTCALLBACK		MoveEventFunc;
-    PMOUSECLICKEVENTCALLBACK	ClickEventFunc;
-    PMOUSECLICKEVENTCALLBACK	DblClickEventFunc;
+    MOUSEMOVEEVENTCALLBACK		*MoveEventFunc;
+    MOUSECLICKEVENTCALLBACK		*ClickEventFunc;
 
-    void InstallMoveEvent(PMOUSEMOVEEVENTCALLBACK pFunc);
-    void UninstallMoveEvent(void);
-    void InstallClickEvent(PMOUSECLICKEVENTCALLBACK pFunc);
-    void UninstallClickEvent(void);
-    void InstallDblClickEvent(PMOUSEDBLCLICKEVENTCALLBACK pFunc);
-    void UninstallDblClickEvent(void);
+    void LowInMoveEvent(MOUSEMOVEEVENTCALLBACK *pFunc);
+    void LowUnMoveEvent(void);
+    void LowInClickEvent(MOUSECLICKEVENTCALLBACK *pFunc);
+    void LowUnClickEvent(void);
 
 };
 

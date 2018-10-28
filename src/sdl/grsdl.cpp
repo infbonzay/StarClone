@@ -14,7 +14,6 @@
 #include "sdl/keysdl.h"
 #include "sdl/grsdl.h"
 
-#define MOUSEDBLCLICKTIME 8
 mycycle<uint16_t> keybuffer = mycycle<uint16_t>(16,MYCYCLE_INFINITE);
 const uint8_t SHIFTKEYS[128]={
 		    '\x00','\x00','\x00','\x00','\x00','\x00','\x00','\x00','\x00','\x00',
@@ -254,10 +253,8 @@ void settextmode(void)
 //==========================
 int eventwindowloop(void) //return 1 - on quit
 {
-    static long long prevtimer = 0;
     int exitevent = 0;
     int UpperKeysActive;
-    int doubleClick;
     SDL_Event event;
     uint8_t buttons;
     while ( SDL_PollEvent(&event))
@@ -269,28 +266,14 @@ int eventwindowloop(void) //return 1 - on quit
 					(*lowMouse.MoveEventFunc)(event.motion.x,event.motion.y);
 				break;
 			case SDL_MOUSEBUTTONDOWN:
-				doubleClick = 0;
 				buttons = 1 << (event.button.button - 1);
-				if (buttons == 1)
-				{
-					if (tick_timer - prevtimer <= MOUSEDBLCLICKTIME)
-					{
-						doubleClick = 1;
-					}
-					else
-						doubleClick = 0;
-					prevtimer = tick_timer;
-					if (lowMouse.DblClickEventFunc)
-						(*lowMouse.DblClickEventFunc)(doubleClick);
-				}
-				if (doubleClick)
-					if (lowMouse.ClickEventFunc)
-						(*lowMouse.ClickEventFunc)(buttons);
+				if (lowMouse.ClickEventFunc)
+					(*lowMouse.ClickEventFunc)(buttons);
 				//mouse_b |= buttons;
 				break;
 			case SDL_MOUSEBUTTONUP:
-				if (lowMouse.DblClickEventFunc)
-					(*lowMouse.DblClickEventFunc)(0);
+				if (lowMouse.ClickEventFunc)
+					(*lowMouse.ClickEventFunc)(~buttons);
 				needrefreshatend = 1;
 				break;
 			case SDL_KEYDOWN:

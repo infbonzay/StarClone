@@ -44,7 +44,7 @@ void putdestination(struct OBJ *destobj,int xm,int ym,int modemove,int posibleco
     int race;
     if (PLAYER[NUMBGAMER].isobserverflag)
 	return;
-    if (!highMouse.WaitToPressLeftButton)
+    if (!highMouse->WaitToPressLeftButton)
     {
 	if (buildconstr != SC_NOUNITNR)
 	{
@@ -89,9 +89,9 @@ errbuildonminimap:
 	    	}
 	    	else
 	    	{
-	    	    highMouse.WaitToPressLeftButton=1;
-		    SetVisualMapPosition((int) (((highMouse.PosX-Xkart-Xkartbeg)/factorx)-widthkart/2)*SIZESPRLANSHX,
-					 (int) (((highMouse.PosY-Ykart-Ykartbeg)/factory)-hightkart/2)*SIZESPRLANSHY);
+	    	    highMouse->WaitToPressLeftButton=1;
+		    SetVisualMapPosition((int) (((highMouse->PosX-Xkart-Xkartbeg)/factorx)-widthkart/2)*SIZESPRLANSHX,
+					 (int) (((highMouse->PosY-Ykart-Ykartbeg)/factory)-hightkart/2)*SIZESPRLANSHY);
 	    	    return;
 //	    	    if (IsBuild(buildconstr))
 //	    		goto errbuildonminimap;
@@ -112,7 +112,7 @@ errbuildonminimap:
 float scrollmapx(int border,float factor)
 {
     static float ticks=0;
-//    if (highMouse.cursorsCROLLON)
+//    if (highMouse->cursorsCROLLON)
 	if (!border)
 	{
 	    if (ticks>0)
@@ -143,7 +143,7 @@ float scrollmapx(int border,float factor)
 float scrollmapy(int border,float factor)
 {
     static float ticks=0;
-//    if (highMouse.cursorsCROLLON)
+//    if (highMouse->cursorsCROLLON)
 	if (!border)
 	{
 	    if (ticks>0)
@@ -176,7 +176,7 @@ void getmousetype(int xk,int yk)
 {
     static int oldc=0;
     int c;
-    highMouse.MouseType = NORMALMOUSE;
+    highMouse->MouseType = NORMALMOUSE;
     if (MENUACTIVE)
 	return;
     if (GAME)
@@ -186,12 +186,12 @@ void getmousetype(int xk,int yk)
         waitfordownleftbuton=0;
      if (!waitfordownleftbuton)
      {
-      if (!highMouse.WaitToPressLeftButton)
+      if (!highMouse->WaitToPressLeftButton)
       {
 	 buildconstr=SC_NOUNITNR;
          if ((mouse_b&WMLEFTKEY)&&(select_aria)&&!(karta_aria))
          {
-             if (highMouse.PrevY<gameconf.grmode.y-YDECICONS)
+             if (highMouse->PrevY<gameconf.grmode.y-YDECICONS)
                 patr=1;
              else
                 patr=0;
@@ -202,13 +202,13 @@ void getmousetype(int xk,int yk)
             if (patr)
             {
                if (KEYPRESS(SHIFTLKEY)||KEYPRESS(SHIFTRKEY))
-                  selectMAN(highMouse.PrevX,highMouse.PrevY,highMouse.PosX,highMouse.PosY,1);
+                  selectMAN(highMouse->PrevX,highMouse->PrevY,highMouse->PosX,highMouse->PosY,1);
                else
-                  selectMAN(highMouse.PrevX,highMouse.PrevY,highMouse.PosX,highMouse.PosY,0);
+                  selectMAN(highMouse->PrevX,highMouse->PrevY,highMouse->PosX,highMouse->PosY,0);
                patr=0;
             }
-            highMouse.PrevX=highMouse.PosX;
-            highMouse.PrevY=highMouse.PosY;
+            highMouse->PrevX=highMouse->PosX;
+            highMouse->PrevY=highMouse->PosY;
           }
      }
      else
@@ -216,45 +216,45 @@ void getmousetype(int xk,int yk)
         if (waitfordownrightbuton&&(!(mouse_b&WMRIGHTKEY)))
         {
             waitfordownrightbuton=0;
-            highMouse.WaitToPressLeftButton=0;
+            highMouse->WaitToPressLeftButton=0;
         }
         if (properties[8] == MODECANCEL_BB_AB && (mouse_b&WMRIGHTKEY))
         {
             waitfordownrightbuton=1;
         }
-        if (highMouse.WaitToPressLeftButton==2)
+        if (highMouse->WaitToPressLeftButton==2)
            if (!(mouse_b & WMLEFTKEY))
-              highMouse.WaitToPressLeftButton = false;
+              highMouse->WaitToPressLeftButton = false;
         waitfordownleftbuton=1;
      }
     }
-    if (highMouse.WaitToPressLeftButton==1&&select_aria)
+    if (highMouse->WaitToPressLeftButton==1&&select_aria)
     {
       if (mouse_b&WMLEFTKEY)
       {
-        highMouse.WaitToPressLeftButton=0;
+        highMouse->WaitToPressLeftButton=0;
         if (karta_aria)
-           putdestination(highMouse.DestMouseOBJ,
-                          (int)((highMouse.PosX-Xkart-Xkartbeg)/factorx)*SIZESPRLANSHX,
-                          (int)((highMouse.PosY-Ykart-Ykartbeg)/factory)*SIZESPRLANSHY,
+           putdestination(highMouse->DestMouseOBJ,
+                          (int)((highMouse->PosX-Xkart-Xkartbeg)/factorx)*SIZESPRLANSHX,
+                          (int)((highMouse->PosY-Ykart-Ykartbeg)/factory)*SIZESPRLANSHY,
                           mouseprop,0,0);
         else
-           putdestination(highMouse.DestMouseOBJ,highMouse.PosX+xk,highMouse.PosY+yk,mouseprop,posibleconstruct,0);
+           putdestination(highMouse->DestMouseOBJ,highMouse->PosX+xk,highMouse->PosY+yk,mouseprop,posibleconstruct,0);
       }
     }
 
-     highMouse.MouseOnBorder=0;
+     highMouse->MouseOnBorder=0;
 //     if (WMouseMoveRelativX&&WMouseMoveRelativY)
      {
-        if ( highMouse.PosX <= BORDERMOUSE )
+        if ( highMouse->PosX <= BORDERMOUSE )
 	    c|=1;
         else
-    	    if ( highMouse.PosX>=mousemaxx - BORDERMOUSE )
+    	    if ( highMouse->PosX>=mousemaxx - BORDERMOUSE )
 		c|=2;
-        if ( highMouse.PosY <= BORDERMOUSE  )
+        if ( highMouse->PosY <= BORDERMOUSE  )
     	    c|=4;
         else
-    	    if (highMouse.PosY>=mousemaxy- BORDERMOUSE )
+    	    if (highMouse->PosY>=mousemaxy- BORDERMOUSE )
 		c|=8;
 	if (MOUSESCROLLON)
         switch(c)
@@ -268,107 +268,107 @@ void getmousetype(int xk,int yk)
     	    case 1:
                 if (xk)
                 {
-                    highMouse.MouseOnBorder=1;
-		    highMouse.MouseType = MOUSELEFTSCROLL;
+                    highMouse->MouseOnBorder=1;
+		    highMouse->MouseType = MOUSELEFTSCROLL;
 		    if (!addscrx)
 			addscrx = (int)scrollmapx(-1,SMOUTHMOUSE);
 		    if (!addscry)
 			addscry = (int)scrollmapy(0,SMOUTHMOUSE);
                 }
                 else
-		    highMouse.MouseType = NORMALMOUSE;
+		    highMouse->MouseType = NORMALMOUSE;
                 break;
     	    case 2:
                 if (xk<(MAXXMAP-widthkart)*SIZESPRLANSHX)
                 {
-                    highMouse.MouseOnBorder=1;
-		    highMouse.MouseType = MOUSERIGHTSCROLL;
+                    highMouse->MouseOnBorder=1;
+		    highMouse->MouseType = MOUSERIGHTSCROLL;
 		    if (!addscrx)
 			addscrx = (int)scrollmapx(1,SMOUTHMOUSE);
 		    if (!addscry)
 			addscry = (int)scrollmapy(0,SMOUTHMOUSE);
                 }
                 else
-		    highMouse.MouseType = NORMALMOUSE;
+		    highMouse->MouseType = NORMALMOUSE;
                 break;
     	    case 4:
                 if (yk)
                 {
-                    highMouse.MouseOnBorder=1;
-		    highMouse.MouseType = MOUSEUPSCROLL;
+                    highMouse->MouseOnBorder=1;
+		    highMouse->MouseType = MOUSEUPSCROLL;
 		    if (!addscrx)
 			addscrx = (int)scrollmapx(0,SMOUTHMOUSE);
 		    if (!addscry)
 			addscry = (int)scrollmapy(-1,SMOUTHMOUSE);
                 }
                 else
-		    highMouse.MouseType = NORMALMOUSE;
+		    highMouse->MouseType = NORMALMOUSE;
                 break;
     	    case 5:
                 if (xk||yk)
                 {
-                    highMouse.MouseOnBorder=1;
-		    highMouse.MouseType = MOUSELEFTUPSCROLL;
+                    highMouse->MouseOnBorder=1;
+		    highMouse->MouseType = MOUSELEFTUPSCROLL;
 		    if (!addscrx)
 			addscrx = (int)scrollmapx(-1,SMOUTHMOUSE);
 		    if (!addscry)
 			addscry = (int)scrollmapy(-1,SMOUTHMOUSE);
                 }
                 else
-		    highMouse.MouseType = NORMALMOUSE;
+		    highMouse->MouseType = NORMALMOUSE;
                 break;
     	    case 6:
                 if (xk<(MAXXMAP-widthkart)*SIZESPRLANSHX||yk)
                 {
-                    highMouse.MouseOnBorder=1;
-		    highMouse.MouseType = MOUSERIGHTUPSCROLL;
+                    highMouse->MouseOnBorder=1;
+		    highMouse->MouseType = MOUSERIGHTUPSCROLL;
 		    if (!addscrx)
 			addscrx = (int)scrollmapx(1,SMOUTHMOUSE);
 		    if (!addscry)
 			addscry = (int)scrollmapy(-1,SMOUTHMOUSE);
                 }
                 else
-		    highMouse.MouseType = NORMALMOUSE;
+		    highMouse->MouseType = NORMALMOUSE;
                 break;
     	    case 8:
                 if (yk<(MAXYMAP-hightkart)*SIZESPRLANSHY)
                 {
-                    highMouse.MouseOnBorder=1;
-		    highMouse.MouseType = MOUSEDOWNSCROLL;
+                    highMouse->MouseOnBorder=1;
+		    highMouse->MouseType = MOUSEDOWNSCROLL;
 		    if (!addscrx)
 			addscrx = (int)scrollmapx(0,SMOUTHMOUSE);
 		    if (!addscry)
 			addscry = (int)scrollmapy(1,SMOUTHMOUSE);
                 }
                 else
-		    highMouse.MouseType = NORMALMOUSE;
+		    highMouse->MouseType = NORMALMOUSE;
                 break;
     	    case 9:
                 if (xk||yk<(MAXYMAP-hightkart)*SIZESPRLANSHY)
                 {
-                    highMouse.MouseOnBorder=1;
-		    highMouse.MouseType = MOUSELEFTDOWNSCROLL;
+                    highMouse->MouseOnBorder=1;
+		    highMouse->MouseType = MOUSELEFTDOWNSCROLL;
 		    if (!addscrx)
 			addscrx = (int)scrollmapx(-1,SMOUTHMOUSE);
 		    if (!addscry)
 			addscry = (int)scrollmapy(1,SMOUTHMOUSE);
                 }
                 else
-		    highMouse.MouseType = NORMALMOUSE;
+		    highMouse->MouseType = NORMALMOUSE;
                 break;
     	    case 0xa:
                 if (xk<(MAXXMAP-widthkart)*SIZESPRLANSHX||
                     yk<(MAXYMAP-hightkart)*SIZESPRLANSHY)
                 {
-                    highMouse.MouseOnBorder=1;
-		    highMouse.MouseType = MOUSERIGHTDOWNSCROLL;
+                    highMouse->MouseOnBorder=1;
+		    highMouse->MouseType = MOUSERIGHTDOWNSCROLL;
 		    if (!addscrx)
 			addscrx = (int)scrollmapx(1,SMOUTHMOUSE);
 		    if (!addscry)
 			addscry = (int)scrollmapy(1,SMOUTHMOUSE);
                 }
                 else
-		    highMouse.MouseType = NORMALMOUSE;
+		    highMouse->MouseType = NORMALMOUSE;
                 break;
     	}//if & switch
         oldc=c;
@@ -377,29 +377,29 @@ void getmousetype(int xk,int yk)
     if ((mouse_b==WMRIGHTKEY)&&(!mouseclear)&&select_aria&&GAME&&(!waitfordownrightbuton))
     {
 	mouseclear=1;
-	putdestination(highMouse.DestMouseOBJ,highMouse.PosX+xk,highMouse.PosY+yk,MODEMOVE,0,1);
+	putdestination(highMouse->DestMouseOBJ,highMouse->PosX+xk,highMouse->PosY+yk,MODEMOVE,0,1);
     }
     if (patr&&movieminikarta!=YES)
     {
-      if (highMouse.PosX != highMouse.PrevX || highMouse.PosY != highMouse.PrevY)
+      if (highMouse->PosX != highMouse->PrevX || highMouse->PosY != highMouse->PrevY)
       {
-        highMouse.MouseOnSelectionMode=1;
+        highMouse->MouseOnSelectionMode=1;
         addscrx=0;
         addscry=0;
-        if (highMouse.PrevX > gameconf.grmode.x)
-	    highMouse.PrevX = gameconf.grmode.x;
-        if (highMouse.PrevY > gameconf.grmode.y)
-	    highMouse.PrevY = gameconf.grmode.y;
+        if (highMouse->PrevX > gameconf.grmode.x)
+	    highMouse->PrevX = gameconf.grmode.x;
+        if (highMouse->PrevY > gameconf.grmode.y)
+	    highMouse->PrevY = gameconf.grmode.y;
       }
     }
     else
     {
-	highMouse.MouseOnSelectionMode=0;
+	highMouse->MouseOnSelectionMode=0;
         if (!GAME)
-	    highMouse.MouseType = NORMALMOUSE;
+	    highMouse->MouseType = NORMALMOUSE;
         if (mouse_b == WMLEFTKEY)
         {
-	    highMouse.MouseType = NORMALMOUSE;
+	    highMouse->MouseType = NORMALMOUSE;
         }
     }
 }

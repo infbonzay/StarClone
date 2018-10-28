@@ -220,7 +220,7 @@ int TIMER::TimeIsCome(int gamespeed)
 void mousescrolling(void)
 {
     if (!(tick_timer%TIMETOMOUSESCROLL))
-        highMouse.ScrollMouse();
+        highMouse->ScrollMouse();
 }
 //=================================
 void cursorblinkfunc(void)

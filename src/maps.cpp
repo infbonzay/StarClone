@@ -54,7 +54,7 @@ void CreateMiniMapPixels(struct mapinfo *map)
     Ykartbeg = map->minimap_starty;
     Xkartend = map->minimap_endx;
     Ykartend = map->minimap_endy;
-    highMouse.SetRestrictCoords(MOUSEMODE4,Xkart+Xkartbeg,Ykart+Ykartbeg,Xkart+Xkartend,Ykart+Ykartend);
+    highMouse->SetRestrictCoords(MOUSEMODE4,Xkart+Xkartbeg,Ykart+Ykartbeg,Xkart+Xkartend,Ykart+Ykartend);
     factorx=(float)((Xkartend-Xkartbeg))/MAXXMAP;
     factory=(float)((Ykartend-Ykartbeg))/MAXYMAP;
     sizemaprectx=(int)(widthkart*factorx);

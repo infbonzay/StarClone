@@ -23,6 +23,7 @@
 #include "sigorder.h"
 #include "doodad.h"
 #include "flingy.h"
+#include "gener.h"
 #include "images.h"
 
 #define MAXIMAGELEVELS	20
@@ -633,17 +634,17 @@ void MAIN_IMG::CheckForMouseOver(OBJ *a)
 	alliance = player_aliance(NUMBGAMER,a->playernr);
 	isbuild = IsBuild(a->SC_Unit);
 	mouseobjtype = destselectionsteps[isbuild][alliance];
-	if (highMouse.PrevMouseType  > mouseobjtype && !highMouse.MouseOnOBJS[mouseobjtype])
+	if (highMouse->PrevMouseType  > mouseobjtype && !highMouse->MouseOnOBJS[mouseobjtype])
 	{
-        focusonobj = highMouse.CheckForBorder(	(xpos>>8)-map.MAPXGLOBAL-GetUnitWidthAndHeight(a->SC_Unit,UNITDIM_WIDTH)/2,
+        focusonobj = highMouse->CheckForBorder(	(xpos>>8)-map.MAPXGLOBAL-GetUnitWidthAndHeight(a->SC_Unit,UNITDIM_WIDTH)/2,
                 		        (ypos>>8)-map.MAPYGLOBAL-GetUnitWidthAndHeight(a->SC_Unit,UNITDIM_HEIGHT)/2,
                 			(xpos>>8)-map.MAPXGLOBAL+GetUnitWidthAndHeight(a->SC_Unit,UNITDIM_WIDTH)/2,
                 			(ypos>>8)-map.MAPYGLOBAL+GetUnitWidthAndHeight(a->SC_Unit,UNITDIM_HEIGHT)/2);
 	    if (focusonobj)
 		if (IfUnitIsSelectable(a) )
 		{
-		    highMouse.PrevMouseType  = mouseobjtype;
-		    highMouse.MouseOnOBJS[mouseobjtype]=a;
+		    highMouse->PrevMouseType  = mouseobjtype;
+		    highMouse->MouseOnOBJS[mouseobjtype]=a;
 		}
 	}
     }

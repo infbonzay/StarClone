@@ -1186,8 +1186,8 @@ void putnameonselectedunits(struct OBJ *a[],int count,int XWINPOS,int YWINPOS)
 	int xpos,ypos,xsize,ysize,i,oldxsize;
 	struct OBJ *a1;
 	struct XY uu;
-	if (highMouse.MouseOnSelectionMode)
-	return;
+	if (highMouse->MouseOnSelectionMode)
+		return;
 	xpos=XWINPOS+30;
 	ypos=YWINPOS+14;
 	for (i=0;i<MAXSELECTMAN;i++)
@@ -1450,8 +1450,8 @@ int  desenbuildifconstr(void)
 		//b=loadobj(buildconstr);
 		x=POSX(GetUnitWidthAndHeight(buildconstr,UNITDIM_WIDTH));
 		y=POSY(GetUnitWidthAndHeight(buildconstr,UNITDIM_HEIGHT));
-		a.x1=(highMouse.PosX/SIZESPRLANSHX)*SIZESPRLANSHX-xk%SIZESPRLANSHX;
-		a.y1=(highMouse.PosY/SIZESPRLANSHY)*SIZESPRLANSHY-yk%SIZESPRLANSHY;
+		a.x1=(highMouse->PosX/SIZESPRLANSHX)*SIZESPRLANSHX-xk%SIZESPRLANSHX;
+		a.y1=(highMouse->PosY/SIZESPRLANSHY)*SIZESPRLANSHY-yk%SIZESPRLANSHY;
 		xpointconstr = a.x1+SIZESPRLANSHX*x/2;
 		ypointconstr = a.y1+SIZESPRLANSHY*y/2;
 		if (IsAddon(buildconstr))
@@ -1463,8 +1463,8 @@ int  desenbuildifconstr(void)
 		}
 		DrawRawMainImageOBJ(xpointconstr,ypointconstr,buildconstr, PLAYER[NUMBGAMER].colorRACE,NORMAL,MININVISIBLECOLOR);
 		//put build picture
-		x0=(highMouse.PosX/SIZESPRLANSHX)*SIZESPRLANSHX-xk%SIZESPRLANSHX;
-		y0=(highMouse.PosY/SIZESPRLANSHY)*SIZESPRLANSHY-yk%SIZESPRLANSHX;
+		x0=(highMouse->PosX/SIZESPRLANSHX)*SIZESPRLANSHX-xk%SIZESPRLANSHX;
+		y0=(highMouse->PosY/SIZESPRLANSHY)*SIZESPRLANSHY-yk%SIZESPRLANSHX;
 		xmap=(x0+xk)/SIZESPRLANSHX;
 		ymap=(y0+yk)/SIZESPRLANSHY;
 		if (mapOPEN(xmap,ymap)<=1)//check if open this part of map
@@ -1512,8 +1512,8 @@ int  desenbuildifconstr(void)
 			//put masterbuild
 			x=4;
 			y=3;
-			x0=(highMouse.PosX/SIZESPRLANSHX)*SIZESPRLANSHX-xk%SIZESPRLANSHX-SIZESPRLANSHX*4;
-			y0=(highMouse.PosY/SIZESPRLANSHY)*SIZESPRLANSHY-yk%SIZESPRLANSHY-SIZESPRLANSHY*1;
+			x0=(highMouse->PosX/SIZESPRLANSHX)*SIZESPRLANSHX-xk%SIZESPRLANSHX-SIZESPRLANSHX*4;
+			y0=(highMouse->PosY/SIZESPRLANSHY)*SIZESPRLANSHY-yk%SIZESPRLANSHY-SIZESPRLANSHY*1;
 			posibletry = CanBuildOnPlaceWithAddon((x0+xk)/32,(y0+yk)/32,
 						GetOBJx(cbuild)/32-x/2,GetOBJy(cbuild)/32-y/2,
 						x,y,returnedarray,motherbuild,NUMBGAMER,&constrerror);
@@ -1541,8 +1541,8 @@ int  desenbuildifconstr(void)
 	else
 	{
 		posibleconstr=1;
-		xpointconstr = highMouse.PosX;
-		ypointconstr = highMouse.PosY;
+		xpointconstr = highMouse->PosX;
+		ypointconstr = highMouse->PosY;
 	}
 	if (posibleconstr2 < 0)
 		return(posibleconstr2);
