@@ -57,7 +57,7 @@
 #define TYPEOFCURSORS 			19
 
 typedef void (MOUSEMOVEFUNC)(int ,int );
-typedef void (MOUSECLICKFUNC)(int);
+typedef void (MOUSECLICKFUNC)(bool, int);
 typedef void (MOUSEDBLCLICKFUNC)(void);
 
 class HighMouse
@@ -125,7 +125,7 @@ public:
 };
 
 void MouseMoveEvent(int x, int y);
-void MouseClickEvent(int buttons);
+void MouseClickEvent(bool type, int buttons);
 
 
 #endif /*    _MOUSE_W   */

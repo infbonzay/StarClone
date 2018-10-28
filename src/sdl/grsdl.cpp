@@ -268,12 +268,13 @@ int eventwindowloop(void) //return 1 - on quit
 			case SDL_MOUSEBUTTONDOWN:
 				buttons = 1 << (event.button.button - 1);
 				if (lowMouse.ClickEventFunc)
-					(*lowMouse.ClickEventFunc)(buttons);
+					(*lowMouse.ClickEventFunc)(true, buttons);
 				//mouse_b |= buttons;
 				break;
 			case SDL_MOUSEBUTTONUP:
+				buttons = 1 << (event.button.button - 1);
 				if (lowMouse.ClickEventFunc)
-					(*lowMouse.ClickEventFunc)(~buttons);
+					(*lowMouse.ClickEventFunc)(false, buttons);
 				needrefreshatend = 1;
 				break;
 			case SDL_KEYDOWN:

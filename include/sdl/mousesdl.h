@@ -6,7 +6,7 @@
 #define WMRIGHTKEY (SDL_BUTTON(3))
 
 typedef void (MOUSEMOVEEVENTCALLBACK)(int ,int );
-typedef void (MOUSECLICKEVENTCALLBACK)(int);
+typedef void (MOUSECLICKEVENTCALLBACK)(bool, int);
 typedef void (MOUSEDBLCLICKEVENTCALLBACK)(void);
 
 class LowMouse

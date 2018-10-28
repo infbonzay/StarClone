@@ -343,25 +343,27 @@ void MouseMoveEvent(int x, int y)
 		(highMouse->MoveFunc)(x,y);
 }
 //==========================================
-void MouseClickEvent(int buttons)
+void MouseClickEvent(bool type, int buttons)
 {
-	if (highMouse->ClickFunc)
-		(*highMouse->ClickFunc)(buttons);
 	static long long prevtimer = 0;
 	bool doubleClick;
-	if (buttons == 1)
+	if (highMouse->ClickFunc)
+		(*highMouse->ClickFunc)(type, buttons);
+	if (highMouse->DblClickFunc)
 	{
-		if (tick_timer - prevtimer <= MOUSEDBLCLICKTIME)
+		if (buttons == 1)
 		{
-			doubleClick = true;
-		}
-		else
-		{
-			doubleClick = false;
-		}
-		prevtimer = tick_timer;
-		if (highMouse->DblClickFunc)
+			if (tick_timer - prevtimer <= MOUSEDBLCLICKTIME)
+			{
+				doubleClick = true;
+			}
+			else
+			{
+				doubleClick = false;
+			}
+			prevtimer = tick_timer;
 			(*highMouse->DblClickFunc)();
+		}
 	}
 }
 

@@ -5,6 +5,7 @@ cmake_install.cmake
 autom4te.cache/
 bin/characters/*
 bin/StarClone*
+bin/core*
 bin/temp/*
 bin/StarDat.mpq
 bin/BrooDat.mpq
