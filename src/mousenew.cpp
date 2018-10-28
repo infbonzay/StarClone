@@ -79,7 +79,7 @@ void HighMouse::DrawMouse(void)
 		}
 		else
 		{
-			if (!grm)
+			if (!MouseOnBorder)
 			{
 				if (waitforleftbuton)
 				{

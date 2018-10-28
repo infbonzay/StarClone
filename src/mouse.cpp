@@ -28,7 +28,7 @@
 #	include "dos/handlers.h"
 #endif
 
-int 	grm,factorscrollkey,mousehotpos;
+int 	factorscrollkey,mousehotpos;
 int     mouse_x,mouse_y,mousemaxx,mousemaxy,mouse_b;
 int     xmloc,ymloc,movieminikarta=NO,mousedoubleclick;
 struct  XY mouser[MAXMOUSEMODE];
@@ -320,7 +320,7 @@ void getmousetype(int xk,int yk)
       }
     }
 
-     grm=0;
+     highMouse.MouseOnBorder=0;
 //     if (WMouseMoveRelativX&&WMouseMoveRelativY)
      {
         if ( mouse_x <= BORDERMOUSE )
@@ -345,7 +345,7 @@ void getmousetype(int xk,int yk)
     	    case 1:
                 if (xk)
                 {
-                    grm=1;
+                    highMouse.MouseOnBorder=1;
 		    highMouse.MouseType = MOUSELEFTSCROLL;
 		    if (!addscrx)
 			addscrx = (int)scrollmapx(-1,SMOUTHMOUSE);
@@ -358,7 +358,7 @@ void getmousetype(int xk,int yk)
     	    case 2:
                 if (xk<(MAXXMAP-widthkart)*SIZESPRLANSHX)
                 {
-                    grm=1;
+                    highMouse.MouseOnBorder=1;
 		    highMouse.MouseType = MOUSERIGHTSCROLL;
 		    if (!addscrx)
 			addscrx = (int)scrollmapx(1,SMOUTHMOUSE);
@@ -371,7 +371,7 @@ void getmousetype(int xk,int yk)
     	    case 4:
                 if (yk)
                 {
-                    grm=1;
+                    highMouse.MouseOnBorder=1;
 		    highMouse.MouseType = MOUSEUPSCROLL;
 		    if (!addscrx)
 			addscrx = (int)scrollmapx(0,SMOUTHMOUSE);
@@ -384,7 +384,7 @@ void getmousetype(int xk,int yk)
     	    case 5:
                 if (xk||yk)
                 {
-                    grm=1;
+                    highMouse.MouseOnBorder=1;
 		    highMouse.MouseType = MOUSELEFTUPSCROLL;
 		    if (!addscrx)
 			addscrx = (int)scrollmapx(-1,SMOUTHMOUSE);
@@ -397,7 +397,7 @@ void getmousetype(int xk,int yk)
     	    case 6:
                 if (xk<(MAXXMAP-widthkart)*SIZESPRLANSHX||yk)
                 {
-                    grm=1;
+                    highMouse.MouseOnBorder=1;
 		    highMouse.MouseType = MOUSERIGHTUPSCROLL;
 		    if (!addscrx)
 			addscrx = (int)scrollmapx(1,SMOUTHMOUSE);
@@ -410,7 +410,7 @@ void getmousetype(int xk,int yk)
     	    case 8:
                 if (yk<(MAXYMAP-hightkart)*SIZESPRLANSHY)
                 {
-                    grm=1;
+                    highMouse.MouseOnBorder=1;
 		    highMouse.MouseType = MOUSEDOWNSCROLL;
 		    if (!addscrx)
 			addscrx = (int)scrollmapx(0,SMOUTHMOUSE);
@@ -423,7 +423,7 @@ void getmousetype(int xk,int yk)
     	    case 9:
                 if (xk||yk<(MAXYMAP-hightkart)*SIZESPRLANSHY)
                 {
-                    grm=1;
+                    highMouse.MouseOnBorder=1;
 		    highMouse.MouseType = MOUSELEFTDOWNSCROLL;
 		    if (!addscrx)
 			addscrx = (int)scrollmapx(-1,SMOUTHMOUSE);
@@ -437,7 +437,7 @@ void getmousetype(int xk,int yk)
                 if (xk<(MAXXMAP-widthkart)*SIZESPRLANSHX||
                     yk<(MAXYMAP-hightkart)*SIZESPRLANSHY)
                 {
-                    grm=1;
+                    highMouse.MouseOnBorder=1;
 		    highMouse.MouseType = MOUSERIGHTDOWNSCROLL;
 		    if (!addscrx)
 			addscrx = (int)scrollmapx(1,SMOUTHMOUSE);

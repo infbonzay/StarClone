@@ -62,6 +62,7 @@ class HighMouse
 
 public:
     int		MouseType;
+    bool	MouseOnBorder;
     struct
     {
 		GRPFILE			*mousegrp;

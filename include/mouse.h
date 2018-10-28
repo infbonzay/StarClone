@@ -19,7 +19,7 @@
 
 #define	MAXSCROLLTICKS 6
 
-extern int 		grm,factorscrollkey;
+extern int 		factorscrollkey;
 extern int     	mouse_x,mouse_y,mouse_b,mousehotpos;
 extern char    	curentREGIM;
 extern int     	xmloc,ymloc,movieminikarta,mspeed;
