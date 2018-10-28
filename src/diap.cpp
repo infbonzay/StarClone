@@ -8,6 +8,8 @@
 
 #include "auxil.h"
 #include "mouse.h"
+#include "mousenew.h"
+#include "gener.h"
 #include "man.h"
 #include "vars.h"
 #include "putobj.h"
@@ -130,17 +132,17 @@ void desenproperties(int *localprop,char *selectableicons)
 		if ((oldmouseonicon!=-1&&oldmouseonicon==i*3+j)||
 		    (keyupselectedicon==i*3+j))
 	        {
-				putgrpspr(uu.x1+1,uu.y1+1,grpicons,NORMAL,255,grpplayernr,NULL,1);
+		    putgrpspr(uu.x1+1,uu.y1+1,grpicons,NORMAL,255,grpplayernr,NULL,1);
 //            	    putgrp(uu.x1+1,uu.y1+1,grpicons,1,grpplayernr);
 	    	    uu.x1+=1;
 	    	    uu.y1+=1;
 	        }
 	        else
-				putgrpspr(uu.x1+1,uu.y1+1,grpicons,NORMAL,255,grpplayernr,NULL,0);
+		    putgrpspr(uu.x1+1,uu.y1+1,grpicons,NORMAL,255,grpplayernr,NULL,0);
 //            	    putgrp(uu.x1+1,uu.y1+1,grpicons,0,grpplayernr);
-				putgrpspr(uu.x1+(38-sizex)/2,uu.y1+(36-sizey)/2,
-							znakgrp,NORMAL,255,grpplayernr,NULL,
-							mageprop[localprop[i*3+j]].icon_id);
+	    	putgrpspr(uu.x1+(38-sizex)/2,uu.y1+(36-sizey)/2,
+	    		znakgrp,NORMAL,255,grpplayernr,NULL,
+	    		mageprop[localprop[i*3+j]].icon_id);
 
 //	    	putgrp(uu.x1+(38-sizex)/2,uu.y1+(36-sizey)/2,
 //                	znakgrp,mageprop[localprop[i*3+j]].icon_id,
@@ -164,38 +166,38 @@ void desenproperties(int *localprop,char *selectableicons)
     		uu.y1 = xy[1][i] + YUNITCONSTR;
     		uu.x2 = uu.x1 + 36;
     		uu.y2 = uu.y1 + 36;
-			if (highMouse->CheckForBorder(uu.x1,uu.y1,uu.x2,uu.y2))
-				mouseonconstrunit = i;
+		if (highMouse->CheckForBorder(uu.x1,uu.y1,uu.x2,uu.y2))
+		    mouseonconstrunit = i;
 	    }
 	if (transportplaceobj&&transportplaceobj->playernr==NUMBGAMER)
 	    if (mousehotpos>=MOUSEONTRANSP&&mousehotpos<MOUSEONICONSMIN)
-			if (transportplace[mousehotpos - MOUSEONTRANSP]!=SC_NOUNITNR)
-			{
-				mouseontranspunit = mousehotpos - MOUSEONTRANSP;
-			}
+		if (transportplace[mousehotpos - MOUSEONTRANSP]!=SC_NOUNITNR)
+		{
+		    mouseontranspunit = mousehotpos - MOUSEONTRANSP;
+		}
 	if (!MENUACTIVE)	//prevent activate hotkey if some menu is active
 	{
 	    for (i=0;i<3;i++)
     		for (j=0;j<3;j++)
-				if (localprop[i*3+j])
+		    if (localprop[i*3+j])
     		    {
-					if (keyactive && mageprop[localprop[i*3+j]].keyfororder!=255)  //check for hotkey
-					{
-						if (mageprop[localprop[i*3+j]].keyfororder == KEYPRESSEDTABLE(rus,curentreadkey)-1
-								&&
-							selectableicons[i*3+j]!=FORGRAY)
-						{
-							keyupselectedicon = i*3+j;
-							goto selectedicon;
-						}
-					}
-					else
-						if (keyupselectedicon!=-1)
-						{
-							selectedicon=keyupselectedicon;
-							keyupselectedicon=-1;
-						}
-					}
+			if (keyactive && mageprop[localprop[i*3+j]].keyfororder!=255)  //check for hotkey
+			{
+			    if (mageprop[localprop[i*3+j]].keyfororder == KEYPRESSEDTABLE(rus,curentreadkey)-1
+						&&
+				selectableicons[i*3+j]!=FORGRAY)
+				{
+				    keyupselectedicon = i*3+j;
+				    goto selectedicon;
+				}
+			}
+			else
+			    if (keyupselectedicon!=-1)
+			    {
+				selectedicon=keyupselectedicon;
+				keyupselectedicon=-1;
+			    }
+		    }
 	}
 selectedicon:
 	if (mouseonicon==-1 && mousehotpos>=MOUSEONICONSMIN && mousehotpos<=MOUSEONICONSMAX)
@@ -203,117 +205,123 @@ selectedicon:
     	    mouseonicon=mousehotpos-MOUSEONICONSMIN;
 	    if (localprop[mouseonicon])
 	    {
-			i = mouseonicon / 3;
-			j = mouseonicon % 3;
-			mp=&mageprop[localprop[i*3+j]];
-			if (selectableicons[i*3+j] == FORGRAY)
+		i = mouseonicon / 3;
+		j = mouseonicon % 3;
+		mp=&mageprop[localprop[i*3+j]];
+		if (selectableicons[i*3+j] == FORGRAY)
+		{
+		    iconmessagecolor = GGREYCOLORFONT;
+		    if (mp->type_id == ORDERS_UPGRADE)
+		    {
+			upg = GetUpgradeTree(&map,NUMBGAMER,mp->obj_id);
+			strcpy(iconstr,alldattbl.stattxt_tbl->get_TBL_STR(mp->stattxt_id_disable[upg]));
+    		    }
+		    else
+		    {
+			strcpy(iconstr,alldattbl.stattxt_tbl->get_TBL_STR(mp->stattxt_id_disable[0]));
+		    }
+		}
+		else
+		{
+		    iconmessagecolor = GBLUECOLORFONT;
+		    switch(mp->type_id)
+		    {
+			case ORDERS_NONE:
+			    iconstr[0] = 0;
+    			    need[NEED_MINERALS] = 0;
+			    need[NEED_GAS] = 0;
+			    need[NEED_MANA] = 0;
+			    need[NEED_PSI] = 0;
+			    break;
+			case ORDERS_MODEMOVE:
+			    strcpy(iconstr,alldattbl.stattxt_tbl->get_TBL_STR(mp->stattxt_id_enable)+2);
+    			    need[NEED_MINERALS] = 0;
+			    need[NEED_GAS] = 0;
+			    if (mp->obj_id != -1)
+				need[NEED_MANA] = GetTechEnergyCost(mp->obj_id);
+			    else
+				need[NEED_MANA] = 0;
+			    need[NEED_PSI] = 0;
+			    break;
+			case ORDERS_UNIT:
+			    strcpy(iconstr,alldattbl.stattxt_tbl->get_TBL_STR(mp->stattxt_id_enable)+2);
+			    GetCostUnit(mp->obj_id,&need[NEED_MINERALS],&need[NEED_GAS]);
+			    need[NEED_MANA] = 0;
+			    if (mp->techid < MAX_TECHDATA_ELEM)
+				need[NEED_MANA] = GetTechEnergyCost(mp->techid);
+//			    if (mp->orderdatid<MAX_ORDERS_ELEM)
+//			    {
+//				techdata_id=alldattbl.orders_dat->techdata_id[mp->orderdatid];
+//				if (techdata_id<MAX_TECHDATA_ELEM)
+//				    need[NEED_MANA]=GetTechEnergyCost(techdata_id);
+//			    }
+			    if (GetInEgg(mp->obj_id))
+				need[NEED_PSI] = GetSupplyUnit(mp->obj_id);
+			    else
+				need[NEED_PSI] = GetSupplyUnit(mp->obj_id)/2;
+			    break;
+			case ORDERS_UPGRADE:
+			    upg=GetUpgradeTree(&map,NUMBGAMER,mp->obj_id);
+			    maxupg=GetMaxUpgradeTree(&map,NUMBGAMER,mp->obj_id);
+			    strcpy(iconstr,alldattbl.stattxt_tbl->get_TBL_STR(mp->stattxt_id_enable)+2);
+			    if (upg<maxupg&&alldattbl.upgrades_dat->MaxRepeats[mp->obj_id] > 1)
+			    {
+				strcat(iconstr,"\n");
+				strcat(iconstr,alldattbl.stattxt_tbl->get_TBL_STR(STATTXT_TBL_NEXTLEVELTEXT));
+				int len=strlen(iconstr);
+				iconstr[len] = '1'+upg;
+				iconstr[len+1] = 0x0;//END STRING
+			    }
+			    GetCostUpgr(mp->obj_id,NUMBGAMER,&need[NEED_MINERALS],&need[NEED_GAS]);
+			    need[NEED_MANA] = 0;
+			    need[NEED_PSI] = 0;
+			    break;
+			case ORDERS_TECHNOLOGY:
+			    strcpy(iconstr,alldattbl.stattxt_tbl->get_TBL_STR(mp->stattxt_id_enable)+2);
+			    GetCostTech(mp->obj_id,&need[NEED_MINERALS],&need[NEED_GAS]);
+			    need[NEED_MANA]=0;
+			    need[NEED_PSI]=0;
+			    break;
+		    }
+		    int messagecr=0;
+		    if (mp->atr&ORDER_IGNOREREQ)
+		    {
+    			need[NEED_MINERALS]=0;
+			need[NEED_GAS]=0;
+			need[NEED_MANA]=0;
+			need[NEED_PSI]=0;
+		    }
+		    for (k=0;k<4;k++)
+		    {
+			addstr[0]=0;
+			if (need[k]>0)
 			{
-				iconmessagecolor = GGREYCOLORFONT;
-				if (mp->type_id == ORDERS_UPGRADE)
-				{
-					upg = GetUpgradeTree(&map,NUMBGAMER,mp->obj_id);
-					strcpy(iconstr,alldattbl.stattxt_tbl->get_TBL_STR(mp->stattxt_id_disable[upg]));
-				}
-				else
-				{
-					strcpy(iconstr,alldattbl.stattxt_tbl->get_TBL_STR(mp->stattxt_id_disable[0]));
-				}
+			    if (!messagecr)
+			    {
+				messagecr=1;
+				strcat(iconstr,"\n");
+			    }
+			    if (k==3)
+			    {
+				simbrace = mp->race;
+				sprintf(addstr,"%c%c%d ",COMMANDSYMB,PSISYMBZ+simbrace,need[k]);
+			    }
+			    else
+			    {
+				sprintf(addstr,"%c%c%d ",COMMANDSYMB,MINERALSYMB+k,need[k]);
+			    }
+			    strcat(iconstr,addstr);
 			}
-			else
-			{
-				iconmessagecolor = GBLUECOLORFONT;
-				switch(mp->type_id)
-				{
-					case ORDERS_NONE:
-						iconstr[0] = 0;
-						need[NEED_MINERALS] = 0;
-						need[NEED_GAS] = 0;
-						need[NEED_MANA] = 0;
-						need[NEED_PSI] = 0;
-						break;
-					case ORDERS_MODEMOVE:
-						strcpy(iconstr,alldattbl.stattxt_tbl->get_TBL_STR(mp->stattxt_id_enable)+2);
-						need[NEED_MINERALS] = 0;
-						need[NEED_GAS] = 0;
-						if (mp->obj_id != -1)
-							need[NEED_MANA] = GetTechEnergyCost(mp->obj_id);
-						else
-							need[NEED_MANA] = 0;
-						need[NEED_PSI] = 0;
-						break;
-					case ORDERS_UNIT:
-						strcpy(iconstr,alldattbl.stattxt_tbl->get_TBL_STR(mp->stattxt_id_enable)+2);
-						GetCostUnit(mp->obj_id,&need[NEED_MINERALS],&need[NEED_GAS]);
-						need[NEED_MANA] = 0;
-						if (mp->techid < MAX_TECHDATA_ELEM)
-							need[NEED_MANA] = GetTechEnergyCost(mp->techid);
-						if (GetInEgg(mp->obj_id))
-							need[NEED_PSI] = GetSupplyUnit(mp->obj_id);
-						else
-							need[NEED_PSI] = GetSupplyUnit(mp->obj_id)/2;
-						break;
-					case ORDERS_UPGRADE:
-						upg=GetUpgradeTree(&map,NUMBGAMER,mp->obj_id);
-						maxupg=GetMaxUpgradeTree(&map,NUMBGAMER,mp->obj_id);
-						strcpy(iconstr,alldattbl.stattxt_tbl->get_TBL_STR(mp->stattxt_id_enable)+2);
-						if (upg<maxupg&&alldattbl.upgrades_dat->MaxRepeats[mp->obj_id] > 1)
-						{
-							strcat(iconstr,"\n");
-							strcat(iconstr,alldattbl.stattxt_tbl->get_TBL_STR(STATTXT_TBL_NEXTLEVELTEXT));
-							int len=strlen(iconstr);
-							iconstr[len] = '1'+upg;
-							iconstr[len+1] = 0x0;//END STRING
-						}
-						GetCostUpgr(mp->obj_id,NUMBGAMER,&need[NEED_MINERALS],&need[NEED_GAS]);
-						need[NEED_MANA] = 0;
-						need[NEED_PSI] = 0;
-						break;
-					case ORDERS_TECHNOLOGY:
-						strcpy(iconstr,alldattbl.stattxt_tbl->get_TBL_STR(mp->stattxt_id_enable)+2);
-						GetCostTech(mp->obj_id,&need[NEED_MINERALS],&need[NEED_GAS]);
-						need[NEED_MANA]=0;
-						need[NEED_PSI]=0;
-						break;
-				}
-				int messagecr=0;
-				if (mp->atr&ORDER_IGNOREREQ)
-				{
-					need[NEED_MINERALS]=0;
-					need[NEED_GAS]=0;
-					need[NEED_MANA]=0;
-					need[NEED_PSI]=0;
-				}
-				for (k=0;k<4;k++)
-				{
-					addstr[0]=0;
-					if (need[k]>0)
-					{
-						if (!messagecr)
-						{
-							messagecr=1;
-							strcat(iconstr,"\n");
-						}
-						if (k==3)
-						{
-							simbrace = mp->race;
-							sprintf(addstr,"%c%c%d ",COMMANDSYMB,PSISYMBZ+simbrace,need[k]);
-						}
-						else
-						{
-							sprintf(addstr,"%c%c%d ",COMMANDSYMB,MINERALSYMB+k,need[k]);
-						}
-						strcat(iconstr,addstr);
-					}
-				}
-			}
-			//show 3x3 action(move,atack,etc) icons text
-			putboxmessage(  FONTCOLOR(tfontgamp,GBLUECOLORFONT,2),
-					FONTCOLOR(tfontgamp,GBLUECOLORFONT,4),
-					xicon[j]+XADDICONS+DELTASCREENX,yicon[i]+YADDICONS,
-					BORDERSIZE,BUTTONMESSAGEFONT,
-					iconstr,iconmessagecolor,tfontgamp,gamedlggrp);
-			if (selectableicons[i*3+j]==FORGRAY)
-				mouseonicon = -1;
+		    }
+		}
+		//show 3x3 action(move,atack,etc) icons text
+		putboxmessage(  FONTCOLOR(tfontgamp,GBLUECOLORFONT,2),
+				FONTCOLOR(tfontgamp,GBLUECOLORFONT,4),
+				xicon[j]+XADDICONS+DELTASCREENX,yicon[i]+YADDICONS,
+				BORDERSIZE,BUTTONMESSAGEFONT,
+				iconstr,iconmessagecolor,tfontgamp,gamedlggrp);
+		if (selectableicons[i*3+j]==FORGRAY)
+		    mouseonicon = -1;
 	    }
 	}
 	mbuttonpress = mouse_b&WMLEFTKEY;
@@ -321,29 +329,29 @@ selectedicon:
 	{
 	    if (mouseonicon!=-1)
 	    {
-			if (localprop[mouseonicon])
-				oldmouseonicon = mouseonicon;
+		if (localprop[mouseonicon])
+		    oldmouseonicon = mouseonicon;
 	    }
 	    if (mouseonconstrunit!=-1)
 	    {
-			oldmouseonconstrunit = mouseonconstrunit;
+		oldmouseonconstrunit = mouseonconstrunit;
 	    }
 	    if (mouseontranspunit!=-1)
 	    {
-			oldmouseontranspunit = mouseontranspunit;
+		oldmouseontranspunit = mouseontranspunit;
 	    }
 	}
 	else
 	{
 	    if (mouseonicon==oldmouseonicon&&oldmouseonicon!=-1)
-			selectedicon = oldmouseonicon;
+		selectedicon = oldmouseonicon;
 	    oldmouseonicon = -1;
 	    if (mouseonconstrunit==oldmouseonconstrunit&&
-			oldmouseonconstrunit!=-1)
+		oldmouseonconstrunit!=-1)
 		selecteddeconstrunit = oldmouseonconstrunit;
-			oldmouseonconstrunit = -1;
+	    oldmouseonconstrunit = -1;
 	    if (mouseontranspunit==oldmouseontranspunit&&
-			oldmouseontranspunit!=-1)
+		oldmouseontranspunit!=-1)
 		selectedunloadunit = oldmouseontranspunit;
 	    oldmouseontranspunit = -1;
 	}
@@ -351,139 +359,138 @@ selectedicon:
     {
         if (!fordeselect[0])
         {
-			highMouse->WaitToPressLeftButton = 0;
+			highMouse->WaitToPressLeftButton=0;
         }
         else
         {
-			race=GetUnitRace(fordeselect[0]->SC_Unit);
-			plusfactor=0;
-			i = selectedicon / 3;
-			j = selectedicon % 3;
-				oldselectbuton=localprop[i*3+j];
-			mp=&mageprop[oldselectbuton];
-			if (mp->depend.maxdepend==1&&mp->type_id==ORDERS_UNIT)
+	    race=GetUnitRace(fordeselect[0]->SC_Unit);
+	    plusfactor=0;
+	    i = selectedicon / 3;
+	    j = selectedicon % 3;
+    	    oldselectbuton=localprop[i*3+j];
+	    mp=&mageprop[oldselectbuton];
+	    if (mp->depend.maxdepend==1&&mp->type_id==ORDERS_UNIT)
+	        switch(mp->depend.type_id[0])
+		{
+		    case ORDERS_TECHNOLOGY:
+			if (IsSpellCaster(fordeselect[0]->SC_Unit))//if spellcaster check for mana too
 			{
-				switch(mp->depend.type_id[0])
+			    if (!(mp->atr&ORDER_IGNOREREQ))
+			    {
+				needmana=GetTechEnergyCost(mp->depend.obj_id[0]);
+				err=CheckForMana(fordeselect[0],needmana);
+				if (err==CHECKRES_MANA)
 				{
-					case ORDERS_TECHNOLOGY:
-					if (IsSpellCaster(fordeselect[0]->SC_Unit))//if spellcaster check for mana too
-					{
-						if (!(mp->atr&ORDER_IGNOREREQ))
-						{
-							needmana=GetTechEnergyCost(mp->depend.obj_id[0]);
-							err=CheckForMana(fordeselect[0],needmana);
-							if (err==CHECKRES_MANA)
-							{
-								playinfoadvisorsound(NUMBGAMER,race,ADVENERGY,PLAYADVISOR_TEXTANDSOUND);
-								return;
-							}
-						}
-					}
-					break;
+		    		    playinfoadvisorsound(NUMBGAMER,race,ADVENERGY,PLAYADVISOR_TEXTANDSOUND);
+				    return;
 				}
-				if (mp->atr&ORDER_IGNOREREQ)
-					retstatus=CHECKRES_OK;
-				else
-					retstatus=CheckForResource_typeid(fordeselect[0],NUMBGAMER,mp->type_id,mp->obj_id);
-				if (retstatus != CHECKRES_OK)
-				{
-					playadvisorerr(NUMBGAMER,race,retstatus);
-					return;
-				}
-				if (mp->atr & ORDER_RIGHTWAY)
-				{
-					if (oldselectbuton == MODECANCEL_BB_AB)
-					{
-						for (k=0;k<MAXSELECTMAN;k++)
-							if (fordeselect[k])
-							{
-								if (IsWorkerUnit(fordeselect[k]->SC_Unit))
-									ChangeTypeOfProp(fordeselect[k],PROPNORMAL1);
-							}
-							groupmove=0;
-							highMouse->WaitToPressLeftButton=0;
-					}
-					else
-					{
-						if (!probeconstruct(oldselectbuton))
-						{
-							if (localprop[i*3+j] != MODEWARPARCHON &&
-								localprop[i*3+j] != MODEWARPDARCHON)
-							{
-								for (k=0;k<MAXSELECTMAN;k++)
-									if (fordeselect[k])
-									{
-				//				    	makemove(fordeselect[k],NULL,0,0,oldselectbutton,NUMBGAMER,SHOWERRORTEXT);
-										DoOrder(NUMBGAMER,fordeselect[k],0,0,
-												mp->type_id,mp->obj_id,mp->icon_id,mp->stattxt_id_enable,
-												oldselectbuton,SHOWERRORTEXT);
-									}
-							}
-							else
-							{
-								for (k=0;k<MAXSELECTMAN;k++)
-								{
-									obj =  fordeselect[k];
-									if (obj)
-									{
-										if (!obj2)
-										{
-											obj2=obj;
-											continue;
-										}
-										else
-										{
-											makemove(obj,obj2,0,0,localprop[i*3+j],obj->playernr,NOSHOWERROR);
-											makemove(obj2,obj,0,0,localprop[i*3+j],obj2->playernr,NOSHOWERROR);
-					//                      moveobj(obj,obj2,localprop[i*3+j],NOSHOWERROR);
-					//                      moveobj(obj2,obj,localprop[i*3+j],NOSHOWERROR);
-											obj2 = NULL;
-										}
-									}//if obj
-								}//for k
-							}//else
-						}//if probe construct
-					}
-				}
-				else
-				{
-					cbuild=fordeselect[0];
-					constrbuild(oldselectbuton);
-					mouseprop = oldselectbuton;
-					groupmove=0;
-					highMouse->WaitToPressLeftButton=2;
-				}
+			    }
 			}
+		    break;
 		}
+	    if (mp->atr&ORDER_IGNOREREQ)
+		retstatus=CHECKRES_OK;
+	    else
+		retstatus=CheckForResource_typeid(fordeselect[0],NUMBGAMER,mp->type_id,mp->obj_id);
+	    if (retstatus != CHECKRES_OK)
+	    {
+		playadvisorerr(NUMBGAMER,race,retstatus);
+		return;
+	    }
+            if (mp->atr & ORDER_RIGHTWAY)
+            {
+                if (oldselectbuton == MODECANCEL_BB_AB)
+                {
+                    	for (k=0;k<MAXSELECTMAN;k++)
+                    	    if (fordeselect[k])
+			    {
+				if (IsWorkerUnit(fordeselect[k]->SC_Unit))
+				    ChangeTypeOfProp(fordeselect[k],PROPNORMAL1);
+			    }
+                    	    groupmove=0;
+                            highMouse->WaitToPressLeftButton=0;
+            	}
+                else
+                {
+        	    if (!probeconstruct(oldselectbuton))
+            	    {
+                	if (localprop[i*3+j] != MODEWARPARCHON &&
+			    localprop[i*3+j] != MODEWARPDARCHON)
+			{
+			    for (k=0;k<MAXSELECTMAN;k++)
+                    		if (fordeselect[k])
+                    		{
+//				    makemove(fordeselect[k],NULL,0,0,oldselectbutton,NUMBGAMER,SHOWERRORTEXT);
+				    DoOrder(NUMBGAMER,fordeselect[k],0,0,
+					    mp->type_id,mp->obj_id,mp->icon_id,mp->stattxt_id_enable,
+					    oldselectbuton,SHOWERRORTEXT);
+                        	}
+			}
+			else
+			{
+			    for (k=0;k<MAXSELECTMAN;k++)
+			    {
+				obj =  fordeselect[k];
+				if (obj)
+				{
+				    if (!obj2)
+				    {
+					obj2=obj;
+					continue;
+				    }
+				    else
+				    {
+            				makemove(obj,obj2,0,0,localprop[i*3+j],obj->playernr,NOSHOWERROR);
+            				makemove(obj2,obj,0,0,localprop[i*3+j],obj2->playernr,NOSHOWERROR);
+//                        		moveobj(obj,obj2,localprop[i*3+j],NOSHOWERROR);
+//                        		moveobj(obj2,obj,localprop[i*3+j],NOSHOWERROR);
+					obj2 = NULL;
+				    }
+				}//if obj
+			    }//for k
+			}//else
+            	    }//if probe construct
+                }
+            }
+            else
+            {
+				cbuild=fordeselect[0];
+                constrbuild(oldselectbuton);
+                mouseprop = oldselectbuton;
+				groupmove=0;
+            	highMouse->WaitToPressLeftButton=2;
+            }
+	}
     }
     if (selecteddeconstrunit!=-1)
     {
-		for (k=0;k<MAXSELECTMAN;k++)
+	for (k=0;k<MAXSELECTMAN;k++)
+	{
+	    a=fordeselect[k];
+	    if (a)
+	    {
+		if (IsOBJUnderConstruct(a)&&selecteddeconstrunit==0)
 		{
-			a=fordeselect[k];
-			if (a)
-			{
-				if (IsOBJUnderConstruct(a)&&selecteddeconstrunit==0)
-				{
-					makemove(a,NULL,0,0,MODEESCAPE,NUMBGAMER,SHOWERRORTEXT);
-					break;
-				}
-				if (selecteddeconstrunit<GetConstructNR(a))
-				{
-					makemove(a,NULL,0,0,MODEESCAPE1+selecteddeconstrunit,NUMBGAMER,SHOWERRORTEXT);
-					break;
-				}
-			}
+            	    makemove(a,NULL,0,0,MODEESCAPE,NUMBGAMER,SHOWERRORTEXT);
+		    break;
 		}
+		if (selecteddeconstrunit<GetConstructNR(a))
+		{
+            	    makemove(a,NULL,0,0,MODEESCAPE1+selecteddeconstrunit,NUMBGAMER,SHOWERRORTEXT);
+		    break;
+		}
+	    }
+	}
     }
     if (selectedunloadunit!=-1)
     {
 	//				  x is  nr of unloaded unit, y is 0
-		makemove(transportplaceobj,NULL,selectedunloadunit,0,MODEUNLOADUNITNR,transportplaceobj->playernr,NOSHOWERROR);
-//		oveobj(transportplaceobj,NULL,MODEUNLOADUNITNR,selectedunloadunit,0,NOSHOWERROR);
+	makemove(transportplaceobj,NULL,selectedunloadunit,0,MODEUNLOADUNITNR,transportplaceobj->playernr,NOSHOWERROR);
+//	moveobj(transportplaceobj,NULL,MODEUNLOADUNITNR,selectedunloadunit,0,NOSHOWERROR);
     }
-  }
+  }//if !patrate
 }
+
 //=============================================
 void playadvisorerr(int playernr,int race,int retreserror)
 {

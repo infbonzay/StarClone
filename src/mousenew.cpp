@@ -5,10 +5,11 @@
 #include "stringfiles.h"
 #include "auxil.h"
 #include "debug.h"
-#include "gener.h"
 #include "vars.h"
+#include "gener.h"
 #include "mousenew.h"
 
+extern int mouse_b;
 //==============================
 HighMouse::HighMouse(void)
 {
@@ -349,6 +350,14 @@ void MouseClickEvent(bool type, int buttons)
 	bool doubleClick;
 	if (highMouse->ClickFunc)
 		(*highMouse->ClickFunc)(type, buttons);
+	if (type)
+	{
+		mouse_b |= buttons;
+	}
+	else
+	{
+		mouse_b &= ~buttons;
+	}
 	if (highMouse->DblClickFunc)
 	{
 		if (buttons == 1)

@@ -91,7 +91,7 @@ public:
 	int		DestMouseType;
     bool	MouseOnBorder;
     bool	MouseOnSelectionMode;
-    bool	WaitToPressLeftButton;
+    uint8_t	WaitToPressLeftButton;
     struct
     {
 		GRPFILE			*mousegrp;

@@ -986,7 +986,7 @@ int gogame(struct mapinfo *info)
 		{
 			keyactive=0;
 			lastkey=0;
-			mouse_b=0;
+			//mouse_b=0;
 			dblclick=0;
 		}
 		timeid=mytimer.TimeIsCome(gameconf.speedconf.gamespeed);
@@ -1326,7 +1326,7 @@ int gogame(struct mapinfo *info)
 			showedmenu.EndShowMenu();
 		}
 	//	DEBUGMESSCR("%d\n",MENUACTIVE);
-		mouse_b = lowMouse.GetButtonStatus();
+		//mouse_b = lowMouse.GetButtonStatus();
 		if (needrefreshatend&scrnew)
 		{
 			needrefreshatend = 0;

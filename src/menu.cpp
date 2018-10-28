@@ -623,7 +623,7 @@ int drawmenu(MENUSTR *allmenus,int flags)
     {
 		getmousetype(map.MAPXGLOBAL,map.MAPYGLOBAL);
 		do{
-			mouse_b = lowMouse.GetButtonStatus();
+			//mouse_b = lowMouse.GetButtonStatus();
 			eventwindowloop();
 			getmouseonitem(&activeitemchange,&activeitem);
 			keyrefresh();
@@ -831,52 +831,52 @@ int showlistmenu(MENUSTR *allmenus)
     checkanddrawmenu(allmenus,ITEMNOONEACTIVE,ITEM_RESTOREANDFREE);
     getmousetype(map.MAPXGLOBAL,map.MAPYGLOBAL);
     do{
-	mouse_b = lowMouse.GetButtonStatus();
-	getmouseonitem(&activeitemchange,&activeitem);
-	eventwindowloop();
-	if (allmenus->prevmenu)
-	    RunCallBackFuncs(allmenus->prevmenu);
-//	    if (allmenus->prevmenu->CallBackFunc)
-//		(*allmenus->prevmenu->CallBackFunc)(allmenus->prevmenu,allmenus->prevmenu->somecallbackdata);
-	highMouse->SaveImageUnder();
-	highMouse->DrawMouse();
-	wscreenon();
-	highMouse->LoadImageUnder();
+		//mouse_b = lowMouse.GetButtonStatus();
+		getmouseonitem(&activeitemchange,&activeitem);
+		eventwindowloop();
+		if (allmenus->prevmenu)
+			RunCallBackFuncs(allmenus->prevmenu);
+	//	    if (allmenus->prevmenu->CallBackFunc)
+	//		(*allmenus->prevmenu->CallBackFunc)(allmenus->prevmenu,allmenus->prevmenu->somecallbackdata);
+		highMouse->SaveImageUnder();
+		highMouse->DrawMouse();
+		wscreenon();
+		highMouse->LoadImageUnder();
 
-	allmenus->vars.BarChanges.bar = NOSELECTMENUBAR;
-	if (activeitemchange) //move moved on other menu
-	{
-		allmenus->vars.BarChanges.bar = activeitem;
-		allmenus->vars.BarChanges.color = ITEMSHOW_FOCUS;
-	}
-	if (mouse_b&WMLEFTKEY)
-	{
-		if (activeitem>=0)
+		allmenus->vars.BarChanges.bar = NOSELECTMENUBAR;
+		if (activeitemchange) //move moved on other menu
 		{
-		    activeitemchange = 1;
-		    if (downmenu == NOSELECTMENUBAR)
-			downmenu = activeitem;
-		    else
-		    {
 			allmenus->vars.BarChanges.bar = activeitem;
-			allmenus->vars.BarChanges.color = ITEMSHOW_CLICK;
-		    }
+			allmenus->vars.BarChanges.color = ITEMSHOW_FOCUS;
 		}
-	}
-	else
-	{
-		if (activeitem!=NOSELECTMENUBAR)
-		    selectedmenu=activeitem;
+		if (mouse_b&WMLEFTKEY)
+		{
+			if (activeitem>=0)
+			{
+				activeitemchange = 1;
+				if (downmenu == NOSELECTMENUBAR)
+					downmenu = activeitem;
+				else
+				{
+					allmenus->vars.BarChanges.bar = activeitem;
+					allmenus->vars.BarChanges.color = ITEMSHOW_CLICK;
+				}
+			}
+		}
 		else
-		    selectedmenu=NOSELECTLIST;
-	}
-	if (activeitemchange)
-	{
-	    scrollportrait_menu=scrollportrait;
-	    clearscrollportrait();
-	    checkanddrawmenu(allmenus,allmenus->vars.BarChanges.bar,ITEM_RESTOREANDFREE);
-	    setmouseonitem(0);
-	}
+		{
+			if (activeitem!=NOSELECTMENUBAR)
+				selectedmenu=activeitem;
+			else
+				selectedmenu=NOSELECTLIST;
+		}
+		if (activeitemchange)
+		{
+			scrollportrait_menu=scrollportrait;
+			clearscrollportrait();
+			checkanddrawmenu(allmenus,allmenus->vars.BarChanges.bar,ITEM_RESTOREANDFREE);
+			setmouseonitem(0);
+		}
     }while(selectedmenu==NOSELECTMENUBAR);
     lowMouse.GetPos();
     loadunderitems(allmenus,ITEM_ONLYFREE);
@@ -918,7 +918,7 @@ void regmenu(int x,int y,MENUSTR *allmenus,void (*func)(int))
 {
     int i,elements=0;
     if (allmenus->elements<=0)
-	return;
+		return;
     //find non enabled buttons
     for (i=0;i<allmenus->elements;i++)
     {
@@ -928,16 +928,16 @@ void regmenu(int x,int y,MENUSTR *allmenus,void (*func)(int))
     calcmenuitemsizes(allmenus);
     for (i=0;i<allmenus->elements;i++)
     {
-	if (allmenus->menu[i].itemtype!=ISSMKVIDEO)
-	{
-	    addmousehotpos( allmenus->menu[i].hotdeltax,allmenus->menu[i].hotdeltay,
-			    allmenus->menu[i].hotxsize,allmenus->menu[i].hotysize,&allmenus->menu[i].dialogbin_flags);
-	}
-	else
-	{
-	    addmousehotpos( allmenus->menu[i].hotdeltax,allmenus->menu[i].hotdeltay,
-			    allmenus->menu[i].textxsize,allmenus->menu[i].textysize,&allmenus->menu[i].dialogbin_flags);
-	}
+		if (allmenus->menu[i].itemtype!=ISSMKVIDEO)
+		{
+			addmousehotpos( allmenus->menu[i].hotdeltax,allmenus->menu[i].hotdeltay,
+							allmenus->menu[i].hotxsize,allmenus->menu[i].hotysize,&allmenus->menu[i].dialogbin_flags);
+		}
+		else
+		{
+			addmousehotpos( allmenus->menu[i].hotdeltax,allmenus->menu[i].hotdeltay,
+							allmenus->menu[i].textxsize,allmenus->menu[i].textysize,&allmenus->menu[i].dialogbin_flags);
+		}
     }
     incrcallbackwork();
 }
@@ -961,41 +961,41 @@ void drawmenuitem(MENUSTR *allmenus,int itemnr)
 {
     switch(allmenus->menu[itemnr].itemtype)
     {
-	case ISBUTTON:
-	    drawbuttonitem(allmenus,itemnr);
-	    break;
-	case ISLISTBOX:
-	    drawlistboxitem(allmenus,itemnr);
-	    break;
-	case ISEDITBOX:
-	    draweditboxitem(allmenus,itemnr);
-	    break;
-	case ISLABELLEFT:
-	case ISLABELCENTER:
-	case ISLABELRIGHT:
-	    drawtextitem(allmenus,itemnr);
-	    break;
-	case ISEXPANDBOX:
-	    drawexpanditem(allmenus,itemnr);
-	    break;
-	case ISCHECKBOX:
-	    drawcheckboxitem(allmenus,itemnr);
-	    break;
-	case ISRADIOBUTTON:
-	    drawradiobuttonitem(allmenus,itemnr);
-	    break;
-	case ISHORIZBUTTON:
-	    drawhorizbutton(allmenus,itemnr);
-	    break;
-	case ISSMKVIDEO:
-	    drawsmkvideo(allmenus,itemnr);
-	    break;
-	case ISIMAGE:
-	    drawimageitem(allmenus,itemnr);
-	    break;
+		case ISBUTTON:
+			drawbuttonitem(allmenus,itemnr);
+			break;
+		case ISLISTBOX:
+			drawlistboxitem(allmenus,itemnr);
+			break;
+		case ISEDITBOX:
+			draweditboxitem(allmenus,itemnr);
+			break;
+		case ISLABELLEFT:
+		case ISLABELCENTER:
+		case ISLABELRIGHT:
+			drawtextitem(allmenus,itemnr);
+			break;
+		case ISEXPANDBOX:
+			drawexpanditem(allmenus,itemnr);
+			break;
+		case ISCHECKBOX:
+			drawcheckboxitem(allmenus,itemnr);
+			break;
+		case ISRADIOBUTTON:
+			drawradiobuttonitem(allmenus,itemnr);
+			break;
+		case ISHORIZBUTTON:
+			drawhorizbutton(allmenus,itemnr);
+			break;
+		case ISSMKVIDEO:
+			drawsmkvideo(allmenus,itemnr);
+			break;
+		case ISIMAGE:
+			drawimageitem(allmenus,itemnr);
+			break;
     }
     if (!(allmenus->menu[itemnr].dialogbin_flags&DIALOGBIN_FLAGS_NODLGGRP))
-	drawdecorate(allmenus,itemnr);
+		drawdecorate(allmenus,itemnr);
 }
 //==========================================
 int editboxaction(MENUSTR *allmenus)
@@ -1004,44 +1004,44 @@ int editboxaction(MENUSTR *allmenus)
     if (!keybuffer.IsEmpty())
     {
 	//if keypressed and we have editbox add to edit string
-	keypressed = keybuffer.PopElem();
-	if (allmenus->defaultbutton >= 0)
-	{
-	    MENUPOS *curitem = &allmenus->menu[allmenus->defaultbutton];
-	    if (curitem->itemtype != ISEDITBOX)
-		return(0);
-	    int curlength = curitem->item.editbox->length;
-	    if (keypressed == BACKSPACEKEY	||
-		keypressed == ENTERKEY		||
-		(keypressed >= ' ' && keypressed <= '~' ))
-	    {
-		switch(keypressed)
+		keypressed = keybuffer.PopElem();
+		if (allmenus->defaultbutton >= 0)
 		{
-		    case BACKSPACEKEY:
-			if (curlength)
+			MENUPOS *curitem = &allmenus->menu[allmenus->defaultbutton];
+			if (curitem->itemtype != ISEDITBOX)
+				return(0);
+			int curlength = curitem->item.editbox->length;
+			if (keypressed == BACKSPACEKEY	||
+				keypressed == ENTERKEY		||
+				(keypressed >= ' ' && keypressed <= '~' ))
 			{
-			    curlength--;
-			    curitem->item.editbox->editstr[curlength] = 0;
+				switch(keypressed)
+				{
+					case BACKSPACEKEY:
+						if (curlength)
+						{
+							curlength--;
+							curitem->item.editbox->editstr[curlength] = 0;
+						}
+						break;
+					case ENTERKEY:
+						if (curlength >= 0)
+							return(2);
+						break;
+					default:
+						if (curlength < curitem->item.editbox->maxsymbols)
+						{
+							curitem->item.editbox->editstr[curlength] = keypressed;
+							curitem->item.editbox->editstr[curlength+1] = 0;
+								curlength++;
+						}
+						break;
 			}
-			break;
-		    case ENTERKEY:
-			if (curlength >= 0)
-			    return(2);
-			break;
-		    default:
-			if (curlength < curitem->item.editbox->maxsymbols)
-			{
-			    curitem->item.editbox->editstr[curlength] = keypressed;
-			    curitem->item.editbox->editstr[curlength+1] = 0;
-		    	    curlength++;
+			curitem->item.editbox->length = curlength;
+			keyactive = 0;
+			return(1);
 			}
-			break;
 		}
-		curitem->item.editbox->length = curlength;
-		keyactive = 0;
-		return(1);
-	    }
-	}
     }
     return(0);
 }
@@ -1054,172 +1054,172 @@ int menukeys(MENUSTR *allmenus,int *pressed,int *needredraw)
     *pressed = NOSELECTMENUBAR;
     if (keyactive)
     {
-	if (keyactive == TABKEY) //need to parce all elements to need next active and decorated and responce to mouse&key events
-	{
-	    for (i=allmenus->defaultbutton+1;i<allmenus->elements;i++)
-		if (!menuitem_ISDISABLED(allmenus,i)&&menuitem_ISVISIBLED(allmenus,i))
-		    if (allmenus->menu[i].dialogbin_flags&DIALOGBIN_FLAGS_KEYMOUSERESPONDEVENTS)
-		    {
-			setdefaultbutton(allmenus,i);
-			if (needredraw)
-			    *needredraw=1;
-			keyactive=0;
-		        return NOSELECTMENUBAR;
-		    }
-	    for (i=0;i<allmenus->defaultbutton;i++)
-		if (!menuitem_ISDISABLED(allmenus,i)&&menuitem_ISVISIBLED(allmenus,i))
-		    if (allmenus->menu[i].dialogbin_flags&DIALOGBIN_FLAGS_KEYMOUSERESPONDEVENTS)
-		    {
-			setdefaultbutton(allmenus,i);
-			keyactive=0;
-			if (needredraw)
-			    *needredraw=1;
-			return NOSELECTMENUBAR;
-		    }
-	}
-	if (((allmenus->defaultbutton>=0&&allmenus->menu[allmenus->defaultbutton].itemtype!=ISEDITBOX)||
-	    allmenus->defaultbutton<0)||
-	    (allmenus->menu[allmenus->defaultbutton].itemtype==ISEDITBOX&&keyactive==ESCAPEKEY))
-	{
-	    prevkey = keyactive;
-	    switch(keyactive)
-	    {
-		case ENTERKEY:
-	    	    if (allmenus->menu[allmenus->defaultbutton].itemtype==ISBUTTON ||
-	    		allmenus->menu[allmenus->defaultbutton].itemtype==ISLISTBOX)
-	    	    {
-			if (menuitem_ISENABLED(allmenus,allmenus->defaultbutton))
+		if (keyactive == TABKEY) //need to parce all elements to need next active and decorated and responce to mouse&key events
+		{
+			for (i=allmenus->defaultbutton+1;i<allmenus->elements;i++)
+				if (!menuitem_ISDISABLED(allmenus,i)&&menuitem_ISVISIBLED(allmenus,i))
+					if (allmenus->menu[i].dialogbin_flags&DIALOGBIN_FLAGS_KEYMOUSERESPONDEVENTS)
+					{
+						setdefaultbutton(allmenus,i);
+						if (needredraw)
+							*needredraw=1;
+						keyactive=0;
+						return NOSELECTMENUBAR;
+					}
+			for (i=0;i<allmenus->defaultbutton;i++)
+				if (!menuitem_ISDISABLED(allmenus,i)&&menuitem_ISVISIBLED(allmenus,i))
+					if (allmenus->menu[i].dialogbin_flags&DIALOGBIN_FLAGS_KEYMOUSERESPONDEVENTS)
+					{
+						setdefaultbutton(allmenus,i);
+						keyactive=0;
+						if (needredraw)
+							*needredraw=1;
+						return NOSELECTMENUBAR;
+					}
+		}
+		if (((allmenus->defaultbutton>=0&&allmenus->menu[allmenus->defaultbutton].itemtype!=ISEDITBOX)||
+			allmenus->defaultbutton<0)||
+			(allmenus->menu[allmenus->defaultbutton].itemtype==ISEDITBOX&&keyactive==ESCAPEKEY))
+		{
+			prevkey = keyactive;
+			switch(keyactive)
 			{
-	    		    *pressed=allmenus->defaultbutton;
-	    		}
-	    		else
-	    		    prevkey=0;
-		    }
-		    break;
-		case TABKEY: //need to parce all elements to need next active and decorated and responce to mouse&key events
-		    for (i=allmenus->defaultbutton+1;i<allmenus->elements;i++)
-			if (!menuitem_ISDISABLED(allmenus,i)&&menuitem_ISVISIBLED(allmenus,i))
-			    if (allmenus->menu[i].dialogbin_flags&DIALOGBIN_FLAGS_KEYMOUSERESPONDEVENTS)
-			    {
-				setdefaultbutton(allmenus,i);
-			        return NOSELECTMENUBAR;
-			    }
-		    for (i=0;i<allmenus->defaultbutton;i++)
-			if (!menuitem_ISDISABLED(allmenus,i)&&menuitem_ISVISIBLED(allmenus,i))
-			    if (allmenus->menu[i].dialogbin_flags&DIALOGBIN_FLAGS_KEYMOUSERESPONDEVENTS)
-			    {
-				setdefaultbutton(allmenus,i);
-				return NOSELECTMENUBAR;
-			    }
-		    break;
-		case UPKEY:
-	    	    if (allmenus->defaultbutton>=0)
-	    		if (allmenus->menu[allmenus->defaultbutton].itemtype==ISLISTBOX)
-	    		{
-			    if (allmenus->menu[allmenus->defaultbutton].item.listbox->bar)
-				allmenus->menu[allmenus->defaultbutton].item.listbox->bar->showtypet=ITEMSHOW_CLICK;
-			    changelist=changelistbox_selectednr(allmenus,allmenus->defaultbutton,-1);
-			    if (changelist)
-				*pressed=allmenus->defaultbutton;
-			    keyactive=0;
-	    		}
-	    	    break;
-		case DOWNKEY:
-	    	    if (allmenus->defaultbutton>=0)
-	    		if (allmenus->menu[allmenus->defaultbutton].itemtype==ISLISTBOX)
-	    		{
-			    if (allmenus->menu[allmenus->defaultbutton].item.listbox->bar)
-				allmenus->menu[allmenus->defaultbutton].item.listbox->bar->showtypeb=ITEMSHOW_CLICK;
-			    changelist=changelistbox_selectednr(allmenus,allmenus->defaultbutton,+1);
-			    if (changelist)
-				*pressed=allmenus->defaultbutton;
-			    keyactive=0;
-	    		}
-	    	    break;
-		default:
-		    for (i=0;i<allmenus->elements;i++)
-			if (allmenus->menu[i].hotkey==keyactive)
-			{
-			    if (menuitem_ISENABLED(allmenus,i)&&menuitem_ISVISIBLED(allmenus,i))
-		    		*pressed = i;
-			    else
-				prevkey=0;
-			    break;
+				case ENTERKEY:
+					if (allmenus->menu[allmenus->defaultbutton].itemtype==ISBUTTON ||
+						allmenus->menu[allmenus->defaultbutton].itemtype==ISLISTBOX)
+					{
+						if (menuitem_ISENABLED(allmenus,allmenus->defaultbutton))
+						{
+							*pressed=allmenus->defaultbutton;
+						}
+						else
+							prevkey=0;
+					}
+					break;
+				case TABKEY: //need to parce all elements to need next active and decorated and responce to mouse&key events
+					for (i=allmenus->defaultbutton+1;i<allmenus->elements;i++)
+						if (!menuitem_ISDISABLED(allmenus,i)&&menuitem_ISVISIBLED(allmenus,i))
+							if (allmenus->menu[i].dialogbin_flags&DIALOGBIN_FLAGS_KEYMOUSERESPONDEVENTS)
+							{
+								setdefaultbutton(allmenus,i);
+								return NOSELECTMENUBAR;
+							}
+					for (i=0;i<allmenus->defaultbutton;i++)
+						if (!menuitem_ISDISABLED(allmenus,i)&&menuitem_ISVISIBLED(allmenus,i))
+							if (allmenus->menu[i].dialogbin_flags&DIALOGBIN_FLAGS_KEYMOUSERESPONDEVENTS)
+							{
+								setdefaultbutton(allmenus,i);
+								return NOSELECTMENUBAR;
+							}
+					break;
+				case UPKEY:
+						if (allmenus->defaultbutton>=0)
+							if (allmenus->menu[allmenus->defaultbutton].itemtype==ISLISTBOX)
+							{
+								if (allmenus->menu[allmenus->defaultbutton].item.listbox->bar)
+									allmenus->menu[allmenus->defaultbutton].item.listbox->bar->showtypet=ITEMSHOW_CLICK;
+								changelist=changelistbox_selectednr(allmenus,allmenus->defaultbutton,-1);
+								if (changelist)
+									*pressed=allmenus->defaultbutton;
+								keyactive=0;
+							}
+						break;
+				case DOWNKEY:
+						if (allmenus->defaultbutton>=0)
+							if (allmenus->menu[allmenus->defaultbutton].itemtype==ISLISTBOX)
+							{
+								if (allmenus->menu[allmenus->defaultbutton].item.listbox->bar)
+									allmenus->menu[allmenus->defaultbutton].item.listbox->bar->showtypeb=ITEMSHOW_CLICK;
+								changelist=changelistbox_selectednr(allmenus,allmenus->defaultbutton,+1);
+								if (changelist)
+									*pressed=allmenus->defaultbutton;
+								keyactive=0;
+							}
+						break;
+				default:
+					for (i=0;i<allmenus->elements;i++)
+						if (allmenus->menu[i].hotkey==keyactive)
+						{
+							if (menuitem_ISENABLED(allmenus,i)&&menuitem_ISVISIBLED(allmenus,i))
+								*pressed = i;
+							else
+								prevkey=0;
+							break;
+						}
+					break;
 			}
-		    break;
-	    }
-	}
+		}
     }
     else
     {
-	if (prevkey)
-	{
-	    tempkey = prevkey;
-	    prevkey=0;
-	    switch(tempkey)
-	    {
-
-		case ESCAPEKEY:
-/*		    for (i=0;i<allmenus->elements;i++)
-			if (allmenus->menu[i].dialogbin_flags&DIALOGBIN_FLAGS_RESPONDTOESCKEY)
+		if (prevkey)
+		{
+			tempkey = prevkey;
+			prevkey=0;
+			switch(tempkey)
 			{
-			    if (allmenus->menu[i].dialogbin_flags&DIALOGBIN_FLAGS_ITEMDISABLED)
-				break;
-			    else
-				if (!allmenus->menu[i].dialogbin_flags&DIALOGBIN_FLAGS_ITEMVISIBLED)
-				    break;
-			    return CANCELFROMMENU;
+
+				case ESCAPEKEY:
+		/*		    for (i=0;i<allmenus->elements;i++)
+					if (allmenus->menu[i].dialogbin_flags&DIALOGBIN_FLAGS_RESPONDTOESCKEY)
+					{
+						if (allmenus->menu[i].dialogbin_flags&DIALOGBIN_FLAGS_ITEMDISABLED)
+						break;
+						else
+						if (!allmenus->menu[i].dialogbin_flags&DIALOGBIN_FLAGS_ITEMVISIBLED)
+							break;
+						return CANCELFROMMENU;
+					}
+		*/
+					return CANCELFROMMENU;
+					break;
+				case ENTERKEY:
+					if (allmenus->menu[allmenus->defaultbutton].dialogbin_flags & DIALOGBIN_FLAGS_ITEMDISABLED)
+						break;
+					else
+						if (!(allmenus->menu[allmenus->defaultbutton].dialogbin_flags & DIALOGBIN_FLAGS_ITEMVISIBLED))
+							break;
+					return (allmenus->defaultbutton);
+				case UPKEY:
+						if (allmenus->defaultbutton>=0)
+							if (allmenus->menu[allmenus->defaultbutton].itemtype == ISLISTBOX)
+							{
+								if (allmenus->menu[allmenus->defaultbutton].item.listbox->bar)
+									allmenus->menu[allmenus->defaultbutton].item.listbox->bar->showtypet=ITEMSHOW_NOFOCUS;
+							}
+						if (allmenus->defaultlistitem>=0)
+						{
+							changelist=changelistbox_selectednr(allmenus,allmenus->defaultlistitem,-1);
+							if (changelist)
+								*pressed=allmenus->defaultlistitem;
+						}
+					break;
+				case DOWNKEY:
+						if (allmenus->defaultbutton>=0)
+							if (allmenus->menu[allmenus->defaultbutton].itemtype==ISLISTBOX)
+							{
+								if (allmenus->menu[allmenus->defaultbutton].item.listbox->bar)
+									allmenus->menu[allmenus->defaultbutton].item.listbox->bar->showtypeb=ITEMSHOW_NOFOCUS;
+							}
+						if (allmenus->defaultlistitem>=0)
+						{
+							changelist=changelistbox_selectednr(allmenus,allmenus->defaultlistitem,+1);
+							if (changelist)
+							*	pressed=allmenus->defaultlistitem;
+						}
+					break;
+				case PAGEUPKEY:
+					break;
+				case PAGEDOWNKEY:
+					break;
+				default:
+					for (i=0;i<allmenus->elements;i++)
+						if (menuitem_ISENABLED(allmenus,i)&&menuitem_ISVISIBLED(allmenus,i))
+							if (allmenus->menu[i].hotkey==tempkey)
+							return i;
+					break;
 			}
-*/
-		    return CANCELFROMMENU;
-		    break;
-		case ENTERKEY:
-		    if (allmenus->menu[allmenus->defaultbutton].dialogbin_flags & DIALOGBIN_FLAGS_ITEMDISABLED)
-			break;
-		    else
-			if (!(allmenus->menu[allmenus->defaultbutton].dialogbin_flags & DIALOGBIN_FLAGS_ITEMVISIBLED))
-			    break;
-		    return (allmenus->defaultbutton);
-		case UPKEY:
-	    	    if (allmenus->defaultbutton>=0)
-	    		if (allmenus->menu[allmenus->defaultbutton].itemtype == ISLISTBOX)
-	    		{
-			    if (allmenus->menu[allmenus->defaultbutton].item.listbox->bar)
-				allmenus->menu[allmenus->defaultbutton].item.listbox->bar->showtypet=ITEMSHOW_NOFOCUS;
-			}
-	    	    if (allmenus->defaultlistitem>=0)
-		    {
-			changelist=changelistbox_selectednr(allmenus,allmenus->defaultlistitem,-1);
-			if (changelist)
-			    *pressed=allmenus->defaultlistitem;
-		    }
-		    break;
-		case DOWNKEY:
-	    	    if (allmenus->defaultbutton>=0)
-	    		if (allmenus->menu[allmenus->defaultbutton].itemtype==ISLISTBOX)
-	    		{
-			    if (allmenus->menu[allmenus->defaultbutton].item.listbox->bar)
-				allmenus->menu[allmenus->defaultbutton].item.listbox->bar->showtypeb=ITEMSHOW_NOFOCUS;
-	    		}
-	    	    if (allmenus->defaultlistitem>=0)
-		    {
-			changelist=changelistbox_selectednr(allmenus,allmenus->defaultlistitem,+1);
-			if (changelist)
-			    *pressed=allmenus->defaultlistitem;
-		    }
-		    break;
-		case PAGEUPKEY:
-		    break;
-		case PAGEDOWNKEY:
-		    break;
-		default:
-		    for (i=0;i<allmenus->elements;i++)
-			if (menuitem_ISENABLED(allmenus,i)&&menuitem_ISVISIBLED(allmenus,i))
-			    if (allmenus->menu[i].hotkey==tempkey)
-				return i;
-		    break;
-	    }
-	}
+		}
     }
     return NOSELECTMENUBAR;
 }
