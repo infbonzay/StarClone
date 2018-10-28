@@ -171,12 +171,6 @@ typedef unsigned char SCUNIT;
 
 #define BORDERMOUSE 2
 
-#define MOUSEMODE1 0
-#define MOUSEMODE2 1
-#define MOUSEMODE3 2
-#define MOUSEMODE4 3
-#define MAXMOUSEMODE 4
-
 #define MAXMAPONX	256
 #define MAXMAPONY	256
 

@@ -9,6 +9,13 @@
 #endif
 
 #include "man.h"
+#include "const.h"
+
+#define MOUSEMODE1 				0
+#define MOUSEMODE2 				1
+#define MOUSEMODE3 				2
+#define MOUSEMODE4 				3
+#define MAXMOUSEMODE 			4
 
 #define	SMOUTHMOUSE    			1.0001
 
@@ -52,8 +59,15 @@
 class HighMouse
 {
 
-private:
-    struct
+public:
+	int		PosX;
+	int		PosY;
+	int		PrevX;
+	int		PrevY;
+    int		MouseType;
+    int		PrevMouseType;
+
+	struct
     {
 		int		PosX;
 		int		PosY;
@@ -62,13 +76,8 @@ private:
 		char	SavedPixels[MAXMOUSESIZEX*MAXMOUSESIZEY];
     }SavedUnder;
 
-public:
-	int		PosX;
-	int		PosY;
-	int		PrevX;
-	int		PrevY;
-    int		MouseType;
-    int		PrevMouseType;
+	int		RestrictNr;
+	XY		RestrictXY[MAXMOUSEMODE];
 	OBJ		*MouseOnOBJS[MOUSEON_MAXVALUE];	//myunit,alianceunit,neutralunit,enemyunit,mybuild,aliancebuild,neutralbuild,enemybuild
 	OBJ		*DestMouseOBJ;
 	int		DestMouseType;
@@ -93,6 +102,10 @@ public:
     void GetMouseOnObj(void);
     void SaveImageUnder();
     void LoadImageUnder();
+    bool CheckForBorder(int x1,int y1,int x2,int y2);
+	void SetRestrictCoords(int restrictNr);
+	void SetRestrictCoords(int restrictNr,int x1,int y1,int x2,int y2);
+	void FixRestrict(int *x,int *y);
 
 };
 

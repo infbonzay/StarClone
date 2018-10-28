@@ -635,7 +635,7 @@ void MAIN_IMG::CheckForMouseOver(OBJ *a)
 	mouseobjtype = destselectionsteps[isbuild][alliance];
 	if (highMouse.PrevMouseType  > mouseobjtype && !highMouse.MouseOnOBJS[mouseobjtype])
 	{
-    	    focusonobj = mouseborder2(	(xpos>>8)-map.MAPXGLOBAL-GetUnitWidthAndHeight(a->SC_Unit,UNITDIM_WIDTH)/2,
+        focusonobj = highMouse.CheckForBorder(	(xpos>>8)-map.MAPXGLOBAL-GetUnitWidthAndHeight(a->SC_Unit,UNITDIM_WIDTH)/2,
                 		        (ypos>>8)-map.MAPYGLOBAL-GetUnitWidthAndHeight(a->SC_Unit,UNITDIM_HEIGHT)/2,
                 			(xpos>>8)-map.MAPXGLOBAL+GetUnitWidthAndHeight(a->SC_Unit,UNITDIM_WIDTH)/2,
                 			(ypos>>8)-map.MAPYGLOBAL+GetUnitWidthAndHeight(a->SC_Unit,UNITDIM_HEIGHT)/2);

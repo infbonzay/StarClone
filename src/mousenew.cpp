@@ -221,4 +221,62 @@ void HighMouse::LoadImageUnder(void)
 {
     CPutImage8(SavedUnder.PosX,SavedUnder.PosY,SavedUnder.SizeX,SavedUnder.SizeY,SavedUnder.SavedPixels);
 }
-
+//==========================
+bool HighMouse::CheckForBorder(int x1,int y1,int x2,int y2)
+{
+    if(PosX >= x1 && PosY >= y1 && PosX <= x2 && PosY <= y2)
+		return(1);
+    else
+		return(0);
+}
+//==========================
+void HighMouse::SetRestrictCoords(int restrictNr)
+{
+    RestrictNr = restrictNr;
+}
+//==========================================
+void HighMouse::SetRestrictCoords(int restrictNr,int x1,int y1,int x2,int y2)
+{
+    RestrictXY[restrictNr].x1 = x1;
+    RestrictXY[restrictNr].y1 = y1;
+    RestrictXY[restrictNr].x2 = x2;
+    RestrictXY[restrictNr].y2 = y2;
+}
+//==========================================
+void HighMouse::FixRestrict(int *x,int *y)
+{
+	bool change = false;
+	if (*x > RestrictXY[RestrictNr].x2)
+    {
+        *x = RestrictXY[RestrictNr].x2;
+        change = true;
+    }
+    else
+    {
+        if (*x < RestrictXY[RestrictNr].x1)
+		{
+			*x = RestrictXY[RestrictNr].x1;
+			change = true;
+		}
+	}
+    if (*y > RestrictXY[RestrictNr].y2)
+    {
+		*y = RestrictXY[RestrictNr].y2;
+        change = true;
+    }
+    else
+    {
+        if (*y < highMouse.RestrictXY[RestrictNr].y1)
+		{
+    	    *y = highMouse.RestrictXY[RestrictNr].y1;
+			change = true;
+		}
+	}
+	PosX = *x;
+	PosY = *y;
+    if (change)
+    {
+		lowMouse.SetPos(PosX,PosY);
+	}
+}
+//==========================================

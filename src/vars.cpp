@@ -236,11 +236,9 @@ char	EXPANSIONSET		= 1;
 //==========================================================
 void inivars(void)
 {
-    //mousedetect=0;
     GAME=0;
     keyactive=0;
     lastkey=0;
-    mouse=1;
 }
 //================================
 void addvars(void)
@@ -251,19 +249,9 @@ void addvars(void)
     hightkart=(gameconf.grmode.y-32*3)/SIZESPRLANSHY;
     SCRFOGX=widthkart+2+1;
     SCRFOGY=hightkart+2+1;
-    mouse=0;
-    mouser[MOUSEMODE1].x1=0;
-    mouser[MOUSEMODE1].y1=0;
-    mouser[MOUSEMODE1].x2=gameconf.grmode.x-1;
-    mouser[MOUSEMODE1].y2=gameconf.grmode.y-1;
-    mouser[MOUSEMODE2].x1=0;
-    mouser[MOUSEMODE2].y1=0;
-    mouser[MOUSEMODE2].x2=gameconf.grmode.x-1;
-    mouser[MOUSEMODE2].y2=gameconf.grmode.y-1;
-    mouser[MOUSEMODE3].x1=0;
-    mouser[MOUSEMODE3].y1=0;
-    mouser[MOUSEMODE3].x2=gameconf.grmode.x-1;
-    mouser[MOUSEMODE3].y2=gameconf.grmode.y-110;
+    highMouse.SetRestrictCoords(MOUSEMODE1,0,0,gameconf.grmode.x-1,gameconf.grmode.y-1);
+    highMouse.SetRestrictCoords(MOUSEMODE2,0,0,gameconf.grmode.x-1,gameconf.grmode.y-1);
+    highMouse.SetRestrictCoords(MOUSEMODE3,0,0,gameconf.grmode.x-1,gameconf.grmode.y-110);
 
     screenfog=(unsigned char *)wmalloc(SCRFOGX*SCRFOGY);
     screenmapused=(unsigned char *)wmalloc((hightkart+1)*(widthkart+1));
@@ -276,13 +264,13 @@ void deinit(void)
 {
     if (screenfog)
     {
-	wfree(screenfog);
-	screenfog=NULL;
+		wfree(screenfog);
+		screenfog=NULL;
     }
     if (screenmapused)
     {
-	wfree(screenmapused);
-	screenmapused=NULL;
+		wfree(screenmapused);
+		screenmapused=NULL;
     }
 }
 //================================

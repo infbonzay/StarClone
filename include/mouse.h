@@ -21,22 +21,16 @@
 
 extern int 		factorscrollkey;
 extern int     	mouse_b,mousehotpos;
-extern char    	curentREGIM;
 extern int     	xmloc,ymloc,movieminikarta,mspeed;
-extern struct  	XY mouser[MAXMOUSEMODE];
 extern int      mousemaxx,mousemaxy,doublespeed,mousedoubleclick;
-extern int     	decrxx,decryy,grm;
+extern int     	decrxx,decryy;
 extern char    	waitfordownrightbuton,waitfordownleftbuton;
-extern char    	mouse,patr,mouseclear,mloc,mousescrollflag;
+extern char    	patr,mouseclear,mloc,mousescrollflag;
 extern unsigned	short  mouseprop;
 extern char     timemouse;
 extern char    	timemousewait;
-extern int 		memmouseposx,memmouseposy;
-extern int 		memmousepossizex,memmousepossizey;
 
-int  restrictmousecoords(int REGIM);
-int  mouseborder2(int x1,int y1,int x2,int y2);
-int  mouseborder(struct XY *m);
+
 void desenlocation(void);
 void putdestination(struct OBJ *destobj,int xm,int ym,int modemove,int posibleconstr,int rightclick);
 void getmousetype(int x,int y);

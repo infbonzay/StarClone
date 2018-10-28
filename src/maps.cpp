@@ -54,10 +54,7 @@ void CreateMiniMapPixels(struct mapinfo *map)
     Ykartbeg = map->minimap_starty;
     Xkartend = map->minimap_endx;
     Ykartend = map->minimap_endy;
-    mouser[MOUSEMODE4].x1 = Xkart+Xkartbeg;
-    mouser[MOUSEMODE4].y1 = Ykart+Ykartbeg;
-    mouser[MOUSEMODE4].x2 = Xkart+Xkartend;
-    mouser[MOUSEMODE4].y2 = Ykart+Ykartend;
+    highMouse.SetRestrictCoords(MOUSEMODE4,Xkart+Xkartbeg,Ykart+Ykartbeg,Xkart+Xkartend,Ykart+Ykartend);
     factorx=(float)((Xkartend-Xkartbeg))/MAXXMAP;
     factory=(float)((Ykartend-Ykartbeg))/MAXYMAP;
     sizemaprectx=(int)(widthkart*factorx);
@@ -290,7 +287,7 @@ void drawMAP(int ignorefirstwaiting)
 			{
 			    minimapcolor=map.mapbits.underfog[NUMBGAMER][ii*MAXXMAP+jj]->pictureslot[0].grcolor;	//putobjonminimap
 			    if (!minimapcolor)
-				continue; 
+				continue;
 			}
 			else
 			    continue;
@@ -367,7 +364,7 @@ void drawMAP(int ignorefirstwaiting)
 	    }
 	}
     }
-    
+
 /*    FILE *f=fopen("screenmapused.txt","w");
     if (f)
     {
@@ -399,7 +396,7 @@ void AutoMoveMap(void)
 		if (map.totaldeltax >= 0)
 		    mapmovedone = 1;
 	    }
-	    else 
+	    else
 		if (map.deltax > 0)
 		{
 		    if (map.totaldeltax <= 0)
@@ -443,7 +440,7 @@ void MoveVisualMapPosition(int x,int y)
     int deltax,deltay;
     if (x<0)
 	x=0;
-    if (y<0) 
+    if (y<0)
         y=0;
     if (x>SIZESPRLANSHX*(MAXXMAP-widthkart))
         x=SIZESPRLANSHX*(MAXXMAP-widthkart);
@@ -473,9 +470,9 @@ int SetVisualMapPosition(int x,int y)//x,y-0..MAX?MAP*32
 	return(0);
     x &= ~0x1f;
     y &= ~0x1f;
-    if (x<0) 
+    if (x<0)
 	x=0;
-    if (y<0) 
+    if (y<0)
         y=0;
     if (x>SIZESPRLANSHX*(MAXXMAP-widthkart))
         x=SIZESPRLANSHX*(MAXXMAP-widthkart);
@@ -579,7 +576,7 @@ void clearopenseeKarta(void)
     memcpy(map.mapbits.seedetector,map.mapbits.seedetector2,MAXXMAP*MAXYMAP);
     memcpy(map.mapbits.arbiterfield,map.mapbits.arbiterfield2,MAXXMAP*MAXYMAP);
 
-    
+
     for (i=0;i<PLAYEDPLAYERS;i++)
     {
     	if (IfPlayerHaveStartLocation(&map,i)!=-1)
@@ -674,7 +671,7 @@ void makeopenseeKarta(int beginobj,int endobj)
                                     GetMageAtr(&a->atrobj,ATRINVISIBLE)<ATRMAGEINFINITE)
                                     addmage(a,ATRINVISIBLE,0);//others obj
                     }
-            	  }    
+            	  }
                }
     }//for
 }
@@ -940,7 +937,7 @@ void calcfullinvandseeobj(OBJ *a)
     		OBJ_VAR_MASK_SET(a,obj_see,plmask);
 	    visbits = GetVisionBitsPlayer(i);
     	    if (map.mapbits.seedetector[a->ykart*MAXXMAP+a->xkart] & visbits)
-    	    {	
+    	    {
     		//esli vidim detectorom
     		OBJ_VAR_MASK_SET(a,obj_invsee,plmask);
     		OBJ_VAR_MASK_CLR(a,obj_notdetect,plmask);

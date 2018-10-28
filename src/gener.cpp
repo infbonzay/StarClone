@@ -742,24 +742,26 @@ void setmainscreenmouseevents(void)
 {
     int i,j,x,y;
     addnewmousehotpos(&mouseonhotpos,4+MAXSELECTMAN+11);//total mousehotspots
-    addmousehotpos(mouser[MOUSEMODE4].x1,mouser[MOUSEMODE4].y1,
-		   mouser[MOUSEMODE4].x2-mouser[MOUSEMODE4].x1+1,
-		   mouser[MOUSEMODE4].y2-mouser[MOUSEMODE4].y1+1,NULL);
+    addmousehotpos( highMouse.RestrictXY[MOUSEMODE4].x1,
+					highMouse.RestrictXY[MOUSEMODE4].y1,
+					highMouse.RestrictXY[MOUSEMODE4].x2 - highMouse.RestrictXY[MOUSEMODE4].x1 + 1,
+					highMouse.RestrictXY[MOUSEMODE4].y2 - highMouse.RestrictXY[MOUSEMODE4].y1 + 1,
+					NULL);
     for (i=0;i<MAXSELECTMAN;i++)
     {
-//	x = XUNITBAR+i/2*36;
-//	y = YUNITBAR+(i&1)*36;
-	x = 172+DELTASCREENX+i/2*36;
-	y = YUNITBAR+(i&1)*36;
-	addmousehotpos(x,y,36,36,NULL);
+	//	x = XUNITBAR+i/2*36;
+	//	y = YUNITBAR+(i&1)*36;
+		x = 172+DELTASCREENX+i/2*36;
+		y = YUNITBAR+(i&1)*36;
+		addmousehotpos(x,y,36,36,NULL);
     }
     for (i=0;i<9;i++)
     {
-	addmousehotpos( statbtnmenu->iteminfo[i+1].xpos+statbtnmenu->iteminfo[0].xpos,
-			statbtnmenu->iteminfo[i+1].ypos+statbtnmenu->iteminfo[0].ypos,
-			statbtnmenu->iteminfo[i+1].xsize,
-			statbtnmenu->iteminfo[i+1].ysize,
-			NULL);
+		addmousehotpos( statbtnmenu->iteminfo[i+1].xpos+statbtnmenu->iteminfo[0].xpos,
+				statbtnmenu->iteminfo[i+1].ypos+statbtnmenu->iteminfo[0].ypos,
+				statbtnmenu->iteminfo[i+1].xsize,
+				statbtnmenu->iteminfo[i+1].ysize,
+				NULL);
     }
     addmousehotpos( f10menu->iteminfo[F10DIALOG_MENUBUTTON].xpos+f10menu->iteminfo[F10DIALOG_MAIN].xpos,
 		    f10menu->iteminfo[F10DIALOG_MENUBUTTON].ypos+f10menu->iteminfo[F10DIALOG_MAIN].ypos,
@@ -907,7 +909,7 @@ int gogame(struct mapinfo *info)
     changegoods=1;
     highMouse.LoadAllCursors();
     showedmenu.Init();
-    restrictmousecoords(MOUSEMODE2);
+    highMouse.SetRestrictCoords(MOUSEMODE2);
     chatbar.clearallmessages();
     infobar.clearallmessages();
     GAME=1;
@@ -1025,11 +1027,10 @@ int gogame(struct mapinfo *info)
 			keyhandler();		//analyze if some key action
 			karta_aria =  (mousehotpos == MOUSEONMINIMAP);
 			select_aria = (mousehotpos == MOUSEONMAP);
-			if (movieminikarta==YES&&karta_aria)
-				curentREGIM=MOUSEMODE4;//restrict mouse move on minimap only
+			if (movieminikarta == YES && karta_aria)
+				highMouse.SetRestrictCoords(MOUSEMODE4);
 			else
-				if (curentREGIM!=MOUSEMODE2)
-					curentREGIM=MOUSEMODE2;//restrict mouse move on entire map
+				highMouse.SetRestrictCoords(MOUSEMODE2);
 			movieminikarta=NO;
 			switch(timeid)
 			{
@@ -1111,7 +1112,7 @@ int gogame(struct mapinfo *info)
 			}//switch timeid
 			if (gamestatus!=NOGAMESTATUS)
 			{
-				curentREGIM=MOUSEMODE2;
+				highMouse.SetRestrictCoords(MOUSEMODE2);
 			}
 			AutoMoveMap();
 			if (!PAUSEGAME)
@@ -1185,11 +1186,11 @@ int gogame(struct mapinfo *info)
 			drawGAMEMENUbutton(&dipl_menu,minimapmenu,MINIMAPDIALOG_DIPLOMACYBUTTON,
 					DIPLOMACYBUTTON_PICT,MOUSEONDIPLOMACYBUTTON,STATTXT_TBL_DIPLOMACY);
 			drawGAMEMENUbutton(&terr_menu,minimapmenu,MINIMAPDIALOG_TERRAINBUTTON,
-				TERRAINBUTTON_PICT,MOUSEONTERRAINBUTTON,STATTXT_TBL_TERRAINONTEXT);
+					TERRAINBUTTON_PICT,MOUSEONTERRAINBUTTON,STATTXT_TBL_TERRAINONTEXT);
 			drawGAMEMENUbutton(&mess_menu,minimapmenu,MINIMAPDIALOG_MESSAGEBUTTON,
-				MESSAGEBUTTON_PICT,MOUSEONMESSAGEBUTTON,STATTXT_TBL_MESSAGING);
+					MESSAGEBUTTON_PICT,MOUSEONMESSAGEBUTTON,STATTXT_TBL_MESSAGING);
 			drawGAMEMENUbutton(&f10_menu,f10menu,F10DIALOG_MENUBUTTON,
-				F10BUTTON_PICT,MOUSEONMENUBUTTON,STATTXT_TBL_GAMEMENUTEXT);
+					F10BUTTON_PICT,MOUSEONMENUBUTTON,STATTXT_TBL_GAMEMENUTEXT);
 			if (!PAUSEGAME)
 				printobjparam();		//draw parameters of selected objects
 			desenonlymouseflag = 0;
@@ -1206,21 +1207,21 @@ int gogame(struct mapinfo *info)
 			if (PAUSEGAME)
 			{
 				desenonlymouseflag = 0;
-				scrparts[0].x=0;
-				scrparts[0].y=0;
-				scrparts[0].w=gameconf.grmode.x;
-				scrparts[0].h=gameconf.grmode.y;
-				scrregions=1;
+				scrparts[0].x = 0;
+				scrparts[0].y = 0;
+				scrparts[0].w = gameconf.grmode.x;
+				scrparts[0].h = gameconf.grmode.y;
+				scrregions = 1;
 			}
 			else
 			{
 				desenonlymouseflag = 1;
 				//update mousecursor
-				scrparts[0].x=memmouseposx;
-				scrparts[0].y=memmouseposy;
-				scrparts[0].w=memmousepossizex;
-				scrparts[0].h=memmousepossizey;
-				scrregions=1;
+				scrparts[0].x = highMouse.SavedUnder.PosX;
+				scrparts[0].y = highMouse.SavedUnder.PosY;
+				scrparts[0].w = highMouse.SavedUnder.SizeX;
+				scrparts[0].h = highMouse.SavedUnder.SizeY;
+				scrregions = 1;
 			}
 		}
 		ShowGameStatusMenu(&prevgameticks);

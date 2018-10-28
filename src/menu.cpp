@@ -95,64 +95,40 @@ void addmousehotpos(int x,int y,int sizex,int sizey,int *dialogflags)
     }
 }
 //==========================================
+//coming here from sdl main loop
+//
 void mymousemoveevent(int x,int y)
 {
-    int i,found=-1,mouseborder=0,flags;
+    int i,found=-1,flags;
     MOUSEHOTSPOT *temp;
 
-    if (x>mouser[curentREGIM].x2)
-    {
-        x=mouser[curentREGIM].x2;
-	mouseborder=1;
-    }
-    else
-        if (x<mouser[curentREGIM].x1)
-	{
-	    x=mouser[curentREGIM].x1;
-	    mouseborder=1;
-	}
-    if (y>mouser[curentREGIM].y2)
-    {
-	y=mouser[curentREGIM].y2;
-	mouseborder=1;
-    }
-    else
-        if (y<mouser[curentREGIM].y1)
-	{
-    	    y=mouser[curentREGIM].y1;
-	    mouseborder=1;
-	}
-    highMouse.PosX = x;
-    highMouse.PosY = y;
-    if (mouseborder)
-	lowMouse.SetPos(x,y);
+	highMouse.FixRestrict(&x, &y);
     if (!currentmousehottable)
-	return;
+		return;
     if (!currentmousehottable->callbackwork)
-	return;
+		return;
     for (i=0;i<currentmousehottable->curenthotspots;i++)
     {
-	temp = &currentmousehottable->spot[i];
-	if (temp->dialogflags)
-	{
-	    flags=*temp->dialogflags;
-	    if (!(flags&DIALOGBIN_FLAGS_ITEMVISIBLED))
-		continue;
-	    if (flags&DIALOGBIN_FLAGS_ITEMDISABLED)
-		continue;
-	    if (!(flags&DIALOGBIN_FLAGS_KEYMOUSERESPONDEVENTS))
-		continue;
-	}
-	if (x>=temp->x && y>=temp->y && x<=temp->x+temp->sizex && y<=temp->y+temp->sizey)
-	{
-	    (*currentmousehottable->mousemovecallback)(i);
-	    found = i;
-	    break;
-	}
+		temp = &currentmousehottable->spot[i];
+		if (temp->dialogflags)
+		{
+			flags=*temp->dialogflags;
+			if (!(flags&DIALOGBIN_FLAGS_ITEMVISIBLED))
+				continue;
+			if (flags&DIALOGBIN_FLAGS_ITEMDISABLED)
+				continue;
+			if (!(flags&DIALOGBIN_FLAGS_KEYMOUSERESPONDEVENTS))
+				continue;
+		}
+		if (x>=temp->x && y>=temp->y && x<=temp->x+temp->sizex && y<=temp->y+temp->sizey)
+		{
+			(*currentmousehottable->mousemovecallback)(i);
+			found = i;
+			break;
+		}
     }
     if (found==-1)
-	(*currentmousehottable->mousemovecallback)(NOSELECTMENUBAR);
-
+		(*currentmousehottable->mousemovecallback)(NOSELECTMENUBAR);
 }
 //==========================================
 void puttransptilebox(int x,int y,int sizex,int sizey,GRPFILE *grp)

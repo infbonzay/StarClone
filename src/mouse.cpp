@@ -32,76 +32,13 @@
 int 	factorscrollkey,mousehotpos;
 int     mousemaxx,mousemaxy,mouse_b;
 int     xmloc,ymloc,movieminikarta=NO,mousedoubleclick;
-struct  XY mouser[MAXMOUSEMODE];
 int     decrxx,decryy;
 char    waitfordownrightbuton,waitfordownleftbuton;
-char    mouse,patr,mouseclear,mloc;
+char    patr,mouseclear,mloc;
 unsigned short  mouseprop;
 char     timemouse;
 
-char    curentREGIM;
-int memmouseposx,memmouseposy;
-int memmousepossizex,memmousepossizey;
-
 //==============================
-int restrictmousecoords(int REGIM)
-{
-    int mx,my;
-    mx = highMouse.PosX;
-    my = highMouse.PosY;
-//    if (curentREGIM==REGIM)
-//	return 1;
-    curentREGIM=REGIM;
-//    if (mousedetect)
-    if (0)
-    {
-	lowMouse.GetPos();
-	highMouse.PosX += lowMouse.DeltaX;
-        highMouse.PosY += lowMouse.DeltaY;
-        if (highMouse.PosX>mouser[REGIM].x2)
-    	    highMouse.PosX=mouser[REGIM].x2;
-        else
-    	    if (highMouse.PosX<mouser[REGIM].x1)
-		highMouse.PosX=mouser[REGIM].x1;
-	if (highMouse.PosY>mouser[REGIM].y2)
-	    highMouse.PosY=mouser[REGIM].y2;
-        else
-            if (highMouse.PosY<mouser[REGIM].y1)
-		highMouse.PosY=mouser[REGIM].y1;
-    }
-    if ((highMouse.PosX!=mx)||(highMouse.PosY!=my))
-	return 1;
-    return 0;
-
-}
-
-//==========================
-int mouseborder2(int x1,int y1,int x2,int y2)
-{
-    if(highMouse.PosX>=x1&&highMouse.PosY>=y1&&highMouse.PosX<=x2&&highMouse.PosY<=y2)
-	return(1);
-    else
-	return(0);
-}
-//==========================
-int mouseborder(struct XY *m)
-{
-    return(mouseborder2(m->x1,m->y1,m->x2,m->y2));
-}
-//==========================
-/*void desenlocation(void)
-{
-    if (mloc)
-    {
-	int type=DESTINATIONMOUSE;
-	int deltax=-highMouse.cursors[type].mousegrp->SizeX/2;
-	int deltay=-highMouse.cursors[type].mousegrp->SizeY/2;
-	putgrpspr(xmloc+deltax-map.MAPXGLOBAL,ymloc+deltay-map.MAPYGLOBAL,highMouse.cursors[type].mousegrp,NORMAL,
-              0,0,NULL,highMouse.cursors[type].curentposition);
-    }
-}
-*/
-//=================================
 void putdestination(struct OBJ *destobj,int xm,int ym,int modemove,int posibleconstr,int rightclick)
 {
     int race;
@@ -466,36 +403,6 @@ void getmousetype(int xk,int yk)
         }
     }
 }
-//==========================
-//static char *adrmouse;
-/*void saveundermouse(void)
-{
-    __type=NORMALMOUSE;
-    memmouseposx = highMouse.PosX-highMouse.cursors[__type].mousegrp->SizeX/2;
-    if (memmouseposx<0)
-	memmouseposx=0;
-    memmouseposy = highMouse.PosY-highMouse.cursors[__type].mousegrp->SizeY/2;
-    if (memmouseposy<0)
-	memmouseposy=0;
-    memmousepossizex = highMouse.cursors[__type].mousegrp->SizeX*3/2;
-    if (memmouseposx+memmousepossizex>=GRP_wmaxx)
-	memmousepossizex = GRP_wmaxx-memmouseposx+1;
-    memmousepossizey = highMouse.cursors[__type].mousegrp->SizeY*3/2;
-    if (memmouseposy+memmousepossizey>=GRP_wmaxy)
-	memmousepossizey = GRP_wmaxy-memmouseposy+1;
-    __adrmouse = (char *)wmalloc(memmousepossizex*memmousepossizey);
-    CGetImage8(memmouseposx,memmouseposy,
-	       memmousepossizex,memmousepossizey,__adrmouse);
 
-}
-//==========================
-void loadundermouse(void)
-{
-    CPutImage8(memmouseposx,memmouseposy,
-	       memmousepossizex,memmousepossizey,__adrmouse);
-    wfree(__adrmouse);
-}
-//==========================
-*/
 
 

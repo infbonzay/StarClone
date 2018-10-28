@@ -517,7 +517,7 @@ int campaignselect(void)
     mousetype=NORMALMOUSE;
     highMouse.LoadOneCursor(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,CAMPAIGN_STR[0],CAMPAIGN_STR[1],ARROW_STR),mousetype);
     mytimer.SetMyTimerFunc(&campaignselecttimer,NULL);
-    restrictmousecoords(MOUSEMODE1);
+    highMouse.SetRestrictCoords(MOUSEMODE1);
     lowMouse.InstallMoveEvent(&mymousemoveevent);
 
     MENUFIRSTDATA menushow[2] = {
@@ -699,7 +699,7 @@ int xcampaignselect(void)
     int mousetype = NORMALMOUSE;
     highMouse.LoadOneCursor(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,CAMPAIGN_STR[0],CAMPAIGN_STR[1],ARROW_STR),mousetype);
     mytimer.SetMyTimerFunc(&campaignselecttimer,NULL);
-    restrictmousecoords(MOUSEMODE1);
+    highMouse.SetRestrictCoords(MOUSEMODE1);
     lowMouse.InstallMoveEvent(&mymousemoveevent);
 
     MENUFIRSTDATA menushow[2] = {
@@ -860,7 +860,7 @@ int glu_loadgame(void)
     int mousetype=NORMALMOUSE;
     highMouse.LoadOneCursor(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,SINGLEGAME_STR[0],SINGLEGAME_STR[1],ARROW_STR),mousetype);
     mytimer.SetMyTimerFunc(&menutimer,NULL);
-    restrictmousecoords(MOUSEMODE1);
+    highMouse.SetRestrictCoords(MOUSEMODE1);
     lowMouse.InstallMoveEvent(&mymousemoveevent);
 
     MENUFIRSTDATA menushow[3] = {
@@ -982,7 +982,7 @@ int glu_loadreplay(void)
     int mousetype=NORMALMOUSE;
     highMouse.LoadOneCursor(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,SINGLEGAME_STR[0],SINGLEGAME_STR[1],ARROW_STR),mousetype);
     mytimer.SetMyTimerFunc(&menutimer,NULL);
-    restrictmousecoords(MOUSEMODE1);
+    highMouse.SetRestrictCoords(MOUSEMODE1);
     lowMouse.InstallMoveEvent(&mymousemoveevent);
 
     MENUFIRSTDATA menushow[3] = {
@@ -1193,7 +1193,7 @@ int glu_briefing(int race,int networksingle,struct mapinfo *info,char *prefix_ca
     int mousetype=NORMALMOUSE;
     highMouse.LoadOneCursor(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,'R',RACE_CHAR[race],ARROW_STR),mousetype);
     mytimer.SetMyTimerFunc(&menutimer,NULL);
-    restrictmousecoords(MOUSEMODE1);
+    highMouse.SetRestrictCoords(MOUSEMODE1);
     lowMouse.InstallMoveEvent(&mymousemoveevent);
 
     e=BRIEFING_ELEMS[race];
@@ -1607,7 +1607,7 @@ void glu_score(struct mapinfo *info)
     changetextitem(gluscore,9,txt);
 
     mytimer.SetMyTimerFunc(&scoremenutimer,NULL);
-    restrictmousecoords(MOUSEMODE1);
+    highMouse.SetRestrictCoords(MOUSEMODE1);
     lowMouse.InstallMoveEvent(&mymousemoveevent);
     int mousetype=NORMALMOUSE;
     highMouse.LoadOneCursor(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,RACE_CHAR[race],LOSEWIN_STR[losewin],ARROW_STR),mousetype);
@@ -1748,7 +1748,7 @@ int mainmenu(void)
 		wscreenon();
     highMouse.LoadOneCursor(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,MAINMENU_STR[0],MAINMENU_STR[1],ARROW_STR),NORMALMOUSE);
     mytimer.SetMyTimerFunc(&mainmenutimer,NULL);
-    restrictmousecoords(MOUSEMODE1);
+    highMouse.SetRestrictCoords(MOUSEMODE1);
     lowMouse.InstallMoveEvent(&mymousemoveevent);
     MENUSTR *mainmenu=LoadDialogBin("rez\\glumain.bin",DIALOGBIN_MAINDIALOGS,IDFONT16X);
     menuspecialtables(mainmenu,fntadr,NULL);
@@ -1937,7 +1937,7 @@ int glu_conn(void)
     int mousetype=NORMALMOUSE;
     highMouse.LoadOneCursor(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,SINGLEGAME_STR[0],SINGLEGAME_STR[1],ARROW_STR),mousetype);
     mytimer.SetMyTimerFunc(&menutimer,NULL);
-    restrictmousecoords(MOUSEMODE1);
+    highMouse.SetRestrictCoords(MOUSEMODE1);
     lowMouse.InstallMoveEvent(&mymousemoveevent);
 
     menunetw[4].disabled = 1;
@@ -2164,7 +2164,7 @@ int glu_join(FORCE_SLOTS *fslots)
     int mousetype=NORMALMOUSE;
     highMouse.LoadOneCursor(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,SINGLEGAME_STR[0],SINGLEGAME_STR[1],ARROW_STR),mousetype);
     mytimer.SetMyTimerFunc(&menutimerandnetwork,NULL);
-    restrictmousecoords(MOUSEMODE1);
+    highMouse.SetRestrictCoords(MOUSEMODE1);
     lowMouse.InstallMoveEvent(&mymousemoveevent);
 
     MENUFIRSTDATA menushow[4] = {
@@ -2369,7 +2369,7 @@ int glu_login(void)
     int mousetype=NORMALMOUSE;
     highMouse.LoadOneCursor(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,SINGLEGAME_STR[0],SINGLEGAME_STR[1],ARROW_STR),mousetype);
     mytimer.SetMyTimerFunc(&menutimer,NULL);
-    restrictmousecoords(MOUSEMODE1);
+    highMouse.SetRestrictCoords(MOUSEMODE1);
     lowMouse.InstallMoveEvent(&mymousemoveevent);
 
     mylist ulist;
@@ -3036,7 +3036,7 @@ int selectmapmenu(void)
     int mousetype=NORMALMOUSE;
     highMouse.LoadOneCursor(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,SINGLEGAME_STR[0],SINGLEGAME_STR[1],ARROW_STR),mousetype);
     mytimer.SetMyTimerFunc(&menutimer,NULL);
-    restrictmousecoords(MOUSEMODE1);
+    highMouse.SetRestrictCoords(MOUSEMODE1);
     lowMouse.InstallMoveEvent(&mymousemoveevent);
 
     MENUFIRSTDATA menushow[5] = {
@@ -3357,7 +3357,7 @@ int glu_creat(FORCE_SLOTS *fslots)
     int mousetype=NORMALMOUSE;
     highMouse.LoadOneCursor(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,SINGLEGAME_STR[0],SINGLEGAME_STR[1],ARROW_STR),mousetype);
     mytimer.SetMyTimerFunc(&menutimerandnetwork,NULL);
-    restrictmousecoords(MOUSEMODE1);
+    highMouse.SetRestrictCoords(MOUSEMODE1);
     lowMouse.InstallMoveEvent(&mymousemoveevent);
 
     MENUFIRSTDATA menushow[4] = {
@@ -3909,7 +3909,7 @@ int glu_chat(int masterjoin,int playernr,FORCE_SLOTS *fslots)
     int mousetype=NORMALMOUSE;
     highMouse.LoadOneCursor(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,SINGLEGAME_STR[0],SINGLEGAME_STR[1],ARROW_STR),mousetype);
     mytimer.SetMyTimerFunc(&menutimerandnetwork,NULL);
-    restrictmousecoords(MOUSEMODE1);
+    highMouse.SetRestrictCoords(MOUSEMODE1);
     lowMouse.InstallMoveEvent(&mymousemoveevent);
 
     MENUFIRSTDATA menushow[5] = {
@@ -4985,10 +4985,7 @@ int DownloadMpqMenu(int mpqcfgresult)
     *files[1] = 0;
     *files[2] = 0;
 
-    mouser[MOUSEMODE1].x1=0;
-    mouser[MOUSEMODE1].y1=0;
-    mouser[MOUSEMODE1].x2=gameconf.grmode.x-1;
-    mouser[MOUSEMODE1].y2=gameconf.grmode.y-1;
+    highMouse.SetRestrictCoords(MOUSEMODE1,0,0,gameconf.grmode.x - 1,gameconf.grmode.y - 1);
 
     backgnd.openMpqPcx(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,DLNDMENU_STR[0],DLNDMENU_STR[1],BACKGND_STR));
     backgnd.readPalFromPcx(newpal,0);//readfourbytepalette
@@ -5004,7 +5001,7 @@ int DownloadMpqMenu(int mpqcfgresult)
 		wscreenon();
     highMouse.LoadOneCursor(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,MAINMENU_STR[0],MAINMENU_STR[1],ARROW_STR),NORMALMOUSE);
     mytimer.SetMyTimerFunc(&mainmenutimer,NULL);
-    restrictmousecoords(MOUSEMODE1);
+    highMouse.SetRestrictCoords(MOUSEMODE1);
     lowMouse.InstallMoveEvent(&mymousemoveevent);
 
     mpqtotal=mpqcfgresult>>8;
@@ -5173,7 +5170,7 @@ int putgamemenu(MENUDRAW *menudraw,MENUPARAMS *menuparams)
 	    case CANCELFROMMENU://ESC
 	    case 0:
 			if (!NETWORKGAME)
-					PAUSEGAME = 0;
+				PAUSEGAME = 0;
 			return(1);
 			break;
 	    case 1:
@@ -5188,9 +5185,9 @@ int putgamemenu(MENUDRAW *menudraw,MENUPARAMS *menuparams)
 			{
 				if (PauseGame(1,NUMBGAMER))
 				{
-				setmenuitem_VISIBLED(menudraw->menutodraw,3,FALSE);	//pausegame
-				setmenuitem_VISIBLED(menudraw->menutodraw,4,TRUE);	//resumegame
-				mymousemoveevent(highMouse.PosX,highMouse.PosY);
+					setmenuitem_VISIBLED(menudraw->menutodraw,3,FALSE);	//pausegame
+					setmenuitem_VISIBLED(menudraw->menutodraw,4,TRUE);	//resumegame
+					mymousemoveevent(highMouse.PosX,highMouse.PosY);
 				}
 			}
 			break;
@@ -5200,9 +5197,9 @@ int putgamemenu(MENUDRAW *menudraw,MENUPARAMS *menuparams)
 			{
 				if (ResumeGame(1,NUMBGAMER))
 				{
-				setmenuitem_VISIBLED(menudraw->menutodraw,3,TRUE);	//pausegame
-				setmenuitem_VISIBLED(menudraw->menutodraw,4,FALSE);	//resumegame
-				mymousemoveevent(highMouse.PosX,highMouse.PosY);
+					setmenuitem_VISIBLED(menudraw->menutodraw,3,TRUE);	//pausegame
+					setmenuitem_VISIBLED(menudraw->menutodraw,4,FALSE);	//resumegame
+					mymousemoveevent(highMouse.PosX,highMouse.PosY);
 				}
 			}
 			break;
