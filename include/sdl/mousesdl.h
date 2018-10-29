@@ -12,21 +12,21 @@ typedef void (MOUSEDBLCLICKEVENTCALLBACK)(void);
 class LowMouse
 {
 public:
-    int  DeltaX,DeltaY;
+	int	 DeltaX,DeltaY;
 
-    int  Init(void);
-    int  GetButtonStatus(void);
-    void GetPos(void);
-    void FlushPos(void);
-    void SetPos(int x,int y);
+	int	 Init(void);
+	int	 GetButtonStatus(void);
+	void GetPos(void);
+	void FlushPos(void);
+	void SetPos(int x,int y);
 
-    MOUSEMOVEEVENTCALLBACK		*MoveEventFunc;
-    MOUSECLICKEVENTCALLBACK		*ClickEventFunc;
+	MOUSEMOVEEVENTCALLBACK		*MoveEventFunc;
+	MOUSECLICKEVENTCALLBACK		*ClickEventFunc;
 
-    void LowInMoveEvent(MOUSEMOVEEVENTCALLBACK *pFunc);
-    void LowUnMoveEvent(void);
-    void LowInClickEvent(MOUSECLICKEVENTCALLBACK *pFunc);
-    void LowUnClickEvent(void);
+	void LowInMoveEvent(MOUSEMOVEEVENTCALLBACK *pFunc);
+	void LowUnMoveEvent(void);
+	void LowInClickEvent(MOUSECLICKEVENTCALLBACK *pFunc);
+	void LowUnClickEvent(void);
 
 };
 

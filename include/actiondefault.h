@@ -6,7 +6,7 @@
 #include "man.h"
 
 #define LARVAEMOVEDELTA (SIZESPRLANSHX*2)
-#define WAITTICKBEFORESEARCHREPAIR	24
+#define WAITTICKBEFORESEARCHREPAIR		24
 
 int CarrierAction( OBJ *a,MAIN_IMG *img);
 int InterceptorsAction( OBJ *a,MAIN_IMG *img);
@@ -18,8 +18,8 @@ int BatteryAction( OBJ *a,MAIN_IMG *img);
 int QueenAction( OBJ *a,MAIN_IMG *img);
 int CritterAction(OBJ *a,MAIN_IMG *img);
 
-int  AdditionalUnitProceed(OBJ *a,MAIN_IMG *img);
-int  AtackCoolDownEnds(OBJ *a,OBJ *destobj,int continueatack,int showerrorflag);
+int	 AdditionalUnitProceed(OBJ *a,MAIN_IMG *img);
+int	 AtackCoolDownEnds(OBJ *a,OBJ *destobj,int continueatack,int showerrorflag);
 void SpecialAtackAction(OBJ *a,int iscriptstate);
 void AtackAction(OBJ *a,OBJ *destobj,int continueatack);
 void EndAtackAction(OBJ *a);

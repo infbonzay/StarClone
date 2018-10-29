@@ -2,14 +2,14 @@
 #define _VIDEO_W
 
 #define TEXT_SCREENLOWERLEFT	1
-#define TEXT_SCREENLEFT		2
-#define TEXT_SCREENRIGHT	3
-#define TEXT_SCREENCENTER	4
-#define TEXT_SCREENTOP		5
-#define TEXT_SCREENBOTTOM	6
+#define TEXT_SCREENLEFT			2
+#define TEXT_SCREENRIGHT		3
+#define TEXT_SCREENCENTER		4
+#define TEXT_SCREENTOP			5
+#define TEXT_SCREENBOTTOM		6
 
-#define FADE_SHOW		0
-#define FADE_HIDE		1
+#define FADE_SHOW				0
+#define FADE_HIDE				1
 
 #define ANYKEYNOTQUITSHOWTITLES 0
 #define ANYKEYQUITSHOWTITLES	1
@@ -22,8 +22,8 @@ void FadeScreen(int fadespeed,char *pal,int typeoffade);
 char *gettextfrombuf(char *buf,int sizebuf,int textnr);
 void PlayCampaignVideo(int campaignnr,int missionnr);
 void PlayVideoSmk(const char *smkfile);
-int  queuePCMdata(unsigned char *audiobuff,int audiosize);
-int  playPCMdata(int firstrun);
+int	 queuePCMdata(unsigned char *audiobuff,int audiosize);
+int	 playPCMdata(int firstrun);
 void smkaudiofinish(int channel);
 inline int beginplayPCMdata(void) { return(playPCMdata(0)); };
 inline int nextplayPCMdata(void) { return(playPCMdata(1)); };

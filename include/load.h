@@ -26,7 +26,7 @@ void unloadpcxicons(void);
 void loadallfonts(void);
 void unloadallfonts(void);
 
-int  loadpal(int tileset,char *palette4);
+int	 loadpal(int tileset,char *palette4);
 void unloadpal(void);
 
 void loadtexturegrp(int images_texture_id);
@@ -34,7 +34,7 @@ void unloadtexturegrp(void);
 
 int loadramka(int needrace);
 void unloadramka(void);
-int  loadbeforestarmap(int race);
+int	 loadbeforestarmap(int race);
 
 int loadbuttons(int race);
 void unloadbuttons(void);
@@ -51,7 +51,7 @@ void loadvar(FILE *h);
 void saveKARTA(FILE *h);
 void loadKARTA(FILE *h);
 void savelog(const char *mes,int i);
-int  LoadDatTblFiles(DATTBLSTRUCT *dattbl);
+int	 LoadDatTblFiles(DATTBLSTRUCT *dattbl);
 void UnloadDatTblFiles(DATTBLSTRUCT *dattbl);
 void loadallobj(void);
 void UnloadAllOBJSTRUCT(void);
@@ -60,21 +60,21 @@ void LoadPatchTbl(void);
 
 void Unload_SC_Images_List(void);
 void *FindLoadedInList(short images_tbl);
-int  GetLoadedImage(int mpqfilenr,int images_tbl,void **loadeddata);
-int  GetLoadedImage(int images_tbl,void **loadeddata);
+int	 GetLoadedImage(int mpqfilenr,int images_tbl,void **loadeddata);
+int	 GetLoadedImage(int images_tbl,void **loadeddata);
 //===========================================
 void unloadafterstarmap(void);
-int  getcampaignname(int campaign_id,int mission_id);
-int  openmission(int campaign_id,int mission_id);
+int	 getcampaignname(int campaign_id,int mission_id);
+int	 openmission(int campaign_id,int mission_id);
 void getmissionidformmissionname(char *missionname,int *mission_id);
-int  CheckForCheats(char *txt1);
+int	 CheckForCheats(char *txt1);
 
 
 //=======================================
-extern char		shield_pos[]; 
-extern char		mineral_pos[];
-extern char		gas_pos[];
-extern void* 		imagesreftogrpdata[];
+extern char				shield_pos[]; 
+extern char				mineral_pos[];
+extern char				gas_pos[];
+extern void*			imagesreftogrpdata[];
 
 //extern unsigned char	campaigns_races[];
 

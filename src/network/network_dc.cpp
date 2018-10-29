@@ -7,6 +7,6 @@
 //====================================================
 int NETWORKGAME_DC(NETWORK_INFO *param)
 {
-    return(NETWORK_ERROR_INIT);
+	return(NETWORK_ERROR_INIT);
 }
 //====================================================

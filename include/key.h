@@ -13,8 +13,8 @@ void pausekey(void);
 void charup(char *a);
 void chardown(char *a);
 void charupdown(char *a,int mode);
-int  readkey(void);
-int  strcmpw(char *a,char *b);
+int	 readkey(void);
+int	 strcmpw(char *a,char *b);
 void keyhandler(void);
 
 extern uint8_t *keystatus;

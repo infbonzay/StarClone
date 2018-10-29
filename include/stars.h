@@ -3,24 +3,24 @@
 
 struct starBmap
 {
-    short Width;
-    short Height;
-    char Data[];
+	short Width;
+	short Height;
+	char Data[];
 };
 
 struct starRef
 {
-    short X;
-    short Y;
-    int image;		//starBmap *image //32bits
+	short X;
+	short Y;
+	int image;			//starBmap *image //32bits
 };
 
 struct spkFile
 {
-    short numLayers;
-    short numStarCount[];
-//    starRef References[];
-//    starBmap Bitmaps[];
+	short numLayers;
+	short numStarCount[];
+//	  starRef References[];
+//	  starBmap Bitmaps[];
 };
 
 int loadStars(const char *starfn);

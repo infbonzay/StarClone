@@ -28,28 +28,28 @@
 #include "key.h"
 
 #ifdef WITHSDL
-       #include "sdl/grsdl.h"
-       #include "sdl/keysdl.h"
+	   #include "sdl/grsdl.h"
+	   #include "sdl/keysdl.h"
 #endif
 #ifdef UNDERDOS
-       #include "dos/handlers.h"
-       #include "dos/keydos.h"
+	   #include "dos/handlers.h"
+	   #include "dos/keydos.h"
 #endif
 
-#define  TIMEFORKEY  4
-#define  KEYSLAY     2
+#define	 TIMEFORKEY	 4
+#define	 KEYSLAY	 2
 
 //================================
 void keyscroll(void)
 {
-    if (KEYPRESS(LEFTKEY))
-        addscrx-=factorscrollkey;
-    if (KEYPRESS(RIGHTKEY))
-        addscrx+=factorscrollkey;
-    if (KEYPRESS(UPKEY))
-        addscry-=factorscrollkey;
-    if (KEYPRESS(DOWNKEY))
-        addscry+=factorscrollkey;
+	if (KEYPRESS(LEFTKEY))
+		addscrx-=factorscrollkey;
+	if (KEYPRESS(RIGHTKEY))
+		addscrx+=factorscrollkey;
+	if (KEYPRESS(UPKEY))
+		addscry-=factorscrollkey;
+	if (KEYPRESS(DOWNKEY))
+		addscry+=factorscrollkey;
 }
 //==================================
 void keyup(void)
@@ -66,144 +66,144 @@ void keydown(void)
 //====================================
 void pausekey(void)
 {
-     keydown();
-     keyup();
+	 keydown();
+	 keyup();
 }
 //==================================
 int readkey(void)
 {
-    static int timeoldkey=0;
-    int a=0;
-    if (tick_timer>timeoldkey)
-    {
-	if (keyactive)
+	static int timeoldkey=0;
+	int a=0;
+	if (tick_timer>timeoldkey)
 	{
-    	    a = lastkey;
-    	    timeoldkey = tick_timer+KEYSLAY;
+		if (keyactive)
+		{
+			a = lastkey;
+			timeoldkey = tick_timer+KEYSLAY;
+		}
 	}
-    }
-    return(a);
+	return(a);
 }
 //====================================
 int strcmpw(char *a,char *b)
 {
   int i,l=strlen(b);
-    for (i=1;i<=l;i++)
-        if (*a++!=*b++) return(0);
-    return(1);
+	for (i=1;i<=l;i++)
+		if (*a++!=*b++) return(0);
+	return(1);
 }
 //====================================
 void keyhandler(void)
 {
-    char mes[100];
-    static int mesnr=0;
+	char mes[100];
+	static int mesnr=0;
 #ifdef DEBUG
-    if (KEYPRESS(F12))
-    {
-//	logend();
-	menustatus = EXITGAME;
-	return;
-    }
-    if (KEYPRESS(F11))
-    {
-	SHOWCELLS=1-SHOWCELLS;
-    }
-    if (KEYPRESS(ALTKEY))
-    {
-    }
-    if (curentreadkey==NUMB1KEY)
-    {
-	for (int g=0;g<PLAYEDPLAYERS;g++)
-	    deselectallobj(g);
-    	do{
-    	    if (++NUMBGAMER>=PLAYEDPLAYERS)
-        	NUMBGAMER=0;
-	}while(IfPlayerHaveStartLocation(&map,NUMBGAMER)==-1);
-        changegoods=0;
-        map.clearfog[NUMBGAMER]=1;
-	bitsplayer=GetVisionBitsPlayer(NUMBGAMER);
-	MAPREGENERATIONBIT=1;
-	MAPUNITSREGENERATIONBIT=1;
-    }
-/*    if (keyactive==F1)
-    {
-	testmenu();
-    }
-    if (keyactive==F2)
-    {
-	for (int i=0;i<MaxObjects;i++)
+	if (KEYPRESS(F12))
 	{
-	    if (objects[i]->playernr==1)
-		dieobj(objects[i]);
+//		logend();
+		menustatus = EXITGAME;
+		return;
 	}
-    }
-    if (keyactive==F2)
-    {
-//	WaitingPlayersMenu(0x0fff);
-	showedmenu.prepareforshowmenu(&WaitingPlayersMenu,0xffff);
-							    //all 12 players (0000 1111 1111 1111)
-//							    			0   f    f    f
-    }
+	if (KEYPRESS(F11))
+	{
+		SHOWCELLS=1-SHOWCELLS;
+	}
+	if (KEYPRESS(ALTKEY))
+	{
+	}
+	if (curentreadkey==NUMB1KEY)
+	{
+		for (int g=0;g<PLAYEDPLAYERS;g++)
+			deselectallobj(g);
+		do{
+			if (++NUMBGAMER>=PLAYEDPLAYERS)
+				NUMBGAMER=0;
+		}while(IfPlayerHaveStartLocation(&map,NUMBGAMER)==-1);
+		changegoods=0;
+		map.clearfog[NUMBGAMER]=1;
+		bitsplayer=GetVisionBitsPlayer(NUMBGAMER);
+		MAPREGENERATIONBIT=1;
+		MAPUNITSREGENERATIONBIT=1;
+	}
+/*	  if (keyactive==F1)
+	{
+		testmenu();
+	}
+	if (keyactive==F2)
+	{
+		for (int i=0;i<MaxObjects;i++)
+		{
+			if (objects[i]->playernr==1)
+				dieobj(objects[i]);
+		}
+	}
+	if (keyactive==F2)
+	{
+//		WaitingPlayersMenu(0x0fff);
+		showedmenu.prepareforshowmenu(&WaitingPlayersMenu,0xffff);
+															//all 12 players (0000 1111 1111 1111)
+//																				0	f	 f	  f
+	}
 */
-    if (curentreadkey==F5)
-    {
-	if (fordeselect[0])
+	if (curentreadkey==F5)
 	{
-	    dieobj(fordeselect[0]);
+		if (fordeselect[0])
+		{
+			dieobj(fordeselect[0]);
+		}
 	}
-    }
-    if (curentreadkey==F6)
-    {
-	if (fordeselect[0])
+	if (curentreadkey==F6)
 	{
-	    OBJstruct *b=loadobj(fordeselect[0]->SC_Unit);
-	    LowLevelDamage(NULL,fordeselect[0],WEAPONID_NUCLEARMISSILE,DAMAGE_INDEPENDENT,25<<8,0,0);
+		if (fordeselect[0])
+		{
+			OBJstruct *b=loadobj(fordeselect[0]->SC_Unit);
+			LowLevelDamage(NULL,fordeselect[0],WEAPONID_NUCLEARMISSILE,DAMAGE_INDEPENDENT,25<<8,0,0);
+		}
 	}
-    }
-    if (curentreadkey==F7)
-    {
-	if (fordeselect[0])
+	if (curentreadkey==F7)
 	{
-	    fordeselect[0]->mainimage->neededside += 8;
-	    fordeselect[0]->mainimage->Rotation(8);
+		if (fordeselect[0])
+		{
+			fordeselect[0]->mainimage->neededside += 8;
+			fordeselect[0]->mainimage->Rotation(8);
+		}
 	}
-    }
-    if (curentreadkey==F8)
-    {
-	if (fordeselect[0] && fordeselect[0]->subunit)
+	if (curentreadkey==F8)
 	{
-	    fordeselect[0]->subunit->mainimage->neededside += 8;
-	    fordeselect[0]->subunit->mainimage->Rotation(8);
+		if (fordeselect[0] && fordeselect[0]->subunit)
+		{
+			fordeselect[0]->subunit->mainimage->neededside += 8;
+			fordeselect[0]->subunit->mainimage->Rotation(8);
+		}
 	}
-    }
 #endif
-    if (keyactive==F10)
-    {
-	f10_menu|=GAMEBUTTON_KEYPRESS;
-	f10_menu&=~GAMEBUTTON_KEYRELEASE;
-    }
-    else
-	if (f10_menu&GAMEBUTTON_KEYPRESS)
+	if (keyactive==F10)
 	{
-	    f10_menu&=~GAMEBUTTON_KEYPRESS;
-	    f10_menu|=GAMEBUTTON_KEYRELEASE;
+		f10_menu|=GAMEBUTTON_KEYPRESS;
+		f10_menu&=~GAMEBUTTON_KEYRELEASE;
 	}
-    if (keyactive==TABKEY)
-    {
-	terr_menu|=GAMEBUTTON_KEYPRESS;
-	terr_menu&=~GAMEBUTTON_KEYRELEASE;
-    }
-    else
-	if (terr_menu&GAMEBUTTON_KEYPRESS)
+	else
+		if (f10_menu&GAMEBUTTON_KEYPRESS)
+		{
+			f10_menu&=~GAMEBUTTON_KEYPRESS;
+			f10_menu|=GAMEBUTTON_KEYRELEASE;
+		}
+	if (keyactive==TABKEY)
 	{
-	    terr_menu&=~GAMEBUTTON_KEYPRESS;
-	    terr_menu|=GAMEBUTTON_KEYRELEASE;
+		terr_menu|=GAMEBUTTON_KEYPRESS;
+		terr_menu&=~GAMEBUTTON_KEYRELEASE;
 	}
-    if (MENUACTIVE==0 && (keyactive == ENTERKEY || keyactive == ENTERKEY2))
-    {
-	showedmenu.prepareforshowmenu(&chatboxmenu,NULL);
-    }
-    menustatus=CONTINUEGAME;
-    return;
+	else
+		if (terr_menu&GAMEBUTTON_KEYPRESS)
+		{
+			terr_menu&=~GAMEBUTTON_KEYPRESS;
+			terr_menu|=GAMEBUTTON_KEYRELEASE;
+		}
+	if (MENUACTIVE==0 && (keyactive == ENTERKEY || keyactive == ENTERKEY2))
+	{
+		showedmenu.prepareforshowmenu(&chatboxmenu,NULL);
+	}
+	menustatus=CONTINUEGAME;
+	return;
 }
 //====================================

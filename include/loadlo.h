@@ -5,9 +5,9 @@
 //===============================================
 struct LOFILE
 {
-    int	CountSides;
-    int	CountPictsPerSides;
-    int offseteachline[];
+	int CountSides;
+	int CountPictsPerSides;
+	int offseteachline[];
 };
 //===============================================
 //LOFILE *loadlo(char *filename);
@@ -23,7 +23,7 @@ signed char *GetLoXY(LOFILE *temp,int nr_side,int nr_pos);
 //lou - if build/unit on ground and go from 'U'p to down
 //los - vespene gas exits from tube and goes to 'S'ky
 //lol - special (mage cast like yamatogun,siegemode)
-//loa -  from where goes 'A'ir atack bullet
+//loa -	 from where goes 'A'ir atack bullet
 //loo - 'Own' minerals (for drone,probe,scv)
 //lob - where 'B'irth from cocoon
 //log - from where goes 'G'ound atack bullet

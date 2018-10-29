@@ -6,29 +6,29 @@
 #include "mousenew.h"
 
 /*#ifdef WITHSDL
-    #include "sdl/mousesdl.h"
+	#include "sdl/mousesdl.h"
 #endif
 
 #ifdef UNDERDOS
-       #define WMLEFTKEY  1
-       #define WMRIGHTKEY 2
-       void savelog(char *mes,int i);
-       //#include "dos/mousedos.h"
+	   #define WMLEFTKEY  1
+	   #define WMRIGHTKEY 2
+	   void savelog(char *mes,int i);
+	   //#include "dos/mousedos.h"
 #endif
 */
 
-#define	MAXSCROLLTICKS 6
+#define MAXSCROLLTICKS 6
 
-extern int 		factorscrollkey;
-extern int     	mousehotpos;
-extern int     	xmloc,ymloc,movieminikarta,mspeed;
-extern int      mousemaxx,mousemaxy,doublespeed,mousedoubleclick,mouse_b;
-extern int     	decrxx,decryy;
-extern char    	waitfordownrightbuton,waitfordownleftbuton;
-extern char    	patr,mouseclear,mloc,mousescrollflag;
-extern unsigned	short  mouseprop;
-extern char     timemouse;
-extern char    	timemousewait;
+extern int				factorscrollkey;
+extern int		mousehotpos;
+extern int		xmloc,ymloc,movieminikarta,mspeed;
+extern int		mousemaxx,mousemaxy,doublespeed,mousedoubleclick,mouse_b;
+extern int		decrxx,decryy;
+extern char		waitfordownrightbuton,waitfordownleftbuton;
+extern char		patr,mouseclear,mloc,mousescrollflag;
+extern unsigned short  mouseprop;
+extern char		timemouse;
+extern char		timemousewait;
 
 
 void desenlocation(void);
@@ -41,5 +41,5 @@ float scrollmapx(int border,float factor);
 float scrollmapy(int border,float factor);
 
 //=================================
-#endif /*    _MOUSE_W   */
+#endif /*	 _MOUSE_W	*/
 

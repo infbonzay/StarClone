@@ -60,12 +60,12 @@
 #include "gener.h"
 
 #ifdef WITHSDL
-       #include "sdl/grsdl.h"
-       #include "sdl/mousesdl.h"
+	   #include "sdl/grsdl.h"
+	   #include "sdl/mousesdl.h"
 #endif
 #ifdef UNDERDOS
-       #include "dos/gr8dos.h"
-       #include "dos/handlers.h"
+	   #include "dos/gr8dos.h"
+	   #include "dos/handlers.h"
 #endif
 
 #include <stdint.h>
@@ -80,39 +80,39 @@ MENUDRAW	showedmenu;
 int menustatus,startmission,campaign_id;
 MAIN_IMG *mousedestimg;
 HighMouse *highMouse;
-char    select_aria,karta_aria,mode_aria;
+char	select_aria,karta_aria,mode_aria;
 
 //=================================
 /*====================================================
 ======================================================
-                     Begin of program
+					 Begin of program
 ======================================================
 ======================================================*/
 int main(int c,char **parm,char **env)
 {
-    long usec;
-    int i,err,statusgame,firsttimelaunch=0,videook=0;
-    int status,status2,gamequitstatus,mission_id,selected_id,missionfrommenu,runonemission;
-    char *su;
-    struct stat statpath;
-    mapinfo *testmap;
-    char temppath[1024];
+	long usec;
+	int i,err,statusgame,firsttimelaunch=0,videook=0;
+	int status,status2,gamequitstatus,mission_id,selected_id,missionfrommenu,runonemission;
+	char *su;
+	struct stat statpath;
+	mapinfo *testmap;
+	char temppath[1024];
 #ifdef TESTMALLOC
-    char *testmem = (char *)wmalloc(16);
-    wfree(testmem);
+	char *testmem = (char *)wmalloc(16);
+	wfree(testmem);
 #endif
 
-    inivars();
-    fflush(stdout);
-    if(!lowMouse.Init())
-    {
-       printf("Warning: Mouse Not Detected!\n");
-       fflush(stdout);
-    }
-    getcwd(GAMEPATH,sizeof(GAMEPATH)-1);//get temp pwd directory, it will be change after load config
-    printf("SIZEOF SOMEINFO UNION=%d\n",(int)sizeof(SOMEINFO));
-    printf("OBJ=%d OBJstruct=%d\n",(int)sizeof(OBJ),(int)sizeof(OBJstruct));
-    do{
+	inivars();
+	fflush(stdout);
+	if(!lowMouse.Init())
+	{
+	   printf("Warning: Mouse Not Detected!\n");
+	   fflush(stdout);
+	}
+	getcwd(GAMEPATH,sizeof(GAMEPATH)-1);//get temp pwd directory, it will be change after load config
+	printf("SIZEOF SOMEINFO UNION=%d\n",(int)sizeof(SOMEINFO));
+	printf("OBJ=%d OBJstruct=%d\n",(int)sizeof(OBJ),(int)sizeof(OBJstruct));
+	do{
 		printf("Loading config file " SC_CONFIGFILE "\n");
 		UnLoadAllMpqs();
 		unloadcfg();
@@ -130,11 +130,11 @@ int main(int c,char **parm,char **env)
 				exit(-1);
 			}
 		}
-	//    printf("%lld\n",gettimeticks2());
+	//	  printf("%lld\n",gettimeticks2());
 
-	//    getcwd(GAMEPATH,sizeof(GAMEPATH)-1);
-	//    strcpy(GAMEMAPPATH,GAMEPATH);
-	//    strcat(GAMEMAPPATH,"/maps");
+	//	  getcwd(GAMEPATH,sizeof(GAMEPATH)-1);
+	//	  strcpy(GAMEMAPPATH,GAMEPATH);
+	//	  strcat(GAMEMAPPATH,"/maps");
 
 		mkdir("maps",0755);
 		mkdir(USERS_DIRECTORY,0755);
@@ -146,7 +146,7 @@ int main(int c,char **parm,char **env)
 		{
 			printf("WARNING: the MAP %s do not exist\n",GAMEMAPPATH);
 		}
-	//    printf("%lld\n",gettimeticks2());
+	//	  printf("%lld\n",gettimeticks2());
 		int readedsymb=readlink(GAMEMAPPATH,temppath,sizeof(temppath)-1);
 		if (readedsymb!=-1)
 		{
@@ -158,7 +158,7 @@ int main(int c,char **parm,char **env)
 			printf("cannot chdir %s, path not found.\n",GAMEPATH);
 			exit(-1);
 		}
-	//    printf("%lld\n",gettimeticks2());
+	//	  printf("%lld\n",gettimeticks2());
 		loadallfonts();
 		highMouse = new HighMouse();
 		printf("set graph mode...\n");
@@ -190,89 +190,89 @@ int main(int c,char **parm,char **env)
 				exit(-1);
 			UnloadDatTblFiles(&alldattbl);
 		}
-    }while(firsttimelaunch&0xff);
+	}while(firsttimelaunch&0xff);
 
-    DEBUG_INIT(0);
+	DEBUG_INIT(0);
 
-    gameconf.audioconf.audioflags=0;
-    printf("initialization sound system ...\n");
-    i = initsoundengine(MAXSOUNDS);
-    if (i<0)
-    {
-        gameconf.audioconf.audioflags |= AUDIOFLAGS_MUSICDISABLE;
-        gameconf.audioconf.audioflags |= AUDIOFLAGS_SOUNDDISABLE;
-        printf("Can not initialize sound. Disabled\n");
-    }
-    volumeallsfx(gameconf.audioconf.soundvolume);
+	gameconf.audioconf.audioflags=0;
+	printf("initialization sound system ...\n");
+	i = initsoundengine(MAXSOUNDS);
+	if (i<0)
+	{
+		gameconf.audioconf.audioflags |= AUDIOFLAGS_MUSICDISABLE;
+		gameconf.audioconf.audioflags |= AUDIOFLAGS_SOUNDDISABLE;
+		printf("Can not initialize sound. Disabled\n");
+	}
+	volumeallsfx(gameconf.audioconf.soundvolume);
 
-    ShowFirstRunVideo(0);
+	ShowFirstRunVideo(0);
 
-    PlayMusic("music\\title.wav",-1);
+	PlayMusic("music\\title.wav",-1);
 
-    MENUSTR *title = showtitle();
-    if (LoadDatTblFiles(&alldattbl))
-    {
-//        gameend("Problem with loading dat,tbl files");
-    }
-    LoadPatchTbl();
-    if (loadznak())
-    {
+	MENUSTR *title = showtitle();
+	if (LoadDatTblFiles(&alldattbl))
+	{
+//		  gameend("Problem with loading dat,tbl files");
+	}
+	LoadPatchTbl();
+	if (loadznak())
+	{
 //		exit(-1);
-    }
-    loadlang();
-    fflush(stdout);
-    printf("parce units table ...\n");
-    printf("      %d units parced\n",createmantable());
-    err = loadweapons();
-    if (err<0)
-    {
-        printf("weapons:Error in file nr:%d\n",err);
-    }
+	}
+	loadlang();
+	fflush(stdout);
+	printf("parce units table ...\n");
+	printf("	  %d units parced\n",createmantable());
+	err = loadweapons();
+	if (err<0)
+	{
+		printf("weapons:Error in file nr:%d\n",err);
+	}
 
-    printf("Press '1' for change player nr,F12 - exit\n");
-    addvars();
-    SetVisionTables();
+	printf("Press '1' for change player nr,F12 - exit\n");
+	addvars();
+	SetVisionTables();
 
-    createtemptables();
-//    setseed(mytimer.GetCurrentTimerTick());
-    setseed(0);
+	createtemptables();
+//	  setseed(mytimer.GetCurrentTimerTick());
+	setseed(0);
 
-    if (iscriptinfo.CompileIScripts("data/iscript"))
+	if (iscriptinfo.CompileIScripts("data/iscript"))
 		return(-1);
 
-    int sleepNr = gameconf.videoconf.titledelay + 1;
-    do{
+	int sleepNr = gameconf.videoconf.titledelay + 1;
+	do{
 		mytimer.CallTimer(MYTIMER_ASINCHRONMODE);
 		usleep(125000);
-    }while(--sleepNr);
-    cleartitle(title);
+	}while(--sleepNr);
+	cleartitle(title);
 
-    GetINOUTsmk();
+	GetINOUTsmk();
 
-/*    int array[5]={4,0,1,2,3};
+/*	  int array[5]={4,0,1,2,3};
 
-    int deltax=(640-380)/2;
-    int deltay=(480-251)/2;
-    MENUSTR *temp=LoadDialogBin("rez\\gluhist.bin",DIALOGBIN_MAIN,1,IDFONT16);
-    temp->menu[0].itemtype=ISLABELCENTER;
-    temp->menu[0].fontnr=IDFONT16;
-    addimageitem(temp,4,0,0,380,251,"glue\\campaign\\phist.pcx");
-    setmenuitem_DISABLED(temp,4,FALSE);	//ok
-    setmenuitem_VISIBLED(temp,4,TRUE);	//ok
+	int deltax=(640-380)/2;
+	int deltay=(480-251)/2;
+	MENUSTR *temp=LoadDialogBin("rez\\gluhist.bin",DIALOGBIN_MAIN,1,IDFONT16);
+	temp->menu[0].itemtype=ISLABELCENTER;
+	temp->menu[0].fontnr=IDFONT16;
+	addimageitem(temp,4,0,0,380,251,"glue\\campaign\\phist.pcx");
+	setmenuitem_DISABLED(temp,4,FALSE); //ok
+	setmenuitem_VISIBLED(temp,4,TRUE);	//ok
 
-    temp->x+=deltax;
-    temp->y+=deltay;
-    for (int i=0;i<5;i++)
-    {
+	temp->x+=deltax;
+	temp->y+=deltay;
+	for (int i=0;i<5;i++)
+	{
 	temp->menu[i].hotdeltax+=deltax;
 	temp->menu[i].hotdeltay+=deltay;
-    }
-    DialogBin_Save(temp,"BZHistory","rez/gluhist2.bin",array);
+	}
+	DialogBin_Save(temp,"BZHistory","rez/gluhist2.bin",array);
 
-    temp=LoadDialogBin("rez\\gluhist2.bin",DIALOGBIN_MAIN,0,IDFONT16);
+	temp=LoadDialogBin("rez\\gluhist2.bin",DIALOGBIN_MAIN,0,IDFONT16);
 */
 
-    do{
+	do{
 	int selected=mainmenu();
 		do{
 			gamequitstatus=CONTINUEGAME;
@@ -305,7 +305,7 @@ playmission:
 								GAMETYPE = MAP_GAMETYPE_USEMAPSETTINGS;
 								selected_id = (startmission >> 16) & 0xff;
 								campaign_id = (startmission >> 8) & 0xff;
-								mission_id  = startmission & 0xff;
+								mission_id	= startmission & 0xff;
 								//DEBUGMESSCR("startmission=0x%x\n",startmission);
 								status = getcampaignname(campaign_id,selected_id);
 								if (status == SHOWVIDEO)
@@ -363,7 +363,7 @@ repeatmissionagain:
 										}
 										if ( gamequitstatus==EXITGAME || gamequitstatus==QUITMISSION )
 											break;
-			//							gamestatus=WINGAME;	//for test
+			//							gamestatus=WINGAME; //for test
 										if ( gamestatus!=WINGAME || gamequitstatus == RESTARTGAME )
 											goto repeatmissionagain;
 gonextmission:
@@ -450,7 +450,7 @@ gonextmission:
 												free_missionobjectives();
 												break;
 											case 1:
-			//				    				printf("return to menu SINGLEGAME\n");
+			//									printf("return to menu SINGLEGAME\n");
 												unload_starmapallocated(testmap);
 												wfree(testmap);
 												testmap=NULL;
@@ -623,9 +623,9 @@ gonextmission:
 				return 0;
 				break;
 			case VIEWCREDITS:
-	//		    StopMusic(MUSIC_STOPWITHFADE);
-	//		    if (EXPANSIONSET)
-	//		        ShowPreviewFile("rez\\crdt_exp.txt");
+	//			StopMusic(MUSIC_STOPWITHFADE);
+	//			if (EXPANSIONSET)
+	//				ShowPreviewFile("rez\\crdt_exp.txt");
 				ShowPreviewFile("rez\\crdt_lst.txt",ANYKEYQUITSHOWTITLES);
 				gamequitstatus=CONTINUEGAME;
 				break;
@@ -644,10 +644,10 @@ gonextmission:
 				break;
 			}
 		}while((selected == SINGLEGAME || selected == MULTIPLAYERGAME) && gamequitstatus != EXITGAME);
-    }while(gamequitstatus!=EXITGAME);
-    StopMusic(MUSIC_STOP);
-    iscriptinfo.~ISCRIPT();
-    gameend("end from menu");
+	}while(gamequitstatus!=EXITGAME);
+	StopMusic(MUSIC_STOP);
+	iscriptinfo.~ISCRIPT();
+	gameend("end from menu");
 }
 //==========================
 #define MAXGAMEMUSIC	3
@@ -656,144 +656,144 @@ signed char gamemusicstart;
 //==========================
 void PreparePlayGameMusic(void)
 {
-    gamemusicstart = -1;
-    gamemusicnr[0] = myrand(MAXGAMEMUSIC);
-    gamemusicnr[1] = myrand(MAXGAMEMUSIC);
-    if (gamemusicnr[0]==gamemusicnr[1])
+	gamemusicstart = -1;
+	gamemusicnr[0] = myrand(MAXGAMEMUSIC);
+	gamemusicnr[1] = myrand(MAXGAMEMUSIC);
+	if (gamemusicnr[0]==gamemusicnr[1])
 		if (++gamemusicnr[1]>=MAXGAMEMUSIC)
 			gamemusicnr[1]=0;
-    gamemusicnr[2]=MAXGAMEMUSIC-gamemusicnr[0]-gamemusicnr[1];
+	gamemusicnr[2]=MAXGAMEMUSIC-gamemusicnr[0]-gamemusicnr[1];
 }
 //==========================
 void GoPlayNextMusic(void)
 {
-    if (audiostream && !audiostream->stopchannel)
+	if (audiostream && !audiostream->stopchannel)
 		return;
-    int race = gameconf.pl_race[NUMBGAMER];
-    if (++gamemusicstart>=MAXGAMEMUSIC)
-        gamemusicstart=0;
-    sprintf(FULLFILENAME,"music\\%s%c.wav",racename[race],gamemusicnr[gamemusicstart]+'1');
-    PlayMusic(FULLFILENAME,0,&GoPlayNextMusic);
+	int race = gameconf.pl_race[NUMBGAMER];
+	if (++gamemusicstart>=MAXGAMEMUSIC)
+		gamemusicstart=0;
+	sprintf(FULLFILENAME,"music\\%s%c.wav",racename[race],gamemusicnr[gamemusicstart]+'1');
+	PlayMusic(FULLFILENAME,0,&GoPlayNextMusic);
 }
 //==========================
 int letsplaygame(int race,char *mypath)
 {
-    int status,i;
+	int status,i;
 
-    CHEATERBIT = 0;
-    CODEFORSCREEN = 0;
-    CODEFORGOD = 0;
-    CODEFORQUICKMAKE = 1;
-    CODEFORWITHOUTGOODS	= 0;
-    CODEFORWITHOUTTECHTREE = 0;
-    CODEFORPSIUNLIMIT = 0;
-    SHOWCELLS = 0;
+	CHEATERBIT = 0;
+	CODEFORSCREEN = 0;
+	CODEFORGOD = 0;
+	CODEFORQUICKMAKE = 1;
+	CODEFORWITHOUTGOODS = 0;
+	CODEFORWITHOUTTECHTREE = 0;
+	CODEFORPSIUNLIMIT = 0;
+	SHOWCELLS = 0;
 
-    if (race==RACE_OBSERVER)
+	if (race==RACE_OBSERVER)
 		race=RACE_TERRAN;
 
-    clearallplayerinfo();
-    loadbeforestarmap(race);
-    i = load_starmap( SELECTMAP, mypath, &map,&gameconf );
-    if ( i )
-    {
-	    printf("error load %s\n",SELECTMAP);
-	    if (i==1)
+	clearallplayerinfo();
+	loadbeforestarmap(race);
+	i = load_starmap( SELECTMAP, mypath, &map,&gameconf );
+	if ( i )
+	{
+		printf("error load %s\n",SELECTMAP);
+		if (i==1)
 			printf("error load MPQ-archive ,errorcode=%d\n",i);
-	    else
+		else
 			printf("error load %s,errorcode=%d\n",SELECTMAP,i);
-	    status=PREVIOUSMENU;
-    }
-    else
-    {
-	    calcsomespellinfo();
+		status=PREVIOUSMENU;
+	}
+	else
+	{
+		calcsomespellinfo();
 
-	    DEBUGMESSCR("loaded %s\n",SELECTMAP);
-	    if (map.flags & STARMAP_FLAG_EXPANSION)
+		DEBUGMESSCR("loaded %s\n",SELECTMAP);
+		if (map.flags & STARMAP_FLAG_EXPANSION)
 			DEBUGMESSCR("(EXPANSION MAP)\n",SELECTMAP);
-	    map.played_as_nr=NUMBGAMER;
+		map.played_as_nr=NUMBGAMER;
 
-	    mytimer.ClearGameTimer();
-	    clearshowgoods();
+		mytimer.ClearGameTimer();
+		clearshowgoods();
 
-	    PreparePlayGameMusic();
-	    GoPlayNextMusic();	//first start play music
+		PreparePlayGameMusic();
+		GoPlayNextMusic();	//first start play music
 
-	    status=gogame(&map);
-	    map.secondsplayed=mytimer.GetCurrentGameTime();
-	    if (status!=EXITGAME)
+		status=gogame(&map);
+		map.secondsplayed=mytimer.GetCurrentGameTime();
+		if (status!=EXITGAME)
 			glu_score(&map);
-	    if (!map.valid_vcode)
-	    {
+		if (!map.valid_vcode)
+		{
 			printf("ERROR with map(valid_vcode=0,may be already freed)");
-	    }
-    }
-    unload_starmap(&map);
-    unloadafterstarmap();
-    if (NETWORKGAME)
+		}
+	}
+	unload_starmap(&map);
+	unloadafterstarmap();
+	if (NETWORKGAME)
 		DestroyAllConnectionsWithPlayers(&playersconn);
-//    NUMBGAMER=0;
-    return(status);
+//	  NUMBGAMER=0;
+	return(status);
 }
 //==========================================
 void mouseonhotpos(int value)
 {
-    mousehotpos = value;
+	mousehotpos = value;
 }
 //==========================================
 void setmainscreenmouseevents(void)
 {
-    int i,j,x,y;
-    addnewmousehotpos(&mouseonhotpos,4+MAXSELECTMAN+11);//total mousehotspots
-    addmousehotpos( highMouse->RestrictXY[MOUSEMODE4].x1,
+	int i,j,x,y;
+	addnewmousehotpos(&mouseonhotpos,4+MAXSELECTMAN+11);//total mousehotspots
+	addmousehotpos( highMouse->RestrictXY[MOUSEMODE4].x1,
 					highMouse->RestrictXY[MOUSEMODE4].y1,
 					highMouse->RestrictXY[MOUSEMODE4].x2 - highMouse->RestrictXY[MOUSEMODE4].x1 + 1,
 					highMouse->RestrictXY[MOUSEMODE4].y2 - highMouse->RestrictXY[MOUSEMODE4].y1 + 1,
 					NULL);
-    for (i=0;i<MAXSELECTMAN;i++)
-    {
+	for (i=0;i<MAXSELECTMAN;i++)
+	{
 	//	x = XUNITBAR+i/2*36;
 	//	y = YUNITBAR+(i&1)*36;
 		x = 172+DELTASCREENX+i/2*36;
 		y = YUNITBAR+(i&1)*36;
 		addmousehotpos(x,y,36,36,NULL);
-    }
-    for (i=0;i<9;i++)
-    {
+	}
+	for (i=0;i<9;i++)
+	{
 		addmousehotpos( statbtnmenu->iteminfo[i+1].xpos+statbtnmenu->iteminfo[0].xpos,
 				statbtnmenu->iteminfo[i+1].ypos+statbtnmenu->iteminfo[0].ypos,
 				statbtnmenu->iteminfo[i+1].xsize,
 				statbtnmenu->iteminfo[i+1].ysize,
 				NULL);
-    }
-    addmousehotpos( f10menu->iteminfo[F10DIALOG_MENUBUTTON].xpos+f10menu->iteminfo[F10DIALOG_MAIN].xpos,
-		    f10menu->iteminfo[F10DIALOG_MENUBUTTON].ypos+f10menu->iteminfo[F10DIALOG_MAIN].ypos,
-		    f10menu->iteminfo[F10DIALOG_MENUBUTTON].xsize,
-		    f10menu->iteminfo[F10DIALOG_MENUBUTTON].ysize,
-		    &f10menu->iteminfo[F10DIALOG_MENUBUTTON].Flags);
-    addmousehotpos( minimapmenu->iteminfo[MINIMAPDIALOG_TERRAINBUTTON].xpos+minimapmenu->iteminfo[MINIMAPDIALOG_MAIN].xpos,
-		    minimapmenu->iteminfo[MINIMAPDIALOG_TERRAINBUTTON].ypos+minimapmenu->iteminfo[MINIMAPDIALOG_MAIN].ypos,
-		    minimapmenu->iteminfo[MINIMAPDIALOG_TERRAINBUTTON].xsize,
-		    minimapmenu->iteminfo[MINIMAPDIALOG_TERRAINBUTTON].ysize,
-		    &minimapmenu->iteminfo[MINIMAPDIALOG_TERRAINBUTTON].Flags);
-    addmousehotpos( minimapmenu->iteminfo[MINIMAPDIALOG_MESSAGEBUTTON].xpos+minimapmenu->iteminfo[MINIMAPDIALOG_MAIN].xpos,
-		    minimapmenu->iteminfo[MINIMAPDIALOG_MESSAGEBUTTON].ypos+minimapmenu->iteminfo[MINIMAPDIALOG_MAIN].ypos,
-		    minimapmenu->iteminfo[MINIMAPDIALOG_MESSAGEBUTTON].xsize,
-		    minimapmenu->iteminfo[MINIMAPDIALOG_MESSAGEBUTTON].ysize,
-		    &minimapmenu->iteminfo[MINIMAPDIALOG_MESSAGEBUTTON].Flags);
-    addmousehotpos( minimapmenu->iteminfo[MINIMAPDIALOG_DIPLOMACYBUTTON].xpos+minimapmenu->iteminfo[MINIMAPDIALOG_MAIN].xpos,
-		    minimapmenu->iteminfo[MINIMAPDIALOG_DIPLOMACYBUTTON].ypos+minimapmenu->iteminfo[MINIMAPDIALOG_MAIN].ypos,
-		    minimapmenu->iteminfo[MINIMAPDIALOG_DIPLOMACYBUTTON].xsize,
-		    minimapmenu->iteminfo[MINIMAPDIALOG_DIPLOMACYBUTTON].ysize,
-		    &minimapmenu->iteminfo[MINIMAPDIALOG_DIPLOMACYBUTTON].Flags);
-    addmousehotpos(0,0,gameconf.grmode.x,gameconf.grmode.y-YDECICONS-13,NULL);
-    incrcallbackwork();
+	}
+	addmousehotpos( f10menu->iteminfo[F10DIALOG_MENUBUTTON].xpos+f10menu->iteminfo[F10DIALOG_MAIN].xpos,
+			f10menu->iteminfo[F10DIALOG_MENUBUTTON].ypos+f10menu->iteminfo[F10DIALOG_MAIN].ypos,
+			f10menu->iteminfo[F10DIALOG_MENUBUTTON].xsize,
+			f10menu->iteminfo[F10DIALOG_MENUBUTTON].ysize,
+			&f10menu->iteminfo[F10DIALOG_MENUBUTTON].Flags);
+	addmousehotpos( minimapmenu->iteminfo[MINIMAPDIALOG_TERRAINBUTTON].xpos+minimapmenu->iteminfo[MINIMAPDIALOG_MAIN].xpos,
+			minimapmenu->iteminfo[MINIMAPDIALOG_TERRAINBUTTON].ypos+minimapmenu->iteminfo[MINIMAPDIALOG_MAIN].ypos,
+			minimapmenu->iteminfo[MINIMAPDIALOG_TERRAINBUTTON].xsize,
+			minimapmenu->iteminfo[MINIMAPDIALOG_TERRAINBUTTON].ysize,
+			&minimapmenu->iteminfo[MINIMAPDIALOG_TERRAINBUTTON].Flags);
+	addmousehotpos( minimapmenu->iteminfo[MINIMAPDIALOG_MESSAGEBUTTON].xpos+minimapmenu->iteminfo[MINIMAPDIALOG_MAIN].xpos,
+			minimapmenu->iteminfo[MINIMAPDIALOG_MESSAGEBUTTON].ypos+minimapmenu->iteminfo[MINIMAPDIALOG_MAIN].ypos,
+			minimapmenu->iteminfo[MINIMAPDIALOG_MESSAGEBUTTON].xsize,
+			minimapmenu->iteminfo[MINIMAPDIALOG_MESSAGEBUTTON].ysize,
+			&minimapmenu->iteminfo[MINIMAPDIALOG_MESSAGEBUTTON].Flags);
+	addmousehotpos( minimapmenu->iteminfo[MINIMAPDIALOG_DIPLOMACYBUTTON].xpos+minimapmenu->iteminfo[MINIMAPDIALOG_MAIN].xpos,
+			minimapmenu->iteminfo[MINIMAPDIALOG_DIPLOMACYBUTTON].ypos+minimapmenu->iteminfo[MINIMAPDIALOG_MAIN].ypos,
+			minimapmenu->iteminfo[MINIMAPDIALOG_DIPLOMACYBUTTON].xsize,
+			minimapmenu->iteminfo[MINIMAPDIALOG_DIPLOMACYBUTTON].ysize,
+			&minimapmenu->iteminfo[MINIMAPDIALOG_DIPLOMACYBUTTON].Flags);
+	addmousehotpos(0,0,gameconf.grmode.x,gameconf.grmode.y-YDECICONS-13,NULL);
+	incrcallbackwork();
 }
 //==========================
 void deletemainscreenmouseevents(void)
 {
-    decrcallbackwork();
-    delnewmousehotpos();
+	decrcallbackwork();
+	delnewmousehotpos();
 }
 //==========================
 int needredesen=0;
@@ -801,10 +801,10 @@ unsigned char buton2=0;
 //==========================
 void mouseonkartaarea(void)
 {
-    if (karta_aria)
-    {
+	if (karta_aria)
+	{
 		if (mouse_b&WMLEFTKEY)
-    	{
+		{
 			if (highMouse->WaitToPressLeftButton && waitfordownleftbuton)
 			{
 				//action on leftbutton on minimap
@@ -822,49 +822,49 @@ void mouseonkartaarea(void)
 				{
 					if (MAPDEF&&!highMouse->MouseOnSelectionMode)
 					{
-	//            		movieminikarta=YES;
+	//					movieminikarta=YES;
 						movieminikarta = SetVisualMapPosition((int) (((highMouse->PosX-Xkart-Xkartbeg)/factorx)-widthkart/2)*SIZESPRLANSHX,
 															  (int) (((highMouse->PosY-Ykart-Ykartbeg)/factory)-hightkart/2)*SIZESPRLANSHY);
 					}
 				}
 			}
-    	}
-    	else
-    	{
-        	if ((!buton2)&&(mouse_b&WMRIGHTKEY)&&!canceloperation)
-        	{
-            	buton2=1;
-            	putdestination(/*DestMouseOBJ*/NULL,
-                              (int)((highMouse->PosX-Xkart-Xkartbeg)/factorx)*SIZESPRLANSHX,
-                              (int)((highMouse->PosY-Ykart-Ykartbeg)/factory)*SIZESPRLANSHY,
-                              MODEMOVE,0,0);
-        	}
-    	}
-    }
-    if (!(mouse_b&WMRIGHTKEY))
-    {
+		}
+		else
+		{
+			if ((!buton2)&&(mouse_b&WMRIGHTKEY)&&!canceloperation)
+			{
+				buton2=1;
+				putdestination(/*DestMouseOBJ*/NULL,
+							  (int)((highMouse->PosX-Xkart-Xkartbeg)/factorx)*SIZESPRLANSHX,
+							  (int)((highMouse->PosY-Ykart-Ykartbeg)/factory)*SIZESPRLANSHY,
+							  MODEMOVE,0,0);
+			}
+		}
+	}
+	if (!(mouse_b&WMRIGHTKEY))
+	{
 		buton2=0;
-    }
+	}
 
 }
 //==========================
 void redesenscreen(void)
 {
-    	calculatefog(bitsplayer);			//calculate all fog
-    	drawMAP(0);
-	    CreatePylonSelectArea();
-	    RemovePylonSelectArea();
-    	putfog();			//show fogofwar
-    	showgoods();
-	    int pc=desenbuildifconstr();
-	    if (pc!=0)
-    		posibleconstruct=pc;
-	    highMouse->DrawSelectionArea();
-//	    desenlocation();
-    	showramka();
-    	drawMINIMAP();
-    	desenproperties(properties,selectableproperties);//draw properties of selected unit(s) on screen
-    	printobjparam();		//draw parameters of selected objects
+		calculatefog(bitsplayer);			//calculate all fog
+		drawMAP(0);
+		CreatePylonSelectArea();
+		RemovePylonSelectArea();
+		putfog();			//show fogofwar
+		showgoods();
+		int pc=desenbuildifconstr();
+		if (pc!=0)
+			posibleconstruct=pc;
+		highMouse->DrawSelectionArea();
+//		desenlocation();
+		showramka();
+		drawMINIMAP();
+		desenproperties(properties,selectableproperties);//draw properties of selected unit(s) on screen
+		printobjparam();		//draw parameters of selected objects
 }
 //==========================
 int totable,bitsplayer;
@@ -874,103 +874,103 @@ CommandQueue UnitsCommandQueue(&CommandQueueAction,MAXCOMMANDELEM);
 //==========================
 void FreeQueues(void)
 {
-    QueueGame.EmptyQueue();
-    UnitsCommandQueue.EmptyQueue();
+	QueueGame.EmptyQueue();
+	UnitsCommandQueue.EmptyQueue();
 }
 //==========================
 void GoNextCommandTick()
 {
-    if (!NETWORKGAME)
+	if (!NETWORKGAME)
 	commandqueuetick += 1;
-    else
+	else
 	commandqueuetick += 1;//TODO need to add something else
 }
 //==========================
 void pregameQUEUE(void)
 {
-    MakeQueueAction(SELFCREATEACTION,SPECIALMAPID,&MAPREGENERATIONBIT,MINIMAPREFRESHCYCLE,0,0,1);
-    MakeQueueAction(SELFCREATEACTION,SPECIALMAPUNITSID,&MAPUNITSREGENERATIONBIT,MINIMAPUNITSREFRESHCYCLE,0,0,1);
-    MakeQueueAction(SELFCREATEACTION,SPECIALCREEPID,&NEEDTOCHANGECREEPBIT,CHANGECREEPCYCLE,0,0,1);
+	MakeQueueAction(SELFCREATEACTION,SPECIALMAPID,&MAPREGENERATIONBIT,MINIMAPREFRESHCYCLE,0,0,1);
+	MakeQueueAction(SELFCREATEACTION,SPECIALMAPUNITSID,&MAPUNITSREGENERATIONBIT,MINIMAPUNITSREFRESHCYCLE,0,0,1);
+	MakeQueueAction(SELFCREATEACTION,SPECIALCREEPID,&NEEDTOCHANGECREEPBIT,CHANGECREEPCYCLE,0,0,1);
 }
 //==========================
 void clearactionBITS(void)
 {
-    MAPREGENERATIONBIT=0;
-    MAPUNITSREGENERATIONBIT=0;
-    NEEDTOCHANGECREEPBIT=0;
+	MAPREGENERATIONBIT=0;
+	MAPUNITSREGENERATIONBIT=0;
+	NEEDTOCHANGECREEPBIT=0;
 }
 //==========================
 #define MOUSEDESTELEVATION	255
 int gogame(struct mapinfo *info)
 {
-    int resettimerforplayers,gameticks=0,prevgameticks=-1;
-    int activatedwaittimer;
-    MENUPARAMS *mp;
+	int resettimerforplayers,gameticks=0,prevgameticks=-1;
+	int activatedwaittimer;
+	MENUPARAMS *mp;
 
-    int scrregions,pc;
-    SCREEN_REGION	scrparts[2],lastmenuregion;
-    int retmenu;
-    int i,retnet,timeid;
-    char desenonlymouseflag;
-    unsigned long oldusecs=0,oldkeyscrollusecs=0,oldmousescrollusecs=0,usecs=0;
-    changegoods=1;
-    highMouse->LoadAllCursors();
-    showedmenu.Init();
-    highMouse->SetRestrictCoords(MOUSEMODE2);
-    chatbar.clearallmessages();
-    infobar.clearallmessages();
-    GAME=1;
-    PAUSEGAME = 0;
-    PAUSEINTRIG=0;
-    needclearmap=0;
-    commandqueuetick = 0;
-    for (i=0;i<PLAYEDPLAYERS;i++)
+	int scrregions,pc;
+	SCREEN_REGION	scrparts[2],lastmenuregion;
+	int retmenu;
+	int i,retnet,timeid;
+	char desenonlymouseflag;
+	unsigned long oldusecs=0,oldkeyscrollusecs=0,oldmousescrollusecs=0,usecs=0;
+	changegoods=1;
+	highMouse->LoadAllCursors();
+	showedmenu.Init();
+	highMouse->SetRestrictCoords(MOUSEMODE2);
+	chatbar.clearallmessages();
+	infobar.clearallmessages();
+	GAME=1;
+	PAUSEGAME = 0;
+	PAUSEINTRIG=0;
+	needclearmap=0;
+	commandqueuetick = 0;
+	for (i=0;i<PLAYEDPLAYERS;i++)
 		map.clearfog[i]=1;
-//    clearopenseeKarta();
-//    clearopenseeKarta();	//clear map
-    UnitsMAPRefresh();
-//    allobjtypemove();			//calculate what sprites will be placed
-    makeopenseeKarta(0,MaxObjects-1);
-    calcfullinvandsee();
-    bitsplayer=GetVisionBitsPlayer(NUMBGAMER);
-    MAPREGENERATIONBIT=1;
-    MAPUNITSREGENERATIONBIT=1;
-    calculatefog(bitsplayer);			//calculate all fog
-    drawMAP(1);
+//	  clearopenseeKarta();
+//	  clearopenseeKarta();	//clear map
+	UnitsMAPRefresh();
+//	  allobjtypemove();			//calculate what sprites will be placed
+	makeopenseeKarta(0,MaxObjects-1);
+	calcfullinvandsee();
+	bitsplayer=GetVisionBitsPlayer(NUMBGAMER);
+	MAPREGENERATIONBIT=1;
+	MAPUNITSREGENERATIONBIT=1;
+	calculatefog(bitsplayer);			//calculate all fog
+	drawMAP(1);
 
-    highMouse->MouseOnObjClear();
-    totalimgs=0;
-    drawedimgs=0;
-    AllImages_Draw();
-    DEBUGMESSCR("At begin totalimgs=%d drawedimgs=%d\n",totalimgs,drawedimgs);		//to check for leaks
+	highMouse->MouseOnObjClear();
+	totalimgs=0;
+	drawedimgs=0;
+	AllImages_Draw();
+	DEBUGMESSCR("At begin totalimgs=%d drawedimgs=%d\n",totalimgs,drawedimgs);		//to check for leaks
 
-    putfog();			//show fogofwar
-    drawMINIMAP();
-    showramka();
-    wscreenon();
-    setmainscreenmouseevents();
-    //make minimap regeneration queue
-    gamecycle=0;
-    pregameQUEUE();
-    NrObjRegen=INT_MAX;
+	putfog();			//show fogofwar
+	drawMINIMAP();
+	showramka();
+	wscreenon();
+	setmainscreenmouseevents();
+	//make minimap regeneration queue
+	gamecycle=0;
+	pregameQUEUE();
+	NrObjRegen=INT_MAX;
 
-    netplay.MakeFirstNetworkCycle();
-    menustatus=CONTINUEGAME;
-    resettimerforplayers=1<<16;
-    activatedwaittimer=0;
-    gamestatus=NOGAMESTATUS;
-//    gameconf.speedconf.gamespeed=SPEED6X;
-    clearopenseeKarta();
-    clearopenseeKarta();
+	netplay.MakeFirstNetworkCycle();
+	menustatus=CONTINUEGAME;
+	resettimerforplayers=1<<16;
+	activatedwaittimer=0;
+	gamestatus=NOGAMESTATUS;
+//	  gameconf.speedconf.gamespeed=SPEED6X;
+	clearopenseeKarta();
+	clearopenseeKarta();
 
 
-    do{
+	do{
 		scrregions=0;
 		needredesen = 0;
 		clearactionBITS();
 		int need_quiting = eventwindowloop();
 	//	if (need_quiting)
-	//    	    gameend("close box");
+	//			gameend("close box");
 
 		addscrx=0;
 		addscry=0;
@@ -979,7 +979,7 @@ int gogame(struct mapinfo *info)
 			redesenscreen();
 		if (!PAUSEGAME && !PAUSEINTRIG)
 		{
-			keyrefresh();               	//refresh array of keys
+			keyrefresh();					//refresh array of keys
 			getmousetype(map.MAPXGLOBAL,map.MAPYGLOBAL);
 			mouseonkartaarea();
 		}
@@ -1008,7 +1008,7 @@ int gogame(struct mapinfo *info)
 		{
 			//show wait menu
 			printf("error! wait players!!!retnet=%x\n",retnet);
-	/*	    if (!activatedwaittimer)
+	/*		if (!activatedwaittimer)
 			{
 			//show waitingplayermenu
 			activatedwaittimer=1;
@@ -1046,7 +1046,7 @@ int gogame(struct mapinfo *info)
 				case TIMETOACT:		//timetoprocess
 					if (!PAUSEGAME&&!PAUSEINTRIG)
 					{
-		//			    printf("aloc=%d max=%d maxmark=%d\nn",mainimageslist.allocatedelem,mainimageslist.totalelem,mainimageslist.totalmarked);
+		//				printf("aloc=%d max=%d maxmark=%d\nn",mainimageslist.allocatedelem,mainimageslist.totalelem,mainimageslist.totalmarked);
 						QueueGame.QueueMain(INCREMENTTICKS);
 
 						UnitsCommandQueue.QueueMain(commandqueuetick);
@@ -1336,29 +1336,29 @@ int gogame(struct mapinfo *info)
 		if (gamestatus!=NOGAMESTATUS)
 			PAUSEGAME=1;
 
-    }while(menustatus==CONTINUEGAME);
-    if (ALLMENUS.GetMaxElements()>0)
+	}while(menustatus==CONTINUEGAME);
+	if (ALLMENUS.GetMaxElements()>0)
 		DEBUGMESSCR("REMAIN ALLMENUS lists\n");
-    ALLMENUS.DeallocList();
-    netplay.DeInitNetworkTicks();
-    deletemainscreenmouseevents();
-    GAME=0;
-    highMouse->UnloadCursors();
-    scrnew=0;
+	ALLMENUS.DeallocList();
+	netplay.DeInitNetworkTicks();
+	deletemainscreenmouseevents();
+	GAME=0;
+	highMouse->UnloadCursors();
+	scrnew=0;
 
-    AllImages_FreeAndEmpty();
-    if (mousedestimg)
-    {
+	AllImages_FreeAndEmpty();
+	if (mousedestimg)
+	{
 		delete mousedestimg;
 		mousedestimg=NULL;
-    }
-    return(menustatus);
+	}
+	return(menustatus);
 }
 //==========================
 int ChangeMenuStatus(int mstatus)
 {
-    switch(mstatus)
-    {
+	switch(mstatus)
+	{
 		case BECOMEOBSERVER:
 			MakeObserver(NUMBGAMER);
 			return(CONTINUEGAME);
@@ -1369,30 +1369,30 @@ int ChangeMenuStatus(int mstatus)
 			return(CONTINUEGAME);
 		case MAINMENUSTATUS_SAVEGAMEFAILED:
 			return(CONTINUEGAME);
-    }
-    return(mstatus);
+	}
+	return(mstatus);
 }
 //==========================
 void clearplayersconfig(void)
 {
-    for (int i=0;i<PLAYEDPLAYERS;i++)
-    {
+	for (int i=0;i<PLAYEDPLAYERS;i++)
+	{
 		gameconf.pl_race[i]=RACE_INDEPENDENT;		//random
 		gameconf.pl_owner[i]=OWNER_COMPUTER;		//computer
-    }
+	}
 }
 //==========================
 void clearallplayerinfo(void)
 {
-    memset(&PLAYER,0,sizeof(PLAYER));
+	memset(&PLAYER,0,sizeof(PLAYER));
 }
 //==========================
 void drawGAMEMENUbutton(char *button,DIALOGBIN_INFO *menuinfo,int buttonnr,
 			 int dlggrp_firstpict,int mousehotnr,int stattxt_nr)
 {
-    int color,press=0;
-    if (menuinfo->iteminfo[buttonnr].Flags&DIALOGBIN_FLAGS_ITEMVISIBLED)
-    {
+	int color,press=0;
+	if (menuinfo->iteminfo[buttonnr].Flags&DIALOGBIN_FLAGS_ITEMVISIBLED)
+	{
 		if (menuinfo->iteminfo[buttonnr].Flags & DIALOGBIN_FLAGS_ITEMDISABLED)
 		{
 			putgrp_nopacked(menuinfo->iteminfo[buttonnr].xpos+menuinfo->iteminfo[0].xpos,
@@ -1402,12 +1402,12 @@ void drawGAMEMENUbutton(char *button,DIALOGBIN_INFO *menuinfo,int buttonnr,
 		}
 		else
 		{
-            if (mousehotpos==mousehotnr&&!highMouse->MouseOnSelectionMode)
-            {
+			if (mousehotpos==mousehotnr&&!highMouse->MouseOnSelectionMode)
+			{
 				if (mouse_b & WMLEFTKEY)
 				{
-					*button  = GAMEBUTTON_MOUSEPRESS;
-					*button	&= ~GAMEBUTTON_MOUSERELEASE;
+					*button	 = GAMEBUTTON_MOUSEPRESS;
+					*button &= ~GAMEBUTTON_MOUSERELEASE;
 				}
 				else
 					if (*button & GAMEBUTTON_MOUSEPRESS)
@@ -1415,14 +1415,14 @@ void drawGAMEMENUbutton(char *button,DIALOGBIN_INFO *menuinfo,int buttonnr,
 						*button &= ~GAMEBUTTON_MOUSEPRESS;
 						*button |= GAMEBUTTON_MOUSERELEASE;
 					}
-            }
-            else
-            {
+			}
+			else
+			{
 				*button&=~GAMEBUTTON_MOUSEPRESS;
 				*button&=~GAMEBUTTON_MOUSERELEASE;
-            }
-            if ((mousehotpos==mousehotnr&&!highMouse->MouseOnSelectionMode)||(*button&GAMEBUTTON_KEYPRESS))
-            {
+			}
+			if ((mousehotpos==mousehotnr&&!highMouse->MouseOnSelectionMode)||(*button&GAMEBUTTON_KEYPRESS))
+			{
 				if ((mouse_b&WMLEFTKEY)||(*button&GAMEBUTTON_KEYPRESS))
 				{
 					putgrp_nopacked(menuinfo->iteminfo[buttonnr].xpos+menuinfo->iteminfo[0].xpos,
@@ -1445,44 +1445,44 @@ void drawGAMEMENUbutton(char *button,DIALOGBIN_INFO *menuinfo,int buttonnr,
 							GBLUECOLORFONT,tfontgamp,gamedlggrp);
 				}
 				color=GWHITECOLORFONT;
-            }
-            else
-            {
+			}
+			else
+			{
 				color=GYELLOWCOLORFONT;
 				putgrp_nopacked(menuinfo->iteminfo[buttonnr].xpos+menuinfo->iteminfo[0].xpos,
-				        menuinfo->iteminfo[buttonnr].ypos+menuinfo->iteminfo[0].ypos,
+						menuinfo->iteminfo[buttonnr].ypos+menuinfo->iteminfo[0].ypos,
 						gamedlggrp,dlggrp_firstpict+MENUBUTTON_ENABLED);
-            }
+			}
 		}//else disabled
 		if (menuinfo->iteminfo[buttonnr].text)
 			putmessage( menuinfo->iteminfo[buttonnr].xtextpos+menuinfo->iteminfo[0].xpos+press*2,
 						menuinfo->iteminfo[buttonnr].ytextpos+menuinfo->iteminfo[0].ypos-press*2,
 						menuinfo->iteminfo[buttonnr].fontnr,
 						menuinfo->iteminfo[buttonnr].text,color,tfontgamp,gamedlggrp);
-    }//visibled
+	}//visibled
 }
 //==========================
 void showF10menu(char *button)
 {
-    if ((*button&GAMEBUTTON_SHOW) && (*button&GAMEBUTTON_RELEASE))
-    {
+	if ((*button&GAMEBUTTON_SHOW) && (*button&GAMEBUTTON_RELEASE))
+	{
 		*button=GAMEBUTTON_CLEARALL;
 		showedmenu.prepareforshowmenu(&putgamemenu,NULL);
 	//	ret=putgamemenu();
-    }
+	}
 }
 //==========================
 void showTERRAINmenu(char *button)
 {
-    if ((*button&GAMEBUTTON_SHOW) && (*button&GAMEBUTTON_RELEASE))
-    {
+	if ((*button&GAMEBUTTON_SHOW) && (*button&GAMEBUTTON_RELEASE))
+	{
 		*button=GAMEBUTTON_CLEARALL;
 		MAPDEF++;
-    	if (MAPDEF>3)
+		if (MAPDEF>3)
 			MAPDEF=2;
 		switch(MAPDEF)
 		{
-	/*	    case 0://nomap
+	/*		case 0://nomap
 						setmemd(Minimap,MAXIMSIZEMINIMAP*MAXIMSIZEMINIMAP/4,0);
 				break;
 			case 1://only terrain
@@ -1502,96 +1502,96 @@ void showTERRAINmenu(char *button)
 				drawMINIMAP();
 				break;
 		}
-    }
+	}
 }
 //==========================
 void showMESSAGEmenu(char *button)
 {
-    if ((*button&GAMEBUTTON_SHOW) && (*button&GAMEBUTTON_RELEASE))
-    {
+	if ((*button&GAMEBUTTON_SHOW) && (*button&GAMEBUTTON_RELEASE))
+	{
 		*button=GAMEBUTTON_CLEARALL;
 		showedmenu.prepareforshowmenu(&messagingmenu,NULL);
-    }
+	}
 }
 //==========================
 void showDIPLOMACYmenu(char *button)
 {
-    if ((*button&GAMEBUTTON_SHOW) && (*button&GAMEBUTTON_RELEASE))
-    {
+	if ((*button&GAMEBUTTON_SHOW) && (*button&GAMEBUTTON_RELEASE))
+	{
 		*button=GAMEBUTTON_CLEARALL;
 		showedmenu.prepareforshowmenu(&diplomacymenu,NULL);
-    }
+	}
 }
 //==========================
 void showramka(void)
 {
-    putstasprite8(DELTASCREENX,0,packedconsole);
+	putstasprite8(DELTASCREENX,0,packedconsole);
 }
 //==========================
 void showiconramka(void)
 {
-    putstasprite8(DELTASCREENX,DELTASCREENY,packedconsoleover);
+	putstasprite8(DELTASCREENX,DELTASCREENY,packedconsoleover);
 }
 //==========================
 void wscreenonmem(int nrregions,SCREEN_REGION regions[])
 {
-    static int frames,fps,prevsec,clc;
-    static long prevgamecycle;
-    int cursec;
-    char s[300];
-    char ss[50];
-    s[0]=0;
+	static int frames,fps,prevsec,clc;
+	static long prevgamecycle;
+	int cursec;
+	char s[300];
+	char ss[50];
+	s[0]=0;
 
-    frames++;
-    cursec = mytimer.GetTimeParced();
-    if (cursec != prevsec)
-    {
+	frames++;
+	cursec = mytimer.GetTimeParced();
+	if (cursec != prevsec)
+	{
 		prevsec = cursec;
 		clc = gamecycle - prevgamecycle;
 		prevgamecycle = gamecycle;
 		fps = frames;
 		frames = 0;
-    }
-    strcat(s,"FPS/CYCLES:");
-    itoa(fps,ss,10);
-    strcat(s,ss);
-    strcat(s,"/");
-    itoa(clc,ss,10);
-    strcat(s,ss);
+	}
+	strcat(s,"FPS/CYCLES:");
+	itoa(fps,ss,10);
+	strcat(s,ss);
+	strcat(s,"/");
+	itoa(clc,ss,10);
+	strcat(s,ss);
 
-    strcat(s," maxobjs:");
-    itoa(MaxObjects,ss,10);
-    strcat(s,ss);
-/*    if (fordeselect[0])
-    {
+	strcat(s," maxobjs:");
+	itoa(MaxObjects,ss,10);
+	strcat(s,ss);
+/*	  if (fordeselect[0])
+	{
 	sprintf(ss," %d,%d %d,%d",GetOBJx(fordeselect[0]),GetOBJy(fordeselect[0]),fordeselect[0]->finalx>>8,fordeselect[0]->finaly>>8);
 	strcat(s,ss);
-    }
+	}
 */
-/*    if (fordeselect[0])
-    {
+/*	  if (fordeselect[0])
+	{
 	sprintf(ss," 0x%x",(int)fordeselect[0]);
 	strcat(s,ss);
-    }
-    if (fordeselect[0])
-    {
+	}
+	if (fordeselect[0])
+	{
 	sprintf(ss," %d",fordeselect[0]->mainimage->side);
 	strcat(s,ss);
-    }
+	}
 */
-    strcat(s," hot:");
-    itoa(mousehotpos,ss,10);
-    strcat(s,ss);
+	strcat(s," hot:");
+	itoa(mousehotpos,ss,10);
+	strcat(s,ss);
 
-    strcat(s," pl:");
-    itoa(NUMBGAMER,ss,10);
-    strcat(s,ss);
-    strcat(s,"/");
-    itoa(PLAYEDPLAYERS,ss,10);
-    strcat(s,ss);
+	strcat(s," pl:");
+	itoa(NUMBGAMER,ss,10);
+	strcat(s,ss);
+	strcat(s,"/");
+	itoa(PLAYEDPLAYERS,ss,10);
+	strcat(s,ss);
 
-    if (fordeselect[0])
-    {
+	if (fordeselect[0])
+	{
 		strcat(s," pl:");
 		itoa(fordeselect[0]->playernr,ss,10);
 		strcat(s,ss);
@@ -1601,9 +1601,9 @@ void wscreenonmem(int nrregions,SCREEN_REGION regions[])
 	//	strcat(s,"/");
 	//	itoa(fordeselect[0]->atackcooldowntime,ss,10);
 	//	strcat(s,ss);
-    }
-/*    if (fordeselect[0])
-    {
+	}
+/*	  if (fordeselect[0])
+	{
 		strcat(s,"x=");
 		itoa(fordeselect[0]->xkart,ss,10);
 		strcat(s,ss);
@@ -1616,202 +1616,202 @@ void wscreenonmem(int nrregions,SCREEN_REGION regions[])
 		strcat(s,"y=");
 		itoa(fordeselect[0]->sourcey,ss,10);
 		strcat(s,ss);
-    }
+	}
 */
-    putmessage(0,0,IDFONT16,s,GGREENCOLORFONT,tfontgamp,gamedlggrp);
-    if (map.palettechanges)
-    {
+	putmessage(0,0,IDFONT16,s,GGREENCOLORFONT,tfontgamp,gamedlggrp);
+	if (map.palettechanges)
+	{
 		palchange(map.palette,gameconf.videoconf.gamma,gameconf.videoconf.saturate);
 		map.palettechanges=0;
 		if (!(gameconf.grmode.flags & DISPLAYFLAGS_EMULATIONMODE))
 			wscreenonregions(nrregions,regions);
-    }
-    else
-        wscreenonregions(nrregions,regions);
-//    printf("totalimgs=%d drawedimgs=%d\n",totalimgs,drawedimgs);		//to check for leaks
-//    printf("windowactive=%d\n",gameconf.grmode.windowactive);
+	}
+	else
+		wscreenonregions(nrregions,regions);
+//	  printf("totalimgs=%d drawedimgs=%d\n",totalimgs,drawedimgs);		//to check for leaks
+//	  printf("windowactive=%d\n",gameconf.grmode.windowactive);
 }
 //===================================================
 void gameend(const char *mes)
 {
-    logend();
-    printf("%s\n",mes);
-    if (map.valid_vcode)
-        unload_starmap(&map);
-    highMouse->UnloadCursors();
-   	delete highMouse;
+	logend();
+	printf("%s\n",mes);
+	if (map.valid_vcode)
+		unload_starmap(&map);
+	highMouse->UnloadCursors();
+	delete highMouse;
 
-    deletemainscreenmouseevents();
-//    freeOBJstructs(1);
-//    freeMAGEstructs();
-    usleep(300000);//wait to finish playng sounds
-    deinit();
-    deinitsoundengine();
-    unloadcircles();
-    unloadweapons();
-//    UnloadAllOverlaysGRP();
-    unloadznak();
-    UnloadDatTblFiles(&alldattbl);
-    unloadallfonts();
-    UnloadVisionBinTables();
+	deletemainscreenmouseevents();
+//	  freeOBJstructs(1);
+//	  freeMAGEstructs();
+	usleep(300000);//wait to finish playng sounds
+	deinit();
+	deinitsoundengine();
+	unloadcircles();
+	unloadweapons();
+//	  UnloadAllOverlaysGRP();
+	unloadznak();
+	UnloadDatTblFiles(&alldattbl);
+	unloadallfonts();
+	UnloadVisionBinTables();
 
-//    unloadtexturegrp();
-//    Unload_SC_Images_List();
-    settextmode();
-    QuitGrpLib();
-    uninstallvectors();
-    UnLoadAllMpqs();
-    unloadcfg();
-    exit(0);
+//	  unloadtexturegrp();
+//	  Unload_SC_Images_List();
+	settextmode();
+	QuitGrpLib();
+	uninstallvectors();
+	UnLoadAllMpqs();
+	unloadcfg();
+	exit(0);
 }
 //===================================================
 #include "walk.h"
 void logend(void)
 {
-    static int filenr=0;
-    char fn[200];
-    int i,j,ii,jj,k;
-    unsigned short kk;
-    FILE *f;
-/*    f=fopen("MAPvision0.txt","wb");
-    for (i=0;i<MAXVISY;i++)
-    {
-        for (j=0;j<MAXVISX;j++)
-        {
-	    fprintf(f,"%02x",MAPvision[0][i][j]);
+	static int filenr=0;
+	char fn[200];
+	int i,j,ii,jj,k;
+	unsigned short kk;
+	FILE *f;
+/*	  f=fopen("MAPvision0.txt","wb");
+	for (i=0;i<MAXVISY;i++)
+	{
+		for (j=0;j<MAXVISX;j++)
+		{
+		fprintf(f,"%02x",MAPvision[0][i][j]);
 	}
 	fprintf(f,"\n");
-    }
-    fclose(f);
+	}
+	fclose(f);
 */
-/*    f=fopen("pylonarea.txt","wb");
-    for (i=0;i<MAXYMAP;i++)
-    {
+/*	  f=fopen("pylonarea.txt","wb");
+	for (i=0;i<MAXYMAP;i++)
+	{
 	for (j=0;j<MAXXMAP;j++)
 	{
-	    fprintf(f,"%03d ",map.pylonarea[2][i*MAXXMAP+j]);
+		fprintf(f,"%03d ",map.pylonarea[2][i*MAXXMAP+j]);
 	}
 	fprintf(f,"\n");
-    }
-    fclose(f);
-    f=fopen("seedetector.txt","wb");
-    for (i=0;i<MAXYMAP;i++)
-    {
+	}
+	fclose(f);
+	f=fopen("seedetector.txt","wb");
+	for (i=0;i<MAXYMAP;i++)
+	{
 	for (j=0;j<MAXXMAP;j++)
 	{
-	    fprintf(f,"%03d ",map.mapbits.seedetector[i*MAXXMAP+j]);
+		fprintf(f,"%03d ",map.mapbits.seedetector[i*MAXXMAP+j]);
 	}
 	fprintf(f,"\n");
-    }
-    fclose(f);
-    f=fopen("whitefog.txt","wb");
-    for (i=0;i<MAXYMAP;i++)
-    {
+	}
+	fclose(f);
+	f=fopen("whitefog.txt","wb");
+	for (i=0;i<MAXYMAP;i++)
+	{
 	for (j=0;j<MAXXMAP;j++)
 	{
-	    fprintf(f,"%03d ",map.mapbits.whitefog[1][i*MAXXMAP+j]);
+		fprintf(f,"%03d ",map.mapbits.whitefog[1][i*MAXXMAP+j]);
 	}
 	fprintf(f,"\n");
-    }
-    fclose(f);
+	}
+	fclose(f);
 */
-/*    f=fopen("whitefog.txt","wb");
-    for (i=0;i<MAXYMAP;i++)
-    {
+/*	  f=fopen("whitefog.txt","wb");
+	for (i=0;i<MAXYMAP;i++)
+	{
 	for (j=0;j<MAXXMAP;j++)
 	{
-	    fprintf(f,"%02d ",map.mapbits.whitefog[1][i*MAXXMAP+j]);
+		fprintf(f,"%02d ",map.mapbits.whitefog[1][i*MAXXMAP+j]);
 	}
 	fprintf(f,"\n");
-    }
-    fclose(f);
-    f=fopen("blackfog.txt","wb");
-    for (i=0;i<MAXYMAP;i++)
-    {
+	}
+	fclose(f);
+	f=fopen("blackfog.txt","wb");
+	for (i=0;i<MAXYMAP;i++)
+	{
 	for (j=0;j<MAXXMAP;j++)
 	{
-	    fprintf(f,"%02d ",map.mapbits.blackfog[1][i*MAXXMAP+j]);
+		fprintf(f,"%02d ",map.mapbits.blackfog[1][i*MAXXMAP+j]);
 	}
 	fprintf(f,"\n");
-    }
-    fclose(f);
+	}
+	fclose(f);
 
-    f=fopen("screep.txt","wb");
-    for (i=0;i<MAXYMAP;i++)
-    {
+	f=fopen("screep.txt","wb");
+	for (i=0;i<MAXYMAP;i++)
+	{
 	for (j=0;j<MAXXMAP;j++)
 	{
-	    fprintf(f,"%03d ",map.mapbits.savedcreep[NUMBGAMER][i*MAXXMAP+j]);
+		fprintf(f,"%03d ",map.mapbits.savedcreep[NUMBGAMER][i*MAXXMAP+j]);
 	}
 	fprintf(f,"\n");
-    }
-    fclose(f);
-    f=fopen("txt.elevation","wb");
-    for (i=0;i<MAXYMAP;i++)
-    {
+	}
+	fclose(f);
+	f=fopen("txt.elevation","wb");
+	for (i=0;i<MAXYMAP;i++)
+	{
 	for (j=0;j<MAXXMAP;j++)
 	{
-	    fprintf(f,"%01d",map.maplevel[i*MAXXMAP+j]);
+		fprintf(f,"%01d",map.maplevel[i*MAXXMAP+j]);
 	}
 	fprintf(f,"\n");
-    }
-    fclose(f);
+	}
+	fclose(f);
 */
-/*    f=fopen("txt.creepflagplace","wb");
-    for (i=0;i<MAXYMAP;i++)
-    {
+/*	  f=fopen("txt.creepflagplace","wb");
+	for (i=0;i<MAXYMAP;i++)
+	{
 	for (j=0;j<MAXXMAP;j++)
 	{
-	    fprintf(f,"%01d",map.creepflagplace[i*MAXXMAP+j]);
+		fprintf(f,"%01d",map.creepflagplace[i*MAXXMAP+j]);
 	}
 	fprintf(f,"\n");
-    }
-    fclose(f);
+	}
+	fclose(f);
 */
 /*
-    f=fopen("txt.creepflagneed","wb");
-    for (i=0;i<MAXYMAP;i++)
-    {
+	f=fopen("txt.creepflagneed","wb");
+	for (i=0;i<MAXYMAP;i++)
+	{
 	for (j=0;j<MAXXMAP;j++)
 	{
-	    fprintf(f,"%01d",map.creepflagneeded[i*MAXXMAP+j]);
+		fprintf(f,"%01d",map.creepflagneeded[i*MAXXMAP+j]);
 	}
 	fprintf(f,"\n");
-    }
-    fclose(f);
+	}
+	fclose(f);
 */
 
-/*    f=fopen("txt.buildswalk","wb");
-    for (i=0;i<MAXYMAP;i++)
-    {
+/*	  f=fopen("txt.buildswalk","wb");
+	for (i=0;i<MAXYMAP;i++)
+	{
 	for (j=0;j<MAXXMAP;j++)
 	{
-	    fprintf(f,"%01d",map.buildswalk[i*MAXXMAP+j]);
+		fprintf(f,"%01d",map.buildswalk[i*MAXXMAP+j]);
 	}
 	fprintf(f,"\n");
-    }
-    fclose(f);
+	}
+	fclose(f);
 */
-/*    f=fopen("txt.display_map.1","wb");
-    for (i=0;i<MAXYMAP;i++)
-    {
+/*	  f=fopen("txt.display_map.1","wb");
+	for (i=0;i<MAXYMAP;i++)
+	{
 	for (j=0;j<MAXXMAP;j++)
 	{
-	    fprintf(f,"%04x ",map.display_map[i*MAXXMAP+j]);
+		fprintf(f,"%04x ",map.display_map[i*MAXXMAP+j]);
 	}
 	fprintf(f,"\n");
-    }
-    fclose(f);
+	}
+	fclose(f);
 
-    sprintf(fn,"txt.walk.%d",filenr++);
-    f=fopen(fn,"wb");
-    for (i=0;i<MAXYMAP8;i++)
-    {
+	sprintf(fn,"txt.walk.%d",filenr++);
+	f=fopen(fn,"wb");
+	for (i=0;i<MAXYMAP8;i++)
+	{
 	for (j=0;j<MAXXMAP8;j++)
-	    fprintf(f,"%01d",map.mapwalk[i*MAXXMAP8+j]);
+		fprintf(f,"%01d",map.mapwalk[i*MAXXMAP8+j]);
 	fprintf(f,"\n");
-    }
-    fclose(f);
+	}
+	fclose(f);
 */
 }
 //===================================================
@@ -1819,10 +1819,10 @@ void ShowGameStatusMenu(int *prevgameticks)
 {
 	if (gamestatus!=NOGAMESTATUS)
 	{
-	    if (gamestatusremainticks!=0)
-	    {
+		if (gamestatusremainticks!=0)
+		{
 			int gameticks;
-    		gameticks=mytimer.GetCurrentGameTimeTick();
+			gameticks=mytimer.GetCurrentGameTimeTick();
 			if (gameticks==*prevgameticks)
 				return;
 			*prevgameticks=gameticks;
@@ -1843,7 +1843,7 @@ void ShowGameStatusMenu(int *prevgameticks)
 					}
 				}
 			}
-	    }
+		}
 	}
 
 }
@@ -1857,31 +1857,31 @@ int IfTimeForTrigger(struct mapinfo *info,int *prevgameticks)
 		*prevgameticks=gameticks;
 		if (info->flags & STARMAP_FLAG_HAVECOUNTDOWN)
 		{
-		    if (!(info->flags & STARMAP_FLAG_COUNTSTOPED))
-		    {
+			if (!(info->flags & STARMAP_FLAG_COUNTSTOPED))
+			{
 				map.CountDownTimer-=MAXGAMECYCLESPERSECOND/2;
 				if (map.CountDownTimer<=0)
 				{
 					map.CountDownTimer=0;
 					info->flags &= ~STARMAP_FLAG_HAVECOUNTDOWN;
 				}
-		    }
+			}
 		}
 //		if (gamestatus==NOGAMESTATUS)
 		if (!TRIG_stopalltriggers)
 		{
-		    Triggers_Parce(info,info->TRIGS_NR,info->TRIGS,1000/2);
+			Triggers_Parce(info,info->TRIGS_NR,info->TRIGS,1000/2);
 		}
 		CalcLeaderBoards(&map);
-	    return(1);
+		return(1);
 	}
 	return(0);
 }
 //===================================================
 void ShowFirstRunVideo(int ignorefirstrunbit)
 {
-    if (!EXPANSIONSET)
-    {
+	if (!EXPANSIONSET)
+	{
 		if (!(gameconf.videoconf.preview & 0x01) || ignorefirstrunbit )
 		{
 			PlayVideoSmk("smk\\starintr.smk");
@@ -1891,9 +1891,9 @@ void ShowFirstRunVideo(int ignorefirstrunbit)
 				saveconf();
 			}
 		}
-    }
-    else
-    {
+	}
+	else
+	{
 		if (!(gameconf.videoconf.preview & 0x02) || ignorefirstrunbit )
 		{
 			PlayVideoSmk("smk\\starxintr.smk");
@@ -1903,16 +1903,16 @@ void ShowFirstRunVideo(int ignorefirstrunbit)
 				saveconf();
 			}
 		}
-    }
+	}
 }
 //===================================================
 void ActivateCheat(int cheatid)
 {
-    int i,fogvalue;
-    CHEATERBIT = 1;
-    DEBUGMESSCR("cheat nr %d\n",cheatid);
-    switch(cheatid)
-    {
+	int i,fogvalue;
+	CHEATERBIT = 1;
+	DEBUGMESSCR("cheat nr %d\n",cheatid);
+	switch(cheatid)
+	{
 		case 0:
 			break;
 		case 1:		//showall
@@ -1976,6 +1976,6 @@ void ActivateCheat(int cheatid)
 		case 10:	//quit
 			menustatus = EXITGAME;
 			break;
-    }
+	}
 }
 

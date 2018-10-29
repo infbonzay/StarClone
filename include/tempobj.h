@@ -6,11 +6,11 @@
 #include "man.h"
 #include "starmap.h"
 
-#define FIRSTBUILD	0
-#define FIRSTUNIT	1
+#define FIRSTBUILD		0
+#define FIRSTUNIT		1
 
-#define MINIMAP_COLORFORRESOURCES	53
-#define MINIMAP_COLORFORSTARTLOC	117
+#define MINIMAP_COLORFORRESOURCES		53
+#define MINIMAP_COLORFORSTARTLOC		117
 
 unsigned char GetFirstUnitBuild(int race,int build_or_unit);
 
@@ -33,8 +33,8 @@ void AddToMinimapNeutralObjs(mylist *units,struct mapinfo *loadedmap,int playort
 extern signed char startlocations[MAXPLAYERS];
 extern OBJ *testobj;
 
-#define MAXMINERALSINSTACK	1500
-#define MAXGASINSTACK		5000
+#define MAXMINERALSINSTACK		1500
+#define MAXGASINSTACK			5000
 
 #endif /*_TEMPOBJ_W*/
 

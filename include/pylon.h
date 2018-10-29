@@ -5,8 +5,8 @@
 #include "man.h"
 #include "starmap.h"
 
-#define PYLONAREAX		16
-#define PYLONAREAY		10
+#define PYLONAREAX				16
+#define PYLONAREAY				10
 
 #endif /*_PYLON_W */
 
