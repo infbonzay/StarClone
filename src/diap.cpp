@@ -54,16 +54,16 @@ int curentproperties;
 //=============================================
 int constrbuild(int nb)
 {
-	if (mageprop[nb].type_id==ORDERS_UNIT)//if unit constr
+	if (mageprop[nb].type_id == ORDERS_UNIT)//if unit constr
 	{
-		buildconstr=mageprop[nb].obj_id;
+		highMouse->Construct.SC_BuildUnit = mageprop[nb].obj_id;
 	}
 	else
-		if (nb==MODELANDING)
-			buildconstr=curentoperationobj->SC_Unit;
+		if (nb == MODELANDING)
+			highMouse->Construct.SC_BuildUnit=curentoperationobj->SC_Unit;
 		else
-			buildconstr=SC_NOUNITNR;
-	return(buildconstr);
+			highMouse->Construct.SC_BuildUnit=SC_NOUNITNR;
+	return(highMouse->Construct.SC_BuildUnit);
 }
 //=============================================
 int probeconstruct(int nb)

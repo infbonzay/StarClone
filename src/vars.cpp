@@ -132,7 +132,6 @@ GRPFILE *grpwire1,*grpwire2,*grpwire3,*blinkgrp;
 GRPFILE *grpminmineral[3],*grpmingas[3];
 char	needclearmap,ifhaverescuableplayers;
 int		magenrfrommageatr[MAXMAGEATR];
-int		buildconstr,posibleconstruct;
 OBJ		*cbuild;
 int		circl[10]={22,32,48,62,72,94,110,122,146,224};
 unsigned char transportplace[8]={0,0,0,0,0,0,0,0};

@@ -10,6 +10,9 @@
 
 #include "man.h"
 #include "const.h"
+#include "images.h"
+
+#define MOUSEDESTELEVATION      		255
 
 #define MOUSEMODE1						0
 #define MOUSEMODE2						1
@@ -80,6 +83,14 @@ public:
 		char	SavedPixels[MAXMOUSESIZEX*MAXMOUSESIZEY];
 	}SavedUnder;
 
+	struct
+	{
+		SCUNIT	SC_BuildUnit;
+		int8_t	CanDo;
+		int		PosX;
+		int		PosY;
+	}Construct;
+
 	MOUSEMOVEFUNC			*MoveFunc;
 	MOUSECLICKFUNC			*ClickFunc;
 	MOUSEDBLCLICKFUNC		*DblClickFunc;
@@ -103,7 +114,7 @@ public:
 
 	HighMouse(void);
 	~HighMouse(void);
-	
+
 	int			LoadOneCursor(char *filename,int typemouse);
 	int			LoadAllCursors(void);
 	void		UnloadCursors(void);
@@ -125,6 +136,7 @@ public:
 	void		InstallDblClickEvent(MOUSEDBLCLICKFUNC *eventFunc);
 	void		UninstallDblClickEvent(void);
 	void		SetPos(int x,int y);
+	void 		DoRightClickAction(OBJ *destobj,int xm,int ym,int modemove,int rightclick);
 
 	inline int	GetButtonStatus(void) { return MouseButtons; };
 
@@ -133,6 +145,21 @@ public:
 void MouseMoveEvent(int x, int y);
 void MouseClickEvent(bool type, int buttons);
 
+class DestCursor
+{
+private:
+	int 		PosX;
+	int 		PosY;
+	bool		Presence;
+	MAIN_IMG 	*MouseDestImg;
+public:
 
+	DestCursor();
+
+	void 		SetDestinationCursor(int x,int y);
+	void		DrawDestinationCursor();
+	void		ExecuteScript();
+
+};
 #endif /*	 _MOUSE_W	*/
 

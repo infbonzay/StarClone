@@ -1339,9 +1339,10 @@ void AnalizeAllTransportUnits(struct OBJ *a,unsigned char *retarray,struct OBJ *
 void putbuildneededtodraw(struct OBJ *a)
 {
 		int deltax,deltay;
-		int xb,yb,xe,ye,i,myobj=0;
+		int xb,yb,xe,ye;
 		unsigned char motherbuild=SC_NOUNITNR;
-		unsigned char bf;
+
+		int buildconstr = highMouse->Construct.SC_BuildUnit;
 		switch(buildconstr)
 		{
 				case SC_EXTRACTOROBJ:
@@ -1358,8 +1359,9 @@ void putbuildneededtodraw(struct OBJ *a)
 								ye = yb + GetUnitWidthAndHeight(buildconstr,UNITDIM_HEIGHT);
 								wrectangle(YELLOWCOLOR,xb-1,yb-1,xe,ye);
 								DrawRawMainImageOBJ((xb + xe) / 2,
-																		(yb + ye) / 2,
-																		buildconstr,PLAYER[NUMBGAMER].colorRACE,TRANSPARENT,MAXINVISIBLECOLOR);
+													(yb + ye) / 2,
+													buildconstr,
+													PLAYER[NUMBGAMER].colorRACE,TRANSPARENT,MAXINVISIBLECOLOR);
 						}
 						break;
 				case SC_COMSATSTATIONOBJ:
@@ -1444,7 +1446,8 @@ int	 desenbuildifconstr(void)
 		struct XY a;
 		//struct OBJstruct *b;
 		int posibletry;
-		if (buildconstr==SC_NOUNITNR)
+		int buildconstr = highMouse->Construct.SC_BuildUnit;
+		if (buildconstr == SC_NOUNITNR)
 				return(posibleconstr);
 		if (IsBuild(buildconstr))
 		{
@@ -1677,7 +1680,7 @@ void DrawBuildPlace(void)
 {
 	int i;
 	OBJ *a;
-	if (buildconstr)
+	if (highMouse->Construct.SC_BuildUnit)
 	{
 		for (i=0;i<MaxObjects;i++)
 		{

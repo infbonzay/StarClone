@@ -1,7 +1,9 @@
+.kdev4/
 CMakeCache.txt
 CMakeFiles/
 cmake_install.cmake
-
+*.kdev4
+compile*
 autom4te.cache/
 bin/characters/*
 bin/StarClone*
@@ -25,5 +27,4 @@ config.status
 configure
 install-sh
 missing
-compile
 backup

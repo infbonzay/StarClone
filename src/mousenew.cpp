@@ -1,3 +1,8 @@
+#include <iscript.h>
+#include <walk.h>
+#include <putobj.h>
+#include <objinfo.h>
+#include <mousenew.h>
 #include <grplib/usegrp.h>
 #include <grplib/gr8.h>
 
@@ -7,6 +12,10 @@
 #include "debug.h"
 #include "vars.h"
 #include "gener.h"
+#include "objs.h"
+#include "lists.h"
+#include "maps.h"
+#include "audio.h"
 #include "mousenew.h"
 
 //==============================
@@ -30,6 +39,7 @@ HighMouse::HighMouse(void)
 	lowMouse.Init();
 	lowMouse.LowInMoveEvent(&MouseMoveEvent);
 	lowMouse.LowInClickEvent(&MouseClickEvent);
+
 }
 //==============================
 HighMouse::~HighMouse(void)
@@ -49,7 +59,6 @@ int HighMouse::LoadOneCursor(char *filename,int typemouse)
 	}
 	else
 		cursors[typemouse].flag = 2;
-
 	cursors[typemouse].curentposition = 0;
 	cursors[typemouse].maxpositions = cursors[typemouse].mousegrp->CountPictures;
 	return 0;
@@ -342,6 +351,118 @@ void HighMouse::SetPos(int x,int y)
 	PosY = y;
 }
 //==========================
+void HighMouse::DoRightClickAction(OBJ *destobj,int xm,int ym,int modemove,int rightclick)
+{
+	int race;
+    if (PLAYER[NUMBGAMER].isobserverflag)
+		return;
+	if (!highMouse->WaitToPressLeftButton)
+	{
+		if (Construct.SC_BuildUnit != SC_NOUNITNR)
+		{
+			if (Construct.CanDo > 0)
+			{
+				xm = Construct.PosX + map.MAPXGLOBAL;
+				ym = Construct.PosY + map.MAPYGLOBAL;
+				if (gameconf.audioconf.buildsounds)
+				{
+					if (IsBuild(Construct.SC_BuildUnit))
+					{
+						if (fordeselect[0])
+						{
+							race = GetUnitRace(fordeselect[0]->SC_Unit);
+							Play_sfxdata_id(fordeselect[0],sfx_buildplace[race],2,0);
+						}
+					}
+				}
+			}
+			else
+			{
+				//cancel construct if wrong location
+				if (Construct.CanDo < 0)
+				{
+					if (gameconf.audioconf.buildsounds)
+					{
+						if (fordeselect[0])
+						{
+							if (IsWorkerUnit(fordeselect[0]->SC_Unit))
+							{
+								activatesound(fordeselect[0],MODESOUNDERROR,2,NOSTOPCURRENTSOUNDS);
+							}
+							else
+							{
+								if (modemove == MODELANDING)
+								{
+									Construct.CanDo = TOBELAND_CANTLANDHERE;
+								}
+								Play_sfxdata_id(fordeselect[0],PUTLIFTDOWNERROR,2,0);
+							}
+						}
+					}
+					putbuildplacemessage(-Construct.CanDo);
+					return;
+				}
+				else
+				{
+					highMouse->WaitToPressLeftButton=1;
+					SetVisualMapPosition((int) (((highMouse->PosX-Xkart-Xkartbeg)/factorx)-widthkart/2)*SIZESPRLANSHX,
+										 (int) (((highMouse->PosY-Ykart-Ykartbeg)/factory)-hightkart/2)*SIZESPRLANSHY);
+					return;
+				}
+			}
+		}
+		if (selectedobjmove(destobj,xm,ym,modemove,NUMBGAMER,SHOWERRORTEXT,rightclick))
+		{
+			destCursor->SetDestinationCursor(xm,ym);
+			SetBlinkOBJ(destobj);
+		}
+	}
+}
+//==========================================
+DestCursor::DestCursor(void)
+{
+	Presence = false;
+	MouseDestImg = NULL;
+}
+//==========================================
+void DestCursor::ExecuteScript(void)
+{
+	if (MouseDestImg)
+		iscriptinfo.ExecuteScript(MouseDestImg);
+}
+//==========================================
+void DestCursor::SetDestinationCursor(int x,int y)
+{
+	Presence = true;
+	PosX = x;
+	PosY = y;
+}
+//==========================================
+void DestCursor::DrawDestinationCursor(void)
+{
+	if (Presence)
+	{
+		Presence = false;
+		if (!MouseDestImg)
+		{
+			MouseDestImg = new MAIN_IMG(IMAGEID_MOUSEDEST,
+										PosX << 8,
+										PosY << 8,
+										MOUSEDESTELEVATION,0,0,0,0,
+										SC_IMAGE_FLAG_NOCHECKFORFOG | SC_IMAGE_FLAG_AIRIMG,ISCRIPTNR_GNDATTKINIT);
+		}
+		else
+		{
+			MouseDestImg->SetPos(PosX << 8, PosY << 8);
+			MouseDestImg->EnableExecScript();
+			MouseDestImg->ShowImgFlag();
+			MouseDestImg->SetIScriptNr(ISCRIPTNR_GNDATTKINIT);
+		}
+	}
+	if (MouseDestImg)
+		MouseDestImg->DrawImage();
+}
+//==========================================
 void MouseMoveEvent(int x, int y)
 {
 	if (highMouse->MoveFunc)

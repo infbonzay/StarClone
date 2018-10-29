@@ -23,51 +23,51 @@
 #define GAMEBUTTON_RELEASE		(GAMEBUTTON_KEYRELEASE | GAMEBUTTON_MOUSERELEASE)
 #define GAMEBUTTON_SHOW			0x10
 
-#define OWNERGAMER				0
-#define GUESTGAMER				1
+#define OWNERGAMER						0
+#define GUESTGAMER						1
 
-#define CONTINUEGAME			-2
+#define CONTINUEGAME					-2
 #define EXITGAME						-1
 #define SINGLEGAME						1
-#define MULTIPLAYERGAME			2
+#define MULTIPLAYERGAME					2
 #define EDITORGAME						3
 #define RESTARTGAME						4
 #define QUITMISSION						5
-#define PREVIOUSMENU			5
-#define BECOMEOBSERVER			6
+#define PREVIOUSMENU					5
+#define BECOMEOBSERVER					6
 #define JOINGAME						7
 #define CREATEGAME						8
 #define CREATEDGAME						9
-#define EXITCREATEDGAME			10
-#define PLAYNETWORKGAME			11
+#define EXITCREATEDGAME					10
+#define PLAYNETWORKGAME					11
 #define QUITGAME						12
 #define VIEWINTRO						13
 #define VIEWCREDITS						14
 
-#define MAINMENUSTATUS_LOADGAMEOK				1000
+#define MAINMENUSTATUS_LOADGAMEOK			1000
 #define MAINMENUSTATUS_LOADGAMEFAILED	1001
 #define MAINMENUSTATUS_SAVEGAMEFAILED	1002
 
-#define NETWORKGAMETYPE1		9
-#define NETWORKGAMETYPE2		10
-#define NETWORKGAMETYPE3		11
-#define NETWORKGAMETYPE4		12
+#define NETWORKGAMETYPE1				9
+#define NETWORKGAMETYPE2				10
+#define NETWORKGAMETYPE3				11
+#define NETWORKGAMETYPE4				12
 
 
 
-#define STARTGAME		0
-#define CANCELGAME		1
-#define SHOWVIDEO		2
-#define PREVIEWTEXT		3
-#define ENDCAMPAIGN		4
-#define SKIPMISSION		5
+#define STARTGAME						0
+#define CANCELGAME						1
+#define SHOWVIDEO						2
+#define PREVIEWTEXT						3
+#define ENDCAMPAIGN						4
+#define SKIPMISSION						5
 
 
-#define MAXQUEUEDELEM			1000
+#define MAXQUEUEDELEM					1000
 
-#define MAXCOMMANDELEM			(1000 * 24)
+#define MAXCOMMANDELEM					(1000 * 24)
 
-#define MOUSEONNONE								-2
+#define MOUSEONNONE						-2
 #define MOUSEONMINIMAP					0
 #define MOUSEONSTATUNIT					1
 #define MOUSEONTRANSP					5
@@ -75,17 +75,17 @@
 #define MOUSEONICONSMIN					13
 #define MOUSEONICONSMAX					21
 #define MOUSEONMENUBUTTON				22
-#define MOUSEONTERRAINBUTTON	23
-#define MOUSEONMESSAGEBUTTON	24
-#define MOUSEONDIPLOMACYBUTTON	25
-#define MOUSEONMAP								26
+#define MOUSEONTERRAINBUTTON			23
+#define MOUSEONMESSAGEBUTTON			24
+#define MOUSEONDIPLOMACYBUTTON			25
+#define MOUSEONMAP						26
 
 
 
 
 #define F10BUTTON_PICT					0
 #define TERRAINBUTTON_PICT				3
-#define DIPLOMACYBUTTON_PICT	83
+#define DIPLOMACYBUTTON_PICT			83
 #define MESSAGEBUTTON_PICT				130
 
 #define MENUBUTTON_DISABLED				0
@@ -122,24 +122,23 @@ void ShowGameStatusMenu(int *prevticks);
 void ActivateCheat(int cheatid);
 
 
-#define MINIMAPDIALOG_MAIN								0
+#define MINIMAPDIALOG_MAIN						0
 #define MINIMAPDIALOG_MINIMAP					1
 #define MINIMAPDIALOG_TERRAINBUTTON				2
-#define MINIMAPDIALOG_DIPLOMACYBUTTON	3
+#define MINIMAPDIALOG_DIPLOMACYBUTTON			3
 #define MINIMAPDIALOG_MESSAGEBUTTON				4
 
-#define F10DIALOG_MAIN									0
+#define F10DIALOG_MAIN							0
 #define F10DIALOG_MENUBUTTON					1
 
 
 
-extern int bitsplayer;
-//extern showterr,showmess,showmenu,showdipl;
-//extern int pressf10[4],pressterr[4],pressmess[4],pressdipl[4];
-extern char		select_aria,karta_aria,mode_aria;
-extern char f10_menu,terr_menu,mess_menu,dipl_menu;
-extern DIALOGBIN_INFO *minimapmenu,*f10menu,*statbtnmenu;
-extern FORCE_SLOTS force_slots;
+extern int 				bitsplayer;
+
+extern char				select_aria,karta_aria,mode_aria;
+extern char 			f10_menu,terr_menu,mess_menu,dipl_menu;
+extern DIALOGBIN_INFO	*minimapmenu,*f10menu,*statbtnmenu;
+extern FORCE_SLOTS		force_slots;
 extern NETW_PLAY		netplay;
 extern MENUDRAW			showedmenu;
 extern int				menustatus;
@@ -150,7 +149,8 @@ extern Queue			QueueGame;
 
 extern long				commandqueuetick;
 extern CommandQueue		UnitsCommandQueue;
-extern HighMouse *highMouse;
+extern HighMouse		*highMouse;
+extern DestCursor		*destCursor;
 
 #endif /*_GENER_W*/
 

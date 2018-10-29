@@ -23,9 +23,9 @@ extern char	   PREFIX_UNIT[200];
 #define CONF_VIDEO_PORTRAITS_STATIC		1
 #define CONF_VIDEO_PORTRAITS_DISABLED	2
 
-typedef enum 
-{ 
-		TERRAIN_BADLANDS, 
+typedef enum
+{
+		TERRAIN_BADLANDS,
 		TERRAIN_SPACEPLATFORM,
 		TERRAIN_INSTALLATION,
 		TERRAIN_ASHWORLD,
@@ -33,7 +33,7 @@ typedef enum
 		TERRAIN_DESERT,
 		TERRAIN_ARCTIC,
 		TERRAIN_TWILIGHT
-}terrain_type; 
+}terrain_type;
 
 typedef enum
 {
@@ -184,7 +184,6 @@ extern char		needclearmap,ifhaverescuableplayers;
 extern GRPFILE *grpwire1,*grpwire2,*grpwire3,*blinkgrp;
 
 extern int		magenrfrommageatr[];
-extern int		buildconstr,posibleconstruct;
 extern OBJ		*cbuild;
 extern int		circl[];
 extern unsigned char transportplace[];

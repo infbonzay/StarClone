@@ -93,7 +93,7 @@ void destroyobj(struct OBJ *a)
 			wfree(a->loaded);
 			a->loaded = NULL;
 		}
-		
+
 		if (a->SC_Unit != SC_SCARABOBJ)
 			weaponflingy.RemoveOBJFromFlingyobj(a,NULL);
 		else
@@ -306,7 +306,7 @@ struct OBJ *createobjlowlevel(OBJ *workerobj,int x,int y,SCUNIT SC_Unit,int play
 		else
 			if (playernr>=PLAYEDPLAYERS&&playernr!=GREYNEUTRALCOLORPLAYER)
 				playernr=GREYNEUTRALCOLORPLAYER;
-	}		
+	}
 
 //	  SetOrder(a,4,&SIGOrder_UnitInitComplete);
 
@@ -331,7 +331,7 @@ struct OBJ *createobjlowlevel(OBJ *workerobj,int x,int y,SCUNIT SC_Unit,int play
 
 //	  OBJ_VAR_MASK_SET(a,obj_invsee,0xff);
 //	  OBJ_VAR_MASK_SET(a,obj_see,0xff);
-	
+
 	if (IsInvincibleUnit(a->SC_Unit))
 		SetInvincibleOBJ(a,1);
 	if (IsAirUnit(a->SC_Unit))
@@ -440,9 +440,9 @@ void GeyserDisactivate(OBJ *a,OBJ *geyser)
 	geyser->prop |= (VARCANTSELECT | VARNOTWORK);
 	a->data.resource.resource_count = geyser->data.resource.resource_count;
 	a->data.resource.max_resource_count = geyser->data.resource.max_resource_count;
-	
+
 	geyser->mainimage->DisableExecScript();//disable all overlays exec scripts
-	
+
 }
 //=====================================
 static int selectbuilds[4],selectunits[4];
@@ -483,25 +483,27 @@ void DetectIfAnyPylonOnSelected(void)
 #ifdef DESENPYLONAREA
 	SCUNIT SC_Unit;
 	pylonselected = 0;
-	if (buildconstr != SC_NOUNITNR)
+	if (highMouse->Construct.SC_BuildUnit != SC_NOUNITNR)
 	{
-		SC_Unit=buildconstr;
-		if (GetUnitRace(SC_Unit)==PROTOSSRACE)
+		SC_Unit = highMouse->Construct.SC_BuildUnit;
+		if (GetUnitRace(SC_Unit) == PROTOSSRACE)
+		{
 			switch(SC_Unit)
 			{
 				case SC_NEXUSOBJ:
 				case SC_ASSIMILATOROBJ:
-//				case SC_PYLONOBJ:
 					break;
 				default:
-					pylonselected=1;
+					pylonselected = 1;
 					return;
 			}
+		}
 	}
 	for (int i=0;i<MAXSELECTMAN;i++)
-		if (fordeselect[i]&&
-			fordeselect[i]->SC_Unit==SC_PYLONOBJ&&
-			fordeselect[i]->playernr==NUMBGAMER&&!IsOBJUnderConstruct(fordeselect[i]))
+		if (fordeselect[i]							&&
+			fordeselect[i]->SC_Unit == SC_PYLONOBJ	&&
+			fordeselect[i]->playernr == NUMBGAMER	&&
+			!IsOBJUnderConstruct(fordeselect[i]))
 		{
 			pylonselected = 1;
 			break;
@@ -666,8 +668,8 @@ int yn,distx,disty,mindist=0x7fffffff;
 			x = GetOBJx(a);
 			y = GetOBJy(a);
 			if (x1 > x-GetUnitWidthAndHeight(a->SC_Unit,UNITDIM_WIDTH)/2  &&
-				y1 > y-GetUnitWidthAndHeight(a->SC_Unit,UNITDIM_HEIGHT)/2 && 
-				x1 < x+GetUnitWidthAndHeight(a->SC_Unit,UNITDIM_WIDTH)/2  && 
+				y1 > y-GetUnitWidthAndHeight(a->SC_Unit,UNITDIM_HEIGHT)/2 &&
+				x1 < x+GetUnitWidthAndHeight(a->SC_Unit,UNITDIM_WIDTH)/2  &&
 				y1 < y+GetUnitWidthAndHeight(a->SC_Unit,UNITDIM_HEIGHT)/2 )
 			{
 				if (IfUnitIsSelectable(a))
@@ -769,9 +771,9 @@ void selectMAN(int x1,int y1,int x2,int y2,int mode)
 			fordeselectcopy[i]=fordeselect[i];
 		deselectallobj(NUMBGAMER);
 	}
-	if (x2<x1) 
+	if (x2<x1)
 		swap(&x1,&x2);
-	if (y2<y1) 
+	if (y2<y1)
 		swap(&y1,&y2);
 	x1 = x1+map.MAPXGLOBAL;
 	x2 = x2+map.MAPXGLOBAL;
@@ -815,9 +817,9 @@ void selectMAN(int x1,int y1,int x2,int y2,int mode)
 				yn2=y2;
 				x = GetOBJx(a);
 				y = GetOBJy(a);
-				if (x > x1-GetUnitWidthAndHeight(a->SC_Unit,UNITDIM_WIDTH)/2  && 
-					y > y1-GetUnitWidthAndHeight(a->SC_Unit,UNITDIM_HEIGHT)/2 && 
-					x < x2+GetUnitWidthAndHeight(a->SC_Unit,UNITDIM_WIDTH)/2  && 
+				if (x > x1-GetUnitWidthAndHeight(a->SC_Unit,UNITDIM_WIDTH)/2  &&
+					y > y1-GetUnitWidthAndHeight(a->SC_Unit,UNITDIM_HEIGHT)/2 &&
+					x < x2+GetUnitWidthAndHeight(a->SC_Unit,UNITDIM_WIDTH)/2  &&
 					y < y2+GetUnitWidthAndHeight(a->SC_Unit,UNITDIM_HEIGHT)/2)
 				{
 					if (IfUnitIsSelectable(a))
@@ -1069,7 +1071,7 @@ int ApplyDamageToUnit(struct OBJ *a)
 	int lifechange;
 	MAIN_IMG *img;
 	OVERLAY_IMG *newimg;
-	
+
 	lifechange=0;
 	if (a->psistormdamage)
 	{
@@ -1481,8 +1483,8 @@ int moveobj_buildmode(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int
 		else
 		{
 			//change x,y to correct geyser coords
-			if ( obj_id == SC_EXTRACTOROBJ || 
-				 obj_id	 == SC_REFINERYOBJ || 
+			if ( obj_id == SC_EXTRACTOROBJ ||
+				 obj_id	 == SC_REFINERYOBJ ||
 				 obj_id	 == SC_ASSIMILATOROBJ )
 			{
 				//geyser under worker
@@ -1594,7 +1596,7 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int modemovef
 	int i,j,tempvar,errmes,state,openstate;
 	int (*comparefunc)(int *,int );										//for doodad
 //	  if (a == destobj)
-//		return(MOVEOBJ_NOACT);	  
+//		return(MOVEOBJ_NOACT);
 	//prevent to move if is uninterrupted mode
 
 	if (!(modemoveflags & XYNOTCOORDS))
@@ -1648,7 +1650,7 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int modemovef
 			//memorize next move in time of casting spell
 			AddModeMove(a,destobj,mode,x,y,NOSHOWERROR);
 			return(MOVEOBJ_DONE);
-		}	 
+		}
 	if (a->SC_Unit == SC_BUGGUYOBJ && mode == MODEATACK && !destobj)
 	{
 		//infested terrain atack to ground
@@ -1696,7 +1698,7 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int modemovef
 			a->mainimage->HideImgFlag();
 			//play "nuclear launch detected"
 			playinfoadvisorsound(a->playernr,gameconf.pl_race[NUMBGAMER],ADVNUCLEARDETECT,PLAYADVISOR_TEXTANDSOUND);
-			
+
 			SetOBJIScriptNr(a,ISCRIPTNR_WARPIN,ISCRIPTNR_EXECUTE);
 			break;
 		case MODECANCELNUKE:
@@ -1742,7 +1744,7 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int modemovef
 					AddModeMove(a,destobj,MODEINFEST,x,y,modemoveflags);//cast mage after
 				}
 			}
-			break;		
+			break;
 		case MODECASTSPELL:
 			needmana = getusemanaformodemove(a->castmagenr);
 			if (CheckForMana(a,needmana)!=CHECKRES_OK)
@@ -1788,7 +1790,7 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int modemovef
 			//move to destination
 			initmoveaction(a,destobj,mode,0,0,x,y);
 			AddModeMove(a,destobj,MODECASTSPELL,x,y,modemoveflags);//cast mage after
-//			a->finalOBJ = NULL;			
+//			a->finalOBJ = NULL;
 			a->prop &= ~VARMOVEOBJACT;	//this is prevent move to destobj at next tick, that create engine glowing then do yamatogun
 			break;
 		case MODEWAITHARVESTMINERAL:
@@ -1825,7 +1827,7 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int modemovef
 					break;
 			}
 			changegoods = 1;
-			
+
 			dieobj_silently(newobj);
 //			ChangeTypeOfProp(a,b,PROPNORMAL1);
 			if ( !a->prevresourceobj)
@@ -2075,7 +2077,7 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int modemovef
 				if (!a->currentspeed)
 				{
 					flingy_id = alldattbl.units_dat->flingy_id[a->SC_Unit];
-					if (alldattbl.flingy_dat->MoveControl[flingy_id] == FLINGYMOVECONTROL_FLINGY  || 
+					if (alldattbl.flingy_dat->MoveControl[flingy_id] == FLINGYMOVECONTROL_FLINGY  ||
 						alldattbl.flingy_dat->MoveControl[flingy_id] == FLINGYMOVECONTROL_WEAPON   )
 					{
 						a->prop |= VARMOVEOBJACT;
@@ -2185,7 +2187,7 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int modemovef
 				if (!CheckIfCanLand(a,x,y,&constrerror))
 				{
 					moveobj(a,NULL,MODESTOP,NOSHOWERROR);
-					if (a->playernr == NUMBGAMER && (modemoveflags & SHOWERRORTEXT)) 
+					if (a->playernr == NUMBGAMER && (modemoveflags & SHOWERRORTEXT))
 					{
 						Play_sfxdata_id(fordeselect[0],PUTLIFTDOWNERROR,2,0);
 						putbuildplacemessage(-constrerror);
@@ -2318,7 +2320,7 @@ escapeconstrslots:
 						ReturnResources(a->SC_Unit,a->playernr,a->selfconstruct.timeremained * 100 / a->selfconstruct.timemax);
 						if (IsAddon(a->SC_Unit))
 							delADVobj(a);
-						else	
+						else
 							dieobj(a);
 						break;
 					case PROTOSSRACE:
@@ -2604,9 +2606,9 @@ bugguyexplode:
 		case MODEDOODADCHANGESTATE:
 			state = GetDoodadState(a);
 			openstate = x;
-			if (a->SC_Unit == SC_LEFTUPPERLEVELDOOROBJ || 
-				a->SC_Unit == SC_RIGHTUPPERLEVELDOOROBJ || 
-				a->SC_Unit == SC_LEFTPITDOOROBJ || 
+			if (a->SC_Unit == SC_LEFTUPPERLEVELDOOROBJ ||
+				a->SC_Unit == SC_RIGHTUPPERLEVELDOOROBJ ||
+				a->SC_Unit == SC_LEFTPITDOOROBJ ||
 				a->SC_Unit == SC_RIGHTPITDOOROBJ )
 			{
 				comparefunc = DoorConditionFunctions[openstate];
@@ -2626,7 +2628,7 @@ bugguyexplode:
 				for (i=0;i<MAXCHILDS;i++)
 				{
 					if (a->childs->parentof[i])
-						selectobj(a->childs->parentof[i]);					
+						selectobj(a->childs->parentof[i]);
 				}
 			}
 			break;
@@ -2651,7 +2653,7 @@ bugguyexplode:
 			a->prop |= VARNEXTMODEMOVEIGNOREINERTION;
 			if (!a->currentspeed)
 				a->currentspeed = 1;
-			a->modemove = mode;	   
+			a->modemove = mode;
 			if (!x)
 				a->mainimage->UnitNeededDeltaDirection256(myrand(-64,64));
 //				a->mainimage->neededside += myrand(-64,64);
@@ -2827,13 +2829,13 @@ int movefrommouse(struct OBJ *a)
 		case SC_DRONEOBJ:
 		case SC_SCVOBJ:
 			if ((a->typeofprop == PROPBUILDSIMPLE || a->typeofprop == PROPBUILDADVANCED)  &&
-				 !buildconstr)
+				 !highMouse->Construct.SC_BuildUnit)
 			{
 				ChangeTypeOfProp(a,PROPNORMAL1);
 				return 0;
 			}
 			break;
-	}	 
+	}
 	return 1;
 }
 //==================================
@@ -2874,7 +2876,7 @@ int makemove(struct OBJ *a,struct OBJ *destobj,int locx,int locy,int mode,int pl
 	if (!NETWORKGAME)
 		cqe.executeTick = commandqueuetick + 0;
 	else
-		cqe.executeTick = commandqueuetick + 0;//TODO need to change 
+		cqe.executeTick = commandqueuetick + 0;//TODO need to change
 	UnitsCommandQueue.AppendToQueue(&cqe);
 	return(1);
 }
@@ -2945,7 +2947,7 @@ int selectedobjmove(struct OBJ *destobj,int locx,int locy,int mode,int player,in
 				deltay = GetOBJy(moveobjects[i]) - midy;
 			}
 			moveobjects[i]->prop &= ~VARAUTOMATRESOURCERET;
-			
+
 			if (rightclick)
 			{
 				if (moveobjects[i]->SC_Unit == SC_SCVOBJ && moveobjects[i]->constrobj)
@@ -3055,8 +3057,8 @@ int GetDefaultModeForRightClick(OBJ *a,OBJ *destobj,int playernr)
 						}
 						else
 						{
-							if (IsMechanical(destobj->SC_Unit) && 
-								IsTerranRace(destobj->SC_Unit) && 
+							if (IsMechanical(destobj->SC_Unit) &&
+								IsTerranRace(destobj->SC_Unit) &&
 								destobj->health != GetUnitMaxHealth(destobj->SC_Unit))
 							{
 									modemove = MODEREPAIR;
@@ -3194,7 +3196,7 @@ void LoadObjInObj(struct OBJ *a,struct OBJ *c)
 			a->subunit->mainimage->HideChildsImgFlag();
 			a->subunit->mainimage->HideImgFlag();
 		}
-		
+
 		sortselectedunits(c->loaded->loadedunits,8);
 		transportanalizeobj(c);
 		doselectedOBJbit(a,a->playernr,0);
@@ -3327,7 +3329,7 @@ void dieobj(struct OBJ *a)
 
 	a->currentspeed = 0;
 	a->prop &= ~VARACCELERATIONBIT;
-	
+
 	moveobj(a,NULL,MODEDIE,NOSHOWERROR);
 
 	needtodestroyonexit=0;
@@ -3489,14 +3491,14 @@ void dieobj(struct OBJ *a)
 					default:
 						ChangeSupply(a->playernr,SC_Unit,MINUSFACTOR);
 						ChangeMaxSupply(a->playernr,SC_Unit,MINUSFACTOR);
-						break;				
+						break;
 				}
 			}
 		}
 	}
 //	  a->prop&=~VARBEGINFIREPARSED;
 	RemoveFromDestination(a);
-	
+
 //	  if (needtodestroyonexit)
 //		dieobj_silently(a);
 
@@ -3510,10 +3512,10 @@ void dieobj(struct OBJ *a)
 	}
 	if (!IsOnSkyOBJ(a))
 		SetObjWalk8(&map,a,CLEARWALK);
-	if (cbuild==a)
+	if (cbuild == a)
 	{
-		buildconstr=0;
-		cbuild=NULL;
+		highMouse->Construct.SC_BuildUnit = 0;
+		cbuild = NULL;
 	}
 	if (!IsHallucination(a))
 	{
@@ -3536,7 +3538,7 @@ void dieobj(struct OBJ *a)
 				a->whoatack->kills++;
 		}
 		add_unit_stat(&map,UNITSTAT_DEATH,a->playernr,a->SC_Unit);
-		
+
 //		sub_unit_stat(&map,UNITSTAT_PRODUCING,a->playernr,a->SC_Unit);
 		if (IsReadyOBJ(a))
 		{
@@ -4173,7 +4175,7 @@ struct OBJ* OneUnitSearchGoal(OBJ *a,int ignoremodes,int facedirectionatackonly)
 	{
 		if (IsSubUnit(a->SC_Unit))
 			baseunit = a->subunit;
-		if (ignoremodes || baseunit->modemove == MODESTOP || baseunit->prop & VARHOLDPOSBIT || baseunit->modemove == MODEPATROL || 
+		if (ignoremodes || baseunit->modemove == MODESTOP || baseunit->prop & VARHOLDPOSBIT || baseunit->modemove == MODEPATROL ||
 			(baseunit->prop & VARMOVEINATACKMODE) ||
 			(IsDoodadState(baseunit->SC_Unit)&&!IsInvincibleUnit(baseunit->SC_Unit)&&(GetDoodadMoveDirection(baseunit) != DOODAD_MOVE_NONE)))
 			{
@@ -4228,7 +4230,7 @@ void SearchForAtacks(void)
 				{
 					a->searchforatack_tick = MAXWAIT_SEARCHATACK_TICK;
 					OneUnitSearchGoal(a,0,0);
-				} 
+				}
 		}
 		else
 		{
@@ -4237,7 +4239,7 @@ void SearchForAtacks(void)
 				{
 					a->searchforatack_tick = MAXWAIT_SEARCHATACK_TICK;
 					OneUnitSearchGoal(a,0,4);			//atack only face direction
-				} 
+				}
 		}
 	}
 }
@@ -4410,7 +4412,7 @@ void unitprepareforatack(OBJ *a,OBJ *a2)
 					{
 						moveobj(a,NULL,MODEUNBURROW,NOSHOWERROR);
 						AddModeMove(a,a2,MODEATACK,0,0,NOSHOWERROR);
-					}	
+					}
 				}
 				break;
 		}
@@ -4523,8 +4525,8 @@ void atackback(OBJ *firstatacker,OBJ *destobj,int directiondamage)
 				//try to atackback
 				if (firstatacker->prop & VARINTRANSPORT)
 				{
-					if (destobj->SC_Unit == SC_VULTUREMINEOBJ && 
-						firstatacker->in_transport && 
+					if (destobj->SC_Unit == SC_VULTUREMINEOBJ &&
+						firstatacker->in_transport &&
 						IsBuild(firstatacker->in_transport->SC_Unit))
 					{
 					}
@@ -4696,7 +4698,7 @@ void TryToScanArea(OBJ *a,OBJ *scanobjarea)
 			a2 = SearchUnit(a->playernr,SC_SCIENCEVESSELOBJ,-1,-1,-1);
 			if (!a2)
 			{
-				a2 = SearchUnit(a->playernr,SC_OVERLORDOBJ,-1,-1,-1);	
+				a2 = SearchUnit(a->playernr,SC_OVERLORDOBJ,-1,-1,-1);
 			}
 		}
 		if (a2)			//send observer obj to the area
@@ -4704,7 +4706,7 @@ void TryToScanArea(OBJ *a,OBJ *scanobjarea)
 	}
 	else				//scan area
 		moveobj(a2,NULL,MODESCANREGION,GetOBJx(scanobjarea),GetOBJy(scanobjarea),NOSHOWERROR);
-		
+
 }
 //=================================
 void TellOtherUnitsAboutAtacking(OBJ *a,OBJ *atacker)
@@ -4831,7 +4833,7 @@ void SetHallucinationOBJ(OBJ *a)
 	//hallucination dont need food, so decrease supply
 	ChangeSupply(a->playernr,a->SC_Unit,MINUSFACTOR);
 	ChangeMaxSupply(a->playernr,a->SC_Unit,MINUSFACTOR);
-	
+
 }
 //=================================
 void initmoveaction(OBJ *a,OBJ *destobj,int mode,int startx,int starty,int x,int y)
@@ -4854,7 +4856,7 @@ void initmoveaction(OBJ *a,OBJ *destobj,int mode,int startx,int starty,int x,int
 					{
 						a->modemoveminusdistance = 256<<8;
 					}
-					else	
+					else
 						a->modemoveminusdistance = GetRangeWeaponInPixels(a,startx,a->playernr)<<8;		//move minus range of weapos
 				}
 				else
@@ -4886,7 +4888,7 @@ void initmoveaction(OBJ *a,OBJ *destobj,int mode,int startx,int starty,int x,int
 			default:
 				a->modemoveminusdistance = mageprop[mode].mindistance;
 				break;
-			
+
 		}
 	}
 	switch(alldattbl.flingy_dat->MoveControl[flingy_id])
@@ -4904,7 +4906,7 @@ void initmoveaction(OBJ *a,OBJ *destobj,int mode,int startx,int starty,int x,int
 			{
 				a->finalOBJ = NULL;
 				a->prop &= ~VARMOVEOBJACT;
-			}	
+			}
 			PathFinding_InitType1(a,GetOBJx256(a),GetOBJy256(a),a->finalx,a->finaly);
 			SetOBJIScriptNr(a,ISCRIPTNR_WALKING,ISCRIPTNR_SETONLY);
 			break;
@@ -4925,7 +4927,7 @@ void initmoveaction(OBJ *a,OBJ *destobj,int mode,int startx,int starty,int x,int
 				a->prop &= ~VARMOVEOBJACT;
 				a->finalx	= x<<8;
 				a->finaly	= y<<8;
-			}	
+			}
 			pathreterror = PathFinding_InitType2(a,GetOBJx256(a),GetOBJy256(a),a->finalx,a->finaly,flingy_id);
 //			if (pathreterror)
 //				SetModeMove(a,MODESTOP);
@@ -5195,7 +5197,7 @@ void CheckForKartChanges(OBJ *a,int xpos,int ypos)
 //=================================
 void CheckForWalkChanges(OBJ *a,int xpos,int ypos)
 {
-	
+
 }
 //=================================
 //deltax,deltay - delta between movedunit & destination unit
@@ -5254,7 +5256,7 @@ void AllOBJMoving(void)
 					}
 					if (CalcDestVars(a,a->finalOBJ,GetOBJx256(a),GetOBJy256(a),a->finalx,a->finaly,flingy_id))
 					{
-						//need to stop engines	  
+						//need to stop engines
 						InitStopAfterMove(a);
 					}
 				}
@@ -5528,7 +5530,7 @@ int LaunchScarab(OBJ *a,OBJ *destobj)
 //=================================
 void LaunchInterceptors(OBJ *a,OBJ *destobj)
 {
-	WakeUpInterceptors(a,destobj);	  
+	WakeUpInterceptors(a,destobj);
 }
 //=================================
 void CALLBACK_OBJ_AfterStop(OBJ *a)
@@ -5545,7 +5547,7 @@ void CALLBACK_OBJ_AfterStop(OBJ *a)
 				moveobj(a,a->myparent,MODEGOTORECHARGE,NOSHOWERROR);
 			}
 		break;
-	}	 
+	}
 }
 //=================================
 int CALLBACK_OBJ_AtackedOBJISNULL(OBJ *a)

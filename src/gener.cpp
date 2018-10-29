@@ -72,15 +72,15 @@
 #include "mycycle.h"
 
 //=================================
-DIALOGBIN_INFO *minimapmenu,*f10menu,*statbtnmenu;
-char f10_menu,terr_menu,mess_menu,dipl_menu;
-FORCE_SLOTS force_slots;
-NETW_PLAY	netplay;
-MENUDRAW	showedmenu;
-int menustatus,startmission,campaign_id;
-MAIN_IMG *mousedestimg;
-HighMouse *highMouse;
-char	select_aria,karta_aria,mode_aria;
+DIALOGBIN_INFO 	*minimapmenu,*f10menu,*statbtnmenu;
+char 			f10_menu,terr_menu,mess_menu,dipl_menu;
+FORCE_SLOTS 	force_slots;
+NETW_PLAY		netplay;
+MENUDRAW		showedmenu;
+int 			menustatus,startmission,campaign_id;
+HighMouse 		*highMouse;
+DestCursor		*destCursor;
+char			select_aria,karta_aria,mode_aria;
 
 //=================================
 /*====================================================
@@ -802,10 +802,10 @@ void mouseonkartaarea(void)
 				//action on leftbutton on minimap
 				highMouse->WaitToPressLeftButton=0;
 				waitfordownleftbuton=0;
-				putdestination(/*DestMouseOBJ*/NULL,
-								  (int)((highMouse->PosX-Xkart-Xkartbeg)/factorx)*SIZESPRLANSHX,
-								  (int)((highMouse->PosY-Ykart-Ykartbeg)/factory)*SIZESPRLANSHY,
-								  mouseprop,0,0);
+				highMouse->DoRightClickAction(	NULL,
+												(int)((highMouse->PosX-Xkart-Xkartbeg)/factorx)*SIZESPRLANSHX,
+												(int)((highMouse->PosY-Ykart-Ykartbeg)/factory)*SIZESPRLANSHY,
+												mouseprop,0);
 			//action
 			}
 			else
@@ -826,10 +826,10 @@ void mouseonkartaarea(void)
 			if ( (!buton2) && (highMouse->GetButtonStatus() & WMRIGHTKEY) && !canceloperation)
 			{
 				buton2=1;
-				putdestination(/*DestMouseOBJ*/NULL,
-							  (int)((highMouse->PosX-Xkart-Xkartbeg)/factorx)*SIZESPRLANSHX,
-							  (int)((highMouse->PosY-Ykart-Ykartbeg)/factory)*SIZESPRLANSHY,
-							  MODEMOVE,0,0);
+				highMouse->DoRightClickAction(  NULL,
+												(int)((highMouse->PosX-Xkart-Xkartbeg)/factorx)*SIZESPRLANSHX,
+												(int)((highMouse->PosY-Ykart-Ykartbeg)/factory)*SIZESPRLANSHY,
+												MODEMOVE,0);
 			}
 		}
 	}
@@ -850,7 +850,7 @@ void redesenscreen(void)
 		showgoods();
 		int pc=desenbuildifconstr();
 		if (pc!=0)
-			posibleconstruct=pc;
+			highMouse->Construct.CanDo = pc;
 		highMouse->DrawSelectionArea();
 //		desenlocation();
 		showramka();
@@ -931,6 +931,7 @@ int gogame(struct mapinfo *info)
 	drawMAP(1);
 
 	highMouse->MouseOnObjClear();
+	destCursor = new DestCursor();
 	totalimgs=0;
 	drawedimgs=0;
 	AllImages_Draw();
@@ -1056,8 +1057,8 @@ int gogame(struct mapinfo *info)
 						if (MINIMAPREFRESHCYCLE)
 							applyrescuableunits();
 
-						if (mousedestimg)
-							iscriptinfo.ExecuteScript(mousedestimg);
+						if (destCursor)
+							destCursor->ExecuteScript();
 						if (TRIG_inittriggers)
 							SearchForAtacks();	//search unit to atack unit if triggers activated
 
@@ -1146,28 +1147,12 @@ int gogame(struct mapinfo *info)
 				showgoods();
 				ShowLeaderBoards(&map,5,15);
 				ShowCountDownTimer(&map,290,15);
-				pc=desenbuildifconstr();
-				if (pc!=0)
-					posibleconstruct=pc;
+				pc = desenbuildifconstr();
+				if (pc != 0)
+					highMouse->Construct.CanDo = pc;
 				highMouse->DrawSelectionArea();
-				if (mloc)
-				{
-					mloc=0;
-					if (!mousedestimg)
-					{
-						mousedestimg = new MAIN_IMG(IMAGEID_MOUSEDEST,xmloc<<8,ymloc<<8,MOUSEDESTELEVATION,0,0,0,0,
-									SC_IMAGE_FLAG_NOCHECKFORFOG|SC_IMAGE_FLAG_AIRIMG,ISCRIPTNR_GNDATTKINIT);
-					}
-					else
-					{
-						mousedestimg->SetPos(xmloc<<8,ymloc<<8);
-						mousedestimg->EnableExecScript();
-						mousedestimg->ShowImgFlag();
-						mousedestimg->SetIScriptNr(ISCRIPTNR_GNDATTKINIT);
-					}
-				}
-				if (mousedestimg)
-					mousedestimg->DrawImage();
+				if (destCursor)
+					destCursor->DrawDestinationCursor();
 				showramka();
 
 				drawMINIMAP();			//put minimap
@@ -1339,10 +1324,10 @@ int gogame(struct mapinfo *info)
 	scrnew=0;
 
 	AllImages_FreeAndEmpty();
-	if (mousedestimg)
+	if (destCursor)
 	{
-		delete mousedestimg;
-		mousedestimg=NULL;
+		delete destCursor;
+		destCursor = NULL;
 	}
 	return(menustatus);
 }
