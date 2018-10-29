@@ -324,7 +324,7 @@ selectedicon:
 					mouseonicon = -1;
 			}
 		}
-		mbuttonpress = mouse_b&WMLEFTKEY;
+		mbuttonpress = highMouse->GetButtonStatus() & WMLEFTKEY;
 		if (mbuttonpress)
 		{
 			if (mouseonicon!=-1)

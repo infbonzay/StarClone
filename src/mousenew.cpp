@@ -9,7 +9,6 @@
 #include "gener.h"
 #include "mousenew.h"
 
-extern int mouse_b;
 //==============================
 HighMouse::HighMouse(void)
 {
@@ -26,7 +25,9 @@ HighMouse::HighMouse(void)
 	MouseOnBorder = false;
 	MouseOnSelectionMode = false;
 	WaitToPressLeftButton = false;
+	MouseButtons = 0;
 	MouseOnObjClear();
+	lowMouse.Init();
 	lowMouse.LowInMoveEvent(&MouseMoveEvent);
 	lowMouse.LowInClickEvent(&MouseClickEvent);
 }
@@ -334,10 +335,6 @@ void HighMouse::UninstallDblClickEvent(void)
 	DblClickFunc = NULL;
 }
 //==========================
-
-
-
-//==========================
 void MouseMoveEvent(int x, int y)
 {
 	if (highMouse->MoveFunc)
@@ -350,17 +347,17 @@ void MouseClickEvent(bool type, int buttons)
 	bool doubleClick;
 	if (type)
 	{
-		mouse_b |= buttons;
+		highMouse->MouseButtons |= buttons;
 	}
 	else
 	{
-		mouse_b &= ~buttons;
+		highMouse->MouseButtons &= ~buttons;
 	}
 	if (highMouse->ClickFunc)
 		(*highMouse->ClickFunc)(type, buttons);
 	if (highMouse->DblClickFunc)
 	{
-		if (buttons == 1)
+		if (buttons == WMLEFTKEY)
 		{
 			if (tick_timer - prevtimer <= MOUSEDBLCLICKTIME)
 			{

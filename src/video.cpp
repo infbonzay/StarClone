@@ -14,6 +14,7 @@
 #include "mpq.h"
 #include "mytime.h"
 #include "fonts.h"
+#include "gener.h"
 #include "mouse.h"
 #include "wmem.h"
 #include "debug.h"
@@ -267,7 +268,7 @@ void ShowPreviewBuff(char *cmpbuf,int sizebuf,int esckeyaction)
 									unpressmouse=2;
 									eventwindowloop();//to clear all events
 									do{
-										if (lowMouse.GetButtonStatus())
+										if (highMouse->GetButtonStatus())
 											unpressmouse=1;
 										else
 											if (unpressmouse!=2)
@@ -307,7 +308,6 @@ exitshowtitles:
 		FadeScreen(fadespeed,pal,FADE_HIDE);
 		backgnd.closePcx();
 	}
-	lowMouse.FlushPos();
 }
 //==========================================
 void FadeScreen(int fadespeed,char *pal,int typeoffade) //0-fadetoimage 1-fadetoblackscreen
@@ -494,7 +494,7 @@ void PlayVideoSmk(const char *smkfile)
 				}
 				if (vidbuff)
 					putrow2x1(xpos,ypos,w,h,vidbuff);
-				if (lowMouse.GetButtonStatus())
+				if (highMouse->GetButtonStatus())
 					unpressmouse=1;
 				else
 					if (unpressmouse!=2)

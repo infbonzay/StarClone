@@ -30,7 +30,7 @@
 #endif
 
 int		factorscrollkey,mousehotpos;
-int		mousemaxx,mousemaxy,mouse_b;
+int		mousemaxx,mousemaxy;
 int		xmloc,ymloc,movieminikarta=NO,mousedoubleclick;
 int		decrxx,decryy;
 char	waitfordownrightbuton,waitfordownleftbuton;
@@ -182,21 +182,21 @@ void getmousetype(int xk,int yk)
 	if (GAME)
 	{
 	 c=0;
-	 if (!(mouse_b&WMLEFTKEY))
+	 if (!(highMouse->GetButtonStatus()&WMLEFTKEY))
 		waitfordownleftbuton=0;
 	 if (!waitfordownleftbuton)
 	 {
 	  if (!highMouse->WaitToPressLeftButton)
 	  {
 		 buildconstr=SC_NOUNITNR;
-		 if ((mouse_b&WMLEFTKEY)&&(select_aria)&&!(karta_aria))
+		 if ((highMouse->GetButtonStatus()&WMLEFTKEY)&&(select_aria)&&!(karta_aria))
 		 {
 			 if (highMouse->PrevY<gameconf.grmode.y-YDECICONS)
 				patr=1;
 			 else
 				patr=0;
 		 }
-		 if (!mouse_b)
+		 if (!highMouse->GetButtonStatus())
 		 {
 			mouseclear=0;
 			if (patr)
@@ -213,24 +213,24 @@ void getmousetype(int xk,int yk)
 	 }
 	 else
 	 {
-		if (waitfordownrightbuton&&(!(mouse_b&WMRIGHTKEY)))
+		if (waitfordownrightbuton&&(!(highMouse->GetButtonStatus()&WMRIGHTKEY)))
 		{
 			waitfordownrightbuton=0;
 			highMouse->WaitToPressLeftButton=0;
 		}
-		if (properties[8] == MODECANCEL_BB_AB && (mouse_b&WMRIGHTKEY))
+		if (properties[8] == MODECANCEL_BB_AB && (highMouse->GetButtonStatus()&WMRIGHTKEY))
 		{
 			waitfordownrightbuton=1;
 		}
 		if (highMouse->WaitToPressLeftButton == 2)
-		   if (!(mouse_b & WMLEFTKEY))
+		   if (!(highMouse->GetButtonStatus() & WMLEFTKEY))
 			  highMouse->WaitToPressLeftButton--;
 		waitfordownleftbuton=1;
 	 }
 	}
 	if (highMouse->WaitToPressLeftButton==1&&select_aria)
 	{
-	  if (mouse_b&WMLEFTKEY)
+	  if (highMouse->GetButtonStatus()&WMLEFTKEY)
 	  {
 		highMouse->WaitToPressLeftButton=0;
 		if (karta_aria)
@@ -374,7 +374,7 @@ void getmousetype(int xk,int yk)
 		oldc=c;
 	 }//if move events
 	}//game
-	if ((mouse_b==WMRIGHTKEY)&&(!mouseclear)&&select_aria&&GAME&&(!waitfordownrightbuton))
+	if ((highMouse->GetButtonStatus()==WMRIGHTKEY)&&(!mouseclear)&&select_aria&&GAME&&(!waitfordownrightbuton))
 	{
 		mouseclear=1;
 		putdestination(highMouse->DestMouseOBJ,highMouse->PosX+xk,highMouse->PosY+yk,MODEMOVE,0,1);
@@ -397,7 +397,7 @@ void getmousetype(int xk,int yk)
 		highMouse->MouseOnSelectionMode=0;
 		if (!GAME)
 			highMouse->MouseType = NORMALMOUSE;
-		if (mouse_b == WMLEFTKEY)
+		if (highMouse->GetButtonStatus() == WMLEFTKEY)
 		{
 			highMouse->MouseType = NORMALMOUSE;
 		}

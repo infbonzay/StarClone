@@ -623,7 +623,7 @@ int drawmenu(MENUSTR *allmenus,int flags)
 	{
 				getmousetype(map.MAPXGLOBAL,map.MAPYGLOBAL);
 				do{
-						//mouse_b = lowMouse.GetButtonStatus();
+						//mouse_b = highMouse.GetButtonStatus();
 						eventwindowloop();
 						getmouseonitem(&activeitemchange,&activeitem);
 						keyrefresh();
@@ -697,7 +697,7 @@ int drawmenu(MENUSTR *allmenus,int flags)
 										else
 												prevactiveitem=-1000;
 								}
-								if (mouse_b&WMLEFTKEY)
+								if (highMouse->GetButtonStatus() & WMLEFTKEY)
 								{
 										if (activeitem>=0)
 										{
@@ -799,7 +799,7 @@ int drawmenu(MENUSTR *allmenus,int flags)
 						}
 				}while(selectedmenu==NOSELECTMENUBAR);
 	}//flags
-	lowMouse.GetPos();
+	//lowMouse.GetPos();
 	loadunderitems(allmenus,ITEM_ONLYFREE);
 	unregmenucallbacks();
 	mymousemoveevent(highMouse->PosX,highMouse->PosY);
@@ -831,7 +831,7 @@ int showlistmenu(MENUSTR *allmenus)
 	checkanddrawmenu(allmenus,ITEMNOONEACTIVE,ITEM_RESTOREANDFREE);
 	getmousetype(map.MAPXGLOBAL,map.MAPYGLOBAL);
 	do{
-				//mouse_b = lowMouse.GetButtonStatus();
+				//mouse_b = highMouse.GetButtonStatus();
 				getmouseonitem(&activeitemchange,&activeitem);
 				eventwindowloop();
 				if (allmenus->prevmenu)
@@ -849,7 +849,7 @@ int showlistmenu(MENUSTR *allmenus)
 						allmenus->vars.BarChanges.bar = activeitem;
 						allmenus->vars.BarChanges.color = ITEMSHOW_FOCUS;
 				}
-				if (mouse_b&WMLEFTKEY)
+				if (highMouse->GetButtonStatus() & WMLEFTKEY)
 				{
 						if (activeitem>=0)
 						{
@@ -878,7 +878,7 @@ int showlistmenu(MENUSTR *allmenus)
 						setmouseonitem(0);
 				}
 	}while(selectedmenu==NOSELECTMENUBAR);
-	lowMouse.GetPos();
+	//lowMouse.GetPos();
 	loadunderitems(allmenus,ITEM_ONLYFREE);
 	unregmenucallbacks();
 	ret=selectedmenu;
@@ -4164,7 +4164,7 @@ int drawmenu_ONETICK(MENUSTR *allmenus)
 				else
 					allmenus->vars.prevactiveitem=-1000;
 			}
-			if (mouse_b&WMLEFTKEY)
+			if (highMouse->GetButtonStatus() & WMLEFTKEY)
 			{
 				if (allmenus->vars.expanditemnr>=0)
 				{
@@ -4310,7 +4310,7 @@ int showlistmenu_ONETICK(MENUSTR *allmenus)
 				allmenus->vars.BarChanges.bar = allmenus->vars.activeitem;
 				allmenus->vars.BarChanges.color = ITEMSHOW_FOCUS;
 		}
-		if (mouse_b&WMLEFTKEY)
+		if (highMouse->GetButtonStatus() & WMLEFTKEY)
 		{
 				if (allmenus->vars.activeitem>=0)
 				{

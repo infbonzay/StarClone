@@ -22,7 +22,7 @@
 extern int				factorscrollkey;
 extern int		mousehotpos;
 extern int		xmloc,ymloc,movieminikarta,mspeed;
-extern int		mousemaxx,mousemaxy,doublespeed,mousedoubleclick,mouse_b;
+extern int		mousemaxx,mousemaxy,doublespeed,mousedoubleclick;
 extern int		decrxx,decryy;
 extern char		waitfordownrightbuton,waitfordownleftbuton;
 extern char		patr,mouseclear,mloc,mousescrollflag;

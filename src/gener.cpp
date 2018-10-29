@@ -104,11 +104,6 @@ int main(int c,char **parm,char **env)
 
 	inivars();
 	fflush(stdout);
-	if(!lowMouse.Init())
-	{
-	   printf("Warning: Mouse Not Detected!\n");
-	   fflush(stdout);
-	}
 	getcwd(GAMEPATH,sizeof(GAMEPATH)-1);//get temp pwd directory, it will be change after load config
 	printf("SIZEOF SOMEINFO UNION=%d\n",(int)sizeof(SOMEINFO));
 	printf("OBJ=%d OBJstruct=%d\n",(int)sizeof(OBJ),(int)sizeof(OBJstruct));
@@ -803,7 +798,7 @@ void mouseonkartaarea(void)
 {
 	if (karta_aria)
 	{
-		if (mouse_b&WMLEFTKEY)
+		if (highMouse->GetButtonStatus() & WMLEFTKEY)
 		{
 			if (highMouse->WaitToPressLeftButton && waitfordownleftbuton)
 			{
@@ -831,7 +826,7 @@ void mouseonkartaarea(void)
 		}
 		else
 		{
-			if ((!buton2)&&(mouse_b&WMRIGHTKEY)&&!canceloperation)
+			if ( (!buton2) && (highMouse->GetButtonStatus() & WMRIGHTKEY) && !canceloperation)
 			{
 				buton2=1;
 				putdestination(/*DestMouseOBJ*/NULL,
@@ -841,7 +836,7 @@ void mouseonkartaarea(void)
 			}
 		}
 	}
-	if (!(mouse_b&WMRIGHTKEY))
+	if (!(highMouse->GetButtonStatus() & WMRIGHTKEY))
 	{
 		buton2=0;
 	}
@@ -1327,7 +1322,7 @@ int gogame(struct mapinfo *info)
 			showedmenu.EndShowMenu();
 		}
 	//	DEBUGMESSCR("%d\n",MENUACTIVE);
-		//mouse_b = lowMouse.GetButtonStatus();
+		//mouse_b = highMouse.GetButtonStatus();
 		if (needrefreshatend&scrnew)
 		{
 			needrefreshatend = 0;
@@ -1404,7 +1399,7 @@ void drawGAMEMENUbutton(char *button,DIALOGBIN_INFO *menuinfo,int buttonnr,
 		{
 			if (mousehotpos==mousehotnr&&!highMouse->MouseOnSelectionMode)
 			{
-				if (mouse_b & WMLEFTKEY)
+				if (highMouse->GetButtonStatus() & WMLEFTKEY)
 				{
 					*button	 = GAMEBUTTON_MOUSEPRESS;
 					*button &= ~GAMEBUTTON_MOUSERELEASE;
@@ -1423,7 +1418,7 @@ void drawGAMEMENUbutton(char *button,DIALOGBIN_INFO *menuinfo,int buttonnr,
 			}
 			if ((mousehotpos==mousehotnr&&!highMouse->MouseOnSelectionMode)||(*button&GAMEBUTTON_KEYPRESS))
 			{
-				if ((mouse_b&WMLEFTKEY)||(*button&GAMEBUTTON_KEYPRESS))
+				if ((highMouse->GetButtonStatus() & WMLEFTKEY)||(*button & GAMEBUTTON_KEYPRESS))
 				{
 					putgrp_nopacked(menuinfo->iteminfo[buttonnr].xpos+menuinfo->iteminfo[0].xpos,
 							menuinfo->iteminfo[buttonnr].ypos+menuinfo->iteminfo[0].ypos,

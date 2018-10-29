@@ -1227,9 +1227,9 @@ void drawallunitsinbar(int XWINPOS,int YWINPOS,struct OBJ *a[],int count)
 		struct OBJ *a1;
 		if (count)
 		{
-				mbuttonpress = lowMouse.GetButtonStatus() & WMLEFTKEY;
-				shiftpress=KEYPRESS(SHIFTLKEY)|KEYPRESS(SHIFTRKEY);
-				ctrlpress=KEYPRESS(CTRLLKEY)|KEYPRESS(CTRLRKEY);
+				mbuttonpress = (highMouse->GetButtonStatus() & WMLEFTKEY) && (!highMouse->MouseOnSelectionMode);
+				shiftpress = KEYPRESS(SHIFTLKEY) | KEYPRESS(SHIFTRKEY);
+				ctrlpress = KEYPRESS(CTRLLKEY) | KEYPRESS(CTRLRKEY);
 				for (i=0;i<MAXSELECTMAN;i++)
 				{
 						a1 = a[i];
@@ -1264,7 +1264,7 @@ void drawallunitsinbar(int XWINPOS,int YWINPOS,struct OBJ *a[],int count)
 								else
 										objtype = 3;
 						life_pers = (int) (a1->health*100/GetUnitMaxHealth(a1->SC_Unit));
-						if (mbuttonpress&&mousehotpos-MOUSEONSTATUNIT==i)
+						if (mbuttonpress && mousehotpos-MOUSEONSTATUNIT==i)
 						{
 								addx=2;
 								addy=2;
@@ -1276,18 +1276,20 @@ void drawallunitsinbar(int XWINPOS,int YWINPOS,struct OBJ *a[],int count)
 								addy=0;
 						}
 						if (!mbuttonpress)
-								if (selectunit!=-1)
-								{
-										if (!shiftpress)
-												if (ctrlpress)
-														deselectallexcludeonetypeobj(fordeselect[selectunit]);
-												else
-														deselectallexcludeone(fordeselect[selectunit]);
-										else
-												deselectobj(fordeselect[selectunit]);
-												selectunit=-1;
-										break;
-								}
+						{
+							if (selectunit!=-1)
+							{
+								if (!shiftpress)
+									if (ctrlpress)
+										deselectallexcludeonetypeobj(fordeselect[selectunit]);
+									else
+										deselectallexcludeone(fordeselect[selectunit]);
+									else
+										deselectobj(fordeselect[selectunit]);
+										selectunit=-1;
+									break;
+							}
+						}
 						drawunitinbar(	xpos+addx,ypos+addy,1,objtype,WITHRAMKA,
 														shield_pers,life_pers,grpicons,grpwire1,a1->SC_Unit);
 						ypos += ysize;
