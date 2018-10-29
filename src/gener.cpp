@@ -168,10 +168,7 @@ int main(int c,char **parm,char **env)
 			}
 			if (i == 2)
 				gameconf.grmode.flags |= DISPLAYFLAGS_EMULATIONMODE;
-			lowMouse.SetPos(gameconf.grmode.x / 2,gameconf.grmode.y / 2);
-			lowMouse.SetPos(gameconf.grmode.x / 2,gameconf.grmode.y / 2);
-			highMouse->PosX = gameconf.grmode.x / 2;
-			highMouse->PosY = gameconf.grmode.y / 2;
+			highMouse->SetPos(gameconf.grmode.x / 2,gameconf.grmode.y / 2);
 			if (installvectors())
 			{
 				gameend("Problem with install interrupts(may be timer interrupt)");

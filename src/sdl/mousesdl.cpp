@@ -52,6 +52,5 @@ void LowMouse::LowUnClickEvent(void)
 	ClickEventFunc = NULL;
 }
 
-
 LowMouse lowMouse;
 

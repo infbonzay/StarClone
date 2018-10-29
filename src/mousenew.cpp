@@ -335,6 +335,13 @@ void HighMouse::UninstallDblClickEvent(void)
 	DblClickFunc = NULL;
 }
 //==========================
+void HighMouse::SetPos(int x,int y)
+{
+	lowMouse.SetPos(x,y);
+	PosX = x;
+	PosY = y;
+}
+//==========================
 void MouseMoveEvent(int x, int y)
 {
 	if (highMouse->MoveFunc)

@@ -124,6 +124,7 @@ public:
 	void		UninstallClickEvent(void);
 	void		InstallDblClickEvent(MOUSEDBLCLICKFUNC *eventFunc);
 	void		UninstallDblClickEvent(void);
+	void		SetPos(int x,int y);
 
 	inline int	GetButtonStatus(void) { return MouseButtons; };
 
