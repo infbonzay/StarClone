@@ -356,135 +356,135 @@ selectedicon:
 		}
 		if (selectedicon!=-1)
 		{
-		if (!fordeselect[0])
-		{
-						highMouse->WaitToPressLeftButton=0;
-		}
-		else
-		{
-			race=GetUnitRace(fordeselect[0]->SC_Unit);
-			plusfactor=0;
-			i = selectedicon / 3;
-			j = selectedicon % 3;
-			oldselectbuton=localprop[i*3+j];
-			mp=&mageprop[oldselectbuton];
-			if (mp->depend.maxdepend==1&&mp->type_id==ORDERS_UNIT)
-				switch(mp->depend.type_id[0])
-				{
-					case ORDERS_TECHNOLOGY:
-						if (IsSpellCaster(fordeselect[0]->SC_Unit))//if spellcaster check for mana too
-						{
-							if (!(mp->atr&ORDER_IGNOREREQ))
+			if (!fordeselect[0])
+			{
+				highMouse->WaitToPressLeftButton=0;
+			}
+			else
+			{
+				race=GetUnitRace(fordeselect[0]->SC_Unit);
+				plusfactor=0;
+				i = selectedicon / 3;
+				j = selectedicon % 3;
+				oldselectbuton=localprop[i*3+j];
+				mp=&mageprop[oldselectbuton];
+				if (mp->depend.maxdepend==1&&mp->type_id==ORDERS_UNIT)
+					switch(mp->depend.type_id[0])
+					{
+						case ORDERS_TECHNOLOGY:
+							if (IsSpellCaster(fordeselect[0]->SC_Unit))//if spellcaster check for mana too
 							{
-								needmana=GetTechEnergyCost(mp->depend.obj_id[0]);
-								err=CheckForMana(fordeselect[0],needmana);
-								if (err==CHECKRES_MANA)
+								if (!(mp->atr&ORDER_IGNOREREQ))
 								{
-									playinfoadvisorsound(NUMBGAMER,race,ADVENERGY,PLAYADVISOR_TEXTANDSOUND);
-									return;
+									needmana=GetTechEnergyCost(mp->depend.obj_id[0]);
+									err=CheckForMana(fordeselect[0],needmana);
+									if (err==CHECKRES_MANA)
+									{
+										playinfoadvisorsound(NUMBGAMER,race,ADVENERGY,PLAYADVISOR_TEXTANDSOUND);
+										return;
+									}
 								}
 							}
-						}
-					break;
-				}
-			if (mp->atr&ORDER_IGNOREREQ)
-				retstatus=CHECKRES_OK;
-			else
-				retstatus=CheckForResource_typeid(fordeselect[0],NUMBGAMER,mp->type_id,mp->obj_id);
-			if (retstatus != CHECKRES_OK)
-			{
-				playadvisorerr(NUMBGAMER,race,retstatus);
-				return;
-			}
-			if (mp->atr & ORDER_RIGHTWAY)
-			{
-				if (oldselectbuton == MODECANCEL_BB_AB)
-				{
-						for (k=0;k<MAXSELECTMAN;k++)
-							if (fordeselect[k])
-							{
-								if (IsWorkerUnit(fordeselect[k]->SC_Unit))
-									ChangeTypeOfProp(fordeselect[k],PROPNORMAL1);
-							}
-							groupmove=0;
-							highMouse->WaitToPressLeftButton=0;
-				}
+						break;
+					}
+				if (mp->atr&ORDER_IGNOREREQ)
+					retstatus=CHECKRES_OK;
 				else
+					retstatus=CheckForResource_typeid(fordeselect[0],NUMBGAMER,mp->type_id,mp->obj_id);
+				if (retstatus != CHECKRES_OK)
 				{
-					if (!probeconstruct(oldselectbuton))
+					playadvisorerr(NUMBGAMER,race,retstatus);
+					return;
+				}
+				if (mp->atr & ORDER_RIGHTWAY)
+				{
+					if (oldselectbuton == MODECANCEL_BB_AB)
 					{
-						if (localprop[i*3+j] != MODEWARPARCHON &&
-							localprop[i*3+j] != MODEWARPDARCHON)
-						{
 							for (k=0;k<MAXSELECTMAN;k++)
 								if (fordeselect[k])
 								{
-//									makemove(fordeselect[k],NULL,0,0,oldselectbutton,NUMBGAMER,SHOWERRORTEXT);
-									DoOrder(NUMBGAMER,fordeselect[k],0,0,
-											mp->type_id,mp->obj_id,mp->icon_id,mp->stattxt_id_enable,
-											oldselectbuton,SHOWERRORTEXT);
+									if (IsWorkerUnit(fordeselect[k]->SC_Unit))
+										ChangeTypeOfProp(fordeselect[k],PROPNORMAL1);
 								}
-						}
-						else
+								groupmove=0;
+								highMouse->WaitToPressLeftButton=0;
+					}
+					else
+					{
+						if (!probeconstruct(oldselectbuton))
 						{
-							for (k=0;k<MAXSELECTMAN;k++)
+							if (localprop[i*3+j] != MODEWARPARCHON &&
+								localprop[i*3+j] != MODEWARPDARCHON)
 							{
-								obj =  fordeselect[k];
-								if (obj)
+								for (k=0;k<MAXSELECTMAN;k++)
+									if (fordeselect[k])
+									{
+	//									makemove(fordeselect[k],NULL,0,0,oldselectbutton,NUMBGAMER,SHOWERRORTEXT);
+										DoOrder(NUMBGAMER,fordeselect[k],0,0,
+												mp->type_id,mp->obj_id,mp->icon_id,mp->stattxt_id_enable,
+												oldselectbuton,SHOWERRORTEXT);
+									}
+							}
+							else
+							{
+								for (k=0;k<MAXSELECTMAN;k++)
 								{
-									if (!obj2)
+									obj =  fordeselect[k];
+									if (obj)
 									{
-										obj2=obj;
-										continue;
-									}
-									else
-									{
-										makemove(obj,obj2,0,0,localprop[i*3+j],obj->playernr,NOSHOWERROR);
-										makemove(obj2,obj,0,0,localprop[i*3+j],obj2->playernr,NOSHOWERROR);
-//										moveobj(obj,obj2,localprop[i*3+j],NOSHOWERROR);
-//										moveobj(obj2,obj,localprop[i*3+j],NOSHOWERROR);
-										obj2 = NULL;
-									}
-								}//if obj
-							}//for k
-						}//else
-					}//if probe construct
+										if (!obj2)
+										{
+											obj2=obj;
+											continue;
+										}
+										else
+										{
+											makemove(obj,obj2,0,0,localprop[i*3+j],obj->playernr,NOSHOWERROR);
+											makemove(obj2,obj,0,0,localprop[i*3+j],obj2->playernr,NOSHOWERROR);
+	//										moveobj(obj,obj2,localprop[i*3+j],NOSHOWERROR);
+	//										moveobj(obj2,obj,localprop[i*3+j],NOSHOWERROR);
+											obj2 = NULL;
+										}
+									}//if obj
+								}//for k
+							}//else
+						}//if probe construct
+					}
+				}
+				else
+				{
+					cbuild = fordeselect[0];
+					constrbuild(oldselectbuton);
+					
+					highMouse->MouseModeMove = oldselectbuton;
+					groupmove = 0;
+					highMouse->WaitToPressLeftButton = 2;
 				}
 			}
-			else
-			{
-				cbuild = fordeselect[0];
-				constrbuild(oldselectbuton);
-				
-				highMouse->MouseModeMove = oldselectbuton;
-				groupmove = 0;
-				highMouse->WaitToPressLeftButton = 2;
-			}
-		}
 		}
 		if (selecteddeconstrunit!=-1)
 		{
-		for (k=0;k<MAXSELECTMAN;k++)
-		{
-			a=fordeselect[k];
-			if (a)
+			for (k=0;k<MAXSELECTMAN;k++)
 			{
-				if (IsOBJUnderConstruct(a)&&selecteddeconstrunit==0)
+				a=fordeselect[k];
+				if (a)
 				{
-					makemove(a,NULL,0,0,MODEESCAPE,NUMBGAMER,SHOWERRORTEXT);
-					break;
-				}
-				if (selecteddeconstrunit<GetConstructNR(a))
-				{
-					makemove(a,NULL,0,0,MODEESCAPE1+selecteddeconstrunit,NUMBGAMER,SHOWERRORTEXT);
-					break;
+					if (IsOBJUnderConstruct(a)&&selecteddeconstrunit==0)
+					{
+						makemove(a,NULL,0,0,MODEESCAPE,NUMBGAMER,SHOWERRORTEXT);
+						break;
+					}
+					if (selecteddeconstrunit<GetConstructNR(a))
+					{
+						makemove(a,NULL,0,0,MODEESCAPE1+selecteddeconstrunit,NUMBGAMER,SHOWERRORTEXT);
+						break;
+					}
 				}
 			}
 		}
-		}
 		if (selectedunloadunit!=-1)
 		{
-		//x is nr of unloaded unit, y is 0
+			//x is nr of unloaded unit, y is 0
 			makemove(transportplaceobj,NULL,selectedunloadunit,0,MODEUNLOADUNITNR,transportplaceobj->playernr,NOSHOWERROR);
 //			moveobj(transportplaceobj,NULL,MODEUNLOADUNITNR,selectedunloadunit,0,NOSHOWERROR);
 		}
@@ -496,20 +496,20 @@ void playadvisorerr(int playernr,int race,int retreserror)
 {
 	switch(retreserror)
 	{
-				case CHECKRES_MIN:
-						playinfoadvisorsound(playernr,race,ADVMINERAL,PLAYADVISOR_TEXTANDSOUND);
-						break;
-				case CHECKRES_GAS:
-						playinfoadvisorsound(playernr,race,ADVGAS,PLAYADVISOR_TEXTANDSOUND);
-						break;
-				case CHECKRES_SUPPLY:
-						playinfoadvisorsound(playernr,race,ADVUNITS,PLAYADVISOR_TEXTANDSOUND);
-						break;
-				case CHECKRES_MANA:
-						playinfoadvisorsound(playernr,race,ADVENERGY,PLAYADVISOR_TEXTANDSOUND);
-						break;
-				case CHECKRES_OK:
-						break;
+		case CHECKRES_MIN:
+			playinfoadvisorsound(playernr,race,ADVMINERAL,PLAYADVISOR_TEXTANDSOUND);
+		break;
+		case CHECKRES_GAS:
+			playinfoadvisorsound(playernr,race,ADVGAS,PLAYADVISOR_TEXTANDSOUND);
+		break;
+		case CHECKRES_SUPPLY:
+			playinfoadvisorsound(playernr,race,ADVUNITS,PLAYADVISOR_TEXTANDSOUND);
+		break;
+		case CHECKRES_MANA:
+			playinfoadvisorsound(playernr,race,ADVENERGY,PLAYADVISOR_TEXTANDSOUND);
+		break;
+		case CHECKRES_OK:
+		break;
 	}
 }
 //=============================================
@@ -537,122 +537,122 @@ int CreateUnitProperties(struct OBJ *a,struct OBJstruct *b,int *prop,int playern
 	}
 	for (i=0;i<MAXUNITPROPERTIES;i++)
 	{
-				prop[i] = b->modemove[a->typeofprop][i];		//copy properties
-				if (a->prop & (VARNOTWORK | VARPOWEROFF))
-				{
-						if (prop[i] != MODEESCAPE)
-						prop[i] = MODENON;
-				}
-				else if (mageprop[prop[i]].type_id == ORDERS_UNIT)
-				{
-						unitnr = INBAY_GetCreatedUnits(a);
-						if (unitnr+underc >= INBAY_GetMaxUnitsToBeCreated(a))
-								prop[i]=MODENON;
-						if (underc==MAXCONSTRUCTINBUILD)
-								prop[i]=MODENON;
-				}
-				else
-						if (prop[i]==MODECLOAKFIELD||
-								prop[i]==MODEPERSONNELCLOAK||
-								prop[i]==MODEDECLOAK)
-						{
-								if (GetMageAtr(&a->atrobj,ATRINVISIBLE)==WRAITHEPODARBITEROM||GetMageAtr(&a->atrobj,ATRINVISIBLE)==NEWRAITHEPODARBITEROM)
-										prop[i]=MODENON;
-						}
+		prop[i] = b->modemove[a->typeofprop][i];		//copy properties
+		if (a->prop & (VARNOTWORK | VARPOWEROFF))
+		{
+			if (prop[i] != MODEESCAPE)
+			prop[i] = MODENON;
+		}
+		else if (mageprop[prop[i]].type_id == ORDERS_UNIT)
+		{
+			unitnr = INBAY_GetCreatedUnits(a);
+			if (unitnr+underc >= INBAY_GetMaxUnitsToBeCreated(a))
+				prop[i]=MODENON;
+			if (underc==MAXCONSTRUCTINBUILD)
+				prop[i]=MODENON;
+		}
+		else
+			if (prop[i]==MODECLOAKFIELD||
+				prop[i]==MODEPERSONNELCLOAK||
+				prop[i]==MODEDECLOAK)
+			{
+				if (GetMageAtr(&a->atrobj,ATRINVISIBLE)==WRAITHEPODARBITEROM||GetMageAtr(&a->atrobj,ATRINVISIBLE)==NEWRAITHEPODARBITEROM)
+					prop[i]=MODENON;
+			}
 		}
 	//if galiutination clear mage properties
 	if (IsHallucination(a))
 	{
-				for (i=0;i<MAXUNITPROPERTIES;i++)
-						if (!(mageprop[prop[i]].atr & ORDER_SHOWHALLUCINATED))
-						prop[i] = MODENON;
+		for (i=0;i<MAXUNITPROPERTIES;i++)
+			if (!(mageprop[prop[i]].atr & ORDER_SHOWHALLUCINATED))
+				prop[i] = MODENON;
 	}
 	if (a->addonobj)
 	{
-				prop[6] = MODENON;		//addonicons
-				prop[7] = MODENON;		//addonicons
+		prop[6] = MODENON;		//addonicons
+		prop[7] = MODENON;		//addonicons
 	}
 	if (underc&&IsBuild(a->SC_Unit))
 	{
-				prop[6] = MODENON;		//
-				prop[7] = MODENON;		//addon position
+		prop[6] = MODENON;		//
+		prop[7] = MODENON;		//addon position
 	}
 	for (i=0;i<MAXUNITPROPERTIES;i++)
 	{
-				if (prop[i]==MODERETURNCARGO)
-				{
-						if (a->carryobj)
-						{
-								if (IsNonNeutralFlag(a->carryobj->SC_Unit))
-										prop[i]=MODENON;
-						}
-						else
-								prop[i]=MODENON;
-				}
-				else if (prop[i]==MODEUNLOADUNITS)
-				{
-						if (!a->loaded)
-								prop[i]=MODENON;
-				}
-				else if ((a->SC_Unit==SC_VULTUREOBJ||a->SC_Unit==SC_HERO_JIMRAYNORVOBJ) && prop[i]==MODERELEASEMINE && !a->ammo)
+		if (prop[i]==MODERETURNCARGO)
+		{
+			if (a->carryobj)
 			{
-						prop[i]=MODENON;
+				if (IsNonNeutralFlag(a->carryobj->SC_Unit))
+					prop[i]=MODENON;
+			}
+			else
+				prop[i]=MODENON;
 		}
+		else if (prop[i]==MODEUNLOADUNITS)
+		{
+			if (!a->loaded)
+				prop[i]=MODENON;
+		}
+		else if ((a->SC_Unit==SC_VULTUREOBJ||a->SC_Unit==SC_HERO_JIMRAYNORVOBJ) && prop[i]==MODERELEASEMINE && !a->ammo)
+		{
+			prop[i]=MODENON;
+		}
+		else
+		{
+			if (prop[i]==MODEMAKENUKEBOMB)
+			{
+				if (a->ammo)
+					prop[i]=MODENON;
+			}
 			else
 			{
-						if (prop[i]==MODEMAKENUKEBOMB)
+				switch(mageprop[prop[i]].type_id)
+				{
+					case ORDERS_NONE:
+					break;
+					case ORDERS_MODEMOVE:
+						//check if need to deny prop
+						if (mageprop[prop[i]].obj_id>=0)
 						{
-								if (a->ammo)
-										prop[i]=MODENON;
+							if (!GetMaxTechTree(&map,playernr,mageprop[prop[i]].obj_id))
+								prop[i]=MODENON;//prevent use if not available(max tech tree=0)
 						}
+					break;
+					case ORDERS_UNIT:
+						if (mageprop[prop[i]].obj_id>=0)
+						{
+							if (!GetUnitRestrictions(&map,playernr,mageprop[prop[i]].obj_id))
+								prop[i]=MODENON;
+						}
+					break;
+					case ORDERS_UPGRADE:
+						upgradenr=GetTempUpgradeTree(&map,playernr,mageprop[prop[i]].obj_id);
+						if (upgradenr)
+							prop[i]=MODENON;
 						else
 						{
-								switch(mageprop[prop[i]].type_id)
-								{
-										case ORDERS_NONE:
-												break;
-										case ORDERS_MODEMOVE:
-												//check if need to deny prop
-														if (mageprop[prop[i]].obj_id>=0)
-														{
-																if (!GetMaxTechTree(&map,playernr,mageprop[prop[i]].obj_id))
-																		prop[i]=MODENON;//prevent use if not available(max tech tree=0)
-														}
-												break;
-										case ORDERS_UNIT:
-														if (mageprop[prop[i]].obj_id>=0)
-														{
-																if (!GetUnitRestrictions(&map,playernr,mageprop[prop[i]].obj_id))
-																		prop[i]=MODENON;
-														}
-												break;
-										case ORDERS_UPGRADE:
-												upgradenr=GetTempUpgradeTree(&map,playernr,mageprop[prop[i]].obj_id);
-												if (upgradenr)
-														prop[i]=MODENON;
-												else
-												{
-														upgradenr=GetUpgradeTree(&map,playernr,mageprop[prop[i]].obj_id);
-														maxupgradenr=GetMaxUpgradeTree(&map,playernr,mageprop[prop[i]].obj_id);
-														if (upgradenr>=maxupgradenr)
-																prop[i]=MODENON;//prevent showing at max upgrade level reached
-												}
-												break;
-										case ORDERS_TECHNOLOGY:
-												upgradenr=GetTempTechTree(&map,playernr,mageprop[prop[i]].obj_id);
-												if (upgradenr)
-														prop[i]=MODENON;
-												else
-												{
-														upgradenr=GetTechTree(&map,playernr,mageprop[prop[i]].obj_id);
-														maxupgradenr=GetMaxTechTree(&map,playernr,mageprop[prop[i]].obj_id);
-														if (upgradenr>=maxupgradenr)
-																prop[i]=MODENON;//prevent showing at max tech level reached
-												}
-												break;
-								}//switch
+							upgradenr=GetUpgradeTree(&map,playernr,mageprop[prop[i]].obj_id);
+							maxupgradenr=GetMaxUpgradeTree(&map,playernr,mageprop[prop[i]].obj_id);
+							if (upgradenr>=maxupgradenr)
+								prop[i]=MODENON;//prevent showing at max upgrade level reached
 						}
-				}
+					break;
+					case ORDERS_TECHNOLOGY:
+						upgradenr=GetTempTechTree(&map,playernr,mageprop[prop[i]].obj_id);
+						if (upgradenr)
+							prop[i]=MODENON;
+						else
+						{
+							upgradenr=GetTechTree(&map,playernr,mageprop[prop[i]].obj_id);
+							maxupgradenr=GetMaxTechTree(&map,playernr,mageprop[prop[i]].obj_id);
+							if (upgradenr>=maxupgradenr)
+								prop[i]=MODENON;//prevent showing at max tech level reached
+						}
+					break;
+				}//switch
+			}
+		}
 	}//for
 	return 0;
 }
@@ -667,141 +667,143 @@ int CreateMenuProperties(int *prop,char *selectableicons,
 	//if we select move/mage need to put only cancel mage/move button
 	if (highMouse->WaitToPressLeftButton)
 	{
-				for (i=0;i<MAXUNITPROPERTIES-1;i++)
-				{
-						prop[i] = MODENON;
-						selectableicons[i]=FORYELLOW;
-				}
-				prop[8] = MODECANCEL_BB_AB;
-				selectableicons[8]=FORYELLOW;
-				return 0;
+		for (i=0;i<MAXUNITPROPERTIES-1;i++)
+		{
+			prop[i] = MODENON;
+			selectableicons[i]=FORYELLOW;
+		}
+			prop[8] = MODECANCEL_BB_AB;
+			selectableicons[8]=FORYELLOW;
+		return 0;
 	}
 	//create all properties for selected units
 	selobj=selectobjcount();
 	if (selobj)
 	{
-				for (i=0;i<MAXSELECTMAN;i++)
+		for (i=0;i<MAXSELECTMAN;i++)
+		{
+			if (selectedobjects[i]&&(!PLAYER[NUMBGAMER].isobserverflag)&&
+				player_aliance(selectedobjects[i]->playernr,player)==MYOBJ)
+			{
+				b = loadobj(selectedobjects[i]->SC_Unit);
+				err = CreateUnitProperties(selectedobjects[i],b,propunits[maxprop],player);
+				if (!err)
+					maxprop++;
+				if (maxprop==1)
 				{
-						if (selectedobjects[i]&&(!PLAYER[NUMBGAMER].isobserverflag)&&
-								player_aliance(selectedobjects[i]->playernr,player)==MYOBJ)
-						{
-								b = loadobj(selectedobjects[i]->SC_Unit);
-								err = CreateUnitProperties(selectedobjects[i],b,propunits[maxprop],player);
-								if (!err)
-										maxprop++;
-								if (maxprop==1)
-								{
-										curentproperties=selectedobjects[i]->modemove;
-										curenticon=mageprop[curentproperties].icon_id;
-										curentoperationobj=selectedobjects[i];
-								}
-						}
+					curentproperties=selectedobjects[i]->modemove;
+					curenticon=mageprop[curentproperties].icon_id;
+					curentoperationobj=selectedobjects[i];
 				}
+			}
+		}
 	}
 	if (selobj==1 && selectedobjects[0] && selectedobjects[0]->SC_Unit == SC_MEDICOBJ)
-				propunits[0][2]=MODENON;				//do not show atack
+		propunits[0][2]=MODENON;				//do not show atack
 	//combine all properties of units to have same one
 	if (maxprop&&selobj)
 	{
-				for (i=0;i<MAXUNITPROPERTIES;i++)
+		for (i=0;i<MAXUNITPROPERTIES;i++)
+		{
+			prop[i] = propunits[0][i];
+		}
+		if (maxprop>1)
+		{
+			for (i=0;i<MAXUNITPROPERTIES;i++)
+			{
+				for (j=1;j<maxprop;j++)
 				{
-						prop[i] = propunits[0][i];
+					switch(prop[i])
+					{
+						case MODECLOAKFIELD:
+						case MODEPERSONNELCLOAK:
+						case MODEDECLOAK:
+							if (propunits[j][i] != MODECLOAKFIELD			&&
+								propunits[j][i] != MODEPERSONNELCLOAK		&&
+								propunits[j][i] != MODEDECLOAK)
+								prop[i] = MODENON;
+						break;
+						case MODEBURROW:
+						case MODEBURROW2:
+						case MODEUNBURROW:
+							if (propunits[j][i]!=MODEBURROW&&
+								propunits[j][i]!=MODEBURROW2&&
+								propunits[j][i]!=MODEUNBURROW)
+								prop[i] = MODENON;
+						break;
+						case MODETANKSIEGE:
+						case MODETANKNORMAL:
+							if (propunits[j][i]!=MODETANKSIEGE&&
+								propunits[j][i]!=MODETANKNORMAL)
+								prop[i] = MODENON;
+						break;
+						case MODELIFTOFF:
+						case MODELANDING:
+							if (propunits[j][i]!=MODELIFTOFF  &&
+								propunits[j][i]!=MODELANDING)
+								prop[i] = MODENON;
+						break;
+						default:
+							if (prop[i]!=propunits[j][i])
+								prop[i] = MODENON;
+						break;
+					}//switch
+				}//forj
+			}//fori
+		}
+		for (i=0;i<MAXUNITPROPERTIES;i++)
+		{
+			if (selectedobjects[0] && prop[i] != MODENON)
+			{
+				if (!MageDepend(selectedobjects[0],player,prop[i]))
+				{
+					selectableicons[i]=FORGRAY;
 				}
-				if (maxprop>1)
+				else
 				{
-						for (i=0;i<MAXUNITPROPERTIES;i++)
-						{
-								for (j=1;j<maxprop;j++)
-								{
-										switch(prop[i])
-										{
-												case MODECLOAKFIELD:
-												case MODEPERSONNELCLOAK:
-												case MODEDECLOAK:
-														if (propunits[j][i]!=MODECLOAKFIELD&&
-																propunits[j][i]!=MODEPERSONNELCLOAK&&
-																propunits[j][i]!=MODEDECLOAK)
-																prop[i] = MODENON;
-														break;
-												case MODEBURROW:
-												case MODEBURROW2:
-												case MODEUNBURROW:
-														if (propunits[j][i]!=MODEBURROW&&
-																propunits[j][i]!=MODEBURROW2&&
-																propunits[j][i]!=MODEUNBURROW)
-																prop[i] = MODENON;
-														break;
-												case MODETANKSIEGE:
-												case MODETANKNORMAL:
-														if (propunits[j][i]!=MODETANKSIEGE&&
-																propunits[j][i]!=MODETANKNORMAL)
-																prop[i] = MODENON;
-														break;
-												case MODELIFTOFF:
-												case MODELANDING:
-														if (propunits[j][i]!=MODELIFTOFF  &&
-																propunits[j][i]!=MODELANDING)
-																prop[i] = MODENON;
-														break;
-												default:
-														if (prop[i]!=propunits[j][i])
-																prop[i] = MODENON;
-														break;
-										}//switch
-								}//forj
-						}//fori
-				}
-				for (i=0;i<MAXUNITPROPERTIES;i++)
-				{
-						if (selectedobjects[0] && prop[i] != MODENON)
-						{
-								if (!MageDepend(selectedobjects[0],player,prop[i]))
-								{
-										selectableicons[i]=FORGRAY;
-								}
+					switch(prop[i])
+					{
+						case MODENUKELAUNCH:
+							if (!PLAYER[player].nukes)
+								selectableicons[i]=FORGRAY;
+							else
+								selectableicons[i]=FORYELLOW;
+						break;
+						case MODEWARPARCHON:
+						case MODEWARPDARCHON:
+							if (!warparchon)
+								selectableicons[i]=FORGRAY;
+							else
+								selectableicons[i]=FORYELLOW;
+						break;
+						default:
+							if (selectedobjects[0]->prop & VARHOLDPOSBIT)
+							{
+								if (prop[i] == MODEHOLDPOS)
+									selectableicons[i]=FORWHITE;
 								else
-								{
-										switch(prop[i])
-										{
-												case MODENUKELAUNCH:
-														if (!PLAYER[player].nukes)
-																selectableicons[i]=FORGRAY;
-														else
-																selectableicons[i]=FORYELLOW;
-														break;
-												case MODEWARPARCHON:
-												case MODEWARPDARCHON:
-														if (!warparchon)
-																selectableicons[i]=FORGRAY;
-														else
-																selectableicons[i]=FORYELLOW;
-														break;
-												default:
-														if (selectedobjects[0]->prop & VARHOLDPOSBIT)
-														{
-																if (prop[i] == MODEHOLDPOS)
-																		selectableicons[i]=FORWHITE;
-																else
-																		selectableicons[i]=FORYELLOW;
-														}
-														else
-														{
-																if (mageprop[prop[i]].icon_id == curenticon)
-																		selectableicons[i]=FORWHITE;
-																else
-																		selectableicons[i]=FORYELLOW;
-														}
-														break;
-										}
-								}
-						}
+									selectableicons[i]=FORYELLOW;
+							}
+							else
+							{
+								if (mageprop[prop[i]].icon_id == curenticon)
+									selectableicons[i]=FORWHITE;
+								else
+									selectableicons[i]=FORYELLOW;
+							}
+						break;
+					}
 				}
+			}
+		}
 	}//maxprop
 	else		//if not units put no properties
+	{
 		for (i=0;i<MAXUNITPROPERTIES;i++)
 		{
 			prop[i] = MODENON;
 		}
+	}
 	return 0;
 }
 //==============================================
