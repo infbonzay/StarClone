@@ -12,6 +12,7 @@
 #include "menu.h"
 #include "queue.h"
 #include "dialogbin.h"
+#include "mylist.h"
 #include "mousenew.h"
 
 #define GAMEBUTTON_CLEARALL		0x00
@@ -130,8 +131,6 @@ void ActivateCheat(int cheatid);
 
 #define F10DIALOG_MAIN							0
 #define F10DIALOG_MENUBUTTON					1
-
-
 
 extern int 				bitsplayer;
 

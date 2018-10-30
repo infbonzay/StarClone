@@ -1,8 +1,3 @@
-#include <iscript.h>
-#include <walk.h>
-#include <putobj.h>
-#include <objinfo.h>
-#include <mousenew.h>
 #include <grplib/usegrp.h>
 #include <grplib/gr8.h>
 
@@ -16,6 +11,12 @@
 #include "lists.h"
 #include "maps.h"
 #include "audio.h"
+#include "iscript.h"
+#include "walk.h"
+#include "putobj.h"
+#include "objinfo.h"
+#include "key.h"
+#include "mouse.h"
 #include "mousenew.h"
 
 //==============================
@@ -419,6 +420,257 @@ void HighMouse::DoRightClickAction(OBJ *destobj,int xm,int ym,int modemove,int r
 	}
 }
 //==========================================
+float HighMouse::ScrollMapX(int border,float factor)
+{
+}
+//==========================================
+float HighMouse::ScrollMapY(int border,float factor)
+{
+}
+//==========================================
+void HighMouse::RefreshMouseType(int xk,int yk)
+{
+	//static int oldc=0;
+	int borderBits;
+	MouseType = NORMALMOUSE;
+	if (MENUACTIVE)
+		return;
+	if (GAME)
+	{
+		borderBits = 0;
+		if (!(GetButtonStatus() & WMLEFTKEY))
+			waitfordownleftbuton=0;
+		if (!waitfordownleftbuton)
+		{
+			if (!WaitToPressLeftButton)
+			{
+				Construct.SC_BuildUnit = SC_NOUNITNR;
+				if ((GetButtonStatus() & WMLEFTKEY) && (select_aria) && !(karta_aria))
+				{
+					if (PrevY<gameconf.grmode.y-YDECICONS)
+						patr=1;
+					else
+						patr=0;
+				}
+				if (!GetButtonStatus())
+				{
+					mouseclear=0;
+					if (patr)
+					{
+						if (KEYPRESS(SHIFTLKEY) || KEYPRESS(SHIFTRKEY))
+							selectMAN(PrevX,PrevY,PosX,PosY,1);
+						else
+							selectMAN(PrevX,PrevY,PosX,PosY,0);
+						patr=0;
+					}
+					PrevX=PosX;
+					PrevY=PosY;
+				}
+			}
+			else
+			{
+				if (waitfordownrightbuton&&(!(GetButtonStatus()&WMRIGHTKEY)))
+				{
+					waitfordownrightbuton=0;
+					WaitToPressLeftButton=0;
+				}
+				if (properties[8] == MODECANCEL_BB_AB && (GetButtonStatus()&WMRIGHTKEY))
+				{
+					waitfordownrightbuton=1;
+				}
+				if (WaitToPressLeftButton == 2)
+					if (!(GetButtonStatus() & WMLEFTKEY))
+						WaitToPressLeftButton--;
+				waitfordownleftbuton=1;
+			}
+		}
+		if (WaitToPressLeftButton==1&&select_aria)
+		{
+			if (GetButtonStatus()&WMLEFTKEY)
+			{
+				WaitToPressLeftButton=0;
+				if (karta_aria)
+					DoRightClickAction(	DestMouseOBJ,
+										(int)((PosX-Xkart-Xkartbeg)/factorx)*SIZESPRLANSHX,
+										(int)((PosY-Ykart-Ykartbeg)/factory)*SIZESPRLANSHY,
+										mouseprop,0);
+					else
+						DoRightClickAction(	DestMouseOBJ,
+											PosX+xk,
+											PosY+yk,
+											mouseprop,0);
+			}
+		}
+
+		MouseOnBorder=0;
+		if ( PosX <= BORDERMOUSE )
+			borderBits |= 0x01;
+		else
+			if ( PosX>=mousemaxx - BORDERMOUSE )
+				borderBits |= 0x02;
+		if ( PosY <= BORDERMOUSE	 )
+			borderBits |= 0x04;
+		else
+			if (PosY>=mousemaxy- BORDERMOUSE )
+				borderBits |= 0x08;
+		if (MOUSESCROLLON)
+		{
+			switch(borderBits)
+			{
+				case 0:
+						if (!addscrx)
+							addscrx = (int)ScrollMapX(0,SMOUTHMOUSE);
+						if (!addscry)
+							addscry = (int)ScrollMapY(0,SMOUTHMOUSE);
+					break;
+				case 1:
+					if (xk)
+					{
+						MouseOnBorder=1;
+						MouseType = MOUSELEFTSCROLL;
+						if (!addscrx)
+							addscrx = (int)ScrollMapX(-1,SMOUTHMOUSE);
+						if (!addscry)
+							addscry = (int)ScrollMapY(0,SMOUTHMOUSE);
+					}
+					else
+						MouseType = NORMALMOUSE;
+					break;
+				case 2:
+					if (xk<(MAXXMAP-widthkart)*SIZESPRLANSHX)
+					{
+						MouseOnBorder=1;
+						MouseType = MOUSERIGHTSCROLL;
+						if (!addscrx)
+							addscrx = (int)ScrollMapX(1,SMOUTHMOUSE);
+						if (!addscry)
+							addscry = (int)ScrollMapY(0,SMOUTHMOUSE);
+					}
+					else
+						MouseType = NORMALMOUSE;
+					break;
+				case 4:
+					if (yk)
+					{
+						MouseOnBorder=1;
+						MouseType = MOUSEUPSCROLL;
+						if (!addscrx)
+							addscrx = (int)ScrollMapX(0,SMOUTHMOUSE);
+						if (!addscry)
+							addscry = (int)ScrollMapY(-1,SMOUTHMOUSE);
+					}
+					else
+						MouseType = NORMALMOUSE;
+					break;
+				case 5:
+					if (xk||yk)
+					{
+						MouseOnBorder=1;
+						MouseType = MOUSELEFTUPSCROLL;
+						if (!addscrx)
+							addscrx = (int)ScrollMapX(-1,SMOUTHMOUSE);
+						if (!addscry)
+							addscry = (int)ScrollMapY(-1,SMOUTHMOUSE);
+					}
+					else
+						MouseType = NORMALMOUSE;
+					break;
+				case 6:
+					if (xk<(MAXXMAP-widthkart)*SIZESPRLANSHX||yk)
+					{
+						MouseOnBorder=1;
+						MouseType = MOUSERIGHTUPSCROLL;
+						if (!addscrx)
+							addscrx = (int)ScrollMapX(1,SMOUTHMOUSE);
+						if (!addscry)
+							addscry = (int)ScrollMapY(-1,SMOUTHMOUSE);
+					}
+					else
+						MouseType = NORMALMOUSE;
+					break;
+				case 8:
+					if (yk<(MAXYMAP-hightkart)*SIZESPRLANSHY)
+					{
+						MouseOnBorder=1;
+						MouseType = MOUSEDOWNSCROLL;
+						if (!addscrx)
+							addscrx = (int)ScrollMapX(0,SMOUTHMOUSE);
+						if (!addscry)
+							addscry = (int)ScrollMapY(1,SMOUTHMOUSE);
+					}
+					else
+						MouseType = NORMALMOUSE;
+					break;
+				case 9:
+					if (xk||yk<(MAXYMAP-hightkart)*SIZESPRLANSHY)
+					{
+						MouseOnBorder=1;
+						MouseType = MOUSELEFTDOWNSCROLL;
+						if (!addscrx)
+							addscrx = (int)ScrollMapX(-1,SMOUTHMOUSE);
+						if (!addscry)
+							addscry = (int)ScrollMapY(1,SMOUTHMOUSE);
+					}
+					else
+						MouseType = NORMALMOUSE;
+					break;
+				case 0xa:
+					if (xk<(MAXXMAP-widthkart)*SIZESPRLANSHX||
+						yk<(MAXYMAP-hightkart)*SIZESPRLANSHY)
+					{
+						MouseOnBorder=1;
+						MouseType = MOUSERIGHTDOWNSCROLL;
+						if (!addscrx)
+							addscrx = (int)ScrollMapX(1,SMOUTHMOUSE);
+						if (!addscry)
+							addscry = (int)ScrollMapY(1,SMOUTHMOUSE);
+					}
+					else
+						MouseType = NORMALMOUSE;
+					break;
+			}//if & switch
+			//oldc = borderBits;
+		}
+
+	}//game
+	if ((GetButtonStatus()==WMRIGHTKEY)&&(!mouseclear)&&select_aria&&GAME&&(!waitfordownrightbuton))
+	{
+		mouseclear=1;
+		DoRightClickAction(DestMouseOBJ,PosX+xk,PosY+yk,MODEMOVE,1);
+	}
+	if (patr&&movieminikarta!=YES)
+	{
+		if (PosX != PrevX || PosY != PrevY)
+		{
+			MouseOnSelectionMode=1;
+			addscrx=0;
+			addscry=0;
+			if (PrevX > gameconf.grmode.x)
+				PrevX = gameconf.grmode.x;
+			if (PrevY > gameconf.grmode.y)
+				PrevY = gameconf.grmode.y;
+		}
+	}
+	else
+	{
+		MouseOnSelectionMode=0;
+		if (!GAME)
+			MouseType = NORMALMOUSE;
+		if (GetButtonStatus() == WMLEFTKEY)
+		{
+			MouseType = NORMALMOUSE;
+		}
+	}
+}
+
+
+
+
+
+
+
+
+//==========================================
 DestCursor::DestCursor(void)
 {
 	Presence = false;
@@ -462,6 +714,22 @@ void DestCursor::DrawDestinationCursor(void)
 	if (MouseDestImg)
 		MouseDestImg->DrawImage();
 }
+//==========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //==========================================
 void MouseMoveEvent(int x, int y)
 {

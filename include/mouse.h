@@ -24,9 +24,6 @@ void getmousetype(int x,int y);
 void saveunderpatr(void);
 void loadunderpatr(void);
 
-float scrollmapx(int border,float factor);
-float scrollmapy(int border,float factor);
-
 //=================================
 #endif /*	 _MOUSE_W	*/
 

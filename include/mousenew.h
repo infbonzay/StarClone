@@ -137,6 +137,9 @@ public:
 	void		UninstallDblClickEvent(void);
 	void		SetPos(int x,int y);
 	void 		DoRightClickAction(OBJ *destobj,int xm,int ym,int modemove,int rightclick);
+	float		ScrollMapX(int border,float factor);
+	float		ScrollMapY(int border,float factor);
+	void		RefreshMouseType(int xk,int yk);
 
 	inline int	GetButtonStatus(void) { return MouseButtons; };
 
