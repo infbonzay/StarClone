@@ -28,6 +28,7 @@ include_directories(include/network)
 include_directories(include/smacker)
 
 set(SOURCES
+	src/ScreenDraw.cpp
 	src/MenuItem.cpp
 	src/action.cpp
 	src/actiondefault.cpp
