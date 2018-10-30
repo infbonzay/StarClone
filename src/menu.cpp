@@ -14,7 +14,6 @@
 #include "gr.h"
 #include "audio.h"
 #include "fonts.h"
-#include "mouse.h"
 #include "vars.h"
 #include "key.h"
 #include "maps.h"

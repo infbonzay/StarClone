@@ -1,4 +1,3 @@
-
 #include "mouse.h"
 
 const char	  *ires[3][3]={

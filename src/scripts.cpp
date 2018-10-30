@@ -14,7 +14,6 @@
 #include "load.h"
 #include "wmem.h"
 #include "gener.h"
-#include "mouse.h"
 #include "scripts.h"
 #include "mpq.h"
 #include "lists.h"

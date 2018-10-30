@@ -13,7 +13,7 @@
 #include "queue.h"
 #include "dialogbin.h"
 #include "mylist.h"
-#include "mousenew.h"
+#include "mouse.h"
 
 #define GAMEBUTTON_CLEARALL		0x00
 #define GAMEBUTTON_KEYPRESS		0x01
@@ -150,6 +150,7 @@ extern long				commandqueuetick;
 extern CommandQueue		UnitsCommandQueue;
 extern HighMouse		*highMouse;
 extern DestCursor		*destCursor;
-
+extern bool				movieminikarta;
+extern int				mousehotpos;
 #endif /*_GENER_W*/
 

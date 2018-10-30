@@ -5,7 +5,6 @@
 
 #include "vars.h"
 #include "fonts.h"
-#include "mouse.h"
 #include "mylist.h"
 #include "debug.h"
 #include "mytime.h"

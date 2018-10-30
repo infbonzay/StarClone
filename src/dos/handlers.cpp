@@ -1,7 +1,6 @@
 #include <dos.h>
 #include <conio.h>
 #include "handlers.h"
-#include "../mouse.h"
 
 //==========================================
 volatile char keyactive,lastkey;

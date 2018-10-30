@@ -9,7 +9,6 @@
 #include "gr.h"
 #include "key.h"
 #include "man.h"
-#include "mouse.h"
 #include "pcx.h"
 #include "mylist.h"
 #include "maps.h"

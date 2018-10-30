@@ -12,7 +12,6 @@
 #include "man.h"
 #include "gr.h"
 #include "pcx.h"
-#include "mouse.h"
 #include "wmem.h"
 #include "scripts.h"
 #include "mpq.h"

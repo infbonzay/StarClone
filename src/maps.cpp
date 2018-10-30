@@ -13,7 +13,6 @@
 #include "diap.h"
 #include "gr.h"
 #include "objs.h"
-#include "mouse.h"
 #include "tempobj.h"
 #include "starmap.h"
 #include "creep.h"
@@ -463,9 +462,9 @@ void MoveVisualMapPositionCenter(int x,int y)
 	MoveVisualMapPosition(x-widthkart*SIZESPRLANSHX/2,y-hightkart*SIZESPRLANSHY/2-SIZESPRLANSHY);
 }
 //==================================
-int SetVisualMapPosition(int x,int y)//x,y-0..MAX?MAP*32
+bool SetVisualMapPosition(int x,int y)//x,y-0..MAX?MAP*32
 {
-	int retval=0;
+	bool retval = false;
 	if (map.flags & STARMAP_FLAG_AUTOMOVE)
 		return(0);
 	x &= ~0x1f;
@@ -483,7 +482,7 @@ int SetVisualMapPosition(int x,int y)//x,y-0..MAX?MAP*32
 	if (map.MAPX != x/SIZESPRLANSHX || map.MAPY != y/SIZESPRLANSHX)
 	{
 		map.flags |= STARMAP_FLAG_MAPMOVE;
-		retval=1;
+		retval = true;
 		map.MAPX = x/SIZESPRLANSHX;
 		map.MAPY = y/SIZESPRLANSHY;
 		map.newx = x;

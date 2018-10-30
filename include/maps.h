@@ -17,7 +17,7 @@ void drawMAP(int ignorefirstwaiting);
 void AutoMoveMap(void);
 void MoveVisualMapPosition(int x,int y);
 void MoveVisualMapPositionCenter(int x,int y);
-int	 SetVisualMapPosition(int x,int y);
+bool SetVisualMapPosition(int x,int y);
 void SetVisualMapPositionCenter(int x,int y);
 void xchgkart(void);
 void putlansh(int xglob,int yglob,int x,int y,int indextile32,char wfog,char bfog);

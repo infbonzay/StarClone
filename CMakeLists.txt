@@ -45,7 +45,6 @@ set(SOURCES
 	src/fog.cpp
 	src/fonts.cpp
 	src/gamemenu.cpp
-	src/gener.cpp
 	src/gr.cpp
 	src/hod.cpp
 	src/images.cpp
@@ -61,7 +60,6 @@ set(SOURCES
 	src/menu.cpp
 	src/messages.cpp
 	src/mouse.cpp
-	src/mousenew.cpp
 	src/mpq.cpp
 	src/mpqwrapper.cpp
 	src/music.cpp
@@ -97,6 +95,7 @@ set(SOURCES
 	src/vision.cpp
 	src/walk.cpp
 	src/weapons.cpp
+	src/gener.cpp
 	src/wmem.cpp
 	src/network/netwgame.cpp
 	src/network/network_dc.cpp

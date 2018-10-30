@@ -10,7 +10,6 @@
 #include "wmem.h"
 #include "gr.h"
 #include "gener.h"
-#include "mouse.h"
 
 #ifdef WITHSDL
 		#include "sdl/grsdl.h"
@@ -177,8 +176,6 @@ int setmode(int x,int y,int bpp,int fullscreen)
 		SetPitchAndChunk();
 		highMouse->PosX = 0;
 		highMouse->PosY = 0;
-		mousemaxx = gameconf.grmode.x;
-		mousemaxy = gameconf.grmode.y;
 	}
 	return(a);
 }

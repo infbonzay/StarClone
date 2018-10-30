@@ -8,7 +8,6 @@
 
 #include "auxil.h"
 #include "mouse.h"
-#include "mousenew.h"
 #include "gener.h"
 #include "man.h"
 #include "vars.h"
@@ -454,11 +453,12 @@ selectedicon:
 			}
 			else
 			{
-								cbuild=fordeselect[0];
+				cbuild = fordeselect[0];
 				constrbuild(oldselectbuton);
-				mouseprop = oldselectbuton;
-								groupmove=0;
-				highMouse->WaitToPressLeftButton=2;
+				
+				highMouse->MouseModeMove = oldselectbuton;
+				groupmove = 0;
+				highMouse->WaitToPressLeftButton = 2;
 			}
 		}
 		}

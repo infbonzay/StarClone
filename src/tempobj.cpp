@@ -14,7 +14,6 @@
 #include "creep.h"
 #include "lists.h"
 #include "mylist.h"
-#include "mouse.h"
 #include "objs.h"
 #include "mytime.h"
 #include "starmap.h"

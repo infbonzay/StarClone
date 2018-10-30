@@ -3,7 +3,6 @@
 
 #include "version.hxx"
 #include "mytime.h"
-#include "mouse.h"
 #include "maps.h"
 #include "vars.h"
 #include "debug.h"
@@ -12,6 +11,7 @@
 #include "mycycle.h"
 
 #include "sdl/keysdl.h"
+#include "sdl/mousesdl.h"
 #include "sdl/grsdl.h"
 
 mycycle<uint16_t> keybuffer = mycycle<uint16_t>(16,MYCYCLE_INFINITE);

@@ -15,7 +15,6 @@
 #include "rand.h"
 #include "auxil.h"
 #include "load.h"
-#include "mouse.h"
 #include "music.h"
 #include "scripts.h"
 #include "gr.h"

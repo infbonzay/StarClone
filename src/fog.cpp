@@ -6,7 +6,6 @@
 #include "vars.h"
 #include "gr.h"
 #include "maps.h"
-#include "mouse.h"
 #include "vision.h"
 #include "fog.h"
 

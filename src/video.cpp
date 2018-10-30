@@ -15,7 +15,6 @@
 #include "mytime.h"
 #include "fonts.h"
 #include "gener.h"
-#include "mouse.h"
 #include "wmem.h"
 #include "debug.h"
 #include "gamemenu.h"

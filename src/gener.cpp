@@ -15,7 +15,6 @@
 #include "commandqueue.h"
 #include "debug.h"
 #include "auxil.h"
-#include "mouse.h"
 #include "mytime.h"
 #include "lists.h"
 #include "key.h"
@@ -81,7 +80,8 @@ int 			menustatus,startmission,campaign_id;
 HighMouse 		*highMouse;
 DestCursor		*destCursor;
 char			select_aria,karta_aria,mode_aria;
-
+bool			movieminikarta;
+int				mousehotpos;
 //=================================
 /*====================================================
 ======================================================
@@ -797,24 +797,23 @@ void mouseonkartaarea(void)
 	{
 		if (highMouse->GetButtonStatus() & WMLEFTKEY)
 		{
-			if (highMouse->WaitToPressLeftButton && waitfordownleftbuton)
+			if (highMouse->WaitToPressLeftButton && highMouse->WaitToReleaseLeftButton)
 			{
 				//action on leftbutton on minimap
 				highMouse->WaitToPressLeftButton=0;
-				waitfordownleftbuton=0;
+				highMouse->WaitToReleaseLeftButton=0;
 				highMouse->DoRightClickAction(	NULL,
 												(int)((highMouse->PosX-Xkart-Xkartbeg)/factorx)*SIZESPRLANSHX,
 												(int)((highMouse->PosY-Ykart-Ykartbeg)/factory)*SIZESPRLANSHY,
-												mouseprop,0);
+												0);
 			//action
 			}
 			else
 			{
-				if (!mloc)
+				if (!destCursor->Presence)
 				{
 					if (MAPDEF&&!highMouse->MouseOnSelectionMode)
 					{
-	//					movieminikarta=YES;
 						movieminikarta = SetVisualMapPosition((int) (((highMouse->PosX-Xkart-Xkartbeg)/factorx)-widthkart/2)*SIZESPRLANSHX,
 															  (int) (((highMouse->PosY-Ykart-Ykartbeg)/factory)-hightkart/2)*SIZESPRLANSHY);
 					}
@@ -826,10 +825,11 @@ void mouseonkartaarea(void)
 			if ( (!buton2) && (highMouse->GetButtonStatus() & WMRIGHTKEY) && !canceloperation)
 			{
 				buton2=1;
+				highMouse->MouseModeMove = MODEMOVE;
 				highMouse->DoRightClickAction(  NULL,
 												(int)((highMouse->PosX-Xkart-Xkartbeg)/factorx)*SIZESPRLANSHX,
 												(int)((highMouse->PosY-Ykart-Ykartbeg)/factory)*SIZESPRLANSHY,
-												MODEMOVE,0);
+												0);
 			}
 		}
 	}
@@ -1019,7 +1019,7 @@ int gogame(struct mapinfo *info)
 				drawmenu_LASTTICK(&showedmenu);
 			}
 		}
-		if (movieminikarta==YES&&karta_aria)
+		if (movieminikarta && karta_aria)
 			scrnew=1;
 		if (scrnew&&!retnet)
 		{
@@ -1027,11 +1027,11 @@ int gogame(struct mapinfo *info)
 			keyhandler();		//analyze if some key action
 			karta_aria =  (mousehotpos == MOUSEONMINIMAP);
 			select_aria = (mousehotpos == MOUSEONMAP);
-			if (movieminikarta == YES && karta_aria)
+			if (movieminikarta && karta_aria)
 				highMouse->SetRestrictCoords(MOUSEMODE4);
 			else
 				highMouse->SetRestrictCoords(MOUSEMODE2);
-			movieminikarta=NO;
+			movieminikarta = false;
 			switch(timeid)
 			{
 				case TIMETONOSLEEP:
@@ -1233,7 +1233,7 @@ int gogame(struct mapinfo *info)
 		{
 			karta_aria = 0;
 			select_aria = 0;
-			movieminikarta=NO;
+			movieminikarta = false;
 			mousehotpos=MOUSEONNONE;
 			highMouse->WaitToPressLeftButton=0;
 			highMouse->MouseOnSelectionMode=0;

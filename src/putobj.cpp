@@ -18,7 +18,6 @@
 #include "gr.h"
 #include "gener.h"
 #include "maps.h"
-#include "mouse.h"
 #include "wmem.h"
 #include "load.h"
 #include "objs.h"

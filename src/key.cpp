@@ -7,7 +7,6 @@
 #include "audio.h"
 #include "doodad.h"
 #include "gr.h"
-#include "mouse.h"
 #include "vars.h"
 #include "gener.h"
 #include "mytime.h"
@@ -42,7 +41,7 @@
 //================================
 void keyscroll(void)
 {
-	if (KEYPRESS(LEFTKEY))
+/*	if (KEYPRESS(LEFTKEY))
 		addscrx-=factorscrollkey;
 	if (KEYPRESS(RIGHTKEY))
 		addscrx+=factorscrollkey;
@@ -50,6 +49,7 @@ void keyscroll(void)
 		addscry-=factorscrollkey;
 	if (KEYPRESS(DOWNKEY))
 		addscry+=factorscrollkey;
+*/
 }
 //==================================
 void keyup(void)

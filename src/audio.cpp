@@ -11,7 +11,6 @@
 #include "mpq.h"
 #include "load.h"
 #include "vars.h"
-#include "mouse.h"
 #include "rand.h"
 #include "objinfo.h"
 #include "maps.h"

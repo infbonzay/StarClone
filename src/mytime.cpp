@@ -5,7 +5,6 @@
 #include "vars.h"
 #include "maps.h"
 #include "scrolltile.h"
-#include "mouse.h"
 #include "gener.h"
 #include "fonts.h"
 #include "portrait.h"
@@ -54,7 +53,6 @@ unsigned char timewaitticks[10]=
 	}
 #endif
 /*#ifdef UNDERDOS
-	#include "mouse.h"
 	long long GetCPUCurentTick(void)
 	{
 		int _edx,_eax;

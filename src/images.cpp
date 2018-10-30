@@ -18,7 +18,6 @@
 #include "objinfo.h"
 #include "objs.h"
 #include "market.h"
-#include "mouse.h"
 #include "rand.h"
 #include "sigorder.h"
 #include "doodad.h"

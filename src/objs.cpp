@@ -3,7 +3,6 @@
 
 #include "auxil.h"
 #include "debug.h"
-#include "mouse.h"
 #include "man.h"
 #include "vars.h"
 #include "putobj.h"
@@ -779,7 +778,7 @@ void selectMAN(int x1,int y1,int x2,int y2,int mode)
 	x2 = x2+map.MAPXGLOBAL;
 	y1 = y1+map.MAPYGLOBAL;
 	y2 = y2+map.MAPYGLOBAL;
-	int ctrl=(KEYPRESS(CTRLLKEY)|(KEYPRESS(CTRLRKEY)))||mousedoubleclick;
+	int ctrl = (KEYPRESS(CTRLLKEY) | (KEYPRESS(CTRLRKEY))) || highMouse->DoubleClick;
 	if ( ((x2-x1 <= MINHAP) && (y2-y1<=MINHAP)) || ctrl)
 	{
 		a=founduniqueobj((x1+x2)/2,(y1+y2)/2);
