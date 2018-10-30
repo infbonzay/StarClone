@@ -1213,10 +1213,16 @@ int gogame(struct mapinfo *info)
 			if (!activatedwaittimer)
 			{
 				//not show any menus if waitplayermenu activated
-				showF10menu(&f10_menu);
-				showDIPLOMACYmenu(&dipl_menu);
-				showTERRAINmenu(&terr_menu);
-				showMESSAGEmenu(&mess_menu);
+				ShowButtonMenu(&f10_menu,&putgamemenu);
+				ShowButtonMenu(&dipl_menu,&diplomacymenu);
+				if (ShowButtonMenu(&terr_menu,NULL))
+					ChangeTerrain();
+				ShowButtonMenu(&mess_menu,&messagingmenu);
+
+				//showF10menu(&f10_menu);
+				//showDIPLOMACYmenu(&dipl_menu);
+				//showTERRAINmenu(&terr_menu);
+				//showMESSAGEmenu(&mess_menu);
 			}
 		}
 		retmenu=0;
@@ -1431,7 +1437,36 @@ void drawGAMEMENUbutton(char *button,DIALOGBIN_INFO *menuinfo,int buttonnr,
 	}//visibled
 }
 //==========================
-void showF10menu(char *button)
+void ChangeTerrain(void)
+{
+		MAPDEF++;
+		if (MAPDEF>3)
+			MAPDEF=2;
+		switch(MAPDEF)
+		{
+			case 2://only units
+				setmemd(Minimap,MAXIMSIZEMINIMAP*MAXIMSIZEMINIMAP/4,0);
+				break;
+			case 3:// all infos
+				drawMINIMAP();
+				break;
+		}
+
+}
+//==========================
+bool ShowButtonMenu(char *button,int (*adrmenu)(MENUDRAW *menudraw,MENUPARAMS *menuparams))
+{
+	if ((*button & GAMEBUTTON_SHOW) && (*button & GAMEBUTTON_RELEASE))
+	{
+		*button = GAMEBUTTON_CLEARALL;
+		if (adrmenu)
+			showedmenu.prepareforshowmenu(adrmenu,NULL);
+		return true;
+	}
+	return false;
+}
+//==========================
+/*void showF10menu(char *button)
 {
 	if ((*button&GAMEBUTTON_SHOW) && (*button&GAMEBUTTON_RELEASE))
 	{
@@ -1446,31 +1481,7 @@ void showTERRAINmenu(char *button)
 	if ((*button&GAMEBUTTON_SHOW) && (*button&GAMEBUTTON_RELEASE))
 	{
 		*button=GAMEBUTTON_CLEARALL;
-		MAPDEF++;
-		if (MAPDEF>3)
-			MAPDEF=2;
-		switch(MAPDEF)
-		{
-	/*		case 0://nomap
-						setmemd(Minimap,MAXIMSIZEMINIMAP*MAXIMSIZEMINIMAP/4,0);
-				break;
-			case 1://only terrain
-				memcpy(Minimap,map.minimap,MAXXMAP*MAXYMAP);
-			break;
-				case 2://only units
-				setmemd(Minimap,MAXIMSIZEMINIMAP*MAXIMSIZEMINIMAP/4,0);
-				break;
-			case 3:// all infos
-					drawMINIMAP();
-			break;
-	*/
-			case 2://only units
-				setmemd(Minimap,MAXIMSIZEMINIMAP*MAXIMSIZEMINIMAP/4,0);
-				break;
-			case 3:// all infos
-				drawMINIMAP();
-				break;
-		}
+		ChangeTerrain();
 	}
 }
 //==========================
@@ -1491,6 +1502,7 @@ void showDIPLOMACYmenu(char *button)
 		showedmenu.prepareforshowmenu(&diplomacymenu,NULL);
 	}
 }
+*/
 //==========================
 void showramka(void)
 {

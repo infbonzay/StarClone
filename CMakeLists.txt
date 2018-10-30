@@ -30,6 +30,7 @@ include_directories(include/smacker)
 set(SOURCES
 	src/ScreenDraw.cpp
 	src/MenuItem.cpp
+	src/gener.cpp
 	src/action.cpp
 	src/actiondefault.cpp
 	src/audio.cpp
@@ -96,7 +97,6 @@ set(SOURCES
 	src/vision.cpp
 	src/walk.cpp
 	src/weapons.cpp
-	src/gener.cpp
 	src/wmem.cpp
 	src/network/netwgame.cpp
 	src/network/network_dc.cpp

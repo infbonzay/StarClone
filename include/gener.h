@@ -111,10 +111,13 @@ int	 letsplaygame(int race,char *mypath);
 void drawGAMEMENUbutton(char *button,DIALOGBIN_INFO *menuinfo,int buttonnr,
 						 int dlggrp_firstpict,int mousehotnr,int stattxt_nr);
 
-void showF10menu(char *button);
-void showTERRAINmenu(char *button);
-void showMESSAGEmenu(char *button);
-void showDIPLOMACYmenu(char *button);
+bool ShowButtonMenu(char *button,int (*adrmenu)(MENUDRAW *menudraw,MENUPARAMS *menuparams));
+void ChangeTerrain(void);
+
+//void showF10menu(char *button);
+//void showTERRAINmenu(char *button);
+//void showMESSAGEmenu(char *button);
+//void showDIPLOMACYmenu(char *button);
 int	 ChangeMenuStatus(int mstatus);
 int	 IfTimeForTrigger(struct mapinfo *info,int *prevgameticks);
 void ShowFirstRunVideo(int ignorefirstrunbit);
@@ -152,6 +155,8 @@ extern HighMouse		*highMouse;
 extern DestCursor		*destCursor;
 extern bool				movieminikarta;
 extern int				mousehotpos;
+
+
 
 
 #endif /*_GENER_W*/
