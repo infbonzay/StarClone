@@ -12,6 +12,7 @@
 #include "vars.h"
 #include "market.h"
 
+#include "ScreenDraw.h"
 #include "commandqueue.h"
 #include "debug.h"
 #include "auxil.h"
@@ -79,6 +80,8 @@ MENUDRAW		showedmenu;
 int 			menustatus,startmission,campaign_id;
 HighMouse 		*highMouse;
 DestCursor		*destCursor;
+ScreenDraw		*screenDraw;
+
 char			select_aria,karta_aria,mode_aria;
 bool			movieminikarta;
 int				mousehotpos;
@@ -899,8 +902,8 @@ int gogame(struct mapinfo *info)
 	int activatedwaittimer;
 	MENUPARAMS *mp;
 
-	int scrregions,pc;
-	SCREEN_REGION	scrparts[2],lastmenuregion;
+	int pc;
+	SCREEN_REGION	lastmenuregion;
 	int retmenu;
 	int i,retnet,timeid;
 	char desenonlymouseflag;
@@ -932,6 +935,7 @@ int gogame(struct mapinfo *info)
 
 	highMouse->MouseOnObjClear();
 	destCursor = new DestCursor();
+	screenDraw = new ScreenDraw();
 	totalimgs=0;
 	drawedimgs=0;
 	AllImages_Draw();
@@ -958,7 +962,7 @@ int gogame(struct mapinfo *info)
 
 
 	do{
-		scrregions=0;
+		screenDraw->ClearRegions();
 		needredesen = 0;
 		clearactionBITS();
 		int need_quiting = eventwindowloop();
@@ -1178,11 +1182,9 @@ int gogame(struct mapinfo *info)
 				printobjparam();		//draw parameters of selected objects
 			desenonlymouseflag = 0;
 			//update entirescreen
-			scrparts[0].x=0;
-			scrparts[0].y=0;
-			scrparts[0].w=gameconf.grmode.x;
-			scrparts[0].h=gameconf.grmode.y;
-			scrregions=1;
+			
+			screenDraw->AddRegion(0,0,0,gameconf.grmode.x,gameconf.grmode.y);
+			screenDraw->SetRegions(1);
 		}
 		else//scrnew
 		{
@@ -1190,21 +1192,19 @@ int gogame(struct mapinfo *info)
 			if (PAUSEGAME)
 			{
 				desenonlymouseflag = 0;
-				scrparts[0].x = 0;
-				scrparts[0].y = 0;
-				scrparts[0].w = gameconf.grmode.x;
-				scrparts[0].h = gameconf.grmode.y;
-				scrregions = 1;
+				screenDraw->AddRegion(0,0,0,gameconf.grmode.x,gameconf.grmode.y);
+				screenDraw->SetRegions(1);
 			}
 			else
 			{
 				desenonlymouseflag = 1;
 				//update mousecursor
-				scrparts[0].x = highMouse->SavedUnder.PosX;
-				scrparts[0].y = highMouse->SavedUnder.PosY;
-				scrparts[0].w = highMouse->SavedUnder.SizeX;
-				scrparts[0].h = highMouse->SavedUnder.SizeY;
-				scrregions = 1;
+				screenDraw->AddRegion(  0,
+										highMouse->SavedUnder.PosX,
+										highMouse->SavedUnder.PosY,
+										highMouse->SavedUnder.SizeX,
+										highMouse->SavedUnder.SizeY);
+				screenDraw->SetRegions(1);
 			}
 		}
 		ShowGameStatusMenu(&prevgameticks);
@@ -1255,16 +1255,9 @@ int gogame(struct mapinfo *info)
 				{
 					if (!showedmenu.menutodraw)
 					{
-						scrparts[1].x=scrparts[0].x;
-						scrparts[1].y=scrparts[0].y;
-						scrparts[1].w=scrparts[0].w;
-						scrparts[1].h=scrparts[0].h;
-
-						scrparts[0].x=lastmenuregion.x;
-						scrparts[0].y=lastmenuregion.y;
-						scrparts[0].w=lastmenuregion.w;
-						scrparts[0].h=lastmenuregion.h;
-						scrregions=2;
+						screenDraw->CloneRegion(1,0);
+						screenDraw->AddRegion(0, &lastmenuregion);
+						screenDraw->SetRegions(2);
 					}
 				}
 			}
@@ -1274,15 +1267,13 @@ int gogame(struct mapinfo *info)
 				//add and menu region update
 				if (showedmenu.menutodraw)
 				{
-					scrparts[1].x=scrparts[0].x;
-					scrparts[1].y=scrparts[0].y;
-					scrparts[1].w=scrparts[0].w;
-					scrparts[1].h=scrparts[0].h;
-					scrparts[0].x=showedmenu.menutodraw->x;
-					scrparts[0].y=showedmenu.menutodraw->y;
-					scrparts[0].w=showedmenu.menutodraw->xsize;
-					scrparts[0].h=showedmenu.menutodraw->ysize;
-					scrregions=2;
+					screenDraw->CloneRegion(1,0);
+					screenDraw->AddRegion(	0,
+											showedmenu.menutodraw->x,
+											showedmenu.menutodraw->y,
+											showedmenu.menutodraw->xsize,
+											showedmenu.menutodraw->ysize);
+					screenDraw->SetRegions(2);
 				}
 			}
 		}
@@ -1294,7 +1285,9 @@ int gogame(struct mapinfo *info)
 		highMouse->SaveImageUnder();
 		//	desenpatr();
 		highMouse->DrawMouse();
-		wscreenonmem(scrregions,scrparts);
+		screenDraw->TopMessage();
+		screenDraw->UpdateScreen();
+		//wscreenonmem(scrregions,scrparts);
 		highMouse->LoadImageUnder();
 	//	loadunderpatr();
 		showedmenu.EndDrawMenu();
@@ -1322,6 +1315,7 @@ int gogame(struct mapinfo *info)
 	scrnew=0;
 
 	AllImages_FreeAndEmpty();
+	delete screenDraw;
 	if (destCursor)
 	{
 		delete destCursor;
@@ -1508,105 +1502,6 @@ void showiconramka(void)
 	putstasprite8(DELTASCREENX,DELTASCREENY,packedconsoleover);
 }
 //==========================
-void wscreenonmem(int nrregions,SCREEN_REGION regions[])
-{
-	static int frames,fps,prevsec,clc;
-	static long prevgamecycle;
-	int cursec;
-	char s[300];
-	char ss[50];
-	s[0]=0;
-
-	frames++;
-	cursec = mytimer.GetTimeParced();
-	if (cursec != prevsec)
-	{
-		prevsec = cursec;
-		clc = gamecycle - prevgamecycle;
-		prevgamecycle = gamecycle;
-		fps = frames;
-		frames = 0;
-	}
-	strcat(s,"FPS/CYCLES:");
-	itoa(fps,ss,10);
-	strcat(s,ss);
-	strcat(s,"/");
-	itoa(clc,ss,10);
-	strcat(s,ss);
-
-	strcat(s," maxobjs:");
-	itoa(MaxObjects,ss,10);
-	strcat(s,ss);
-/*	  if (fordeselect[0])
-	{
-	sprintf(ss," %d,%d %d,%d",GetOBJx(fordeselect[0]),GetOBJy(fordeselect[0]),fordeselect[0]->finalx>>8,fordeselect[0]->finaly>>8);
-	strcat(s,ss);
-	}
-*/
-/*	  if (fordeselect[0])
-	{
-	sprintf(ss," 0x%x",(int)fordeselect[0]);
-	strcat(s,ss);
-	}
-	if (fordeselect[0])
-	{
-	sprintf(ss," %d",fordeselect[0]->mainimage->side);
-	strcat(s,ss);
-	}
-*/
-	strcat(s," hot:");
-	itoa(mousehotpos,ss,10);
-	strcat(s,ss);
-
-	strcat(s," pl:");
-	itoa(NUMBGAMER,ss,10);
-	strcat(s,ss);
-	strcat(s,"/");
-	itoa(PLAYEDPLAYERS,ss,10);
-	strcat(s,ss);
-
-	if (fordeselect[0])
-	{
-		strcat(s," pl:");
-		itoa(fordeselect[0]->playernr,ss,10);
-		strcat(s,ss);
-		strcat(s," move:");
-		itoa(fordeselect[0]->modemove,ss,10);
-		strcat(s,ss);
-	//	strcat(s,"/");
-	//	itoa(fordeselect[0]->atackcooldowntime,ss,10);
-	//	strcat(s,ss);
-	}
-/*	  if (fordeselect[0])
-	{
-		strcat(s,"x=");
-		itoa(fordeselect[0]->xkart,ss,10);
-		strcat(s,ss);
-		strcat(s,"y=");
-		itoa(fordeselect[0]->ykart,ss,10);
-		strcat(s,ss);
-		strcat(s," x=");
-		itoa(fordeselect[0]->sourcex,ss,10);
-		strcat(s,ss);
-		strcat(s,"y=");
-		itoa(fordeselect[0]->sourcey,ss,10);
-		strcat(s,ss);
-	}
-*/
-	putmessage(0,0,IDFONT16,s,GGREENCOLORFONT,tfontgamp,gamedlggrp);
-	if (map.palettechanges)
-	{
-		palchange(map.palette,gameconf.videoconf.gamma,gameconf.videoconf.saturate);
-		map.palettechanges=0;
-		if (!(gameconf.grmode.flags & DISPLAYFLAGS_EMULATIONMODE))
-			wscreenonregions(nrregions,regions);
-	}
-	else
-		wscreenonregions(nrregions,regions);
-//	  printf("totalimgs=%d drawedimgs=%d\n",totalimgs,drawedimgs);		//to check for leaks
-//	  printf("windowactive=%d\n",gameconf.grmode.windowactive);
-}
-//===================================================
 void gameend(const char *mes)
 {
 	logend();

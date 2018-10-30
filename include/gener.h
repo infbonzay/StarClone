@@ -152,5 +152,7 @@ extern HighMouse		*highMouse;
 extern DestCursor		*destCursor;
 extern bool				movieminikarta;
 extern int				mousehotpos;
+
+
 #endif /*_GENER_W*/
 
