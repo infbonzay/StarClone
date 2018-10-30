@@ -37,7 +37,6 @@ int				fullscreen = 0;
 SDL_Surface		*sdlsurface;
 Uint8			*keystatus;
 int				needrefreshatend;
-int				dblclick;
 //==========================
 int setpalette(SDL_Color rememberpal[])
 {
@@ -269,7 +268,6 @@ int eventwindowloop(void) //return 1 - on quit
 				buttons = 1 << (event.button.button - 1);
 				if (lowMouse.ClickEventFunc)
 					(*lowMouse.ClickEventFunc)(true, buttons);
-				//mouse_b |= buttons;
 				break;
 			case SDL_MOUSEBUTTONUP:
 				buttons = 1 << (event.button.button - 1);

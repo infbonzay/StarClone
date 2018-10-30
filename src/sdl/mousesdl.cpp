@@ -1,4 +1,3 @@
-#include "SDL/SDL.h"
 #include "grsdl.h"
 #include "mousesdl.h"
 

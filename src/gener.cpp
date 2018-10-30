@@ -873,9 +873,9 @@ void FreeQueues(void)
 void GoNextCommandTick()
 {
 	if (!NETWORKGAME)
-	commandqueuetick += 1;
+		commandqueuetick += 1;
 	else
-	commandqueuetick += 1;//TODO need to add something else
+		commandqueuetick += 1;//TODO need to add something else
 }
 //==========================
 void pregameQUEUE(void)
@@ -980,8 +980,7 @@ int gogame(struct mapinfo *info)
 		{
 			keyactive=0;
 			lastkey=0;
-			//mouse_b=0;
-			dblclick=0;
+			highMouse->DoubleClick = false;
 		}
 		timeid=mytimer.TimeIsCome(gameconf.speedconf.gamespeed);
 		if (PAUSEGAME)
@@ -1304,7 +1303,6 @@ int gogame(struct mapinfo *info)
 			showedmenu.EndShowMenu();
 		}
 	//	DEBUGMESSCR("%d\n",MENUACTIVE);
-		//mouse_b = highMouse.GetButtonStatus();
 		if (needrefreshatend&scrnew)
 		{
 			needrefreshatend = 0;

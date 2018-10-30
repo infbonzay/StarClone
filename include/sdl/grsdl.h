@@ -31,7 +31,6 @@ extern	volatile short int keyactive,lastkey;
 extern	int fullscreen;
 extern	SDL_Surface *sdlsurface;
 extern	int needrefreshatend;
-extern	int dblclick;
 extern	mycycle<uint16_t> keybuffer;
 #endif
 

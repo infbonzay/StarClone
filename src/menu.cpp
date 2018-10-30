@@ -315,12 +315,12 @@ int actiondblclick(MENUSTR *allmenus,int downmenu)
 	MENUPOS *item;
 	LISTBOXBAR	*bar;
 	int action;
-	if (dblclick)
+	if (highMouse->DoubleClick)
 	{
-				dblclick=0;
-				item=&allmenus->menu[downmenu];
-				switch(item->itemtype)
-				{
+		highMouse->DoubleClick = false;
+		item=&allmenus->menu[downmenu];
+		switch(item->itemtype)
+		{
 						case ISLISTBOX:
 						action=0;
 						bar=item->item.listbox->bar;
@@ -352,7 +352,7 @@ int actiondblclick(MENUSTR *allmenus,int downmenu)
 
 						}
 						break;
-				}
+		}
 	}
 	return(NOSELECTMENUBAR);
 }
@@ -604,7 +604,7 @@ int drawmenu(MENUSTR *allmenus,int flags)
 	prevmenuonbar = menuonbar;
 	menuonbar = NOSELECTMENUBAR;
 	needredraw=0;
-	dblclick=0;
+	highMouse->DoubleClick = false;
 	keyactive=0;
 	eventwindowloop();
 	keybuffer.Flush();
@@ -622,7 +622,6 @@ int drawmenu(MENUSTR *allmenus,int flags)
 	{
 				highMouse->RefreshMouseType(map.MAPXGLOBAL,map.MAPYGLOBAL);
 				do{
-						//mouse_b = highMouse.GetButtonStatus();
 						eventwindowloop();
 						getmouseonitem(&activeitemchange,&activeitem);
 						keyrefresh();
@@ -830,7 +829,6 @@ int showlistmenu(MENUSTR *allmenus)
 	checkanddrawmenu(allmenus,ITEMNOONEACTIVE,ITEM_RESTOREANDFREE);
 	highMouse->RefreshMouseType(map.MAPXGLOBAL,map.MAPYGLOBAL);
 	do{
-				//mouse_b = highMouse.GetButtonStatus();
 				getmouseonitem(&activeitemchange,&activeitem);
 				eventwindowloop();
 				if (allmenus->prevmenu)
@@ -4068,8 +4066,6 @@ int drawmenu_ONETICK(MENUSTR *allmenus)
 {
 	int exitcallback,i,redrawbar,expitem;
 	MENUSTR *showlist;
-
-//	  dblclick=0;
 
 	allmenus->saveunder=saveundermenu(allmenus);
 	ShowMenuEdge(allmenus);
