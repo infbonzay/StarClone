@@ -973,7 +973,7 @@ int gogame(struct mapinfo *info)
 		if (!PAUSEGAME && !PAUSEINTRIG)
 		{
 			keyrefresh();					//refresh array of keys
-			getmousetype(map.MAPXGLOBAL,map.MAPYGLOBAL);
+			highMouse->RefreshMouseType(map.MAPXGLOBAL,map.MAPYGLOBAL);
 			mouseonkartaarea();
 		}
 		if (PAUSEINTRIG)

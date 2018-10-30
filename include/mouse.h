@@ -19,11 +19,6 @@ extern char		timemouse;
 extern char		timemousewait;
 
 
-void desenlocation(void);
-void getmousetype(int x,int y);
-void saveunderpatr(void);
-void loadunderpatr(void);
-
 //=================================
 #endif /*	 _MOUSE_W	*/
 

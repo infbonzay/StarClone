@@ -621,7 +621,7 @@ int drawmenu(MENUSTR *allmenus,int flags)
 	checkanddrawmenu(allmenus,ITEMNOONEACTIVE,updateunder);
 	if (!(flags&&MENUFLAGS_BYPASS))
 	{
-				getmousetype(map.MAPXGLOBAL,map.MAPYGLOBAL);
+				highMouse->RefreshMouseType(map.MAPXGLOBAL,map.MAPYGLOBAL);
 				do{
 						//mouse_b = highMouse.GetButtonStatus();
 						eventwindowloop();
@@ -829,7 +829,7 @@ int showlistmenu(MENUSTR *allmenus)
 	scrollportrait_menu=scrollportrait;
 	clearscrollportrait();
 	checkanddrawmenu(allmenus,ITEMNOONEACTIVE,ITEM_RESTOREANDFREE);
-	getmousetype(map.MAPXGLOBAL,map.MAPYGLOBAL);
+	highMouse->RefreshMouseType(map.MAPXGLOBAL,map.MAPYGLOBAL);
 	do{
 				//mouse_b = highMouse.GetButtonStatus();
 				getmouseonitem(&activeitemchange,&activeitem);
