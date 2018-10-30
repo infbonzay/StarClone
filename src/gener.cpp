@@ -93,11 +93,9 @@ int				mousehotpos;
 ======================================================*/
 int main(int c,char **parm,char **env)
 {
-	long usec;
-	int i,err,statusgame,firsttimelaunch=0,videook=0;
+
+	int i,err,firsttimelaunch=0,videook=0;
 	int status,status2,gamequitstatus,mission_id,selected_id,missionfrommenu,runonemission;
-	char *su;
-	struct stat statpath;
 	mapinfo *testmap;
 	char temppath[1024];
 #ifdef TESTMALLOC
@@ -114,10 +112,10 @@ int main(int c,char **parm,char **env)
 		printf("Loading config file " SC_CONFIGFILE "\n");
 		UnLoadAllMpqs();
 		unloadcfg();
-		i=loadcfg(SC_CONFIGFILE,&firsttimelaunch);
+		i = loadcfg(SC_CONFIGFILE,&firsttimelaunch);
 		if (i)
 		{
-			if (i==-2)
+			if (i == -2)
 			{
 				printf(SC_CONFIGFILE " not found.\nCreate default " SC_CONFIGFILE " configuration.\n");
 				i=loadcfg(SC_CONFIGFILE,&firsttimelaunch);
@@ -176,23 +174,23 @@ int main(int c,char **parm,char **env)
 			{
 				gameend("Problem with install interrupts(may be timer interrupt)");
 			}
-			videook=1;
+			videook = 1;
 		}
-		if (firsttimelaunch&0xff)
+		if (firsttimelaunch & 0xff)
 		{
 			LoadDatTblFiles(&alldattbl);
-			if (DownloadMpqMenu(firsttimelaunch)==-1)
+			if (DownloadMpqMenu(firsttimelaunch) == -1)
 				exit(-1);
 			UnloadDatTblFiles(&alldattbl);
 		}
-	}while(firsttimelaunch&0xff);
+	}while(firsttimelaunch & 0xff);
 
 	DEBUG_INIT(0);
 
-	gameconf.audioconf.audioflags=0;
+	gameconf.audioconf.audioflags = 0;
 	printf("initialization sound system ...\n");
 	i = initsoundengine(MAXSOUNDS);
-	if (i<0)
+	if (i < 0)
 	{
 		gameconf.audioconf.audioflags |= AUDIOFLAGS_MUSICDISABLE;
 		gameconf.audioconf.audioflags |= AUDIOFLAGS_SOUNDDISABLE;
@@ -268,25 +266,25 @@ int main(int c,char **parm,char **env)
 */
 
 	do{
-	int selected=mainmenu();
+		int selected = mainmenu();
 		do{
-			gamequitstatus=CONTINUEGAME;
+			gamequitstatus = CONTINUEGAME;
 			switch(selected)
 			{
 			case SINGLEGAME:
-				NETWORKGAME=0;
+				NETWORKGAME = 0;
 				selected=SINGLEGAME;
-				NUMBGAMER=0;//
-				status=glu_login();
+				NUMBGAMER = 0;//
+				status = glu_login();
 				switch(status)
 				{
 					case 0://user selected ok pressed
 					do{
 						if (!EXPANSIONSET)
-							status=campaignselect();
+							status = campaignselect();
 						else
-							status=xcampaignselect();
-						missionfrommenu=1;
+							status = xcampaignselect();
+						missionfrommenu = 1;
 						switch(status)
 						{
 							case STAR_PROTOSS:
@@ -309,12 +307,12 @@ playmission:
 									PlayCampaignVideo(campaign_id,selected_id);
 									if (missionfrommenu)
 									{
-										gamequitstatus=PREVIOUSMENU;
+										gamequitstatus = PREVIOUSMENU;
 										break;
 									}
 									goto gonextmission;
 								}
-								missionfrommenu=0;
+								missionfrommenu = 0;
 repeatmissionagain:
 								ShowPreviewMission(campaign_id,selected_id,0);//show info before the mission
 								if (status == ENDCAMPAIGN)
@@ -328,27 +326,27 @@ repeatmissionagain:
 								}
 								clearplayersconfig();
 								clearplayernames();
-								testmap=(mapinfo *) wmalloc(sizeof(mapinfo));
+								testmap = (mapinfo *) wmalloc(sizeof(mapinfo));
 								memset(testmap,0,sizeof(mapinfo));
 
-								err=starmap_info(SELECTMAP,NULL,testmap);
+								err = starmap_info(SELECTMAP,NULL,testmap);
 								if (err)
 								{
-									gamequitstatus=PREVIOUSMENU;
+									gamequitstatus = PREVIOUSMENU;
 									break;
 								}
 								copytempowners(testmap);
 								preparegameconf_ums();
 								force_slots.CreatePlayersNr();
-								selected=SINGLEGAME;
-								status=glu_briefing(gameconf.pl_race[NUMBGAMER],NETWORKGAME,testmap,SELECTMAP,startmission == 0);
+								selected = SINGLEGAME;
+								status = glu_briefing(gameconf.pl_race[NUMBGAMER],NETWORKGAME,testmap,SELECTMAP,startmission == 0);
 								unload_starmapallocated(testmap);
 								wfree(testmap);
-								testmap=NULL;
+								testmap = NULL;
 								switch(status)
 								{
 									case STARTGAME://let's play
-									gamequitstatus=letsplaygame(gameconf.pl_race[NUMBGAMER],SELECTMAP);
+									gamequitstatus = letsplaygame(gameconf.pl_race[NUMBGAMER],SELECTMAP);
 									free_missionobjectives();
 									case SKIPMISSION://go next mission
 										if (status == SKIPMISSION)
@@ -356,10 +354,10 @@ repeatmissionagain:
 											gamestatus = WINGAME;
 											gamequitstatus = QUITGAME;
 										}
-										if ( gamequitstatus==EXITGAME || gamequitstatus==QUITMISSION )
+										if ( gamequitstatus == EXITGAME || gamequitstatus == QUITMISSION )
 											break;
-			//							gamestatus=WINGAME; //for test
-										if ( gamestatus!=WINGAME || gamequitstatus == RESTARTGAME )
+										//gamestatus = WINGAME; //for test
+										if ( gamestatus != WINGAME || gamequitstatus == RESTARTGAME )
 											goto repeatmissionagain;
 gonextmission:
 										ShowPreviewMission(campaign_id,selected_id,1);//show info after mission(if exist)
@@ -378,7 +376,7 @@ gonextmission:
 										if ( runonemission )
 										{
 											//complete campaign go to the menu
-											gamequitstatus=PREVIOUSMENU;
+											gamequitstatus = PREVIOUSMENU;
 											break;
 										}
 										//campaign not done, go next mission;
@@ -387,21 +385,21 @@ gonextmission:
 										goto playmission;
 										break;
 									case CANCELGAME://cancel play
-										selected=SINGLEGAME;
-										gamequitstatus=PREVIOUSMENU;
+										selected = SINGLEGAME;
+										gamequitstatus = PREVIOUSMENU;
 										free_missionobjectives();
 										break;
 								}
 								break;
 							case STAR_LOADSAVED:
 							case BROOD_LOADSAVED:
-								selected=SINGLEGAME;
-								gamequitstatus=glu_loadgame();
+								selected = SINGLEGAME;
+								gamequitstatus = glu_loadgame();
 								break;
 							case STAR_LOADREPLAY:
 							case BROOD_LOADREPLAY:
-								selected=SINGLEGAME;
-								gamequitstatus=glu_loadreplay();
+								selected = SINGLEGAME;
+								gamequitstatus = glu_loadreplay();
 								break;
 							case STAR_PLAYCUSTOM:
 							case BROOD_PLAYCUSTOM:
@@ -414,32 +412,32 @@ gonextmission:
 									do{
 											if (GAMETYPE == MAP_GAMETYPE_USEMAPSETTINGS)
 										preparegameconf_ums();
-										testmap=(mapinfo *) wmalloc(sizeof(mapinfo));
+										testmap = (mapinfo *) wmalloc(sizeof(mapinfo));
 										memset(testmap,0,sizeof(mapinfo));
 
-										err=starmap_info(NULL,SELECTMAP,testmap);
+										err = starmap_info(NULL,SELECTMAP,testmap);
 										if (!err)
 										{
 											starmap_forceslots(testmap,&force_slots,GAMETYPE);
 										}
 										force_slots.CreatePlayersNr();
-										selected=SINGLEGAME;
-										gamequitstatus=CONTINUEGAME;
+										selected = SINGLEGAME;
+										gamequitstatus = CONTINUEGAME;
 										switch(status)
 										{
 											case 0:
-												status=glu_briefing(gameconf.pl_race[NUMBGAMER],NETWORKGAME,testmap,NULL,0);
+												status = glu_briefing(gameconf.pl_race[NUMBGAMER],NETWORKGAME,testmap,NULL,0);
 												unload_starmapallocated(testmap);
 												wfree(testmap);
-												testmap=NULL;
+												testmap = NULL;
 												switch(status)
 												{
 													case STARTGAME://let's play
 													gamequitstatus=letsplaygame(gameconf.pl_race[NUMBGAMER],NULL);
 													break;
 													case CANCELGAME://cancel play
-													selected=SINGLEGAME;
-													gamequitstatus=PREVIOUSMENU;
+													selected = SINGLEGAME;
+													gamequitstatus = PREVIOUSMENU;
 													break;
 												}
 												free_missionobjectives();
@@ -448,24 +446,24 @@ gonextmission:
 			//									printf("return to menu SINGLEGAME\n");
 												unload_starmapallocated(testmap);
 												wfree(testmap);
-												testmap=NULL;
-												gamequitstatus=PREVIOUSMENU;
-												selected=SINGLEGAME;
+												testmap = NULL;
+												gamequitstatus = PREVIOUSMENU;
+												selected = SINGLEGAME;
 												break;
 											default:
 												unload_starmapallocated(testmap);
 												wfree(testmap);
-												testmap=NULL;
-												selected=SINGLEGAME;
-												gamequitstatus=PREVIOUSMENU;
+												testmap = NULL;
+												selected = SINGLEGAME;
+												gamequitstatus = PREVIOUSMENU;
 												printf("Error code %d\n",status);
 												gameend("error in selectmap() menu");
 												break;
 										}
-									}while(gamequitstatus==RESTARTGAME);
-									if (gamequitstatus!=EXITGAME)
+									}while(gamequitstatus == RESTARTGAME);
+									if (gamequitstatus != EXITGAME)
 										PlayMusic("music\\title.wav",-1);
-								}while(gamequitstatus!=PREVIOUSMENU&&gamequitstatus!=EXITGAME);
+								}while(gamequitstatus != PREVIOUSMENU && gamequitstatus != EXITGAME);
 								break;
 							case STAR_ERROR:
 							case BROOD_ERROR:
@@ -474,20 +472,20 @@ gonextmission:
 								break;
 							case STAR_CANCEL:
 							case BROOD_CANCEL:
-								selected=SINGLEGAME;
-								gamequitstatus=CONTINUEGAME;
+								selected = SINGLEGAME;
+								gamequitstatus = CONTINUEGAME;
 								break;
 							default:
-								selected=SINGLEGAME;
-								gamequitstatus=CONTINUEGAME;
+								selected = SINGLEGAME;
+								gamequitstatus = CONTINUEGAME;
 								break;
 						}//gametype
 						if (gamequitstatus != EXITGAME)
 							PlayMusic("music\\title.wav",-1);
-					}while(gamequitstatus==PREVIOUSMENU);
+					}while(gamequitstatus == PREVIOUSMENU);
 					break;
 				case 2://exit to mainmenu
-					selected=-1;
+					selected = -1;
 					break;
 				default:
 					printf("Error code %d\n",status);
@@ -496,124 +494,124 @@ gonextmission:
 				}
 				break;
 			case MULTIPLAYERGAME:
-				NETWORKGAME=1;
-				selected=MULTIPLAYERGAME;
-				NUMBGAMER=0;
+				NETWORKGAME = 1;
+				selected = MULTIPLAYERGAME;
+				NUMBGAMER = 0;
 				do{
-					status=glu_conn();
+					status = glu_conn();
 					switch(status)
 					{
 						case NETWORKGAMETYPE1:
 						case NETWORKGAMETYPE2:
 						case NETWORKGAMETYPE3:
 						case NETWORKGAMETYPE4:
-							status2=glu_login();
-							if (status2==2)
+							status2 = glu_login();
+							if (status2 == 2)
 							{
-								gamequitstatus=PREVIOUSMENU;
+								gamequitstatus = PREVIOUSMENU;
 								break;
 							}
 							do{
-								status2=glu_join(&force_slots);
+								status2 = glu_join(&force_slots);
 								switch(status2)
 								{
 									case CREATEGAME:
 									do
 									{
 										clearplayernames();
-										status2=glu_creat(&force_slots);
+										status2 = glu_creat(&force_slots);
 										switch(status2)
 										{
 											case CREATEDGAME:
-												NUMBGAMER=GetForceFirstEmptySlot(&force_slots);
-												HOSTGAMER=OWNERGAMER;
+												NUMBGAMER = GetForceFirstEmptySlot(&force_slots);
+												HOSTGAMER = OWNERGAMER;
 												setplayername(NUMBGAMER,nickname);
-												status2=glu_chat(HOSTGAMER,NUMBGAMER,&force_slots);
+												status2 = glu_chat(HOSTGAMER,NUMBGAMER,&force_slots);
 												switch(status2)
 												{
 													case PLAYNETWORKGAME:
 														printf("numbgamer=%d\n",NUMBGAMER);
-														status=glu_briefing(gameconf.pl_race[NUMBGAMER],NETWORKGAME,NULL,NULL,0);
+														status = glu_briefing(gameconf.pl_race[NUMBGAMER],NETWORKGAME,NULL,NULL,0);
 														switch(status)
 														{
 															case STARTGAME://let's play
-																gamequitstatus=letsplaygame(gameconf.pl_race[NUMBGAMER],NULL);
+																gamequitstatus = letsplaygame(gameconf.pl_race[NUMBGAMER],NULL);
 																break;
 															case CANCELGAME://cancel play
-																gamequitstatus=PREVIOUSMENU;
+																gamequitstatus = PREVIOUSMENU;
 																break;
 														}
 														free_missionobjectives();
 														break;
 													case EXITCREATEDGAME:
 													default:
-														gamequitstatus=CONTINUEGAME;
+														gamequitstatus = CONTINUEGAME;
 														break;
 												}
 												break;
 											default:
-												gamequitstatus=PREVIOUSMENU;
+												gamequitstatus = PREVIOUSMENU;
 												break;
 										}
-									}while(gamequitstatus!=PREVIOUSMENU&&gamequitstatus!=EXITGAME);
-									if (gamequitstatus!=EXITGAME)
+									}while(gamequitstatus != PREVIOUSMENU && gamequitstatus != EXITGAME);
+									if (gamequitstatus != EXITGAME)
 									{
 										PlayMusic("music\\title.wav",-1);
-										gamequitstatus=CONTINUEGAME;
+										gamequitstatus = CONTINUEGAME;
 									}
 									break;
 									case JOINGAME:
 					//					printf("joined slot=%d\n",JOINSLOT);
-										NUMBGAMER=JOINSLOT;
+										NUMBGAMER = JOINSLOT;
 										setplayername(NUMBGAMER,nickname);
-										HOSTGAMER=GUESTGAMER;
+										HOSTGAMER = GUESTGAMER;
 										force_slots.Clear();//empty any previous garbage
-										status2=glu_chat(HOSTGAMER,NUMBGAMER,&force_slots);
+										status2 = glu_chat(HOSTGAMER,NUMBGAMER,&force_slots);
 										switch(status2)
 										{
 											case PLAYNETWORKGAME:
 												printf("numbgamer=%d\n",NUMBGAMER);
-												status=glu_briefing(gameconf.pl_race[NUMBGAMER],NETWORKGAME,NULL,NULL,0);
+												status = glu_briefing(gameconf.pl_race[NUMBGAMER],NETWORKGAME,NULL,NULL,0);
 												switch(status)
 												{
 													case STARTGAME://let's play
-														gamequitstatus=letsplaygame(gameconf.pl_race[NUMBGAMER],NULL);
+														gamequitstatus = letsplaygame(gameconf.pl_race[NUMBGAMER],NULL);
 														break;
 													case CANCELGAME://cancel play
-														gamequitstatus=CONTINUEGAME;
+														gamequitstatus = CONTINUEGAME;
 														break;
 												}
 												free_missionobjectives();
 												break;
 											case EXITCREATEDGAME:
 												default:
-												gamequitstatus=CONTINUEGAME;
+												gamequitstatus = CONTINUEGAME;
 												break;
 										}
 										break;
 									default:
-										gamequitstatus=PREVIOUSMENU;
+										gamequitstatus = PREVIOUSMENU;
 										break;
 								}
-							}while(gamequitstatus!=PREVIOUSMENU&&gamequitstatus!=EXITGAME);
+							}while(gamequitstatus != PREVIOUSMENU && gamequitstatus != EXITGAME);
 							if (gamequitstatus != EXITGAME)
 							{
 								PlayMusic("music\\title.wav",-1);
-								gamequitstatus=CONTINUEGAME;
+								gamequitstatus = CONTINUEGAME;
 							}
 							break;
 						default:
-							gamequitstatus=PREVIOUSMENU;
-							selected=-1;
+							gamequitstatus = PREVIOUSMENU;
+							selected = -1;
 							break;
 					}
-				}while(gamequitstatus!=PREVIOUSMENU&&gamequitstatus!=EXITGAME);
-				if (gamequitstatus!=EXITGAME)
-					gamequitstatus=CONTINUEGAME;
+				}while(gamequitstatus != PREVIOUSMENU && gamequitstatus != EXITGAME);
+				if (gamequitstatus != EXITGAME)
+					gamequitstatus = CONTINUEGAME;
 				break;
 			case EXITGAME:
 				StopMusic(MUSIC_STOPWITHFADE);
-				selected=EXITGAME;
+				selected = EXITGAME;
 				gameend("Normal exit");
 				return 0;
 				break;
@@ -622,16 +620,16 @@ gonextmission:
 	//			if (EXPANSIONSET)
 	//				ShowPreviewFile("rez\\crdt_exp.txt");
 				ShowPreviewFile("rez\\crdt_lst.txt",ANYKEYQUITSHOWTITLES);
-				gamequitstatus=CONTINUEGAME;
+				gamequitstatus = CONTINUEGAME;
 				break;
 			case VIEWINTRO:
 				StopMusic(MUSIC_STOPWITHFADE);
 				ShowFirstRunVideo(1);
 				PlayMusic("music\\title.wav",-1);
-				gamequitstatus=CONTINUEGAME;
+				gamequitstatus = CONTINUEGAME;
 				break;
 			case EDITORGAME:
-				gamequitstatus=CONTINUEGAME;
+				gamequitstatus = CONTINUEGAME;
 				break;
 			default:
 				printf("Error code %d\n",status);
@@ -639,7 +637,7 @@ gonextmission:
 				break;
 			}
 		}while((selected == SINGLEGAME || selected == MULTIPLAYERGAME) && gamequitstatus != EXITGAME);
-	}while(gamequitstatus!=EXITGAME);
+	}while(gamequitstatus != EXITGAME);
 	StopMusic(MUSIC_STOP);
 	iscriptinfo.~ISCRIPT();
 	gameend("end from menu");
@@ -654,10 +652,10 @@ void PreparePlayGameMusic(void)
 	gamemusicstart = -1;
 	gamemusicnr[0] = myrand(MAXGAMEMUSIC);
 	gamemusicnr[1] = myrand(MAXGAMEMUSIC);
-	if (gamemusicnr[0]==gamemusicnr[1])
-		if (++gamemusicnr[1]>=MAXGAMEMUSIC)
-			gamemusicnr[1]=0;
-	gamemusicnr[2]=MAXGAMEMUSIC-gamemusicnr[0]-gamemusicnr[1];
+	if (gamemusicnr[0] == gamemusicnr[1])
+		if (++gamemusicnr[1] >= MAXGAMEMUSIC)
+			gamemusicnr[1] = 0;
+	gamemusicnr[2] = MAXGAMEMUSIC - gamemusicnr[0] - gamemusicnr[1];
 }
 //==========================
 void GoPlayNextMusic(void)
@@ -665,8 +663,8 @@ void GoPlayNextMusic(void)
 	if (audiostream && !audiostream->stopchannel)
 		return;
 	int race = gameconf.pl_race[NUMBGAMER];
-	if (++gamemusicstart>=MAXGAMEMUSIC)
-		gamemusicstart=0;
+	if (++gamemusicstart >= MAXGAMEMUSIC)
+		gamemusicstart = 0;
 	sprintf(FULLFILENAME,"music\\%s%c.wav",racename[race],gamemusicnr[gamemusicstart]+'1');
 	PlayMusic(FULLFILENAME,0,&GoPlayNextMusic);
 }
@@ -684,8 +682,8 @@ int letsplaygame(int race,char *mypath)
 	CODEFORPSIUNLIMIT = 0;
 	SHOWCELLS = 0;
 
-	if (race==RACE_OBSERVER)
-		race=RACE_TERRAN;
+	if (race == RACE_OBSERVER)
+		race = RACE_TERRAN;
 
 	clearallplayerinfo();
 	loadbeforestarmap(race);
@@ -693,11 +691,11 @@ int letsplaygame(int race,char *mypath)
 	if ( i )
 	{
 		printf("error load %s\n",SELECTMAP);
-		if (i==1)
+		if (i == 1)
 			printf("error load MPQ-archive ,errorcode=%d\n",i);
 		else
 			printf("error load %s,errorcode=%d\n",SELECTMAP,i);
-		status=PREVIOUSMENU;
+		status = PREVIOUSMENU;
 	}
 	else
 	{
@@ -706,7 +704,7 @@ int letsplaygame(int race,char *mypath)
 		DEBUGMESSCR("loaded %s\n",SELECTMAP);
 		if (map.flags & STARMAP_FLAG_EXPANSION)
 			DEBUGMESSCR("(EXPANSION MAP)\n",SELECTMAP);
-		map.played_as_nr=NUMBGAMER;
+		map.played_as_nr = NUMBGAMER;
 
 		mytimer.ClearGameTimer();
 		clearshowgoods();
@@ -714,9 +712,9 @@ int letsplaygame(int race,char *mypath)
 		PreparePlayGameMusic();
 		GoPlayNextMusic();	//first start play music
 
-		status=gogame(&map);
-		map.secondsplayed=mytimer.GetCurrentGameTime();
-		if (status!=EXITGAME)
+		status = gogame(&map);
+		map.secondsplayed = mytimer.GetCurrentGameTime();
+		if (status != EXITGAME)
 			glu_score(&map);
 		if (!map.valid_vcode)
 		{
@@ -727,7 +725,7 @@ int letsplaygame(int race,char *mypath)
 	unloadafterstarmap();
 	if (NETWORKGAME)
 		DestroyAllConnectionsWithPlayers(&playersconn);
-//	  NUMBGAMER=0;
+//	  NUMBGAMER = 0;
 	return(status);
 }
 //==========================================
@@ -803,8 +801,8 @@ void mouseonkartaarea(void)
 			if (highMouse->WaitToPressLeftButton && highMouse->WaitToReleaseLeftButton)
 			{
 				//action on leftbutton on minimap
-				highMouse->WaitToPressLeftButton=0;
-				highMouse->WaitToReleaseLeftButton=0;
+				highMouse->WaitToPressLeftButton = 0;
+				highMouse->WaitToReleaseLeftButton = 0;
 				highMouse->DoRightClickAction(	NULL,
 												(int)((highMouse->PosX-Xkart-Xkartbeg)/factorx)*SIZESPRLANSHX,
 												(int)((highMouse->PosY-Ykart-Ykartbeg)/factory)*SIZESPRLANSHY,
@@ -827,7 +825,7 @@ void mouseonkartaarea(void)
 		{
 			if ( (!buton2) && (highMouse->GetButtonStatus() & WMRIGHTKEY) && !canceloperation)
 			{
-				buton2=1;
+				buton2 = 1;
 				highMouse->MouseModeMove = MODEMOVE;
 				highMouse->DoRightClickAction(  NULL,
 												(int)((highMouse->PosX-Xkart-Xkartbeg)/factorx)*SIZESPRLANSHX,
@@ -838,7 +836,7 @@ void mouseonkartaarea(void)
 	}
 	if (!(highMouse->GetButtonStatus() & WMRIGHTKEY))
 	{
-		buton2=0;
+		buton2 = 0;
 	}
 
 }
@@ -1182,7 +1180,7 @@ int gogame(struct mapinfo *info)
 				printobjparam();		//draw parameters of selected objects
 			desenonlymouseflag = 0;
 			//update entirescreen
-			
+
 			screenDraw->AddRegion(0,0,0,gameconf.grmode.x,gameconf.grmode.y);
 			screenDraw->SetRegions(1);
 		}
@@ -1393,16 +1391,16 @@ void drawGAMEMENUbutton(char *button,DIALOGBIN_INFO *menuinfo,int buttonnr,
 			}
 			else
 			{
-				*button&=~GAMEBUTTON_MOUSEPRESS;
-				*button&=~GAMEBUTTON_MOUSERELEASE;
+				*button &= ~GAMEBUTTON_MOUSEPRESS;
+				*button &= ~GAMEBUTTON_MOUSERELEASE;
 			}
-			if ((mousehotpos==mousehotnr&&!highMouse->MouseOnSelectionMode)||(*button&GAMEBUTTON_KEYPRESS))
+			if ((mousehotpos == mousehotnr && !highMouse->MouseOnSelectionMode) || (*button & GAMEBUTTON_KEYPRESS))
 			{
 				if ((highMouse->GetButtonStatus() & WMLEFTKEY)||(*button & GAMEBUTTON_KEYPRESS))
 				{
 					putgrp_nopacked(menuinfo->iteminfo[buttonnr].xpos+menuinfo->iteminfo[0].xpos,
-							menuinfo->iteminfo[buttonnr].ypos+menuinfo->iteminfo[0].ypos,
-							gamedlggrp,dlggrp_firstpict+MENUBUTTON_CLICKED);
+									menuinfo->iteminfo[buttonnr].ypos+menuinfo->iteminfo[0].ypos,
+									gamedlggrp,dlggrp_firstpict+MENUBUTTON_CLICKED);
 
 					*button|=GAMEBUTTON_SHOW;
 					press=1;
@@ -1410,14 +1408,14 @@ void drawGAMEMENUbutton(char *button,DIALOGBIN_INFO *menuinfo,int buttonnr,
 				else
 				{
 					putgrp_nopacked(menuinfo->iteminfo[buttonnr].xpos+menuinfo->iteminfo[0].xpos,
-							menuinfo->iteminfo[buttonnr].ypos+menuinfo->iteminfo[0].ypos,
-							gamedlggrp,dlggrp_firstpict+MENUBUTTON_ENABLED);
-					putboxmessage(FONTCOLOR(tfontgamp,GBLUECOLORFONT,2),
-							FONTCOLOR(tfontgamp,GBLUECOLORFONT,4),
-							menuinfo->iteminfo[buttonnr].xpos+menuinfo->iteminfo[0].xpos+menuinfo->iteminfo[buttonnr].xsize,
-							menuinfo->iteminfo[buttonnr].ypos+menuinfo->iteminfo[0].ypos+12,
-							2,IDFONT8,alldattbl.stattxt_tbl->get_TBL_STR(stattxt_nr),
-							GBLUECOLORFONT,tfontgamp,gamedlggrp);
+									menuinfo->iteminfo[buttonnr].ypos+menuinfo->iteminfo[0].ypos,
+									gamedlggrp,dlggrp_firstpict+MENUBUTTON_ENABLED);
+					putboxmessage(  FONTCOLOR(tfontgamp,GBLUECOLORFONT,2),
+									FONTCOLOR(tfontgamp,GBLUECOLORFONT,4),
+									menuinfo->iteminfo[buttonnr].xpos+menuinfo->iteminfo[0].xpos+menuinfo->iteminfo[buttonnr].xsize,
+									menuinfo->iteminfo[buttonnr].ypos+menuinfo->iteminfo[0].ypos+12,
+									2,IDFONT8,alldattbl.stattxt_tbl->get_TBL_STR(stattxt_nr),
+									GBLUECOLORFONT,tfontgamp,gamedlggrp);
 				}
 				color=GWHITECOLORFONT;
 			}
@@ -1425,8 +1423,8 @@ void drawGAMEMENUbutton(char *button,DIALOGBIN_INFO *menuinfo,int buttonnr,
 			{
 				color=GYELLOWCOLORFONT;
 				putgrp_nopacked(menuinfo->iteminfo[buttonnr].xpos+menuinfo->iteminfo[0].xpos,
-						menuinfo->iteminfo[buttonnr].ypos+menuinfo->iteminfo[0].ypos,
-						gamedlggrp,dlggrp_firstpict+MENUBUTTON_ENABLED);
+								menuinfo->iteminfo[buttonnr].ypos+menuinfo->iteminfo[0].ypos,
+								gamedlggrp,dlggrp_firstpict+MENUBUTTON_ENABLED);
 			}
 		}//else disabled
 		if (menuinfo->iteminfo[buttonnr].text)
@@ -1446,10 +1444,10 @@ void ChangeTerrain(void)
 		{
 			case 2://only units
 				setmemd(Minimap,MAXIMSIZEMINIMAP*MAXIMSIZEMINIMAP/4,0);
-				break;
+			break;
 			case 3:// all infos
 				drawMINIMAP();
-				break;
+			break;
 		}
 
 }
@@ -1465,44 +1463,6 @@ bool ShowButtonMenu(char *button,int (*adrmenu)(MENUDRAW *menudraw,MENUPARAMS *m
 	}
 	return false;
 }
-//==========================
-/*void showF10menu(char *button)
-{
-	if ((*button&GAMEBUTTON_SHOW) && (*button&GAMEBUTTON_RELEASE))
-	{
-		*button=GAMEBUTTON_CLEARALL;
-		showedmenu.prepareforshowmenu(&putgamemenu,NULL);
-	//	ret=putgamemenu();
-	}
-}
-//==========================
-void showTERRAINmenu(char *button)
-{
-	if ((*button&GAMEBUTTON_SHOW) && (*button&GAMEBUTTON_RELEASE))
-	{
-		*button=GAMEBUTTON_CLEARALL;
-		ChangeTerrain();
-	}
-}
-//==========================
-void showMESSAGEmenu(char *button)
-{
-	if ((*button&GAMEBUTTON_SHOW) && (*button&GAMEBUTTON_RELEASE))
-	{
-		*button=GAMEBUTTON_CLEARALL;
-		showedmenu.prepareforshowmenu(&messagingmenu,NULL);
-	}
-}
-//==========================
-void showDIPLOMACYmenu(char *button)
-{
-	if ((*button&GAMEBUTTON_SHOW) && (*button&GAMEBUTTON_RELEASE))
-	{
-		*button=GAMEBUTTON_CLEARALL;
-		showedmenu.prepareforshowmenu(&diplomacymenu,NULL);
-	}
-}
-*/
 //==========================
 void showramka(void)
 {
@@ -1699,26 +1659,26 @@ void logend(void)
 //===================================================
 void ShowGameStatusMenu(int *prevgameticks)
 {
-	if (gamestatus!=NOGAMESTATUS)
+	if (gamestatus != NOGAMESTATUS)
 	{
-		if (gamestatusremainticks!=0)
+		if (gamestatusremainticks != 0)
 		{
 			int gameticks;
-			gameticks=mytimer.GetCurrentGameTimeTick();
-			if (gameticks==*prevgameticks)
+			gameticks = mytimer.GetCurrentGameTimeTick();
+			if (gameticks == *prevgameticks)
 				return;
-			*prevgameticks=gameticks;
-			if (--gamestatusremainticks==0)
+			*prevgameticks = gameticks;
+			if (--gamestatusremainticks == 0)
 			{
 				StopMusic(MUSIC_STOPWITHFADE);
-				if (gamestatus==WINGAME)
+				if (gamestatus == WINGAME)
 				{
 					Play_sfxdata_id(NULL,SFXDATA_YOUWIN,1,0);
 					showedmenu.prepareforshowmenu(&wmission,NULL);
 				}
 				else
 				{
-					if (gamestatus==DEFEATGAME)
+					if (gamestatus == DEFEATGAME)
 					{
 							Play_sfxdata_id(NULL,SFXDATA_YOULOSE,1,0);
 							showedmenu.prepareforshowmenu(&lmission,NULL);
@@ -1736,20 +1696,20 @@ int IfTimeForTrigger(struct mapinfo *info,int *prevgameticks)
 	gameticks = mytimer.GetCurrentGameTimeTick();
 	if (gameticks-*prevgameticks>=MAXGAMECYCLESPERSECOND/2)
 	{
-		*prevgameticks=gameticks;
+		*prevgameticks = gameticks;
 		if (info->flags & STARMAP_FLAG_HAVECOUNTDOWN)
 		{
 			if (!(info->flags & STARMAP_FLAG_COUNTSTOPED))
 			{
-				map.CountDownTimer-=MAXGAMECYCLESPERSECOND/2;
-				if (map.CountDownTimer<=0)
+				map.CountDownTimer -= MAXGAMECYCLESPERSECOND/2;
+				if (map.CountDownTimer <= 0)
 				{
-					map.CountDownTimer=0;
+					map.CountDownTimer = 0;
 					info->flags &= ~STARMAP_FLAG_HAVECOUNTDOWN;
 				}
 			}
 		}
-//		if (gamestatus==NOGAMESTATUS)
+//		if (gamestatus == NOGAMESTATUS)
 		if (!TRIG_stopalltriggers)
 		{
 			Triggers_Parce(info,info->TRIGS_NR,info->TRIGS,1000/2);
@@ -1796,7 +1756,7 @@ void ActivateCheat(int cheatid)
 	switch(cheatid)
 	{
 		case 0:
-			break;
+		break;
 		case 1:		//showall
 			CODEFORSCREEN = CODEFORSCREEN ^ 1;
 			changegoods = 1;
@@ -1822,30 +1782,30 @@ void ActivateCheat(int cheatid)
 						memset(map.mapbits.blackfog[i],fogvalue,map.map_width*map.map_height);
 				}
 			}
-			break;
+		break;
 		case 2:		//givemin
 			changegoods = 1;
 			ChangeResourcePlayer(NUMBGAMER,PLUSFACTOR,1000,0);
-			break;
+		break;
 		case 3:		//givegas
 			changegoods = 1;
 			ChangeResourcePlayer(NUMBGAMER,PLUSFACTOR,0,1000);
-			break;
+		break;
 		case 4:		//quickmake
 			CODEFORQUICKMAKE = 32;
-			break;
+		break;
 		case 5:		//nogoods
 			CODEFORWITHOUTGOODS = 1;
-			break;
+		break;
 		case 6:		//notech
 			CODEFORWITHOUTTECHTREE = 1;
-			break;
+		break;
 		case 7:		//nopsi
 			CODEFORPSIUNLIMIT = 1;
-			break;
+		break;
 		case 8:		//showcells
 			SHOWCELLS = SHOWCELLS ^ 1;
-			break;
+		break;
 		case 9:		//kill
 			for (i = MAXSELECTMAN-1;i>=0; i--)
 			{
@@ -1854,10 +1814,10 @@ void ActivateCheat(int cheatid)
 					dieobj(fordeselect[i]);
 				}
 			}
-			break;
+		break;
 		case 10:	//quit
 			menustatus = EXITGAME;
-			break;
+		break;
 	}
 }
 
