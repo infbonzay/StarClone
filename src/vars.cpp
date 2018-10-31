@@ -70,7 +70,7 @@ int		mouseontranspunit,oldmouseontranspunit=-1;
 
 int		method=0;
 //int	  leftkart,upkart;
-int		KEYSCROLLTIME,MOUSESCROLLTIME,MOUSESCROLLON;
+int		KEYSCROLLTIME,MOUSESCROLLTIME,MOUSESCROLLON=1;
 
 int		groupmove;
 char	tableforminimap[16];
@@ -242,18 +242,21 @@ void inivars(void)
 //================================
 void addvars(void)
 {
-	Xkart=5+DELTASCREENX;
-	Ykart=348+DELTASCREENY;
-	widthkart=gameconf.grmode.x/SIZESPRLANSHX;
-	hightkart=(gameconf.grmode.y-32*3)/SIZESPRLANSHY;
-	SCRFOGX=widthkart+2+1;
-	SCRFOGY=hightkart+2+1;
+	screenMapInfo->MinimapPosX = 5 + DELTASCREENX;
+	screenMapInfo->MinimapPosY = 348 + DELTASCREENY;
+	screenMapInfo->SizeWidth = gameconf.grmode.x/SIZESPRLANSHX;
+	screenMapInfo->SizeHeight = (gameconf.grmode.y-32*3)/SIZESPRLANSHY;
+
+	SCRFOGX = screenMapInfo->SizeWidth + 2 + 1;
+	SCRFOGY = screenMapInfo->SizeHeight + 2 +1;
+	
+	
 	highMouse->SetRestrictCoords(MOUSEMODE1,0,0,gameconf.grmode.x-1,gameconf.grmode.y-1);
 	highMouse->SetRestrictCoords(MOUSEMODE2,0,0,gameconf.grmode.x-1,gameconf.grmode.y-1);
 	highMouse->SetRestrictCoords(MOUSEMODE3,0,0,gameconf.grmode.x-1,gameconf.grmode.y-110);
 
 	screenfog=(unsigned char *)wmalloc(SCRFOGX*SCRFOGY);
-	screenmapused=(unsigned char *)wmalloc((hightkart+1)*(widthkart+1));
+	screenmapused=(unsigned char *)wmalloc((screenMapInfo->SizeHeight+1)*(screenMapInfo->SizeWidth+1));
 	calcinert();
 	calcsintables();
 	SetAroundTable();

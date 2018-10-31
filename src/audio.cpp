@@ -14,6 +14,7 @@
 #include "rand.h"
 #include "objinfo.h"
 #include "maps.h"
+#include "gener.h"
 #include "mage.h"
 #include "portrait.h"
 #include "putobj.h"
@@ -282,8 +283,8 @@ int playOBJsound(struct OBJ *a,int soundmode,int sfxdata_id,int stopprevsound,in
 	{
 		if (GetOBJx(a) >= map.MAPXGLOBAL						&&
 			GetOBJy(a) >= map.MAPYGLOBAL						&&
-			GetOBJx(a) < map.MAPXGLOBAL+widthkart*SIZESPRLANSHX &&
-			GetOBJy(a) < map.MAPYGLOBAL+hightkart*SIZESPRLANSHY)
+			GetOBJx(a) < map.MAPXGLOBAL+screenMapInfo->SizeWidth*SIZESPRLANSHX &&
+			GetOBJy(a) < map.MAPYGLOBAL+screenMapInfo->SizeHeight*SIZESPRLANSHY)
 			;
 		else
 			return -1;

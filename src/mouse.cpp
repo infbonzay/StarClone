@@ -389,8 +389,8 @@ void HighMouse::DoRightClickAction(OBJ *destobj,int xm,int ym,int rightclick)
 				else
 				{
 					highMouse->WaitToPressLeftButton=1;
-					SetVisualMapPosition((int) (((highMouse->PosX-Xkart-Xkartbeg)/factorx)-widthkart/2)*SIZESPRLANSHX,
-										 (int) (((highMouse->PosY-Ykart-Ykartbeg)/factory)-hightkart/2)*SIZESPRLANSHY);
+					SetVisualMapPosition((int) (((highMouse->PosX-screenMapInfo->SizeWidth-screenMapInfo->MinimapStartX)/factorx)-screenMapInfo->SizeWidth/2)*SIZESPRLANSHX,
+										 (int) (((highMouse->PosY-screenMapInfo->SizeHeight-screenMapInfo->MinimapStartY)/factory)-screenMapInfo->SizeHeight/2)*SIZESPRLANSHY);
 					return;
 				}
 			}
@@ -475,8 +475,8 @@ void HighMouse::RefreshMouseType(int xk,int yk)
 				WaitToPressLeftButton = 0;
 				if (karta_aria)
 					DoRightClickAction(	DestMouseOBJ,
-										(int)((PosX-Xkart-Xkartbeg)/factorx)*SIZESPRLANSHX,
-										(int)((PosY-Ykart-Ykartbeg)/factory)*SIZESPRLANSHY,
+										(int)((PosX-screenMapInfo->SizeWidth-screenMapInfo->MinimapStartX)/factorx)*SIZESPRLANSHX,
+										(int)((PosY-screenMapInfo->SizeHeight-screenMapInfo->MinimapStartY)/factory)*SIZESPRLANSHY,
 										0);
 					else
 						DoRightClickAction(	DestMouseOBJ,
@@ -497,38 +497,38 @@ void HighMouse::RefreshMouseType(int xk,int yk)
 		else
 			if (PosY >= gameconf.grmode.y - BORDERMOUSE )
 				borderBits |= 0x08;
-/*		if (MOUSESCROLLON)
+		if (MOUSESCROLLON)
 		{
 			switch(borderBits)
 			{
 				case 0:
-						if (!addscrx)
-							addscrx = (int)ScrollMapX(0,SMOUTHMOUSE);
-						if (!addscry)
-							addscry = (int)ScrollMapY(0,SMOUTHMOUSE);
+						if (!screenMapInfo->ScrollX)
+							screenMapInfo->ScrollX = (int)ScrollMapX(0,SMOUTHMOUSE);
+						if (!screenMapInfo->ScrollY)
+							screenMapInfo->ScrollY = (int)ScrollMapY(0,SMOUTHMOUSE);
 					break;
 				case 1:
 					if (xk)
 					{
 						MouseOnBorder=1;
 						MouseType = MOUSELEFTSCROLL;
-						if (!addscrx)
-							addscrx = (int)ScrollMapX(-1,SMOUTHMOUSE);
-						if (!addscry)
-							addscry = (int)ScrollMapY(0,SMOUTHMOUSE);
+						if (!screenMapInfo->ScrollX)
+							screenMapInfo->ScrollX = (int)ScrollMapX(-1,SMOUTHMOUSE);
+						if (!screenMapInfo->ScrollY)
+							screenMapInfo->ScrollY = (int)ScrollMapY(0,SMOUTHMOUSE);
 					}
 					else
 						MouseType = NORMALMOUSE;
 					break;
 				case 2:
-					if (xk<(MAXXMAP-widthkart)*SIZESPRLANSHX)
+					if (xk<(MAXXMAP-screenMapInfo->SizeWidth)*SIZESPRLANSHX)
 					{
 						MouseOnBorder=1;
 						MouseType = MOUSERIGHTSCROLL;
-						if (!addscrx)
-							addscrx = (int)ScrollMapX(1,SMOUTHMOUSE);
-						if (!addscry)
-							addscry = (int)ScrollMapY(0,SMOUTHMOUSE);
+						if (!screenMapInfo->ScrollX)
+							screenMapInfo->ScrollX = (int)ScrollMapX(1,SMOUTHMOUSE);
+						if (!screenMapInfo->ScrollY)
+							screenMapInfo->ScrollY = (int)ScrollMapY(0,SMOUTHMOUSE);
 					}
 					else
 						MouseType = NORMALMOUSE;
@@ -538,10 +538,10 @@ void HighMouse::RefreshMouseType(int xk,int yk)
 					{
 						MouseOnBorder=1;
 						MouseType = MOUSEUPSCROLL;
-						if (!addscrx)
-							addscrx = (int)ScrollMapX(0,SMOUTHMOUSE);
-						if (!addscry)
-							addscry = (int)ScrollMapY(-1,SMOUTHMOUSE);
+						if (!screenMapInfo->ScrollX)
+							screenMapInfo->ScrollX = (int)ScrollMapX(0,SMOUTHMOUSE);
+						if (!screenMapInfo->ScrollY)
+							screenMapInfo->ScrollY = (int)ScrollMapY(-1,SMOUTHMOUSE);
 					}
 					else
 						MouseType = NORMALMOUSE;
@@ -551,70 +551,70 @@ void HighMouse::RefreshMouseType(int xk,int yk)
 					{
 						MouseOnBorder=1;
 						MouseType = MOUSELEFTUPSCROLL;
-						if (!addscrx)
-							addscrx = (int)ScrollMapX(-1,SMOUTHMOUSE);
-						if (!addscry)
-							addscry = (int)ScrollMapY(-1,SMOUTHMOUSE);
+						if (!screenMapInfo->ScrollX)
+							screenMapInfo->ScrollX = (int)ScrollMapX(-1,SMOUTHMOUSE);
+						if (!screenMapInfo->ScrollY)
+							screenMapInfo->ScrollY = (int)ScrollMapY(-1,SMOUTHMOUSE);
 					}
 					else
 						MouseType = NORMALMOUSE;
 					break;
 				case 6:
-					if (xk<(MAXXMAP-widthkart)*SIZESPRLANSHX||yk)
+					if (xk<(MAXXMAP-screenMapInfo->SizeWidth)*SIZESPRLANSHX||yk)
 					{
 						MouseOnBorder=1;
 						MouseType = MOUSERIGHTUPSCROLL;
-						if (!addscrx)
-							addscrx = (int)ScrollMapX(1,SMOUTHMOUSE);
-						if (!addscry)
-							addscry = (int)ScrollMapY(-1,SMOUTHMOUSE);
+						if (!screenMapInfo->ScrollX)
+							screenMapInfo->ScrollX = (int)ScrollMapX(1,SMOUTHMOUSE);
+						if (!screenMapInfo->ScrollY)
+							screenMapInfo->ScrollY = (int)ScrollMapY(-1,SMOUTHMOUSE);
 					}
 					else
 						MouseType = NORMALMOUSE;
 					break;
 				case 8:
-					if (yk<(MAXYMAP-hightkart)*SIZESPRLANSHY)
+					if (yk<(MAXYMAP-screenMapInfo->SizeHeight)*SIZESPRLANSHY)
 					{
 						MouseOnBorder=1;
 						MouseType = MOUSEDOWNSCROLL;
-						if (!addscrx)
-							addscrx = (int)ScrollMapX(0,SMOUTHMOUSE);
-						if (!addscry)
-							addscry = (int)ScrollMapY(1,SMOUTHMOUSE);
+						if (!screenMapInfo->ScrollX)
+							screenMapInfo->ScrollX = (int)ScrollMapX(0,SMOUTHMOUSE);
+						if (!screenMapInfo->ScrollY)
+							screenMapInfo->ScrollY = (int)ScrollMapY(1,SMOUTHMOUSE);
 					}
 					else
 						MouseType = NORMALMOUSE;
 					break;
 				case 9:
-					if (xk||yk<(MAXYMAP-hightkart)*SIZESPRLANSHY)
+					if (xk||yk<(MAXYMAP-screenMapInfo->SizeHeight)*SIZESPRLANSHY)
 					{
 						MouseOnBorder=1;
 						MouseType = MOUSELEFTDOWNSCROLL;
-						if (!addscrx)
-							addscrx = (int)ScrollMapX(-1,SMOUTHMOUSE);
-						if (!addscry)
-							addscry = (int)ScrollMapY(1,SMOUTHMOUSE);
+						if (!screenMapInfo->ScrollX)
+							screenMapInfo->ScrollX = (int)ScrollMapX(-1,SMOUTHMOUSE);
+						if (!screenMapInfo->ScrollY)
+							screenMapInfo->ScrollY = (int)ScrollMapY(1,SMOUTHMOUSE);
 					}
 					else
 						MouseType = NORMALMOUSE;
 					break;
 				case 0xa:
-					if (xk<(MAXXMAP-widthkart)*SIZESPRLANSHX||
-						yk<(MAXYMAP-hightkart)*SIZESPRLANSHY)
+					if (xk<(MAXXMAP-screenMapInfo->SizeWidth)*SIZESPRLANSHX||
+						yk<(MAXYMAP-screenMapInfo->SizeHeight)*SIZESPRLANSHY)
 					{
 						MouseOnBorder=1;
 						MouseType = MOUSERIGHTDOWNSCROLL;
-						if (!addscrx)
-							addscrx = (int)ScrollMapX(1,SMOUTHMOUSE);
-						if (!addscry)
-							addscry = (int)ScrollMapY(1,SMOUTHMOUSE);
+						if (!screenMapInfo->ScrollX)
+							screenMapInfo->ScrollX = (int)ScrollMapX(1,SMOUTHMOUSE);
+						if (!screenMapInfo->ScrollY)
+							screenMapInfo->ScrollY = (int)ScrollMapY(1,SMOUTHMOUSE);
 					}
 					else
 						MouseType = NORMALMOUSE;
 					break;
 			}//if & switch
 		}
-*/		
+		
 		if ((GetButtonStatus() == WMRIGHTKEY) && (!mouseClear) && select_aria && (!WaitToReleaseRightButton))
 		{
 			mouseClear = true;
@@ -628,8 +628,8 @@ void HighMouse::RefreshMouseType(int xk,int yk)
 		if (PosX != PrevX || PosY != PrevY)
 		{
 			MouseOnSelectionMode=1;
-			//addscrx = 0;
-			//addscry = 0;
+			//screenMapInfo->ScrollX = 0;
+			//screenMapInfo->ScrollY = 0;
 			if (PrevX > gameconf.grmode.x)
 				PrevX = gameconf.grmode.x;
 			if (PrevY > gameconf.grmode.y)

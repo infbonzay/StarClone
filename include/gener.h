@@ -10,6 +10,7 @@
 #include "gamemenu.h"
 #include "netwplay.h"
 #include "menu.h"
+#include "maps.h"
 #include "queue.h"
 #include "dialogbin.h"
 #include "mylist.h"

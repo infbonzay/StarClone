@@ -42,13 +42,13 @@
 void keyscroll(void)
 {
 /*	if (KEYPRESS(LEFTKEY))
-		addscrx-=factorscrollkey;
+		screenMapInfo->ScrollX-=factorscrollkey;
 	if (KEYPRESS(RIGHTKEY))
-		addscrx+=factorscrollkey;
+		screenMapInfo->ScrollX+=factorscrollkey;
 	if (KEYPRESS(UPKEY))
-		addscry-=factorscrollkey;
+		screenMapInfo->ScrollY-=factorscrollkey;
 	if (KEYPRESS(DOWNKEY))
-		addscry+=factorscrollkey;
+		screenMapInfo->ScrollY+=factorscrollkey;
 */
 }
 //==================================

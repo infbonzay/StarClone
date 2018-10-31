@@ -106,7 +106,7 @@ void putfog(void)
 			retborder=getborderfogs(jj+1,ii+1,scrfognr,borders);
 			if (!retborder)
 			{
-				if (screenmapused[ii*(widthkart+1)+jj])
+				if (screenmapused[ii*(screenMapInfo->SizeWidth+1)+jj])
 				{
 					putfogspr(jj*SIZESPRLANSHX-xkk,ii*SIZESPRLANSHX-ykk,_toblack_,
 						borders[0],borders[1],borders[2],borders[3],scrfognr);

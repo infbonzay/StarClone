@@ -186,6 +186,7 @@ int main(int c,char **parm,char **env)
 			UnloadDatTblFiles(&alldattbl);
 		}
 	}while(firsttimelaunch&0xff);
+	screenMapInfo = new ScreenMapInfo();
 
 	DEBUG_INIT(0);
 
@@ -806,8 +807,8 @@ void mouseonkartaarea(void)
 				highMouse->WaitToPressLeftButton=0;
 				highMouse->WaitToReleaseLeftButton=0;
 				highMouse->DoRightClickAction(	NULL,
-												(int)((highMouse->PosX-Xkart-Xkartbeg)/factorx)*SIZESPRLANSHX,
-												(int)((highMouse->PosY-Ykart-Ykartbeg)/factory)*SIZESPRLANSHY,
+												(int)((highMouse->PosX-screenMapInfo->SizeWidth-screenMapInfo->MinimapStartX)/factorx)*SIZESPRLANSHX,
+												(int)((highMouse->PosY-screenMapInfo->SizeHeight-screenMapInfo->MinimapStartY)/factory)*SIZESPRLANSHY,
 												0);
 			//action
 			}
@@ -817,8 +818,8 @@ void mouseonkartaarea(void)
 				{
 					if (MAPDEF&&!highMouse->MouseOnSelectionMode)
 					{
-						movieminikarta = SetVisualMapPosition((int) (((highMouse->PosX-Xkart-Xkartbeg)/factorx)-widthkart/2)*SIZESPRLANSHX,
-															  (int) (((highMouse->PosY-Ykart-Ykartbeg)/factory)-hightkart/2)*SIZESPRLANSHY);
+						movieminikarta = SetVisualMapPosition((int) (((highMouse->PosX-screenMapInfo->SizeWidth-screenMapInfo->MinimapStartX)/factorx)-screenMapInfo->SizeWidth/2)*SIZESPRLANSHX,
+															  (int) (((highMouse->PosY-screenMapInfo->SizeHeight-screenMapInfo->MinimapStartY)/factory)-screenMapInfo->SizeHeight/2)*SIZESPRLANSHY);
 					}
 				}
 			}
@@ -830,8 +831,8 @@ void mouseonkartaarea(void)
 				buton2=1;
 				highMouse->MouseModeMove = MODEMOVE;
 				highMouse->DoRightClickAction(  NULL,
-												(int)((highMouse->PosX-Xkart-Xkartbeg)/factorx)*SIZESPRLANSHX,
-												(int)((highMouse->PosY-Ykart-Ykartbeg)/factory)*SIZESPRLANSHY,
+												(int)((highMouse->PosX-screenMapInfo->SizeWidth-screenMapInfo->MinimapStartX)/factorx)*SIZESPRLANSHX,
+												(int)((highMouse->PosY-screenMapInfo->SizeHeight-screenMapInfo->MinimapStartY)/factory)*SIZESPRLANSHY,
 												0);
 			}
 		}
@@ -969,8 +970,8 @@ int gogame(struct mapinfo *info)
 	//	if (need_quiting)
 	//			gameend("close box");
 
-		addscrx=0;
-		addscry=0;
+		screenMapInfo->ScrollX = 0;
+		screenMapInfo->ScrollY = 0;
 
 		if (needredesen)
 			redesenscreen();
@@ -1522,6 +1523,7 @@ void gameend(const char *mes)
 		unload_starmap(&map);
 	highMouse->UnloadCursors();
 	delete highMouse;
+	delete screenMapInfo;
 
 	deletemainscreenmouseevents();
 //	  freeOBJstructs(1);

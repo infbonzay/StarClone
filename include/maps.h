@@ -51,20 +51,31 @@ void opentempmap(int playernr,int xkart,int ykart,int sizex,int sizey);
 int	 GetMapFog(int x,int y);
 void ClearFinalOBJ(OBJ *a0);
 
-extern struct mapinfo map;
+extern struct mapinfo 	map;
 
 inline int GetVisionBitsPlayer(int playernr) { return (map.pl_visionbits[playernr]); };
 inline int player_aliance(int whopl,int pl) { return (map.pl_allied[whopl][pl]); }; //0-enemy,1-neutral,2-alience,3-my
 inline int player_vision(int whopl,int pl) { return (map.pl_vision[whopl][pl]); };
 inline int mapEFFECT(int xkart,int ykart,int effectmage) { return(map.mapbits.mageeffect[effectmage][ykart*MAXXMAP+xkart]); };
 //=============================================
+class ScreenMapInfo
+{
+public:
+	int		MinimapPosX;		//position of minimap on screen
+	int		MinimapPosY;
+	int		SizeWidth;			//size of screen in 32x32 item
+	int		SizeHeight;			
 
-extern float factorx,factory;
-extern int Xkart,Ykart,Xkartbeg,Ykartbeg,Xkartend,Ykartend;
-extern int addscrx,addscry;
-extern int widthkart,hightkart;
+	int		ScrollX;			//factor to scroll 
+	int		ScrollY;
 
+	int		MinimapStartX;		//pos of minimap in minimap area
+	int		MinimapStartY;		//
+	int		MinimapEndX;		//
+	int		MinimapEndY;		//
+};
 
-
+extern float 			factorx,factory;
+extern ScreenMapInfo	*screenMapInfo;
 
 #endif /*_MAPS_W*/
