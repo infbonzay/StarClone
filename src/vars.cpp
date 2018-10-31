@@ -244,19 +244,19 @@ void addvars(void)
 {
 	screenMapInfo->MinimapPosX = 5 + DELTASCREENX;
 	screenMapInfo->MinimapPosY = 348 + DELTASCREENY;
-	screenMapInfo->SizeWidth = gameconf.grmode.x/SIZESPRLANSHX;
-	screenMapInfo->SizeHeight = (gameconf.grmode.y-32*3)/SIZESPRLANSHY;
+	screenMapInfo->SizeX32 = gameconf.grmode.x/SIZESPRLANSHX;
+	screenMapInfo->SizeY32 = (gameconf.grmode.y-32*3)/SIZESPRLANSHY;
 
-	SCRFOGX = screenMapInfo->SizeWidth + 2 + 1;
-	SCRFOGY = screenMapInfo->SizeHeight + 2 +1;
-	
-	
+	SCRFOGX = screenMapInfo->SizeX32 + 2 + 1;
+	SCRFOGY = screenMapInfo->SizeY32 + 2 +1;
+
+
 	highMouse->SetRestrictCoords(MOUSEMODE1,0,0,gameconf.grmode.x-1,gameconf.grmode.y-1);
 	highMouse->SetRestrictCoords(MOUSEMODE2,0,0,gameconf.grmode.x-1,gameconf.grmode.y-1);
 	highMouse->SetRestrictCoords(MOUSEMODE3,0,0,gameconf.grmode.x-1,gameconf.grmode.y-110);
 
 	screenfog=(unsigned char *)wmalloc(SCRFOGX*SCRFOGY);
-	screenmapused=(unsigned char *)wmalloc((screenMapInfo->SizeHeight+1)*(screenMapInfo->SizeWidth+1));
+	screenmapused=(unsigned char *)wmalloc((screenMapInfo->SizeY32+1)*(screenMapInfo->SizeX32+1));
 	calcinert();
 	calcsintables();
 	SetAroundTable();

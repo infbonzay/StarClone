@@ -213,7 +213,7 @@ int loadandplaywav(HANDLE mpq,struct OBJ *a,char *filesound,int repeatedflag,int
 		SetChannelVolume(i,chunkvolume);
 		unitsound[i].length = sndlength;
 		unitsound[i].sample = sample;
-		
+
 		if (a)
 			a->sfxplay.nrofmusicsplayed++;
 		unitsound[i].presence = 0;
@@ -283,8 +283,8 @@ int playOBJsound(struct OBJ *a,int soundmode,int sfxdata_id,int stopprevsound,in
 	{
 		if (GetOBJx(a) >= map.MAPXGLOBAL						&&
 			GetOBJy(a) >= map.MAPYGLOBAL						&&
-			GetOBJx(a) < map.MAPXGLOBAL+screenMapInfo->SizeWidth*SIZESPRLANSHX &&
-			GetOBJy(a) < map.MAPYGLOBAL+screenMapInfo->SizeHeight*SIZESPRLANSHY)
+			GetOBJx(a) < map.MAPXGLOBAL+screenMapInfo->SizeX32*SIZESPRLANSHX &&
+			GetOBJy(a) < map.MAPYGLOBAL+screenMapInfo->SizeY32*SIZESPRLANSHY)
 			;
 		else
 			return -1;
@@ -375,7 +375,7 @@ int activatesound(struct OBJ *a,int soundmode,int addfactor,int stopprevsound)
 		}
 		else
 			if (player_aliance(NUMBGAMER,a->playernr) == MYOBJ &&
-				a->sfxplay.nrselectplayed >= MAXSELECTPLAY	   && 
+				a->sfxplay.nrselectplayed >= MAXSELECTPLAY	   &&
 				a->SC_Unit < MAX_UNITS_ELEM2 && alldattbl.units_dat->PissSoundStart[a->SC_Unit] > 0 )
 			{
 					soundmode = MODESOUNDPSS;
@@ -625,9 +625,9 @@ void FreeChannelWithObj(struct OBJ *a)
 	}
 }
 //===================================
-//				  atack		 death	 err	 work	  workdone	
-//				   hit		 pss	mage5	 mage6	 mage7	 
-//				  mage8		 ready	select	  action  modein 
+//				  atack		 death	 err	 work	  workdone
+//				   hit		 pss	mage5	 mage6	 mage7
+//				  mage8		 ready	select	  action  modein
 //				 modeout   bconstr	construct  warp	   move	 deconstruct
 /*char playenemysoundobj[MAXTYPESOFSOUND]={
 											1,1,0,1,0,
@@ -638,7 +638,7 @@ void FreeChannelWithObj(struct OBJ *a)
 */
 //ready,action,select,pss,error
 char playenemysoundobj[MAXTYPESOFSOUND]={
-										0,0,0,0,0	 
+										0,0,0,0,0
 										};
 //====================================================
 int canplaysound(OBJ *a,int soundmode,int statuspl)

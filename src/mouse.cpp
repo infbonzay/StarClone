@@ -388,9 +388,9 @@ void HighMouse::DoRightClickAction(OBJ *destobj,int xm,int ym,int rightclick)
 				}
 				else
 				{
-					highMouse->WaitToPressLeftButton=1;
-					SetVisualMapPosition((int) (((highMouse->PosX-screenMapInfo->SizeWidth-screenMapInfo->MinimapStartX)/factorx)-screenMapInfo->SizeWidth/2)*SIZESPRLANSHX,
-										 (int) (((highMouse->PosY-screenMapInfo->SizeHeight-screenMapInfo->MinimapStartY)/factory)-screenMapInfo->SizeHeight/2)*SIZESPRLANSHY);
+					highMouse->WaitToPressLeftButton = 1;
+					SetVisualMapPosition((int) (((highMouse->PosX - screenMapInfo->SizeX32 - screenMapInfo->MinimapStartX) / factorx)-screenMapInfo->SizeX32/2)*SIZESPRLANSHX,
+										 (int) (((highMouse->PosY - screenMapInfo->SizeY32 - screenMapInfo->MinimapStartY) / factory)-screenMapInfo->SizeY32/2)*SIZESPRLANSHY);
 					return;
 				}
 			}
@@ -475,8 +475,8 @@ void HighMouse::RefreshMouseType(int xk,int yk)
 				WaitToPressLeftButton = 0;
 				if (karta_aria)
 					DoRightClickAction(	DestMouseOBJ,
-										(int)((PosX-screenMapInfo->SizeWidth-screenMapInfo->MinimapStartX)/factorx)*SIZESPRLANSHX,
-										(int)((PosY-screenMapInfo->SizeHeight-screenMapInfo->MinimapStartY)/factory)*SIZESPRLANSHY,
+										(int)((PosX-screenMapInfo->SizeX32-screenMapInfo->MinimapStartX)/factorx)*SIZESPRLANSHX,
+										(int)((PosY-screenMapInfo->SizeY32-screenMapInfo->MinimapStartY)/factory)*SIZESPRLANSHY,
 										0);
 					else
 						DoRightClickAction(	DestMouseOBJ,
@@ -521,7 +521,7 @@ void HighMouse::RefreshMouseType(int xk,int yk)
 						MouseType = NORMALMOUSE;
 					break;
 				case 2:
-					if (xk<(MAXXMAP-screenMapInfo->SizeWidth)*SIZESPRLANSHX)
+					if (xk<(MAXXMAP-screenMapInfo->SizeX32)*SIZESPRLANSHX)
 					{
 						MouseOnBorder=1;
 						MouseType = MOUSERIGHTSCROLL;
@@ -560,7 +560,7 @@ void HighMouse::RefreshMouseType(int xk,int yk)
 						MouseType = NORMALMOUSE;
 					break;
 				case 6:
-					if (xk<(MAXXMAP-screenMapInfo->SizeWidth)*SIZESPRLANSHX||yk)
+					if (xk<(MAXXMAP-screenMapInfo->SizeX32)*SIZESPRLANSHX||yk)
 					{
 						MouseOnBorder=1;
 						MouseType = MOUSERIGHTUPSCROLL;
@@ -573,7 +573,7 @@ void HighMouse::RefreshMouseType(int xk,int yk)
 						MouseType = NORMALMOUSE;
 					break;
 				case 8:
-					if (yk<(MAXYMAP-screenMapInfo->SizeHeight)*SIZESPRLANSHY)
+					if (yk<(MAXYMAP-screenMapInfo->SizeY32)*SIZESPRLANSHY)
 					{
 						MouseOnBorder=1;
 						MouseType = MOUSEDOWNSCROLL;
@@ -586,7 +586,7 @@ void HighMouse::RefreshMouseType(int xk,int yk)
 						MouseType = NORMALMOUSE;
 					break;
 				case 9:
-					if (xk||yk<(MAXYMAP-screenMapInfo->SizeHeight)*SIZESPRLANSHY)
+					if (xk||yk<(MAXYMAP-screenMapInfo->SizeY32)*SIZESPRLANSHY)
 					{
 						MouseOnBorder=1;
 						MouseType = MOUSELEFTDOWNSCROLL;
@@ -599,8 +599,8 @@ void HighMouse::RefreshMouseType(int xk,int yk)
 						MouseType = NORMALMOUSE;
 					break;
 				case 0xa:
-					if (xk<(MAXXMAP-screenMapInfo->SizeWidth)*SIZESPRLANSHX||
-						yk<(MAXYMAP-screenMapInfo->SizeHeight)*SIZESPRLANSHY)
+					if (xk<(MAXXMAP-screenMapInfo->SizeX32)*SIZESPRLANSHX||
+						yk<(MAXYMAP-screenMapInfo->SizeY32)*SIZESPRLANSHY)
 					{
 						MouseOnBorder=1;
 						MouseType = MOUSERIGHTDOWNSCROLL;
@@ -614,7 +614,7 @@ void HighMouse::RefreshMouseType(int xk,int yk)
 					break;
 			}//if & switch
 		}
-		
+
 		if ((GetButtonStatus() == WMRIGHTKEY) && (!mouseClear) && select_aria && (!WaitToReleaseRightButton))
 		{
 			mouseClear = true;
@@ -736,7 +736,7 @@ void MouseClickEvent(bool type, int buttons)
 	if (highMouse->ClickFunc)
 		(*highMouse->ClickFunc)(type, buttons);
 
-	if (buttons & WMLEFTKEY)
+	if (type && buttons & WMLEFTKEY)
 	{
 		if (tick_timer - prevtimer <= MOUSEDBLCLICKTIME)
 		{

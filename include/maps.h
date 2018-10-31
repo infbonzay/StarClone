@@ -5,7 +5,7 @@
 #include "man.h"
 #include "starmap.h"
 
-#define CHECKFORMAPBORDERS(xkart,ykart) ( (ykart) < 0 || (xkart) < 0 || (ykart) >= MAXYMAP || (xkart) >= MAXXMAP ) 
+#define CHECKFORMAPBORDERS(xkart,ykart) ( (ykart) < 0 || (xkart) < 0 || (ykart) >= MAXYMAP || (xkart) >= MAXXMAP )
 
 
 void CreateMiniMapPixels(struct mapinfo *map);
@@ -61,15 +61,15 @@ inline int mapEFFECT(int xkart,int ykart,int effectmage) { return(map.mapbits.ma
 class ScreenMapInfo
 {
 public:
-	int		MinimapPosX;		//position of minimap on screen
+	int		MinimapPosX;		//position of minimap on screen //Xkart && Ykart
 	int		MinimapPosY;
-	int		SizeWidth;			//size of screen in 32x32 item
-	int		SizeHeight;			
+	int		SizeX32;			//size of screen in 32x32 item //widthkart && hightkart
+	int		SizeY32;
 
-	int		ScrollX;			//factor to scroll 
+	int		ScrollX;			//factor to scroll
 	int		ScrollY;
 
-	int		MinimapStartX;		//pos of minimap in minimap area
+	int		MinimapStartX;		//pos of minimap in minimap area //xkart/begin/end & tkart/begin/end
 	int		MinimapStartY;		//
 	int		MinimapEndX;		//
 	int		MinimapEndY;		//

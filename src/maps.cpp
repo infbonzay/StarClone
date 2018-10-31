@@ -34,11 +34,10 @@
 	   #include "dos/handlers.h"
 #endif
 
-struct mapinfo 	map;
-float 			factorx,factory;
-int				sizemaprectx,sizemaprecty;
-ScreenMapInfo	*screenMapInfo;
-
+struct mapinfo map;
+float factorx,factory;
+int sizemaprectx,sizemaprecty;
+ScreenMapInfo *screenMapInfo;
 //==============================
 void CreateMiniMapPixels(struct mapinfo *map)
 {
@@ -50,15 +49,11 @@ void CreateMiniMapPixels(struct mapinfo *map)
 	screenMapInfo->MinimapStartY = map->minimap_starty;
 	screenMapInfo->MinimapEndX = map->minimap_endx;
 	screenMapInfo->MinimapEndY = map->minimap_endy;
-	highMouse->SetRestrictCoords(MOUSEMODE4,
-								 screenMapInfo->SizeWidth + screenMapInfo->MinimapStartX,
-								 screenMapInfo->SizeHeight + screenMapInfo->MinimapStartY,
-								 screenMapInfo->SizeWidth + screenMapInfo->MinimapEndX,
-								 screenMapInfo->SizeHeight + screenMapInfo->MinimapEndY);
-	factorx = (float)((screenMapInfo->MinimapEndX - screenMapInfo->MinimapStartX))/MAXXMAP;
-	factory = (float)((screenMapInfo->MinimapEndY - screenMapInfo->MinimapStartY))/MAXYMAP;
-	sizemaprectx=(int)(screenMapInfo->SizeWidth * factorx);
-	sizemaprecty=(int)(screenMapInfo->SizeHeight * factory);
+	highMouse->SetRestrictCoords(MOUSEMODE4,screenMapInfo->MinimapPosX+screenMapInfo->MinimapStartX,screenMapInfo->MinimapPosY+screenMapInfo->MinimapStartY,screenMapInfo->MinimapPosX+screenMapInfo->MinimapEndX,screenMapInfo->MinimapPosY+screenMapInfo->MinimapEndY);
+	factorx=(float)((screenMapInfo->MinimapEndX-screenMapInfo->MinimapStartX))/MAXXMAP;
+	factory=(float)((screenMapInfo->MinimapEndY-screenMapInfo->MinimapStartY))/MAXYMAP;
+	sizemaprectx=(int)(screenMapInfo->SizeX32*factorx);
+	sizemaprecty=(int)(screenMapInfo->SizeY32*factory);
 }
 //==============================
 //x32,y32 - coords in map 128x128 for example,
@@ -69,8 +64,8 @@ void GetMiniMapCoord(int x32,int y32,
 					 int *xminimap,int *yminimap,
 					 int *sizexinpixels,int *sizeyinpixels)
 {
-	*xminimap = screenMapInfo->SizeWidth+screenMapInfo->MinimapStartX+(int)(x32*factorx);
-	*yminimap = screenMapInfo->SizeHeight+screenMapInfo->MinimapStartY+(int)(y32*factory);
+	*xminimap = screenMapInfo->MinimapPosX+screenMapInfo->MinimapStartX+(int)(x32*factorx);
+	*yminimap = screenMapInfo->MinimapPosY+screenMapInfo->MinimapStartY+(int)(y32*factory);
 	*sizexinpixels=(int)(sizex*factorx+0.5);
 	*sizeyinpixels=(int)(sizey*factory+0.5);
 }
@@ -90,8 +85,8 @@ void minimap_showobj(OBJ *a)
 //==============================================
 void getminimapcoord(struct mapinfo *info,int x,int y,int *xm,int *ym)
 {
-	*xm = (int) ((x*factorx/SIZESPRLANSHX)+screenMapInfo->MinimapStartX)+screenMapInfo->SizeWidth;
-	*ym = (int) ((y*factory/SIZESPRLANSHY)+screenMapInfo->MinimapStartY)+screenMapInfo->SizeHeight;
+	*xm = (int) ((x*factorx/SIZESPRLANSHX)+screenMapInfo->MinimapStartX)+screenMapInfo->MinimapPosX;
+	*ym = (int) ((y*factory/SIZESPRLANSHY)+screenMapInfo->MinimapStartY)+screenMapInfo->MinimapPosY;
 }
 //==============================================
 void ObjOnMiniMap(int xkart,int ykart,int sizex,int sizey,char color,char *minimapadr)
@@ -115,19 +110,19 @@ void drawMINIMAP(void)
 	int xbeg,ybeg,xend,yend;
 	if (MAPDEF)
 	{
-		CPutPartVisibleSpr( screenMapInfo->SizeWidth,screenMapInfo->SizeHeight,128,128,Minimap);
-		GetMiniMapCoord(map.MAPX,map.MAPY,screenMapInfo->SizeWidth,screenMapInfo->SizeHeight,&xbeg,&ybeg,&xend,&yend);
-		xend += xbeg;
-		yend += ybeg;
+		CPutPartVisibleSpr( screenMapInfo->MinimapPosX,screenMapInfo->MinimapPosY,128,128,Minimap);
+		GetMiniMapCoord(map.MAPX,map.MAPY,screenMapInfo->SizeX32,screenMapInfo->SizeY32,&xbeg,&ybeg,&xend,&yend);
+		xend+=xbeg;
+		yend+=ybeg;
 		wrectangle(WHITECOLOR,xbeg,ybeg,xend,yend);
 		if (screenMapInfo->MinimapStartY>0)
-			horizline(WHITECOLOR,screenMapInfo->MinimapStartX+screenMapInfo->SizeWidth-1,screenMapInfo->MinimapEndX+screenMapInfo->SizeWidth+1,screenMapInfo->MinimapStartY+screenMapInfo->SizeHeight);
+			horizline(WHITECOLOR,screenMapInfo->MinimapStartX+screenMapInfo->MinimapPosX-1,screenMapInfo->MinimapEndX+screenMapInfo->MinimapPosX+1,screenMapInfo->MinimapStartY+screenMapInfo->MinimapPosY);
 		if (screenMapInfo->MinimapEndY<128)
-			horizline(WHITECOLOR,screenMapInfo->MinimapStartX+screenMapInfo->SizeWidth-1,screenMapInfo->MinimapEndX+screenMapInfo->SizeWidth+1,screenMapInfo->MinimapEndY+screenMapInfo->SizeHeight);
+			horizline(WHITECOLOR,screenMapInfo->MinimapStartX+screenMapInfo->MinimapPosX-1,screenMapInfo->MinimapEndX+screenMapInfo->MinimapPosX+1,screenMapInfo->MinimapEndY+screenMapInfo->MinimapPosY);
 		if (screenMapInfo->MinimapStartX>0)
-			vertline(WHITECOLOR,screenMapInfo->MinimapStartX+screenMapInfo->SizeWidth,screenMapInfo->MinimapStartY+screenMapInfo->SizeHeight-1,screenMapInfo->MinimapEndY+screenMapInfo->SizeHeight+1);
+			vertline(WHITECOLOR,screenMapInfo->MinimapStartX+screenMapInfo->MinimapPosX,screenMapInfo->MinimapStartY+screenMapInfo->MinimapPosY-1,screenMapInfo->MinimapEndY+screenMapInfo->MinimapPosY+1);
 		if (screenMapInfo->MinimapEndX<128)
-			vertline(WHITECOLOR,screenMapInfo->MinimapEndX+screenMapInfo->SizeWidth,screenMapInfo->MinimapStartY+screenMapInfo->SizeHeight-1,screenMapInfo->MinimapEndY+screenMapInfo->SizeHeight+1);
+			vertline(WHITECOLOR,screenMapInfo->MinimapEndX+screenMapInfo->MinimapPosX,screenMapInfo->MinimapStartY+screenMapInfo->MinimapPosY-1,screenMapInfo->MinimapEndY+screenMapInfo->MinimapPosY+1);
 	}
 }
 //==================================
@@ -219,18 +214,18 @@ void drawMAP(int ignorefirstwaiting)
 		}
 	}
 	bh=map.MAPY;
-	eh=bh+screenMapInfo->SizeHeight+1;
+	eh=bh+screenMapInfo->SizeY32+1;
 	if (eh > MAXYMAP)
 		eh = MAXYMAP;
 	bw=map.MAPX;
-	ew=bw+screenMapInfo->SizeWidth+1;
+	ew=bw+screenMapInfo->SizeX32+1;
 	if (ew > MAXXMAP)
 		ew = MAXXMAP;
 	xk=map.MAPXGLOBAL;
 	yk=map.MAPYGLOBAL;
 	xkk = xk % SIZESPRLANSHX;
 	ykk = yk % SIZESPRLANSHY;
-	memset(screenmapused,0,(screenMapInfo->SizeHeight+1)*(screenMapInfo->SizeWidth+1));
+	memset(screenmapused,0,(screenMapInfo->SizeY32+1)*(screenMapInfo->SizeX32+1));
 	for (ii=0,i=bh;i<eh;i++,ii++)
 	{
 		for (jj=0,j=bw;j<ew;j++,jj++)
@@ -241,14 +236,14 @@ void drawMAP(int ignorefirstwaiting)
 			{
 				indextile32=map.display_map[i*MAXXMAP+j];
 				putlansh(jj*SIZESPRLANSHX-xkk,ii*SIZESPRLANSHY-ykk,j,i,indextile32,wf,bf);
-				screenmapused[ii*(screenMapInfo->SizeWidth+1)+jj]=1;
+				screenmapused[ii*(screenMapInfo->SizeX32+1)+jj]=1;
 			}
 			else
 				if (gameconf.videoconf.visiblemap||checkaroundtile(j,i))//if around not open we don't show tile
 					{
 						indextile32=map.display_map[i*MAXXMAP+j];
 						putlansh(jj*SIZESPRLANSHX-xkk,ii*SIZESPRLANSHY-ykk,j,i,indextile32,wf,bf);
-						screenmapused[ii*(screenMapInfo->SizeWidth+1)+jj]=1;
+						screenmapused[ii*(screenMapInfo->SizeX32+1)+jj]=1;
 					}
 			if (SHOWCELLS)
 			{
@@ -368,11 +363,11 @@ void drawMAP(int ignorefirstwaiting)
 /*	  FILE *f=fopen("screenmapused.txt","w");
 	if (f)
 	{
-		for (i=0;i<screenMapInfo->SizeHeight+1;i++)
+		for (i=0;i<screenMapInfo->SizeY32+1;i++)
 		{
-			for (j=0;j<screenMapInfo->SizeWidth+1;j++)
+			for (j=0;j<screenMapInfo->SizeX32+1;j++)
 			{
-				fprintf(f,"%02d ",screenmapused[i*(screenMapInfo->SizeWidth+1)+j]);
+				fprintf(f,"%02d ",screenmapused[i*(screenMapInfo->SizeX32+1)+j]);
 			}
 			fprintf(f,"\n");
 		}
@@ -442,10 +437,10 @@ void MoveVisualMapPosition(int x,int y)
 		x=0;
 	if (y<0)
 		y=0;
-	if (x>SIZESPRLANSHX*(MAXXMAP-screenMapInfo->SizeWidth))
-		x=SIZESPRLANSHX*(MAXXMAP-screenMapInfo->SizeWidth);
-	if (y>SIZESPRLANSHY*(MAXYMAP-screenMapInfo->SizeHeight))
-		y=SIZESPRLANSHY*(MAXYMAP-screenMapInfo->SizeHeight);
+	if (x>SIZESPRLANSHX*(MAXXMAP-screenMapInfo->SizeX32))
+		x=SIZESPRLANSHX*(MAXXMAP-screenMapInfo->SizeX32);
+	if (y>SIZESPRLANSHY*(MAXYMAP-screenMapInfo->SizeY32))
+		y=SIZESPRLANSHY*(MAXYMAP-screenMapInfo->SizeY32);
 	map.newx = x;
 	map.newy = y;
 	map.totaldeltax = x - map.MAPXGLOBAL;
@@ -460,7 +455,7 @@ void MoveVisualMapPosition(int x,int y)
 //==================================
 void MoveVisualMapPositionCenter(int x,int y)
 {
-	MoveVisualMapPosition(x-screenMapInfo->SizeWidth*SIZESPRLANSHX/2,y-screenMapInfo->SizeHeight*SIZESPRLANSHY/2-SIZESPRLANSHY);
+	MoveVisualMapPosition(x-screenMapInfo->SizeX32*SIZESPRLANSHX/2,y-screenMapInfo->SizeY32*SIZESPRLANSHY/2-SIZESPRLANSHY);
 }
 //==================================
 bool SetVisualMapPosition(int x,int y)//x,y-0..MAX?MAP*32
@@ -474,10 +469,10 @@ bool SetVisualMapPosition(int x,int y)//x,y-0..MAX?MAP*32
 		x=0;
 	if (y<0)
 		y=0;
-	if (x>SIZESPRLANSHX*(MAXXMAP-screenMapInfo->SizeWidth))
-		x=SIZESPRLANSHX*(MAXXMAP-screenMapInfo->SizeWidth);
-	if (y>SIZESPRLANSHY*(MAXYMAP-screenMapInfo->SizeHeight))
-		y=SIZESPRLANSHY*(MAXYMAP-screenMapInfo->SizeHeight);
+	if (x>SIZESPRLANSHX*(MAXXMAP-screenMapInfo->SizeX32))
+		x=SIZESPRLANSHX*(MAXXMAP-screenMapInfo->SizeX32);
+	if (y>SIZESPRLANSHY*(MAXYMAP-screenMapInfo->SizeY32))
+		y=SIZESPRLANSHY*(MAXYMAP-screenMapInfo->SizeY32);
 	map.MAPXGLOBAL = x;
 	map.MAPYGLOBAL = y;
 	if (map.MAPX != x/SIZESPRLANSHX || map.MAPY != y/SIZESPRLANSHX)
@@ -494,7 +489,7 @@ bool SetVisualMapPosition(int x,int y)//x,y-0..MAX?MAP*32
 //==================================
 void SetVisualMapPositionCenter(int x,int y)
 {
-	SetVisualMapPosition(x-screenMapInfo->SizeWidth*SIZESPRLANSHX/2,y-screenMapInfo->SizeHeight*SIZESPRLANSHY/2-SIZESPRLANSHY);
+	SetVisualMapPosition(x-screenMapInfo->SizeX32*SIZESPRLANSHX/2,y-screenMapInfo->SizeY32*SIZESPRLANSHY/2-SIZESPRLANSHY);
 }
 //==================================
 void putfullcreep(int xglob,int yglob,int x,int y,int creepnrspr)
@@ -968,11 +963,11 @@ void _putcells(void)
 	int i,j,xkk,ykk;
 	xkk=map.MAPXGLOBAL%SIZESPRLANSHX;
 	ykk=map.MAPYGLOBAL%SIZESPRLANSHY;
-	for (i=0;i<screenMapInfo->SizeHeight+1;i++)
+	for (i=0;i<screenMapInfo->SizeY32+1;i++)
 	{
 		horizline(245,GRP_wminx,GRP_wmaxx,i*SIZESPRLANSHY-ykk);
 	}
-	for (j=0;j<screenMapInfo->SizeWidth+1;j++)
+	for (j=0;j<screenMapInfo->SizeX32+1;j++)
 	{
 		vertline(245,j*SIZESPRLANSHX-xkk,GRP_wminy,GRP_wmaxy);
 	}

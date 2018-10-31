@@ -805,8 +805,8 @@ void mouseonkartaarea(void)
 				highMouse->WaitToPressLeftButton = 0;
 				highMouse->WaitToReleaseLeftButton = 0;
 				highMouse->DoRightClickAction(	NULL,
-												(int)((highMouse->PosX-screenMapInfo->SizeWidth-screenMapInfo->MinimapStartX)/factorx)*SIZESPRLANSHX,
-												(int)((highMouse->PosY-screenMapInfo->SizeHeight-screenMapInfo->MinimapStartY)/factory)*SIZESPRLANSHY,
+												(int)((highMouse->PosX-screenMapInfo->MinimapPosX-screenMapInfo->MinimapStartX)/factorx)*SIZESPRLANSHX,
+												(int)((highMouse->PosY-screenMapInfo->MinimapPosY-screenMapInfo->MinimapStartY)/factory)*SIZESPRLANSHY,
 												0);
 			//action
 			}
@@ -814,10 +814,10 @@ void mouseonkartaarea(void)
 			{
 				if (!destCursor->Presence)
 				{
-					if (MAPDEF&&!highMouse->MouseOnSelectionMode)
+					if (MAPDEF && !highMouse->MouseOnSelectionMode)
 					{
-						movieminikarta = SetVisualMapPosition((int) (((highMouse->PosX-screenMapInfo->SizeWidth-screenMapInfo->MinimapStartX)/factorx)-screenMapInfo->SizeWidth/2)*SIZESPRLANSHX,
-															  (int) (((highMouse->PosY-screenMapInfo->SizeHeight-screenMapInfo->MinimapStartY)/factory)-screenMapInfo->SizeHeight/2)*SIZESPRLANSHY);
+						movieminikarta = SetVisualMapPosition((int) (((highMouse->PosX-screenMapInfo->MinimapPosX-screenMapInfo->MinimapStartX)/factorx)-screenMapInfo->SizeX32/2)*SIZESPRLANSHX,
+															  (int) (((highMouse->PosY-screenMapInfo->MinimapPosY-screenMapInfo->MinimapStartY)/factory)-screenMapInfo->SizeY32/2)*SIZESPRLANSHY);
 					}
 				}
 			}
@@ -829,8 +829,8 @@ void mouseonkartaarea(void)
 				buton2 = 1;
 				highMouse->MouseModeMove = MODEMOVE;
 				highMouse->DoRightClickAction(  NULL,
-												(int)((highMouse->PosX-screenMapInfo->SizeWidth-screenMapInfo->MinimapStartX)/factorx)*SIZESPRLANSHX,
-												(int)((highMouse->PosY-screenMapInfo->SizeHeight-screenMapInfo->MinimapStartY)/factory)*SIZESPRLANSHY,
+												(int)((highMouse->PosX-screenMapInfo->MinimapPosX-screenMapInfo->MinimapStartX)/factorx)*SIZESPRLANSHX,
+												(int)((highMouse->PosY-screenMapInfo->MinimapPosY-screenMapInfo->MinimapStartY)/factory)*SIZESPRLANSHY,
 												0);
 			}
 		}

@@ -779,6 +779,7 @@ void selectMAN(int x1,int y1,int x2,int y2,int mode)
 	y1 = y1+map.MAPYGLOBAL;
 	y2 = y2+map.MAPYGLOBAL;
 	int ctrl = (KEYPRESS(CTRLLKEY) | (KEYPRESS(CTRLRKEY))) || highMouse->DoubleClick;
+	printf("%d\n",highMouse->DoubleClick);
 	if ( ((x2-x1 <= MINHAP) && (y2-y1<=MINHAP)) || ctrl)
 	{
 		a=founduniqueobj((x1+x2)/2,(y1+y2)/2);

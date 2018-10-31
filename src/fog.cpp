@@ -13,7 +13,7 @@
 int SCRFOGX,SCRFOGY;
 unsigned char *screenfog,*screenmapused;
 //================================================
-void putfogspr(int x,int y,char *table,long lt,long rt,long lb,long rb,int fognr)		
+void putfogspr(int x,int y,char *table,long lt,long rt,long lb,long rb,int fognr)
 {
 //	  char buff[20];
 //	  sprintf(buff,"%d",fognr);
@@ -29,11 +29,11 @@ int FOGAROUND[4][3][2]= {
 						};
 //					  0 - 4 open & see
 //					  5 - 7 open & !see
-//					  8 - !open & !see 
+//					  8 - !open & !see
 //					  9 -  border between open & see
-//					  10 
-//					  11 
-//					  12 
+//					  10
+//					  11
+//					  12
 //					  13 - border between !open & open
 //					  0	   1	2	 3	  4	   5	6	 7	  8	   9   10	11	 12	  13
 	char FOGDIAP[2][14]=
@@ -106,7 +106,7 @@ void putfog(void)
 			retborder=getborderfogs(jj+1,ii+1,scrfognr,borders);
 			if (!retborder)
 			{
-				if (screenmapused[ii*(screenMapInfo->SizeWidth+1)+jj])
+				if (screenmapused[ii*(screenMapInfo->SizeX32+1)+jj])
 				{
 					putfogspr(jj*SIZESPRLANSHX-xkk,ii*SIZESPRLANSHX-ykk,_toblack_,
 						borders[0],borders[1],borders[2],borders[3],scrfognr);
@@ -129,7 +129,7 @@ void putfog(void)
 //================================================
 void copywhitefogtoblackfog(int player)
 {
-#ifndef WITHOUTHALFFOG 
+#ifndef WITHOUTHALFFOG
 	int i;
 	unsigned char fogvalue;
 	if (map.mapbits.whitefog[player])
@@ -194,7 +194,7 @@ void calculatefog(int bitplayers)
 							scrfognr[player]=0;
 						}
 						else
-						{		
+						{
 							if (map.mapbits.whitefog[player][i*MAXXMAP+j]>=map.mapbits.blackfog[player][i*MAXXMAP+j])
 							{
 								switch(map.mapbits.whitefog[player][i*MAXXMAP+j])
@@ -225,7 +225,7 @@ void calculatefog(int bitplayers)
 										break;
 									case 1://black==2 or 3 or 4
 										switch(map.mapbits.blackfog[player][i*MAXXMAP+j])
-										{		
+										{
 											case 4:
 												scrfognr[player]=3;
 												break;
@@ -285,7 +285,7 @@ void ApplyFogMask(struct mapinfo *info,int playernr)
 {
 	int i,totaltiles;
 	unsigned char mask;
-	
+
 	if (!info->FogMask)
 		return;
 	if (playernr >= PLAYEDPLAYERS)
