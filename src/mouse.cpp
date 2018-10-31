@@ -735,21 +735,19 @@ void MouseClickEvent(bool type, int buttons)
 	}
 	if (highMouse->ClickFunc)
 		(*highMouse->ClickFunc)(type, buttons);
-	if (highMouse->DblClickFunc)
+
+	if (buttons & WMLEFTKEY)
 	{
-		if (buttons == WMLEFTKEY)
+		if (tick_timer - prevtimer <= MOUSEDBLCLICKTIME)
 		{
-			if (tick_timer - prevtimer <= MOUSEDBLCLICKTIME)
-			{
-				highMouse->DoubleClick = true;
-			}
-			else
-			{
-				highMouse->DoubleClick = false;
-			}
-			prevtimer = tick_timer;
-			if (highMouse->DoubleClick)
-				(*highMouse->DblClickFunc)();
+			highMouse->DoubleClick = true;
 		}
+		else
+		{
+			highMouse->DoubleClick = false;
+		}
+		prevtimer = tick_timer;
+		if (highMouse->DblClickFunc)
+			(*highMouse->DblClickFunc)();
 	}
 }

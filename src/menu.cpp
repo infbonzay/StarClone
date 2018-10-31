@@ -317,7 +317,7 @@ int actiondblclick(MENUSTR *allmenus,int downmenu)
 	int action;
 	if (highMouse->DoubleClick)
 	{
-		highMouse->DoubleClick = false;
+		//highMouse->DoubleClick = false;
 		item=&allmenus->menu[downmenu];
 		switch(item->itemtype)
 		{
@@ -604,7 +604,7 @@ int drawmenu(MENUSTR *allmenus,int flags)
 	prevmenuonbar = menuonbar;
 	menuonbar = NOSELECTMENUBAR;
 	needredraw=0;
-	highMouse->DoubleClick = false;
+//	highMouse->DoubleClick = false;
 	keyactive=0;
 	eventwindowloop();
 	keybuffer.Flush();

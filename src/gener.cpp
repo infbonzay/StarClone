@@ -983,7 +983,7 @@ int gogame(struct mapinfo *info)
 		{
 			keyactive=0;
 			lastkey=0;
-			highMouse->DoubleClick = false;
+			//highMouse->DoubleClick = false;
 		}
 		timeid=mytimer.TimeIsCome(gameconf.speedconf.gamespeed);
 		if (PAUSEGAME)
