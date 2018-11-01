@@ -4,7 +4,7 @@
 #include "List.h"
 
 template <typename T>
-void List<T>::EnumListInit(void)
+void List<T>::EnumInit(void)
 {
 	EnumValue = 0;
 	GlobalEnumValue = 0;
@@ -12,24 +12,23 @@ void List<T>::EnumListInit(void)
 }
 //=========================================
 template <typename T>
-void List<T>::Empty(void)
+void List<T>::Clear(void)
 {
-	Elements = 0;
+	Count = 0;
 	First = NULL;
-	EnumListInit();
+	EnumInit();
 }
 //=========================================
 template <typename T>
 List<T>::List(int maxElements)
 {
-	MaxElements = maxElements;
-	Empty();
+	Capacity = maxElements;
+	Clear();
 }
 //=========================================
 template <typename T>
 List<T>::List(void) : List(INT_MAX)
 {
-	Empty();
 }
 //=========================================
 template <typename T>
@@ -42,7 +41,7 @@ List<T>::~List(void)
 		next = curent->Next;
 		delete curent;
 	}
-	Empty();
+	Clear();
 }
 //=========================================
 template <typename T>
@@ -50,7 +49,7 @@ void List<T>::Add(T elem)
 {
 	int i,nrreturn,next_parsetimes = 0;
 	ListElem<T> *curent,*next;
-	if (MaxElements == Elements)
+	if (Capacity == Count)
 		return;
 	if (!First)
 	{
@@ -80,13 +79,13 @@ void List<T>::Add(T elem)
 	}
 	nrreturn = curent->FirstEmptyElem;
 	curent->Elements[nrreturn] = elem;
-	curent->PrecenseFlag[nrreturn] = MYLIST_FULL;
-	Elements++;
+	curent->PrecenseFlag[nrreturn] = true;
+	Count++;
 	curent->EmptyElem--;
 	if (curent->EmptyElem)
 	{
 		for ( i=nrreturn+1; i<MAXLISTELEMENTS; i++ )
-			if (curent->PresenceFlag[i] == MYLIST_EMPTY)
+			if (curent->PresenceFlag[i])
 			{
 				curent->FirstEmptyElem = i;
 				break;
@@ -95,15 +94,15 @@ void List<T>::Add(T elem)
 }
 //=========================================
 template <typename T>
-void List<T>::Del(ListElem<T> curent, int elemNr)
+void List<T>::Remove(ListElem<T> curent, int elemNr)
 {
 	if (!curent)
 		return;
-	if (curent->PresenceFlag[elemNr] == MYLIST_EMPTY)
+	if (!curent->PresenceFlag[elemNr])
 		return;
 	curent->Elements[elemNr] = NULL;
-	curent->Presence[elemNr] = MYLIST_EMPTY;
-	Elements--;
+	curent->Presence[elemNr] = false;
+	Count--;
 	if (++curent->EmptyElem < MAXLISTELEMENTS)
 	{
 		if (elemNr < curent->FirstEmptyElem)
@@ -133,7 +132,7 @@ void List<T>::Del(ListElem<T> curent, int elemNr)
 }
 //=========================================
 template <typename T>
-void List<T>::Del(T elem)
+void List<T>::Remove(T elem)
 {
 	int i,j=0;
 	ListElem<T> *curent = First;
@@ -142,8 +141,8 @@ void List<T>::Del(T elem)
 	while(curent)
 	{
 		for (i=0;i<MAXLISTELEMENTS;i++)
-			if (curent->Elements[i] == elem)
-				return(Del(curent,j+i));
+			if (curent->PresenceFlag[i] && curent->Elements[i] == elem)
+				return(Remove(curent,j+i));
 		j += MAXLISTELEMENTS;
 		curent = curent->Next;
 	}
@@ -170,5 +169,24 @@ T List<T>::GetNextElem(void)
 		GlobalEnumValue++;
 	}while(!CurentEnum->PresenceFlag[EnumValue++]);							//find next elem if curent is NULL
 	return(retval);
+}
+//=========================================
+template <typename T>
+bool List<T>::Contains(T elem)
+{
+	int i,j=0;
+	ListElem<T> *curent = First;
+	if (!First)
+		false;
+	while(curent)
+	{
+		for (i=0;i<MAXLISTELEMENTS;i++)
+			if (curent->PresenceFlag[i])
+			if (curent->Elements[i] == elem)
+				return(true);
+		j += MAXLISTELEMENTS;
+		curent = curent->Next;
+	}
+	return false;
 }
 //=========================================

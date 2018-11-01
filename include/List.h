@@ -2,8 +2,6 @@
 #define _LIST_W
 
 #define MAXLISTELEMENTS	64
-#define MYLIST_EMPTY	0
-#define MYLIST_FULL		1
 
 
 template <typename T> 
@@ -14,27 +12,30 @@ struct ListElem
 	ListElem<T>		*Next;
 	ListElem<T> 	*Prev;
 	T				Elements[MAXLISTELEMENTS];
-	unsigned char	PresenceFlag[MAXLISTELEMENTS];
+	bool			PresenceFlag[MAXLISTELEMENTS];
 };
 
 template <typename T> 
 class List
 {
 private:
-	int				MaxElements;
-	int				Elements;
+	int				Capacity;
+	int				Count;
 	ListElem<T> 	*First;
-	int				EnumValue;
-	int				GlobalEnumValue;
 	ListElem<T>		*CurentEnum;
+	//int				EnumValue;
+	//int				GlobalEnumValue;
+
+	void			Remove(ListElem<T> curent, int elemnr);
 
 public:
-	void			EnumListInit(void);
-	void			Empty(void);
-	void			Add(T	elem);
-	void			Del(ListElem<T> curent, int elemnr);
-	void			Del(T elemnr);
-	T				GetNextElem(void);
+	void			Clear(void);
+	void			Add(T elem);
+	void			Remove(T elemnr);
+	bool			Contains(T elem);
+
+	//void			EnumInit(void);
+	//T				GetNextElem(void);
 //=========================================
 
 	List();
@@ -42,6 +43,21 @@ public:
 	~List();
 };
 //=========================================
+
+template <typename T>
+class Enumerate : public List<T>
+{
+	int				EnumValue;
+	int				GlobalEnumValue;
+
+public:
+	T				GetNextElem(void);
+	
+	Enumerate(List<T> *list);
+	~Enumerate();
+}
+
+
 
 #endif	/*		_MYLIST_W  */
 
