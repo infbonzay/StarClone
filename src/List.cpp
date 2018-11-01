@@ -3,20 +3,12 @@
 
 #include "List.h"
 
-template <typename T>
-void List<T>::EnumInit(void)
-{
-	EnumValue = 0;
-	GlobalEnumValue = 0;
-	CurentEnum = First;
-}
 //=========================================
 template <typename T>
 void List<T>::Clear(void)
 {
 	Count = 0;
 	First = NULL;
-	EnumInit();
 }
 //=========================================
 template <typename T>
@@ -94,39 +86,36 @@ void List<T>::Add(T elem)
 }
 //=========================================
 template <typename T>
-void List<T>::Remove(ListElem<T> curent, int elemNr)
+void List<T>::Remove(ListElem<T> current, int elemNr)
 {
-	if (!curent)
+	if (!current)
 		return;
-	if (!curent->PresenceFlag[elemNr])
+	if (!current->PresenceFlag[elemNr])
 		return;
-	curent->Elements[elemNr] = NULL;
-	curent->Presence[elemNr] = false;
+	current->Elements[elemNr] = NULL;
+	current->Presence[elemNr] = false;
 	Count--;
-	if (++curent->EmptyElem < MAXLISTELEMENTS)
+	if (++current->EmptyElem < MAXLISTELEMENTS)
 	{
-		if (elemNr < curent->FirstEmptyElem)
-			curent->FirstEmptyElem = elemNr;
+		if (elemNr < current->FirstEmptyElem)
+			current->FirstEmptyElem = elemNr;
 	}
 	else
 	{
 		//here emptyelem=maxlistelements, entire slot is empty, need to reorganize this
-		if (curent->Prev)
+		if (current->Prev)
 		{
-			curent->Prev->Next = curent->Next;
-			if (curent->Next)
-				curent->Next->Prev = curent->Prev;
+			current->Prev->Next = current->Next;
+			if (current->Next)
+				current->Next->Prev = current->Prev;
 		}
 		else
 		{
-			First = curent->Next;
-			if (curent->Next)
-				curent->Next->Prev=NULL;
+			First = current->Next;
+			if (current->Next)
+				current->Next->Prev=NULL;
 		}
-		CurentEnum = curent->Next;
-		GlobalEnumValue -= EnumValue;
-		EnumValue = 0;
-		delete curent;
+		delete current;
 	}
 	return;
 }
@@ -150,43 +139,58 @@ void List<T>::Remove(T elem)
 }
 //=========================================
 template <typename T>
-T List<T>::GetNextElem(void)
-{
-	T retval;
-	if (!CurentEnum)
-		return NULL;
-	do{
-		while(EnumValue >= MAXLISTELEMENTS)
-		{
-			do{
-				CurentEnum = CurentEnum->Next;	//go to next slot
-				if (!CurentEnum)
-					return NULL;
-				EnumValue = 0;
-			}while(CurentEnum->EmptyElem == MAXLISTELEMENTS);	//repeat at next if we have empty entire slot
-		}
-		retval = CurentEnum->Elements[EnumValue];
-		GlobalEnumValue++;
-	}while(!CurentEnum->PresenceFlag[EnumValue++]);							//find next elem if curent is NULL
-	return(retval);
-}
-//=========================================
-template <typename T>
 bool List<T>::Contains(T elem)
 {
 	int i,j=0;
 	ListElem<T> *curent = First;
 	if (!First)
-		false;
+		return false;
 	while(curent)
 	{
 		for (i=0;i<MAXLISTELEMENTS;i++)
 			if (curent->PresenceFlag[i])
 			if (curent->Elements[i] == elem)
-				return(true);
+				return true;
 		j += MAXLISTELEMENTS;
 		curent = curent->Next;
 	}
 	return false;
 }
 //=========================================
+template <typename T>
+Enumerate<T>::Enumerate(List<T> *list)
+{
+	EnumValue = 0;
+	GlobalEnumValue = 0;
+	_list = list;
+	CurrentEnum = _list.First;
+}
+//=========================================
+template <typename T>
+Enumerate<T>::~Enumerate()
+{
+}
+//=========================================
+template <typename T>
+T Enumerate<T>::GetNextElem(void)
+{
+
+	T retval;
+	if (!CurrentEnum)
+		return NULL;
+	do{
+		while(EnumValue >= MAXLISTELEMENTS)
+		{
+			do{
+				CurrentEnum = CurrentEnum->Next;	//go to next slot
+				if (!CurrentEnum)
+					return NULL;
+				EnumValue = 0;
+			}while(CurrentEnum->EmptyElem == MAXLISTELEMENTS);	//repeat at next if we have empty entire slot
+		}
+		GlobalEnumValue++;
+	}while(!CurrentEnum->PresenceFlag[EnumValue++]);
+	retval = CurrentEnum->Elements[--EnumValue];
+	return(retval);
+}
+

@@ -76,7 +76,7 @@ HANDLE MpqsFindFile(const char *filename)
 	return 0;
 }
 //============================================
-HANDLE LoadMpq(char *MPQFileName)
+HANDLE LoadMpq(const char *MPQFileName)
 {
 	HANDLE mpq;
 	int result;
@@ -89,7 +89,7 @@ HANDLE LoadMpq(char *MPQFileName)
 //============================================
 void UnLoadAllMpqs(void)
 {
-	for (int i=0;i<allmpq.GetMaxElements();i++)	   
+	for (int i=0;i<allmpq.GetMaxElements();i++)
 		wr_SFileCloseArchive(allmpq.GetElemNr(i));
 	allmpq.FlushList();
 	if (install1mpq)
@@ -119,7 +119,7 @@ int GetMpqFilesNr(HANDLE hmpq)
 	return(SFileGetFileInfo(hmpq,SFILE_INFO_NUM_FILES));
 }
 //============================================
-HANDLE GetFilePosInArchive(HANDLE mainmpq,char *filename,int *nr)
+HANDLE GetFilePosInArchive(HANDLE mainmpq,const char *filename,int *nr)
 {
 	HANDLE mpq,f;
 	*nr=-1;
@@ -145,7 +145,7 @@ int SFileEOF(HANDLE f)
 	DWORD fsize=SFileGetFileInfo(f,SFILE_INFO_FILE_SIZE);
 	return (fpos>=fsize);
 }
-#undef SFileOpenFileEx 
+#undef SFileOpenFileEx
 UINT SFileOpenFileExStormLibVersion(HANDLE hMpq, const char * szFileName, UINT dwSearchScope, HANDLE * phFile)
 {
 	if((unsigned long)szFileName < 0x00010000)//opened file by number
@@ -187,7 +187,7 @@ int SFileEOF(HANDLE f)
 }
 #endif
 //============================================
-int	 GetMPQFileID(HANDLE mpq,char *filesound,MPQIDS *fileid)
+int	 GetMPQFileID(HANDLE mpq,const char *filesound,MPQIDS *fileid)
 {
 	fileid->hmpq = GetFilePosInArchive(mpq,filesound,&fileid->mpqfilenr);
 	return(fileid->mpqfilenr);

@@ -4,9 +4,10 @@
 #define MAXLISTELEMENTS	64
 
 
-template <typename T> 
+template <typename T>
 struct ListElem
 {
+protected:
 	int	 			EmptyElem;
 	int	 			FirstEmptyElem;
 	ListElem<T>		*Next;
@@ -15,28 +16,21 @@ struct ListElem
 	bool			PresenceFlag[MAXLISTELEMENTS];
 };
 
-template <typename T> 
+template <typename T>
 class List
 {
-private:
+protected:
 	int				Capacity;
 	int				Count;
 	ListElem<T> 	*First;
-	ListElem<T>		*CurentEnum;
-	//int				EnumValue;
-	//int				GlobalEnumValue;
 
-	void			Remove(ListElem<T> curent, int elemnr);
+	void			Remove(ListElem<T> current, int elemnr);
 
 public:
 	void			Clear(void);
 	void			Add(T elem);
 	void			Remove(T elemnr);
 	bool			Contains(T elem);
-
-	//void			EnumInit(void);
-	//T				GetNextElem(void);
-//=========================================
 
 	List();
 	List(int maxElements);
@@ -45,17 +39,19 @@ public:
 //=========================================
 
 template <typename T>
-class Enumerate : public List<T>
+class Enumerate
 {
+protected:
 	int				EnumValue;
 	int				GlobalEnumValue;
-
+	List<T>			*_list;
+	ListElem<T>		*CurrentEnum;
 public:
-	T				GetNextElem(void);
-	
+	T	GetNextElem(void);
+
 	Enumerate(List<T> *list);
 	~Enumerate();
-}
+};
 
 
 

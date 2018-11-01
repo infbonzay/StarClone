@@ -56,7 +56,7 @@ int CalculateVolume(int distance,int minvolume,int maxvolume,int globalvol)
 {
 	int retvalue;
 	distance = abs(distance-(gameconf.grmode.x+gameconf.grmode.y)/2)/8;
-	if (distance<MINDIST)
+	if (distance < MINDIST)
 		retvalue = maxvolume;
 	else
 		if (distance>MAXDIST)
@@ -160,7 +160,7 @@ int Play_sfxdata(int x,int y,int sfxdata_id,int repeatedsongs)
 	return(-1);
 }
 //==============================================
-int loadandplaywav(HANDLE mpq,struct OBJ *a,char *filesound,int repeatedflag,int distance)
+int loadandplaywav(HANDLE mpq,struct OBJ *a,const char *filesound,int repeatedflag,int distance)
 {
 	int repeated=0,repeated2=0,i=-1,err,chunkvolume;
 	long soundsz,sndlength;
@@ -230,7 +230,7 @@ int loadandplaywav(HANDLE mpq,struct OBJ *a,char *filesound,int repeatedflag,int
 //==============================================
 int checkifplay(int channel)
 {
-	return(unitsound[channel].presence&SOUNDEXIST);
+	return(unitsound[channel].presence & SOUNDEXIST);
 }
 //==============================================
 int unloadwav(int channel)
@@ -240,7 +240,7 @@ int unloadwav(int channel)
 	if (unitsound)
 	{
 		i = channel;
-		if (unitsound[i].presence&SOUNDPLAYINFINITE)
+		if (unitsound[i].presence & SOUNDPLAYINFINITE)
 		{
 			wPlayChannel(i,unitsound[i].sample,0);
 			return 0;
@@ -281,9 +281,9 @@ int playOBJsound(struct OBJ *a,int soundmode,int sfxdata_id,int stopprevsound,in
 	char *soundfile;
 	if (IsDoodadState(a->SC_Unit))
 	{
-		if (GetOBJx(a) >= map.MAPXGLOBAL						&&
-			GetOBJy(a) >= map.MAPYGLOBAL						&&
-			GetOBJx(a) < map.MAPXGLOBAL+screenMapInfo->SizeX32*SIZESPRLANSHX &&
+		if (GetOBJx(a) >= map.MAPXGLOBAL										&&
+			GetOBJy(a) >= map.MAPYGLOBAL										&&
+			GetOBJx(a) < map.MAPXGLOBAL+screenMapInfo->SizeX32*SIZESPRLANSHX	&&
 			GetOBJy(a) < map.MAPYGLOBAL+screenMapInfo->SizeY32*SIZESPRLANSHY)
 			;
 		else
@@ -316,7 +316,7 @@ int activatesound(struct OBJ *a,int soundmode,int addfactor,int stopprevsound)
 	maxmusnr = sndto - sndfrom+1;
 	if (!sndfrom)
 	{
-		if (soundmode == MODESOUNDSELECT || player_aliance(NUMBGAMER,a->playernr)!=ENEMYOBJ)
+		if (soundmode == MODESOUNDSELECT || player_aliance(NUMBGAMER,a->playernr) != ENEMYOBJ)
 		{
 			SetPortrait(a->SC_Unit,SMKNORMAL,NOSOUNDFILENR,-1);
 			SetPortraitOBJ(a);
@@ -324,10 +324,10 @@ int activatesound(struct OBJ *a,int soundmode,int addfactor,int stopprevsound)
 		return -1;
 	}
 	aliance=player_aliance(NUMBGAMER,a->playernr);
-	if (aliance==ENEMYOBJ||aliance==NEUTRALOBJ||aliance==ALLIANCEOBJ)
+	if (aliance == ENEMYOBJ || aliance == NEUTRALOBJ || aliance == ALLIANCEOBJ)
 	{
 		needsong=canplaysound(a,soundmode,aliance);
-		if (soundmode==MODESOUNDSELECT)
+		if (soundmode == MODESOUNDSELECT)
 		{
 			SetPortrait(a->SC_Unit,SMKNORMAL,NOSOUNDFILENR,-1);
 			SetPortraitOBJ(a);
@@ -343,7 +343,7 @@ int activatesound(struct OBJ *a,int soundmode,int addfactor,int stopprevsound)
 	switch(addfactor)
 	{
 		case 1:
-			if (!a->sfxplay.nextmusicplay&&a->sfxplay.nrofmusicsplayed)
+			if (!a->sfxplay.nextmusicplay && a->sfxplay.nrofmusicsplayed)
 			{
 				//need to prevent to play same sound :)
 				if (soundmode == a->sfxplay.sfxtypeplayed)
@@ -374,9 +374,10 @@ int activatesound(struct OBJ *a,int soundmode,int addfactor,int stopprevsound)
 			soundmode = MODESOUNDPSS;
 		}
 		else
-			if (player_aliance(NUMBGAMER,a->playernr) == MYOBJ &&
-				a->sfxplay.nrselectplayed >= MAXSELECTPLAY	   &&
-				a->SC_Unit < MAX_UNITS_ELEM2 && alldattbl.units_dat->PissSoundStart[a->SC_Unit] > 0 )
+			if (player_aliance(NUMBGAMER,a->playernr) == MYOBJ 			&&
+				a->sfxplay.nrselectplayed >= MAXSELECTPLAY	   			&&
+				a->SC_Unit < MAX_UNITS_ELEM2 							&&
+				alldattbl.units_dat->PissSoundStart[a->SC_Unit] > 0 )
 			{
 					soundmode = MODESOUNDPSS;
 					a->sfxplay.nrselectplayed = 0;
@@ -405,11 +406,11 @@ int activatesound(struct OBJ *a,int soundmode,int addfactor,int stopprevsound)
 			if (maxmusnr > 1 && a->sfxplay.sfxtypeplayed == soundmode &&  musnr == a->sfxplay.nrsfxplayed)
 			{
 				musnr++;
-				if (musnr>=maxmusnr)
-					musnr=0;
+				if (musnr >= maxmusnr)
+					musnr = 0;
 			}
 	}
-	musplay = sndfrom+musnr;
+	musplay = sndfrom + musnr;
 	if (IsBuild(a->SC_Unit))
 	{
 				if (!gameconf.audioconf.buildsounds)
@@ -421,7 +422,7 @@ int activatesound(struct OBJ *a,int soundmode,int addfactor,int stopprevsound)
 					return(soundmode);
 	}
 	err = playOBJsound(a,soundmode,musplay,stopprevsound,repeatedsongs);
-	if (err>=0)
+	if (err >= 0)
 	{
 			a->sfxplay.nrsfxplayed = musnr;
 			if (needadd)
@@ -431,7 +432,7 @@ int activatesound(struct OBJ *a,int soundmode,int addfactor,int stopprevsound)
 	SetPortraitFromSound(a->SC_Unit,soundmode,musnr);
 	SetPortraitOBJ(a);
 	if (soundmode == MODESOUNDPSS)
-		if (err>=0)
+		if (err >= 0)
 		{
 			//show as we hear sound
 			SetPortraitShowedTime(getchannelplaylength(err));
@@ -473,17 +474,17 @@ void getsoundIDfromunitdat(SCUNIT SC_Unit,int soundmode,short *from,short *to)
 			}
 			break;
 	}
-	*from=0;
-	*to=0;
+	*from = 0;
+	*to = 0;
 }
 //==============================================
 void stopcurrentsound(struct OBJ *a)
 {
 	if (unitsound)
 	{
-		a->sfxplay.nextmusicplay=0;
+		a->sfxplay.nextmusicplay = 0;
 		for (int i=0;i<maxunitsounds;i++)
-			if (unitsound[i].obj==a)
+			if (unitsound[i].obj == a)
 			{
 				StopPlayChannel(i);//this function call finishchannel
 			}
@@ -520,14 +521,14 @@ int GetSoundsPlay(void)
 int BlockSoundToPlay(void)
 {
 	int temp = MayPlaySounds;
-	MayPlaySounds=0;
+	MayPlaySounds = 0;
 	return(temp);
 }
 //==============================================
 int UnBlockSoundToPlay(void)
 {
 	int temp = MayPlaySounds;
-	MayPlaySounds=1;
+	MayPlaySounds = 1;
 	return(temp);
 }
 //==============================================
@@ -599,10 +600,7 @@ void playinfoadvisorsound(int playernr,int race,int typeofsong,int textsound)
 //==============================================
 void playadvisorsound(int playernr,int race,int typeofsong,int song)
 {
-	char filename[200];
-//	  if (race==TERRANADVRACE)
-//		race=TERRANRACE;
-	if (typeofsong == ADVNUCLEARDETECT || player_aliance(NUMBGAMER,playernr)==MYOBJ)
+	if (typeofsong == ADVNUCLEARDETECT || player_aliance(NUMBGAMER,playernr) == MYOBJ)
 	{
 		if (gameconf.audioconf.advisorsounds)
 		{
@@ -620,7 +618,7 @@ void FreeChannelWithObj(struct OBJ *a)
 	{
 		for (i=0;i<maxunitsounds;i++)
 			if (checkifplay(i))
-				if (unitsound[i].obj==a)
+				if (unitsound[i].obj == a)
 					unitsound[i].presence |= OBJADREMPTY;
 	}
 }
@@ -643,13 +641,13 @@ char playenemysoundobj[MAXTYPESOFSOUND]={
 //====================================================
 int canplaysound(OBJ *a,int soundmode,int statuspl)
 {
-	int isbuildobj;
-	if (statuspl==ENEMYOBJ)
+
+	if (statuspl == ENEMYOBJ)
 	{
 		return(playenemysoundobj[soundmode]);
 	}
 	else
-		if (statuspl==NEUTRALOBJ||statuspl==ALLIANCEOBJ)
+		if (statuspl == NEUTRALOBJ || statuspl == ALLIANCEOBJ)
 		{
 			if (playenemysoundobj[soundmode])
 				return(1);
@@ -675,7 +673,7 @@ int GetTimeWaveLength(WAVHEADER *wavheader)
 	return(1000 * wavheader->subchunk2Size / (wavheader->bitsPerSample / 8) / wavheader->numChannels / wavheader->sampleRate);
 }
 //====================================================
-int FileWavePlayLength(HANDLE mpq,char *filesound)
+int FileWavePlayLength(HANDLE mpq,const char *filesound)
 {
 		HANDLE f;
 		int result;
@@ -704,7 +702,7 @@ void WaitUntilAllAudioStops(int maxwait)
 				}
 			}
 			usleep(10000);
-			maxwait-=10000;
+			maxwait -= 10000;
 		}while(plays && maxwait>0);
 	}
 }

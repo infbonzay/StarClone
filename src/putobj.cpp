@@ -1447,109 +1447,114 @@ int	 desenbuildifconstr(void)
 		int posibletry;
 		int buildconstr = highMouse->Construct.SC_BuildUnit;
 		if (buildconstr == SC_NOUNITNR)
-				return(posibleconstr);
+			return(posibleconstr);
 		if (IsBuild(buildconstr))
 		{
-				posibleconstr=1;
-				//b=loadobj(buildconstr);
-				x=POSX(GetUnitWidthAndHeight(buildconstr,UNITDIM_WIDTH));
-				y=POSY(GetUnitWidthAndHeight(buildconstr,UNITDIM_HEIGHT));
-				a.x1=(highMouse->PosX/SIZESPRLANSHX)*SIZESPRLANSHX-xk%SIZESPRLANSHX;
-				a.y1=(highMouse->PosY/SIZESPRLANSHY)*SIZESPRLANSHY-yk%SIZESPRLANSHY;
-				xpointconstr = a.x1+SIZESPRLANSHX*x/2;
-				ypointconstr = a.y1+SIZESPRLANSHY*y/2;
-				if (IsAddon(buildconstr))
+			posibleconstr=1;
+			//b=loadobj(buildconstr);
+			x=POSX(GetUnitWidthAndHeight(buildconstr,UNITDIM_WIDTH));
+			y=POSY(GetUnitWidthAndHeight(buildconstr,UNITDIM_HEIGHT));
+			a.x1=(highMouse->PosX/SIZESPRLANSHX)*SIZESPRLANSHX-xk%SIZESPRLANSHX;
+			a.y1=(highMouse->PosY/SIZESPRLANSHY)*SIZESPRLANSHY-yk%SIZESPRLANSHY;
+			highMouse->Construct.PosX = a.x1+SIZESPRLANSHX*x/2;
+			highMouse->Construct.PosY = a.y1+SIZESPRLANSHY*y/2;
+			if (IsAddon(buildconstr))
+			{
+				motherbuild = GetMotherAddon(buildconstr);
+				//put pred-addon build picture
+				AttachAddonDeltaCoords(motherbuild,buildconstr,&deltax,&deltay);
+				DrawRawMainImageOBJ(highMouse->Construct.PosX - deltax,
+									highMouse->Construct.PosY - deltay,
+									motherbuild,
+									PLAYER[NUMBGAMER].colorRACE,
+									NORMAL,
+									MININVISIBLECOLOR);
+			}
+			DrawRawMainImageOBJ(highMouse->Construct.PosX,highMouse->Construct.PosY,buildconstr, PLAYER[NUMBGAMER].colorRACE,NORMAL,MININVISIBLECOLOR);
+			//put build picture
+			x0 = (highMouse->PosX/SIZESPRLANSHX)*SIZESPRLANSHX-xk%SIZESPRLANSHX;
+			y0 = (highMouse->PosY/SIZESPRLANSHY)*SIZESPRLANSHY-yk%SIZESPRLANSHX;
+			xmap = (x0+xk)/SIZESPRLANSHX;
+			ymap = (y0+yk)/SIZESPRLANSHY;
+			if (mapOPEN(xmap,ymap) <= 1)//check if open this part of map
+			{
+				memset(returnedarray,0,sizeof(returnedarray));
+				posibletry = 0;
+				posibleconstr = TOBECONSTRUCT_NOTOPENMAP;
+			}
+			else
+			{
+				if (mapSEE(xmap,ymap) <= 1)//check if see this part of map
 				{
-						motherbuild = GetMotherAddon(buildconstr);
-						//put pred-addon build picture
-						AttachAddonDeltaCoords(motherbuild,buildconstr,&deltax,&deltay);
-						DrawRawMainImageOBJ(xpointconstr - deltax,ypointconstr - deltay, motherbuild, PLAYER[NUMBGAMER].colorRACE,NORMAL,MININVISIBLECOLOR);
-				}
-				DrawRawMainImageOBJ(xpointconstr,ypointconstr,buildconstr, PLAYER[NUMBGAMER].colorRACE,NORMAL,MININVISIBLECOLOR);
-				//put build picture
-				x0=(highMouse->PosX/SIZESPRLANSHX)*SIZESPRLANSHX-xk%SIZESPRLANSHX;
-				y0=(highMouse->PosY/SIZESPRLANSHY)*SIZESPRLANSHY-yk%SIZESPRLANSHX;
-				xmap=(x0+xk)/SIZESPRLANSHX;
-				ymap=(y0+yk)/SIZESPRLANSHY;
-				if (mapOPEN(xmap,ymap)<=1)//check if open this part of map
-				{
-						memset(returnedarray,0,sizeof(returnedarray));
-						posibletry = 0;
-						posibleconstr=TOBECONSTRUCT_NOTOPENMAP;
+					memset(returnedarray,0,sizeof(returnedarray));
+					posibletry = 0;
+					posibleconstr=TOBECONSTRUCT_NOTSEEMAP;
 				}
 				else
 				{
-						if (mapSEE(xmap,ymap)<=1)//check if see this part of map
-						{
-								memset(returnedarray,0,sizeof(returnedarray));
-								posibletry = 0;
-								posibleconstr=TOBECONSTRUCT_NOTSEEMAP;
-						}
-						else
-						{
-								posibletry=CanBuildOnPlace((x0+xk)/32,(y0+yk)/32,x,y,returnedarray,NULL,buildconstr,NUMBGAMER,&constrerror);
-								posibleconstr &= posibletry;
-								if (posibleconstr==0)
-										posibleconstr=constrerror;
-						}
+					posibletry=CanBuildOnPlace((x0+xk)/32,(y0+yk)/32,x,y,returnedarray,NULL,buildconstr,NUMBGAMER,&constrerror);
+					posibleconstr &= posibletry;
+					if (posibleconstr == 0)
+						posibleconstr = constrerror;
 				}
+			}
+			for (i=0;i<y;i++)
+			{
+				a.y1=y0+i*SIZESPRLANSHY;
+				a.y2=a.y1+SIZESPRLANSHY-1;
+				//ykk=(a.y1+yk)/SIZESPRLANSHY;
+				for (j=0;j<x;j++)
+				{
+					a.x1=x0+j*SIZESPRLANSHX;
+					a.x2=a.x1+SIZESPRLANSHX-1;
+					//xkk=(a.x1+xk)/SIZESPRLANSHX;
+					if (returnedarray[i*x+j]==0xffff)
+						wsetimage8x(ENABLECONSTRUCT,&a);
+					else
+						wsetimage8x(DISABLECONSTRUCT,&a);
+				}
+			}
+			if (posibleconstr<0)
+				posibleconstr2=posibleconstr;
+			if (motherbuild != SC_NOUNITNR)
+			{
+				//put masterbuild
+				x=4;
+				y=3;
+				x0=(highMouse->PosX/SIZESPRLANSHX)*SIZESPRLANSHX-xk%SIZESPRLANSHX-SIZESPRLANSHX*4;
+				y0=(highMouse->PosY/SIZESPRLANSHY)*SIZESPRLANSHY-yk%SIZESPRLANSHY-SIZESPRLANSHY*1;
+				posibletry = CanBuildOnPlaceWithAddon((x0+xk)/32,(y0+yk)/32,
+													GetOBJx(cbuild)/32-x/2,GetOBJy(cbuild)/32-y/2,
+													x,y,returnedarray,motherbuild,NUMBGAMER,&constrerror);
+				posibleconstr &= posibletry;
+				if (posibleconstr==0)
+					posibleconstr=constrerror;
 				for (i=0;i<y;i++)
 				{
-						a.y1=y0+i*SIZESPRLANSHY;
-						a.y2=a.y1+SIZESPRLANSHY-1;
-						//ykk=(a.y1+yk)/SIZESPRLANSHY;
-						for (j=0;j<x;j++)
-						{
-								a.x1=x0+j*SIZESPRLANSHX;
-								a.x2=a.x1+SIZESPRLANSHX-1;
-								//xkk=(a.x1+xk)/SIZESPRLANSHX;
-								if (returnedarray[i*x+j]==0xffff)
-										wsetimage8x(ENABLECONSTRUCT,&a);
-								else
-										wsetimage8x(DISABLECONSTRUCT,&a);
-						}
-				}
-				if (posibleconstr<0)
-						posibleconstr2=posibleconstr;
-				if (motherbuild != SC_NOUNITNR)
-				{
-						//put masterbuild
-						x=4;
-						y=3;
-						x0=(highMouse->PosX/SIZESPRLANSHX)*SIZESPRLANSHX-xk%SIZESPRLANSHX-SIZESPRLANSHX*4;
-						y0=(highMouse->PosY/SIZESPRLANSHY)*SIZESPRLANSHY-yk%SIZESPRLANSHY-SIZESPRLANSHY*1;
-						posibletry = CanBuildOnPlaceWithAddon((x0+xk)/32,(y0+yk)/32,
-												GetOBJx(cbuild)/32-x/2,GetOBJy(cbuild)/32-y/2,
-												x,y,returnedarray,motherbuild,NUMBGAMER,&constrerror);
-						posibleconstr &= posibletry;
-						if (posibleconstr==0)
-						posibleconstr=constrerror;
-						for (i=0;i<y;i++)
-						{
-								a.y1=y0+i*SIZESPRLANSHY;
-								a.y2=a.y1+SIZESPRLANSHY-1;
-								//ykk=(a.y1+yk)/SIZESPRLANSHY;
-								for (j=0;j<x;j++)
-								{
-										a.x1=x0+j*SIZESPRLANSHX;
-										a.x2=a.x1+SIZESPRLANSHX-1;
-										//xkk=(a.x1+xk)/SIZESPRLANSHX;
-										if (returnedarray[i*x+j]==0xffff)
-												wsetimage8x(ENABLECONSTRUCT,&a);
-										else
-												wsetimage8x(DISABLECONSTRUCT,&a);
-								}//forj
-						}//fori
-				}//if masterbuild
+					a.y1=y0+i*SIZESPRLANSHY;
+					a.y2=a.y1+SIZESPRLANSHY-1;
+					//ykk=(a.y1+yk)/SIZESPRLANSHY;
+					for (j=0;j<x;j++)
+					{
+						a.x1=x0+j*SIZESPRLANSHX;
+						a.x2=a.x1+SIZESPRLANSHX-1;
+						//xkk=(a.x1+xk)/SIZESPRLANSHX;
+						if (returnedarray[i*x+j]==0xffff)
+							wsetimage8x(ENABLECONSTRUCT,&a);
+						else
+							wsetimage8x(DISABLECONSTRUCT,&a);
+					}//forj
+				}//fori
+			}//if masterbuild
 		}//if buildconstruct
 		else
 		{
-				posibleconstr=1;
-				xpointconstr = highMouse->PosX;
-				ypointconstr = highMouse->PosY;
+			posibleconstr=1;
+			highMouse->Construct.PosX = highMouse->PosX;
+			highMouse->Construct.PosY = highMouse->PosY;
 		}
 		if (posibleconstr2 < 0)
-				return(posibleconstr2);
+			return(posibleconstr2);
 		return(posibleconstr);
 }
 //=============================================

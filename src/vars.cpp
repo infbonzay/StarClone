@@ -63,7 +63,7 @@ long	gamecycle;
 int		helpgame;
 int		MinObjRegen,MaxObjects;
 int		NrObjRegen;
-int		xpointconstr,ypointconstr,oldselectbuton,existinbuildconstr;
+int		oldselectbuton,existinbuildconstr;
 int		mouseonconstrunit,selecteddeconstrunit,selectedunloadunit;
 int		oldmouseonconstrunit=-1;
 int		mouseontranspunit,oldmouseontranspunit=-1;

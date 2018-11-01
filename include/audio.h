@@ -51,7 +51,7 @@ struct AUDIOUNIT
 										//bit 1 = 1 - obj have incorrect adress
 										//bit 2 - 1 - play infinite
 										//bit 3 - 1 - stop sound and all queues
-											
+
 	unsigned char		distance;				//distance from seeing kart to object
 	unsigned char		prevdistance;			//prev distance from seeing kart to object
 	unsigned char		volume;					//volume this sound
@@ -71,7 +71,7 @@ void deinitsoundengine(void);
 int	 play_race_rescue(int race,int repeatflag,int distance);
 int	 Play_sfxdata_id(OBJ *a,int sfxdata_id,int repeatflag,int distance);
 int	 Play_sfxdata(int x,int y,int sfxdata_id,int repeatedsongs);
-int	 loadandplaywav(HANDLE mpq,struct OBJ *a,char *filesound,int repeatedflag,int distance);
+int	 loadandplaywav(HANDLE mpq,struct OBJ *a,const char *filesound,int repeatedflag,int distance);
 int	 unloadwav(int channel);
 int	 activatesound(struct OBJ *a,int soundmode,int addfactor,int stopprevsound);
 void stopcurrentsound(struct OBJ *a);
@@ -92,7 +92,7 @@ int	 getchannelplaylength(int channel);
 void stopallsounds(void);
 int	 getsoundIDfromunitsfx(int unitnr,int soundmode);
 void WaitUntilAllAudioStops(int maxwait);
-int	 FileWavePlayLength(HANDLE mpq,char *filesound);
+int	 FileWavePlayLength(HANDLE mpq,const char *filesound);
 void getsoundIDfromunitdat(SCUNIT SC_Unit,int soundmode,short *from,short *to);
 void ReduceVolume(int boolflag);
 int	 GetReduceVolume(void);

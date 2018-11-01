@@ -16,7 +16,7 @@
 #else
 	// using mpqlib if not declared both
 	#define WITHMPQLIB
-	
+
 	#include <mpqlib/StormLib.h>
 	#define MPQOPENPARAM SFILE_OPEN_HARD_DISK_FILE
 #endif
@@ -26,7 +26,7 @@
 struct MPQIDS
 {
 	HANDLE		hmpq;
-	int			mpqfilenr;	  
+	int			mpqfilenr;
 };
 struct MPQPRIO
 {
@@ -38,13 +38,13 @@ struct MPQPRIO
 int	 loadfilefrommpq(HANDLE mpq,const char *filename,char **mem,int *fsize);
 void unloadfilefrommpq(void *mem);
 HANDLE MpqsFindFile(const char *filename);
-HANDLE LoadMpq(char *MPQFileName);
+HANDLE LoadMpq(const char *MPQFileName);
 void UnLoadAllMpqs(void);
 int	 mpqloadfile(const char *filename,char **mem);
 int	 GetMpqFilesNr(HANDLE hmpq);
 HANDLE GetFilePosInArchive(HANDLE mpq,char *filename,int *nr);
 int	 SFileEOF(HANDLE f);
-int	 GetMPQFileID(HANDLE mpq,char *filesound,MPQIDS *fileid);
+int	 GetMPQFileID(HANDLE mpq,const char *filesound,MPQIDS *fileid);
 int	 CmpMPQFileID(MPQIDS *fileid1,MPQIDS *fileid2);
 void SetMPQFileID(MPQIDS *fileid1,MPQIDS *fileid2);
 void ClearMPQFileID(MPQIDS *fileid1);

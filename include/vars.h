@@ -123,7 +123,7 @@ extern long		gamecycle;
 extern int		helpgame;
 extern int		MinObjRegen,MaxObjects;
 extern int		NrObjRegen;
-extern int		xpointconstr,ypointconstr,oldselectbuton,existinbuildconstr;
+extern int		oldselectbuton,existinbuildconstr;
 extern int		mouseonconstrunit,selecteddeconstrunit,selectedunloadunit;
 extern int		oldmouseonconstrunit;
 extern int		mouseontranspunit,oldmouseontranspunit;
