@@ -563,6 +563,11 @@ void mylistsimple::FreeAndEmptyAll(void)
 	EnumListInit();
 }
 //=========================================
+void mylistsimple::CopyTo(mylistsimple *copy)
+{
+	memcpy(copy,this,sizeof(mylistsimple));
+}
+//=========================================
 void mylistsimple::DelElem(void *elem)
 {
 	int i;
@@ -583,3 +588,15 @@ void mylistsimple::DelElem(void *elem)
 	}
 }
 //=========================================
+int mylistsimple::Contains(void *elem)
+{
+	for (int i=0;i<totalelem;i++)
+	{
+		if (elements[i] == elem)
+		{
+			return i;
+		}
+	}
+	return -1;
+}
+

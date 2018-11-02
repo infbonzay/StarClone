@@ -72,7 +72,7 @@ void drawunitinbar( int x,int y,int weight,int objtype,int ramka,
 					int shield_pers,int life_pers,
 					GRPFILE *grp1,GRPFILE *grp2,int iconnr2);
 int getlifepercent(int number,int maxnumber);
-void drawallunitsinbar(int XWINPOS,int YWINPOS,struct OBJ *a[],int count);
+void drawallunitsinbar(int XWINPOS,int YWINPOS);
 void AnalizeAllTransportUnits(struct OBJ *a,unsigned char *rettransp,struct OBJ **trtplobj);
 void putbuildneededtodraw(struct OBJ *a);
 void clearshowgoods(void);

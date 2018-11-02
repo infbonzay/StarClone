@@ -1163,7 +1163,7 @@ int gogame(struct mapinfo *info)
 
 				DetectIfAnyPylonOnSelected();
 			//analize properties of selected objects
-				CreateMenuProperties(properties,selectableproperties,fordeselect,NUMBGAMER);
+				CreateMenuProperties(properties,selectableproperties,NUMBGAMER);
 
 				desenproperties(properties,selectableproperties);//draw properties of selected unit(s) on screen
 			}
@@ -1755,6 +1755,7 @@ void ActivateCheat(int cheatid)
 	int i,fogvalue;
 	CHEATERBIT = 1;
 	DEBUGMESSCR("cheat nr %d\n",cheatid);
+	OBJ *o;
 	switch(cheatid)
 	{
 		case 0:
@@ -1809,12 +1810,10 @@ void ActivateCheat(int cheatid)
 			SHOWCELLS = SHOWCELLS ^ 1;
 		break;
 		case 9:		//kill
-			for (i = MAXSELECTMAN-1;i>=0; i--)
+			SelectedUnits.EnumListInit();
+			while( o = (OBJ *)SelectedUnits.GetNextListElem(NULL))
 			{
-				if ( fordeselect[i] )
-				{
-					dieobj(fordeselect[i]);
-				}
+				dieobj(o);
 			}
 		break;
 		case 10:	//quit

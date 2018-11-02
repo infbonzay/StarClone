@@ -98,6 +98,9 @@ void keyhandler(void)
 	char mes[100];
 	static int mesnr=0;
 #ifdef DEBUG
+	OBJ *o = NULL;
+	if (SelectedUnits.totalelem)
+		o = (OBJ *)SelectedUnits.GetElem(0,NULL);
 	if (KEYPRESS(F12))
 	{
 //		logend();
@@ -111,17 +114,17 @@ void keyhandler(void)
 	if (KEYPRESS(ALTKEY))
 	{
 	}
-	if (curentreadkey==NUMB1KEY)
+	if (curentreadkey == NUMB1KEY)
 	{
 		for (int g=0;g<PLAYEDPLAYERS;g++)
 			deselectallobj(g);
 		do{
-			if (++NUMBGAMER>=PLAYEDPLAYERS)
-				NUMBGAMER=0;
+			if (++NUMBGAMER >= PLAYEDPLAYERS)
+				NUMBGAMER = 0;
 		}while(IfPlayerHaveStartLocation(&map,NUMBGAMER)==-1);
 		changegoods=0;
 		map.clearfog[NUMBGAMER]=1;
-		bitsplayer=GetVisionBitsPlayer(NUMBGAMER);
+		bitsplayer = GetVisionBitsPlayer(NUMBGAMER);
 		MAPREGENERATIONBIT=1;
 		MAPUNITSREGENERATIONBIT=1;
 	}
@@ -145,65 +148,49 @@ void keyhandler(void)
 //																				0	f	 f	  f
 	}
 */
-	if (curentreadkey==F5)
+	if (curentreadkey == F5)
 	{
-		if (fordeselect[0])
+		if (o)
 		{
-			dieobj(fordeselect[0]);
+			dieobj(o);
 		}
 	}
-	if (curentreadkey==F6)
+	if (curentreadkey == F6)
 	{
-		if (fordeselect[0])
+		if (o)
 		{
-			OBJstruct *b=loadobj(fordeselect[0]->SC_Unit);
-			LowLevelDamage(NULL,fordeselect[0],WEAPONID_NUCLEARMISSILE,DAMAGE_INDEPENDENT,25<<8,0,0);
-		}
-	}
-	if (curentreadkey==F7)
-	{
-		if (fordeselect[0])
-		{
-			fordeselect[0]->mainimage->neededside += 8;
-			fordeselect[0]->mainimage->Rotation(8);
-		}
-	}
-	if (curentreadkey==F8)
-	{
-		if (fordeselect[0] && fordeselect[0]->subunit)
-		{
-			fordeselect[0]->subunit->mainimage->neededside += 8;
-			fordeselect[0]->subunit->mainimage->Rotation(8);
+			OBJstruct *b=loadobj(o->SC_Unit);
+			LowLevelDamage(NULL,o,WEAPONID_NUCLEARMISSILE,DAMAGE_INDEPENDENT,25<<8,0,0);
 		}
 	}
 #endif
-	if (keyactive==F10)
+	if (keyactive == F10)
 	{
-		f10_menu|=GAMEBUTTON_KEYPRESS;
-		f10_menu&=~GAMEBUTTON_KEYRELEASE;
+		f10_menu |= GAMEBUTTON_KEYPRESS;
+		f10_menu &= ~GAMEBUTTON_KEYRELEASE;
 	}
 	else
-		if (f10_menu&GAMEBUTTON_KEYPRESS)
+		if (f10_menu & GAMEBUTTON_KEYPRESS)
 		{
-			f10_menu&=~GAMEBUTTON_KEYPRESS;
-			f10_menu|=GAMEBUTTON_KEYRELEASE;
+			f10_menu &= ~GAMEBUTTON_KEYPRESS;
+			f10_menu |= GAMEBUTTON_KEYRELEASE;
 		}
-	if (keyactive==TABKEY)
+	if (keyactive == TABKEY)
 	{
-		terr_menu|=GAMEBUTTON_KEYPRESS;
-		terr_menu&=~GAMEBUTTON_KEYRELEASE;
+		terr_menu |= GAMEBUTTON_KEYPRESS;
+		terr_menu &= ~GAMEBUTTON_KEYRELEASE;
 	}
 	else
-		if (terr_menu&GAMEBUTTON_KEYPRESS)
+		if (terr_menu & GAMEBUTTON_KEYPRESS)
 		{
-			terr_menu&=~GAMEBUTTON_KEYPRESS;
-			terr_menu|=GAMEBUTTON_KEYRELEASE;
+			terr_menu &= ~GAMEBUTTON_KEYPRESS;
+			terr_menu |= GAMEBUTTON_KEYRELEASE;
 		}
 	if (MENUACTIVE==0 && (keyactive == ENTERKEY || keyactive == ENTERKEY2))
 	{
 		showedmenu.prepareforshowmenu(&chatboxmenu,NULL);
 	}
-	menustatus=CONTINUEGAME;
+	menustatus = CONTINUEGAME;
 	return;
 }
 //====================================

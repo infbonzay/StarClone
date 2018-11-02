@@ -189,7 +189,7 @@ T Enumerate<T>::GetNextElem(void)
 			}while(CurrentEnum->EmptyElem == MAXLISTELEMENTS);	//repeat at next if we have empty entire slot
 		}
 		GlobalEnumValue++;
-	}while(!CurrentEnum->PresenceFlag[EnumValue++]);
+	}while(CurrentEnum->PresenceFlag[EnumValue++]);
 	retval = CurrentEnum->Elements[--EnumValue];
 	return(retval);
 }

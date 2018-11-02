@@ -88,7 +88,10 @@ struct _BE_ diapazone[MAPREGENERATION];
 unsigned short MaxRegen=0;
 struct MAGEP mageprop[MAXIMMODE+1];//pointer to MAGEP array
 
-struct	OBJ *fordeselect[MAXSELECTMAN],*fordeselectcopy[MAXSELECTMAN];
+mylistsimple SelectedUnits(MAXSELECTMAN);
+mylistsimple SelectedUnitsCopy(MAXSELECTMAN);
+
+//struct	OBJ *fordeselect[MAXSELECTMAN],*fordeselectcopy[MAXSELECTMAN];
 struct	OBJ *curentoperationobj;
 short	int xpoint1l,xpoint2l,wmaxcol,wmaxrow;
 int		ctextures;

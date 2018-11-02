@@ -72,7 +72,6 @@ set(SOURCES
 	src/mytime.cpp
 	src/objinfo.cpp
 	src/objlists.cpp
-	src/objs.cpp
 	src/overlay.cpp
 	src/pcx.cpp
 	src/player.cpp
@@ -99,6 +98,7 @@ set(SOURCES
 	src/walk.cpp
 	src/weapons.cpp
 	src/wmem.cpp
+	src/objs.cpp
 	src/network/netwgame.cpp
 	src/network/network_dc.cpp
 	src/network/network_dedicated.cpp

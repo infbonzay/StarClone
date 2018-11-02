@@ -340,6 +340,9 @@ void HighMouse::DoRightClickAction(OBJ *destobj,int xm,int ym,int rightclick)
 	int race;
     if (PLAYER[NUMBGAMER].isobserverflag)
 		return;
+	OBJ *o = NULL;
+	if (SelectedUnits.totalelem)
+		o = (OBJ *)SelectedUnits.GetElem(0,NULL);
 	if (!highMouse->WaitToPressLeftButton)
 	{
 		if (Construct.SC_BuildUnit != SC_NOUNITNR)
@@ -352,10 +355,10 @@ void HighMouse::DoRightClickAction(OBJ *destobj,int xm,int ym,int rightclick)
 				{
 					if (IsBuild(Construct.SC_BuildUnit))
 					{
-						if (fordeselect[0])
+						if (o)
 						{
-							race = GetUnitRace(fordeselect[0]->SC_Unit);
-							Play_sfxdata_id(fordeselect[0],sfx_buildplace[race],2,0);
+							race = GetUnitRace(o->SC_Unit);
+							Play_sfxdata_id(o,sfx_buildplace[race],2,0);
 						}
 					}
 				}
@@ -367,11 +370,11 @@ void HighMouse::DoRightClickAction(OBJ *destobj,int xm,int ym,int rightclick)
 				{
 					if (gameconf.audioconf.buildsounds)
 					{
-						if (fordeselect[0])
+						if (o)
 						{
-							if (IsWorkerUnit(fordeselect[0]->SC_Unit))
+							if (IsWorkerUnit(o->SC_Unit))
 							{
-								activatesound(fordeselect[0],MODESOUNDERROR,2,NOSTOPCURRENTSOUNDS);
+								activatesound(o,MODESOUNDERROR,2,NOSTOPCURRENTSOUNDS);
 							}
 							else
 							{
@@ -379,7 +382,7 @@ void HighMouse::DoRightClickAction(OBJ *destobj,int xm,int ym,int rightclick)
 								{
 									Construct.CanDo = TOBELAND_CANTLANDHERE;
 								}
-								Play_sfxdata_id(fordeselect[0],PUTLIFTDOWNERROR,2,0);
+								Play_sfxdata_id(o,PUTLIFTDOWNERROR,2,0);
 							}
 						}
 					}

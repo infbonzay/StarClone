@@ -67,28 +67,33 @@ int constrbuild(int nb)
 //=============================================
 int probeconstruct(int nb)
 {
+	OBJ *o;
 	int k;
 	//for probe
-	if (nb == MODEWARPBUILD ||
-		nb == MODEMUTATEBUILD ||
-		nb == MODECONSTRUCTBUILD )
-	for (k=0;k<MAXSELECTMAN;k++)
-		if (fordeselect[k])
+	if (nb == MODEWARPBUILD				||
+		nb == MODEMUTATEBUILD			||
+		nb == MODECONSTRUCTBUILD)
+	{
+		SelectedUnits.EnumListInit();
+		while( o = (OBJ *)SelectedUnits.GetNextListElem(NULL))
 		{
-			groupmove=1;
-			ChangeTypeOfProp(fordeselect[k],PROPBUILDSIMPLE);
+			groupmove = 1;
+			ChangeTypeOfProp(o,PROPBUILDSIMPLE);
 			return(1);
 		}
-	if (nb==MODEADVWARPBUILD||
-		nb==MODEADVMUTATEBUILD||
-		nb==MODEADVCONSTRUCTBUILD)
-	for (k=0;k<MAXSELECTMAN;k++)
-		if (fordeselect[k])
+	}
+	if (nb == MODEADVWARPBUILD			||
+		nb == MODEADVMUTATEBUILD		||
+		nb == MODEADVCONSTRUCTBUILD)
+	{
+		SelectedUnits.EnumListInit();
+		while( o = (OBJ *)SelectedUnits.GetNextListElem(NULL))
 		{
-			groupmove=2;
-			ChangeTypeOfProp(fordeselect[k],PROPBUILDADVANCED);
+			groupmove = 2;
+			ChangeTypeOfProp(0,PROPBUILDADVANCED);
 			return(1);
 		}
+	}
 	return(0);
 }
 //=============================================
@@ -119,6 +124,7 @@ void desenproperties(int *localprop,char *selectableicons)
 	char iconstr[150];
 	char addstr[15];
 	struct OBJ *a,*obj,*obj2=NULL;
+	OBJ *o;
 	for (i=0;i<3;i++)
 		for (j=0;j<3;j++)
 			if (localprop[i*3+j])
@@ -354,31 +360,32 @@ selectedicon:
 				selectedunloadunit = oldmouseontranspunit;
 			oldmouseontranspunit = -1;
 		}
-		if (selectedicon!=-1)
+		if (selectedicon != -1)
 		{
-			if (!fordeselect[0])
+			if (!SelectedUnits.totalelem)
 			{
-				highMouse->WaitToPressLeftButton=0;
+				highMouse->WaitToPressLeftButton = 0;
 			}
 			else
 			{
-				race=GetUnitRace(fordeselect[0]->SC_Unit);
+				o = (OBJ *)SelectedUnits.GetElem(0,NULL);
+				race = GetUnitRace(o->SC_Unit);
 				plusfactor=0;
 				i = selectedicon / 3;
 				j = selectedicon % 3;
-				oldselectbuton=localprop[i*3+j];
-				mp=&mageprop[oldselectbuton];
-				if (mp->depend.maxdepend==1&&mp->type_id==ORDERS_UNIT)
+				oldselectbuton = localprop[i*3+j];
+				mp = &mageprop[oldselectbuton];
+				if (mp->depend.maxdepend == 1 && mp->type_id == ORDERS_UNIT)
 					switch(mp->depend.type_id[0])
 					{
 						case ORDERS_TECHNOLOGY:
-							if (IsSpellCaster(fordeselect[0]->SC_Unit))//if spellcaster check for mana too
+							if (IsSpellCaster(o->SC_Unit))//if spellcaster check for mana too
 							{
 								if (!(mp->atr&ORDER_IGNOREREQ))
 								{
-									needmana=GetTechEnergyCost(mp->depend.obj_id[0]);
-									err=CheckForMana(fordeselect[0],needmana);
-									if (err==CHECKRES_MANA)
+									needmana = GetTechEnergyCost(mp->depend.obj_id[0]);
+									err = CheckForMana(o,needmana);
+									if (err == CHECKRES_MANA)
 									{
 										playinfoadvisorsound(NUMBGAMER,race,ADVENERGY,PLAYADVISOR_TEXTANDSOUND);
 										return;
@@ -390,7 +397,7 @@ selectedicon:
 				if (mp->atr&ORDER_IGNOREREQ)
 					retstatus=CHECKRES_OK;
 				else
-					retstatus=CheckForResource_typeid(fordeselect[0],NUMBGAMER,mp->type_id,mp->obj_id);
+					retstatus=CheckForResource_typeid(o,NUMBGAMER,mp->type_id,mp->obj_id);
 				if (retstatus != CHECKRES_OK)
 				{
 					playadvisorerr(NUMBGAMER,race,retstatus);
@@ -400,14 +407,14 @@ selectedicon:
 				{
 					if (oldselectbuton == MODECANCEL_BB_AB)
 					{
-							for (k=0;k<MAXSELECTMAN;k++)
-								if (fordeselect[k])
-								{
-									if (IsWorkerUnit(fordeselect[k]->SC_Unit))
-										ChangeTypeOfProp(fordeselect[k],PROPNORMAL1);
-								}
-								groupmove=0;
-								highMouse->WaitToPressLeftButton=0;
+						SelectedUnits.EnumListInit();
+						while( o = (OBJ *)SelectedUnits.GetNextListElem(NULL))
+						{
+							if (IsWorkerUnit(o->SC_Unit))
+								ChangeTypeOfProp(o,PROPNORMAL1);
+						}
+						groupmove = 0;
+						highMouse->WaitToPressLeftButton = 0;
 					}
 					else
 					{
@@ -416,36 +423,33 @@ selectedicon:
 							if (localprop[i*3+j] != MODEWARPARCHON &&
 								localprop[i*3+j] != MODEWARPDARCHON)
 							{
-								for (k=0;k<MAXSELECTMAN;k++)
-									if (fordeselect[k])
-									{
-	//									makemove(fordeselect[k],NULL,0,0,oldselectbutton,NUMBGAMER,SHOWERRORTEXT);
-										DoOrder(NUMBGAMER,fordeselect[k],0,0,
-												mp->type_id,mp->obj_id,mp->icon_id,mp->stattxt_id_enable,
-												oldselectbuton,SHOWERRORTEXT);
-									}
+								SelectedUnits.EnumListInit();
+								while( o = (OBJ *)SelectedUnits.GetNextListElem(NULL))
+								{
+									//makemove(fordeselect[k],NULL,0,0,oldselectbutton,NUMBGAMER,SHOWERRORTEXT);
+									DoOrder(NUMBGAMER,o,0,0,
+											mp->type_id,mp->obj_id,mp->icon_id,mp->stattxt_id_enable,
+											oldselectbuton,SHOWERRORTEXT);
+								}
 							}
 							else
 							{
-								for (k=0;k<MAXSELECTMAN;k++)
+								SelectedUnits.EnumListInit();
+								while( obj = (OBJ *)SelectedUnits.GetNextListElem(NULL))
 								{
-									obj =  fordeselect[k];
-									if (obj)
+									if (!obj2)
 									{
-										if (!obj2)
-										{
-											obj2=obj;
-											continue;
-										}
-										else
-										{
-											makemove(obj,obj2,0,0,localprop[i*3+j],obj->playernr,NOSHOWERROR);
-											makemove(obj2,obj,0,0,localprop[i*3+j],obj2->playernr,NOSHOWERROR);
-	//										moveobj(obj,obj2,localprop[i*3+j],NOSHOWERROR);
-	//										moveobj(obj2,obj,localprop[i*3+j],NOSHOWERROR);
-											obj2 = NULL;
-										}
-									}//if obj
+										obj2 = obj;
+										continue;
+									}
+									else
+									{
+										makemove(obj,obj2,0,0,localprop[i*3+j],obj->playernr,NOSHOWERROR);
+										makemove(obj2,obj,0,0,localprop[i*3+j],obj2->playernr,NOSHOWERROR);
+										//moveobj(obj,obj2,localprop[i*3+j],NOSHOWERROR);
+										//moveobj(obj2,obj,localprop[i*3+j],NOSHOWERROR);
+										obj2 = NULL;
+									}
 								}//for k
 							}//else
 						}//if probe construct
@@ -453,7 +457,7 @@ selectedicon:
 				}
 				else
 				{
-					cbuild = fordeselect[0];
+					cbuild = (OBJ *)SelectedUnits.GetElem(0,NULL);
 					constrbuild(oldselectbuton);
 					
 					highMouse->MouseModeMove = oldselectbuton;
@@ -464,21 +468,19 @@ selectedicon:
 		}
 		if (selecteddeconstrunit!=-1)
 		{
-			for (k=0;k<MAXSELECTMAN;k++)
+			OBJ *a;
+			SelectedUnits.EnumListInit();
+			while( a = (OBJ *)SelectedUnits.GetNextListElem(NULL))
 			{
-				a=fordeselect[k];
-				if (a)
+				if (IsOBJUnderConstruct(a)&&selecteddeconstrunit==0)
 				{
-					if (IsOBJUnderConstruct(a)&&selecteddeconstrunit==0)
-					{
-						makemove(a,NULL,0,0,MODEESCAPE,NUMBGAMER,SHOWERRORTEXT);
-						break;
-					}
-					if (selecteddeconstrunit<GetConstructNR(a))
-					{
-						makemove(a,NULL,0,0,MODEESCAPE1+selecteddeconstrunit,NUMBGAMER,SHOWERRORTEXT);
-						break;
-					}
+					makemove(a,NULL,0,0,MODEESCAPE,NUMBGAMER,SHOWERRORTEXT);
+					break;
+				}
+				if (selecteddeconstrunit<GetConstructNR(a))
+				{
+					makemove(a,NULL,0,0,MODEESCAPE1+selecteddeconstrunit,NUMBGAMER,SHOWERRORTEXT);
+					break;
 				}
 			}
 		}
@@ -658,9 +660,9 @@ int CreateUnitProperties(struct OBJ *a,struct OBJstruct *b,int *prop,int playern
 }
 //==============================================
 //create prop[9] from selectedobjects for player nr.
-int CreateMenuProperties(int *prop,char *selectableicons,
-						 struct OBJ *selectedobjects[],int player)
+int CreateMenuProperties(int *prop,char *selectableicons,int player)
 {
+	OBJ *o;
 	int i,j,err,maxprop=0,selobj,curenticon;
 	int propunits[MAXSELECTMAN][MAXUNITPROPERTIES];
 	struct OBJstruct *b;
@@ -677,31 +679,32 @@ int CreateMenuProperties(int *prop,char *selectableicons,
 		return 0;
 	}
 	//create all properties for selected units
-	selobj=selectobjcount();
+	selobj = SelectedUnits.totalelem;
 	if (selobj)
 	{
-		for (i=0;i<MAXSELECTMAN;i++)
+		SelectedUnits.EnumListInit();
+		while( o = (OBJ *)SelectedUnits.GetNextListElem(NULL))
 		{
-			if (selectedobjects[i]&&(!PLAYER[NUMBGAMER].isobserverflag)&&
-				player_aliance(selectedobjects[i]->playernr,player)==MYOBJ)
+			if (!PLAYER[NUMBGAMER].isobserverflag 	&&
+				player_aliance(o->playernr,player) == MYOBJ)
 			{
-				b = loadobj(selectedobjects[i]->SC_Unit);
-				err = CreateUnitProperties(selectedobjects[i],b,propunits[maxprop],player);
+				b = loadobj(o->SC_Unit);
+				err = CreateUnitProperties(o,b,propunits[maxprop],player);
 				if (!err)
 					maxprop++;
 				if (maxprop==1)
 				{
-					curentproperties=selectedobjects[i]->modemove;
-					curenticon=mageprop[curentproperties].icon_id;
-					curentoperationobj=selectedobjects[i];
+					curentproperties = o->modemove;
+					curenticon = mageprop[curentproperties].icon_id;
+					curentoperationobj = o;
 				}
 			}
 		}
 	}
-	if (selobj==1 && selectedobjects[0] && selectedobjects[0]->SC_Unit == SC_MEDICOBJ)
-		propunits[0][2]=MODENON;				//do not show atack
+	if (selobj==1 && SelectedUnits.totalelem && ((OBJ *)SelectedUnits.GetElem(0,NULL))->SC_Unit == SC_MEDICOBJ)
+		propunits[0][2] = MODENON;				//do not show atack
 	//combine all properties of units to have same one
-	if (maxprop&&selobj)
+	if (maxprop && selobj)
 	{
 		for (i=0;i<MAXUNITPROPERTIES;i++)
 		{
@@ -751,11 +754,12 @@ int CreateMenuProperties(int *prop,char *selectableicons,
 				}//forj
 			}//fori
 		}
-		for (i=0;i<MAXUNITPROPERTIES;i++)
+		SelectedUnits.EnumListInit();
+		while( o = (OBJ *)SelectedUnits.GetNextListElem(NULL))
 		{
-			if (selectedobjects[0] && prop[i] != MODENON)
+			if (o && prop[i] != MODENON)
 			{
-				if (!MageDepend(selectedobjects[0],player,prop[i]))
+				if (!MageDepend(o,player,prop[i]))
 				{
 					selectableicons[i]=FORGRAY;
 				}
@@ -777,7 +781,7 @@ int CreateMenuProperties(int *prop,char *selectableicons,
 								selectableicons[i]=FORYELLOW;
 						break;
 						default:
-							if (selectedobjects[0]->prop & VARHOLDPOSBIT)
+							if (o->prop & VARHOLDPOSBIT)
 							{
 								if (prop[i] == MODEHOLDPOS)
 									selectableicons[i]=FORWHITE;

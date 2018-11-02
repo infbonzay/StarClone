@@ -148,7 +148,10 @@ extern struct _BE_ diapazone[];
 extern unsigned short MaxRegen;
 extern struct MAGEP mageprop[];
 
-extern struct  OBJ *fordeselect[],*fordeselectcopy[];
+extern mylistsimple SelectedUnits;
+extern mylistsimple SelectedUnitsCopy;
+
+//extern struct  OBJ *fordeselect[],*fordeselectcopy[];
 extern struct  OBJ *curentoperationobj;
 extern short	int xpoint1l,xpoint2l,wmaxcol,wmaxrow;
 //extern				int xk,yk;

@@ -39,7 +39,11 @@ void ScreenDraw::TopMessage(void)
 	char s[300];
 	char ss[50];
 	s[0]=0;
-
+	OBJ *o = NULL;
+	if (SelectedUnits.totalelem)
+	{
+		OBJ *o = (OBJ *) SelectedUnits.GetElem(0,NULL);
+	}
 	frames++;
 	cursec = mytimer.GetTimeParced();
 	if (cursec != prevsec)
@@ -88,31 +92,31 @@ void ScreenDraw::TopMessage(void)
 	itoa(PLAYEDPLAYERS,ss,10);
 	strcat(s,ss);
 
-	if (fordeselect[0])
+	if (o)
 	{
 		strcat(s," pl:");
-		itoa(fordeselect[0]->playernr,ss,10);
+		itoa(o->playernr,ss,10);
 		strcat(s,ss);
 		strcat(s," move:");
-		itoa(fordeselect[0]->modemove,ss,10);
+		itoa(o->modemove,ss,10);
 		strcat(s,ss);
 	//	strcat(s,"/");
-	//	itoa(fordeselect[0]->atackcooldowntime,ss,10);
+	//	itoa(o->atackcooldowntime,ss,10);
 	//	strcat(s,ss);
 	}
-/*	  if (fordeselect[0])
+/*	  if (o)
 	{
 		strcat(s,"x=");
-		itoa(fordeselect[0]->xkart,ss,10);
+		itoa(o->xkart,ss,10);
 		strcat(s,ss);
 		strcat(s,"y=");
-		itoa(fordeselect[0]->ykart,ss,10);
+		itoa(o->ykart,ss,10);
 		strcat(s,ss);
 		strcat(s," x=");
-		itoa(fordeselect[0]->sourcex,ss,10);
+		itoa(o->sourcex,ss,10);
 		strcat(s,ss);
 		strcat(s,"y=");
-		itoa(fordeselect[0]->sourcey,ss,10);
+		itoa(o->sourcey,ss,10);
 		strcat(s,ss);
 	}
 */

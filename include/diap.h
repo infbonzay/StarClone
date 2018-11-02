@@ -13,8 +13,7 @@ void makesteps(int speed);
 int	 constrbuild(int nb);
 int	 probeconstruct(int nb);
 void desenproperties(int *localprop,char *selectableicons);
-int	 CreateMenuProperties(int *prop,char *selectableicons,
-						 struct OBJ *selectedobjects[],int player);
+int	 CreateMenuProperties(int *prop,char *selectableicons,int player);
 int	 ChangeTypeOfProp(struct OBJ *a,struct OBJstruct *b,int typeofprop);
 int	 ChangeTypeOfProp(struct OBJ *a,int typeofprop);
 int	 ExistProp(struct OBJstruct *b,int verifymode);

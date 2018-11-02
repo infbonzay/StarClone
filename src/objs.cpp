@@ -498,15 +498,18 @@ void DetectIfAnyPylonOnSelected(void)
 			}
 		}
 	}
-	for (int i=0;i<MAXSELECTMAN;i++)
-		if (fordeselect[i]							&&
-			fordeselect[i]->SC_Unit == SC_PYLONOBJ	&&
-			fordeselect[i]->playernr == NUMBGAMER	&&
-			!IsOBJUnderConstruct(fordeselect[i]))
+	OBJ *o;
+	SelectedUnits.EnumListInit();
+	while( o = (OBJ *)SelectedUnits.GetNextListElem(NULL))
+	{
+		if (o->SC_Unit == SC_PYLONOBJ	&&
+			o->playernr == NUMBGAMER	&&
+			!IsOBJUnderConstruct(o))
 		{
 			pylonselected = 1;
 			break;
 		}
+	}
 #endif
 }
 //=====================================
@@ -524,24 +527,13 @@ void deselectvars(void)
 //=====================================
 void deselectallobj(int playernr)
 {
-	for (int i=0;i<MAXSELECTMAN;i++)
+	OBJ *o;
+	SelectedUnits.EnumListInit();
+	while( o = (OBJ *)SelectedUnits.GetNextListElem(NULL))
 	{
-		if (fordeselect[i])
-		{
-			doselectedOBJbit(fordeselect[i],playernr,0);
-			fordeselect[i]=NULL;
-		}
+		doselectedOBJbit(o,playernr,0);
 	}
-}
-//=====================================
-struct OBJ *getfirstselectedobj(struct OBJ *a[])
-{
-	for (int i=0;i<MAXSELECTMAN;i++)
-	{
-		if (fordeselect[i])
-			return fordeselect[i];
-	}
-	return NULL;
+	SelectedUnits.FreeAndEmptyAll();
 }
 //=====================================
 void controlbu(int typeunits,int typeb_or_u,int mode)
@@ -691,23 +683,24 @@ return(minobj);
 void ifselectedprobe(int countofselectunits)
 {
 	int i;
-	for (i=0;i<MAXSELECTMAN;i++)
-		if (fordeselect[i])
+	OBJ *o;
+	SelectedUnits.EnumListInit();
+	while( o = (OBJ *)SelectedUnits.GetNextListElem(NULL))
+	{
+		if (IsWorkerUnit(o->SC_Unit))
 		{
-			if (IsWorkerUnit(fordeselect[i]->SC_Unit))
-			{
-				if (IsOBJBurrowed(fordeselect[i]))
-					ChangeTypeOfProp(fordeselect[i],PROPNORMAL2);
-				else
-					if (!fordeselect[i]->constrobj)
-						ChangeTypeOfProp(fordeselect[i],PROPNORMAL1);
-			}
+			if (IsOBJBurrowed(o))
+				ChangeTypeOfProp(o,PROPNORMAL2);
+			else
+				if (!o->constrobj)
+					ChangeTypeOfProp(o,PROPNORMAL1);
 		}
+	}
 }
 //=====================================
 void ifselectTEMPLARS(int player)
 {
-	if (selectobjcount()>=2)
+	if (SelectedUnits.totalelem >= 2)
 	{
 		warparchon = 1;
 	}
@@ -766,8 +759,7 @@ void selectMAN(int x1,int y1,int x2,int y2,int mode)
 	deselectvars();
 	if (!mode)
 	{
-		for (i=0;i<MAXSELECTMAN;i++)
-			fordeselectcopy[i]=fordeselect[i];
+		SelectedUnits.CopyTo(&SelectedUnitsCopy);
 		deselectallobj(NUMBGAMER);
 	}
 	if (x2<x1)
@@ -836,37 +828,34 @@ void selectMAN(int x1,int y1,int x2,int y2,int mode)
 		groupmove=0;
 	if ((!mode)&&(!u))
 	{
-		for (i=0;i<MAXSELECTMAN;i++)
+		SelectedUnitsCopy.CopyTo(&SelectedUnits);
+		OBJ *o;
+		SelectedUnits.EnumListInit();
+		while( o = (OBJ *)SelectedUnits.GetNextListElem(NULL))
 		{
-			fordeselect[i]=fordeselectcopy[i];
-			if (fordeselect[i])
-				doselectedOBJbit(fordeselect[i],NUMBGAMER,1);
+			doselectedOBJbit(o,NUMBGAMER,1);
 		}
 	}
-	sortselectedunits(fordeselect,MAXSELECTMAN);
+	//sortselectedunits(fordeselect,MAXSELECTMAN);?????
 	grupingobj(mode);
 	if (u)
 		ifselectedprobe(u);
 	ifselectTEMPLARS(NUMBGAMER);
 	oldu=u;
-	u=selectobjcount();
-	if (u==1)
+	u = SelectedUnits.totalelem;
+	if (u == 1)
 	{
-		ifselectTRANSPORTS(getfirstselectedobj(fordeselect));
-		ifselectedDAMAGEDBUILD(fordeselect[0]);
+		OBJ *o = (OBJ *)SelectedUnits.GetElem(0,NULL);
+		ifselectTRANSPORTS(o);
+		ifselectedDAMAGEDBUILD(o);
 	}
 	else
 		transportplaceobj=NULL;
 	firstobj=NULL;
 	if (u)
 	{
-		for (i=0;i<MAXSELECTMAN;i++)
-			if (fordeselect[0])
-			{
-				firstobj=fordeselect[0];
-				break;
-			}
-		if (firstobj&&oldu)
+		firstobj =(OBJ *) SelectedUnits.GetElem(0,NULL);
+		if (firstobj && oldu)
 		{
 			if (firstobj->prop&VARREADY)
 			{
@@ -879,7 +868,7 @@ void selectMAN(int x1,int y1,int x2,int y2,int mode)
 				}
 				else
 				{
-					speakOBJ = GetMaxRankOBJ(MAXSELECTMAN,fordeselect);
+					speakOBJ = GetMaxRankOBJ(&SelectedUnits);
 					if (speakOBJ)
 						activatesound(speakOBJ,MODESOUNDSELECT,0,NOSTOPCURRENTSOUNDS);
 				}
@@ -892,63 +881,48 @@ void selectMAN(int x1,int y1,int x2,int y2,int mode)
 //========================================
 void changedeselectobj(struct OBJ *a,struct OBJ *aa)
 {
- int i;
- for (i=0;i<MAXSELECTMAN;i++)
-	 if (fordeselect[i]==a)
-	 {
-		fordeselect[i]=aa;
-		selectobj(aa);
-		return;
-	 }
+	int i;
+	OBJ *o;
+	SelectedUnits.EnumListInit();
+	while( o = (OBJ *)SelectedUnits.GetNextListElem(&i))
+	{
+		if (o == a)
+	 	{
+			SelectedUnits.Set(i,aa);
+			selectobj(aa);
+			return;
+	 	}
+	}
 }
 //========================================
-int selectobjcount(void)
-{
- int i,j=0;
- for (i=0;i<MAXSELECTMAN;i++)
-	 if (fordeselect[i])
-		j++;
- return(j);
-}
-//==============================================
 int selectobj(struct OBJ *a)
 {
 	int i;
-	if (addselectobj(a)==1)
-		for (i=0;i<MAXSELECTMAN;i++)
-			if (fordeselect[i]==a)
+	if (addselectobj(a) == 1)
+	{
+		OBJ *o;
+		SelectedUnits.EnumListInit();
+		while( o = (OBJ *)SelectedUnits.GetNextListElem(NULL))
+		{
+			if (o == a)
 			{
-				doselectedOBJbit(fordeselect[i],NUMBGAMER,1);
+				doselectedOBJbit(o,NUMBGAMER,1);
 				AddCircleImage(a);
 				return(1);
 			}
+		}
+	}
 	return(0);
 }
 //========================================
 int deselectobj(struct OBJ *a)
 {
-	int i,found=-1,lastelem=-1;
-	for (i=0;i<MAXSELECTMAN;i++)
-		if (fordeselect[i]==a)
-			found = i;
-		else
-			if (fordeselect[i] && found!=-1)
-				lastelem=i;
-	if (found != -1)
+	int i = SelectedUnits.Contains(a);
+	if (i >= 0)
 	{
-		//return to advisor if deselecting unit
-//		printf("deselection %x %x\n",test,fordeselect[found]);
-		if (GetPortraitOBJ() == fordeselect[found])
+		if (GetPortraitOBJ() == a)
 			ShowAdvisorPortrait();
-		//deselect unit
-		doselectedOBJbit(fordeselect[found],NUMBGAMER,0);
-		if (lastelem!=-1)
-		{
-			fordeselect[found]=fordeselect[lastelem];
-			fordeselect[lastelem]=NULL;
-		}
-		else
-			fordeselect[found]=NULL;
+		doselectedOBJbit(a,NUMBGAMER,0);
 		DelCircleImage(a);
 	}
 	return(0);
@@ -956,18 +930,13 @@ int deselectobj(struct OBJ *a)
 //========================================
 int addselectobj(struct OBJ *a)
 {
-	int i;
-	if (a->prop&VARCANTSELECT)
+	if (a->prop & VARCANTSELECT)
 		return 0;
-	for (i=0;i<MAXSELECTMAN;i++)
-		if (a==fordeselect[i])
-			return(-1);
-	for (i=0;i<MAXSELECTMAN;i++)
-		if (!fordeselect[i])
-		{
-			fordeselect[i]=a;
-			return(1);
-		}
+	int i = SelectedUnits.Contains(a);
+	if (i >= 0)
+	{
+		SelectedUnits.AddElem(a);
+	}
 	return(0);
 }
 //========================================
@@ -2189,7 +2158,7 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int modemovef
 					moveobj(a,NULL,MODESTOP,NOSHOWERROR);
 					if (a->playernr == NUMBGAMER && (modemoveflags & SHOWERRORTEXT))
 					{
-						Play_sfxdata_id(fordeselect[0],PUTLIFTDOWNERROR,2,0);
+						Play_sfxdata_id((OBJ *)SelectedUnits.GetElem(0,NULL),PUTLIFTDOWNERROR,2,0);
 						putbuildplacemessage(-constrerror);
 					}
 					return(MOVEOBJ_NOACT);
@@ -2886,84 +2855,84 @@ int selectedobjmove(struct OBJ *destobj,int locx,int locy,int mode,int player,in
 	int minx,miny,maxx,maxy,midx=0,midy=0,deltax=0,deltay=0,flags=SHOWERRORTEXT;
 	int i,k=0,maxmoveobj=0;
 	struct OBJ *speakOBJ;
-	struct OBJ *moveobjects[12];
-	   for (i=0;i<MAXSELECTMAN;i++)
-		 if (fordeselect[i]
-					&&
-			 (!(fordeselect[i]->prop&VARNOTSEEPROP))
-					&&
-			!(fordeselect[i]->prop&VARNOTWORK)
-			)
+	mylistsimple *moveobjects = new mylistsimple(MAXSELECTMAN);
+	OBJ *o;
+	SelectedUnits.EnumListInit();
+	while( o = (OBJ *)SelectedUnits.GetNextListElem(NULL))
+	{
+		if ((!(o->prop & VARNOTSEEPROP))
+				&&
+			!(o->prop & VARNOTWORK))
 		{
-			  //elsi move na sebea
-			if (fordeselect[i]==destobj)
+		  	//elsi move na sebea
+			if (o == destobj)
 			{
-//				if (!(mageprop[mode].atr&VARMAKEONMYSELF))
-//					continue;
-//				else
-					if (mode != MODELANDING)
-					{
-						locx = GetOBJx(destobj);
-						locy = GetOBJy(destobj);
-						destobj=NULL;
-					}
-			}
-			if (movefrommouse(fordeselect[i]))
-			{
-				moveobjects[maxmoveobj++]=fordeselect[i];
-			}
-		}
-		minx=256*32;
-		miny=256*32;
-		maxx=0;
-		maxy=0;
-		for (i=0;i<maxmoveobj;i++)
-		{
-			if (GetOBJx(moveobjects[i]) < minx)
-				minx = GetOBJx(moveobjects[i]);
-			if (GetOBJy(moveobjects[i]) < miny)
-				miny = GetOBJy(moveobjects[i]);
-			if (GetOBJx(moveobjects[i]) > maxx)
-				maxx = GetOBJx(moveobjects[i]);
-			if (GetOBJy(moveobjects[i]) > maxy)
-				maxy = GetOBJy(moveobjects[i]);
-		}
-		if (maxx-minx<=128 && maxy-miny<=128)
-		{
-			//move in group
-			if (locx < minx || locy < miny || locx > maxx || locy > maxy)
-			{
-				midx=(maxx-minx)/2+minx;
-				midy=(maxy-miny)/2+miny;
-			}
-		}
-		if (mode == MODEATACK)
-			flags |= ATACKMOVEBIT;
-		for (i=0;i<maxmoveobj;i++)
-		{
-			if (midx)
-			{
-				deltax = GetOBJx(moveobjects[i]) - midx;
-				deltay = GetOBJy(moveobjects[i]) - midy;
-			}
-			moveobjects[i]->prop &= ~VARAUTOMATRESOURCERET;
-
-			if (rightclick)
-			{
-				if (moveobjects[i]->SC_Unit == SC_SCVOBJ && moveobjects[i]->constrobj)
+				if (mode != MODELANDING)
 				{
-					continue;
+					locx = GetOBJx(destobj);
+					locy = GetOBJy(destobj);
+					destobj = NULL;
 				}
-				if (destobj)
-					mode = GetDefaultModeForRightClick(moveobjects[i],destobj,player);
 			}
-			if (mode != MODENON)
-				k |= makemove(moveobjects[i],destobj,locx+deltax,locy+deltay,mode,player,flags);
+			if (movefrommouse(o))
+			{
+				moveobjects->AddElem(o);
+			}
 		}
-		speakOBJ = GetMaxRankOBJ(maxmoveobj,moveobjects);
-		if (speakOBJ)
-			activatesound(speakOBJ,MODESOUNDACTION,0,NOSTOPCURRENTSOUNDS);
-		return(k);
+	}
+	minx = 256*32;
+	miny = 256*32;
+	maxx = 0;
+	maxy = 0;
+	moveobjects->EnumListInit();
+	while( o = (OBJ *)moveobjects->GetNextListElem(NULL))
+	{
+		if (GetOBJx(o) < minx)
+			minx = GetOBJx(o);
+		if (GetOBJy(o) < miny)
+			miny = GetOBJy(o);
+		if (GetOBJx(o) > maxx)
+			maxx = GetOBJx(o);
+		if (GetOBJy(o) > maxy)
+			maxy = GetOBJy(o);
+	}
+	if (maxx-minx<=128 && maxy-miny<=128)
+	{
+		//move in group
+		if (locx < minx || locy < miny || locx > maxx || locy > maxy)
+		{
+			midx=(maxx-minx)/2+minx;
+			midy=(maxy-miny)/2+miny;
+		}
+	}
+	if (mode == MODEATACK)
+		flags |= ATACKMOVEBIT;
+	moveobjects->EnumListInit();
+	while( o = (OBJ *)moveobjects->GetNextListElem(NULL))
+	{
+		if (midx)
+		{
+			deltax = GetOBJx(o) - midx;
+			deltay = GetOBJy(o) - midy;
+		}
+		o->prop &= ~VARAUTOMATRESOURCERET;
+		if (rightclick)
+		{
+			if (o->SC_Unit == SC_SCVOBJ && o->constrobj)
+			{
+				continue;
+			}
+			if (destobj)
+				mode = GetDefaultModeForRightClick(o,destobj,player);
+		}
+		if (mode != MODENON)
+			k |= makemove(o,destobj,locx+deltax,locy+deltay,mode,player,flags);
+	}
+	speakOBJ = GetMaxRankOBJ(moveobjects);
+	if (speakOBJ)
+		activatesound(speakOBJ,MODESOUNDACTION,0,NOSTOPCURRENTSOUNDS);
+	delete moveobjects;
+	return(k);
 }
 //=================================
 int GetDefaultModeForRightClick(OBJ *a,OBJ *destobj,int playernr)
@@ -3089,20 +3058,19 @@ int GetDefaultModeForRightClick(OBJ *a,OBJ *destobj,int playernr)
 		return(modemove);
 }
 //=================================
-struct OBJ* GetMaxRankOBJ(int maxobjs,OBJ *objs[])
+struct OBJ* GetMaxRankOBJ(mylistsimple *objs)
 {
-	int maxrank=-1,unitrank,i;
-	struct OBJ *maxrankOBJ=NULL;
-	for (i=0;i<maxobjs;i++)
+	int maxrank=-1,unitrank;
+	struct OBJ *maxrankOBJ = NULL;
+	OBJ *o;
+	SelectedUnits.EnumListInit();
+	while( o = (OBJ *)SelectedUnits.GetNextListElem(NULL))
 	{
-		if (objs[i])
+		unitrank = GetUnitSublabel(o->SC_Unit);
+		if (unitrank > maxrank)
 		{
-			unitrank = GetUnitSublabel(objs[i]->SC_Unit);
-			if (unitrank>maxrank)
-			{
-				maxrank=unitrank;
-				maxrankOBJ = objs[i];
-			}
+			maxrank = unitrank;
+			maxrankOBJ = o;
 		}
 	}
 	return(maxrankOBJ);
@@ -3201,9 +3169,9 @@ void LoadObjInObj(struct OBJ *a,struct OBJ *c)
 		transportanalizeobj(c);
 		doselectedOBJbit(a,a->playernr,0);
 		deselectobj(a);
-		if (selectobjcount()==1)
+		if (SelectedUnits.totalelem == 1)
 		{
-			ifselectTRANSPORTS(getfirstselectedobj(fordeselect));
+			ifselectTRANSPORTS((OBJ *)SelectedUnits.GetElem(0,NULL));
 		}
 		DeleteOldObjPointers(a);
 	}
@@ -3746,9 +3714,13 @@ void DeleteOldObjPointers(struct OBJ *a)
 			b->constrobj = NULL;
 		DelOBJFromModeList(b,a);		//search in obj b ref to obj a
 	}
-	for (i=0;i<MAXSELECTMAN;i++)
-		if (fordeselect[i]==a)
-			fordeselect[i] = NULL;
+	OBJ *o;
+	SelectedUnits.EnumListInit();
+	while( o = (OBJ *)SelectedUnits.GetNextListElem(NULL))
+	{
+		if (o == a)
+			SelectedUnits.DelElem(a);
+	}
 	//find pointers in sound channels
 	FreeChannelWithObj(a);
 	QueueDelObj(a);

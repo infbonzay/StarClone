@@ -627,30 +627,21 @@ void printobjparam(void)
 		struct OBJ *a;
 		struct OBJstruct *b,*tempobjstr;
 		existinbuildconstr = 0;
-		objcount = selectobjcount();
-		if (objcount==1)
+		objcount = SelectedUnits.totalelem;
+		if (objcount == 1)
 		{
-				for (i=0;i<MAXSELECTMAN;i++)
-				{
-						if (fordeselect[i])
-						{
-								a=fordeselect[i];
-//				if (a->prop&VARCANTSELECT)
-//					return;
-								SC_Unit=a->SC_Unit;
-								b=loadobj(SC_Unit);
-								break;
-						}
-				}
-				constrelem=GetConstructNR(a);
-				ss[0]=0;
-				tblname=getOBJname(SC_Unit);
+				a = (OBJ *)SelectedUnits.GetElem(0,NULL);
+				SC_Unit = a->SC_Unit;
+				b = loadobj(SC_Unit);
+				constrelem = GetConstructNR(a);
+				ss[0] = 0;
+				tblname = getOBJname(SC_Unit);
 				putrowtext(XWINPOS+102,YWINPOS+0,152,IDFONT10,TEXT_CENTERALIGN,tblname,GBLUECOLORFONT,tfontgamp);
 
-				tblcolor=GBLUECOLORFONT;
-				tblname=NULL;
-				sname[0]=0;
-				if (a->prop&VARREADY)
+				tblcolor = GBLUECOLORFONT;
+				tblname = NULL;
+				sname[0] = 0;
+				if (a->prop & VARREADY)
 				{
 						//is resourcebuild or geyser and depleted show this message
 						if ( allow_display_mineralstatus( a, NUMBGAMER ) &&
@@ -676,12 +667,12 @@ void printobjparam(void)
 										{
 												if( allow_display_unitstatus( a, NUMBGAMER ) )
 												{
-														if (fordeselect[0])
+														if (a)
 														{
 																for( int attr=0; attr<MAXMAGEATR; attr++ )
 																{
 																		//don't display hallucination on enemy unit
-																		if (attr == ATRHALLUCINATION && player_aliance(fordeselect[0]->playernr,NUMBGAMER)==ENEMYOBJ)
+																		if (attr == ATRHALLUCINATION && player_aliance(a->playernr,NUMBGAMER)==ENEMYOBJ)
 																				continue;
 																		if(mage_descriptions_hod[attr]==-1)
 																				continue;
@@ -691,7 +682,7 @@ void printobjparam(void)
 																		tblcolor=GYELLOWCOLORFONT;
 																		if (attr==ATRCORROSIVEACID)
 																		{
-																				sprintf(sname,"%s:%d",tblname,GetCorrosiveAcidValue(fordeselect[0]));
+																				sprintf(sname,"%s:%d",tblname,GetCorrosiveAcidValue(a));
 																				tblname=sname;
 																		}
 																		break;
@@ -1053,7 +1044,7 @@ void printobjparam(void)
 		}//else objcount
 		else//objcount!=1
 		{
-				drawallunitsinbar(XWINPOS,YWINPOS,fordeselect,selectobjcount());
+			drawallunitsinbar(XWINPOS,YWINPOS);
 		}
 }
 //==============================================
@@ -1179,7 +1170,7 @@ void drawunitsintransport(int XWINPOS,int YWINPOS,struct OBJ *a)
 		}
 }
 //=====================================
-void putnameonselectedunits(struct OBJ *a[],int count,int XWINPOS,int YWINPOS)
+void putnameonselectedunits(int XWINPOS,int YWINPOS)
 {
 		char *tblname;
 		int xpos,ypos,xsize,ysize,i,oldxsize;
@@ -1189,11 +1180,9 @@ void putnameonselectedunits(struct OBJ *a[],int count,int XWINPOS,int YWINPOS)
 				return;
 		xpos=XWINPOS+30;
 		ypos=YWINPOS+14;
-		for (i=0;i<MAXSELECTMAN;i++)
+		SelectedUnits.EnumListInit();
+		while( a1 = (OBJ *)SelectedUnits.GetNextListElem(&i))
 		{
-				a1 = a[i];
-				if (!a1)
-						continue;
 				xsize = 36;
 				ysize = 36;
 				if (ypos+ysize>YWINPOS+14+36*2)
@@ -1201,7 +1190,7 @@ void putnameonselectedunits(struct OBJ *a[],int count,int XWINPOS,int YWINPOS)
 						xpos += oldxsize;
 						ypos = YWINPOS+14;
 				}
-				if (mousehotpos==i+MOUSEONSTATUNIT)
+				if (mousehotpos == i+MOUSEONSTATUNIT)
 				{
 						tblname=alldattbl.stattxt_tbl->get_TBL_STR(STATTXT_TBL_HELPSELECTUNITS);
 						putboxmessage(	FONTCOLOR(tfontgamp,GBLUECOLORFONT,2),
@@ -1213,27 +1202,26 @@ void putnameonselectedunits(struct OBJ *a[],int count,int XWINPOS,int YWINPOS)
 		}
 }
 //=====================================
-void drawallunitsinbar(int XWINPOS,int YWINPOS,struct OBJ *a[],int count)
+void drawallunitsinbar(int XWINPOS,int YWINPOS)
 {
-		static int selectunit=-1;
+		int i;
+		static OBJ *selectunit = NULL;
 		int addx,addy;
 //	  int xpos=XUNITBAR,ypos=YUNITBAR;
 		int xpos=XWINPOS+30,ypos=YWINPOS+14;
 		int xsize,ysize,oldxsize;
 
-		int i,shield_pers,life_pers,mbuttonpress,shiftpress,ctrlpress;
+		int shield_pers,life_pers,mbuttonpress,shiftpress,ctrlpress;
 		int objtype;//objtype=0-darkblue,1-white,2-green,3-lightblue
 		struct OBJ *a1;
-		if (count)
+		if (SelectedUnits.totalelem)
 		{
 				mbuttonpress = (highMouse->GetButtonStatus() & WMLEFTKEY) && (!highMouse->MouseOnSelectionMode);
 				shiftpress = KEYPRESS(SHIFTLKEY) | KEYPRESS(SHIFTRKEY);
 				ctrlpress = KEYPRESS(CTRLLKEY) | KEYPRESS(CTRLRKEY);
-				for (i=0;i<MAXSELECTMAN;i++)
+				SelectedUnits.EnumListInit();
+				while( a1 = (OBJ *)SelectedUnits.GetNextListElem(&i))
 				{
-						a1 = a[i];
-						if (!a1)
-								continue;
 						xsize = 36;
 						ysize = 36;
 						if (ypos+ysize>YWINPOS+14+36*2)
@@ -1267,7 +1255,7 @@ void drawallunitsinbar(int XWINPOS,int YWINPOS,struct OBJ *a[],int count)
 						{
 								addx=2;
 								addy=2;
-								selectunit=i;
+								selectunit = a1;
 						}
 						else
 						{
@@ -1276,16 +1264,16 @@ void drawallunitsinbar(int XWINPOS,int YWINPOS,struct OBJ *a[],int count)
 						}
 						if (!mbuttonpress)
 						{
-							if (selectunit!=-1)
+							if (selectunit)
 							{
 								if (!shiftpress)
 									if (ctrlpress)
-										deselectallexcludeonetypeobj(fordeselect[selectunit]);
+										deselectallexcludeonetypeobj(selectunit);
 									else
-										deselectallexcludeone(fordeselect[selectunit]);
+										deselectallexcludeone(selectunit);
 									else
-										deselectobj(fordeselect[selectunit]);
-										selectunit=-1;
+										deselectobj(selectunit);
+										selectunit = NULL;
 									break;
 							}
 						}
@@ -1293,7 +1281,7 @@ void drawallunitsinbar(int XWINPOS,int YWINPOS,struct OBJ *a[],int count)
 														shield_pers,life_pers,grpicons,grpwire1,a1->SC_Unit);
 						ypos += ysize;
 						oldxsize = xsize;
-						putnameonselectedunits(a,count,XWINPOS,YWINPOS);
+						putnameonselectedunits(XWINPOS,YWINPOS);
 				}
 		}
 }
