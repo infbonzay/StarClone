@@ -19,7 +19,6 @@ mylist::mylist()
 	resetvars();
 }
 //=========================================
-//=========================================
 mylist::~mylist()
 {
 //	  FlushList();
@@ -312,7 +311,7 @@ void *mylist::GetElemNrNoNULL(int *elemnr)
 //!!!!		if (curent->bitelements[elemcur] != MYLIST_EMPTY)
 				return (curent->elements[elemcur]);
 		}
-	}while(1); 
+	}while(1);
 }
 //=========================================
 int mylist::GetMaxElements(void)
@@ -568,13 +567,26 @@ void mylistsimple::CopyTo(mylistsimple *copy)
 	copy->totalelem = this->totalelem;
 	copy->totalmarked = this->totalmarked;
 	copy->curenumelemnr = this->curenumelemnr;
-	
+
 	wfree(copy->elements);
 	wfree(copy->deletemarked);
 	copy->elements = (void **) wmalloc(allocatedelem*sizeof(void *));
 	copy->deletemarked = (char *)wmalloc(allocatedelem*sizeof(char));
 	memcpy(copy->elements,this->elements,allocatedelem*sizeof(void *));
 	memcpy(copy->deletemarked,this->deletemarked,allocatedelem*sizeof(char));
+}
+//=========================================
+void mylistsimple::AppendTo(mylistsimple *appendTo)
+{
+	this->EnumListInit();
+	void *elem;
+	while( ( elem = this->GetNextListElem(NULL) ))
+	{
+		if (appendTo->Contains(elem) < 0)
+		{
+			appendTo->AddElem(elem);
+		}
+	}
 }
 //=========================================
 void mylistsimple::DelElem(void *elem)

@@ -450,31 +450,33 @@ static int selectbuilds[4],selectunits[4];
 void deselectallexcludeone(struct OBJ *a1)
 {
 	struct OBJ *a;
-	for (int i=0;i<MaxObjects;i++)
+	int i;
+	SelectedUnits.EnumListInit();
+	while ( ( a = (OBJ *) SelectedUnits.GetNextListElem(&i)) )
 	{
-	   a=objects[i];
-	   if (a != a1)
-		  if (ifselectedOBJbit(a,NUMBGAMER))
-		  {
-			 doselectedOBJbit(a,NUMBGAMER,0);
-			 deselectobj(a);
-		  }
+		if (a != a1)
+		{
+			SelectedUnits.MarkForDelElem(i);
+			doselectedOBJbit(a,NUMBGAMER,0);
+		}
 	}
+	SelectedUnits.DeleteMarked();
 }
 //=====================================
 void deselectallexcludeonetypeobj(struct OBJ *a1)
 {
 	struct OBJ *a;
-	for (int i=0;i<MaxObjects;i++)
+	int i;
+	SelectedUnits.EnumListInit();
+	while ( ( a = (OBJ *) SelectedUnits.GetNextListElem(&i)) )
 	{
-	   a=objects[i];
-	   if (a->SC_Unit!=a1->SC_Unit)
-		  if (ifselectedOBJbit(a,NUMBGAMER))
-		  {
-			 doselectedOBJbit(a,NUMBGAMER,0);
-			 deselectobj(a);
-		  }
+	   if (a->SC_Unit != a1->SC_Unit)
+		{
+			SelectedUnits.MarkForDelElem(i);
+			doselectedOBJbit(a,NUMBGAMER,0);
+		}
 	}
+	SelectedUnits.DeleteMarked();
 }
 //=====================================
 void DetectIfAnyPylonOnSelected(void)
@@ -500,7 +502,7 @@ void DetectIfAnyPylonOnSelected(void)
 	}
 	OBJ *o;
 	SelectedUnits.EnumListInit();
-	while( o = (OBJ *)SelectedUnits.GetNextListElem(NULL))
+	while( (o = (OBJ *)SelectedUnits.GetNextListElem(NULL)))
 	{
 		if (o->SC_Unit == SC_PYLONOBJ	&&
 			o->playernr == NUMBGAMER	&&
@@ -529,53 +531,40 @@ void deselectallobj(int playernr)
 {
 	OBJ *o;
 	SelectedUnits.EnumListInit();
-	while( o = (OBJ *)SelectedUnits.GetNextListElem(NULL))
+	while( (o = (OBJ *)SelectedUnits.GetNextListElem(NULL)))
 	{
 		doselectedOBJbit(o,playernr,0);
 	}
 	SelectedUnits.FreeAndEmptyAll();
 }
 //=====================================
-void controlbu(int typeunits,int typeb_or_u,int mode)
+void controlbu(mylistsimple *list, int typeunits,int typeb_or_u)
 {
-	struct OBJ *a;
-	int nrobj;
-	nrobj=0;
-	for (int i=0;i<MaxObjects;i++)
+	int i;
+	OBJ *a;
+	list->EnumListInit();
+	while( (a = (OBJ *) list->GetNextListElem(&i)))
 	{
-	   a=objects[i];
-	   if (ifselectedOBJbit(a,NUMBGAMER))
-	   {
-			 if ((player_aliance(NUMBGAMER,a->playernr)==typeunits)
-				 &&IsBuild(a->SC_Unit)==typeb_or_u)
-			 {
-				if (nrobj<MAXSELECTMAN)
-				{
-				   if (addselectobj(a)!=0)
-				   {
-					  nrobj++;
-					  if (typeunits!=MYOBJ||typeb_or_u)
-					  {
-						 deselectallexcludeone(a);
-						 break;
-					  }
-					  else
-						 continue;
-				   }
-				}
-			}
-			doselectedOBJbit(a,NUMBGAMER,0);
-	   }//if
-	}//for
+		if ((player_aliance(NUMBGAMER,a->playernr) == typeunits)		&&
+			 IsBuild(a->SC_Unit)==typeb_or_u)
+		{
+			;
+		}
+		else
+		{
+			list->MarkForDelElem(i);
+		}
+	}
+	list->DeleteMarked();
 }
 //========================================
-void grupingobj(int mode)
+void grupingobj(mylistsimple *list)
 {
 	struct OBJ *a;
 	for (int i=0;i<MaxObjects;i++)
 	{
 		a=objects[i];
-		if (ifselectedOBJbit(a,NUMBGAMER))
+		if (list->Contains(a) >= 0)
 		{
 		   if (IsBuild(a->SC_Unit))
 		   {
@@ -595,47 +584,38 @@ void grupingobj(int mode)
 	//7. enemy build
 	//8. neutral build
 	if (selectunits[MYOBJ])
-	   controlbu(MYOBJ,0,mode);
-	else
-		if (selectunits[ALLIANCEOBJ])
-			controlbu(ALLIANCEOBJ,0,mode);
-		else
-			if (selectunits[ENEMYOBJ])
-				controlbu(ENEMYOBJ,0,mode);
-			else
-				if (selectunits[NEUTRALOBJ])
-					controlbu(NEUTRALOBJ,0,mode);
-				else
-					if (selectbuilds[MYOBJ])
-						controlbu(MYOBJ,1,mode);
-					else
-						if (selectbuilds[ALLIANCEOBJ])
-						controlbu(ALLIANCEOBJ,1,mode);
-						else
-							if (selectbuilds[ENEMYOBJ])
-								controlbu(ENEMYOBJ,1,mode);
-							else
-								if (selectbuilds[NEUTRALOBJ])
-								controlbu(NEUTRALOBJ,1,mode);
+		controlbu(list,MYOBJ,0);
+	else if (selectunits[ALLIANCEOBJ])
+		controlbu(list,ALLIANCEOBJ,0);
+	else if (selectunits[ENEMYOBJ])
+		controlbu(list,ENEMYOBJ,0);
+	else if (selectunits[NEUTRALOBJ])
+		controlbu(list,NEUTRALOBJ,0);
+	else if (selectbuilds[MYOBJ])
+		controlbu(list,MYOBJ,1);
+	else if (selectbuilds[ALLIANCEOBJ])
+		controlbu(list,ALLIANCEOBJ,1);
+	else if (selectbuilds[ENEMYOBJ])
+		controlbu(list,ENEMYOBJ,1);
+	else if (selectbuilds[NEUTRALOBJ])
+		controlbu(list,NEUTRALOBJ,1);
 }
 //=====================================
-int foundonetypeobj(struct OBJ *a)
+void addtolist_onetypeobj(mylistsimple *list, OBJ *a)
 {
-	int i,u=0;
+	int i;
 	struct OBJ *c;
 	for (i=0;i<MaxObjects;i++)
 	{
-		c=objects[i];
+		c = objects[i];
 		if (IsInvincibleUnit(c->SC_Unit))
 			continue;
 		if	(c->playernr == a->playernr && a->SC_Unit == c->SC_Unit)
 			if (!OBJ_VAR_CHK(c,obj_notdetect,NUMBGAMER))
 			{
-				doselectedOBJbit(c,NUMBGAMER,1);
-				u++;
+				list->AddElem(c);
 			}
 	}//for
-	return(u);
 }//end func
 //=====================================
 struct OBJ *founduniqueobj(int x1,int y1)
@@ -680,12 +660,11 @@ int yn,distx,disty,mindist=0x7fffffff;
 return(minobj);
 }//end func
 //=====================================
-void ifselectedprobe(int countofselectunits)
+void ifselectedprobe(void)
 {
-	int i;
 	OBJ *o;
 	SelectedUnits.EnumListInit();
-	while( o = (OBJ *)SelectedUnits.GetNextListElem(NULL))
+	while( (o = (OBJ *)SelectedUnits.GetNextListElem(NULL)))
 	{
 		if (IsWorkerUnit(o->SC_Unit))
 		{
@@ -698,7 +677,7 @@ void ifselectedprobe(int countofselectunits)
 	}
 }
 //=====================================
-void ifselectTEMPLARS(int player)
+void ifselectTEMPLARS(void)
 {
 	if (SelectedUnits.totalelem >= 2)
 	{
@@ -723,91 +702,82 @@ void ifselectTRANSPORTS(struct OBJ *a)
 //=====================================
 int IfUnitIsSelectable(OBJ *a)
 {
-			if (OBJ_VAR_MASK_CHK(a,obj_notdetect,map.pl_visionbits[NUMBGAMER]))
-			{
-				if (OBJ_VAR_MASK_CHK(a,obj_invsee,map.pl_visionbits[NUMBGAMER]))
-					return(1);
-			}
-			else
-			{
-				if (OBJ_VAR_MASK_CHK(a,obj_see,map.pl_visionbits[NUMBGAMER]))
-					return(1);
-			}
+	if (OBJ_VAR_MASK_CHK(a,obj_notdetect,map.pl_visionbits[NUMBGAMER]))
+	{
+		if (OBJ_VAR_MASK_CHK(a,obj_invsee,map.pl_visionbits[NUMBGAMER]))
+		return(1);
+	}
+	else
+	{
+    	if (OBJ_VAR_MASK_CHK(a,obj_see,map.pl_visionbits[NUMBGAMER]))
+			return(1);
+	}
 	return(0);
 }
 //=====================================
 int IfUnitIsSelectable2(OBJ *a)
 {
-			if (OBJ_VAR_CHK(a,obj_notdetect,NUMBGAMER))
-			{
-				if (OBJ_VAR_CHK(a,obj_invsee,NUMBGAMER))
-					return(1);
-			}
-			else
-			{
-				if (OBJ_VAR_CHK(a,obj_see,NUMBGAMER))
-					return(1);
-			}
+	if (OBJ_VAR_CHK(a,obj_notdetect,NUMBGAMER))
+	{
+		if (OBJ_VAR_CHK(a,obj_invsee,NUMBGAMER))
+			return(1);
+	}
+	else
+	{
+		if (OBJ_VAR_CHK(a,obj_see,NUMBGAMER))
+	    	return(1);
+	}
 	return(0);
 }
 //=====================================
 #define MINHAP 2
 void selectMAN(int x1,int y1,int x2,int y2,int mode)
 {
-	int i,yn1,yn2,u=0,oldu,nodoodad,x,y;
-	struct OBJ *a,*firstobj=NULL,*speakOBJ;
+    int yn1,yn2,x,y;
+	OBJ *firstobj, *a, *speakOBJ;
+	mylistsimple *selectnow = new mylistsimple(MAXSELECTMAN);
 	deselectvars();
-	if (!mode)
-	{
-		SelectedUnits.CopyTo(&SelectedUnitsCopy);
-		deselectallobj(NUMBGAMER);
-	}
-	if (x2<x1)
+	if (x2 < x1)
 		swap(&x1,&x2);
-	if (y2<y1)
+	if (y2 < y1)
 		swap(&y1,&y2);
-	x1 = x1+map.MAPXGLOBAL;
-	x2 = x2+map.MAPXGLOBAL;
-	y1 = y1+map.MAPYGLOBAL;
-	y2 = y2+map.MAPYGLOBAL;
+	x1 = x1 + map.MAPXGLOBAL;
+	x2 = x2 + map.MAPXGLOBAL;
+	y1 = y1 + map.MAPYGLOBAL;
+	y2 = y2 + map.MAPYGLOBAL;
 	int ctrl = (KEYPRESS(CTRLLKEY) | (KEYPRESS(CTRLRKEY))) || highMouse->DoubleClick;
-	printf("%d\n",highMouse->DoubleClick);
-	if ( ((x2-x1 <= MINHAP) && (y2-y1<=MINHAP)) || ctrl)
+	if ( ((x2-x1 <= MINHAP) && (y2-y1 <= MINHAP)) || ctrl)
 	{
-		a=founduniqueobj((x1+x2)/2,(y1+y2)/2);
-		firstobj = a;
+		firstobj = a = founduniqueobj((x1+x2)/2,(y1+y2)/2);
 		if (a)
 		{
 			if (IfCanClickOBJ(a->SC_Unit))
 			{
 				if (ctrl)
 				{
-					u = foundonetypeobj(a);
+					addtolist_onetypeobj(selectnow,a);
 				}
 				else
 				{
-					doselectedOBJbit(a,NUMBGAMER,1);
-					u++;
+					selectnow->AddElem(a);
 				}
 			}
 		}
 	}
 	else
 	{
-	   for (i=0;i<MaxObjects;i++)
-	   {
-			a=objects[i];
+        for (int i=0;i<MaxObjects;i++)
+	    {
+			a = objects[i];
 			if (a->mainimage->flags & SC_IMAGE_FLAG_DISABLEDRAW)
 				continue;
-//			if (IsSubUnit(a->SC_Unit))
-//				continue;
-			nodoodad=1;
-			if (IsDoodadState(a->SC_Unit) && (IsInvincibleUnit(a->SC_Unit)||GetDoodadState(a)==DOODAD_BOTTOM_STATE))
-				nodoodad=0;
+			bool nodoodad = true;
+			if (IsDoodadState(a->SC_Unit) && (IsInvincibleUnit(a->SC_Unit) || GetDoodadState(a) == DOODAD_BOTTOM_STATE))
+				nodoodad = false;
 			if (IfCanClickOBJ(a->SC_Unit)  && nodoodad && (!a->carryobj || !IsPickupUnit(a->SC_Unit)))
 			{
-				yn1=y1;
-				yn2=y2;
+				yn1 = y1;
+				yn2 = y2;
 				x = GetOBJx(a);
 				y = GetOBJy(a);
 				if (x > x1-GetUnitWidthAndHeight(a->SC_Unit,UNITDIM_WIDTH)/2  &&
@@ -817,55 +787,53 @@ void selectMAN(int x1,int y1,int x2,int y2,int mode)
 				{
 					if (IfUnitIsSelectable(a))
 					{
-						doselectedOBJbit(a,NUMBGAMER,1);
-						u++;
-						if ((!firstobj)||(!IsBuild(a->SC_Unit)))
+						selectnow->AddElem(a);
+						if ((!firstobj) || (!IsBuild(a->SC_Unit)))
 							firstobj = a;
 					}
 				}
 			}
-	   }//for
+	    }
 	}
-	if (u)
-		groupmove=0;
-	if ((!mode)&&(!u))
+	if (selectnow->totalelem)
+		groupmove = 0;
+	if ((!mode) && (!selectnow->totalelem))
 	{
-		SelectedUnitsCopy.CopyTo(&SelectedUnits);
-		OBJ *o;
-		SelectedUnits.EnumListInit();
-		while( o = (OBJ *)SelectedUnits.GetNextListElem(NULL))
-		{
-			doselectedOBJbit(o,NUMBGAMER,1);
-		}
+		delete selectnow;
+		return;
 	}
-	//sortselectedunits(fordeselect,MAXSELECTMAN);?????
-	grupingobj(mode);
-	if (u)
-		ifselectedprobe(u);
-	ifselectTEMPLARS(NUMBGAMER);
-	oldu=u;
-	u = SelectedUnits.totalelem;
-	if (u == 1)
+	SelectedUnits.EnumListInit();
+	while ( (a = (OBJ *)SelectedUnits.GetNextListElem(NULL) ))
+	{
+		doselectedOBJbit(a,NUMBGAMER,0);
+	}
+	grupingobj(selectnow);
+	if (selectnow->totalelem)
+		ifselectedprobe();
+	ifselectTEMPLARS();
+	if (SelectedUnits.totalelem == 1)
 	{
 		OBJ *o = (OBJ *)SelectedUnits.GetElem(0,NULL);
 		ifselectTRANSPORTS(o);
 		ifselectedDAMAGEDBUILD(o);
 	}
 	else
-		transportplaceobj=NULL;
-	firstobj=NULL;
-	if (u)
 	{
-		firstobj =(OBJ *) SelectedUnits.GetElem(0,NULL);
-		if (firstobj && oldu)
+		transportplaceobj=NULL;
+	}
+	firstobj = NULL;
+	if (selectnow->totalelem == 1)
+	{
+		firstobj = (OBJ *) selectnow->GetElem(0,NULL);
+		if (firstobj)
 		{
-			if (firstobj->prop&VARREADY)
+			if (firstobj->prop & VARREADY)
 			{
 				if (firstobj->prop & VARPOWEROFF)
 				{
 					if (gameconf.audioconf.buildsounds)
-						if (firstobj&&firstobj->playernr==NUMBGAMER)
-							if (mapSEE(firstobj,NUMBGAMER)>1)
+						if (firstobj && firstobj->playernr == NUMBGAMER)
+							if (mapSEE(firstobj,NUMBGAMER) > 1)
 								Play_sfxdata_id(firstobj,sfx_powerdown[GetUnitRace(firstobj->SC_Unit)],2,0);
 				}
 				else
@@ -875,18 +843,30 @@ void selectMAN(int x1,int y1,int x2,int y2,int mode)
 						activatesound(speakOBJ,MODESOUNDSELECT,0,NOSTOPCURRENTSOUNDS);
 				}
 			}
-//			else
-//				activatesound(firstobj,MODESOUNDCONSTRUCT,0,NOSTOPCURRENTSOUNDS);
 		}
 	}
-}//end func
-//========================================
+	if (!mode)
+	{
+		selectnow->CopyTo(&SelectedUnits);
+	}
+	else
+	{
+		selectnow->AppendTo(&SelectedUnits);
+	}
+	SelectedUnits.EnumListInit();
+	while ( (a = (OBJ *)SelectedUnits.GetNextListElem(NULL) ))
+	{
+		doselectedOBJbit(a,NUMBGAMER,1);
+	}
+	delete selectnow;
+}
+//=====================================
 void changedeselectobj(struct OBJ *a,struct OBJ *aa)
 {
 	int i;
 	OBJ *o;
 	SelectedUnits.EnumListInit();
-	while( o = (OBJ *)SelectedUnits.GetNextListElem(&i))
+	while( (o = (OBJ *)SelectedUnits.GetNextListElem(&i)))
 	{
 		if (o == a)
 	 	{
@@ -904,7 +884,7 @@ int selectobj(struct OBJ *a)
 	{
 		OBJ *o;
 		SelectedUnits.EnumListInit();
-		while( o = (OBJ *)SelectedUnits.GetNextListElem(NULL))
+		while( (o = (OBJ *)SelectedUnits.GetNextListElem(NULL)))
 		{
 			if (o == a)
 			{
@@ -922,6 +902,7 @@ int deselectobj(struct OBJ *a)
 	int i = SelectedUnits.Contains(a);
 	if (i >= 0)
 	{
+		SelectedUnits.DeleteOneElem(i);
 		if (GetPortraitOBJ() == a)
 			ShowAdvisorPortrait();
 		doselectedOBJbit(a,NUMBGAMER,0);

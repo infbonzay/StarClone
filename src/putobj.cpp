@@ -47,101 +47,101 @@
 //=====================================
 int getlifepercent(int number,int maxnumber)
 {
-		int i;
-		for (i=5;i>0;i--)
+	int i;
+	for (i=5;i>0;i--)
 		if (number>=(maxnumber*i/6))
-				return i;
-		return 0;
+			return i;
+	return 0;
 }
 //========================================
 //risovati u objecta jizni,shield,magia
 void desenlife(int x,int y,
-						   int sizex,int statusplayer,
-						   int health,int shield,
-						   int mage,int timelife,
-						   int	maxhealth,int maxshield,
-						   int maxmage,int maxtimelife)
+				int sizex,int statusplayer,
+				int health,int shield,
+				int mage,int timelife,
+				int	maxhealth,int maxshield,
+				int maxmage,int maxtimelife)
 {
-		int color;
-		int kubik,maxkubik;
-		if (maxshield)
-		{
-				createmaxkubikSH(shield,maxshield,sizex);
+	int color;
+	int kubik,maxkubik;
+	if (maxshield)
+	{
+		createmaxkubikSH(shield,maxshield,sizex);
 						desenhealth2(x,y,BLUEHPBAR,kubik,maxkubik);
 						y+=SIZEYKUBIK-1;
 		}
 		switch(getlifepercent(health,maxhealth))
 		{
-				case 0:
-				case 1:
-						color=REDHPBAR;
-						break;
-				case 2:
-				case 3:
-						color=YELLOWHPBAR;
-						break;
-				case 4:
-				case 5:
-						color=GREENHPBAR;
-						break;
+			case 0:
+			case 1:
+				color=REDHPBAR;
+			break;
+			case 2:
+			case 3:
+				color=YELLOWHPBAR;
+			break;
+			case 4:
+			case 5:
+				color=GREENHPBAR;
+			break;
 		}
 		createmaxkubik(health,maxhealth,sizex);
 		if (maxshield)
 		{
-				desenhealth2(x,y,color,kubik,maxkubik);
-				y+=SIZEYKUBIK+1;
+			desenhealth2(x,y,color,kubik,maxkubik);
+			y+=SIZEYKUBIK+1;
 		}
 		else
 		{
-				desenhealth(x,y,color,kubik,maxkubik);
-				y+=SIZEYKUBIK+2;
+			desenhealth(x,y,color,kubik,maxkubik);
+			y+=SIZEYKUBIK+2;
 		}
 		if ((statusplayer==MYOBJ)&&(maxmage))
 		{
-				createmaxkubik(mage,maxmage,sizex);
-				desenhealth(x,y,VIOLETHPBAR,kubik,maxkubik);
-				y+=SIZEYKUBIK+1;
+			createmaxkubik(mage,maxmage,sizex);
+			desenhealth(x,y,VIOLETHPBAR,kubik,maxkubik);
+			y += SIZEYKUBIK+1;
 		}
 		if ((statusplayer==MYOBJ)&&maxtimelife)
 		{
-				createmaxkubik(timelife,maxtimelife,sizex);
-				desenhealth(x,y,VIOLETHPBAR,kubik,maxkubik);
+			createmaxkubik(timelife,maxtimelife,sizex);
+			desenhealth(x,y,VIOLETHPBAR,kubik,maxkubik);
 		}
 }
 //========================================
 //risovati odno iz component (jizni|shield|magia)
 void desenhealth(int x,int y,int kubik,int count,int max)
 {
-		int i;
-		horizline(KUBIK[GREYHPBAR][0],x,x+max*(SIZEXKUBIK),y+SIZEYKUBIK);
-		for (i=0;i<count;i++)
-		{
-				CPutImage8(x,y,SIZEXKUBIK,SIZEYKUBIK,KUBIK[kubik]);
-				x+=SIZEXKUBIK;
-		}
-		for (;i<max;i++)
-		{
-				CPutImage8(x,y,SIZEXKUBIK,SIZEYKUBIK,KUBIK[GREYHPBAR]);
-				x+=SIZEXKUBIK;
-		}
-		vertline(KUBIK[GREYHPBAR][0],x,y,y+SIZEYKUBIK);
+	int i;
+	horizline(KUBIK[GREYHPBAR][0],x,x+max*(SIZEXKUBIK),y+SIZEYKUBIK);
+	for (i=0;i<count;i++)
+	{
+		CPutImage8(x,y,SIZEXKUBIK,SIZEYKUBIK,KUBIK[kubik]);
+		x+=SIZEXKUBIK;
+	}
+	for (;i<max;i++)
+	{
+		CPutImage8(x,y,SIZEXKUBIK,SIZEYKUBIK,KUBIK[GREYHPBAR]);
+		x+=SIZEXKUBIK;
+	}
+	vertline(KUBIK[GREYHPBAR][0],x,y,y+SIZEYKUBIK);
 }
 //========================================
 void desenhealth2(int x,int y,int kubik,int count,int max)
 {
-		int i;
-		horizline(PKUBIK[GREYHPBAR][0],x,x+max*(SIZEXKUBIK),y+SIZEYKUBIK-1);
-		for (i=0;i<count;i++)
-		{
-				CPutImage8(x,y,SIZEXKUBIK,SIZEYKUBIK-1,PKUBIK[kubik]);
-				x+=SIZEXKUBIK;
-		}
-		for (;i<max;i++)
-		{
-				CPutImage8(x,y,SIZEXKUBIK,SIZEYKUBIK-1,PKUBIK[GREYHPBAR]);
-				x+=SIZEXKUBIK;
-		}
-		vertline(PKUBIK[GREYHPBAR][0],x,y,y+SIZEYKUBIK-1);
+	int i;
+	horizline(PKUBIK[GREYHPBAR][0],x,x+max*(SIZEXKUBIK),y+SIZEYKUBIK-1);
+	for (i=0;i<count;i++)
+	{
+		CPutImage8(x,y,SIZEXKUBIK,SIZEYKUBIK-1,PKUBIK[kubik]);
+		x+=SIZEXKUBIK;
+	}
+	for (;i<max;i++)
+	{
+		CPutImage8(x,y,SIZEXKUBIK,SIZEYKUBIK-1,PKUBIK[GREYHPBAR]);
+		x+=SIZEXKUBIK;
+	}
+	vertline(PKUBIK[GREYHPBAR][0],x,y,y+SIZEYKUBIK-1);
 }
 
 /* a mechanism is needed to support multiple decoration schemes */
@@ -151,81 +151,80 @@ void desenhealth2(int x,int y,int kubik,int count,int max)
 /* this value can be modified on the fly */
 unsigned char selected_unit_decoration[4] =
 {
-  REDCIRCLE,
-  YELLOWCIRCLE,
-  YELLOWCIRCLE,
-  GREENCIRCLE
+	REDCIRCLE,
+	YELLOWCIRCLE,
+	YELLOWCIRCLE,
+	GREENCIRCLE
 };
 
 //===================================================
 int showcircle(int x,int y,GRPFILE *grp,int color)
 {
-		x-=grp->SizeX/2;
-		y-=grp->SizeY/2;
-		putgrpspr(x,y-5,grp,NORMAL,255,color,NULL,0);
-		//putgrp(x,y-5,grp,0,color<<8);
-		return(y+grp->Picture[0].LinesPerPicture+grp->Picture[0].SkipUp);//+5);
+	x-=grp->SizeX/2;
+	y-=grp->SizeY/2;
+	putgrpspr(x,y-5,grp,NORMAL,255,color,NULL,0);
+	//putgrp(x,y-5,grp,0,color<<8);
+	return(y+grp->Picture[0].LinesPerPicture+grp->Picture[0].SkipUp);//+5);
 }
 //===================================================
 int drawcircle(int x,int y,int st,struct OBJ *a)
 {
-		int color,flingy_id,sprites_id,images_tbl;
-		int nrcircle,circleoffset;
-		y += 10;
-/*	  if (IsInvincibleUnit(a->SC_Unit)
-		color = YELLOWCIRCLE;
-		else
-*/
-		color = selected_unit_decoration[st];
+	int color,flingy_id,sprites_id,images_tbl;
+	int nrcircle,circleoffset;
+	y += 10;
 
-		if (a->SC_Unit!=SC_NOUNITNR)
+	color = selected_unit_decoration[st];
+
+	if (a->SC_Unit!=SC_NOUNITNR)
+	{
+		flingy_id=alldattbl.units_dat->flingy_id[a->SC_Unit];
+		sprites_id=alldattbl.flingy_dat->sprites_id[flingy_id];
+		nrcircle=alldattbl.sprites_dat->sel_circle_image[sprites_id-130];
+		if (IsOBJBurrowed(a))
 		{
-				flingy_id=alldattbl.units_dat->flingy_id[a->SC_Unit];
-				sprites_id=alldattbl.flingy_dat->sprites_id[flingy_id];
-				nrcircle=alldattbl.sprites_dat->sel_circle_image[sprites_id-130];
-				if (IsOBJBurrowed(a))
-				{
-						if (a->SC_Unit==SC_LURKEROBJ)
-								nrcircle=2;
-						else
-								nrcircle=0;
-				}
-				circleoffset=alldattbl.sprites_dat->sel_circle_offset[sprites_id-130];
-				if (!fullc[nrcircle])
-				{
-						images_tbl=alldattbl.images_dat->images_tbl[nrcircle+IMAGES_DAT_FIRSTCIRCLENORMAL];
-						GetLoadedImage(2,images_tbl,(void **)&fullc[nrcircle]);
-				}
-				if (NETWORKGAME&&!puncc[nrcircle])
-				{
-						images_tbl=alldattbl.images_dat->images_tbl[nrcircle+IMAGES_DAT_FIRSTCIRCLEDASHED];
-						GetLoadedImage(2,images_tbl,(void **)&puncc[nrcircle]);
-				}
+			if (a->SC_Unit==SC_LURKEROBJ)
+				nrcircle=2;
+			else
+				nrcircle=0;
 		}
-		return(showcircle(x,y+circleoffset-5,fullc[nrcircle],color));
+		circleoffset=alldattbl.sprites_dat->sel_circle_offset[sprites_id-130];
+		if (!fullc[nrcircle])
+		{
+			images_tbl=alldattbl.images_dat->images_tbl[nrcircle+IMAGES_DAT_FIRSTCIRCLENORMAL];
+			GetLoadedImage(2,images_tbl,(void **)&fullc[nrcircle]);
+		}
+		if (NETWORKGAME&&!puncc[nrcircle])
+		{
+			images_tbl=alldattbl.images_dat->images_tbl[nrcircle+IMAGES_DAT_FIRSTCIRCLEDASHED];
+			GetLoadedImage(2,images_tbl,(void **)&puncc[nrcircle]);
+		}
+	}
+	return(showcircle(x,y+circleoffset-5,fullc[nrcircle],color));
 }
 //==================================
 void ifselectedDAMAGEDBUILD(OBJ *a)
 {
-		if (a)
+	if (a)
+	{
 		if (IsMechanical(a->SC_Unit) && IsReadyOBJ(a) && IsBuild(a->SC_Unit))
 		{
-		switch(DamageFactor(a->health,GetUnitMaxHealth(a->SC_Unit)))
-		{
+			switch(DamageFactor(a->health,GetUnitMaxHealth(a->SC_Unit)))
+			{
 				case 0:
-						break;
+				break;
 				case 1:
 				case 2:
 				case 3:
-						Play_sfxdata_id(a,SFXDATA_BUILDFIRE1,2,0);
-						break;
+					Play_sfxdata_id(a,SFXDATA_BUILDFIRE1,2,0);
+				break;
 				case 4:
 				case 5:
 				case 6:
-						Play_sfxdata_id(a,SFXDATA_BUILDFIRE2,2,0);
-						break;
+					Play_sfxdata_id(a,SFXDATA_BUILDFIRE2,2,0);
+				break;
+			}
 		}
-		}
+	}
 }
 //==============================================
 //return
@@ -246,103 +245,99 @@ void ifselectedDAMAGEDBUILD(OBJ *a)
 //==============================================
 void NewUnitPlace(OBJ *a,SCUNIT SC_Unit,int *first_xpos,int *first_ypos)
 {
-//	  *first_xpos=a->sourcex+64;
-//	  *first_ypos=a->sourcey+64;
-		getcoordofnewunit(a,SC_Unit,first_xpos,first_ypos);
+//	*first_xpos=a->sourcex+64;
+//	*first_ypos=a->sourcey+64;
+	getcoordofnewunit(a,SC_Unit,first_xpos,first_ypos);
 }
 //=====================
 OBJ *CreateUnitInUnit(struct OBJ *a,int obj_id,int playsound,int first_xpos,int first_ypos)
 {
-		struct OBJ *temp;
-		if (!first_xpos||!first_ypos)
-		{
-				NewUnitPlace(a,obj_id,&first_xpos,&first_ypos);
-		}
-		switch(obj_id)
-		{
-				case SC_SCARABOBJ:
-						a->ammo++;
-						break;
-				case SC_INTERCEPTOROBJ:
-				case SC_NUKEOBJ:
-						temp = createobjman(first_xpos,first_ypos,obj_id,a->playernr);
-						addchild(a,temp);
-						temp->prop |= VARNOTHERE;
-						temp->finalOBJ = NULL;
-						temp->prop |= VARINBASE;
-						temp->modemove = MODERECHARGE;
-
-						temp->mainimage->DisableExecScript();
-						temp->mainimage->HideChildsImgFlag();
-						temp->mainimage->HideImgFlag();
-						temp->mainimage->elevationlevel = a->mainimage->elevationlevel-1;
-						temp->prop |= VARREADY;
-
-						if (obj_id == SC_NUKEOBJ)
-						{
-								PLAYER[a->playernr].nukes++;
-								if (playsound)
-										playinfoadvisorsound(a->playernr,TERRANRACE,ADVNUCLREADY,PLAYADVISOR_TEXTANDSOUND);
-						}
-						else
-						{
-								if (obj_id == SC_INTERCEPTOROBJ)
-								{
-										SetOrder(temp,1,&SIGOrder_InterceptorAfterAtack);
-								}
-						}
-						break;
-				default:
-						temp = createobjman(first_xpos,first_ypos,obj_id,a->playernr);
-						temp->finalx = a->finalx;
-						temp->finaly = a->finaly;
-						SIGOrder_UnitInitComplete(temp);
-						break;
-		}
-		return(temp);
+	struct OBJ *temp;
+	if (!first_xpos||!first_ypos)
+	{
+		NewUnitPlace(a,obj_id,&first_xpos,&first_ypos);
+	}
+	switch(obj_id)
+	{
+		case SC_SCARABOBJ:
+			a->ammo++;
+		break;
+		case SC_INTERCEPTOROBJ:
+		case SC_NUKEOBJ:
+			temp = createobjman(first_xpos,first_ypos,obj_id,a->playernr);
+			addchild(a,temp);
+			temp->prop |= VARNOTHERE;
+			temp->finalOBJ = NULL;
+			temp->prop |= VARINBASE;
+			temp->modemove = MODERECHARGE;
+			temp->mainimage->DisableExecScript();
+			temp->mainimage->HideChildsImgFlag();
+			temp->mainimage->HideImgFlag();
+			temp->mainimage->elevationlevel = a->mainimage->elevationlevel-1;
+			temp->prop |= VARREADY;
+			if (obj_id == SC_NUKEOBJ)
+			{
+				PLAYER[a->playernr].nukes++;
+				if (playsound)
+					playinfoadvisorsound(a->playernr,TERRANRACE,ADVNUCLREADY,PLAYADVISOR_TEXTANDSOUND);
+			}
+			else
+			{
+				if (obj_id == SC_INTERCEPTOROBJ)
+				{
+					SetOrder(temp,1,&SIGOrder_InterceptorAfterAtack);
+				}
+			}
+		break;
+		default:
+				temp = createobjman(first_xpos,first_ypos,obj_id,a->playernr);
+				temp->finalx = a->finalx;
+				temp->finaly = a->finaly;
+				SIGOrder_UnitInitComplete(temp);
+		break;
+	}
+	return(temp);
 }
 //=====================
 //process to construct unit in builds
 void workingbuilds(struct OBJ *a)
 {
-		int i,emptyafterconstr=0;
-		int type_id,obj_id;
-		unsigned char upgrace,techrace;
-		struct OBJ *temp;
-		struct OBJstruct *b,*b2;
-		b=loadobj(a->SC_Unit);
-		if ( a->prop & VARPOWEROFF )
-				return;
-		//no constructions
-		if ( !GetConstructNR(a))
-				return;
-		type_id = TickBuildMakeConstruct(a,&obj_id);
-		switch(type_id)
-		{
-				case ORDERS_NONE:
-						return;
-				case ORDERS_MODEMOVE:
-						return;
-				case ORDERS_UNIT:
-						if (IsBuild(obj_id) && IsAddon(obj_id))
-						{
-						}
-						else
-						{
-								CreateUnitInUnit(a,obj_id,1,0,0);
-						}
-						break;
-				case ORDERS_UPGRADE:
-						upgrace=alldattbl.upgrades_dat->Race[obj_id];
-						AddUpgradeTree(&map,a->playernr,obj_id);
-						playinfoadvisorsound(a->playernr,upgrace,ADVRESEARCH2,PLAYADVISOR_TEXTANDSOUND);
-						break;
-				case ORDERS_TECHNOLOGY:
-						techrace=alldattbl.techdata_dat->Race[obj_id];
-						AddTechTree(&map,a->playernr,obj_id);
-						playinfoadvisorsound(a->playernr,techrace,ADVRESEARCH1,PLAYADVISOR_TEXTANDSOUND);
-						break;
-		}
+	int type_id,obj_id;
+	unsigned char upgrace,techrace;
+	struct OBJstruct *b;
+	b=loadobj(a->SC_Unit);
+	if ( a->prop & VARPOWEROFF )
+		return;
+	//no constructions
+	if ( !GetConstructNR(a))
+		return;
+	type_id = TickBuildMakeConstruct(a,&obj_id);
+	switch(type_id)
+	{
+		case ORDERS_NONE:
+		return;
+		case ORDERS_MODEMOVE:
+		return;
+		case ORDERS_UNIT:
+			if (IsBuild(obj_id) && IsAddon(obj_id))
+			{
+			}
+			else
+			{
+				CreateUnitInUnit(a,obj_id,1,0,0);
+			}
+		break;
+		case ORDERS_UPGRADE:
+			upgrace=alldattbl.upgrades_dat->Race[obj_id];
+			AddUpgradeTree(&map,a->playernr,obj_id);
+			playinfoadvisorsound(a->playernr,upgrace,ADVRESEARCH2,PLAYADVISOR_TEXTANDSOUND);
+		break;
+		case ORDERS_TECHNOLOGY:
+			techrace=alldattbl.techdata_dat->Race[obj_id];
+			AddTechTree(&map,a->playernr,obj_id);
+			playinfoadvisorsound(a->playernr,techrace,ADVRESEARCH1,PLAYADVISOR_TEXTANDSOUND);
+		break;
+	}
 }
 //==============================================
 //==============================================
@@ -350,141 +345,144 @@ mylist minimap_showedobjs;
 //==============================================
 void minimap_showobjs(void)
 {
-		int i,max;
-		OBJ *a;
-		minimap_showedobjs.EnumListInit();
-		while( (a = (OBJ *)minimap_showedobjs.GetNextListElem()) )
-		{
-				minimap_showobj(a);
-		}
-		minimap_showedobjs.FlushList();			//clear all obj drawed on minimap for prepare a new one
+	int i,max;
+	OBJ *a;
+	minimap_showedobjs.EnumListInit();
+	while( (a = (OBJ *)minimap_showedobjs.GetNextListElem()) )
+	{
+		minimap_showobj(a);
+	}
+	minimap_showedobjs.FlushList();			//clear all obj drawed on minimap for prepare a new one
 }
 //==============================================
 void putobjsonminimap(void)
 {
-		int i;
-		struct OBJ *a;
+	int i;
+	struct OBJ *a;
 //	  struct OBJstruct *b;
-		if ((MAPUNITSREGENERATIONBIT)&&(MAPDEF&UNITS))			//if Desenterrain && time to regeneration minimap
-		{
+	if ((MAPUNITSREGENERATIONBIT)&&(MAPDEF&UNITS))			//if Desenterrain && time to regeneration minimap
+	{
 		for (i=0;i<MaxObjects;i++)
 		{
-				a=objects[i];
-				if (IfCanClickOBJ(a->SC_Unit))
+			a=objects[i];
+			if (IfCanClickOBJ(a->SC_Unit))
+			{
+				if (!(a->prop&(VARINBASE|VARNOTHERE|VARINTRANSPORT)))
 				{
-						if (!(a->prop&(VARINBASE|VARNOTHERE|VARINTRANSPORT)))
-								if (!OBJ_VAR_CHK(a,obj_notdetect,NUMBGAMER))
-								{
-										if (mapSEE(a->xkart,a->ykart)>=1)
-										{
-												minimap_showedobjs.AddList(a);
-										}
-								}
+					if (!OBJ_VAR_CHK(a,obj_notdetect,NUMBGAMER))
+					{
+						if (mapSEE(a->xkart,a->ykart)>=1)
+						{
+							minimap_showedobjs.AddList(a);
 						}
+					}
 				}
+			}
 		}
+	}
 }
 //==============================================
 short unitlimitmes[3][4]=
 {
-		{820,814,817,823},
-		{821,815,818,824},
-		{822,816,819,825}
+	{820,814,817,823},
+	{821,815,818,824},
+	{822,816,819,825}
 };
 //==============================================
 void ShowBaseBuildMessage(int XWINPOS,int YWINPOS,OBJ *a)
 {
-		char mes[50];
-		if (a->playernr!=NUMBGAMER||GetConstructNR(a))
-				return;
-		int base = IsUnitBaseBuild(a);
-		if (!IsOBJUnderConstruct(a)		&&
-				!IsHallucination(a)				&&
-				 (base==1 || base==2 || IsPsiUnit(a->SC_Unit)) && (!a->loaded))
-		{
-				int race=GetUnitRace(a->SC_Unit);
-				sprintf(mes,"%s%d",alldattbl.stattxt_tbl->get_TBL_STR(unitlimitmes[race][0]),PLAYER[a->playernr].curentpsi[race]/2);
-				putrowtext(XWINPOS+143,YWINPOS+30,111,IDFONT8,TEXT_CENTERALIGN,mes,GBLUECOLORFONT,tfontgamp);
-				sprintf(mes,"%s%d",alldattbl.stattxt_tbl->get_TBL_STR(unitlimitmes[race][1]),GetSupplyProvided(a->SC_Unit)/2);
-				putrowtext(XWINPOS+143,YWINPOS+44,111,IDFONT8,TEXT_CENTERALIGN,mes,GBLUECOLORFONT,tfontgamp);
-				sprintf(mes,"%s%d",alldattbl.stattxt_tbl->get_TBL_STR(unitlimitmes[race][2]),PLAYER[a->playernr].maxcurentpsi[race]/2);
-				putrowtext(XWINPOS+143,YWINPOS+58,111,IDFONT8,TEXT_CENTERALIGN,mes,GBLUECOLORFONT,tfontgamp);
-				sprintf(mes,"%s%d",alldattbl.stattxt_tbl->get_TBL_STR(unitlimitmes[race][3]),MAXPSI/2);
-				putrowtext(XWINPOS+143,YWINPOS+72,111,IDFONT8,TEXT_CENTERALIGN,mes,GBLUECOLORFONT,tfontgamp);
-		}
+	char mes[50];
+	if (a->playernr!=NUMBGAMER||GetConstructNR(a))
+		return;
+	int base = IsUnitBaseBuild(a);
+	if (!IsOBJUnderConstruct(a)			&&
+		!IsHallucination(a)				&&
+		(base==1 || base==2 || IsPsiUnit(a->SC_Unit)) && (!a->loaded))
+	{
+		int race=GetUnitRace(a->SC_Unit);
+		sprintf(mes,"%s%d",alldattbl.stattxt_tbl->get_TBL_STR(unitlimitmes[race][0]),PLAYER[a->playernr].curentpsi[race]/2);
+		putrowtext(XWINPOS+143,YWINPOS+30,111,IDFONT8,TEXT_CENTERALIGN,mes,GBLUECOLORFONT,tfontgamp);
+		sprintf(mes,"%s%d",alldattbl.stattxt_tbl->get_TBL_STR(unitlimitmes[race][1]),GetSupplyProvided(a->SC_Unit)/2);
+		putrowtext(XWINPOS+143,YWINPOS+44,111,IDFONT8,TEXT_CENTERALIGN,mes,GBLUECOLORFONT,tfontgamp);
+		sprintf(mes,"%s%d",alldattbl.stattxt_tbl->get_TBL_STR(unitlimitmes[race][2]),PLAYER[a->playernr].maxcurentpsi[race]/2);
+		putrowtext(XWINPOS+143,YWINPOS+58,111,IDFONT8,TEXT_CENTERALIGN,mes,GBLUECOLORFONT,tfontgamp);
+		sprintf(mes,"%s%d",alldattbl.stattxt_tbl->get_TBL_STR(unitlimitmes[race][3]),MAXPSI/2);
+		putrowtext(XWINPOS+143,YWINPOS+72,111,IDFONT8,TEXT_CENTERALIGN,mes,GBLUECOLORFONT,tfontgamp);
+	}
 }
 //==============================================
 void PutUpgrdMes(int xpos,int ypos,char *iconmes,char *message,int param1,int param2,char *finaltext)
 {
-		char mes[100];
-		if (iconmes)
+	char mes[100];
+	if (iconmes)
 		if (param2<=0)
-				sprintf(mes,"%s\n%s %d %s",iconmes,message,param1,finaltext);
+			sprintf(mes,"%s\n%s %d %s",iconmes,message,param1,finaltext);
 		else
-				sprintf(mes,"%s\n%s %d+%d %s",iconmes,message,param1,param2,finaltext);
-		else
+			sprintf(mes,"%s\n%s %d+%d %s",iconmes,message,param1,param2,finaltext);
+	else
 		sprintf(mes,"%s: %d",message,param1);
-		putboxmessage(	FONTCOLOR(tfontgamp,GBLUECOLORFONT,2),
-										FONTCOLOR(tfontgamp,GBLUECOLORFONT,4),
-										xpos,
-										ypos,
-										2,IDFONT8,mes,GBLUECOLORFONT,tfontgamp,gamedlggrp);
+	putboxmessage(	FONTCOLOR(tfontgamp,GBLUECOLORFONT,2),
+					FONTCOLOR(tfontgamp,GBLUECOLORFONT,4),
+					xpos,
+					ypos,
+					2,IDFONT8,mes,GBLUECOLORFONT,tfontgamp,gamedlggrp);
 }
 //==============================================
 void ShowUpgradesInBar(int XWINPOS,int YWINPOS,OBJ *a,OBJstruct *b)
 {
-		char nullchar=0;
-		int xpos=XWINPOS+104,ypos=YWINPOS+51;
-		unsigned short stattxt_id;
-		unsigned char  nrofhits,tech_id;
-		SCUNIT Subunit1;
-		int upgradenr,upgtot,mousehot=MOUSEONUPGRDICONS;
-		int upgrade_id,weapon_id1,weapon_id2;
-		int atack1,atack2,armor,sharmor,icon,icon2;
-		int MESxpos=-1,MESypos,MESparam1,MESparam2;
-		int newunit;
-		char *MESstr,*MESicon;
-		char *tempfinal=&nullchar;
-		char *MESfinal=&nullchar;
+	char nullchar=0;
+	int xpos=XWINPOS+104,ypos=YWINPOS+51;
+	unsigned short stattxt_id;
+	unsigned char  nrofhits,tech_id;
+	SCUNIT Subunit1;
+	int upgradenr,upgtot,mousehot=MOUSEONUPGRDICONS;
+	int upgrade_id,weapon_id1,weapon_id2;
+	int atack1,atack2,armor,sharmor,icon,icon2;
+	int MESxpos=-1,MESypos,MESparam1,MESparam2;
+	int newunit;
+	char *MESstr,*MESicon;
+	char *tempfinal=&nullchar;
+	char *MESfinal=&nullchar;
 
-		char *mes1,*mes2;
+	char *mes1,*mes2;
 
-		char sname[3]={0,0,0};
-		//tempfinal[0]=0;
-		//MESfinal[0]=0;
-		if (IsOBJUnderConstruct(a))//&&a->SC_Unit!=SC_EGGOBJ&&a->SC_Unit!=SC_LURKEREGGOBJ)
-				return;
-		if (GetConstructNR(a)||a->loaded)
-				return;
-		SCUNIT SC_Unit=a->SC_Unit;
-		upgrade_id=alldattbl.units_dat->ArmorUpgrade[SC_Unit];
-		if (upgrade_id<MAX_UPGRADES_ELEM)
+	char sname[3]={0,0,0};
+	//tempfinal[0]=0;
+	//MESfinal[0]=0;
+	if (IsOBJUnderConstruct(a))//&&a->SC_Unit!=SC_EGGOBJ&&a->SC_Unit!=SC_LURKEREGGOBJ)
+		return;
+	if (GetConstructNR(a)||a->loaded)
+		return;
+	SCUNIT SC_Unit=a->SC_Unit;
+	upgrade_id=alldattbl.units_dat->ArmorUpgrade[SC_Unit];
+	if (upgrade_id<MAX_UPGRADES_ELEM)
+	{
+		icon=alldattbl.upgrades_dat->Icon[upgrade_id];
+		if (icon>0)
 		{
-				icon=alldattbl.upgrades_dat->Icon[upgrade_id];
-				if (icon>0)
-				{
-						armor=GetArmor(a,b->armorupgnr,&upgradenr,&upgtot);
-						putgrpspr(xpos+2,ypos+2,znakgrp,NORMAL,255,FORBLUE,NULL,icon);
-						putgrpspr(xpos,ypos,grpicons,NORMAL,255,0,NULL,12);
-		//			putgrp(xpos,ypos,grpicons,12,0);
-						sname[0]='0'+upgradenr;
-						putmessage(xpos+26,ypos+24,IDFONT8,sname,GBLUECOLORFONT,tfontgamp,gamedlggrp);
-						if (mousehotpos==mousehot)
-						{
-								MESxpos=xpos+36;
-								MESypos=ypos+28;
-								stattxt_id=alldattbl.upgrades_dat->Label[upgrade_id];
-								MESicon=alldattbl.stattxt_tbl->get_TBL_STR(stattxt_id-1);
-								MESstr=alldattbl.stattxt_tbl->get_TBL_STR(STATTXT_TBL_ARMORTEXT);
-								MESparam1=armor;
-								MESparam2=upgtot;
-						}
-						xpos+=36;
-						mousehot+=2;
-				}
+			armor=GetArmor(a,b->armorupgnr,&upgradenr,&upgtot);
+			putgrpspr(xpos+2,ypos+2,znakgrp,NORMAL,255,FORBLUE,NULL,icon);
+			putgrpspr(xpos,ypos,grpicons,NORMAL,255,0,NULL,12);
+			//putgrp(xpos,ypos,grpicons,12,0);
+			sname[0]='0'+upgradenr;
+			putmessage(xpos+26,ypos+24,IDFONT8,sname,GBLUECOLORFONT,tfontgamp,gamedlggrp);
+			if (mousehotpos==mousehot)
+			{
+				MESxpos=xpos+36;
+				MESypos=ypos+28;
+				stattxt_id=alldattbl.upgrades_dat->Label[upgrade_id];
+				MESicon=alldattbl.stattxt_tbl->get_TBL_STR(stattxt_id-1);
+				MESstr=alldattbl.stattxt_tbl->get_TBL_STR(STATTXT_TBL_ARMORTEXT);
+				MESparam1=armor;
+				MESparam2=upgtot;
+			}
+			xpos+=36;
+			mousehot+=2;
 		}
-		if (alldattbl.units_dat->ShieldEnable[SC_Unit])
-		{
+	}
+
+	if (alldattbl.units_dat->ShieldEnable[SC_Unit])
+	{
 				sharmor=GetShieldArmor(a,&upgradenr);
 				icon=alldattbl.upgrades_dat->Icon[UPGRADES_DAT_PLASMASHIELDICON];
 				putgrpspr(xpos+2,ypos+2,znakgrp,NORMAL,255,FORBLUE,NULL,icon);
@@ -1073,22 +1071,22 @@ void FindLineOfProp(struct OBJ *a,struct OBJstruct *b)
 }
 //=====================================
 void drawunitinbar( int x,int y,int weight,int type,int ramka,
-						int shield_pers,int life_pers,
-						GRPFILE *grp1,GRPFILE *grp2,int iconnr2)
+					int shield_pers,int life_pers,
+					GRPFILE *grp1,GRPFILE *grp2,int iconnr2)
 {
-		int iconnr,life,shield;
-		if (ramka)
-		{
-				iconnr = icontype[weight-1]+type*6+1;
-				putgrpspr(x,y,grp1,NORMAL,255,0,NULL,iconnr);
-		}
-		life = LIFE1+life_pers*(LIFEMAXPOS-1)/100;
-		shield = shield_pers*(SHIELDMAXPOS-1)/100;
-		SetPlayerColors(life,1,0xc0,2,&shield_pos[shield]);
-		if (weight==4)
-				putgrpspr(x+3,y+3,grp2,NORMAL,255,life,NULL,iconnr2);
-		else
-				putgrpspr(x,y,grp2,NORMAL,255,life,NULL,iconnr2);
+	int iconnr,life,shield;
+	if (ramka)
+	{
+		iconnr = icontype[weight-1]+type*6+1;
+		putgrpspr(x,y,grp1,NORMAL,255,0,NULL,iconnr);
+	}
+	life = LIFE1+life_pers*(LIFEMAXPOS-1)/100;
+	shield = shield_pers*(SHIELDMAXPOS-1)/100;
+	SetPlayerColors(life,1,0xc0,2,&shield_pos[shield]);
+	if (weight==4)
+		putgrpspr(x+3,y+3,grp2,NORMAL,255,life,NULL,iconnr2);
+	else
+		putgrpspr(x,y,grp2,NORMAL,255,life,NULL,iconnr2);
 }
 //=====================================
 void drawunitsintransport(int XWINPOS,int YWINPOS,struct OBJ *a)
@@ -1204,86 +1202,90 @@ void putnameonselectedunits(int XWINPOS,int YWINPOS)
 //=====================================
 void drawallunitsinbar(int XWINPOS,int YWINPOS)
 {
-		int i;
-		static OBJ *selectunit = NULL;
-		int addx,addy;
-//	  int xpos=XUNITBAR,ypos=YUNITBAR;
-		int xpos=XWINPOS+30,ypos=YWINPOS+14;
-		int xsize,ysize,oldxsize;
+	int i;
+	static OBJ *selectunit = NULL;
+	int addx,addy;
+//	int xpos=XUNITBAR,ypos=YUNITBAR;
+	int xpos=XWINPOS+30,ypos=YWINPOS+14;
+	int xsize,ysize,oldxsize;
 
-		int shield_pers,life_pers,mbuttonpress,shiftpress,ctrlpress;
-		int objtype;//objtype=0-darkblue,1-white,2-green,3-lightblue
-		struct OBJ *a1;
-		if (SelectedUnits.totalelem)
+	int shield_pers,life_pers,mbuttonpress,shiftpress,ctrlpress;
+	int objtype;//objtype=0-darkblue,1-white,2-green,3-lightblue
+	struct OBJ *a1;
+	if (SelectedUnits.totalelem)
+	{
+		mbuttonpress = (highMouse->GetButtonStatus() & WMLEFTKEY) && (!highMouse->MouseOnSelectionMode);
+		shiftpress = KEYPRESS(SHIFTLKEY) | KEYPRESS(SHIFTRKEY);
+		ctrlpress = KEYPRESS(CTRLLKEY) | KEYPRESS(CTRLRKEY);
+		SelectedUnits.EnumListInit();
+		while( (a1 = (OBJ *)SelectedUnits.GetNextListElem(&i)) )
 		{
-				mbuttonpress = (highMouse->GetButtonStatus() & WMLEFTKEY) && (!highMouse->MouseOnSelectionMode);
-				shiftpress = KEYPRESS(SHIFTLKEY) | KEYPRESS(SHIFTRKEY);
-				ctrlpress = KEYPRESS(CTRLLKEY) | KEYPRESS(CTRLRKEY);
-				SelectedUnits.EnumListInit();
-				while( a1 = (OBJ *)SelectedUnits.GetNextListElem(&i))
+			xsize = 36;
+			ysize = 36;
+			if (ypos+ysize>YWINPOS+14+36*2)
+			{
+				xpos += oldxsize;
+				ypos = YWINPOS+14;
+			}
+			if (!IsShieldEnable(a1->SC_Unit))
+			{
+				shield_pers = 0;
+			}
+			else
+			{
+				shield_pers = (int) (a1->shield*100/GetUnitMaxShield(a1->SC_Unit));
+			}
+			if (IsHeroUnit(a1->SC_Unit))
+			{
+				objtype=1;
+			}
+			else
+			{
+				if (!IsHallucination(a1))
+					if (GetMageAtr(&a1->atrobj,ATRBLIND)==0)
+						if (GetMageAtr(&a1->atrobj,ATRPARASITEFROM)==0)
+							objtype = 0;
+						else
+							objtype = 2;
+					else
+						objtype = 1;
+				else
+					objtype = 3;
+			}
+			life_pers = (int) (a1->health*100/GetUnitMaxHealth(a1->SC_Unit));
+			if (mbuttonpress && mousehotpos-MOUSEONSTATUNIT==i)
+			{
+				addx=2;
+				addy=2;
+				selectunit = a1;
+			}
+			else
+			{
+				addx=0;
+				addy=0;
+			}
+			if (!mbuttonpress)
+			{
+				if (selectunit)
 				{
-						xsize = 36;
-						ysize = 36;
-						if (ypos+ysize>YWINPOS+14+36*2)
-						{
-								xpos += oldxsize;
-								ypos = YWINPOS+14;
-						}
-						if (!IsShieldEnable(a1->SC_Unit))
-						{
-								shield_pers = 0;
-						}
+					if (!shiftpress)
+						if (ctrlpress)
+							deselectallexcludeonetypeobj(selectunit);
 						else
-						{
-								shield_pers = (int) (a1->shield*100/GetUnitMaxShield(a1->SC_Unit));
-						}
-						if (IsHeroUnit(a1->SC_Unit))
-								objtype=1;
-						else
-								if (!IsHallucination(a1))
-										if (GetMageAtr(&a1->atrobj,ATRBLIND)==0)
-												if (GetMageAtr(&a1->atrobj,ATRPARASITEFROM)==0)
-														objtype = 0;
-												else
-														objtype = 2;
-										else
-												objtype = 1;
-								else
-										objtype = 3;
-						life_pers = (int) (a1->health*100/GetUnitMaxHealth(a1->SC_Unit));
-						if (mbuttonpress && mousehotpos-MOUSEONSTATUNIT==i)
-						{
-								addx=2;
-								addy=2;
-								selectunit = a1;
-						}
-						else
-						{
-								addx=0;
-								addy=0;
-						}
-						if (!mbuttonpress)
-						{
-							if (selectunit)
-							{
-								if (!shiftpress)
-									if (ctrlpress)
-										deselectallexcludeonetypeobj(selectunit);
-									else
-										deselectallexcludeone(selectunit);
-									else
-										deselectobj(selectunit);
-										selectunit = NULL;
-									break;
-							}
-						}
-						drawunitinbar(	xpos+addx,ypos+addy,1,objtype,WITHRAMKA,
-														shield_pers,life_pers,grpicons,grpwire1,a1->SC_Unit);
-						ypos += ysize;
-						oldxsize = xsize;
-						putnameonselectedunits(XWINPOS,YWINPOS);
+							deselectallexcludeone(selectunit);
+					else
+						deselectobj(selectunit);
+					selectunit = NULL;
+					break;
 				}
+			}
+			drawunitinbar(	xpos+addx,ypos+addy,1,objtype,WITHRAMKA,
+							shield_pers,life_pers,grpicons,grpwire1,a1->SC_Unit);
+			ypos += ysize;
+			oldxsize = xsize;
 		}
+		putnameonselectedunits(XWINPOS,YWINPOS);
+	}
 }
 //=====================================
 //0246

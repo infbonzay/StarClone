@@ -75,7 +75,7 @@ int probeconstruct(int nb)
 		nb == MODECONSTRUCTBUILD)
 	{
 		SelectedUnits.EnumListInit();
-		while( o = (OBJ *)SelectedUnits.GetNextListElem(NULL))
+		while( (o = (OBJ *)SelectedUnits.GetNextListElem(NULL)) )
 		{
 			groupmove = 1;
 			ChangeTypeOfProp(o,PROPBUILDSIMPLE);
@@ -87,7 +87,7 @@ int probeconstruct(int nb)
 		nb == MODEADVCONSTRUCTBUILD)
 	{
 		SelectedUnits.EnumListInit();
-		while( o = (OBJ *)SelectedUnits.GetNextListElem(NULL))
+		while( (o = (OBJ *)SelectedUnits.GetNextListElem(NULL)) )
 		{
 			groupmove = 2;
 			ChangeTypeOfProp(0,PROPBUILDADVANCED);
@@ -129,13 +129,13 @@ void desenproperties(int *localprop,char *selectableicons)
 		for (j=0;j<3;j++)
 			if (localprop[i*3+j])
 			{
-				int sizex=znakgrp->Picture[mageprop[localprop[i*3+j]].icon_id].PixelPerLine;
-				int sizey=znakgrp->Picture[mageprop[localprop[i*3+j]].icon_id].LinesPerPicture;
-				uu.x1=xicon[j]+XADDICONS+DELTASCREENX;
-				uu.y1=yicon[i]+YADDICONS-2;
+				int sizex = znakgrp->Picture[mageprop[localprop[i*3+j]].icon_id].PixelPerLine;
+				int sizey = znakgrp->Picture[mageprop[localprop[i*3+j]].icon_id].LinesPerPicture;
+				uu.x1 = xicon[j]+XADDICONS+DELTASCREENX;
+				uu.y1 = yicon[i]+YADDICONS-2;
 				grpplayernr = selectableicons[i*3+j];
-				if ((oldmouseonicon!=-1&&oldmouseonicon==i*3+j)||
-					(keyupselectedicon==i*3+j))
+				if ((oldmouseonicon != -1 && oldmouseonicon == i*3+j)||
+					(keyupselectedicon == i*3+j))
 				{
 					putgrpspr(uu.x1+1,uu.y1+1,grpicons,NORMAL,255,grpplayernr,NULL,1);
 //					putgrp(uu.x1+1,uu.y1+1,grpicons,1,grpplayernr);
@@ -408,7 +408,7 @@ selectedicon:
 					if (oldselectbuton == MODECANCEL_BB_AB)
 					{
 						SelectedUnits.EnumListInit();
-						while( o = (OBJ *)SelectedUnits.GetNextListElem(NULL))
+						while( (o = (OBJ *)SelectedUnits.GetNextListElem(NULL)) )
 						{
 							if (IsWorkerUnit(o->SC_Unit))
 								ChangeTypeOfProp(o,PROPNORMAL1);
@@ -424,7 +424,7 @@ selectedicon:
 								localprop[i*3+j] != MODEWARPDARCHON)
 							{
 								SelectedUnits.EnumListInit();
-								while( o = (OBJ *)SelectedUnits.GetNextListElem(NULL))
+								while( (o = (OBJ *)SelectedUnits.GetNextListElem(NULL)) )
 								{
 									//makemove(fordeselect[k],NULL,0,0,oldselectbutton,NUMBGAMER,SHOWERRORTEXT);
 									DoOrder(NUMBGAMER,o,0,0,
@@ -435,7 +435,7 @@ selectedicon:
 							else
 							{
 								SelectedUnits.EnumListInit();
-								while( obj = (OBJ *)SelectedUnits.GetNextListElem(NULL))
+								while( ( obj = (OBJ *)SelectedUnits.GetNextListElem(NULL)) )
 								{
 									if (!obj2)
 									{
@@ -459,7 +459,7 @@ selectedicon:
 				{
 					cbuild = (OBJ *)SelectedUnits.GetElem(0,NULL);
 					constrbuild(oldselectbuton);
-					
+
 					highMouse->MouseModeMove = oldselectbuton;
 					groupmove = 0;
 					highMouse->WaitToPressLeftButton = 2;
@@ -470,7 +470,7 @@ selectedicon:
 		{
 			OBJ *a;
 			SelectedUnits.EnumListInit();
-			while( a = (OBJ *)SelectedUnits.GetNextListElem(NULL))
+			while(( a = (OBJ *)SelectedUnits.GetNextListElem(NULL)))
 			{
 				if (IsOBJUnderConstruct(a)&&selecteddeconstrunit==0)
 				{
@@ -683,7 +683,7 @@ int CreateMenuProperties(int *prop,char *selectableicons,int player)
 	if (selobj)
 	{
 		SelectedUnits.EnumListInit();
-		while( o = (OBJ *)SelectedUnits.GetNextListElem(NULL))
+		while( (o = (OBJ *)SelectedUnits.GetNextListElem(NULL)) )
 		{
 			if (!PLAYER[NUMBGAMER].isobserverflag 	&&
 				player_aliance(o->playernr,player) == MYOBJ)
@@ -754,9 +754,9 @@ int CreateMenuProperties(int *prop,char *selectableicons,int player)
 				}//forj
 			}//fori
 		}
-		SelectedUnits.EnumListInit();
-		while( o = (OBJ *)SelectedUnits.GetNextListElem(NULL))
-		{
+        for (i=0;i<MAXUNITPROPERTIES;i++)
+        {
+			o = (OBJ *)SelectedUnits.GetElem(0,NULL);
 			if (o && prop[i] != MODENON)
 			{
 				if (!MageDepend(o,player,prop[i]))

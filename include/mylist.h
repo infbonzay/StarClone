@@ -82,6 +82,8 @@ public:
 	inline int	 GetFreeElements(void){ return(allocatedelem - totalelem); };
 	void  DelElem(void *);
 	void CopyTo(mylistsimple *copyIn);
+	void AppendTo(mylistsimple *appendTo);
+
 };
 
 #endif	/*		_MYLIST_W  */
