@@ -565,7 +565,16 @@ void mylistsimple::FreeAndEmptyAll(void)
 //=========================================
 void mylistsimple::CopyTo(mylistsimple *copy)
 {
-	memcpy(copy,this,sizeof(mylistsimple));
+	copy->totalelem = this->totalelem;
+	copy->totalmarked = this->totalmarked;
+	copy->curenumelemnr = this->curenumelemnr;
+	
+	wfree(copy->elements);
+	wfree(copy->deletemarked);
+	copy->elements = (void **) wmalloc(allocatedelem*sizeof(void *));
+	copy->deletemarked = (char *)wmalloc(allocatedelem*sizeof(char));
+	memcpy(copy->elements,this->elements,allocatedelem*sizeof(void *));
+	memcpy(copy->deletemarked,this->deletemarked,allocatedelem*sizeof(char));
 }
 //=========================================
 void mylistsimple::DelElem(void *elem)

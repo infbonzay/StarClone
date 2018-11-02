@@ -793,6 +793,7 @@ void selectMAN(int x1,int y1,int x2,int y2,int mode)
 		}
 	}
 	else
+	{
 	   for (i=0;i<MaxObjects;i++)
 	   {
 			a=objects[i];
@@ -824,6 +825,7 @@ void selectMAN(int x1,int y1,int x2,int y2,int mode)
 				}
 			}
 	   }//for
+	}
 	if (u)
 		groupmove=0;
 	if ((!mode)&&(!u))
