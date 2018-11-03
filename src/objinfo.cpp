@@ -112,7 +112,7 @@ int GetUnitSightRange(OBJ *a,OBJstruct *b)
 		if (IsHeroUnit(a->SC_Unit))
 			seerange += 2;
 		else
-			seerange += GetUpgradeTree(&map,a->playernr,b->sightupgnr)*2;//each upgrade add +2 to sight range 
+			seerange += GetUpgradeTree(&map,a->playernr,b->sightupgnr)*2;//each upgrade add +2 to sight range
 	}
 	return(seerange);
 }
@@ -414,7 +414,7 @@ int GetInfoWeapon(SCUNIT SC_Unit,int playernr,int nrofhits,int weapon_id,int *up
 int GetArmor(OBJ *a,int armorupgnr,int *upgradenr,int *upgarmor)
 {
 	//NOTE:
-	//made:ultralisk have 2 armors 
+	//made:ultralisk have 2 armors
 	int upgr=0,upgradearmor=0,upgrade_id;
 	if (armorupgnr!=-1)
 		upgradearmor+=GetUpgradeTree(&map,a->playernr,armorupgnr)*2;//ultralisk
@@ -577,7 +577,7 @@ int getfirstchildemptyslot(struct OBJ *a)
 		for (int i=0;i<MAXCHILDS;i++)
 			if (!a->childs->parentof[i])
 				return i;
-	return -1;	
+	return -1;
 }
 //=====================
 int addchild(struct OBJ *a,struct OBJ *child)	//add child on parentof[] & pointers
@@ -655,17 +655,17 @@ void swapOBJ(struct OBJ **a,struct OBJ **b)
 //==================================
 void AlignMAPXYCoordLU(int *l,int *u)
 {
-	if (*u<0) 
+	if (*u<0)
 		*u=0;
-	if (*l<0) 
+	if (*l<0)
 		*l=0;
 }
 //=======================================
 void AlignMAPXYCoordRD(int *r,int *d)
 {
-	if (*r>=MAXXMAP) 
+	if (*r>=MAXXMAP)
 		*r=MAXXMAP-1;
-	if (*d>=MAXYMAP) 
+	if (*d>=MAXYMAP)
 		*d=MAXYMAP-1;
 }
 //=======================================
@@ -693,3 +693,14 @@ int GetSubUnitType(OBJ *a)
 	return(NOSUBUNIT);
 }
 //=======================================
+bool IfCanTransport(SCUNIT SC_Unit,int playernr)
+{
+	if (GetSpaceProvided(SC_Unit))
+	{
+		if (SC_Unit == SC_OVERLORDOBJ)
+			if (!GetUpgradeTree(&map,playernr,UPGRADES_DAT_OVERLORDTRANSP))
+				return false;
+		return true;
+	}
+	return false;
+}

@@ -22,6 +22,6 @@ void allobjtypemove(void);
 int	 getborderbuild(int mx,int my,int *x,int *y);
 void playadvisorerr(int playernr,int race,int retreserror);
 int	 CheckCoordinates(int newx256,int newy256,SCUNIT SC_Unit);
-
+bool IfCanTransport(SCUNIT SC_Unit,int playernr);
 
 #endif /*_DIAP_W*/

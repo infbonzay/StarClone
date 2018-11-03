@@ -59,8 +59,6 @@
 //Unicitojiti OBJECT
 void destroyobj(struct OBJ *a)
 {
-	struct OBJ *temp1,*temp2;
-	struct OBJ *newobj;
 	if (a)
 	{
 		deselectobj(a);
@@ -133,7 +131,7 @@ OBJ *CreateArchon(OBJ *a,OBJ *a2)
 			break;
 		default:
 			printf("error occured obj is not templars\n");
-			break;
+			return NULL;
 	}
 	dieobj_silently(a);
 	dieobj_silently(a2);
@@ -271,7 +269,6 @@ struct OBJ *createreschunk(OBJ *workerobj,int x,int y,SCUNIT SC_Unit)
 struct OBJ *createobjlowlevel(OBJ *workerobj,int x,int y,SCUNIT SC_Unit,int playernr,
 							  int readyatbegin,int persshield,int perslife,int energypers,unsigned short imagelo_id)
 {
-	int i;
 	OBJ *a;
 	OBJ *a2=NULL;
 	OBJstruct *b;
@@ -802,6 +799,7 @@ void selectMAN(int x1,int y1,int x2,int y2,int mode)
 		delete selectnow;
 		return;
 	}
+	//deselect all selected units
 	SelectedUnits.EnumListInit();
 	while ( (a = (OBJ *)SelectedUnits.GetNextListElem(NULL) ))
 	{
@@ -811,9 +809,9 @@ void selectMAN(int x1,int y1,int x2,int y2,int mode)
 	if (selectnow->totalelem)
 		ifselectedprobe();
 	ifselectTEMPLARS();
-	if (SelectedUnits.totalelem == 1)
+	if (selectnow->totalelem == 1)
 	{
-		OBJ *o = (OBJ *)SelectedUnits.GetElem(0,NULL);
+		OBJ *o = (OBJ *)selectnow->GetElem(0,NULL);
 		ifselectTRANSPORTS(o);
 		ifselectedDAMAGEDBUILD(o);
 	}
@@ -822,26 +820,23 @@ void selectMAN(int x1,int y1,int x2,int y2,int mode)
 		transportplaceobj=NULL;
 	}
 	firstobj = NULL;
-	if (selectnow->totalelem == 1)
+	if (selectnow->totalelem)
 	{
 		firstobj = (OBJ *) selectnow->GetElem(0,NULL);
-		if (firstobj)
+		if (firstobj->prop & VARREADY)
 		{
-			if (firstobj->prop & VARREADY)
+			if (firstobj->prop & VARPOWEROFF)
 			{
-				if (firstobj->prop & VARPOWEROFF)
-				{
-					if (gameconf.audioconf.buildsounds)
-						if (firstobj && firstobj->playernr == NUMBGAMER)
-							if (mapSEE(firstobj,NUMBGAMER) > 1)
-								Play_sfxdata_id(firstobj,sfx_powerdown[GetUnitRace(firstobj->SC_Unit)],2,0);
-				}
-				else
-				{
-					speakOBJ = GetMaxRankOBJ(&SelectedUnits);
-					if (speakOBJ)
-						activatesound(speakOBJ,MODESOUNDSELECT,0,NOSTOPCURRENTSOUNDS);
-				}
+				if (gameconf.audioconf.buildsounds)
+					if (firstobj && firstobj->playernr == NUMBGAMER)
+						if (mapSEE(firstobj,NUMBGAMER) > 1)
+							Play_sfxdata_id(firstobj,sfx_powerdown[GetUnitRace(firstobj->SC_Unit)],2,0);
+			}
+			else
+			{
+				speakOBJ = GetMaxRankOBJ(selectnow);
+				if (speakOBJ)
+					activatesound(speakOBJ,MODESOUNDSELECT,0,NOSTOPCURRENTSOUNDS);
 			}
 		}
 	}
@@ -879,7 +874,6 @@ void changedeselectobj(struct OBJ *a,struct OBJ *aa)
 //========================================
 int selectobj(struct OBJ *a)
 {
-	int i;
 	if (addselectobj(a) == 1)
 	{
 		OBJ *o;
@@ -994,7 +988,6 @@ int RegenerateHealth(OBJ *a)
 //========================================
 int DecrementLifeMage(struct OBJ *a)
 {
-	int x,y,sx,sy,nrmage;
 	if (a->timeleft>0)
 	{
 		if (--a->timeleft<=0)
@@ -1168,7 +1161,7 @@ int makeinvisibles(struct OBJ *a)
 //========================================
 void invisiblestick(void)
 {
-	int i,grpmethod;
+	int i;
 	OBJ *a;
 	for (i=0;i<MaxObjects;i++)
 	{
@@ -1543,9 +1536,9 @@ int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int modemoveflags)
 int moveobj(struct OBJ *a,struct OBJ *destobj,int mode,int x,int y,int modemoveflags)
 {
 	OBJ *newobj;
-	unsigned char flingy_id,SC_res_type,inv,useweapon_id;
+	unsigned char flingy_id,SC_res_type;
 	int needmana,type_id,obj_id,ret,slotnr,deltaz,constrerror,resval,newx,newy;
-	int i,j,tempvar,errmes,state,openstate;
+	int i,j,tempvar,state,openstate;
 	int (*comparefunc)(int *,int );										//for doodad
 //	  if (a == destobj)
 //		return(MOVEOBJ_NOACT);
@@ -2684,23 +2677,21 @@ void SlotReturnResources(OBJ *a,int playernr,int slotnr)
 	}
 	else
 		factorreturn=100;
+	mcost=0;
+	gcost=0;
 	if (GetConstruct(a,slotnr,&type_id,&obj_id,NULL,NULL,NULL,NULL))
 	{
 		switch(type_id)
 		{
 			case ORDERS_UNIT:
 				GetCostUnit(obj_id,&mcost,&gcost);
-				break;
+			break;
 			case ORDERS_UPGRADE:
 				GetCostUpgr(obj_id,a->playernr,&mcost,&gcost);
-				break;
+			break;
 			case ORDERS_TECHNOLOGY:
 				GetCostTech(obj_id,&mcost,&gcost);
-				break;
-			default:
-				mcost=0;
-				gcost=0;
-
+			break;
 		}
 	}
 	ChangeResourcePlayer(playernr,PLUSFACTOR,mcost*factorreturn/100,gcost*factorreturn/100);
@@ -2739,14 +2730,28 @@ int accesstomove(struct OBJ *a,struct OBJstruct *b,int mode,int player)
 	}
 	for (j=0;j<MAXUNITPROPERTIES;j++)
 	{
-		prop=b->modemove[a->typeofprop][j];
-		if (a->playernr==player)
+		prop = b->modemove[a->typeofprop][j];
+		if (a->playernr == player)
 		{
-			if (prop==mode)
-				return(1);
-			else
-				if ((mode==MODEBURROW&&prop==MODEBURROW2)||(mode==MODEBURROW2&&prop==MODEBURROW))
-					return(1);
+			switch(mode)
+			{
+				case MODEUNLOADUNITNR:
+					if (prop == MODEUNLOADUNITS || prop == MODEUNLOADALLUNITS)
+						return true;
+				break;
+				case MODEBURROW:
+					if (prop == MODEBURROW2)
+						return true;
+				break;
+				case MODEBURROW2:
+					if (prop == MODEBURROW)
+						return true;
+				break;
+				default:
+					if (prop == mode)
+						return(1);
+				break;
+			}
 		}
 	}
 	switch(a->SC_Unit)
@@ -2762,7 +2767,7 @@ int accesstomove(struct OBJ *a,struct OBJstruct *b,int mode,int player)
 			break;
 		case SC_LARVAEOBJ:
 			for (j=0;j<MAXUNITPROPERTIES;j++)
-				if (b->modemove[PROPNORMAL2][j]==mode&&a->playernr==player)
+				if (b->modemove[PROPNORMAL2][j] == mode && a->playernr == player)
 					return(1);
 			break;
 	}
@@ -2795,7 +2800,7 @@ int makemove(struct OBJ *a,struct OBJ *destobj,int locx,int locy,int mode,int pl
 {
 	COMMANDQUEUEELEMENT cqe;
 	struct OBJstruct *b;
-	b=loadobj(a->SC_Unit);
+	b = loadobj(a->SC_Unit);
 	if (mode >= MODEACTIVATE && mode <= MODEESCAPE5)
 		;
 	else
@@ -2815,10 +2820,6 @@ int makemove(struct OBJ *a,struct OBJ *destobj,int locx,int locy,int mode,int pl
 
 	if (mode != MODEHOLDPOS)
 		a->prop &= ~VARHOLDPOSBIT;
-//==========
-	//DelAllModeMoves(a,0);
-	//moveobj(a,destobj,mode,locx,locy,modemoveflags | PLAYERDOMOVE);
-//===========
 	cqe.queueaction.obj = a;
 	cqe.queueaction.destobj = destobj;
 	cqe.queueaction.actiontype = mode;
@@ -2828,7 +2829,7 @@ int makemove(struct OBJ *a,struct OBJ *destobj,int locx,int locy,int mode,int pl
 	if (!NETWORKGAME)
 		cqe.executeTick = commandqueuetick + 0;
 	else
-		cqe.executeTick = commandqueuetick + 0;//TODO need to change
+		cqe.executeTick = commandqueuetick + 0;//TODO need to change if network latency selected
 	UnitsCommandQueue.AppendToQueue(&cqe);
 	return(1);
 }
@@ -2836,27 +2837,17 @@ int makemove(struct OBJ *a,struct OBJ *destobj,int locx,int locy,int mode,int pl
 int selectedobjmove(struct OBJ *destobj,int locx,int locy,int mode,int player,int modemoveflags,int rightclick)
 {
 	int minx,miny,maxx,maxy,midx=0,midy=0,deltax=0,deltay=0,flags=SHOWERRORTEXT;
-	int i,k=0,maxmoveobj=0;
-	struct OBJ *speakOBJ;
+	int k=0;
+	struct OBJ *speakOBJ,*todestobj;
 	mylistsimple *moveobjects = new mylistsimple(MAXSELECTMAN);
 	OBJ *o;
 	SelectedUnits.EnumListInit();
-	while( o = (OBJ *)SelectedUnits.GetNextListElem(NULL))
+	while( ( o = (OBJ *)SelectedUnits.GetNextListElem(NULL)) )
 	{
 		if ((!(o->prop & VARNOTSEEPROP))
 				&&
 			!(o->prop & VARNOTWORK))
 		{
-		  	//elsi move na sebea
-			if (o == destobj)
-			{
-				if (mode != MODELANDING)
-				{
-					locx = GetOBJx(destobj);
-					locy = GetOBJy(destobj);
-					destobj = NULL;
-				}
-			}
 			if (movefrommouse(o))
 			{
 				moveobjects->AddElem(o);
@@ -2868,7 +2859,7 @@ int selectedobjmove(struct OBJ *destobj,int locx,int locy,int mode,int player,in
 	maxx = 0;
 	maxy = 0;
 	moveobjects->EnumListInit();
-	while( o = (OBJ *)moveobjects->GetNextListElem(NULL))
+	while( (o = (OBJ *)moveobjects->GetNextListElem(NULL)))
 	{
 		if (GetOBJx(o) < minx)
 			minx = GetOBJx(o);
@@ -2891,8 +2882,19 @@ int selectedobjmove(struct OBJ *destobj,int locx,int locy,int mode,int player,in
 	if (mode == MODEATACK)
 		flags |= ATACKMOVEBIT;
 	moveobjects->EnumListInit();
-	while( o = (OBJ *)moveobjects->GetNextListElem(NULL))
+	while( (o = (OBJ *)moveobjects->GetNextListElem(NULL)))
 	{
+		//elsi move na sebea
+		todestobj = destobj;
+		if (o == destobj)
+		{
+			if (mode != MODELANDING)
+			{
+				locx = GetOBJx(destobj);
+				locy = GetOBJy(destobj);
+				todestobj = NULL;
+			}
+		}
 		if (midx)
 		{
 			deltax = GetOBJx(o) - midx;
@@ -2905,11 +2907,11 @@ int selectedobjmove(struct OBJ *destobj,int locx,int locy,int mode,int player,in
 			{
 				continue;
 			}
-			if (destobj)
-				mode = GetDefaultModeForRightClick(o,destobj,player);
+			if (todestobj)
+				mode = GetDefaultModeForRightClick(o,todestobj,player);
 		}
 		if (mode != MODENON)
-			k |= makemove(o,destobj,locx+deltax,locy+deltay,mode,player,flags);
+			k |= makemove(o,todestobj,locx+deltax,locy+deltay,mode,player,flags);
 	}
 	speakOBJ = GetMaxRankOBJ(moveobjects);
 	if (speakOBJ)
@@ -3041,13 +3043,13 @@ int GetDefaultModeForRightClick(OBJ *a,OBJ *destobj,int playernr)
 		return(modemove);
 }
 //=================================
-struct OBJ* GetMaxRankOBJ(mylistsimple *objs)
+struct OBJ* GetMaxRankOBJ(mylistsimple *list)
 {
 	int maxrank=-1,unitrank;
 	struct OBJ *maxrankOBJ = NULL;
 	OBJ *o;
-	SelectedUnits.EnumListInit();
-	while( o = (OBJ *)SelectedUnits.GetNextListElem(NULL))
+	list->EnumListInit();
+	while( (o = (OBJ *)list->GetNextListElem(NULL)) )
 	{
 		unitrank = GetUnitSublabel(o->SC_Unit);
 		if (unitrank > maxrank)
@@ -3265,7 +3267,7 @@ void dieobj(struct OBJ *a)
 {
 	SCUNIT SC_Unit;
 	struct OBJstruct *b;
-	int i,needtodestroyonexit,inegg,damage,oldsnd,changesupply=0;
+	int i,needtodestroyonexit,inegg,changesupply=0;
 	struct OBJ *a1,*newobj;
 
 	if (a->prop & VARMARKFORDESTROY)
@@ -3570,7 +3572,6 @@ void WakeUpInterceptors(OBJ *a,OBJ *destobj)
 //=================================
 void ReturnedToBase(struct OBJ *a)//after moved to base
 {
-	OBJstruct *b;
 	if (a->myparent->childs)
 	{
 		//object now in base need wait factor
@@ -3655,7 +3656,7 @@ void ChangeObjXYDelta(struct OBJ *a,int xdelta,int ydelta)
 void DeleteOldObjPointers(struct OBJ *a)
 {
 	int i;
-	struct OBJ *b,*b2;
+	struct OBJ *b;
 //	  struct MAGEARRAY *c;
 	//find pointers in all objects
 	for (i=0;i<MaxObjects;i++)
@@ -3699,7 +3700,7 @@ void DeleteOldObjPointers(struct OBJ *a)
 	}
 	OBJ *o;
 	SelectedUnits.EnumListInit();
-	while( o = (OBJ *)SelectedUnits.GetNextListElem(NULL))
+	while( ( o = (OBJ *)SelectedUnits.GetNextListElem(NULL)) )
 	{
 		if (o == a)
 			SelectedUnits.DelElem(a);
@@ -3850,7 +3851,7 @@ void SetInvisibleUnit(struct OBJ *a)
 //==================================
 void setpropertiestounit(struct OBJ *a,int special_props,int state_flags)
 {
-	int mask,mode;
+	int mask;
 	OVERLAY_IMG *tempimg;
 	if (state_flags&UNITONMAP_STATEFLAGS_CLOAK)
 		if (special_props&UNITONMAP_STATEFLAGS_CLOAK)
@@ -4003,7 +4004,7 @@ int GetOBJAtackWithoutWeapons(SCUNIT SC_Unit)
 //=================================
 struct OBJ* EveryUnitAtackFunc(OBJ *a,unsigned char weaponmask,unsigned char groundweapon,unsigned char airweapon)
 {
-	OBJ *a2;
+	OBJ *a2 = NULL;
 	if (weaponmask)
 	{
 		a2 = FindObjForAtack(a,weaponmask,groundweapon,airweapon,NULL);
@@ -4014,31 +4015,31 @@ struct OBJ* EveryUnitAtackFunc(OBJ *a,unsigned char weaponmask,unsigned char gro
 //=================================
 struct OBJ* BunkerAtackFunc(OBJ *aa,unsigned char wm,unsigned char gw,unsigned char aw)
 {
-		unsigned char weaponmask,groundweapon,airweapon,SC_Unit;
-		OBJ *a,*a2;
-		if (aa->loaded)
+	unsigned char weaponmask,groundweapon,airweapon,SC_Unit;
+	OBJ *a,*a2;
+	if (aa->loaded)
+	{
+		for (int i=0;i<aa->loaded->nrofloadedunits;i++)
 		{
-			for (int i=0;i<aa->loaded->nrofloadedunits;i++)
+			a = aa->loaded->loadedunits[i];
+			if (!a)
+				continue;
+			SC_Unit = a->SC_Unit;
+			weaponmask=0;
+			groundweapon = alldattbl.units_dat->GroundWeapon[SC_Unit];
+			if (groundweapon<MAX_WEAPONS_ELEM)
+				weaponmask |= 1;
+			airweapon = alldattbl.units_dat->AirWeapon[SC_Unit];
+			if (airweapon<MAX_WEAPONS_ELEM)
+				weaponmask |= 2;
+			if (weaponmask)
 			{
-				a = aa->loaded->loadedunits[i];
-				if (!a)
-					continue;
-				SC_Unit = a->SC_Unit;
-				weaponmask=0;
-				groundweapon = alldattbl.units_dat->GroundWeapon[SC_Unit];
-				if (groundweapon<MAX_WEAPONS_ELEM)
-					weaponmask |= 1;
-				airweapon = alldattbl.units_dat->AirWeapon[SC_Unit];
-				if (airweapon<MAX_WEAPONS_ELEM)
-					weaponmask |= 2;
-				if (weaponmask)
-				{
-					a2 = FindObjForAtack(a,weaponmask,groundweapon,airweapon,NULL);
-					unitprepareforatack(a,a2);
-				}
+				a2 = FindObjForAtack(a,weaponmask,groundweapon,airweapon,NULL);
+				unitprepareforatack(a,a2);
 			}
 		}
-		return(NULL);
+	}
+	return(NULL);
 }
 //=================================
 int CheckMineSpecialUnit(SCUNIT SC_Unit)
@@ -4048,7 +4049,7 @@ int CheckMineSpecialUnit(SCUNIT SC_Unit)
 //=================================
 struct OBJ* VultureMineUnitAtackFunc(OBJ *a,unsigned char weaponmask,unsigned char groundweapon,unsigned char airweapon)
 {
-	OBJ *a2;
+	OBJ *a2 = NULL;
 	if (weaponmask)
 	{
 		a2 = FindObjForAtack(a,weaponmask,groundweapon,airweapon,&CheckMineSpecialUnit);
@@ -4080,7 +4081,7 @@ struct OBJ* CarrierUnitAtackFunc(OBJ *a,unsigned char weaponmask,unsigned char g
 //=================================
 struct OBJ* InterceptorUnitAtackFunc(OBJ *a,unsigned char weaponmask,unsigned char groundweapon,unsigned char airweapon)
 {
-	OBJ *a2;
+	OBJ *a2 = NULL;
 	if (weaponmask)
 	{
 		if (a->myparent)
@@ -4088,15 +4089,13 @@ struct OBJ* InterceptorUnitAtackFunc(OBJ *a,unsigned char weaponmask,unsigned ch
 			a2 = FindObjForAtack(a->myparent,weaponmask,groundweapon,airweapon,NULL);
 			unitprepareforatack(a,a2);
 		}
-		else
-			a2 = NULL;
 	}
 	return(a2);
 }
 //=================================
 struct OBJ* GroundCloakableUnitAtackFunc(OBJ *a,unsigned char weaponmask,unsigned char groundweapon,unsigned char airweapon)
 {
-	OBJ *a2;
+	OBJ *a2 = NULL;
 	if (IsCloaked(a))
 		return(NULL);
 	if (weaponmask)
@@ -4122,8 +4121,9 @@ struct OBJ* (*Atack_IDFunc[9])(OBJ *a,unsigned char weaponmask,unsigned char gro
 //=================================
 struct OBJ* OneUnitSearchGoal(OBJ *a,int ignoremodes,int facedirectionatackonly)
 {
-	unsigned char weaponmask,groundweapon,airweapon,unitatack_id;
-	SCUNIT SC_Unit,Subunit1;
+	unsigned char unitatack_id;
+	unsigned char weaponmask = 0,groundweapon = 0,airweapon = 0;
+	SCUNIT SC_Unit;
 	OBJ *baseunit = a;
 	//neutral units cannot automatic atack
 	if (IsAtackerActiveUnit(a) && ( map.pl_owner[a->playernr] == OWNER_HUMAN || map.pl_owner[a->playernr] == OWNER_COMPUTER))
@@ -4150,19 +4150,20 @@ struct OBJ* OneUnitSearchGoal(OBJ *a,int ignoremodes,int facedirectionatackonly)
 						airweapon = alldattbl.units_dat->AirWeapon[SC_Unit];
 						if (airweapon<MAX_WEAPONS_ELEM)
 							weaponmask |= 2;
-						break;
+					break;
 					case UNITATACKFUNCTYPE_BUNKERS://bunker
-						break;
+					break;
 					case UNITATACKFUNCTYPE_REAVERS://reaver
 						groundweapon = WEAPONID_SCARAB;
 						weaponmask = 1;
-						break;
+					break;
 					case UNITATACKFUNCTYPE_CARRIERS://carrier
-						break;
+					break;
 					case UNITATACKFUNCTYPE_NONE:		//base/turret
 						return(NULL);
+					break;
 					case UNITATACKFUNCTYPE_NOTATACKINCLOAKEDMODE:
-						break;
+					break;
 				}
 				weaponmask |= facedirectionatackonly;
 				return ((*Atack_IDFunc[unitatack_id])(a,weaponmask ,groundweapon,airweapon));
@@ -4180,21 +4181,25 @@ void SearchForAtacks(void)
 		a = objects[i];
 		if (IsFullAutoAttack(a->SC_Unit))
 		{
-			if (!a->finalOBJ)							//???? i need to atack unit who atack me
+			if (!a->finalOBJ)							//TODO i need to atack unit who atack me
+			{
 				if (a->searchforatack_tick -- ==0)
 				{
 					a->searchforatack_tick = MAXWAIT_SEARCHATACK_TICK;
 					OneUnitSearchGoal(a,0,0);
 				}
+			}
 		}
 		else
 		{
 			if (!a->finalOBJ)
+			{
 				if (a->searchforatack_tick -- ==0)
 				{
 					a->searchforatack_tick = MAXWAIT_SEARCHATACK_TICK;
 					OneUnitSearchGoal(a,0,4);			//atack only face direction
 				}
+			}
 		}
 	}
 }
@@ -4213,7 +4218,7 @@ OBJ *FindObjForAtack(OBJ *a,
 					 unsigned char airweapon,
 					 int (*checkspecialfunc)(SCUNIT))
 {
-	int deltaz,i,j,minrange,maxrange,finddistance,mindeltaz[3],weapon_id,wmask;
+	int deltaz,i,j,minrange,maxrange,mindeltaz[3],weapon_id,wmask;
 	int addsiegerange = 0;
 	unsigned char neededside;
 	OBJ *a2,*findobj[3];
@@ -4265,6 +4270,7 @@ OBJ *FindObjForAtack(OBJ *a,
 						for (j=0;wmask;j++,wmask>>=1)
 						{
 							if (wmask & 1)
+							{
 								if (deltaz < mindeltaz[j] && (maxrange>deltaz) && (minrange<=deltaz))
 								{
 									if (weaponmask & 4)			//atackfacedirectiononly
@@ -4276,6 +4282,7 @@ OBJ *FindObjForAtack(OBJ *a,
 									mindeltaz[j] = deltaz;
 									findobj[j] = a2;
 								}
+							}
 						}
 					}//if unit can atack
 				}//if have weapon
@@ -4305,7 +4312,6 @@ void unitprepareforatack(OBJ *a,OBJ *a2)
 {
 	int aiaction=0,doatack=0,status;
 	unsigned char groundweapon_id,NEWSC_Unit;
-	OBJstruct *b;
 	if (UnitDoAiAction(a->playernr) || a->SC_Unit == SC_VULTUREMINEOBJ)
 		aiaction=1;
 	if (a2)//have unit to atack
@@ -4334,12 +4340,16 @@ void unitprepareforatack(OBJ *a,OBJ *a2)
 						if (accesstomove(a->subunit,loadobj(a->SC_Unit),MODETANKSIEGE,a->playernr))//if can go siegemode
 						{
 							if (a->SC_Unit == SC_TANKNORMALTURRETOBJ)
+							{
 								NEWSC_Unit = SC_TANKSIEGETURRETOBJ;
+							}
 							else
+							{
 								if (a->SC_Unit == SC_HERO_EDMUNDDUKETMTURRETOBJ)
 									NEWSC_Unit = SC_HERO_EDMUNDDUKESMTURRETOBJ;
 								else
 									break;
+							}
 							groundweapon_id = GetNewWeaponType(a,a2,NEWSC_Unit);
 							if (groundweapon_id < MAX_WEAPONS_ELEM)
 							{
@@ -4510,7 +4520,6 @@ void moveaway(OBJ *atacker,OBJ *a,int directiondamage,int modeofmove,int addtoqu
 {
 	int dx,dy;
 	unsigned char side = CalcDirection(GetOBJx256(atacker),GetOBJy256(atacker),GetOBJx256(a),GetOBJy256(a));
-
 //	  unsigned char side = directiondamage + 128;
 	dx = (inertion256[side][0]*SIZESPRLANSHX*5)>>16;
 	dy = (inertion256[side][1]*SIZESPRLANSHY*5)>>16;
@@ -4597,7 +4606,6 @@ int tryaiaction(OBJ *a,OBJ *atacker,int directiondamage)
 //=================================
 int tryunitaction(OBJ *a,OBJ *atacker)
 {
-	int err;
 	switch(a->SC_Unit)
 	{
 		case SC_INTERCEPTOROBJ:
@@ -4643,7 +4651,7 @@ void TryToScanArea(OBJ *a,OBJ *scanobjarea)
 			return;
 		}
 	}
-//???? need to search nearest unit!!! or scan area
+	//TODO need to search nearest unit!!! or scan area
 	a2 = SearchUnit(a->playernr,SC_COMSATSTATIONOBJ,-1,-1,50<<8);
 	if (!a2)
 	{
@@ -4673,24 +4681,26 @@ void TellOtherUnitsAboutAtacking(OBJ *a,OBJ *atacker)
 		a2 = objects[i];
 		allstat = player_aliance(a->playernr,a2->playernr);
 		if (allstat == MYOBJ || allstat == ALLIANCEOBJ )
-		if (a2->modemove == MODESTOP && a2 != a)
 		{
-			if (IsAtackerActiveUnit(a2))
+			if (a2->modemove == MODESTOP && a2 != a)
 			{
-				if (controldistanceunit(GetOBJx(a),GetOBJy(a),GetOBJx(a2),GetOBJy(a2),MINREACTIONDISTANCEFORATACKING))
+				if (IsAtackerActiveUnit(a2))
 				{
-					//tell other unit to atack my atacker
-					if (IsOBJBurrowed(a2))
+					if (controldistanceunit(GetOBJx(a),GetOBJy(a),GetOBJx(a2),GetOBJy(a2),MINREACTIONDISTANCEFORATACKING))
 					{
-						if (a2->SC_Unit != SC_LURKEROBJ)
+						//tell other unit to atack my atacker
+						if (IsOBJBurrowed(a2))
 						{
-							moveobj(a2,NULL,MODEUNBURROW,NOSHOWERROR);
+							if (a2->SC_Unit != SC_LURKEROBJ)
+							{
+								moveobj(a2,NULL,MODEUNBURROW,NOSHOWERROR);
+							}
 						}
-					}
-					else
-					{
-						if (a2->SC_Unit != SC_LURKEROBJ)
-							moveobj(a2,atacker,MODEATACK,NOSHOWERROR);
+						else
+						{
+							if (a2->SC_Unit != SC_LURKEROBJ)
+								moveobj(a2,atacker,MODEATACK,NOSHOWERROR);
+						}
 					}
 				}
 			}
@@ -4712,20 +4722,18 @@ void ShowCircleAndBar(OBJ *a)
 		if (a->blinkvalue & BLINKTICKS)
 			showcircle=1;
 	}
-//	  else
-	{
-		if (ifselectedOBJbit(a,NUMBGAMER))
-			showcircle=1;
-	}
+	if (ifselectedOBJbit(a,NUMBGAMER))
+		showcircle=1;
+
 	if (showcircle)
 	{
 		b = loadobj(a->SC_Unit);
 		x = GetOBJx(a);
 		y = GetOBJy(a);
 		fromy=drawcircle(x-map.MAPXGLOBAL,
-						  y-map.MAPYGLOBAL,
-						  player_aliance(NUMBGAMER,a->playernr),
-						  a);
+						 y-map.MAPYGLOBAL,
+						 player_aliance(NUMBGAMER,a->playernr),
+						 a);
 
 		if (!IsInvincibleOBJ(a))
 		{
@@ -4774,9 +4782,6 @@ void doselectedOBJbit(OBJ *a,int playernr,int flag)
 //=================================
 void SetHallucinationOBJ(OBJ *a)
 {
-	MAIN_IMG *img,*tempimg;
-	int i;
-	a->mana=0;
 	a->timeleft = mageprop[MODEHALLUCINATION].timemageactive;
 	for (int i=ATRPARASITEFROM;i<MAXMAGEATR;i++)
 		SetMageAtr(&a->atrobj,i,0);
@@ -4793,7 +4798,7 @@ void SetHallucinationOBJ(OBJ *a)
 //=================================
 void initmoveaction(OBJ *a,OBJ *destobj,int mode,int startx,int starty,int x,int y)
 {
-	int deltax,deltay,deltaz,pathreterror;
+	int pathreterror;
 	unsigned char flingy_id;
 	flingy_id = alldattbl.units_dat->flingy_id[a->SC_Unit];
 	if (mageprop[mode].createweapon != 255)
@@ -4910,7 +4915,6 @@ void PathFinding_InitType1(OBJ *a,int initx,int inity,int destx,int desty)
 int PathFinding_MovePortionType1(OBJ *a,MAIN_IMG *img,int deltamove)
 {
 	int deltaz,deltax,deltay,destx,desty,widthsumm;
-	unsigned char direction;
 	if (a->prop & VARMOVEOBJACT)
 	{
 		// if move to a object
@@ -4946,7 +4950,6 @@ int PathFinding_MovePortionType1(OBJ *a,MAIN_IMG *img,int deltamove)
 			}
 			if (ApplyNextModeMove(a))
 				return(2);
-//			return(0);
 //here unit stopped and wait for change distance to move again
 			a->prop |= VARWAITDISTANCE;
 			if (a->modemove == MODEATACK)
@@ -5014,7 +5017,6 @@ int PathFinding_InitType2(OBJ *a,int initx,int inity,int destx,int desty,unsigne
 int PathFinding_MovePortionType2(OBJ *a,MAIN_IMG *img,unsigned char flingy_id,int deltamove)
 {
 	int deltaz,deltax,deltay,destx,desty,widthsumm;
-	unsigned char direction;
 	if (a->prop & VARMOVEOBJACT)
 	{
 		if (!a->finalOBJ)		//destobj did not exist(died?)
@@ -5168,10 +5170,10 @@ void AdditionalUnitsProceed(void)
 //=================================
 void AllOBJMoving(void)
 {
-	int i,rot,deltax,deltay,deltaz,widthsumm,curspeed;
-	signed char incfactor,nextmoveignorefullinertion;
+	int i,rot;
+	signed char nextmoveignorefullinertion;
 
-	unsigned char flingy_id,side1,side2;
+	unsigned char flingy_id,side1;
 	MAIN_IMG *img;
 	OBJ *a;
 	for (i=0;i<MaxObjects;i++)
@@ -5279,11 +5281,11 @@ void AllOBJMoving(void)
 					else
 					{
 						if (a->prop & VARNEXTMODEMOVEIGNOREINERTION)
+						{
 							nextmoveignorefullinertion = 1;
-//						{
-//							ApplyNextModeMove(a);
-//							break;
-//						}
+//  						ApplyNextModeMove(a);
+//  						break;
+						}
 					}
 				}
 				PathFinding_MovePortionType2(a,img,flingy_id,GetSpeed(a,a->currentspeed));
@@ -5320,7 +5322,6 @@ int TryToEnterNydus(OBJ *a,OBJ *nydus)
 //=================================
 int IfHaveDistanceForMove(OBJ *a,MAIN_IMG *img,OBJ *destobj,int mindistance)
 {
-	unsigned char flingy_id;
 	int deltax,deltay,deltaz;
 	deltax = GetOBJx256(destobj) - img->xpos;
 	deltay = GetOBJy256(destobj) - img->ypos;

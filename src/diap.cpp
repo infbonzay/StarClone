@@ -484,7 +484,7 @@ selectedicon:
 				}
 			}
 		}
-		if (selectedunloadunit!=-1)
+		if (selectedunloadunit != -1)
 		{
 			//x is nr of unloaded unit, y is 0
 			makemove(transportplaceobj,NULL,selectedunloadunit,0,MODEUNLOADUNITNR,transportplaceobj->playernr,NOSHOWERROR);
@@ -549,19 +549,22 @@ int CreateUnitProperties(struct OBJ *a,struct OBJstruct *b,int *prop,int playern
 		{
 			unitnr = INBAY_GetCreatedUnits(a);
 			if (unitnr+underc >= INBAY_GetMaxUnitsToBeCreated(a))
-				prop[i]=MODENON;
+				prop[i] = MODENON;
 			if (underc==MAXCONSTRUCTINBUILD)
-				prop[i]=MODENON;
+				prop[i] = MODENON;
 		}
-		else
-			if (prop[i]==MODECLOAKFIELD||
+		else if (prop[i]==MODECLOAKFIELD||
 				prop[i]==MODEPERSONNELCLOAK||
 				prop[i]==MODEDECLOAK)
-			{
+		{
 				if (GetMageAtr(&a->atrobj,ATRINVISIBLE)==WRAITHEPODARBITEROM||GetMageAtr(&a->atrobj,ATRINVISIBLE)==NEWRAITHEPODARBITEROM)
-					prop[i]=MODENON;
-			}
+					prop[i] = MODENON;
 		}
+		else if (prop[i] == MODELOADUNITS && !IfCanTransport(a->SC_Unit, playernr))
+		{
+			prop[i] = MODENON;
+		}
+	}
 	//if galiutination clear mage properties
 	if (IsHallucination(a))
 	{
