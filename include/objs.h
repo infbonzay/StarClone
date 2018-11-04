@@ -15,7 +15,7 @@
 #define DECREMENTATRIBUTEMAGE	79
 #define MAGEATRIBUTEDOTHINGS	5
 #define DECREMENTLIFEMAGE		49
-#define INCREMENTLIFE			159				
+#define INCREMENTLIFE			159
 #define DECREMENTLIFE			60
 #define INCREMENTSHIELD			119
 
@@ -76,7 +76,7 @@ void deselectallobj(int nr_player);
 void controlbu(int typeunits,int typeb_or_u,int mode);
 void grupingobj(int mode);
 int foundonetypeobj(struct OBJ *a,struct OBJstruct *b);
-struct OBJ *founduniqueobj(int x1,int y1);
+struct OBJ *founduniqueobj(int x1,int y1,int x2,int y2);
 void selectMAN(int x1,int y1,int x2,int y2,int mode);
 struct OBJ* GetMaxRankOBJ(mylistsimple *obj);
 void changedeselectobj(struct OBJ *a,struct OBJ *aa);

@@ -235,8 +235,8 @@ typedef unsigned char SCUNIT;
 #define ORDER_ONTERRAIN					0x20
 #define ORDER_IGNOREUNITDESTINATION		0x40
 //=======================
-#define ENEMYOBJ		0
-#define NEUTRALOBJ		1
+#define NEUTRALOBJ		0
+#define ENEMYOBJ		1
 #define ALLIANCEOBJ		2
 #define MYOBJ			3
 

@@ -424,6 +424,12 @@ void HighMouse::RefreshMouseType(int xk,int yk)
 		return;
 	if (GAME)
 	{
+// 		if (DoubleClick && DestMouseOBJ)
+// 		{
+// 			selectMAN(PosX,PosX,PosX,PosY,0);
+// 			DoubleClick = false;
+// 			return;
+// 		}
 		borderBits = 0;
 		if (!(GetButtonStatus() & WMLEFTKEY))
 			WaitToReleaseLeftButton = 0;
@@ -481,11 +487,11 @@ void HighMouse::RefreshMouseType(int xk,int yk)
 										(int)((PosX-screenMapInfo->SizeX32-screenMapInfo->MinimapStartX)/factorx)*SIZESPRLANSHX,
 										(int)((PosY-screenMapInfo->SizeY32-screenMapInfo->MinimapStartY)/factory)*SIZESPRLANSHY,
 										0);
-					else
-						DoRightClickAction(	DestMouseOBJ,
-											PosX + xk,
-											PosY + yk,
-											0);
+				else
+					DoRightClickAction(	DestMouseOBJ,
+										PosX + xk,
+										PosY + yk,
+										0);
 			}
 		}
 
@@ -505,10 +511,10 @@ void HighMouse::RefreshMouseType(int xk,int yk)
 			switch(borderBits)
 			{
 				case 0:
-						if (!screenMapInfo->ScrollX)
-							screenMapInfo->ScrollX = (int)ScrollMapX(0,SMOUTHMOUSE);
-						if (!screenMapInfo->ScrollY)
-							screenMapInfo->ScrollY = (int)ScrollMapY(0,SMOUTHMOUSE);
+					if (!screenMapInfo->ScrollX)
+						screenMapInfo->ScrollX = (int)ScrollMapX(0,SMOUTHMOUSE);
+					if (!screenMapInfo->ScrollY)
+						screenMapInfo->ScrollY = (int)ScrollMapY(0,SMOUTHMOUSE);
 					break;
 				case 1:
 					if (xk)

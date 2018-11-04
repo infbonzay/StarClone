@@ -149,6 +149,7 @@ extern unsigned short MaxRegen;
 extern struct MAGEP mageprop[];
 
 extern mylistsimple SelectedUnits;
+extern int 			SelectedUnitTypes;
 extern struct  OBJ *curentoperationobj;
 extern short	int xpoint1l,xpoint2l,wmaxcol,wmaxrow;
 //extern				int xk,yk;
