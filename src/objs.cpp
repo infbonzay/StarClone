@@ -535,19 +535,23 @@ void deselectallobj(int playernr)
 	SelectedUnits.FreeAndEmptyAll();
 }
 //=====================================
-void controlbu(mylistsimple *list, int typeunits,int typeb_or_u)
+void controlbu(mylistsimple *list, int typeunits,int buildORunit,int maxunitsselectable)
 {
 	int i;
 	OBJ *a;
 	list->EnumListInit();
 	while( (a = (OBJ *) list->GetNextListElem(&i)))
 	{
-		if ((player_aliance(NUMBGAMER,a->playernr) == typeunits)		&&
-			 IsBuild(a->SC_Unit)==typeb_or_u)
+		if ((player_aliance(NUMBGAMER,a->playernr) != typeunits))
 		{
-			;
+			list->MarkForDelElem(i);
 		}
-		else
+		else if (!buildORunit && IsBuild(a->SC_Unit))
+		{
+			list->MarkForDelElem(i);
+			continue;
+		}
+		else if (list->totalelem - list->totalmarked > maxunitsselectable)
 		{
 			list->MarkForDelElem(i);
 		}
@@ -581,21 +585,21 @@ void grupingobj(mylistsimple *list)
 	//7. enemy build
 	//8. neutral build
 	if (selectunits[MYOBJ])
-		controlbu(list,MYOBJ,0);
+		controlbu(list,MYOBJ,0,MAXSELECTMAN);
 	else if (selectunits[ALLIANCEOBJ])
-		controlbu(list,ALLIANCEOBJ,0);
+		controlbu(list,ALLIANCEOBJ,0,MAXSELECTMAN);
 	else if (selectunits[ENEMYOBJ])
-		controlbu(list,ENEMYOBJ,0);
+		controlbu(list,ENEMYOBJ,0,1);
 	else if (selectunits[NEUTRALOBJ])
-		controlbu(list,NEUTRALOBJ,0);
+		controlbu(list,NEUTRALOBJ,0,1);
 	else if (selectbuilds[MYOBJ])
-		controlbu(list,MYOBJ,1);
+		controlbu(list,MYOBJ,1,1);
 	else if (selectbuilds[ALLIANCEOBJ])
-		controlbu(list,ALLIANCEOBJ,1);
+		controlbu(list,ALLIANCEOBJ,1,1);
 	else if (selectbuilds[ENEMYOBJ])
-		controlbu(list,ENEMYOBJ,1);
+		controlbu(list,ENEMYOBJ,1,1);
 	else if (selectbuilds[NEUTRALOBJ])
-		controlbu(list,NEUTRALOBJ,1);
+		controlbu(list,NEUTRALOBJ,1,1);
 }
 //=====================================
 void addtolist_onetypeobj(mylistsimple *list, OBJ *a)
@@ -805,6 +809,7 @@ void selectMAN(int x1,int y1,int x2,int y2,int mode)
 	{
 		doselectedOBJbit(a,NUMBGAMER,0);
 	}
+
 	grupingobj(selectnow);
 	if (selectnow->totalelem)
 		ifselectedprobe();
