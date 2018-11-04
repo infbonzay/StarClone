@@ -68,7 +68,7 @@ void Remove_Triggers(mapinfo *info)
 //=================================================
 int AllGroups_Prepare(mapinfo *info,MAP_TRIGS *temptrg)
 {
-	int i,j;
+	int i;
 	int actiononplayers=0;
 	for (i=0;i<TRIG_MAX_GROUPPLAYERS;i++)
 	{
@@ -277,13 +277,13 @@ int CheckForUnit(int (*ConditionFunction)(int *, int),
 	int (*UnitTypeFunc) (SCUNIT);
 	struct OBJ *a,*last=NULL;
 //	  mylistsimple *objlist = new mylistsimple(MaxObjects);
-	if (unitid>=MAX_UNITS_ELEM)									
-	{															
+	if (unitid>=MAX_UNITS_ELEM)
+	{
 		UnitTypeFunc=CheckUnit[unitid-MAX_UNITS_ELEM];			//>228 (0xe5-0xe8)
 		checkready=readyfunc[unitid-MAX_UNITS_ELEM];
-	}															
-	else														
-	{															
+	}
+	else
+	{
 		UnitTypeFunc=CheckUnit[0];
 		checkready=readyfunc[0];
 		UNITNRFORCHECK=unitid;
@@ -327,11 +327,11 @@ int CheckForUnitStat(int (*ConditionFunction)(int *, int),int actiononplayers,in
 	int j,mask,nrofunits=0;
 	if (stattype==UNITSTAT_HAVE)
 	{
-		if (unitid>=MAX_UNITS_ELEM)								
+		if (unitid>=MAX_UNITS_ELEM)
 		{
 			stattype=UNITSTAT_PRODUCING;//because last construction unit do not do defeat game
 		}
-	}															
+	}
 	for (j=0,mask=1;j<MAXPLAYERS;j++,mask<<=1)
 	{
 		if (actiononplayers&mask)
@@ -455,14 +455,12 @@ void Init_Triggers_Variables(int cnttrg)
 	TRIG_commentstr=NULL;
 	TRIG_leaderboardcomputerplayers=1;
 	ALLTRIG_pause = (int *) wmalloc(cnttrg * sizeof (int ));
-	memset(ALLTRIG_pause,0,cnttrg * sizeof (int )); 
+	memset(ALLTRIG_pause,0,cnttrg * sizeof (int ));
 }
 //=================================================
 void First_Triggers_Prepare(mapinfo *info,int cnttrg,MAP_TRIGS *trigs)
 {
-	int actiononplayers;
-	int i,j;
-	MAP_TRIGS	*trg;
+	int i;
 	MAP_TRIGS	*temptrg;
 	MAP_TRIGS	(*alltrigs)[]=(MAP_TRIGS (*)[]) trigs;
 	//allocation memory for all triggers pause 1 int (4 bytes) for each trigger;
@@ -478,7 +476,6 @@ void First_Triggers_Prepare(mapinfo *info,int cnttrg,MAP_TRIGS *trigs)
 void Triggers_Parce(mapinfo *info,int cnttrg,MAP_TRIGS *trigs,int deltatick)
 {
 	int i,j,mask;
-	MAP_TRIGS	*trg;
 	MAP_TRIGS	*temptrg;
 	MAP_TRIGS	(*alltrigs)[]=(MAP_TRIGS (*)[]) trigs;
 	TRIG_active=1;
@@ -534,13 +531,12 @@ void Triggers_Parce(mapinfo *info,int cnttrg,MAP_TRIGS *trigs,int deltatick)
 //=================================================
 int Condition_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int trig_nr,int playernr,int playernrmask,int deltatick)
 {
-	int i,j,mask,allcond,applycond,playergrp,nrofunits,nrofunits2,totalcond,conddone,nrofresources,locnr;
-	int switchnr,switchfunc,tick,ownactiononplayers,opponents,remainopponents;
+	int i,j,mask,allcond,applycond,nrofunits,nrofunits2,totalcond,conddone,nrofresources,locnr;
+	int switchnr,tick,ownactiononplayers,opponents,remainopponents;
 
 	int (*ResTypeFunc)(int (*)(int *, int),int playernr,int cnt);
 	unsigned char unitnr;
 	int (*comparefunc)(int *,int );
-	char *txtstr;
 	allcond=0;
 	conddone=0;
 	totalcond=TRIG_MAX_CONDITIONS;
@@ -728,10 +724,10 @@ int Condition_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int trig_nr,int playernr,
 //=================================================
 int Action_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int trig_nr,int playernr,int playernrmask)
 {
-	int min,gas,settype,err,i,j,jj,mask,mask2,triggcnt,triggset,locnr,unitnr,sx,sy;
-	int textid,waveid,soundid,funcdelta,deltapaused,waittime,switchnr,nrofunits;
+	int err,i,j,jj,mask,mask2,triggcnt,triggset,locnr,unitnr,sx,sy;
+	int waveid,soundid,deltapaused,waittime,switchnr,nrofunits;
 	int searchloc,ownedactiononplayers,xobj,yobj,xobj2,yobj2,grpposx,grpposy,state,propnr;
-	int haverescued,openstate,movestate,deltax,deltay,oldsnd;
+	int openstate,movestate,deltax,deltay,oldsnd;
 
 	char *txtstr;
 	struct triggerunit *triggerunitprop;
@@ -743,7 +739,7 @@ int Action_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int trig_nr,int playernr,int
 	OBJstruct *b;
 	err=0;
 	triggcnt=0;
-#ifdef TRIG_DEBUG		
+#ifdef TRIG_DEBUG
 		//show comment trigger first
 		for (i=0;i<TRIG_MAX_ACTIONS;i++)
 		{
@@ -755,7 +751,7 @@ int Action_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int trig_nr,int playernr,int
 				DEBUGMESSCR("COMMENT[%s]\n",TRIG_commentstr);
 				break;
 			}
-		
+
 		}
 #endif
 	for (i=0;i<TRIG_MAX_ACTIONS;i++)
@@ -968,13 +964,13 @@ int Action_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int trig_nr,int playernr,int
 					triggset=1;
 					break;
 				case TRG_ACTIONTYPE_SETSWITCH://13
-					comparefunc=ConditionFunctions[temptrg->action[i].subaction];		//action applyed to 
+					comparefunc=ConditionFunctions[temptrg->action[i].subaction];		//action applyed to
 					switchnr=temptrg->action[i].rescount;
 					(*comparefunc)((int *)&info->Switch[switchnr],-1);
 					triggset=1;
 					break;
 				case TRG_ACTIONTYPE_SETCOUNTDOWNTIMER://14
-					comparefunc=ConditionFunctions[temptrg->action[i].subaction];		//action applyed to 
+					comparefunc=ConditionFunctions[temptrg->action[i].subaction];		//action applyed to
 					(*comparefunc)(&info->CountDownTimer,temptrg->action[i].pauseatime*MAXGAMECYCLESPERSECOND);
 					info->flags |= STARMAP_FLAG_HAVECOUNTDOWN;
 					triggset=1;
@@ -1127,7 +1123,7 @@ int Action_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int trig_nr,int playernr,int
 					break;
 				case TRG_ACTIONTYPE_SETRESOURCES://26
 					ownedactiononplayers=OneGroup_Prepare(info,temptrg->action[i].actiononplayers,playernrmask);
-					comparefunc=ConditionFunctions[temptrg->action[i].subaction];		//action applyed to 
+					comparefunc=ConditionFunctions[temptrg->action[i].subaction];		//action applyed to
 					ResTypeFunc=AddResFunctions[temptrg->action[i].unitorrestype];
 					(*ResTypeFunc)(comparefunc,ownedactiononplayers,temptrg->action[i].rescount);
 					triggset=1;
@@ -1253,7 +1249,7 @@ int Action_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int trig_nr,int playernr,int
 						openstate = temptrg->action[i].subaction;
 					else
 						if (temptrg->action[i].subaction == TRG_TYPEFUNC_SWITCHSET	 ||
-							temptrg->action[i].subaction == TRG_TYPEFUNC_SWITCHCLEAR || 
+							temptrg->action[i].subaction == TRG_TYPEFUNC_SWITCHCLEAR ||
 							temptrg->action[i].subaction == TRG_TYPEFUNC_SWITCHTOGGLE )
 							openstate = temptrg->action[i].subaction;
 						else
@@ -1607,10 +1603,9 @@ int TRG_RunAIScript(mapinfo *info,int aiscriptnr,int playernr,int playernrmask)
 int TRG_RunAIScriptAtLocation(mapinfo *info,int aiscriptnr,int playernr,int playernrmask,int locnr)
 {
 	char statpl[MAXPLAYERS];
-	int pl,i,j,haverescued,magenr,sfxdata_id,xpos,ypos,nrofunits,nrofunits2,dist,mindistance;
+	int pl,i,j,haverescued,magenr,xpos,ypos,nrofunits,nrofunits2,dist,mindistance;
 	OBJ *a,*bunkerobj,*findbunker;
 	mylist *bunkerlist=NULL;
-	OBJstruct *b;
 	if (locnr>=0)
 	{
 		CenterXYArea(&info->gamelocations[locnr].coords,&xpos,&ypos);
@@ -1656,9 +1651,12 @@ int TRG_RunAIScriptAtLocation(mapinfo *info,int aiscriptnr,int playernr,int play
 						//done by previous trigger
 						SetTriggeredOBJState(objects[j], CLEARSTATE);
 						a = CreateUnitInUnit(objects[j],SC_NUKEOBJ,0,GetOBJx(objects[j]),GetOBJy(objects[j]));
-						ChangeSupply(a->playernr,a->SC_Unit,PLUSFACTOR);
-						if (--nrofunits==0)
-							break;
+						if (a)
+						{
+							ChangeSupply(a->playernr,a->SC_Unit,PLUSFACTOR);
+							if (--nrofunits==0)
+								break;
+						}
 					}
 				}
 			}
@@ -1804,7 +1802,7 @@ int TRG_RunAIScriptAtLocation(mapinfo *info,int aiscriptnr,int playernr,int play
 				{
 					CreateAliance(info,playernr,i,ENEMYOBJ);
 					CreateAliance(info,i,playernr,ENEMYOBJ);
-				}	 
+				}
 			return(1);
 			break;
 		case TRG_AISCRIPT_SETPLAYERTOALLIESHERE://????
@@ -1828,7 +1826,7 @@ int TRG_RunAIScriptAtLocation(mapinfo *info,int aiscriptnr,int playernr,int play
 				{
 					CreateAliance(info,playernr,i,ALLIANCEOBJ);
 					CreateAliance(info,i,playernr,ALLIANCEOBJ);
-				}	 
+				}
 			return(1);
 			break;
 		case TRG_AISCRIPT_SETALLUNITSTORANDOMSUICIDEMISSION:
@@ -1855,8 +1853,8 @@ int TRG_RunAIScriptAtLocation(mapinfo *info,int aiscriptnr,int playernr,int play
 			return(1);
 			break;
 		default:
-showdefaulterror:
 			DEBUGMESSCR("unknown aiscriptnr=0x%04x (pl=%d) at [%s]\n",aiscriptnr,playernr,TRIG_commentstr);
+			break;
 	}
 	return(0);
 }

@@ -56,15 +56,12 @@ void freeOBJS(void)
 //==========================================
 void PrepareForDeallocOBJstruct(mylist *pointerlist,OBJstruct *obj)
 {
-	int i,j;
 	if (obj->portraits)
 		pointerlist->AddUniqueElem(obj->portraits);
 }
 //==========================================
 void freeOBJstructs(int withupgradeandtechrace)
 {
-	int i,j;
-	void *tempelem;
 	mylist pointerlists;
 	for (int i=0;i<NUMBRSPROBJ;i++)
 	{
@@ -84,7 +81,6 @@ void freeOBJstructs(int withupgradeandtechrace)
 //==========================================
 void freeMAGEstructs(void)
 {
-	void *tempelem;
 	mylist pointerlists;
 	int i;
 	for (i=0;i<=MAXIMMODE;i++)
@@ -106,7 +102,7 @@ void freeMAGEstructs(void)
 int isrechargebleobj(struct OBJ *a)
 {
 	if (IsShieldEnable(a->SC_Unit))
-		if ( (a->shield < GetUnitMaxShield(a->SC_Unit)) && 
+		if ( (a->shield < GetUnitMaxShield(a->SC_Unit)) &&
 			!(a->prop & VARNOTHERE)						&&
 			!IsOBJUnderConstruct(a) ) //						&&
 //			GetMageAtr(&a->atrobj,ATRSTASIS) == 0 )
@@ -130,15 +126,14 @@ int ishealingobj(struct OBJ *a)
 int isobjtobeinfest(struct OBJ *a)
 {
 	if ( a->SC_Unit == SC_COMMCENTEROBJ && (a->health < GetUnitMaxHealth(a->SC_Unit) / 2) && !IsOBJUnderConstruct(a))
-			return 1;
+		return 1;
 	return 0;
 }
 //==========================================
 struct OBJ *SearchUnitFunc(int playernr,int (*funccheckunit)(SCUNIT SC_Unit),int nearx,int neary,int dist)
 {
-	int i,allstat;
 	OBJ *a;
-	for (i=0;i<MaxObjects;i++)
+	for (int i=0;i<MaxObjects;i++)
 	{
 		a = objects[i];
 		if (a->mainimage)
@@ -155,7 +150,6 @@ struct OBJ *SearchUnitFunc(int playernr,int (*funccheckunit)(SCUNIT SC_Unit),int
 	}
 	return(NULL);
 }
-//==========================================
 //==========================================
 struct OBJ *SearchUnit(int playernr,SCUNIT SC_Unit,int shieldp,int healthp,int energyp)
 {
@@ -185,7 +179,7 @@ struct OBJ *SearchUnit(int playernr,SCUNIT SC_Unit,int shieldp,int healthp,int e
 struct OBJ *SearchOBJforOBJ(struct OBJ *a,int modemage)
 {
 	struct OBJ *destobj;
-	int temp,mindistance,i,findobj=0;
+	int mindistance,i,findobj=0;
 	mindistance = mageprop[modemage].diapazone;
 	for (i=0;i<MaxObjects;i++)
 	{
@@ -348,7 +342,7 @@ int controlifunitinunit(struct OBJ *a,struct OBJ *a2)
 	return(0);
 }
 //=================================
-//esli do (dx,dy)  <= rasstoianie dlia actiona(magii) to return non 0 
+//esli do (dx,dy)  <= rasstoianie dlia actiona(magii) to return non 0
 int controldistancemode(int dx1,int dy1,int dx2,int dy2,int modemove)
 {
 	int distance=mageprop[modemove].mindistance;
@@ -435,7 +429,7 @@ int GetUnitSoundID(SCUNIT SC_Unit,unsigned char sndtype)
 		case UNITSOUND_READY:
 		default:
 			return(alldattbl.units_dat->ReadySound[SC_Unit]);
-	}	 
+	}
 }
 //=================================
 int GetUnitSound(OBJ *a,unsigned char fromsndtype,unsigned char tosndtype)
@@ -565,7 +559,7 @@ int IsHallucination(OBJ *a)
 //==================================
 void ChangeSC_Unit(struct OBJ *a,int newplayernr,SCUNIT SC_Unit,int flagready)
 {
-	int inegg,i,ready;
+	int inegg,i;
 	if (flagready==CHANGESC_UNIT_CONSTR)
 	{
 		a->prop &= ~VARREADY;
@@ -573,7 +567,7 @@ void ChangeSC_Unit(struct OBJ *a,int newplayernr,SCUNIT SC_Unit,int flagready)
 	else
 	{
 		a->prop |= VARREADY;
-	}	
+	}
 	a->SC_Unit=SC_Unit;
 	inegg = GetInEgg(a->SC_ConstrUnit);
 	for (i=0;i<=inegg;i++)

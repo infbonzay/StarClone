@@ -442,12 +442,12 @@ void GeyserDisactivate(OBJ *a,OBJ *geyser)
 }
 //=====================================
 #define SELECTUNITTYPES						8
-#define SELECT_BUILD_NEUTRAL				NEUTRALOBJ
 #define SELECT_BUILD_ENEMY					ENEMYOBJ
+#define SELECT_BUILD_NEUTRAL				NEUTRALOBJ
 #define SELECT_BUILD_ALLIANCE				ALLIANCEOBJ
 #define SELECT_BUILD_MY						MYOBJ
-#define SELECT_UNIT_NEUTRAL					(NEUTRALOBJ + 4)
 #define SELECT_UNIT_ENEMY					(ENEMYOBJ + 4)
+#define SELECT_UNIT_NEUTRAL					(NEUTRALOBJ + 4)
 #define SELECT_UNIT_ALLIANCE				(ALLIANCEOBJ +4)
 #define SELECT_UNIT_MY						(MYOBJ + 4)
 
@@ -455,7 +455,7 @@ static int selectunittypes[SELECTUNITTYPES];
 //=====================================
 int GetSelectedUnitType(SCUNIT SC_Unit,int playernr)
 {
-	if (!IsBuild(SC_Unit))
+	if (IsBuild(SC_Unit))
 		return(player_aliance(NUMBGAMER, playernr));
 	else
 		return(player_aliance(NUMBGAMER, playernr) + 4);
@@ -691,12 +691,12 @@ void selectMAN(int x1,int y1,int x2,int y2,int mode)
 	OBJ *firstobj, *a, *speakOBJ;
 	mylistsimple *selectnow[SELECTUNITTYPES] =
 	{
-		new mylistsimple(MAXSELECTMAN),
-		new mylistsimple(MAXSELECTMAN),
-		new mylistsimple(MAXSELECTMAN),
-		new mylistsimple(MAXSELECTMAN),
-		new mylistsimple(MAXSELECTMAN),
-		new mylistsimple(MAXSELECTMAN),
+		new mylistsimple(1),
+		new mylistsimple(1),
+		new mylistsimple(1),
+		new mylistsimple(1),
+		new mylistsimple(1),
+		new mylistsimple(1),
 		new mylistsimple(MAXSELECTMAN),
 		new mylistsimple(MAXSELECTMAN),
 	};
@@ -723,10 +723,12 @@ void selectMAN(int x1,int y1,int x2,int y2,int mode)
 								 map.MAPYGLOBAL,
 								 map.MAPXGLOBAL+screenMapInfo->SizeX32 * SIZESPRLANSHX,
 								 map.MAPYGLOBAL+screenMapInfo->SizeY32 * SIZESPRLANSHY);
+			totalselected = selectnow[unittype]->totalelem;
 		}
 		else
 		{
 			selectnow[unittype]->AddElem(a);
+			totalselected++;
 		}
 	}
 	else

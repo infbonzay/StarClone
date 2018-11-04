@@ -95,8 +95,6 @@ int strcmpw(char *a,char *b)
 //====================================
 void keyhandler(void)
 {
-	char mes[100];
-	static int mesnr=0;
 #ifdef DEBUG
 	OBJ *o = NULL;
 	if (SelectedUnits.totalelem)
@@ -159,7 +157,6 @@ void keyhandler(void)
 	{
 		if (o)
 		{
-			OBJstruct *b=loadobj(o->SC_Unit);
 			LowLevelDamage(NULL,o,WEAPONID_NUCLEARMISSILE,DAMAGE_INDEPENDENT,25<<8,0,0);
 		}
 	}

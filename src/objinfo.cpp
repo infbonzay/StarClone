@@ -67,7 +67,6 @@ int INBAY_GetMaxUnitsToBeCreated(OBJ *a)
 //====================================
 void AdditionalProperties(OBJ *a)
 {
-	int i,randd;
 	switch(a->SC_Unit)
 	{
 		case SC_HERO_JIMRAYNORVOBJ:
@@ -275,7 +274,7 @@ int GetAddManaFactor(SCUNIT SC_Unit,int playernr)
 //damage - nr of someobjects
 int GetNrSomeObjects(OBJ *a,int *newunit,char **iconmes)
 {
-	int ret,weapon_id,tech_id;
+	int weapon_id,tech_id;
 	if (player_aliance(NUMBGAMER,a->playernr!=MYOBJ))
 		return(-1);
 	switch(a->SC_Unit)
@@ -535,7 +534,7 @@ int IsAtackerActiveUnit(OBJ *a)
 //=================================
 OBJ *SearchNewBounceOBJ(int x,int y,int playernr,OBJ *obj1,OBJ *obj2,int maxdist)
 {
-	int i,j,dist,mindist=65535;
+	int i,dist,mindist=65535;
 	OBJ *a;
 	OBJ *finda=NULL;
 	for (i=0;i<MaxObjects;i++)

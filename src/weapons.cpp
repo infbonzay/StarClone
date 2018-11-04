@@ -39,13 +39,11 @@ void unloadweapons(void)
 //===========================================
 int loadweapons(void)
 {
-	GRPFILE *loadedgrp;
-	int intvalue,whatobj,drawid,totalimages,grpstrnr,i,ii,j;
-	int maxsides,flags,images_tbl,im_id,im_ov;
-	unsigned char trailrefresh,rangeupgnr,rangeupgaddfactor,groundair;
+	int whatobj,i,j;
+	int flags;
+	unsigned char trailrefresh,rangeupgnr,rangeupgaddfactor;
 	int nrofweapons,maxnrforread[100];
-	int images_id[3],sfxnrs[3],sfxdata[3][10];
-	static char strid[200],strvalue[200],strvalue2[200],fname[100];
+	static char strid[200],strvalue[200];
 	FILE *f=fopen(fileweaponsconf,"r");
 	if (!f)
 		return(-1);
@@ -63,7 +61,7 @@ int loadweapons(void)
 			{
 				switch(j)
 				{
-					case 0://[weapon] = nr_sc_weapon1-,: ... 
+					case 0://[weapon] = nr_sc_weapon1-,: ...
 						nrofweapons=getallnumbers(strvalue,maxnrforread,100);
 						trailrefresh=255;
 						rangeupgnr=255;
@@ -95,7 +93,7 @@ int loadweapons(void)
 		}
 readnext:
 		;
-	}	 
+	}
 	fclose(f);
 	return(0);
 }
@@ -121,7 +119,7 @@ int IfCanCreateWeapon(OBJ *atacker,OBJ *destobj,int *errmes,unsigned char *weapo
 			return(CREATEDWEAPONSTATUS_CANTATACKTHISUNIT);
 		}
 		Subunit1 = alldattbl.units_dat->Subunit1[atacker->SC_Unit];
-		if (Subunit1<MAX_UNITS_ELEM)	
+		if (Subunit1<MAX_UNITS_ELEM)
 			SC_Unit = Subunit1;
 		groundweapon_id = alldattbl.units_dat->GroundWeapon[SC_Unit];
 		airweapon_id = alldattbl.units_dat->AirWeapon[SC_Unit];
@@ -144,7 +142,7 @@ int IfCanCreateWeapon(OBJ *atacker,OBJ *destobj,int *errmes,unsigned char *weapo
 				weaponunitid = WEAPON_UNIT_ANY;
 //				usedweapon_id = groundweapon_id;
 				usedweapon_id = WEAPONID_REAVERRANGE;
-				
+
 				weapon_id = NULL;
 				atackangle = alldattbl.weapons_dat->AttackAngle[WEAPONID_SCARAB];
 				break;
@@ -211,7 +209,7 @@ int IfCanCreateWeapon(OBJ *atacker,OBJ *destobj,int *errmes,unsigned char *weapo
 					}
 					else
 					{
-						if (Subunit1<MAX_UNITS_ELEM)	
+						if (Subunit1<MAX_UNITS_ELEM)
 						{
 							//subunit atack
 							if (weapon_id)
@@ -323,10 +321,8 @@ int CalcMaxRangeCoordsXY(int deltax,int deltay,int *destx,int *desty,int maxdist
 int CreateWeaponID(OBJ *a,OBJ *destobj,int xdest256,int ydest256,unsigned char weapon_id,int createflingy)
 {
 	SC_FLINGY *flingy;
-	MAIN_IMG *img,*newimg;
 	unsigned char flingy_id;
 	unsigned short images_id,sprites_id;
-	signed char xlo,ylo;
 	int xdest256_2,ydest256_2,maxrangex,maxrangey,elevationdelta,maxdist;
 	a->usedweapon_id = weapon_id;
 	if (createflingy)
@@ -408,7 +404,7 @@ int CreateWeaponID(OBJ *a,OBJ *destobj,int xdest256,int ydest256,unsigned char w
 			case WB_GOTO_MAX_RANGE:								//9
 				maxdist = alldattbl.weapons_dat->MaximumRange[weapon_id];// + alldattbl.flingy_dat->Acceleration[flingy_id]/256;
 				CalcMaxRangeCoordsXY(xdest256 - GetOBJx256(a),ydest256 - GetOBJy256(a),&maxrangex,&maxrangey,maxdist);
-			
+
 				xdest256 = GetOBJx256(a) + maxrangex;// + 32*256;
 				ydest256 = GetOBJy256(a) + maxrangey;// + 32*256;
 
@@ -416,7 +412,7 @@ int CreateWeaponID(OBJ *a,OBJ *destobj,int xdest256,int ydest256,unsigned char w
 				flingy->destobj = destobj;
 				flingy->listdamaged = new mylist();
 				break;
-			default:									
+			default:
 				DEBUGMESSCR("weapon with this behaviour not developed yet\n");
 				break;
 		}
@@ -449,7 +445,7 @@ void GetOBJXYSideOffsets(OBJ *a,MAIN_IMG *img,int overlaytype,signed char *xlo,s
 			objside = img->side / 8;
 			adrxyoffs = GetLoXY(lo,0 + objside,0);
 			*xlo = adrxyoffs[0];
-		}		
+		}
 		*ylo = adrxyoffs[1];
 	}
 	else
@@ -476,7 +472,7 @@ void WeaponDoDamage(OBJ *atacker,OBJ *destobj,int x256,int y256,SCUNIT SC_Unit,
 			newimg = new MAIN_IMG(IMAGEID_MAELSTROMHIT,x256,y256,atacker->mainimage->elevationlevel+1,0,0,0,0,0,ISCRIPTNR_INIT);
 			newimg->whocreate = SC_IMAGE_SELF_CREATOR;
 			mainimageslist.AddElem(newimg);
-			
+
 			if (castmagenr != -1)
 				mindist[0] = mageprop[castmagenr].diapazone;
 			else
@@ -607,12 +603,12 @@ void WeaponDoDamage(OBJ *atacker,OBJ *destobj,int x256,int y256,SCUNIT SC_Unit,
 		case WEFFECT_ENSNARE:
 			//show ensnare cloud
 			//have iscript sound
-			
+
 			newimg = new MAIN_IMG(IMAGEID_ENSNARECLOUD,x256,y256,atacker->mainimage->elevationlevel+1,0,0,0,0,
 								  SC_IMAGE_FLAG_AIRIMG,ISCRIPTNR_INIT);
 			newimg->whocreate = SC_IMAGE_SELF_CREATOR;
 			mainimageslist.AddElem(newimg);
-			
+
 			if (castmagenr!=-1)
 				mindist[0] = mageprop[castmagenr].diapazone;
 			else
@@ -723,7 +719,7 @@ void WeaponDoDamage(OBJ *atacker,OBJ *destobj,int x256,int y256,SCUNIT SC_Unit,
 								  SC_IMAGE_FLAG_AIRIMG,ISCRIPTNR_INIT);
 			newimg->whocreate = SC_IMAGE_SELF_CREATOR;
 			mainimageslist.AddElem(newimg);
-			
+
 			if (castmagenr!=-1)
 				mindist[0] = mageprop[castmagenr].diapazone;
 			else
@@ -952,7 +948,7 @@ void WeaponDoDamage(OBJ *atacker,OBJ *destobj,int x256,int y256,SCUNIT SC_Unit,
 //===========================================
 void AddOverlayAtrImages(OBJ *destobj,int castmagenr,int independentofmain)
 {
-	int radiuseffect,i,canshowatrimage;
+	int canshowatrimage;
 	signed char atrnr;
 	atrnr = mageprop[castmagenr].atronobj;
 	if (atrnr != -1 && GetMageAtr(&destobj->atrobj,atrnr))		//if no have the same mage(images overlay) on unit

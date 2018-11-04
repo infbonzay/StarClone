@@ -26,7 +26,7 @@
 
 ISCRIPT iscriptinfo;
 //============================================
-const char		*iscriptnrstr[ISCRIPTNR_MAXVALUE+2] = 
+const char		*iscriptnrstr[ISCRIPTNR_MAXVALUE+2] =
 {
 		"Init",
 		"Death",
@@ -60,13 +60,13 @@ const char		*iscriptnrstr[ISCRIPTNR_MAXVALUE+2] =
 		"Type"
 };
 //============================================
-const char		*iscriptcmdstr[ISCRIPTCMD_MAXVALUE] = 
-							{	
+const char		*iscriptcmdstr[ISCRIPTCMD_MAXVALUE] =
+							{
 								"playfram",				//0x00
 								"playframtile",			//0x01
 								"sethorpos",			//0x02
 								"setvertpos",			//0x03
-								"setpos",				//0x04			
+								"setpos",				//0x04
 								"wait",					//0x05
 								"waitrand",				//0x06
 								"goto",					//0x07
@@ -95,31 +95,31 @@ const char		*iscriptcmdstr[ISCRIPTCMD_MAXVALUE] =
 								"randcondjmp",			//0x1e
 								"turnccwise",			//0x1f
 								"turncwise",			//0x20
-								"turn1cwise",			//0x21 
-								"turnrand",				//0x22 
-								"setspawnframe",		//0x23 
-								"sigorder",				//0x24 
-								"attackwith",			//0x25 
-								"attack",				//0x26 
-								"castspell",			//0x27 
-								"useweapon",			//0x28 
-								"move",					//0x29 
-								"gotorepeatattk",		//0x2a 
-								"engframe",				//0x2b 
-								"engset",				//0x2c 
-								"__2d",					//0x2d 
-								"nobrkcodestart",		//0x2e 
-								"nobrkcodeend",			//0x2f 
-								"ignorerest",			//0x30 
-								"attkshiftproj",		//0x31 
+								"turn1cwise",			//0x21
+								"turnrand",				//0x22
+								"setspawnframe",		//0x23
+								"sigorder",				//0x24
+								"attackwith",			//0x25
+								"attack",				//0x26
+								"castspell",			//0x27
+								"useweapon",			//0x28
+								"move",					//0x29
+								"gotorepeatattk",		//0x2a
+								"engframe",				//0x2b
+								"engset",				//0x2c
+								"__2d",					//0x2d
+								"nobrkcodestart",		//0x2e
+								"nobrkcodeend",			//0x2f
+								"ignorerest",			//0x30
+								"attkshiftproj",		//0x31
 								"tmprmgraphicstart",	//0x32
-								"tmprmgraphicend",		//0x33 
-								"setfldirect",			//0x34 
+								"tmprmgraphicend",		//0x33
+								"setfldirect",			//0x34
 								"call",					//0x35
-								"return",				//0x36 
+								"return",				//0x36
 								"setflspeed",			//0x37
 								"creategasoverlays",	//0x38
-								"pwrupcondjmp",			//0x39 
+								"pwrupcondjmp",			//0x39
 								"trgtrangecondjmp",		//0x3a
 								"trgtarccondjmp",		//0x3b
 								"curdirectcondjmp",		//0x3c
@@ -157,54 +157,54 @@ unsigned char	iscriptcmdsizeparam[ISCRIPTCMD_MAXVALUE][MAXCMDSIZE]=
 						{ 4, 2, 1, 1},									//lowsprul		0x0000 0x00 0x00
 						{ 2, 2},										//uflunstable	0x0000
 						{ 4, 2, 1, 1},									//spruluselo	0x0000 0x00 0x00
-						{ 4, 2, 1, 1},									//sprul			0x0000 0x00 0x00		
+						{ 4, 2, 1, 1},									//sprul			0x0000 0x00 0x00
 						{ 3, 2, 1},										//sproluselo	0x0000 0x00
-						{ 0},											//end					
+						{ 0},											//end
 						{ 1, 1},										//setflipstate	0x00
 						{ 2, 2},										//playsnd		0x0000
-						{ 0x80, 2},										//playsndrand	0x00 0x0000 0x0000 ....			
+						{ 0x80, 2},										//playsndrand	0x00 0x0000 0x0000 ....
 						{ 4, 2, 2},										//playsndbtwn	0x0000 0x0000
 						{ 0},											//domissiledmg
 						{ 0x80, 2},										//attackmelee	0x00 0x0000 0x0000 ....
-						{ 0},											//followmaingraphic		
+						{ 0},											//followmaingraphic
 						{ 3, 1, 2+0x80},								//randcondjmp	0x00 0x0000
 						{ 1, 1},										//turnccwise	0x00
-						{ 1, 1},										//turncwise		0x00	
-						{ 0}   ,										//turn1cwise			
+						{ 1, 1},										//turncwise		0x00
+						{ 0}   ,										//turn1cwise
 						{ 1, 1},										//turnrand		0x00
 						{ 1, 1},										//setspawnframe 0x00
 						{ 1, 1},										//sigorder		0x00
-						{ 1, 1},										//attackwith	0x00	
-						{ 0},											//attack				
-						{ 0},											//castspell				
+						{ 1, 1},										//attackwith	0x00
+						{ 0},											//attack
+						{ 0},											//castspell
 						{ 1, 1},										//useweapon		0x00
 						{ 1, 1},										//move			0x00
-						{ 0},											//gotorepeatattk		
+						{ 0},											//gotorepeatattk
 						{ 1, 1},										//engframe		0x00
 						{ 1, 1},										//engset		0x00
-						{ 0},											//__2d					
-						{ 0},											//nobrkcodestart		
-						{ 0},											//nobrkcodeend			
-						{ 0},											//ignorerest			
-						{ 1, 1},										//attkshiftproj			
-						{ 0},											//tmprmgraphicstart"	
-						{ 0},											//tmprmgraphicend		
-						{ 1, 1},										//setfldirect			
-						{ 2, 2+0x80},									//call 0x0000			
-						{ 0},											//return				
+						{ 0},											//__2d
+						{ 0},											//nobrkcodestart
+						{ 0},											//nobrkcodeend
+						{ 0},											//ignorerest
+						{ 1, 1},										//attkshiftproj
+						{ 0},											//tmprmgraphicstart"
+						{ 0},											//tmprmgraphicend
+						{ 1, 1},										//setfldirect
+						{ 2, 2+0x80},									//call 0x0000
+						{ 0},											//return
 						{ 2, 2},										//setflspeed 0x0000
-						{ 1, 1},										//creategasoverlays		
+						{ 1, 1},										//creategasoverlays
 						{ 2, 2+0x80},									//pwrupcondjmp 0x0000
 						{ 3, 1, 2+0x80},								//trgtrangecondjmp 0x00 0x0000
 						{ 4, 1, 1, 2+0x80},								//trgtarccondjmp 0x00 0x00 0x0000
 						{ 4, 1, 1, 2+0x80},								//curdirectcondjmp 0x00 0x00 0x0000
 						{ 2, 1, 1},										//imgulnextid 0x00 0x00
-						{ 0},											//__3e					
+						{ 0},											//__3e
 						{ 2, 2+0x80},									//liftoffcondjmp 0x0000
-						{ 1, 1},										//warpoverlay			
+						{ 1, 1},										//warpoverlay
 						{ 1, 1},										//orderdone		0x00
-						{ 4, 2, 1, 1},									//grdsprol				
-						{ 0},											//__43					
+						{ 4, 2, 1, 1},									//grdsprol
+						{ 0},											//__43
 						{ 0},											//dogrddamage"
 						{ 0}											//0x45 unknown cmd, special for see any errors
 				};
@@ -224,7 +224,7 @@ int comparestrings(char *str,const char *strarray[],int nrofstrarray)
 #define MAXCOMPILEBUFSIZE		65535
 int ISCRIPT::CompilePass1(FILE *f)
 {
-	int i,k,stridlen,retcmd,retstatus = 0,intval,isheader,nrparams;
+	int i,k=0,stridlen,retstatus = 0,intval,isheader,nrparams;
 	long compilebufoffs;
 	unsigned char cmdsize,subcmdsize;
 	signed char cmd;
@@ -368,7 +368,7 @@ endcompilepass1:
 //============================================
 int ISCRIPT::CompilePass2(FILE *f)
 {
-	int i,iscriptid,iscriptnr,retstatus=0,labelelemnr,findlabel,stridlen,maxlabels,isheader,idtype;
+	int i,iscriptid,retstatus=0,labelelemnr,findlabel,stridlen,maxlabels,isheader,idtype;
 	signed char cmd;
 	long labeloffs,cmdlabeloffs;
 	char *labelname,*cmdlabel;
@@ -488,7 +488,7 @@ ISCRIPT::ISCRIPT(void)
 //============================================
 int ISCRIPT::CompileIScripts(const char *filename)
 {
-	int i,j,retcode=0;
+	int retcode=0;
 	FILE *f = fopen(filename,"r");
 	if (!f)
 	{
@@ -541,7 +541,6 @@ int ISCRIPT::CompileIScripts(const char *filename)
 //============================================
 ISCRIPT::~ISCRIPT()
 {
-	int i,j;
 	if (compilediscripts)
 	{
 		wfree(compilediscripts);
@@ -603,7 +602,7 @@ int ISCRIPT::ExecuteScript(MAIN_IMG *img)
 int ISCRIPT::ExecuteScript(OVERLAY_IMG *img)
 {
 	unsigned char iscriptcmd,iscriptcmdsize;
-	int offset,status,rot;
+	int status;
 	if (img->flags & (SC_IMAGE_FLAG_DISABLEEXECSCRIPT | SC_IMAGE_FLAG_MARKFORDELETE))
 		return(0);
 	if (img->waitticks<=1)

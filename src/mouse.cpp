@@ -408,10 +408,12 @@ void HighMouse::DoRightClickAction(OBJ *destobj,int xm,int ym,int rightclick)
 //==========================================
 float HighMouse::ScrollMapX(int border,float factor)
 {
+	return 0;
 }
 //==========================================
 float HighMouse::ScrollMapY(int border,float factor)
 {
+	return 0;
 }
 //==========================================
 void HighMouse::RefreshMouseType(int xk,int yk)

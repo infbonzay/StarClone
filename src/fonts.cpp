@@ -51,7 +51,6 @@ void getmaxsymbolsize(int fontnr,int *sizex,int *sizey)
 //================================
 int putglowtext(int x,int y,int fontnr,char *str,int fromcolor,char *table,int glowfactor)
 {
-	PCX *pcx;
 	char symb,maincolor;
 	int i,j,sizex=0,sizey=0,color,changes=0;
 	j = strlen(str);
@@ -98,7 +97,7 @@ int putglowtext(int x,int y,int fontnr,char *str,int fromcolor,char *table,int g
 					sizex += putfntsymbol(x+sizex,y+sizey,fonts[fontnr],symb,table+color*8+glowfactor,0,0)+spaceletters[fontnr];
 				else
 					sizex += putfntsymbol(x+sizex,y+sizey,fonts[fontnr],symb,table+color*8+0,0,0)+spaceletters[fontnr];
-				
+
 	}
 	return(sizex);
 }
@@ -170,10 +169,10 @@ void putrowtext(int x,int y,int sizewinx,int fontnr,int flags,char *str,int from
 int putmessage(int x,int y,int fontnr,char *str,int fromcolor,char *table,GRPFILE *dlggrp)
 {
 	PCX *pcx;
-	char symb,onlyonecolor=0;
+	char symb;
 	unsigned char *adrrowbytes;
-	int pictnr;
-	int i,j,sizex=0,sizey=0,color,colorcube,maincolor,deltax,deltay,cubex,cubey;
+
+	int i,j,sizex=0,sizey=0,color,colorcube,maincolor,cubex,cubey;
 	j = strlen(str);
 	color = (fromcolor-2) & 0x7;
 //	  if (color==STATICCOLOR1)
@@ -300,7 +299,7 @@ int putmessage(int x,int y,int fontnr,char *str,int fromcolor,char *table,GRPFIL
 //================================
 int getlinesintext(int fontnr,char *mes,int meslen,int sizexrect)
 {
-	int i,j,k,from,sizexmes,showstr;
+	int i,from,sizexmes,showstr;
 	showstr=0;
 	from=0;
 	sizexmes=0;
@@ -339,10 +338,9 @@ int getlinesintext(int fontnr,char *mes,int meslen,int sizexrect)
 int putmessage(int x,int y,int fontnr,char *str,int fromcolor,char *table,GRPFILE *dlggrp,int skipup,int skipdown)
 {
 	PCX *pcx;
-	char symb,onlyonecolor=0;
+	char symb;
 	unsigned char *adrrowbytes;
-	int pictnr;
-	int i,j,sizex=0,sizey=0,color,colorcube,maincolor,deltax,deltay,cubex,cubey;
+	int i,j,sizex=0,sizey=0,color,colorcube,maincolor,cubex,cubey;
 	j = strlen(str);
 	color = (fromcolor-2) & 0x7;
 //	  if (color==STATICCOLOR1)
@@ -467,7 +465,7 @@ int putmessage(int x,int y,int fontnr,char *str,int fromcolor,char *table,GRPFIL
 //================================
 int getlettersizexy(int fontnr,int symbolnr,int *sizex,int *sizey)
 {
-	int pictnr,szx,szy;
+	int szx,szy;
 	SC_FontLetterRaw *letter;
 	SC_FontHeader *font = fonts[fontnr];
 	if (!font)
@@ -650,8 +648,8 @@ void putmessageinrectangleL(int x,int y,int sizexrect,int sizeyrect,int rowsize,
 	int fontnr,int color,char *fonttable,GRPFILE *dlggrp,int flags,int skiplinepixels)
 {
 //	  int i,j,k,from,sizepartmes,sizexmes,showstr=0,posx=0,yoffset=0,align=0,skipfirst=skiplinepixels;
-	int i,j,k,from,sizepartmes,sizexmes,showstr=0,posx=0;
-	int yoffset=skiplinepixels,align=0,skipfirst=skiplinepixels,lastline=0;
+	int i,j,k,from,sizexmes,showstr=0,posx=0;
+	int yoffset=skiplinepixels,align=0,lastline=0;
 	j = strlen(mes);
 	if (j>=MAXOUTBUF-2)
 	{
@@ -757,7 +755,7 @@ void putmessageinrectangleL(int x,int y,int sizexrect,int sizeyrect,int rowsize,
 void putmessageinrectangleR(int x,int y,int sizexrect,int sizeyrect,int rowsize,char *mes,
 	int fontnr,int color,char *fonttable,GRPFILE *dlggrp,int flags)
 {
-	int i,j,k,from,sizepartmes,sizexmes,showstr=0,posx=0,yoffset=0;
+	int i,j,k,from,sizexmes,showstr=0,posx=0,yoffset=0;
 	j = strlen(mes);
 	if (j>=MAXOUTBUF-2)
 	{
@@ -827,7 +825,7 @@ void putmessageinrectangleR(int x,int y,int sizexrect,int sizeyrect,int rowsize,
 void putmessageinrectangleM(int x,int y,int sizexrect,int sizeyrect,int rowsize,char *mes,
 	int fontnr,int color,char *fonttable,GRPFILE *dlggrp,int flags)
 {
-	int i,j,k,from,sizepartmes,sizexmes,showstr=0,posx=0,yoffset=0;
+	int i,j,k,from,sizexmes,showstr=0,posx=0,yoffset=0;
 	j = strlen(mes);
 	if (j>=MAXOUTBUF-2)
 	{
@@ -931,7 +929,7 @@ void putsmkbuttonmes(int x,int y,int rowsize,char *mes,int fontnr,int color,char
 			from=i+1;
 			if (sizexmes>sizexrect)
 				sizexrect=sizexmes;
-		}	 
+		}
 	}
 	from=0;
 	for (i=0;i<=j;i++)

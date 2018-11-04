@@ -171,12 +171,12 @@ int drawcircle(int x,int y,int st,struct OBJ *a)
 {
 	int color,flingy_id,sprites_id,images_tbl;
 	int nrcircle,circleoffset;
-	y += 10;
 
-	color = selected_unit_decoration[st];
 
-	if (a->SC_Unit!=SC_NOUNITNR)
+	if (a->SC_Unit != SC_NOUNITNR)
 	{
+		color = selected_unit_decoration[st];
+		y += 10;
 		flingy_id=alldattbl.units_dat->flingy_id[a->SC_Unit];
 		sprites_id=alldattbl.flingy_dat->sprites_id[flingy_id];
 		nrcircle=alldattbl.sprites_dat->sel_circle_image[sprites_id-130];
@@ -198,8 +198,9 @@ int drawcircle(int x,int y,int st,struct OBJ *a)
 			images_tbl=alldattbl.images_dat->images_tbl[nrcircle+IMAGES_DAT_FIRSTCIRCLEDASHED];
 			GetLoadedImage(2,images_tbl,(void **)&puncc[nrcircle]);
 		}
+		return(showcircle(x,y+circleoffset-5,fullc[nrcircle],color));
 	}
-	return(showcircle(x,y+circleoffset-5,fullc[nrcircle],color));
+	return 0;
 }
 //==================================
 void ifselectedDAMAGEDBUILD(OBJ *a)
@@ -252,8 +253,8 @@ void NewUnitPlace(OBJ *a,SCUNIT SC_Unit,int *first_xpos,int *first_ypos)
 //=====================
 OBJ *CreateUnitInUnit(struct OBJ *a,int obj_id,int playsound,int first_xpos,int first_ypos)
 {
-	struct OBJ *temp;
-	if (!first_xpos||!first_ypos)
+	struct OBJ *temp = NULL;
+	if (!first_xpos || !first_ypos)
 	{
 		NewUnitPlace(a,obj_id,&first_xpos,&first_ypos);
 	}
@@ -345,7 +346,6 @@ mylist minimap_showedobjs;
 //==============================================
 void minimap_showobjs(void)
 {
-	int i,max;
 	OBJ *a;
 	minimap_showedobjs.EnumListInit();
 	while( (a = (OBJ *)minimap_showedobjs.GetNextListElem()) )
@@ -433,18 +433,18 @@ void ShowUpgradesInBar(int XWINPOS,int YWINPOS,OBJ *a,OBJstruct *b)
 	char nullchar=0;
 	int xpos=XWINPOS+104,ypos=YWINPOS+51;
 	unsigned short stattxt_id;
-	unsigned char  nrofhits,tech_id;
+	unsigned char  nrofhits;
 	SCUNIT Subunit1;
 	int upgradenr,upgtot,mousehot=MOUSEONUPGRDICONS;
 	int upgrade_id,weapon_id1,weapon_id2;
-	int atack1,atack2,armor,sharmor,icon,icon2;
+	int atack1,atack2,armor,sharmor,icon;
 	int MESxpos=-1,MESypos,MESparam1,MESparam2;
 	int newunit;
 	char *MESstr,*MESicon;
 	char *tempfinal=&nullchar;
 	char *MESfinal=&nullchar;
 
-	char *mes1,*mes2;
+	char *mes1;
 
 	char sname[3]={0,0,0};
 	//tempfinal[0]=0;
@@ -606,24 +606,22 @@ void printobjparam(void)
 		char *tblname;
 		char tblcolor;
 		char sname[400];
-		int snamecolor;
-		struct XY uu;
 		int XWINPOS=138+DELTASCREENX;	//depend on screensize
 		int YWINPOS=388+DELTASCREENY;	//
-		int i,addxforlife=0,xx,yy,xout=XOUT+10,yout=YOUT,maxtimeleft,objtype,playercolor;
+		int i,addxforlife=0,xx,yy,maxtimeleft,objtype,playercolor;
 //	  int i,addxforlife=0,xx,yy,xout=XUNITBAR,yout=YUNITBAR,maxtimeleft,objtype;
-		int icon,objcount,shield_pers,xsize;
+		int objcount,shield_pers,xsize;
 		unsigned int life_pers;
 		int nrofconstrslots,type_id,obj_id,icon_nr,stattxt_nr,stattxt_nr2,race,build,constrelem;
 		int flingy_id,sprites_id,sizexhealthbar;
 		int constrcomplete,underconstruct=0;
-		int shields,lifes,shieldl;
+		int shields,shieldl;
 		int sizex,sizey;
 		SCUNIT SC_Unit;
 		char ss[100],ss1[100];
 		char *ss2;
 		struct OBJ *a;
-		struct OBJstruct *b,*tempobjstr;
+		struct OBJstruct *b;
 		existinbuildconstr = 0;
 		objcount = SelectedUnits.totalelem;
 		if (objcount == 1)
@@ -1173,13 +1171,12 @@ void putnameonselectedunits(int XWINPOS,int YWINPOS)
 		char *tblname;
 		int xpos,ypos,xsize,ysize,i,oldxsize;
 		struct OBJ *a1;
-		struct XY uu;
 		if (highMouse->MouseOnSelectionMode)
 				return;
 		xpos=XWINPOS+30;
 		ypos=YWINPOS+14;
 		SelectedUnits.EnumListInit();
-		while( a1 = (OBJ *)SelectedUnits.GetNextListElem(&i))
+		while( (a1 = (OBJ *)SelectedUnits.GetNextListElem(&i)) )
 		{
 				xsize = 36;
 				ysize = 36;
@@ -1427,7 +1424,7 @@ int	 desenbuildifconstr(void)
 		unsigned short returnedarray[MAXBUILDSPRSIZE*MAXBUILDSPRSIZE];	//array of x,y sizez 1-noposibleconstruct
 								//					 0-posibleconstruct
 		int posibleconstr=0,posibleconstr2=0,constrerror=0;
-		int x0,y0,x,y,xkk,ykk,i,j;
+		int x0,y0,x,y,i,j;
 		int xk,yk;
 		int xmap,ymap;
 		xk=map.MAPXGLOBAL;

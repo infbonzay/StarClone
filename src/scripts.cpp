@@ -62,7 +62,7 @@
 //==================================
 void parsespecialtext(char *namemage,char *strvalue)
 {
-	int i,ii,j,len,symbinline;
+	int i,ii,len,symbinline;
 	len=strlen(strvalue);
 	for (i=0,ii=0,symbinline=0;i<len;i++)
 	{
@@ -124,20 +124,20 @@ need_to_repeat_pass_1:
 		}
 		tempbuf[tempbufpos]=0;
 		tempbufpos=0;
-		number1 = atoi(tempbuf);	
+		number1 = atoi(tempbuf);
 		if (!simbol)
 		{
 			if (nrtosave<maxnrs)
 				maxnrforread[nrtosave++] = number1;
 			return nrtosave;
-		}	 
+		}
 		if (simbol==',')
 		{
 			if (nrtosave<maxnrs)
 				maxnrforread[nrtosave++] = number1;
 			number1=-1;
 			goto need_to_repeat_pass_1;
-		}	 
+		}
 		else
 		if (simbol=='-'&&number1!=-1)
 		{
@@ -290,177 +290,160 @@ void checkstrforrefer(char *str,int *refer,int *mulfactor)
 //=====================================================
 int readrecordmans(FILE *f,int objnr)
 {
-HANDLE nr_mpq;
-SCUNIT SC_Unit;
-int sprites_id;
+	SCUNIT SC_Unit;
 
-int mcost,gcost;
-unsigned int j;
-int k=0;
 
-unsigned char flingy_id,movecontrol;
-unsigned int topspeed;
-
-int unitpict,unitpictpluseffect,soundfrom,soundto;
-int t,t1,i,jj,ii,noerr,u,temp1,temp2,temp3,exitlo,soundtype;
-int intvalue,intvalue2,kk;
-int nr_readed,offsfirstpict,maxsprites;
-int maxsides,typesofmove,nrgrp;
-int maxnormalmove,maxshadowmove,maxmove,firsttypeofmove;
-int grpfirstnr,fileformat,nrofhits;
-int lonr,typemode,speed,acceleration,images_id,images_tbl;
-ATROBJ *adratr;
-struct OBJstruct *adr,*fromotherobj,*tempobj;
-//MOVESTRUCT *allmove;
-
-int temptrigger_atspritenr;
-
-int maxnrforread[100];
-char strid[200],strvalue[200],strvalue2[200];
-while(1)
-{
-	noerr=0;
-	strcpy(strid,"");
-	strcpy(strvalue,"");
-	fscanf(f,"%s = %s\n",strid,strvalue);
-	k++;
-	strupr(strid);
-	strupr(strvalue);
-	intvalue=atoi(strvalue);
-	if (!strid[0])
-		return(-1);
-	for (j=0;j<sizeof(rezu)/sizeof(char *);j++)
+	int mcost,gcost;
+	unsigned int j;
+	int k=0;
+	int t,t1,noerr;
+	int intvalue;
+	struct OBJstruct *adr;
+	char strid[200],strvalue[200];
+	while(1)
 	{
-		if (!strcmp(strid,rezu[j]))
+		noerr=0;
+		strcpy(strid,"");
+		strcpy(strvalue,"");
+		fscanf(f,"%s = %s\n",strid,strvalue);
+		k++;
+		strupr(strid);
+		strupr(strvalue);
+		intvalue=atoi(strvalue);
+		if (!strid[0])
+			return(-1);
+		for (j=0;j<sizeof(rezu)/sizeof(char *);j++)
 		{
-			 switch(j)
-			 {
-			 case 0://S [NEWOBJECT] numberspr nameobj
-				if (intvalue>=NUMBRSPROBJ)
+			if (!strcmp(strid,rezu[j]))
+			{
+				switch(j)
 				{
-					sprintf(forexit,"Error! object nr [%d] >= %d(NUMBRSPROBJ)",
-							intvalue,NUMBRSPROBJ);
-					gameend(forexit);
-				}	  
-				adr=creatememforobjstruct(intvalue);
-				adr->additionaltext=-1;
-				adr->creeptype=NOCREEPBUILD;
-				SC_Unit=intvalue;
-				adr->SC_Unit=intvalue;
-				adr->portraits=FillSMKInfo(SC_Unit);
-//				FillUnitOverlays(adr,SC_Unit);
-				adr->armorupgnr = -1;
-				adr->sightupgnr = -1;
-				adr->manaupgnr	= -1;
-				adr->speedupgnr = 0xff;
-				adr->atackspeedupgnr = -1;
-				adr->SC_CreateFromUnit=SC_NOUNITNR;
-	
-				//we need to calculate repair cost for every tick
-				GetCostUnit(SC_Unit,&mcost,&gcost);
-				if (IsMechanical(SC_Unit))
-				{
-					adr->repairmin=(mcost<<8)/3/GetUnitBuildTime(SC_Unit);
-					adr->repairgas=(gcost<<8)/3/GetUnitBuildTime(SC_Unit);
-					adr->repairlife=GetUnitMaxHealth(SC_Unit)/GetUnitBuildTime(SC_Unit);
-				}
-				else
-				{
-					adr->repairmin=0;
-					adr->repairgas=0;
-					adr->repairlife=0;
-				}
-				//**************read name*************
-				fscanf(f,"%s \n",strvalue);
-					break;
-			 case  1: //endobj
-				return(0);
-			 case  2://B NOADDSTATATCONSTR
-				  if (intvalue)
-				  {
-					 adr->UNITprop |= NOADDSTATSATCONSTR;
-				  }
-				  break;
-			 case  3://I SPEEDUPG
-				adr->speedupgnr = intvalue;
-				fscanf(f,"%s \n",strvalue);
-				adr->speeduppercentage = (atof(strvalue)*25600/100);
-				break;
-			 case  4://I ULTRALISKSECONDARMOR
-				adr->armorupgnr=intvalue;
-				break;
-			case   5://I SIGHTUPG
-				adr->sightupgnr=intvalue;
-				break;
-			case   6://i MANAUPG
-				adr->manaupgnr=intvalue;
-				break;
-			case   7://[i],i,i,i,i,.. PROPERTIES
-				if (intvalue>=128)
-				{
-					adr->UNITprop |= VARSELECT4NOTSEEPROP;
-					intvalue -=128;
-				}
-				if (intvalue>MAXLINESPROPERTIES)
-				{
-					sprintf(forexit,"Error! obj[%d] line[%d] maxline=%d , exceeded"
-									" max value=[%d]",adr->SC_Unit,
-									k,intvalue,MAXLINESPROPERTIES);
-					gameend(forexit);
-				}
-				adr->maxlineprop = intvalue;
-				int temp;
-				for (t=0;t<adr->maxlineprop;t++)
-				{
-					for (t1=0;t1<9;t1++)
+				case 0://S [NEWOBJECT] numberspr nameobj
+					if (intvalue>=NUMBRSPROBJ)
 					{
-						fscanf(f,"%s \n",strvalue);
-						temp = atoi(strvalue);
-						adr->modemove[t][t1] = temp;
+						sprintf(forexit,"Error! object nr [%d] >= %d(NUMBRSPROBJ)",
+								intvalue,NUMBRSPROBJ);
+						gameend(forexit);
 					}
-				}
-				break;
-			case  8://i TIMELEFT
-				adr->maxtimeleft=intvalue;
-				break;
-			case  9://CREATEFROMUNIT
-					adr->SC_CreateFromUnit = intvalue;
+					adr=creatememforobjstruct(intvalue);
+					adr->additionaltext=-1;
+					adr->creeptype=NOCREEPBUILD;
+					SC_Unit=intvalue;
+					adr->SC_Unit=intvalue;
+					adr->portraits=FillSMKInfo(SC_Unit);
+	//				FillUnitOverlays(adr,SC_Unit);
+					adr->armorupgnr = -1;
+					adr->sightupgnr = -1;
+					adr->manaupgnr	= -1;
+					adr->speedupgnr = 0xff;
+					adr->atackspeedupgnr = -1;
+					adr->SC_CreateFromUnit=SC_NOUNITNR;
+
+					//we need to calculate repair cost for every tick
+					GetCostUnit(SC_Unit,&mcost,&gcost);
+					if (IsMechanical(SC_Unit))
+					{
+						adr->repairmin=(mcost<<8)/3/GetUnitBuildTime(SC_Unit);
+						adr->repairgas=(gcost<<8)/3/GetUnitBuildTime(SC_Unit);
+						adr->repairlife=GetUnitMaxHealth(SC_Unit)/GetUnitBuildTime(SC_Unit);
+					}
+					else
+					{
+						adr->repairmin=0;
+						adr->repairgas=0;
+						adr->repairlife=0;
+					}
+					//**************read name*************
+					fscanf(f,"%s \n",strvalue);
+						break;
+				case  1: //endobj
+					return(0);
+				case  2://B NOADDSTATATCONSTR
+					if (intvalue)
+					{
+						adr->UNITprop |= NOADDSTATSATCONSTR;
+					}
 					break;
-			case 10://i ATACKSPEEDUPG
-				adr->atackspeedupgnr=intvalue;
-				  break;
-			case 11:	//CREEP
-				adr->creeptype = intvalue;
+				case  3://I SPEEDUPG
+					adr->speedupgnr = intvalue;
+					fscanf(f,"%s \n",strvalue);
+					adr->speeduppercentage = (atof(strvalue)*25600/100);
+					break;
+				case  4://I ULTRALISKSECONDARMOR
+					adr->armorupgnr=intvalue;
+					break;
+				case   5://I SIGHTUPG
+					adr->sightupgnr=intvalue;
+					break;
+				case   6://i MANAUPG
+					adr->manaupgnr=intvalue;
+					break;
+				case   7://[i],i,i,i,i,.. PROPERTIES
+					if (intvalue>=128)
+					{
+						adr->UNITprop |= VARSELECT4NOTSEEPROP;
+						intvalue -=128;
+					}
+					if (intvalue>MAXLINESPROPERTIES)
+					{
+						sprintf(forexit,"Error! obj[%d] line[%d] maxline=%d , exceeded"
+										" max value=[%d]",adr->SC_Unit,
+										k,intvalue,MAXLINESPROPERTIES);
+						gameend(forexit);
+					}
+					adr->maxlineprop = intvalue;
+					int temp;
+					for (t=0;t<adr->maxlineprop;t++)
+					{
+						for (t1=0;t1<9;t1++)
+						{
+							fscanf(f,"%s \n",strvalue);
+							temp = atoi(strvalue);
+							adr->modemove[t][t1] = temp;
+						}
+					}
+					break;
+				case  8://i TIMELEFT
+					adr->maxtimeleft=intvalue;
+					break;
+				case  9://CREATEFROMUNIT
+						adr->SC_CreateFromUnit = intvalue;
+						break;
+				case 10://i ATACKSPEEDUPG
+					adr->atackspeedupgnr=intvalue;
+					break;
+				case 11:	//CREEP
+					adr->creeptype = intvalue;
+					break;
+				case 12://I CLOAKRANGE
+					adr->cloakrange = intvalue;
+					break;
+				case 13://I ADDITIONALTEXT
+					adr->additionaltext=intvalue;
+					break;
+				default:
+					fscanf(f,"%s \n",strvalue);
+					sprintf(forexit,"line [%d], [DIRECTIVE %s] in OBJ=[%d] not found next is[%s]",k,
+							strid,adr->SC_Unit,strvalue);
+					gameend(forexit);
+					break;
+				}
+				noerr=1;
 				break;
-			case 12://I CLOAKRANGE
-				adr->cloakrange = intvalue;
-				break;
-			case 13://I ADDITIONALTEXT
-				adr->additionaltext=intvalue;
-				break;
-			default:
-				fscanf(f,"%s \n",strvalue);
-				sprintf(forexit,"line [%d], [DIRECTIVE %s] in OBJ=[%d] not found next is[%s]",k,
-						strid,adr->SC_Unit,strvalue);
-				gameend(forexit);
-				break;
-			}
-			noerr=1;
-			break;
-		  }//if
-	 }//for
-	 if (!noerr)
-	 {
-		if (strid[0]=='#')
+			}//if
+		}//for
+		if (!noerr)
 		{
-			fgets(strvalue,199,f);
-			continue;
+			if (strid[0]=='#')
+			{
+				fgets(strvalue,199,f);
+				continue;
+			}
+			fscanf(f,"%s \n",strvalue);
+			sprintf(forexit,"line [%d],OBJ=[%d] %s not found next is [%s]",k,adr->SC_Unit,strid,strvalue);
+			gameend(forexit);
 		}
-		fscanf(f,"%s \n",strvalue);
-		sprintf(forexit,"line [%d],OBJ=[%d] %s not found next is [%s]",k,adr->SC_Unit,strid,strvalue);
-		gameend(forexit);
-	 }
-}
+	}
 }
 //=================================
 const char *LANGVALUES[2]={"ENGLISH","RUSSIAN"};
@@ -537,7 +520,7 @@ void unloadcfg(void)
 {
 	if (mpqprio)
 	{
-		wfree(mpqprio); 
+		wfree(mpqprio);
 		mpqprio=NULL;
 	}
 }
@@ -545,7 +528,7 @@ void unloadcfg(void)
 int loadcfg(const char *filename,int *mpqresult)
 {
 	unsigned int j,totalmpqs,i,result;
-	int k=0,intvalue,err,err2,ii,jj,mpqfounded=1;
+	int k=0,intvalue,err,ii,jj,mpqfounded=1;
 	static char strid[200],strvalue[200],rem[200];
 	HANDLE installmpq,hmpq;
 	FILE *f;
@@ -689,7 +672,7 @@ int loadcfg(const char *filename,int *mpqresult)
 						{
 							fscanf(f,"%s \n",strvalue);			//load mpq filefilename
 							fscanf(f,"%s \n",rem);				//load priority of this mpq (high value-high priority(first access))
-							
+
 							strncpy(mpqprio[ii].mpqfilename,strvalue,MAX_PATH-1);
 							mpqprio[ii].prio = atoi(rem);
 						}
@@ -700,10 +683,10 @@ int loadcfg(const char *filename,int *mpqresult)
 							{
 								temp_prio.prio = mpqprio[jj].prio;
 								strcpy(temp_prio.mpqfilename,mpqprio[jj].mpqfilename);
-								
+
 								mpqprio[jj].prio=mpqprio[ii].prio;
 								strcpy(mpqprio[jj].mpqfilename,mpqprio[ii].mpqfilename);
-								
+
 								mpqprio[ii].prio = temp_prio.prio;
 								strcpy(mpqprio[ii].mpqfilename,temp_prio.mpqfilename);
 							}
@@ -828,317 +811,313 @@ int loadcfg(const char *filename,int *mpqresult)
 int readmageproperties(void)
 {
 	char *statstr;
-	OBJstruct *adr;
 	FILE *f;
-	unsigned int images_id,images_tbl;
-	int i,j,k,intvalue,whatobj,ii,whatmage,grpfirstnr,nrgrp,totalmage=0;
-	int grpnr;
-	int picttype,maxsprites,nr_readed,fileformat;
-	char c;
-	int maxnrforread[200];
-	static char strid[200],strvalue[200],strval2[200],fname[200];;
+	int i,j,intvalue,whatobj,totalmage=0;
+	static char strid[200],strvalue[200],strval2[200];
 	f=fopen(filemageprop,"r");
 
-while(!feof(f))
-{
-	strcpy(strid,"");
-	strcpy(strvalue,"");
-	fscanf(f,"%s = %s\n",strid,strvalue);
-	strupr(strid);
-//		strupr(strvalue);
-	intvalue=atoi(strvalue);
-	for (j=0;j<sizeof(rezmp)/sizeof(char *);j++)
-		if (!strcmp(strid,rezmp[j]))
+	while(!feof(f))
+	{
+		strcpy(strid,"");
+		strcpy(strvalue,"");
+		fscanf(f,"%s = %s\n",strid,strvalue);
+		strupr(strid);
+	//		strupr(strvalue);
+		intvalue=atoi(strvalue);
+		for (j=0;j<sizeof(rezmp)/sizeof(char *);j++)
 		{
-			switch(j){
-			case 0://S [NEWMAGE] numbermage namemage whatpict_in_icons.grp nratrmage
-				whatobj=intvalue;
-				totalmage++;
-				fscanf(f,"%s \n",strvalue);
-//				strlwr(strvalue);
-				fscanf(f,"%s \n",strval2);
-				mageprop[whatobj].icon_id=atoi(strval2);
-				mageprop[whatobj].keyfororder=255;
-//				mageprop[whatobj].orderdatid=255;
-				mageprop[whatobj].techid=255;
-				mageprop[whatobj].createweapon=255;
+			if (!strcmp(strid,rezmp[j]))
+			{
+				switch(j){
+				case 0://S [NEWMAGE] numbermage namemage whatpict_in_icons.grp nratrmage
+					whatobj=intvalue;
+					totalmage++;
+					fscanf(f,"%s \n",strvalue);
+	//				strlwr(strvalue);
+					fscanf(f,"%s \n",strval2);
+					mageprop[whatobj].icon_id=atoi(strval2);
+					mageprop[whatobj].keyfororder=255;
+	//				mageprop[whatobj].orderdatid=255;
+					mageprop[whatobj].techid=255;
+					mageprop[whatobj].createweapon=255;
 
-//				parsespecialtext(mageprop[whatobj].namemage,strvalue);
-				mageprop[whatobj].type_id=ORDERS_NONE;
-				mageprop[whatobj].obj_id=-1;
-				mageprop[whatobj].depend.maxdepend=0;
-				mageprop[whatobj].depend.type_id[0]=ORDERS_NONE;
-				mageprop[whatobj].depend.type_id[1]=ORDERS_NONE;
-				mageprop[whatobj].depend.type_id[2]=ORDERS_NONE;
+	//				parsespecialtext(mageprop[whatobj].namemage,strvalue);
+					mageprop[whatobj].type_id=ORDERS_NONE;
+					mageprop[whatobj].obj_id=-1;
+					mageprop[whatobj].depend.maxdepend=0;
+					mageprop[whatobj].depend.type_id[0]=ORDERS_NONE;
+					mageprop[whatobj].depend.type_id[1]=ORDERS_NONE;
+					mageprop[whatobj].depend.type_id[2]=ORDERS_NONE;
 
 #ifdef DEBUGOUTPUT
-				strcpy(mageprop[whatobj].namemage,strvalue);
+					strcpy(mageprop[whatobj].namemage,strvalue);
 #endif
-				fscanf(f,"%s \n",strvalue);
-				intvalue = atoi(strvalue);
-				if (intvalue>=MAXMAGEATR)
-				{
-					sprintf(forexit,"Error! [%d] mage atr > %d (MAXMAGEATR)",whatobj,MAXMAGEATR);
-					savelog(forexit,0);
-					fclose(f);
-					return(-1);
-				}
-				if (intvalue!=-1)
-				{
-					if (magenrfrommageatr[intvalue])
+					fscanf(f,"%s \n",strvalue);
+					intvalue = atoi(strvalue);
+					if (intvalue>=MAXMAGEATR)
 					{
-						sprintf(forexit,"Error! mage atr already exist and = [%d]mage!!!",magenrfrommageatr[intvalue]);
+						sprintf(forexit,"Error! [%d] mage atr > %d (MAXMAGEATR)",whatobj,MAXMAGEATR);
 						savelog(forexit,0);
 						fclose(f);
 						return(-1);
 					}
-					magenrfrommageatr[intvalue]=whatobj;
-				}
-				mageprop[whatobj].atronobj = intvalue;
-				mageprop[whatobj].soundmode = -1;
-				mageprop[whatobj].race=NEUTRALRACE;
-				break;
-			case 1://I MINDISTANCE
-				mageprop[whatobj].mindistance = (intvalue << 8);
-				break;
-			case 2://I DIAPAZONE
-			   mageprop[whatobj].diapazone = (intvalue << 8);
-				break;
-			case 3://I rightway
-				if (!strcmp(strvalue,"YES"))
-				{
-					mageprop[whatobj].atr |= ORDER_RIGHTWAY;
-				}
-				else
-				{
-					int ormask = 0x00;
-					int andmask = 0x00;
-					fscanf(f,"%s \n",strvalue);
-					if (!strcmp(strvalue,"ONTERRAIN"))
+					if (intvalue!=-1)
 					{
-						ormask |= WTF_ONTERRAIN;
-						mageprop[whatobj].atr |= ORDER_ONTERRAIN;
-					}else if (!strcmp(strvalue,"ONUNIT"))
+						if (magenrfrommageatr[intvalue])
+						{
+							sprintf(forexit,"Error! mage atr already exist and = [%d]mage!!!",magenrfrommageatr[intvalue]);
+							savelog(forexit,0);
+							fclose(f);
+							return(-1);
+						}
+						magenrfrommageatr[intvalue]=whatobj;
+					}
+					mageprop[whatobj].atronobj = intvalue;
+					mageprop[whatobj].soundmode = -1;
+					mageprop[whatobj].race=NEUTRALRACE;
+					break;
+				case 1://I MINDISTANCE
+					mageprop[whatobj].mindistance = (intvalue << 8);
+					break;
+				case 2://I DIAPAZONE
+				mageprop[whatobj].diapazone = (intvalue << 8);
+					break;
+				case 3://I rightway
+					if (!strcmp(strvalue,"YES"))
 					{
-						andmask |= WTF_ONTERRAIN;
+						mageprop[whatobj].atr |= ORDER_RIGHTWAY;
 					}
 					else
 					{
-						sprintf(forexit,"Error! load [%s] need to be (ONUNIT | ONTERRAIN)",strvalue);
-						savelog(forexit,0);
-						fclose(f);
-						return(-3);
-					}
-					fscanf(f,"%s \n",strvalue);
-					int maxtypesofunit = atoi(strvalue);
-					for (int i=0;i<maxtypesofunit;i++)
-					{
+						int ormask = 0x00;
+						int andmask = 0x00;
 						fscanf(f,"%s \n",strvalue);
-						strupr(strvalue);
-						if (!strcmp(strvalue,"ONSPELLCASTER"))
+						if (!strcmp(strvalue,"ONTERRAIN"))
 						{
-							ormask |= WTF_STARCLONE_ONSPELLCASTER;
-						}
-						else if (!strcmp(strvalue,"NONBUILD"))
+							ormask |= WTF_ONTERRAIN;
+							mageprop[whatobj].atr |= ORDER_ONTERRAIN;
+						}else if (!strcmp(strvalue,"ONUNIT"))
 						{
-							ormask |= WTF_NONBUILD;
-						}
-						else if (!strcmp(strvalue,"ONAIR"))
-						{
-							ormask |= WTF_AIR;
-						}
-						else if (!strcmp(strvalue,"ONGROUND"))
-						{
-							ormask |= WTF_GROUND;
-						}
-						else if (!strcmp(strvalue,"ONORGANIC"))
-						{
-							ormask |= WTF_ORGANIC;
-						}
-						else if (!strcmp(strvalue,"MECHANICALORGANIC"))
-						{
-							ormask |= WTF_MECHANICALORGANIC;
-						}
-						else if (!strcmp(strvalue,"OWN"))
-						{
-							ormask |= WTF_OWN;
-						}
-						else if (!strcmp(strvalue,"NOUNITDESTINATION"))
-						{
-							//cast on place were is unit where in casting time
-							mageprop[whatobj].atr |= ORDER_IGNOREUNITDESTINATION;
+							andmask |= WTF_ONTERRAIN;
 						}
 						else
 						{
-							sprintf(forexit,"Error! load [%s] need to be (ONSPELLCASTER|NONBUILD)",strvalue);
+							sprintf(forexit,"Error! load [%s] need to be (ONUNIT | ONTERRAIN)",strvalue);
 							savelog(forexit,0);
 							fclose(f);
 							return(-3);
 						}
+						fscanf(f,"%s \n",strvalue);
+						int maxtypesofunit = atoi(strvalue);
+						for (int i=0;i<maxtypesofunit;i++)
+						{
+							fscanf(f,"%s \n",strvalue);
+							strupr(strvalue);
+							if (!strcmp(strvalue,"ONSPELLCASTER"))
+							{
+								ormask |= WTF_STARCLONE_ONSPELLCASTER;
+							}
+							else if (!strcmp(strvalue,"NONBUILD"))
+							{
+								ormask |= WTF_NONBUILD;
+							}
+							else if (!strcmp(strvalue,"ONAIR"))
+							{
+								ormask |= WTF_AIR;
+							}
+							else if (!strcmp(strvalue,"ONGROUND"))
+							{
+								ormask |= WTF_GROUND;
+							}
+							else if (!strcmp(strvalue,"ONORGANIC"))
+							{
+								ormask |= WTF_ORGANIC;
+							}
+							else if (!strcmp(strvalue,"MECHANICALORGANIC"))
+							{
+								ormask |= WTF_MECHANICALORGANIC;
+							}
+							else if (!strcmp(strvalue,"OWN"))
+							{
+								ormask |= WTF_OWN;
+							}
+							else if (!strcmp(strvalue,"NOUNITDESTINATION"))
+							{
+								//cast on place were is unit where in casting time
+								mageprop[whatobj].atr |= ORDER_IGNOREUNITDESTINATION;
+							}
+							else
+							{
+								sprintf(forexit,"Error! load [%s] need to be (ONSPELLCASTER|NONBUILD)",strvalue);
+								savelog(forexit,0);
+								fclose(f);
+								return(-3);
+							}
+						}
+						if (mageprop[whatobj].createweapon != 255)
+						{
+							alldattbl.weapons_dat->TargetFlags[mageprop[whatobj].createweapon] |= ormask;	//change default target flags
+							alldattbl.weapons_dat->TargetFlags[mageprop[whatobj].createweapon] &= ~andmask; //change default target flags
+						}
 					}
-					if (mageprop[whatobj].createweapon != 255)
+					break;
+				case 4://IGNOREREQUEREMENTS
+						mageprop[whatobj].atr |= ORDER_IGNOREREQ;
+						break;
+				case 5://I TIMEMAGEACTIVE
+						mageprop[whatobj].timemageactive=intvalue;
+						break;
+				case 6://IMAGES_ID
+						mageprop[whatobj].images_id[0]=intvalue;
+						fscanf(f,"%s \n",strvalue);
+						mageprop[whatobj].images_id[1]=atoi(strvalue);
+						fscanf(f,"%s \n",strvalue);
+						mageprop[whatobj].images_id[2]=atoi(strvalue);
+						break;
+				case 7://USETECHID
+						mageprop[whatobj].techid=intvalue;
+	//					mageprop[whatobj].orderdatid=intvalue;
+	//					DEBUGMESSCR("obj=%d orderdatid=%d techdataid=%d\n",whatobj,intvalue,
+	//						alldattbl.orders_dat->techdata_id[intvalue]);
+						break;
+				case 8://DEPENDONTYPEID = NRsOFDEPEND [dependtypeid1 dependobjid1 ... ]
+						mageprop[whatobj].depend.maxdepend=intvalue;
+						for (i=0;i<intvalue;i++)
+						{
+							fscanf(f,"%s %s \n",strvalue,strval2);
+							mageprop[whatobj].depend.obj_id[i]=atoi(strval2);
+							mageprop[whatobj].depend.obj_id2[i]=SC_NOUNITNR;
+							if (!strcmp(strvalue,"UNIT"))
+							{
+								mageprop[whatobj].depend.type_id[i]=ORDERS_UNIT;
+							}
+							else
+								if (!strcmp(strvalue,"UPGRADE"))
+								{
+									mageprop[whatobj].depend.type_id[i]=ORDERS_UPGRADE;
+								}
+								else
+									if (!strcmp(strvalue,"TECHNOLOGY"))
+									{
+										mageprop[whatobj].depend.type_id[i]=ORDERS_TECHNOLOGY;
+									}
+									else
+										if (!strcmp(strvalue,"UNITANDADDON"))
+										{
+											mageprop[whatobj].depend.type_id[i]=ORDERS_UNIT;
+											fscanf(f,"%s \n",strvalue);
+											mageprop[whatobj].depend.obj_id2[i]=atoi(strvalue);
+										}
+										else
+										{
+											printf("error dependon...%s\n",strvalue);
+										}
+						}
+						break;
+				case 9://CREATEWEAPON
+						mageprop[whatobj].createweapon=intvalue;
+						break;
+				case 10://queuedtomovelist
+						mageprop[whatobj].atr |= ORDER_CANBEQUEUED;
+						break;
+				case 11://CANNOTBEINTERRUPTED
+						mageprop[whatobj].atr |= ORDER_CANNOTBEINTERRUPTED;
+						break;
+				case 12://SOUNDONCASTANDHIT
+						mageprop[whatobj].sound_id[SOUNDONCAST] = intvalue;
+						fscanf(f,"%s \n",strvalue);
+						mageprop[whatobj].sound_id[SOUNDONHIT]	= atoi(strvalue);
+						break;
+				case 13://RACE
+						if (!strcmp(strvalue,"ZERG"))
+						{
+							mageprop[whatobj].race=ZERGRACE;
+						}
+						else
+							if (!strcmp(strvalue,"TERRAN"))
+							{
+								mageprop[whatobj].race=TERRANRACE;
+							}
+							else
+								if (!strcmp(strvalue,"PROTOSS"))
+								{
+									mageprop[whatobj].race=PROTOSSRACE;
+								}
+								else
+								{
+									sprintf(forexit,"MAGE:error [%s] in [%d] not found",strvalue,whatobj);
+									savelog(forexit,0);
+									fclose(f);
+									return(-6);
+								}
+						break;
+				case 14://SHOWHALLUCINATED
+						mageprop[whatobj].atr |= ORDER_SHOWHALLUCINATED;
+					break;
+				case 15://ORDERTYPE
+					if (!strcmp(strvalue,"ORDER"))
 					{
-						alldattbl.weapons_dat->TargetFlags[mageprop[whatobj].createweapon] |= ormask;	//change default target flags
-						alldattbl.weapons_dat->TargetFlags[mageprop[whatobj].createweapon] &= ~andmask; //change default target flags
+						mageprop[whatobj].type_id=ORDERS_MODEMOVE;
+						intvalue=1;
 					}
-				}
-				break;
-			case 4://IGNOREREQUEREMENTS
-					mageprop[whatobj].atr |= ORDER_IGNOREREQ;
-					break;
-			case 5://I TIMEMAGEACTIVE
-					mageprop[whatobj].timemageactive=intvalue;
-					break;
-			case 6://IMAGES_ID
-					mageprop[whatobj].images_id[0]=intvalue;
-					fscanf(f,"%s \n",strvalue);
-					mageprop[whatobj].images_id[1]=atoi(strvalue);
-					fscanf(f,"%s \n",strvalue);
-					mageprop[whatobj].images_id[2]=atoi(strvalue);
-					break;
-			case 7://USETECHID
-					mageprop[whatobj].techid=intvalue;
-//					mageprop[whatobj].orderdatid=intvalue;
-//					DEBUGMESSCR("obj=%d orderdatid=%d techdataid=%d\n",whatobj,intvalue,
-//						alldattbl.orders_dat->techdata_id[intvalue]);
-					break;
-			case 8://DEPENDONTYPEID = NRsOFDEPEND [dependtypeid1 dependobjid1 ... ]
-					mageprop[whatobj].depend.maxdepend=intvalue;
-					for (i=0;i<intvalue;i++)
-					{
-						fscanf(f,"%s %s \n",strvalue,strval2);
-						mageprop[whatobj].depend.obj_id[i]=atoi(strval2);
-						mageprop[whatobj].depend.obj_id2[i]=SC_NOUNITNR;
+					else
 						if (!strcmp(strvalue,"UNIT"))
 						{
-							mageprop[whatobj].depend.type_id[i]=ORDERS_UNIT;
+							mageprop[whatobj].type_id=ORDERS_UNIT;
+							intvalue=1;
 						}
 						else
 							if (!strcmp(strvalue,"UPGRADE"))
 							{
-								mageprop[whatobj].depend.type_id[i]=ORDERS_UPGRADE;
+								mageprop[whatobj].type_id=ORDERS_UPGRADE;
+								intvalue=3;
 							}
 							else
 								if (!strcmp(strvalue,"TECHNOLOGY"))
 								{
-									mageprop[whatobj].depend.type_id[i]=ORDERS_TECHNOLOGY;
+									mageprop[whatobj].type_id=ORDERS_TECHNOLOGY;
+									intvalue=1;
 								}
 								else
-									if (!strcmp(strvalue,"UNITANDADDON"))
-									{
-										mageprop[whatobj].depend.type_id[i]=ORDERS_UNIT;
-										fscanf(f,"%s \n",strvalue);
-										mageprop[whatobj].depend.obj_id2[i]=atoi(strvalue);
-									}
-									else
-									{
-										printf("error dependon...%s\n",strvalue);
-									}
-					}
-					break;
-			case 9://CREATEWEAPON
-					mageprop[whatobj].createweapon=intvalue;
-					break;
-			case 10://queuedtomovelist
-					mageprop[whatobj].atr |= ORDER_CANBEQUEUED;
-					break;
-			case 11://CANNOTBEINTERRUPTED
-					mageprop[whatobj].atr |= ORDER_CANNOTBEINTERRUPTED;
-					break;
-			case 12://SOUNDONCASTANDHIT
-					mageprop[whatobj].sound_id[SOUNDONCAST] = intvalue;
+								{
+									printf("error ordertype %s\n",strvalue);
+									gameend("");
+								}
 					fscanf(f,"%s \n",strvalue);
-					mageprop[whatobj].sound_id[SOUNDONHIT]	= atoi(strvalue);
-					break;
-			case 13://RACE
-					if (!strcmp(strvalue,"ZERG"))
+					mageprop[whatobj].obj_id=atoi(strvalue);
+					for (i=0;i<intvalue;i++)
 					{
-						mageprop[whatobj].race=ZERGRACE;
+						fscanf(f,"%s \n",strvalue);
+						mageprop[whatobj].stattxt_id_disable[i] = atoi(strvalue);
 					}
-					else
-						if (!strcmp(strvalue,"TERRAN"))
-						{
-							mageprop[whatobj].race=TERRANRACE;
-						}
-						else
-							if (!strcmp(strvalue,"PROTOSS"))
-							{
-								mageprop[whatobj].race=PROTOSSRACE;
-							}
-							else
-							{
-								sprintf(forexit,"MAGE:error [%s] in [%d] not found",strvalue,whatobj);
-								savelog(forexit,0);
-								fclose(f);
-								return(-6);
-							}
-					break;
-			case 14://SHOWHALLUCINATED
-					mageprop[whatobj].atr |= ORDER_SHOWHALLUCINATED;
-				break;
-			case 15://ORDERTYPE
-				if (!strcmp(strvalue,"ORDER"))
-				{
-					mageprop[whatobj].type_id=ORDERS_MODEMOVE;
-					intvalue=1;
-				}
-				else
-					if (!strcmp(strvalue,"UNIT"))
-					{
-						mageprop[whatobj].type_id=ORDERS_UNIT;
-						intvalue=1;
-					}
-					else
-						if (!strcmp(strvalue,"UPGRADE"))
-						{
-							mageprop[whatobj].type_id=ORDERS_UPGRADE;
-							intvalue=3;
-						}
-						else
-							if (!strcmp(strvalue,"TECHNOLOGY"))
-							{
-								mageprop[whatobj].type_id=ORDERS_TECHNOLOGY;
-								intvalue=1;
-							}
-							else
-							{
-								printf("error ordertype %s\n",strvalue);
-								gameend("");
-							}
-				fscanf(f,"%s \n",strvalue);
-				mageprop[whatobj].obj_id=atoi(strvalue);
-				for (i=0;i<intvalue;i++)
-				{
 					fscanf(f,"%s \n",strvalue);
-					mageprop[whatobj].stattxt_id_disable[i] = atoi(strvalue);
+					mageprop[whatobj].stattxt_id_enable=atoi(strvalue);
+					statstr=alldattbl.stattxt_tbl->get_TBL_STR(mageprop[whatobj].stattxt_id_enable);
+					if (statstr[1]<=7)
+						mageprop[whatobj].keyfororder=toupper(statstr[0]);
+					break;
+				default:
+					sprintf(forexit,"MAGE:error [%s] in [%d] not found",strid,whatobj);
+					savelog(forexit,0);
+					fclose(f);
+					return(-6);
 				}
-				fscanf(f,"%s \n",strvalue);
-				mageprop[whatobj].stattxt_id_enable=atoi(strvalue);
-				statstr=alldattbl.stattxt_tbl->get_TBL_STR(mageprop[whatobj].stattxt_id_enable);
-				if (statstr[1]<=7)
-					mageprop[whatobj].keyfororder=toupper(statstr[0]);
 				break;
-			default:
-				  sprintf(forexit,"MAGE:error [%s] in [%d] not found",strid,whatobj);
-				  savelog(forexit,0);
-				  fclose(f);
-				  return(-6);
-			 }
-			 break;
+			}
 		}
-	if (j>=sizeof(rezmp)/sizeof(char *))
-	{
-		if (strid[0]=='#')
-			continue;
-		sprintf(forexit,"MAGE:error [%s] in [%d] not found",strid,
-				  whatobj);
-		savelog(forexit,0);
-		fclose(f);
-		return(-6);
+		if (j>=sizeof(rezmp)/sizeof(char *))
+		{
+			if (strid[0]=='#')
+				continue;
+			sprintf(forexit,"MAGE:error [%s] in [%d] not found",strid,
+					whatobj);
+			savelog(forexit,0);
+			fclose(f);
+			return(-6);
+		}
 	}
-}
-fclose(f);
-return(totalmage);
+	fclose(f);
+	return(totalmage);
 }
 //=====================================================
 #define MAXFIDSMKFILE	4
@@ -1156,7 +1135,7 @@ SMKPORTRAITS *FillSMKInfo(SCUNIT SC_Unit)
 	SMKPORTRAITS *portraits=NULL;
 //	  HANDLE hmpq;
 	MPQIDS tempfile;
-	int portdata_id,portdata_tbl,i,len,typeofsmk,mpqfilenr;
+	int portdata_id,portdata_tbl,i,len,typeofsmk;
 	char smkfilename[40];
 	portdata_id=alldattbl.units_dat->portdata_id[SC_Unit];
 	if (portdata_id!=-1)

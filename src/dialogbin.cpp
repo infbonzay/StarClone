@@ -93,12 +93,11 @@ MENUSTR *LoadDialogBin(const char *dialogbinfilename,int dialog_opt,int addforre
 	int xmin,ymin,xsize,ysize,xwin,ywin,xwinsize,ywinsize,strxlen;
 	int fontnr;
 
-	SMK_ARRAY smkinfo[10]; 
+	SMK_ARRAY smkinfo[10];
 	int nrofsmks=0,smkf[10],smktextx,smktexty;
 	DIALOGBIN_SMK *tempsmk[10],*smkarray;
 
-	
-	char zerostring=0;
+
 	char *dialogdata,*text;
 	unsigned char hotkey,transparentcolor,translucencycolor;
 	DIALOGBIN *tempdialog,*tempdialog2;
@@ -214,7 +213,7 @@ MENUSTR *LoadDialogBin(const char *dialogbinfilename,int dialog_opt,int addforre
 		}
 		else
 			buttontype=BUTTONTYPEFULL;
-		
+
 		if (dialog_opt&DIALOGBIN_MAINDIALOGS)
 		{
 				buttoncolor=MBUTTONCOLOR1;
@@ -336,7 +335,7 @@ MENUSTR *LoadDialogBin(const char *dialogbinfilename,int dialog_opt,int addforre
 		}
 		setitemflags(menu,elemnr,flags);
 
-		
+
 //	  }//dialog test
 #ifdef SHOWMENUINFO
 		printf("elem %d - (%dx%d) - (%dx%d) type=%d flags=%08x text= [%s] txo=%d tyo=%d rax=%d ray=%d\n",
@@ -359,7 +358,7 @@ MENUSTR *LoadDialogBin(const char *dialogbinfilename,int dialog_opt,int addforre
 //==========================================
 DIALOGBIN_INFO *DialogBin_GetItemCoords(const char *dialogbinfilename)
 {
-	int maxelem,i,lastelem=0,elemnr=0,len;
+	int maxelem,lastelem=0,elemnr=0,len;
 	int sizex,sizey;
 	DIALOGBIN_INFO *alldialogcoords;
 	char *dialogdata,*text;
@@ -462,8 +461,8 @@ void DialogBin_Save(MENUSTR *menu,char *label,const char *filename)
 //==========================================
 void DialogBin_Save(MENUSTR *menu,char *label,const char *filename,int *sortedarray)
 {
-	int arrayelemnr,elemnr=0,menuelemnr=0,incrmenuelem,flags,alltext,textdataoffset,sizedialog;
-	int xwin,ywin,xwinsize,ywinsize,i,len,totalsmk,dialogsmksize,havetxt;
+	int arrayelemnr,elemnr=0,menuelemnr=0,incrmenuelem,flags,textdataoffset,sizedialog;
+	int xwin,ywin,xwinsize,ywinsize,i,len,dialogsmksize;
 	char *dialogdata,*textdata,*text;
 	DIALOGBIN *tempdialog,*newdialog;
 	DIALOGBIN_SMK *tempsmk,*oldsmk;
@@ -472,15 +471,15 @@ void DialogBin_Save(MENUSTR *menu,char *label,const char *filename,int *sortedar
 	textdata=(char *) wmalloc(50000);
 	memset(textdata,0,50000);
 	textdataoffset=0;
-	
+
 	tempdialog=(DIALOGBIN *)dialogdata;
-	
+
 	xwin=menu->x;
 	ywin=menu->y;
-	
+
 	xwinsize=menu->xsize;
 	ywinsize=menu->ysize;
-	
+
 //	  tempdialog->TextOffsetX=0;
 //	  tempdialog->TextOffsetY=0;
 	tempdialog->LeftEdge=xwin;
@@ -496,7 +495,7 @@ void DialogBin_Save(MENUSTR *menu,char *label,const char *filename,int *sortedar
 	tempdialog->MainStringOffset=textdataoffset;
 	strcpy(textdata+textdataoffset,label);
 	textdataoffset+=strlen(label)+1;
-	
+
 	tempdialog=(DIALOGBIN *)(dialogdata+sizeof(DIALOGBIN));
 	elemnr++;
 	menuelemnr=0;
@@ -670,10 +669,10 @@ void DialogBin_Save(MENUSTR *menu,char *label,const char *filename,int *sortedar
 		}
 		tempdialog->Flags=flags;
 		newdialog=(DIALOGBIN *)((char *)tempdialog+sizeof(DIALOGBIN)+dialogsmksize);
-		
+
 		elemnr++;
 		menuelemnr+=incrmenuelem;
-		
+
 		if (menuelemnr<menu->elements)
 			tempdialog->NextEntryOffset=(int)((char *)(newdialog)-(char *)(dialogdata));
 		else
@@ -719,7 +718,7 @@ MENUSTR *DialogBin_ShowPermanent(const char *dialogbinfilename,int dialog_opt,in
 	MENUSTR *dialog=LoadDialogBin(dialogbinfilename,dialog_opt,addforreserv);
 	if (dialog)
 	{
-		mytimer.SetMyTimerFunc(refreshfunc,dialog);//launch first time and set the timer 
+		mytimer.SetMyTimerFunc(refreshfunc,dialog);//launch first time and set the timer
 	}
 	return(dialog);
 }

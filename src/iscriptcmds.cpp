@@ -63,10 +63,9 @@ unsigned char BUNKERFIRELO[16]={0,1,1,2,2,3,3,4,4,4,5,5,6,6,7,7};
 //============================================
 int IScriptCmd_imgol(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)			//8
 {
-	OBJ *a,*tr,*subunit;
+	OBJ *a,*tr;
 	OVERLAY_IMG *newimg;
-	unsigned short image_id,flags,imagelo_id;
-	unsigned char subunitnr;
+	unsigned short image_id,flags;
 	image_id = *((unsigned short *)&buf[0]);
 	flags = img->flags;
 	flags &= ~SC_IMAGE_FLAG_IMGOBJMAIN;
@@ -110,7 +109,7 @@ int IScriptCmd_imgul(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)			//9
 	image_id = *((unsigned short *)&buf[0]);
 	newimg = new OVERLAY_IMG(img->parentimg,image_id,buf[2],buf[3],img->elevationlevel-1,flags | SC_IMAGE_FLAG_IMGUNDER,ISCRIPTNR_INIT);
 	iscriptinfo.ExecuteScript(newimg);
-	
+
 	img->offsetcmdinbuf += cmdsize;
 	return(0);
 }
@@ -146,9 +145,8 @@ int IScriptCmd_imgolorig(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)		//0a
 //============================================
 int IScriptCmd_imgoluselo(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)		//0d
 {
-	OBJ *a,*subunit;
+	OBJ *a;
 	unsigned short image_id,imagelo_id;
-	unsigned char subunitnr;
 	image_id = *((unsigned short *)&buf[0]);
 	imagelo_id = GetIDFromOverlayLayer(img->imageid,buf[2]);
 	if (img->flags & SC_IMAGE_FLAG_NEEDTOCREATESUBUNIT)			//need to create image for subunit
@@ -190,7 +188,7 @@ int IScriptCmd_sprol(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)			//0x0f
 							buf[2],buf[3],0,img->parentimg->imageusercolor,flags,ISCRIPTNR_INIT);
 	newimg->whocreate = SC_IMAGE_SELF_CREATOR;
 	mainimageslist.AddElem(newimg);
-	
+
 	img->offsetcmdinbuf += cmdsize;
 	return(0);
 }
@@ -225,7 +223,7 @@ int IScriptCmd_spruluselo(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)		//14
 	newimg = new MAIN_IMG(	image_id,img->parentimg->xpos,img->parentimg->ypos,
 							img->elevationlevel + 1,
 							buf[2],buf[3],img->parentimg->side,img->parentimg->imageusercolor,flags,ISCRIPTNR_INIT);
-	mainimageslist.AddElem(newimg);				
+	mainimageslist.AddElem(newimg);
 	newimg->whocreate = SC_IMAGE_SELF_CREATOR;
 	newimg->newgrpmethod = img->parentimg->newgrpmethod;		//copy grp method from parent
 
@@ -263,7 +261,7 @@ int IScriptCmd_sproluselo(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)		//15
 	newimg = new MAIN_IMG(	image_id,img->parentimg->xpos,img->parentimg->ypos,
 							img->elevationlevel + 1,
 							xlo,ylo,img->parentimg->side,img->parentimg->imageusercolor,flags,ISCRIPTNR_INIT);
-	mainimageslist.AddElem(newimg);				
+	mainimageslist.AddElem(newimg);
 	newimg->whocreate = SC_IMAGE_SELF_CREATOR;
 
 	img->offsetcmdinbuf += cmdsize;
@@ -334,7 +332,7 @@ int IScriptCmd_setflipstate(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
 	{
 		img->flags &= ~SC_IMAGE_FLAG_MIRRORIMAGE;
 	}
-	
+
 	img->offsetcmdinbuf += cmdsize;
 	return(0);
 }
@@ -412,12 +410,12 @@ int IScriptCmd_attackmelee(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
 	OBJ *a;
 	unsigned char nrofrandomsnds,sndnr;
 	unsigned short sndid;
-	
+
 	nrofrandomsnds = buf[0];
 	sndnr = myrand(nrofrandomsnds);
 	sndid = *((unsigned short *)&buf[1+sndnr*2]);
 	Play_sfxdata(img->parentimg->xpos>>8,img->parentimg->ypos>>8,sndid,2);
-	
+
 	if (img->parentimg->whocreate == SC_IMAGE_OBJ_CREATOR)
 	{
 		a = img->parentimg->creator.objcreator.obj;
@@ -490,7 +488,6 @@ int IScriptCmd_turnrand(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
 //============================================
 int IScriptCmd_setspawnframe(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
 {
-	OVERLAY_IMG *tempimg;
 	img->parentimg->UnitNeededDirection256(buf[0]*8);
 
 	img->offsetcmdinbuf += cmdsize;
@@ -532,8 +529,6 @@ int IScriptCmd_sigorder(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
 //============================================
 int IScriptCmd_attackwith(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
 {
-	int err;
-	unsigned char subunit;
 	signed char *adrxyoffs;
 	OBJ *a,*tr;
 	LOFILE *lo;
@@ -567,7 +562,7 @@ int IScriptCmd_attackwith(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
 					{
 //						if (a->SC_Unit ==  || a->SC_Unit == )
 //						{
-//						
+//
 //						}
 //						else
 //						{
@@ -588,11 +583,11 @@ int IScriptCmd_attackwith(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
 				{
 					unsigned char side = CalcDirection(GetOBJx256(tr),GetOBJy256(tr),GetOBJx256(a->finalOBJ),GetOBJy256(a->finalOBJ));
 					tr->mainimage->AllUnitDirection256(side);
-					
+
 //					GetLoadedImage( alldattbl.images_dat->Attack_Overlay[tr->mainimage->imageid],(void **)&lo);
 					GetLoadedImage( GetIDFromOverlayLayer(tr->mainimage->imageid,IMAGE_OVERLAY_ATACK),(void **)&lo);
 					adrxyoffs = GetLoXY(lo,0,BUNKERFIRELO[tr->mainimage->side/16]);
-				
+
 					newimg = new MAIN_IMG(IMAGEID_BUNKERFIREOVERLAY,GetOBJx256(tr),GetOBJy256(tr),
 											tr->mainimage->elevationlevel + 1,
 											adrxyoffs[0],adrxyoffs[1],side,tr->mainimage->imageusercolor,
@@ -726,7 +721,6 @@ int IScriptCmd_nobrkcodestart(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
 //============================================
 int IScriptCmd_nobrkcodeend(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
 {
-	OBJ *a;
 	img->flags &= ~SC_IMAGE_FLAG_CANTBREAKCODE;
 /*	  if (img->parentimg->whocreate == SC_IMAGE_OBJ_CREATOR)
 	{
@@ -734,7 +728,7 @@ int IScriptCmd_nobrkcodeend(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
 		if (a)
 			if (ApplyNextModeMove(a));
 	}
-*/	  
+*/
 	img->offsetcmdinbuf += cmdsize;
 	return(0);
 }
@@ -815,7 +809,7 @@ int IScriptCmd_creategasoverlays(OVERLAY_IMG *img,unsigned char *buf,int cmdsize
 {
 	OVERLAY_IMG *newimg;
 	LOFILE *lo;
-	unsigned short overlayimage_id,newflags,imagelo_tbl;
+	unsigned short overlayimage_id,newflags;
 	signed char *adrxyoffs,xlo,ylo;
 
 	unsigned char overlaynr = buf[0];
@@ -831,7 +825,7 @@ int IScriptCmd_creategasoverlays(OVERLAY_IMG *img,unsigned char *buf,int cmdsize
 	else
 		overlayimage_id =  IMAGEID_GEYSERSMOKE1;
 	newimg = new OVERLAY_IMG(img->parentimg,overlayimage_id+overlaynr,xlo,ylo,img->elevationlevel+1,newflags,ISCRIPTNR_INIT);
-	
+
 	img->offsetcmdinbuf += cmdsize;
 	return(0);
 }
@@ -879,7 +873,7 @@ int IScriptCmd_trgtrangecondjmp(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
 			break;
 		default:
 			DEBUGMESSCR("wrong trgtrangecondjmp not from OBJ_CREATOR or OBJ_FLINGY\n");
-			break;			
+			break;
 	}
 
 	img->offsetcmdinbuf += cmdsize;
@@ -905,7 +899,7 @@ int IScriptCmd_trgtarccondjmp(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
 			break;
 		default:
 			DEBUGMESSCR("wrong trgtrangecondjmp not from OBJ_CREATOR\n");
-			break;			
+			break;
 	}
 
 	img->offsetcmdinbuf += cmdsize;
@@ -971,7 +965,7 @@ int IScriptCmd_orderdone(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
 			SetOrder(img->parentimg->creator.objcreator.obj,buf[0],NULL);				//remove order
 		}
 	}
-	
+
 	img->offsetcmdinbuf += cmdsize;
 	return(0);
 }
@@ -1022,7 +1016,7 @@ int IScriptCmd_DEVELOPING(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
 	return(0);
 }
 //============================================
-int (*IScriptCmd[ISCRIPTCMD_MAXVALUE])(OVERLAY_IMG *img,unsigned char *buf,int cmdsize) = 
+int (*IScriptCmd[ISCRIPTCMD_MAXVALUE])(OVERLAY_IMG *img,unsigned char *buf,int cmdsize) =
 {
 				&IScriptCmd_playfram,							//0x00
 				&IScriptCmd_playframtile,						//0x01

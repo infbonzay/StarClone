@@ -47,7 +47,7 @@ void mageattributedothings(OBJ *a)
 {
 	OBJ *a2;
 	int x256,y256;
-	int typemage,i,j,temp,damage,tickdamage,upgnr,upgrdamage;
+	int typemage,i,j;
 	for (i=0;i<MAXMAGEATR;i++)
 	{
 		if (GetMageAtr(&a->atrobj,i)>0)
@@ -79,7 +79,7 @@ void mageattributedothings(OBJ *a)
 										LowLevelDamage(NULL,a2,WEAPONID_IRRADIATE,DAMAGE_IGNOREARMOR,irradiatedamagepertick,0,0);
 								}
 							}
-						}	 
+						}
 						else
 						{
 							if (!IsOBJBurrowed(a))
@@ -112,8 +112,6 @@ void mageattributedothings(OBJ *a)
 //=======================================
 void mageeffect(int typemage,struct OBJ *a,struct OBJ *whoobjputmage)
 {
-	int upgnr,upgdamage,totaldamage,mana;
-	OBJ *temp1,*temp2;
 	if (GetMageAtr(&a->atrobj,ATRSTASIS))
 		return;
 	switch(typemage)
@@ -351,7 +349,7 @@ int decrresourceobj(struct OBJ *a,int minus)
 	{
 		case SC_MINERAL1OBJ:
 		case SC_MINERAL2OBJ:
-		case SC_MINERAL3OBJ:	
+		case SC_MINERAL3OBJ:
 			if (minus >= a->data.resource.resource_count)
 			{
 				resret = a->data.resource.resource_count;
@@ -438,7 +436,7 @@ void MakeMindControl(OBJ *a,int playernr,int ncolor)
 				//remove interceptor from parent if it is in base
 				if (a2->SC_Unit == SC_INTERCEPTOROBJ && !(a2->prop & VARINBASE))
 				{
-					delchild(a,a2);				
+					delchild(a,a2);
 				}
 				else
 				{
@@ -522,15 +520,16 @@ int ifcanworkatr_onme(OBJ *a,int atr,int typemage)
 //==============================================
 void CastSpell(OBJ *casterobj)
 {
-	int needmana,finalx,finaly;
-/*	  needmana = getusemanaformodemove(casterobj->castmagenr);
+/*	int needmana,finalx,finaly;
+	  needmana = getusemanaformodemove(casterobj->castmagenr);
 	if (CheckForMana(casterobj,needmana)!=CHECKRES_OK)
 	{
 		playinfoadvisorsound(casterobj->playernr,GetUnitRace(casterobj->SC_Unit),ADVENERGY,PLAYADVISOR_TEXTANDSOUND);
 		return;
 	}
 	DecrMana(casterobj,needmana);
-*/	  if (mageprop[casterobj->castmagenr].createweapon == 255)
+*/
+	if (mageprop[casterobj->castmagenr].createweapon == 255)
 	{
 		CastSpellWithOutWeaponnr(casterobj,casterobj->castmagenr);
 	}
@@ -545,7 +544,7 @@ void CastSpell(OBJ *casterobj)
 void CastSpellWithOutWeaponnr(OBJ *casterobj,int castmagenr)
 {
 	OBJ *a,*destobj;
-	int i,mindist,x256,y256;
+	int i,mindist;
 	int oldsnd,leftsize,rightsize;
 	if (mageprop[castmagenr].sound_id[SOUNDONHIT])
 		Play_sfxdata(GetOBJx(casterobj),GetOBJy(casterobj),mageprop[castmagenr].sound_id[SOUNDONHIT],2);

@@ -190,10 +190,8 @@ void saveoldtileandcreep(void)
 void drawMAP(int ignorefirstwaiting)
 {
 	unsigned char wf,bf;
-	static int firstmap;
-	signed char creepnr,creepoffset;
-	int i,j,indextile32,nrobj,method,open,see;
-	int POSINMAP;
+	signed char creepnr;
+	int i,j,indextile32,method,open,see;
 	int bh,eh,bw,ew,ii,jj,xk,yk,xkk,ykk;
 	char minimapcolor;
 	if (!CODEFORSCREEN)
@@ -432,7 +430,6 @@ void AutoMoveMap(void)
 //==================================
 void MoveVisualMapPosition(int x,int y)
 {
-	int deltax,deltay;
 	if (x<0)
 		x=0;
 	if (y<0)
@@ -675,7 +672,7 @@ char xypos[2][4]={{0,1,0,1},{0,0,1,1}};
 //=================================
 void arbitermakewarpfield(OBJ *a,OBJstruct *b)
 {
-	int g,x,y,i,j,mybits,xcenter,ycenter,see,objxysize;
+	int g,x,y,mybits,xcenter,ycenter,see,objxysize;
 	signed char vis;
 	int elemnr;
 	MAPOFFSETELEMENT *cmdoffs;
@@ -724,8 +721,8 @@ void arbitermakewarpfield(OBJ *a,OBJstruct *b)
 //=================================
 void makeoneobjseeopen(OBJ *a,OBJstruct *b)
 {
-	int x,y,opendelta,mapchanges=0,objxysize,pl;
-	int g,i,j,k,pp,see,prst=0,opn,nrofuplevel,onsky=0;
+	int x,y,opendelta,mapchanges=0,objxysize;
+	int g,pp,see,prst=0,opn,onsky=0;
 	int xcenter,ycenter,level;
 
 	int nosave,indextile32;
@@ -896,7 +893,7 @@ void calcfullinvandsee(void)
 //=================================
 void calcfullinvandseeobj(OBJ *a)
 {
-	int i,decloaked,cloaked,notdetect=0;
+	int i,decloaked,cloaked;
 	unsigned char visbits,plmask;
 	OBJ_VAR_MASK_CLR(a,obj_invsee,0xff);
 	OBJ_VAR_MASK_CLR(a,obj_see,0xff);

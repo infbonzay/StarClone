@@ -157,10 +157,9 @@ void LoadNextAudioData(void *info)
 	unsigned int readed,nextbuffersize;
 	int result;
 	unsigned char *buff;
-	AUDIOPACKET *apacket;
 	wMUSIC *stream = (wMUSIC *) info;
 	RWOPS *rwops = stream->audio.RWops;
-	
+
 	do{
 		if (!stream->musicbuffers->GetFreeElem())
 		{
@@ -193,7 +192,7 @@ void LoadNextAudioData(void *info)
 		readed = rwops->read(rwops,buff,nextbuffersize,1);
 		if (readed != 1)
 		{
-			//error read 
+			//error read
 			wfree(buff);
 			return;
 		}
@@ -227,7 +226,7 @@ int PlayMusic(const char *filename,int repeatflag)
 //=======================================
 int PlayMusic(const char *filename,int repeatflag, void (*onfinishplay)(void))
 {
-	int result,i;
+	int i;
 	unsigned int readed;
 	WAVHEADER wavheader;
 	HANDLE hmpq;
@@ -263,8 +262,8 @@ int PlayMusic(const char *filename,int repeatflag, void (*onfinishplay)(void))
 		return(-5);
 	}
 	//check the audio file
-	if (wavheader.chunkId != WAV_RIFF || wavheader.format != WAV_WAVE || wavheader.subchunk1Id != WAV_FMT || 
-		wavheader.audioFormat != WAV_PCM_CODE || wavheader.subchunk2Id != WAV_DATA || 
+	if (wavheader.chunkId != WAV_RIFF || wavheader.format != WAV_WAVE || wavheader.subchunk1Id != WAV_FMT ||
+		wavheader.audioFormat != WAV_PCM_CODE || wavheader.subchunk2Id != WAV_DATA ||
 		(wavheader.bitsPerSample != 8 && wavheader.bitsPerSample != 16) )
 	{
 		rwops->close(rwops);

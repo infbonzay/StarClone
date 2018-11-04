@@ -68,7 +68,6 @@ int constrbuild(int nb)
 int probeconstruct(int nb)
 {
 	OBJ *o;
-	int k;
 	//for probe
 	if (nb == MODEWARPBUILD				||
 		nb == MODEMUTATEBUILD			||
@@ -112,18 +111,17 @@ int mbuttonpress;
 void desenproperties(int *localprop,char *selectableicons)
 {
 	static int oldmouseonicon=-1,plusfactor,keyupselectedicon=-1;
-	int i,j,k,i1,mbuttonpress,iconstrlen,grpplayernr;
+	int i,j,k,mbuttonpress,grpplayernr;
 	int need[NEED_MAX];//mineral,gas,mana,psi
-	int iconmessagecolor,magedepend,needmana,err;
-	int sizex,sizey,simbrace,race;
+	int iconmessagecolor,needmana,err;
+	int simbrace,race;
 	MAGEP *mp;
-	unsigned char techdata_id;
-	int upg,maxupg,len,inegg;
+	int upg,maxupg;
 	int mouseonicon,selectedicon,retstatus;
 	struct XY uu;
 	char iconstr[150];
 	char addstr[15];
-	struct OBJ *a,*obj,*obj2=NULL;
+	struct OBJ *obj,*obj2=NULL;
 	OBJ *o;
 	for (i=0;i<3;i++)
 		for (j=0;j<3;j++)
@@ -518,7 +516,6 @@ void playadvisorerr(int playernr,int race,int retreserror)
 int CreateUnitProperties(struct OBJ *a,struct OBJstruct *b,int *prop,int playernr)
 {
 	int i,unitnr,underc,upgradenr,maxupgradenr,constraddon;
-	OBJstruct *proper;
 	for (i=0;i<MAXUNITPROPERTIES;i++)
 	{
 		prop[i] = MODENON;

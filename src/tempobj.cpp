@@ -144,10 +144,8 @@ OBJ *CreateUnitsFromMAP(int xpos,int ypos,int unit_type,int playernr,struct mapi
 //=====================================
 OBJ *CreateUnitsFromMAP(struct unit_on_map *unit,struct mapinfo *loadedmap)
 {
-	int xp,yp,sx,sy;
-	struct OBJ *a,*aa,*a2,*a3=NULL;
+	struct OBJ *a=NULL,*aa,*a2;
 	int i,playernr,xobj,yobj,race,owner;
-	int hp,sp,ep;
 	SCUNIT SC_Unit;
 	if (unit->paried)
 	{
@@ -185,7 +183,7 @@ OBJ *CreateUnitsFromMAP(struct unit_on_map *unit,struct mapinfo *loadedmap)
 				}
 			}
 			playernr=GetPlayerByLocation(loadedmap,curentlocation);
-			if (playernr!=-1)
+			if (playernr != -1)
 			{
 				owner = gameconf.pl_owner[playernr];
 				// do not create units for observer players
@@ -195,7 +193,7 @@ OBJ *CreateUnitsFromMAP(struct unit_on_map *unit,struct mapinfo *loadedmap)
 					if (race!=RACE_OBSERVER)
 					{
 						SC_Unit = GetFirstUnitBuild(race,FIRSTBUILD);
-						if (SC_Unit!=SC_NOUNITNR)
+						if (SC_Unit != SC_NOUNITNR)
 						{
 							a = createobjfulllife(unit->xpos,unit->ypos,SC_Unit,playernr);
 							if (playernr==NUMBGAMER)
@@ -253,7 +251,7 @@ OBJ *CreateUnitsFromMAP(struct unit_on_map *unit,struct mapinfo *loadedmap)
 //=====================================
 void AddToMinimapNeutralObjs(mylist *units,struct mapinfo *loadedmap,int playortest)
 {
-	int i,j,sx,sy;
+	int sx,sy;
 	struct unit_on_map *unit;
 	units->EnumListInit();
 	while( (unit = (unit_on_map *)units->GetNextListElem()) )
@@ -266,6 +264,7 @@ void AddToMinimapNeutralObjs(mylist *units,struct mapinfo *loadedmap,int playort
 				ObjOnMiniMap(unit->xpos/32-sx/64,unit->ypos/32-sy/64,sx,sy,MINIMAP_COLORFORSTARTLOC,loadedmap->minimap);
 		}
 		else
+		{
 			if (unit->player >= PLAYEDPLAYERS)
 			{
 				if (IsBuild(unit->unit_type))
@@ -274,13 +273,13 @@ void AddToMinimapNeutralObjs(mylist *units,struct mapinfo *loadedmap,int playort
 						ObjOnMiniMap(unit->xpos/32-sx/64,unit->ypos/32-sy/64,sx,sy,MINIMAP_COLORFORRESOURCES,loadedmap->minimap);
 				}
 			}
+		}
 	}
 }
 //=====================================
-//=====================================
 void CreateUnitsFromLists(mylist *units,struct mapinfo *loadedmap)
 {
-	int i,j;
+	int i;
 	struct unit_on_map *unit;
 	units->EnumListInit();
 	while( (unit = (unit_on_map *)units->GetNextListElem()) )
@@ -717,9 +716,9 @@ void ConnectingPairBuilds(struct mapinfo *loadedmap)
 //=====================================
 void createallobj(struct mapinfo *loadedmap)
 {
-	int i,j,pl;
+	int i,j;
 	char compname[50];
-	
+
 	curentlocation=0;
 	haveterranparied=0;
 	havezergparied=0;
@@ -753,6 +752,6 @@ void createallobj(struct mapinfo *loadedmap)
 //	  testmisc(20,20,GREYNEUTRALCOLORPLAYER,loadedmap);
 
 #endif
-	
+
 }
 //=====================================

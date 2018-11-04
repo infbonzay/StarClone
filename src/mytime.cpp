@@ -127,7 +127,6 @@ int TIMER::GetTimeParced(void)
 //===========================================
 void TIMER::CallTimer(int mode)
 {
-	static char income=0;
 	tick_current = gettimeticks();
 	if (tick_prev+tick_delta<=tick_current)
 	{

@@ -182,7 +182,7 @@ int setmode(int x,int y,int bpp,int fullscreen)
 //==========================
 void putcube(int x,int y,int sizex,int sizey,char color)
 {
-	int i,j;
+	int i;
 	unsigned char *vidbuf;
 	vidbuf = gameconf.grmode.videobuff + GRP_scanlineoffsets[y] + x;
 	for (i=0;i<sizey;i++)
@@ -335,7 +335,6 @@ void putrow2x2(int x,int y,int sizex,int sizey,unsigned char *buff)
 void putrow2x1(int x,int y,int sizex,int sizey,unsigned char *buff)
 {
 	int i,j;
-	unsigned char pixel;
 	unsigned char *vidbuf;
 	vidbuf = gameconf.grmode.videobuff + GRP_scanlineoffsets[y] + x;
 	for (i=0;i<sizey;i++)

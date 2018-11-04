@@ -737,7 +737,7 @@ void mouseonhotpos(int value)
 //==========================================
 void setmainscreenmouseevents(void)
 {
-	int i,j,x,y;
+	int i,x,y;
 	addnewmousehotpos(&mouseonhotpos,4+MAXSELECTMAN+11);//total mousehotspots
 	addmousehotpos( highMouse->RestrictXY[MOUSEMODE4].x1,
 					highMouse->RestrictXY[MOUSEMODE4].y1,
@@ -897,16 +897,14 @@ void clearactionBITS(void)
 #define MOUSEDESTELEVATION	255
 int gogame(struct mapinfo *info)
 {
-	int resettimerforplayers,gameticks=0,prevgameticks=-1;
+	int resettimerforplayers,prevgameticks=-1;
 	int activatedwaittimer;
-	MENUPARAMS *mp;
 
 	int pc;
 	SCREEN_REGION	lastmenuregion;
 	int retmenu;
 	int i,retnet,timeid;
 	char desenonlymouseflag;
-	unsigned long oldusecs=0,oldkeyscrollusecs=0,oldmousescrollusecs=0,usecs=0;
 	changegoods=1;
 	highMouse->LoadAllCursors();
 	showedmenu.Init();
@@ -964,9 +962,8 @@ int gogame(struct mapinfo *info)
 		screenDraw->ClearRegions();
 		needredesen = 0;
 		clearactionBITS();
-		int need_quiting = eventwindowloop();
-	//	if (need_quiting)
-	//			gameend("close box");
+		eventwindowloop();
+
 
 		screenMapInfo->ScrollX = 0;
 		screenMapInfo->ScrollY = 0;
@@ -1811,7 +1808,7 @@ void ActivateCheat(int cheatid)
 		break;
 		case 9:		//kill
 			SelectedUnits.EnumListInit();
-			while( o = (OBJ *)SelectedUnits.GetNextListElem(NULL))
+			while( (o = (OBJ *)SelectedUnits.GetNextListElem(NULL)) )
 			{
 				dieobj(o);
 			}

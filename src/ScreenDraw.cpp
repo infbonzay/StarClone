@@ -42,7 +42,7 @@ void ScreenDraw::TopMessage(void)
 	OBJ *o = NULL;
 	if (SelectedUnits.totalelem)
 	{
-		OBJ *o = (OBJ *) SelectedUnits.GetElem(0,NULL);
+		o = (OBJ *) SelectedUnits.GetElem(0,NULL);
 	}
 	frames++;
 	cursec = mytimer.GetTimeParced();
@@ -136,5 +136,5 @@ void ScreenDraw::UpdateScreen(void)
 		wscreenonregions(UsedRegions,Regions);
 //	  printf("totalimgs=%d drawedimgs=%d\n",totalimgs,drawedimgs);		//to check for leaks
 //	  printf("windowactive=%d\n",gameconf.grmode.windowactive);
-}	
+}
 

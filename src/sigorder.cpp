@@ -163,7 +163,6 @@ int	 SIGOrder_ProtossBuildWhiteAppear(OBJ *a)
 	{
 		DEBUGMESSCR("bad news about warp white build img\n");
 	}
-	OBJstruct *b = loadobj(a->SC_Unit);
 	SetOrder(a,0,NULL);
 	return(1);
 }
@@ -262,7 +261,7 @@ int	 SIGOrder_AfterBurrow(OBJ *a)
 	a->mainimage->UnitDirection256(12*8);
 	SetOrder(a,0,NULL);
 	a->modemove = MODESTOP;				//to prevent moveobj with MODESTOP after burrowed
-	return(0);	  
+	return(0);
 }
 //==================================
 int SIGOrder_AfterUnburrow(OBJ *a)
@@ -316,7 +315,7 @@ int	 SIGOrder_Landing(OBJ *a)
 	SetOrder(a,0,NULL);
 	a->mainimage->flags &= ~SC_IMAGE_FLAG_AIRIMG;
 	a->mainimage->elevationlevel -= ADDBUILD_AIR_ELEVATIONLEVEL;
-	
+
 	if (a->mainimage->childlists)
 	{
 		a->mainimage->childlists->EnumListInit();
@@ -454,12 +453,12 @@ int	 SIGOrder_CancelMorthFromDrone(OBJ *a)
 	iscriptinfo.ExecuteScript(a->mainimage);	//execute almostbuild
 	a->SC_ConstrUnit = a->SC_FromUnit;
 	a->SC_FromUnit = a->SC_Unit;
-	
+
 	ChangeSC_Unit(a,a->playernr,a->SC_ConstrUnit,CHANGESC_UNIT_CONSTR);
 	a->prop |= VARREADY;
 	a->mainimage->DeleteChilds(SC_IMAGE_FLAG_IMGUNDER|SC_IMAGE_FLAG_IMGOVER);
 	a->mainimage->DeleteMainImg();
-	CreateImageAndAddToList(a,x256,y256,2,NOLOIMAGE);//a->mainimage remain in mainimageslist 
+	CreateImageAndAddToList(a,x256,y256,2,NOLOIMAGE);//a->mainimage remain in mainimageslist
 
 	a->health = a->temphealth;
 	a->shield = a->tempshield;

@@ -205,7 +205,7 @@ void CheckBuildForPower(struct mapinfo *mymap,OBJ *a,int playernr)
 //=================================
 void CheckProtossBuildsForPower(struct mapinfo *mymap)
 {
-	int i,pylonarray;
+	int i;
 	unsigned char *parea;
 	for (i=0;i<PLAYEDPLAYERS;i++)
 	{

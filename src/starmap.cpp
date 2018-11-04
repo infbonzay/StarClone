@@ -51,7 +51,7 @@ struct starmap_section
 #define MAXGROUPS 3000
 #define MAXTILES8 100000
 
-char terraintypes[MAXTERRAINTYPES][10] = 
+char terraintypes[MAXTERRAINTYPES][10] =
 {
 		"Badlands",
 		"Space",
@@ -111,11 +111,11 @@ int load_tileset_palette( HANDLE mpq,char *filename, char *pal )
 {
 		HANDLE f;
 		UINT readed;
-		
+
 		int err = wr_SFileOpenFileEx(mpq,filename,SFILE_OPEN_FROM_MPQ,&f);
 		if ( !err )
 			return -1;
-		
+
 		wr_SFileReadFile(f,pal,1024,&readed,NULL);
 		wr_SFileCloseFile(f);
 		return 0;
@@ -131,13 +131,13 @@ int load_tiles8( HANDLE mpq,char *filename, char *tiles )
 		int err = wr_SFileOpenFileEx(mpq,filename,SFILE_OPEN_FROM_MPQ,&f);
 		if ( !err )
 			return -1;
-		
+
 		while( !SFileEOF(f) )
 		{
 				wr_SFileReadFile(f,p,64,&readed,NULL);
 				if( readed==64 && ++tc < MAXTILES8 )
 				{
-						p += 64;		
+						p += 64;
 				}
 		}
 		wr_SFileCloseFile(f);
@@ -147,14 +147,12 @@ int load_tiles8( HANDLE mpq,char *filename, char *tiles )
 int load_tiles32(HANDLE mpq, char *filename, char *tiles8,
 				  char **tilesret, unsigned short *megatiles,int nrmegatiles )
 {
-		HANDLE f;
 		char *p = tiles8;
-		UINT sz,readed;
 		char *tiles32;
 		int i,j,k;
 		unsigned short tile8idx;
 		char *q;
-		int count, x,y;
+		int x,y;
 
 		*tilesret = 0;
 		int curentmegatile=0;
@@ -301,7 +299,7 @@ void prepare_minimap( unsigned short *map, int w, int h, char *minimap,
 		int i,j, mi,mj;
 		int xoffs, xmax, yoffs, ymax;	/* for non-square map */
 		float rate;
-		
+
 		xoffs = yoffs = 0;
 		xmax = MINIMAPW;
 		ymax = MINIMAPW;
@@ -328,7 +326,7 @@ void prepare_minimap( unsigned short *map, int w, int h, char *minimap,
 		if( rate < 1 )
 				return prepare_minimap_inverse( map, w, h, minimap, tiles );
 
-		mi = 0; 
+		mi = 0;
 		for( i=0; i<h; )
 		{
 				if( mi > yoffs && (mi-yoffs)*rate > i )
@@ -350,7 +348,7 @@ void prepare_minimap( unsigned short *map, int w, int h, char *minimap,
 										j++;
 										continue;
 								}
-		
+
 								if( mj < xoffs || mj > xmax )
 										minimap[mi*MINIMAPW+mj] = 0;	// no map
 								else
@@ -375,7 +373,7 @@ int load_terrain_tiles( struct mapinfo *info,
 {
 		int allcreeptiles[50];
 		char buf[200];
-		int begcreepnr=0,endcreepnr;
+		int begcreepnr=0;
 		int i,j,k,hconfflags;
 		int last_tile,prev_walk;
 		unsigned short *tile_ids, *rev_ids;
@@ -404,7 +402,7 @@ int load_terrain_tiles( struct mapinfo *info,
 		err = load_tileset_palette(mpq,buf, outpal );
 		if (err)
 			return -3;
-		
+
 		// read 8x8 tiles
 		sprintf( buf, "%s.vr4",palettedir[terrain] );
 		mpq = MpqsFindFile(buf);
@@ -445,7 +443,7 @@ int load_terrain_tiles( struct mapinfo *info,
 		last_tile=0;
 
 		info->buildswalk = (unsigned char*)wmalloc(h*w);
-	
+
 		if (loadedcv5>1024)
 		{
 			loadedcv5-=1024;
@@ -529,7 +527,7 @@ int load_terrain_tiles( struct mapinfo *info,
 		*tiles = used_tiles;
 		*walkflags = used_walkf;
 		*tilecount = last_tile;
-		
+
 		prepare_minimap( map, w,h, minimap, *tiles,
 				minx, miny, maxx, maxy );
 		return 0;
@@ -548,10 +546,7 @@ int read_starmap(HANDLE mpq,const char *filename, struct mapinfo *info,int flags
 		doodad_THG2_starmap tempdoodad;
 		doodad_DD2_starmap tempdoodad2;
 		doodad_on_map *doodadu;
-		struct locations *loc;
-		int maxlocations,startloc=0;
 		unsigned int maxsectionsize=0;
-		int readyloc;
 		char name[5];
 		char *prevbuf=NULL,*buf=NULL;
 		char *DD2_section=NULL;
@@ -561,7 +556,7 @@ int read_starmap(HANDLE mpq,const char *filename, struct mapinfo *info,int flags
 		char default_max_upgrade[MAX_UPGRADES_ELEM];
 		char default_start_upgrade[MAX_UPGRADES_ELEM];
 		char use_upgrdefaults[MAXPLAYERS][MAX_UPGRADES_ELEM];
-		
+
 		char default_tech_available[MAX_TECHDATA_ELEM];
 		char default_tech_researched[MAX_TECHDATA_ELEM];
 		char use_techdefaults[MAXPLAYERS][MAX_TECHDATA_ELEM];
@@ -653,61 +648,60 @@ checkmpq2:
 				{
 					if (!strncmp(buf,"RAWB",4))
 						info->flags |= STARMAP_FLAG_EXPANSION;
-					else		
+					else
 						if (strncmp(buf,"RAWS",4))
 							return(-1);
 				}
 				else if( !strcmp( name, "VER " ) )
 				{
-						info->format_version[0] = *((unsigned short *)buf);
+					info->format_version[0] = *((unsigned short *)buf);
 				}
 				else if( !strcmp( name, "IVER" ) )
 				{
-						info->format_version[1] = *((unsigned short *)buf);
+					info->format_version[1] = *((unsigned short *)buf);
 				}
 				else if( !strcmp( name, "IVE2" ) )
 				{
-						info->format_version[2] = *((unsigned short *)buf);
+					info->format_version[2] = *((unsigned short *)buf);
 				}
 				else if( !strcmp( name, "VCOD" ) )
 				{
-						/* TODO: fix this */
-						info->valid_vcode = 1;
+					info->valid_vcode = 1;
 				}
 				else if( !strcmp( name, "OWNR" ) )
 				{
-						memcpy( info->pl_owner, buf, 12 );
+					memcpy( info->pl_owner, buf, 12 );
 				}
 				else if( !strcmp( name, "IOWN" ) )
 				{
-						memcpy( info->pl_iowner, buf, 12 );
+					memcpy( info->pl_iowner, buf, 12 );
 				}
 				else if( !strcmp( name, "ERA " ) )
 				{
-//						int t = *((int*)buf)&0xffff;
-						int t = *((int*)buf)&0x7;
-						info->terrain = (terrain_type)t;
+//					int t = *((int*)buf)&0xffff;
+					int t = *((int*)buf)&0x7;
+					info->terrain = (terrain_type)t;
 				}
 				else if( !strcmp( name, "DIM " ) )
 				{
-						info->map_width = *((int*)buf) & 65535;
-						info->map_height = *((int*)(buf +2) ) & 65535;
-//						printf("mapsize=%dx%d\n",info->map_width,info->map_height);
+					info->map_width = *((int*)buf) & 65535;
+					info->map_height = *((int*)(buf +2) ) & 65535;
+//					printf("mapsize=%dx%d\n",info->map_width,info->map_height);
 				}
 				else if( !strcmp( name, "SIDE" ) )
 				{
-						memcpy( info->pl_race, buf, 12 );
+					memcpy( info->pl_race, buf, 12 );
 				}
 
 				else if( !strcmp( name, "FORC" ) )
 				{
-						memcpy( &info->pl_force, buf, section.size);
+					memcpy( &info->pl_force, buf, section.size);
 				}
 				else if( !strcmp( name, "PUNI" ) )
 				{
 						if (!testplay)
 						{
-							memcpy( info->prod_restrictions.player_restrictions, 
+							memcpy( info->prod_restrictions.player_restrictions,
 										buf, MAXPLAYERS*MAX_UNITS_ELEM );
 							memcpy( info->prod_restrictions.global_restrictions,
 										buf+MAXPLAYERS*MAX_UNITS_ELEM , MAX_UNITS_ELEM );
@@ -725,7 +719,7 @@ checkmpq2:
 									}
 							}
 						}
-									
+
 				}
 				else if( !strcmp( name, "UNIS" ) )
 				{
@@ -864,7 +858,7 @@ checkmpq2:
 				{
 						if (!testplay)
 						{
-					
+
 						for (i=0;i<MAXPLAYERS;i++)
 							memcpy( info->tech_restrictions.tech_available[i],
 									buf+(i+0)*MAX_STARTECHDATA_ELEM,MAX_STARTECHDATA_ELEM);
@@ -923,7 +917,7 @@ checkmpq2:
 //								printf( "Could not allocate display map! exiting.\n" );
 								return -1;
 						}
-						memcpy( info->display_map, buf, 
+						memcpy( info->display_map, buf,
 										info->map_width*info->map_height*2 );
 				}
 				else if( !strcmp( name, "TILE" ) )
@@ -935,7 +929,7 @@ checkmpq2:
 //								printf( "Could not allocate level's tile! exiting.\n" );
 								return -1;
 						}
-						memcpy( info->level_tiles, buf, 
+						memcpy( info->level_tiles, buf,
 										info->map_width*info->map_height*2 );
 				}
 				else if( !strcmp( name, "UPRP" ) )
@@ -1092,20 +1086,20 @@ checkmpq2:
 				}
 		}
 		if (DD2_section)
-			wfree(DD2_section); 
+			wfree(DD2_section);
 		wfree( prevbuf );
 		wr_SFileCloseFile( f );
 
 //		if (checkleak( buf )) DEBUGMES("leak\n");
 
-		/* now that we know the terrain type and 
+		/* now that we know the terrain type and
 		 * tile positions, let's generate terrain tiles.
 		 * Will replace display_map values with the ones
 		 * from loaded header. */
 		err=load_terrain_tiles( info,
-						info->terrain, &info->tiles, 
+						info->terrain, &info->tiles,
 						&info->tilecount, info->palette, info->display_map,
-						&info->tileswalk, info->map_width, info->map_height, 
+						&info->tileswalk, info->map_width, info->map_height,
 						info->minimap,
 						&info->minimap_startx, &info->minimap_starty,
 						&info->minimap_endx, &info->minimap_endy);
@@ -1229,7 +1223,7 @@ char tempfn[1024];
 int load_starmap( const char *mapfile,char *fname, struct mapinfo *info,GAMECONF *conf)
 {
 	HANDLE mpq;
-	int result,i,j,k,ii,jj,tile32,err,pl;
+	int result,i,j,ii,jj,tile32,err;
 	unsigned char firstlevel,level;
 	unsigned short tile;
 
@@ -1282,12 +1276,12 @@ int load_starmap( const char *mapfile,char *fname, struct mapinfo *info,GAMECONF
 	memset(info->mapbits.arbiterfield2,0x0,info->map_width*info->map_height);
 	memset(info->mapbits.mageeffect[DSWARMEFFECT],0x0,info->map_width*info->map_height);
 	memset(info->mapbits.mageeffect[DISRUPTEFFECT],0x0,info->map_width*info->map_height);
-		
+
 //		memcpy(info->origpalette,info->palette,256*4);					//copy additional palette info for gamma
 	CreateMiniMapPixels(info);	//set my map vars from starmap
 	EmptyAllCreeps();
 	AddToMinimapNeutralObjs(&map_units,info,STARMAP_LOADFORPLAY);
-		
+
 	for (i=0;i<MAXYMAP8;i++)
 		for (j=0;j<MAXXMAP8;j++)
 		{
@@ -1421,7 +1415,7 @@ int load_starmap( const char *mapfile,char *fname, struct mapinfo *info,GAMECONF
 	}
 
 	wclrscr(0);
-	
+
 	palchange(info->palette,gameconf.videoconf.gamma,gameconf.videoconf.saturate);
 	if (!(gameconf.grmode.flags & DISPLAYFLAGS_EMULATIONMODE))
 		wscreenon();
@@ -1503,10 +1497,10 @@ void unload_starmapallocated(struct mapinfo *info )
 void unload_starmap(struct mapinfo *info )
 {
 	int i,j,k;
-	
+
 //	  UnloadIScriptBin(info->iscriptmem);
 //	  info->iscriptmem = NULL;
-	
+
 	unloadstaticsmk();
 	unloadtilegrp();
 	FreePylonArea(info);
@@ -1525,7 +1519,7 @@ void unload_starmap(struct mapinfo *info )
 	unloadcreep();		//unload creep decorations from tileset.grp
 
 	unload_starmapallocated(info);
-	
+
 	for (i=0;i<MAXLEADERBOARDS;i++)
 		if (info->leaderboards[i])
 		{
@@ -1676,7 +1670,7 @@ void CreateDefaultAliance(struct mapinfo *info)
 //=================================================
 int CreateBitsVision(struct mapinfo *info,int player)
 {
-	int i,pl,allbits=0;
+	int i,allbits=0;
 	for (i=0;i<PLAYEDPLAYERS;i++)
 	{
 		if (player_vision(player,i)==PLAYER_VISION)
@@ -1697,7 +1691,7 @@ void CreateVision(struct mapinfo *info,int player,int seeplayer2,int flag)
 //=================================================
 void CreateDefaultVision(struct mapinfo *info)
 {
-	int i,ii,j,k,pl,nrpl,forces;
+	int i,ii,j,k,nrpl,forces;
 	signed char sharedvision[MAXPLAYERS];
 	signed char allies[MAXPLAYERS];
 	for (i=0;i<MAXPLAYERS;i++)
@@ -1909,7 +1903,7 @@ void randomizecolor(void)
 //=====================================
 void randomizelocations(struct mapinfo *tempmap)
 {
-	int i,j,force,loc,locpl,startlocs,locnr=0,forceplrs,offsetslot=0;
+	int i,j,force,loc,locpl,startlocs,locnr=0,forceplrs;
 	signed char locs[MAXPLAYERS];
 	signed char pl_location[MAXPLAYERS];
 	startlocs = GetTotalStartLocations(tempmap);
@@ -2039,7 +2033,7 @@ void observers_prepare(mapinfo *info)			//make vision for objserver players
 					CreateVision(info,i,j,PLAYER_VISION);
 		}
 	}
-	
+
 }
 //=================================================
 int GetPlayableGameNumber(mapinfo *info)
@@ -2059,7 +2053,7 @@ void free_missionobjectives(void)
 	{
 		wfree(missionobj);
 		missionobj=NULL;
-	}	
+	}
 }
 //=================================================
 void fill_missionobjectives(const char *missiontxt)
@@ -2179,7 +2173,7 @@ void CalcLeaderBoards(struct mapinfo *info)
 					break;
 			}
 		}
-	}	 
+	}
 }
 //=================================================
 void ShowLeaderBoards(struct mapinfo *info,int x,int y)

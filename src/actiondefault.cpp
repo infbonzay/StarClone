@@ -139,7 +139,7 @@ void SCVConstructAction(OBJ *a,MAIN_IMG *img)
 
 			mx = POSX(GetUnitWidthAndHeight(a->constrobj->SC_Unit,UNITDIM_WIDTH));		//razmer stroeshegosea zdania
 			my = POSY(GetUnitWidthAndHeight(a->constrobj->SC_Unit,UNITDIM_HEIGHT));
-			
+
 //			do{
 				getborderbuild(mx,my,&x,&y);//uznati novye coord. stroiki
 				x -= mx/2;
@@ -149,7 +149,7 @@ void SCVConstructAction(OBJ *a,MAIN_IMG *img)
 				x += a->constrobj->xkart;
 				y += a->constrobj->ykart;
 //			}while(a->xkart == x && a->ykart == y);		//the same coordinates is bad idea, change it
-				
+
 			initmoveaction(a,NULL,MODECONSTRUCTMOVE,0,0,x*32,y*32);//move to construct point build
 //			SetOBJIScriptNr(a,ISCRIPTNR_WALKING,ISCRIPTNR_EXECUTE);						//set the same script to all obj images and subimages
 			a->modemove = MODECONSTRUCTMOVE;
@@ -200,7 +200,7 @@ int WorkersAction(struct OBJ *a,MAIN_IMG *img)
 	{
 		case MODELANDING:
 			//only drone come here
-			img->ydelta++;	  
+			img->ydelta++;
 			if (--a->deltavertpos == 0)
 			{
 				//check if have resources and decrement
@@ -256,7 +256,7 @@ int WorkersAction(struct OBJ *a,MAIN_IMG *img)
 			break;
 		case MODELIFTOFF:
 			//only drone come here
-			img->ydelta--;	  
+			img->ydelta--;
 			if (--a->deltavertpos == 0)
 			{
 				a->modemove = MODESTOP;
@@ -277,7 +277,7 @@ int WorkersAction(struct OBJ *a,MAIN_IMG *img)
 				newobj->modemove = MODECARRYME;
 				newobj->prop |= VARCANTSELECT;
 
-			
+
 				newobj->data.resourcechunk.restype = SC_CARRY_MINERAL1;
 				newobj->data.resourcechunk.rescnt  = rescnt;
 
@@ -306,7 +306,7 @@ int WorkersAction(struct OBJ *a,MAIN_IMG *img)
 				a->mainimage->ShowChildsImgFlag();		//show worker
 				a->mainimage->ShowImgFlag();
 				a->prop &= ~VARNOTHERE;
-			
+
 				newobj->data.resourcechunk.restype = SC_CARRY_GAS[0];
 				newobj->data.resourcechunk.rescnt  = rescnt;
 
@@ -394,7 +394,6 @@ int WorkersAction(struct OBJ *a,MAIN_IMG *img)
 //=================================
 int AirBuildings(struct OBJ *a,MAIN_IMG *img)
 {
-	int j;
 	MAIN_IMG *tempimg;
 	if (a->modemove == MODELANDING)
 	{
@@ -593,7 +592,7 @@ int QueenAction(struct OBJ *a,MAIN_IMG *img)
 				{
 					x = GetOBJx(c);
 					y = GetOBJy(c);
-					flyflag = IsOnSkyOBJ(c);	
+					flyflag = IsOnSkyOBJ(c);
 					dieobj_silently(c);
 					c = createobjfulllife(x,y,SC_INFCOMMCENTEROBJ,a->playernr);
 					if (flyflag)
@@ -639,7 +638,7 @@ int TransportAction(struct OBJ *a,MAIN_IMG *img)
 					ApplyNextModeMove(a);
 			}
 			else
-			{ 
+			{
 				if (a->loaded->nrunittounload < 0 )
 					return(1);
 				else
@@ -676,7 +675,7 @@ int ScarabActionUnit(OBJ *a,MAIN_IMG *img)
 	return(0);
 //	  if (!a->finalOBJ)
 //	  {
-//		
+//
 //	  }
 }
 //=================================
@@ -799,7 +798,7 @@ int AdditionalUnitProceed(OBJ *a,MAIN_IMG *img)
 					{
 						if (IsSubUnit(a->SC_Unit))
 							moveobj(a->subunit,NULL,MODEATACK,a->subunit->finalxatack,a->subunit->finalyatack,NOSHOWERROR|ATACKMOVEBIT);
-						else	
+						else
 							moveobj(a,NULL,MODEATACK,a->finalxatack,a->finalyatack,NOSHOWERROR|ATACKMOVEBIT);
 					}
 					else

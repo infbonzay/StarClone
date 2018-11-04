@@ -162,10 +162,9 @@ int Play_sfxdata(int x,int y,int sfxdata_id,int repeatedsongs)
 //==============================================
 int loadandplaywav(HANDLE mpq,struct OBJ *a,const char *filesound,int repeatedflag,int distance)
 {
-	int repeated=0,repeated2=0,i=-1,err,chunkvolume;
-	long soundsz,sndlength;
+	int repeated=0,repeated2=0,i=-1,chunkvolume;
+	long sndlength;
 	MPQIDS fileaudioID;
-	HANDLE f;
 	wCHUNK *sample;
 	if (MayPlaySounds <=0 && a)
 		return(-1);
@@ -235,8 +234,7 @@ int checkifplay(int channel)
 //==============================================
 int unloadwav(int channel)
 {
-	AUDIOPACKET *apacket;
-	int i,elemnr;
+	int i;
 	if (unitsound)
 	{
 		i = channel;
@@ -277,8 +275,7 @@ int DistanceForAudio(int x,int y)
 //==============================================
 int playOBJsound(struct OBJ *a,int soundmode,int sfxdata_id,int stopprevsound,int repeatedsongs)
 {
-	int soundid,distance;
-	char *soundfile;
+	int distance;
 	if (IsDoodadState(a->SC_Unit))
 	{
 		if (GetOBJx(a) >= map.MAPXGLOBAL										&&
@@ -305,7 +302,7 @@ int activatesound(struct OBJ *a,int soundmode,int addfactor,int stopprevsound)
 {
 	short sndfrom,sndto;
 	int repeatedsongs=3,needsong=1,musnr,maxmusnr,musplay,needadd=0;
-	int err,smktype,aliance;
+	int err,aliance;
 	if (a->prop & VARNOTWORK)
 		return -1;
 	if (a)
@@ -389,44 +386,44 @@ int activatesound(struct OBJ *a,int soundmode,int addfactor,int stopprevsound)
 		return -1;
 	if (soundmode == MODESOUNDPSS)
 	{
-				musnr = a->sfxplay.nrselectplayed;
-				if (musnr >= maxmusnr)
-				{
-					musnr = 0;
-					soundmode = MODESOUNDSELECT;
-					getsoundIDfromunitdat(a->SC_Unit,soundmode,&sndfrom,&sndto);
-					maxmusnr = sndto - sndfrom+1;
-					a->sfxplay.nrselectplayed = 0;
-				}
+		musnr = a->sfxplay.nrselectplayed;
+		if (musnr >= maxmusnr)
+		{
+			musnr = 0;
+			soundmode = MODESOUNDSELECT;
+			getsoundIDfromunitdat(a->SC_Unit,soundmode,&sndfrom,&sndto);
+			maxmusnr = sndto - sndfrom+1;
+			a->sfxplay.nrselectplayed = 0;
+		}
 	}
 	else
 	{
-			musnr = myrand(maxmusnr);
-				//this if need for no repeat this song with previous song
-			if (maxmusnr > 1 && a->sfxplay.sfxtypeplayed == soundmode &&  musnr == a->sfxplay.nrsfxplayed)
-			{
-				musnr++;
-				if (musnr >= maxmusnr)
-					musnr = 0;
-			}
+		musnr = myrand(maxmusnr);
+			//this if need for no repeat this song with previous song
+		if (maxmusnr > 1 && a->sfxplay.sfxtypeplayed == soundmode &&  musnr == a->sfxplay.nrsfxplayed)
+		{
+			musnr++;
+			if (musnr >= maxmusnr)
+				musnr = 0;
+		}
 	}
 	musplay = sndfrom + musnr;
 	if (IsBuild(a->SC_Unit))
 	{
-				if (!gameconf.audioconf.buildsounds)
-					return(soundmode);
+		if (!gameconf.audioconf.buildsounds)
+			return(soundmode);
 	}
 	else
 	{
-				if (!gameconf.audioconf.unitspeach)
-					return(soundmode);
+		if (!gameconf.audioconf.unitspeach)
+			return(soundmode);
 	}
 	err = playOBJsound(a,soundmode,musplay,stopprevsound,repeatedsongs);
 	if (err >= 0)
 	{
-			a->sfxplay.nrsfxplayed = musnr;
-			if (needadd)
-				a->sfxplay.nrselectplayed++;
+		a->sfxplay.nrsfxplayed = musnr;
+		if (needadd)
+			a->sfxplay.nrselectplayed++;
 	}
 	a->sfxplay.sfxtypeplayed = soundmode;
 	SetPortraitFromSound(a->SC_Unit,soundmode,musnr);

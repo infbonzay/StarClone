@@ -59,7 +59,7 @@ char *filename2unix(const char *fn)
 char *filename2temp(const char *fn)
 {
 	char *ret;
-	int i,j,j2;
+	int j,j2;
 	j = strlen(fn);
 	j2 = strlen(TEMPDIR);
 	ret=(char *)wmalloc(j+1+j2);
@@ -86,7 +86,7 @@ void witoa(int var1,char *adr,int simb)
 	{
 		adr[simb-i]=(var1%10)+'0';
 		var1/=10;
-		if (!var1) 
+		if (!var1)
 			break;
 	}
 }
@@ -114,7 +114,7 @@ char *witoa(int var,char *adr)
 	{
 		adr[-i]=(var%10)+'0';
 		var/=10;
-		if (!var) 
+		if (!var)
 			break;
 	}
 	adr[i+1]=0;
@@ -174,12 +174,12 @@ int rmdirrec(const char *dirname)
 	if (dir == NULL) {
 		return -1;
 	}
-	while ((entry = readdir(dir)) != NULL) 
+	while ((entry = readdir(dir)) != NULL)
 	{
-		if (strcmp(entry->d_name, ".") && strcmp(entry->d_name, "..")) 
+		if (strcmp(entry->d_name, ".") && strcmp(entry->d_name, ".."))
 		{
 			snprintf(path, (size_t) PATH_MAX, "%s/%s", dirname, entry->d_name);
-			if (entry->d_type == DT_DIR) 
+			if (entry->d_type == DT_DIR)
 			{
 				rmdirrec(path);
 			}
@@ -258,7 +258,7 @@ unsigned char CalcDirection(int x1,int y1,int x2,int y2)
 //=================================
 void calcinert(void)
 {
-	int i,sni,csi;
+	int i;
 	float j,cs,sn;
 	for (i=0;i<256;i++)
 	{
@@ -273,7 +273,6 @@ void calcinert(void)
 void calcsintables(void)
 {
 	int i;
-	unsigned char j;
 	for (i=0;i<256;i++)
 	{
 		sintable256[i] = sin((i+64)*2*PI/256)*256;

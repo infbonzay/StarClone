@@ -29,9 +29,7 @@ BRIEF_SLOTS		brief_slots[MAX_BRIEF_SLOTS];
 //=================================================
 void First_Briefing_Prepare(struct mapinfo *info,int e,char *path,PCX *pcxs)
 {
-	int actiononplayers;
-	int i,j;
-	MAP_TRIGS	*trg;
+	int i;
 	MAP_TRIGS	*temptrg;
 	MAP_TRIGS	(*alltrigs)[]=(MAP_TRIGS (*)[]) info->BRIEFS;
 	Briefing_SetPause(-1,0);
@@ -53,9 +51,8 @@ void First_Briefing_Prepare(struct mapinfo *info,int e,char *path,PCX *pcxs)
 //=================================================
 void Briefing_Parce(struct mapinfo *info,MENUSTR *allmenus,int deltatick)
 {
-	int actiononplayers,tick,pause;
-	int i,j;
-	MAP_TRIGS	*trg;
+	int tick,pause;
+	int i;
 	MAP_TRIGS	*temptrg;
 	MAP_TRIGS	(*alltrigs)[]=(MAP_TRIGS (*)[]) info->BRIEFS;
 	pause=Briefing_GetPause();
@@ -85,7 +82,7 @@ void Briefing_Parce(struct mapinfo *info,MENUSTR *allmenus,int deltatick)
 //=================================================
 int BCondition_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int actiononplayers,MENUSTR *allmenus)
 {
-	int i,j,applycond,allcond;
+	int i,applycond,allcond;
 	if (!Briefing_GetPause())
 	for (i=0;i<TRIG_MAX_CONDITIONS;i++)
 	{
@@ -116,9 +113,9 @@ int BCondition_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int actiononplayers,MENU
 //=================================================
 int BAction_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int actiononplayers,int condnr,MENUSTR *allmenus)
 {
-	int err,i,j,triggcnt,triggset,needbreakparce=0;
+	int err,i,triggcnt,triggset,needbreakparce=0;
 	int sx,sy,maxysymbsize,maxlines,fontnr,playtime;
-	int slotnr,waittime,textid,waveid,maxlinepixels,deltapaused,funcdelta;
+	int slotnr,waittime,textid,waveid,maxlinepixels,deltapaused;
 	char *txtstr;
 	int (*comparefunc)(int *,int );
 	err=0;
@@ -297,7 +294,7 @@ int BAction_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int actiononplayers,int con
 //=================================================
 void Remove_Briefing(mapinfo *info)
 {
-	
+
 	if (info && info->BRIEFS)
 	{
 		wfree(info->BRIEFS);
@@ -369,7 +366,6 @@ void StopTransmission(MENUSTR *allmenus,int slotnr)
 void Reload_Briefing(struct mapinfo *info,MENUSTR *allmenus)
 {
 	int i,j;
-	MAP_TRIGS	*trg;
 	MAP_TRIGS	*temptrg;
 	MAP_TRIGS	(*alltrigs)[]=(MAP_TRIGS (*)[]) info->BRIEFS;
 	Briefing_SetPause(-1,0);

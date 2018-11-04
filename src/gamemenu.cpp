@@ -462,7 +462,7 @@ char campaign_race[3]={STAR_PROTOSS_CAMPAIGN,STAR_TERRAN_CAMPAIGN,STAR_ZERG_CAMP
 //==========================================
 int campaignselect(void)
 {
-	int err,exitstatus,i,mission_id,retstatus,retstatus2,campaignnr,retval,selecteditem;
+	int exitstatus,retstatus,retstatus2,campaignnr;
 	int mousetype;
 	GRPFILE *dlg;
 	PCX backgnd,fontpcx;
@@ -480,7 +480,7 @@ int campaignselect(void)
 	fntadr[21]=fntadr[11];
 	fntadr[22]=fntadr[12];
 	palchange(pal,gameconf.videoconf.gamma,gameconf.videoconf.saturate);
-	if (!gameconf.grmode.flags & DISPLAYFLAGS_EMULATIONMODE)
+	if (!(gameconf.grmode.flags & DISPLAYFLAGS_EMULATIONMODE))
 		wscreenon();
 	menutranspcolors=(char *)wmalloc(2*256*256);
 	LoadTransPal(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,CAMPAIGN_STR[0],CAMPAIGN_STR[1],TRANS25_STR),
@@ -528,7 +528,6 @@ int campaignselect(void)
 	setdefaultbutton(raceselection,-1);
 	setmenuflags(raceselection,MENUFLAGS_ALWAYSDRAW);
 	int repeat=1;
-	int misstoverify;
 	do{
 		retstatus=drawmenu(raceselection,MENUFLAGS_EMPTY);
 	//	doubleclick=retstatus&SELECTITEMDOUBLECLICK;
@@ -645,7 +644,7 @@ char xcampaign_race[3]={BROOD_ZERG_CAMPAIGN,BROOD_PROTOSS_CAMPAIGN,BROOD_TERRAN_
 //==========================================
 int xcampaignselect(void)
 {
-	int err,exitstatus,i,mission_id,retstatus,retstatus2,campaignnr;
+	int exitstatus,retstatus,retstatus2,campaignnr;
 	GRPFILE *dlg;
 	PCX backgnd,fontpcx;
 	char *menutranspcolors,*fntadr;
@@ -660,7 +659,7 @@ int xcampaignselect(void)
 	fntadr[21]=fntadr[11];
 	fntadr[22]=fntadr[12];
 	palchange(pal,gameconf.videoconf.gamma,gameconf.videoconf.saturate);
-	if (!gameconf.grmode.flags & DISPLAYFLAGS_EMULATIONMODE)
+	if (!(gameconf.grmode.flags & DISPLAYFLAGS_EMULATIONMODE))
 		wscreenon();
 	menutranspcolors=(char *)wmalloc(2*256*256);
 	LoadTransPal(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,CAMPAIGN_STR[0],CAMPAIGN_STR[1],TRANS25_STR),
@@ -824,7 +823,7 @@ int xcampaignselect(void)
 //==========================================
 int glu_loadgame(void)
 {
-	int retstatus,retstatus2,exitstatus,i,repeat,elemnr,err;
+	int retstatus,retstatus2,exitstatus,repeat,elemnr,err;
 	GRPFILE *dlg;
 	PCX backgnd,fontpcx;
 	char *menutranspcolors,*fntadr;
@@ -837,7 +836,7 @@ int glu_loadgame(void)
 	memcpy(gameconf.grmode.videobuff,backgnd.GetPcxRawBytes(),backgnd.xsizePcx()*backgnd.ysizePcx());
 //	  backgnd.PutPcx(DELTASCREENX,DELTASCREENY2,PCX_EMPTYCOLOR1);
 	palchange(pal,gameconf.videoconf.gamma,gameconf.videoconf.saturate);
-	if (!gameconf.grmode.flags & DISPLAYFLAGS_EMULATIONMODE)
+	if (!(gameconf.grmode.flags & DISPLAYFLAGS_EMULATIONMODE))
 		wscreenon();
 	menutranspcolors=(char *)wmalloc(2*256*256);
 	LoadTransPal(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,SINGLEGAME_STR[0],SINGLEGAME_STR[1],TRANS25_STR),
@@ -945,7 +944,7 @@ int glu_loadgame(void)
 //==========================================
 int glu_loadreplay(void)
 {
-	int retstatus,retstatus2,exitstatus,i,repeat,elemnr,err;
+	int retstatus,retstatus2,exitstatus,repeat,elemnr,err;
 	GRPFILE *dlg;
 	PCX backgnd,fontpcx;
 	char *menutranspcolors,*fntadr;
@@ -958,7 +957,7 @@ int glu_loadreplay(void)
 	memcpy(gameconf.grmode.videobuff,backgnd.GetPcxRawBytes(),backgnd.xsizePcx()*backgnd.ysizePcx());
 //	  backgnd.PutPcx(DELTASCREENX,DELTASCREENY2,PCX_EMPTYCOLOR1);
 	palchange(pal,gameconf.videoconf.gamma,gameconf.videoconf.saturate);
-	if (!gameconf.grmode.flags & DISPLAYFLAGS_EMULATIONMODE)
+	if (!(gameconf.grmode.flags & DISPLAYFLAGS_EMULATIONMODE))
 		wscreenon();
 	menutranspcolors=(char *)wmalloc(2*256*256);
 	LoadTransPal(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,SINGLEGAME_STR[0],SINGLEGAME_STR[1],TRANS25_STR),
@@ -1147,7 +1146,7 @@ int CheckOtherPlayers(MENUSTR *allmenus,void *data)
 #define FRAMEPCXS	8
 int glu_briefing(int race,int networksingle,struct mapinfo *info,char *prefix_campaignpath,int skipmissionbutton)
 {
-	int retstatus,retstatus2,exitstatus,i,repeat,e,err;
+	int retstatus,exitstatus,i,repeat,e,err;
 	int totalpcx;
 	PCX backgnd,fontpcx,framepcxs[FRAMEPCXS];
 	char *menutranspcolors,*fntadr;
@@ -1163,7 +1162,7 @@ int glu_briefing(int race,int networksingle,struct mapinfo *info,char *prefix_ca
 	memcpy(gameconf.grmode.videobuff,backgnd.GetPcxRawBytes(),backgnd.xsizePcx()*backgnd.ysizePcx());
 //	  backgnd.PutPcx(DELTASCREENX,DELTASCREENY2,PCX_EMPTYCOLOR1);
 	palchange(pal,gameconf.videoconf.gamma,gameconf.videoconf.saturate);
-	if (!gameconf.grmode.flags & DISPLAYFLAGS_EMULATIONMODE)
+	if (!(gameconf.grmode.flags & DISPLAYFLAGS_EMULATIONMODE))
 		wscreenon();
 	menutranspcolors=(char *)wmalloc(2*256*256);
 	LoadTransPal(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,'R',RACE_CHAR[race],TRANS25_STR),
@@ -1491,7 +1490,7 @@ void initscoreinfo(struct mapinfo *info,int fromoptid)
 //==========================================
 void setmaxscore(struct mapinfo *info)
 {
-	int i,j,k,val,pl,maxscore;
+	int i,j,k,val,pl;
 	for (pl=0;pl<force_slots.realplayers;pl++)
 	{
 		i=force_slots.playernr[pl];
@@ -1529,7 +1528,7 @@ int SCORE_TRANSLUCENCY[3][2]={{147,9},{9,95},{9,9}};
 int races_clan[3]={NETWORK_TBL_ZERGCLANNAMES,NETWORK_TBL_TERRANCLANNAMES,NETWORK_TBL_PROTOSSCLANNAMES};
 void glu_score(struct mapinfo *info)
 {
-	int retstatus,repeat,i,j,pl,selectedlist;
+	int retstatus,repeat,i,pl,selectedlist;
 	PCX backgnd,fontpcx,optbtn;
 	GRPFILE *dlg,*scoregrp;
 	char *menutranspcolors,*fntadr,*forcename;
@@ -1543,6 +1542,7 @@ void glu_score(struct mapinfo *info)
 //	  race = CorrectRaceType(info->pl_race[info->played_as_nr],intfo->played_as_nr);
 	losewin=(map.flags & STARMAP_FLAG_WINGAME)!=0;
 
+	stopallsounds();
 	StopMusic(MUSIC_STOPWITHFADE);
 	sprintf(FULLFILENAME,"music\\%c%s.wav",RACE_CHAR[race],DEFEAT_VICTORY[losewin]);
 	PlayMusic(FULLFILENAME,-1);
@@ -1557,7 +1557,7 @@ void glu_score(struct mapinfo *info)
 	memcpy(gameconf.grmode.videobuff,backgnd.GetPcxRawBytes(),backgnd.xsizePcx()*backgnd.ysizePcx());
 //	  backgnd.PutPcx(DELTASCREENX,DELTASCREENY2,PCX_EMPTYCOLOR1);
 	palchange(pal,gameconf.videoconf.gamma,gameconf.videoconf.saturate);
-	if (!gameconf.grmode.flags & DISPLAYFLAGS_EMULATIONMODE)
+	if (!(gameconf.grmode.flags & DISPLAYFLAGS_EMULATIONMODE))
 		wscreenon();
 	menutranspcolors=(char *)wmalloc(2*256*256);
 	LoadTransPal(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,RACE_CHAR[race],LOSEWIN_STR[losewin],TRANS25_STR),
@@ -1743,7 +1743,7 @@ int mainmenu(void)
 	fntadr[21]=fntadr[11];
 	fntadr[22]=fntadr[12];
 	palchange(newpal,gameconf.videoconf.gamma,gameconf.videoconf.saturate);
-	if (!gameconf.grmode.flags & DISPLAYFLAGS_EMULATIONMODE)
+	if (!(gameconf.grmode.flags & DISPLAYFLAGS_EMULATIONMODE))
 		wscreenon();
 	highMouse->LoadOneCursor(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,MAINMENU_STR[0],MAINMENU_STR[1],ARROW_STR),NORMALMOUSE);
 	mytimer.SetMyTimerFunc(&mainmenutimer,NULL);
@@ -1870,8 +1870,6 @@ void selconn_callback(MENUSTR *allmenus,int nr,int listnr)
 //==========================================
 void selconn_gatewaycallback(MENUSTR *allmenus,int nr,int listnr)
 {
-	MenuItemPcx *oneitem;
-	char txt[50];
 	if (listnr != -1)
 	{
 		changetextitem(allmenus,9,MYTBLSTR(MYINFO_TBL_GATEWAY1_DESCR + listnr));			//additional info about selected gateway
@@ -1883,7 +1881,7 @@ void selconn_gatewaycallback(MENUSTR *allmenus,int nr,int listnr)
 //==========================================
 int glu_conn(void)
 {
-	int retstatus,retstatus2,exitstatus,i,repeat,elemnr,err;
+	int retstatus,exitstatus,i,repeat,err;
 	GRPFILE *dlg;
 	PCX backgnd,fontpcx;
 	char *menutranspcolors,*fntadr;
@@ -1897,7 +1895,7 @@ int glu_conn(void)
 	memcpy(gameconf.grmode.videobuff,backgnd.GetPcxRawBytes(),backgnd.xsizePcx()*backgnd.ysizePcx());
 //	  backgnd.PutPcx(DELTASCREENX,DELTASCREENY2,PCX_EMPTYCOLOR1);
 	palchange(pal,gameconf.videoconf.gamma,gameconf.videoconf.saturate);
-	if (!gameconf.grmode.flags & DISPLAYFLAGS_EMULATIONMODE)
+	if (!(gameconf.grmode.flags & DISPLAYFLAGS_EMULATIONMODE))
 		wscreenon();
 	menutranspcolors=(char *)wmalloc(2*256*256);
 	LoadTransPal(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,SINGLEGAME_STR[0],SINGLEGAME_STR[1],TRANS25_STR),
@@ -2038,8 +2036,8 @@ void updateinfogame_callback(MENUSTR *allmenus,int nr,int listnr)
 //==========================================
 int Guest_WaitJoinResponce(MENUSTR *allmenus,void *data)
 {
-	static int waitcycle=0,retcallback=0;
-	int err,continuereadnetw,updatelists,ret;
+	static int waitcycle=0;
+	int err,ret;
 	NETWORK_INFO *info;
 	info=(NETWORK_INFO *) data;
 	do{
@@ -2099,7 +2097,7 @@ int Guest_CheckNetwork(MENUSTR *allmenus,void *data)
 //==========================================
 int glu_join(FORCE_SLOTS *fslots)
 {
-	int retstatus,retstatus2,exitstatus,i,repeat,elemnr,error,PCID,sellist,err1,err2;
+	int retstatus,exitstatus,repeat,error,PCID,sellist,err1,err2;
 	int errtxt;
 	GRPFILE *dlg;
 	PCX backgnd,fontpcx;
@@ -2116,7 +2114,7 @@ int glu_join(FORCE_SLOTS *fslots)
 	memcpy(gameconf.grmode.videobuff,backgnd.GetPcxRawBytes(),backgnd.xsizePcx()*backgnd.ysizePcx());
 //	  backgnd.PutPcx(DELTASCREENX,DELTASCREENY2,PCX_EMPTYCOLOR1);
 	palchange(pal,gameconf.videoconf.gamma,gameconf.videoconf.saturate);
-	if (!gameconf.grmode.flags & DISPLAYFLAGS_EMULATIONMODE)
+	if (!(gameconf.grmode.flags & DISPLAYFLAGS_EMULATIONMODE))
 		wscreenon();
 	menutranspcolors=(char *)wmalloc(2*256*256);
 	LoadTransPal(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,SINGLEGAME_STR[0],SINGLEGAME_STR[1],TRANS25_STR),
@@ -2321,11 +2319,11 @@ int glu_join(FORCE_SLOTS *fslots)
 int glu_login(void)
 {
 	FILE *f;
-	int strlenx,flags,i;
+	int flags;
 	int exitstatus=0,err;
 	GRPFILE *dlg;
-	PCX backgnd,*elempcx[3],fontpcx;
-	char *menutranspcolors,*savedscr,*fntadr;
+	PCX backgnd,fontpcx;
+	char *menutranspcolors,*fntadr;
 	char tempname[512];
 	char pal[256*4];
 
@@ -2336,7 +2334,7 @@ int glu_login(void)
 	memcpy(gameconf.grmode.videobuff,backgnd.GetPcxRawBytes(),backgnd.xsizePcx()*backgnd.ysizePcx());
 //	  backgnd.PutPcx(DELTASCREENX,DELTASCREENY2,PCX_EMPTYCOLOR1);
 	palchange(pal,gameconf.videoconf.gamma,gameconf.videoconf.saturate);
-	if (!gameconf.grmode.flags & DISPLAYFLAGS_EMULATIONMODE)
+	if (!(gameconf.grmode.flags & DISPLAYFLAGS_EMULATIONMODE))
 		wscreenon();
 	menutranspcolors=(char *)wmalloc(2*256*256);
 	LoadTransPal(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,SINGLEGAME_STR[0],SINGLEGAME_STR[1],TRANS25_STR),
@@ -2663,7 +2661,7 @@ void preparegameconf_ums(void)
 //==========================================
 void initselectmaplists(MENUSTR *allmenus)//,struct mapinfo *info)
 {
-	int i,j,find=0,forcenr;
+	int i,j,find=0;
 	int gmtype;
 	char playertypes[60];
 
@@ -2773,12 +2771,10 @@ static unsigned char convpal_loaded[MAXTERRAINTYPES];
 //==========================================
 int getmapinfo(MENUSTR *allmenus,char *filename,int haveslots)
 {
-	char number[10];
 	char *message;
 	char temptext[60];
 	char temptext2[60];
-	unsigned char convpal[256];
-	int offset,i;
+	int i;
 	mapinfo *testmap=(mapinfo *) wmalloc(sizeof(mapinfo));
 	memset(testmap,0,sizeof(mapinfo));
 	int err=starmap_info(NULL,filename,testmap);
@@ -2992,8 +2988,8 @@ int SelectMapCallbackFunc(MENUSTR *allmenus,void *data)
 //==========================================
 int selectmapmenu(void)
 {
-	int exitstatus=0,repeat=1,i,j,len,updatelistfiles,nrplayers;
-	int retstatus,gmtype;
+	int exitstatus=0,repeat=1,i,len,updatelistfiles,nrplayers;
+	int retstatus;
 	char *menutranspcolors,*fntadr;
 	GRPFILE *dlg;
 	PCX backgnd,fontpcx;
@@ -3014,7 +3010,7 @@ int selectmapmenu(void)
 	memcpy(gameconf.grmode.videobuff,backgnd.GetPcxRawBytes(),backgnd.xsizePcx()*backgnd.ysizePcx());
 //	  backgnd.PutPcx(DELTASCREENX,DELTASCREENY2,PCX_EMPTYCOLOR1);
 	palchange(pal,gameconf.videoconf.gamma,gameconf.videoconf.saturate);
-	if (!gameconf.grmode.flags & DISPLAYFLAGS_EMULATIONMODE)
+	if (!(gameconf.grmode.flags & DISPLAYFLAGS_EMULATIONMODE))
 		wscreenon();
 	menutranspcolors=(char *)wmalloc(2*256*256);
 	LoadTransPal(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,SINGLEGAME_STR[0],SINGLEGAME_STR[1],TRANS25_STR),
@@ -3295,8 +3291,7 @@ void speedchange(MENUSTR *allmenus,int nr,int horizpos)
 int CheckForDublicateGame(MENUSTR *allmenus,void *data)
 {
 	static int waitcycle=0;
-	int err,continuereadnetw,updatelists,nr=networkresend;
-	NETWORK_INFO *info;
+	int nr=networkresend;
 	Guest_CheckNetwork(NULL,data);
 	if (nr)
 	{
@@ -3311,7 +3306,7 @@ int CheckForDublicateGame(MENUSTR *allmenus,void *data)
 //==========================================
 int glu_creat(FORCE_SLOTS *fslots)
 {
-	int exitstatus=0,repeat=1,i,len,error,repeatcheck,updatelistfiles,elemnr,errmap;
+	int exitstatus=0,repeat=1,len,error,repeatcheck,updatelistfiles,elemnr,errmap;
 	int retstatus;
 	char *menutranspcolors,*fntadr;
 	GRPFILE *dlg;
@@ -3335,7 +3330,7 @@ int glu_creat(FORCE_SLOTS *fslots)
 	memcpy(gameconf.grmode.videobuff,backgnd.GetPcxRawBytes(),backgnd.xsizePcx()*backgnd.ysizePcx());
 //	  backgnd.PutPcx(DELTASCREENX,DELTASCREENY2,PCX_EMPTYCOLOR1);
 	palchange(pal,gameconf.videoconf.gamma,gameconf.videoconf.saturate);
-	if (!gameconf.grmode.flags & DISPLAYFLAGS_EMULATIONMODE)
+	if (!(gameconf.grmode.flags & DISPLAYFLAGS_EMULATIONMODE))
 		wscreenon();
 	menutranspcolors=(char *)wmalloc(2*256*256);
 	LoadTransPal(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,SINGLEGAME_STR[0],SINGLEGAME_STR[1],TRANS25_STR),
@@ -3593,7 +3588,7 @@ int SendMyInfoToNetwork(MENUSTR *allmenus,void *data)
 //==========================================
 int Master_JoinPackets(MENUSTR *allmenus,void *data)
 {
-	int cmd,err,err2,continuereadnetw,newplayers=0;
+	int cmd,err,err2,newplayers=0;
 	NETWPLAYERINFO netwinfo;
 	WAITJOIN_INFO *join;
 	char txt1[100];
@@ -3716,9 +3711,9 @@ int Master_JoinPackets(MENUSTR *allmenus,void *data)
 int Guest_JoinPackets(MENUSTR *allmenus,void *data)
 {
 	static int waitcycle=0,waitcycledownload=0,readinfo=0,prevsize=0;
-	int err,err2,continuereadnetw;
+	int err,err2;
 	WAITJOIN_INFO *join;
-	NETWORK_INFO sendrespond;
+;
 	join=(WAITJOIN_INFO *) data;
 	do{
 		err=CallNetwork(NETWORK_DATAREADY,join->sock2);
@@ -3819,7 +3814,7 @@ void createplayerslottabs(char *str,int withobserverslot)
 //==========================================
 int glu_chat(int masterjoin,int playernr,FORCE_SLOTS *fslots)
 {
-	int retstatus,retstatus2,exitstatus,i,repeat,elemnr,PCID,sellist,menuappear,connslot;
+	int retstatus,exitstatus,repeat,menuappear,connslot;
 	int err1,err2,error;
 	GRPFILE *dlg;
 	PCX backgnd,fontpcx;
@@ -3849,7 +3844,7 @@ int glu_chat(int masterjoin,int playernr,FORCE_SLOTS *fslots)
 	memcpy(gameconf.grmode.videobuff,backgnd.GetPcxRawBytes(),backgnd.xsizePcx()*backgnd.ysizePcx());
 //	  backgnd.PutPcx(DELTASCREENX,DELTASCREENY2,PCX_EMPTYCOLOR1);
 	palchange(pal,gameconf.videoconf.gamma,gameconf.videoconf.saturate);
-	if (!gameconf.grmode.flags & DISPLAYFLAGS_EMULATIONMODE)
+	if (!(gameconf.grmode.flags & DISPLAYFLAGS_EMULATIONMODE))
 		wscreenon();
 	menutranspcolors=(char *)wmalloc(2*256*256);
 	LoadTransPal(makefilename(GLUEPAL_NAME,GLUEPAL_OFFSET,SINGLEGAME_STR[0],SINGLEGAME_STR[1],TRANS25_STR),
@@ -3891,7 +3886,7 @@ int glu_chat(int masterjoin,int playernr,FORCE_SLOTS *fslots)
 	}
 	error=0;
 
-	if (err1!=NETWORK_OK||err2!=NETWORK_OK)
+	if (err1 != NETWORK_OK || err2 != NETWORK_OK)
 	{
 		error=-1;
 		if (err2==NETWORK_ERROR_SOCKETBIND)
@@ -3929,6 +3924,7 @@ int glu_chat(int masterjoin,int playernr,FORCE_SLOTS *fslots)
 	{
 		drawmenu(gluerr,MENUFLAGS_EMPTY);
 		UnloadDialogBin(gluerr);
+		exitstatus = EXITCREATEDGAME;
 	}
 	else
 	{
@@ -4179,7 +4175,6 @@ int glu_chat(int masterjoin,int playernr,FORCE_SLOTS *fslots)
 void gluchat_initmenus(MENUSTR *menu,int masterjoin,int playernr,FORCE_SLOTS *fslots)
 {
 	int i,force;
-	int playslot=0;
 	char txt1[50];
 	char txt2[50];
 
@@ -4421,7 +4416,7 @@ void titlerefresh(void *param1,int param2)
 	static int here=0,prev_tick;
 	static PCX font;
 	PCX title1,title2;
-	int i,sx,sy,err2;
+	int sx,sy;
 	if (here)
 		return;
 	MENUSTR *dialog=(MENUSTR *)param1;
@@ -4503,7 +4498,6 @@ void MakeObserver(int playernr)
 //==========================================
 void MakeDisconnect(int playernr)
 {
-	int i;
 	MakeObserver(playernr);
 	PLAYER[playernr].isobserverflag|=PLAYER_DISCONNECTED;
 }
@@ -5309,7 +5303,7 @@ int lmission(MENUDRAW *menudraw,MENUPARAMS *menuparams)
 //==========================================
 int abrtmenu(MENUDRAW *menudraw,MENUPARAMS *menuparams)
 {
-	int ret,exitmenu;
+	int ret;
 	if (!menudraw->menutodraw)
 	{
 		menudraw->menutodraw=LoadDialogBin("rez\\abrtmenu.bin",DIALOGBIN_GAMEDIALOGS|DIALOGBIN_DONOTSAVEUNDERMENU,IDFONT16);
@@ -5784,9 +5778,8 @@ int loadgamefromfile_error1(MENUSTR *allmenus,int menuitem)
 void loadgamefromfile(void)
 {
 	MENUPARAMS *mp;
-	FILE *f=fopen(fileforsaveload,"r");
-//	  if (f)
-	if (0)
+	FILE *f = fopen(fileforsaveload,"r");
+	if (f)
 	{
 		//some code of loading game.......
 		fclose(f);
@@ -5795,7 +5788,7 @@ void loadgamefromfile(void)
 	else
 	{
 		menustatus=MAINMENUSTATUS_LOADGAMEFAILED;
-		mp=new MENUPARAMS(&loadgamefromfile_error1,MYTBLSTR(MYINFO_TBL_LOADGAMEERR1));
+		mp = new MENUPARAMS(&loadgamefromfile_error1,MYTBLSTR(MYINFO_TBL_LOADGAMEERR1));
 		showedmenu.prepareforshowmenu(&xputokmenu,mp);
 	}
 }

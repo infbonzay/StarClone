@@ -212,7 +212,6 @@ void loadunderitem(MENUSTR *allmenus,int itemnr)
 //==========================================
 void saveunderitems(MENUSTR *allmenus)
 {
-	MENUPOS *item;
 	int i;
 	for (i=0;i<allmenus->elements;i++)
 	{
@@ -245,7 +244,7 @@ void clearscrollportrait(void)
 //==========================================
 void checkanddrawmenu(MENUSTR *allmenus,int ItemChanges,int saveunder)
 {
-	int itemselected,i,showtype,inv;
+	int i,showtype,inv;
 	for (i=0;i<allmenus->elements;i++)
 	{
 				if (allmenus->menu[i].relation.address[ITEMRELATION_DISABLE] != NULL)
@@ -361,9 +360,9 @@ int actiondblclick(MENUSTR *allmenus,int downmenu)
 int actionmenuonpressmouse(MENUSTR *allmenus,int downmenu,int *selectedmenu)
 {
 	static long long prevpresstimer=0;
-	int i,j,itemselected,posx,posy,sizeybutton,canscroll,retstatus,prevvalue,curvalue,action;
+	int i,j,itemselected,posx,retstatus,prevvalue,action;
 	int expandboxflag;
-	MENUPOS *item,*item2,*item3;
+	MENUPOS *item;
 	LISTBOXBAR	*bar;
 	char *savedbeforeshowlist;
 	int sprnr,xsizegrp,ysizegrp,xsize,ysize,fromspr,typelistshow,color,selitem;
@@ -543,27 +542,27 @@ int actionmenuonpressmouse(MENUSTR *allmenus,int downmenu,int *selectedmenu)
 //==========================================
 void activemenuupdatevalues(MENUSTR *allmenus,int activeitem)
 {
-	MENUPOS *item;
+
 	if (fadeinout)
 	{
-				fadeinout=0;
-				for (int i=0;i<allmenus->elements;i++)
-				{
-		//			if (allmenus->menu[i].showvalue)
-		//				printf("%d\n",allmenus->menu[i].showvalue);
-						if (i==activeitem)
-						{
-								allmenus->menu[i].showvalue+=allmenus->incrementfactor;
-								if (allmenus->menu[i].showvalue>MENUITEM_TIMEACTIVE_MAXVALUE)
-										allmenus->menu[i].showvalue=MENUITEM_TIMEACTIVE_MAXVALUE;
-						}
-						else
-						{
-								allmenus->menu[i].showvalue-=allmenus->incrementfactor;
-								if (allmenus->menu[i].showvalue<MENUITEM_TIMEACTIVE_MINVALUE)
-										allmenus->menu[i].showvalue=MENUITEM_TIMEACTIVE_MINVALUE;
-						}
-				}
+		fadeinout=0;
+		for (int i=0;i<allmenus->elements;i++)
+		{
+// 			if (allmenus->menu[i].showvalue)
+// 			printf("%d\n",allmenus->menu[i].showvalue);
+			if (i==activeitem)
+			{
+				allmenus->menu[i].showvalue+=allmenus->incrementfactor;
+				if (allmenus->menu[i].showvalue>MENUITEM_TIMEACTIVE_MAXVALUE)
+					allmenus->menu[i].showvalue=MENUITEM_TIMEACTIVE_MAXVALUE;
+			}
+			else
+			{
+				allmenus->menu[i].showvalue-=allmenus->incrementfactor;
+				if (allmenus->menu[i].showvalue<MENUITEM_TIMEACTIVE_MINVALUE)
+					allmenus->menu[i].showvalue=MENUITEM_TIMEACTIVE_MINVALUE;
+			}
+		}
 	}
 }
 //==========================================
@@ -584,11 +583,11 @@ void calcmenuitemsizes(MENUSTR *allmenus)
 //==========================================
 int drawmenu(MENUSTR *allmenus,int flags)
 {
-	int menutick=0,updateunder,exitcallback;
+	int updateunder,exitcallback;
 	int cursorblink=getcursorblinktype();
-	int i,prevmenuonbar,downmenu,redrawbar,editboxchanges,needredraw,selectedmenu;
-	int activeitemchange,activeitem,prevactiveitem=-1000,firsthere=1;
-	char *scrundereditbox,*prev_entire_screen;
+	int prevmenuonbar,downmenu,redrawbar,editboxchanges,needredraw,selectedmenu;
+	int activeitemchange,activeitem,prevactiveitem=-1000;
+	char *prev_entire_screen;
 	MENUACTIVE=1;
 	if (allmenus->prevmenu)
 	{
@@ -809,9 +808,8 @@ int drawmenu(MENUSTR *allmenus,int flags)
 //==========================================
 int showlistmenu(MENUSTR *allmenus)
 {
-	int i,prevmenuonbar,downmenu,prevselmenu,ret,selectedmenu;
+	int prevmenuonbar,downmenu,prevselmenu,ret,selectedmenu = NOSELECTMENUBAR;
 	int activeitemchange,activeitem;
-	char *scrundereditbox;
 	BAR prevBar;
 	prevBar.bar=allmenus->vars.BarChanges.bar;
 	prevBar.color=allmenus->vars.BarChanges.color;
@@ -1045,42 +1043,42 @@ int editboxaction(MENUSTR *allmenus)
 //==========================================
 int menukeys(MENUSTR *allmenus,int *pressed,int *needredraw)
 {
-	MENUPOS *menuitem;
-	int i=0,tempkey,maxelem,changelist=0,viewlistelem;
+
+	int i=0,tempkey,changelist=0;
 	static int prevkey=0;
 	*pressed = NOSELECTMENUBAR;
 	if (keyactive)
 	{
-				if (keyactive == TABKEY) //need to parce all elements to need next active and decorated and responce to mouse&key events
-				{
-						for (i=allmenus->defaultbutton+1;i<allmenus->elements;i++)
-								if (!menuitem_ISDISABLED(allmenus,i)&&menuitem_ISVISIBLED(allmenus,i))
-										if (allmenus->menu[i].dialogbin_flags&DIALOGBIN_FLAGS_KEYMOUSERESPONDEVENTS)
-										{
-												setdefaultbutton(allmenus,i);
-												if (needredraw)
-														*needredraw=1;
-												keyactive=0;
-												return NOSELECTMENUBAR;
-										}
-						for (i=0;i<allmenus->defaultbutton;i++)
-								if (!menuitem_ISDISABLED(allmenus,i)&&menuitem_ISVISIBLED(allmenus,i))
-										if (allmenus->menu[i].dialogbin_flags&DIALOGBIN_FLAGS_KEYMOUSERESPONDEVENTS)
-										{
-												setdefaultbutton(allmenus,i);
-												keyactive=0;
-												if (needredraw)
-														*needredraw=1;
-												return NOSELECTMENUBAR;
-										}
-				}
-				if (((allmenus->defaultbutton>=0&&allmenus->menu[allmenus->defaultbutton].itemtype!=ISEDITBOX)||
-						allmenus->defaultbutton<0)||
-						(allmenus->menu[allmenus->defaultbutton].itemtype==ISEDITBOX&&keyactive==ESCAPEKEY))
-				{
-						prevkey = keyactive;
-						switch(keyactive)
-						{
+		if (keyactive == TABKEY) //need to parce all elements to need next active and decorated and responce to mouse&key events
+		{
+			for (i=allmenus->defaultbutton+1;i<allmenus->elements;i++)
+				if (!menuitem_ISDISABLED(allmenus,i)&&menuitem_ISVISIBLED(allmenus,i))
+					if (allmenus->menu[i].dialogbin_flags&DIALOGBIN_FLAGS_KEYMOUSERESPONDEVENTS)
+					{
+						setdefaultbutton(allmenus,i);
+						if (needredraw)
+							*needredraw=1;
+						keyactive=0;
+						return NOSELECTMENUBAR;
+					}
+			for (i=0;i<allmenus->defaultbutton;i++)
+				if (!menuitem_ISDISABLED(allmenus,i)&&menuitem_ISVISIBLED(allmenus,i))
+					if (allmenus->menu[i].dialogbin_flags&DIALOGBIN_FLAGS_KEYMOUSERESPONDEVENTS)
+					{
+						setdefaultbutton(allmenus,i);
+						keyactive=0;
+						if (needredraw)
+							*needredraw=1;
+						return NOSELECTMENUBAR;
+					}
+		}
+		if (((allmenus->defaultbutton>=0&&allmenus->menu[allmenus->defaultbutton].itemtype!=ISEDITBOX)	||
+			allmenus->defaultbutton<0)																	||
+			(allmenus->menu[allmenus->defaultbutton].itemtype==ISEDITBOX&&keyactive==ESCAPEKEY))
+		{
+			prevkey = keyactive;
+			switch(keyactive)
+			{
 								case ENTERKEY:
 										if (allmenus->menu[allmenus->defaultbutton].itemtype==ISBUTTON ||
 												allmenus->menu[allmenus->defaultbutton].itemtype==ISLISTBOX)
@@ -1144,13 +1142,13 @@ int menukeys(MENUSTR *allmenus,int *pressed,int *needredraw)
 														break;
 												}
 										break;
-						}
-				}
+			}
+		}
 	}
 	else
 	{
-				if (prevkey)
-				{
+		if (prevkey)
+		{
 						tempkey = prevkey;
 						prevkey=0;
 						switch(tempkey)
@@ -1216,7 +1214,7 @@ int menukeys(MENUSTR *allmenus,int *pressed,int *needredraw)
 														return i;
 										break;
 						}
-				}
+		}
 	}
 	return NOSELECTMENUBAR;
 }
@@ -1441,7 +1439,7 @@ void addbuttonitem(MENUSTR *allmenus,int nr,int hotx,int hoty,
 								  int hotsizex,int hotsizey,int texty,char hotkey,
 								  int fontnr,char *text,unsigned int colors4,int buttonsize,int buttontype)
 {
-	int textsizex,i,j,len,newcolor,xormask=0;
+	int textsizex,i,len;
 	MENUPOS *menuitem=&allmenus->menu[nr];
 	if (menuitem->item.button)
 	{
@@ -1483,10 +1481,8 @@ void addbuttonitem(MENUSTR *allmenus,int nr,int hotx,int hoty,
 void drawbuttonitem(MENUSTR *allmenus,int itemnr)
 {
 	int buttonsize,sprnr0,sprnr1,sprnr2,sizexgrp,i,buttontype;
-	mylist *listbox;
 	GRPFILE *dlggrp=allmenus->dlggrp;
 	MENUPOS *menuitem=&allmenus->menu[itemnr];
-	char *mes;
 	char *fonttable=allmenus->fonttable;
 	int showtype=menuitem->typeofshow;
 	int colors4=menuitem->colors4;
@@ -2326,7 +2322,7 @@ char HORIZBUTTON[4]={99,100,102,101};
 void addhorizbutton_params(MENUSTR *allmenus,int nr,int maxpos,int nrofholes,int spacebetweenholes,
 							void (*func)(MENUSTR *allmenus,int itemnr,int horizpos))
 {
-	int sizexelem,i,hole,newsizepix,poshole;
+	int sizexelem,newsizepix;
 	MENUPOS *menuitem=&allmenus->menu[nr];
 	if (menuitem->itemtype==ISHORIZBUTTON)
 	{
@@ -2457,7 +2453,7 @@ int gethorizvalue(MENUSTR *allmenus,int nr)
 //==========================================
 void sethorizbuttonposfrommouse(MENUSTR *allmenus,int itemnr,int value)
 {
-	int lastx,posx,i,j,x;
+	int i;
 	if (allmenus->menu[itemnr].itemtype==ISHORIZBUTTON)
 	{
 		MENUPOS *menuitem=&allmenus->menu[itemnr];
@@ -2506,13 +2502,10 @@ void sethorizbuttonposfrommouse(MENUSTR *allmenus,int itemnr,int value)
 //==========================================
 void drawhorizbutton(MENUSTR *allmenus,int itemnr)
 {
-	int i,color,grpsizex,sprnr,addx=0;
+	int i,sprnr,addx=0;
 	GRPFILE *dlggrp=allmenus->dlggrp;
 	MENUPOS *menuitem=&allmenus->menu[itemnr];
-	char *mes;
-	char *fonttable=allmenus->fonttable;
 	int showtype=menuitem->typeofshow;
-	int colors4=menuitem->colors4;
 	int deltax=(menuitem->hotdeltax-menuitem->item.horizbutton->sizexbar)/2;
 	for (i=0;i<menuitem->item.horizbutton->sizexelem;i++)
 	{
@@ -2559,7 +2552,7 @@ void delhorizbuttonitem(MENUSTR *allmenus,int nr,int end)
 //==========================================
 void addsmkvideo(MENUSTR *allmenus,int nr,int hotx,int hoty,int sizex,int sizey,int nrofsmks,SMK_ARRAY *arrayofsmks)
 {
-	int minhotx,minhoty,smknrframes,i;
+	int smknrframes,i;
 	HANDLE hmpq;
 	smk_t *tempsmk;
 	MENUPOS *menuitem=&allmenus->menu[nr];
@@ -2618,7 +2611,7 @@ void addbuttontosmk(MENUSTR *allmenus,int nr,int xpos,int ypos,int smksizex,int 
 								  int fontnr,char *text,unsigned int colors4,
 								  int buttonsize,int buttontype,int buttonflags)
 {
-	int i,j,len,len2,newcolor,from,smkposx,smkposy,sizextext,sizeytext;
+	int i,len,len2,smkposx,smkposy,sizextext,sizeytext;
 	MENUPOS *menuitem=&allmenus->menu[nr];
 	menuitem->colors4=colors4;
 	menuitem->fontnr=fontnr;
@@ -2705,7 +2698,7 @@ void drawsmkvideo(MENUSTR *allmenus,int itemnr)
 	smk_t *smk;
 	MENUPOS *menuitem=&allmenus->menu[itemnr];
 	unsigned int w,h;
-	unsigned char *vidbuff,*newvidbuff,*shadowedtable;
+	unsigned char *vidbuff;
 	if (menuitem->item.smkvideo->smks)
 	for (i=0;i<menuitem->item.smkvideo->smks->totalsmks;i++)
 	{
@@ -2830,12 +2823,10 @@ void delsmkvideoitem(MENUSTR *allmenus,int nr,int end)
 void drawsmkbuttonitem(MENUSTR *allmenus,int itemnr,BUTTON *button,int xpos,int ypos)
 {
 	int buttonsize,sprnr0,sprnr1,sprnr2,sizexgrp,i,buttontype,glowoffset;
-	mylist *listbox;
 	if (!button)
 		return;
 	GRPFILE *dlggrp=allmenus->dlggrp;
 	MENUPOS *menuitem=&allmenus->menu[itemnr];
-	char *mes;
 	char *fonttable=allmenus->fonttable;
 	int showtype=menuitem->typeofshow;
 	int colors4=menuitem->colors4;
@@ -3434,7 +3425,7 @@ char LISTBOX_BOTTOMBUTTON[4]={19,20,21,20};		//disabled,nofocus,click,focus
 //==========================================
 void calclistboxvertbar(MENUSTR *allmenus,int nr)
 {
-	int x1,y1,sy,syelem;
+	int y1,sy,syelem;
 	LISTBOXBAR *bar;
 	MENUPOS *menuitem=&allmenus->menu[nr];
 	if (!menuitem->item.listbox->bar)
@@ -3617,7 +3608,7 @@ void drawlistboxitem(MENUSTR *allmenus,int itemnr)
 	mylist *listbox;
 	char *mes;
 	LISTBOXBAR *bar;
-	int x1,y1,x2,y2,sx,sy,syelem;
+	int x1,y1,x2,y2;
 	int i,jj,j,from,to,selitem,color;
 	GRPFILE *dlggrp=allmenus->dlggrp;
 	MENUPOS *menuitem=&allmenus->menu[itemnr];
@@ -3743,8 +3734,8 @@ int changelistbox_selectednr(MENUSTR *allmenus,int itemnr,int delta)
 //==========================================
 void changelistbox_fromto(MENUSTR *allmenus,int itemnr,int delta)
 {
-	int maxelem,sizeypolzunok,maxpolz,maxpolzy,skipup,realpolzy;
-	MENUPOS *menuitem,*item3;
+	int maxelem;
+	MENUPOS *menuitem;
 	menuitem=&allmenus->menu[itemnr];
 	if (menuitem->itemtype==ISLISTBOX)
 	{
@@ -3808,7 +3799,6 @@ void dellistboxitem(MENUSTR *allmenus,int nr,int end,int typeofdel)//0-flushlist
 //==========================================
 void changelistbox_buttonbarposdelta(MENUSTR *allmenus,int nr,int mouseypos)
 {
-	int posy,maxelem,from;
 	MENUPOS *menuitem=&allmenus->menu[nr];
 	LISTBOXBAR *bar;
 	if (menuitem->itemtype==ISLISTBOX)
@@ -4064,7 +4054,7 @@ void MENUDRAW::EndShowMenu(void)
 //==========================================
 int drawmenu_ONETICK(MENUSTR *allmenus)
 {
-	int exitcallback,i,redrawbar,expitem;
+	int exitcallback,redrawbar,expitem;
 	MENUSTR *showlist;
 
 	allmenus->saveunder=saveundermenu(allmenus);
@@ -4275,8 +4265,7 @@ int drawmenu_LASTTICK(MENUDRAW *menudraw)
 //==========================================
 int showlistmenu_ONETICK(MENUSTR *allmenus)
 {
-	int exitcallback,i;
-
+	int exitcallback;
 	if (!(allmenus->mainmenuflags&DIALOGBIN_FLAGS_ENTERSEMAPHORE))
 	{
 		MENUACTIVE++;

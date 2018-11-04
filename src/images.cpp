@@ -216,7 +216,6 @@ void OVERLAY_IMG::SetGrpFunc(unsigned short image_id)
 #define MAXOVERCHILDS			10
 void MAIN_IMG::AddImageToParent(OVERLAY_IMG *img)
 {
-	mylistsimple *childs;
 	if (!childlists)
 	{
 		childlists = new OVERLAYIMGLIST(MAXOVERCHILDS);
@@ -406,8 +405,8 @@ void OVERLAY_IMG::DrawImage(void)
 //============================================
 void OVERLAY_IMG::DrawImageXY(int x,int y)
 {
-	int warpstatus,side,side2,mainside,subunit=0;
-	unsigned char oneside,mirror,drawedcolor,fogvalue,loside;
+	int side,side2,mainside,subunit=0;
+	unsigned char oneside,mirror,drawedcolor,fogvalue;
 	signed char newydelta,mainimageturn;
 	char format;
 	signed char *adrxyoffs,xlo,ylo;
@@ -783,7 +782,7 @@ int MAIN_IMG::Rotation(unsigned char rotationfactor)
 {
 	OBJ *a;
 	unsigned char delta;
-	signed char rot,sign;
+	signed char rot;
 	if (side == neededside)
 	{
 		flags &= ~SC_IMAGE_FLAG_NEEDROTATIONTODIRECTION;
@@ -845,12 +844,13 @@ void MAIN_IMG::MoveInUnitDirection(OBJ *a,unsigned char side,int speed)
 MAIN_IMG *OBJCreateImage(OBJ *a,int x256,int y256,unsigned char useiscriptnr,int groundair,unsigned short constr_id,unsigned short imagelo_id)
 {
 	MAIN_IMG *img;
-	unsigned short flags,flingy_id,sprites_id,images_id,iscript_id;
+	unsigned short flags,flingy_id,sprites_id,images_id;
 	unsigned char side,subunitnr,elevationlevel;
 	if (a->SC_Unit == SC_MAPREVEALEROBJ )
 		flags = SC_IMAGE_FLAG_DISABLEDRAW;
 	else
 		flags = 0;
+	flingy_id = alldattbl.units_dat->flingy_id[a->SC_Unit];
 	if (!constr_id)
 	{
 		flingy_id = alldattbl.units_dat->flingy_id[a->SC_Unit];
@@ -950,10 +950,8 @@ void loadandputimage(int POSINMAP)
 void saveandputimage(int x,int y,int xdelta,int ydelta,GRPFILE *grppict,int format,
 					int maxcolor,int grcolor,int colortable,int nrpicture,unsigned short flags,unsigned char buildwhite)
 {
-	int xpos,ypos,sizex,sizey,slotnr,retstatus=0;
 	int xk,yk;
 	int POSINMAP;
-	unsigned char slotflags=0;
 	POSINMAP = y/32*MAXXMAP+x/32;
 	x += xdelta;
 	y += ydelta;
@@ -1210,8 +1208,6 @@ void AddDustImages(struct OBJ *a,int overlaylayer)
 //========================================
 void AddShieldImage(struct OBJ *a,int directiondamage)
 {
-	int effectlevel,inv;
-	int x,y;
 	MAIN_IMG *img;
 	OVERLAY_IMG *newimg;
 	unsigned short imagelo_id;
@@ -1344,7 +1340,6 @@ short IMAGEID_ATRCORROSIVEACID[3]={IMAGEID_ACIDSPORES1,IMAGEID_ACIDSPOREM1,IMAGE
 //========================================
 void InitSporeImage(OBJ *a,int acidvalue)
 {
-	int deltaimg;
 	unsigned short image_id;
 	image_id = IMAGEID_ATRCORROSIVEACID[GetUnitOverlaySize(a->SC_Unit)];
 	AddImagesForAtribute(a,ATRCORROSIVEACID,image_id,IMAGEOVERLAY_DEPENDONMAINIMG);

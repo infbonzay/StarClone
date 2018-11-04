@@ -380,8 +380,8 @@ void DoOrder(int playernr,OBJ *a,int x,int y,int type_id,int obj_id,int icon_nr,
 //=======================================
 int TickBuildMakeConstruct(OBJ *a,int *doneobj_id)
 {
-	int type_id,obj_id,upgr_nr,timeremain;
-	int i,donetype;
+	int type_id,obj_id;
+	int donetype;
 	if (!a->construct)
 		return(0);
 	if (!a->construct->nrofelem)
@@ -396,7 +396,7 @@ int TickBuildMakeConstruct(OBJ *a,int *doneobj_id)
 		DelConstruct(a,0,&type_id,&obj_id);
 		return(donetype);
 	}
-	return(0);	
+	return(0);
 }
 //==================================
 int TickUnderConstruct(OBJ *a)
@@ -405,7 +405,7 @@ int TickUnderConstruct(OBJ *a)
 	OBJstruct *b;
 	if (!IsReadyOBJ(a))
 	{
-		if (a->selfconstruct.currentconstrstep == CONSTR_STEP_ALLBUILDSEXACT100)		//wait for build teleport whitegrd done 
+		if (a->selfconstruct.currentconstrstep == CONSTR_STEP_ALLBUILDSEXACT100)		//wait for build teleport whitegrd done
 			return(0);
 		if (IsBuild(a->SC_Unit))
 		{

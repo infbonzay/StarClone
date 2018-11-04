@@ -27,10 +27,10 @@ void PickupObj(OBJ *a,OBJ *pickupobj)
 	a->carryobj = pickupobj;
 	a->carryobj->carryobj=a;
 	a->finalOBJ = NULL;
-	
+
 	pickupobj->modemove = MODECARRYME;
 	pickupobj->prop |= VARCANTSELECT;
-			
+
 	pickupobj->mainimage->side = a->mainimage->side;
 	pickupobj->mainimage->neededside = a->mainimage->side;
 	//!!!! need to destroy images and send init message
@@ -40,9 +40,9 @@ void PickupObj(OBJ *a,OBJ *pickupobj)
 //=================================
 void QueueAction(void *IDQueueAction,int DestroyQueue)
 {
-	int *regen,i,randd;
+	int *regen;
 	OBJ *temp,*actobj,*actdestobj;
-	OBJstruct *b;
+
 	int x,y;
 	struct QUEUEACTION *act = (struct QUEUEACTION *)IDQueueAction;
 	if (DestroyQueue!=DESTROYQUEUE)
@@ -372,18 +372,18 @@ int methoddecrxy[4][2]={{1,0},{0,-1},{-1,0},{0,1}};
 #define RBUILD	1
 #define UBUILD	1
 #define DBUILD	1
-#define SIZEXB (((128/8-LBUILD-RBUILD)*2))		
+#define SIZEXB (((128/8-LBUILD-RBUILD)*2))
 #define SIZEYB (((96/8-UBUILD-DBUILD)*2))
 //=================================
 void getcoordofnewunit(struct OBJ *a,int nrunit,int *x,int *y)
 {
-	int xbeg,ybeg,i,xx,yy,beginpos,deltax,deltay,x8pos,y8pos;
+	int xbeg,ybeg,i,xx,yy,x8pos,y8pos;
 	int fromoffset=0;
 	if (IsAirUnit(nrunit))
 	{
 		*x = GetOBJx(a);
 		*y = GetOBJy(a);
-	}	 
+	}
 	else
 	{
 		xbeg = GetOBJx(a)/8;
@@ -407,8 +407,7 @@ void getcoordofnewunit(struct OBJ *a,int nrunit,int *x,int *y)
 //=================================
 void getcoordofnewunit(int nrunit,int *x,int *y,struct XY *area)
 {
-	int xbeg,ybeg,i,xx,yy,beginpos,deltax,deltay,x8pos,y8pos;
-	OBJstruct *b2=loadobj(nrunit);
+	int xbeg,ybeg,i,xx,yy,x8pos,y8pos;
 	if (IsAirUnit(nrunit))
 	{
 		CenterXYArea(area,x,y);
@@ -435,11 +434,11 @@ void getcoordofnewunit(int nrunit,int *x,int *y,struct XY *area)
 //=================================
 void SetAroundTable(void)
 {
-	int i,j,posx,posy,prevx,prevy,method=0,prevmethod,posintable=0,pos=2;
+	int posx,posy,prevx,prevy,method=0,posintable=0,pos=2;
 	int deltax,deltay;
 	int usedarraybuild[AROUNDTABLEY][AROUNDTABLEX];
 	memset(usedarraybuild,0,sizeof(usedarraybuild));
-	
+
 /*	  for (i=0;i<SIZEYB;i++)
 	{
 		for (j=0;j<SIZEXB;j++)
@@ -500,9 +499,9 @@ int CreateNuke(OBJ *a,int x,int y)
 	int i,nukestartx,nukestarty;
 	for (i=0;i<MaxObjects;i++)
 	{
-		if (objects[i]->SC_Unit == SC_NUCLEARSILOOBJ	&& 
+		if (objects[i]->SC_Unit == SC_NUCLEARSILOOBJ	&&
 			objects[i]->playernr == a->playernr			&&
-			!(objects[i]->prop & VARPOWEROFF)) 
+			!(objects[i]->prop & VARPOWEROFF))
 		{
 			if (getchilds(objects[i]))//check if we have bomb in nukesilo
 			{
@@ -557,7 +556,7 @@ void addremoveuniteffectfrommap(OBJ *a,int plusminus,mapinfo *testmap)
 		case SC_MISC_DISRUPTIONWEB:
 			mageobjnr = DISRUPTEFFECT;
 			sx1 = x/32 - 2;
-			sx2 = x/32 + 1;				
+			sx2 = x/32 + 1;
 			if (x%32 > 16)
 			{
 				sx2++;					//the position is more to the right, need to change map position +1 to right
@@ -569,14 +568,14 @@ void addremoveuniteffectfrommap(OBJ *a,int plusminus,mapinfo *testmap)
 		case SC_MISC_DARKSWARM:
 			mageobjnr = DSWARMEFFECT;
 			sx1 = x/32 - 3;
-			sx2 = x/32 + 2;				
+			sx2 = x/32 + 2;
 			if (x%32 > 16)
 			{
 				sx2++;					//the position is more to the right, need to change map position +1 to right
 				sx1++;
 			}
 			sy1 = y/32 - 3;
-			sy2 = y/32 + 2;				
+			sy2 = y/32 + 2;
 			if (y%32 > 16)
 			{
 				sy2++;					//the position is more to the bottom, need to change map position +1 to bottom
@@ -611,7 +610,7 @@ int RepairUnit(int playernr,OBJ *scv,OBJ *a)
 		{
 			a->health += b->repairlife * CODEFORQUICKMAKE;
 			AddRemoveBloodFlameOverlays(a);		//change overlay blood|flame
-			
+
 			ChangeResourcePlayerBITS(playernr,MINUSFACTOR,b->repairmin * CODEFORQUICKMAKE,b->repairgas * CODEFORQUICKMAKE);
 			if (a->health < GetUnitMaxHealth(a->SC_Unit))
 				return(1);

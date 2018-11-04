@@ -25,7 +25,7 @@ int OBJlists::AddCriteries(int (*func)(int),int maxelem)
 //=========================================
 void OBJlists::AddElem(int elem_id)
 {
-	int i,j;
+	int i;
 	for (i=0;i<CritFunc;i++)
 	{
 		if ((*AllCriteriesFunc[i])(elem_id))//if criteries is good need to memorize that
@@ -73,11 +73,11 @@ void OBJlists::DelElem(int elem_id)
 						elems[i][j]=elems[i][curelements[i]-1];
 					}
 					curelements[i]--;
-				}	 
+				}
 			}
 		}
 	}
-	
+
 }
 //=========================================
 void OBJlists::ClearAll(void)

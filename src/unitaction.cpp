@@ -49,7 +49,7 @@ void GhostNUKECancel(OBJ *a,int mode)//GHOSTCANCELNUKE-if cancel,GHOSTRELEASENUK
 int CheckIfCanBuild(OBJ *a,SCUNIT SC_Unit,int x,int y,int *constrerror)
 {
 	unsigned short retarray[MAXBUILDSPRSIZE*MAXBUILDSPRSIZE];
-	int xp,yp,xs,ys,ret,goods,mcost,gcost;
+	int xp,yp,xs,ys,ret;
 	xp = (x - GetUnitWidthAndHeight(SC_Unit,UNITDIM_WIDTH)/2)/SIZESPRLANSHX;
 	yp = (y - GetUnitWidthAndHeight(SC_Unit,UNITDIM_HEIGHT)/2)/SIZESPRLANSHY;
 	xs = GetUnitWidthAndHeight(SC_Unit,UNITDIM_WIDTH)/SIZESPRLANSHX;
@@ -75,7 +75,7 @@ int DecrUnitCost(SCUNIT SC_Unit,int playernr)
 int CheckIfCanLand(OBJ *a,int x,int y,int *constrerror)
 {
 	unsigned short retarray[MAXBUILDSPRSIZE*MAXBUILDSPRSIZE];
-	int xp,yp,xs,ys,ret,goods,temperror;
+	int xp,yp,xs,ys,ret,temperror;
 	xp = (x - GetUnitWidthAndHeight(a->SC_Unit,UNITDIM_WIDTH)/2)/SIZESPRLANSHX;
 	yp = (y - GetUnitWidthAndHeight(a->SC_Unit,UNITDIM_HEIGHT)/2)/SIZESPRLANSHY;
 	xs = GetUnitWidthAndHeight(a->SC_Unit,UNITDIM_WIDTH)/SIZESPRLANSHX;

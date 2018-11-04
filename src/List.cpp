@@ -163,7 +163,7 @@ Enumerate<T>::Enumerate(List<T> *list)
 	EnumValue = 0;
 	GlobalEnumValue = 0;
 	_list = list;
-	CurrentEnum = _list.First;
+	CurrentEnum = list->First;
 }
 //=========================================
 template <typename T>

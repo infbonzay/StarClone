@@ -39,13 +39,13 @@ void ShowPreviewMission(int campaignnr,int missionnr,int prevafterflag)
 	if (prevafterflag)
 	{
 		strncpy(FULLFILENAME+4,"fin",3);
-	}	
+	}
 	ShowPreviewFile(FULLFILENAME,ANYKEYNOTQUITSHOWTITLES);
 }
 //==========================================
 void ShowPreviewFile(const char *filename,int esckeyaction)
 {
-	HANDLE f,hmpq;
+	HANDLE f;
 	char *cmpbuf=NULL;
 	int err,filesize;
 	UINT readed;
@@ -75,15 +75,13 @@ void ShowPreviewFile(const char *filename,int esckeyaction)
 //if esckeyaction==1 exit do not show next portion of previewtext
 void ShowPreviewBuff(char *cmpbuf,int sizebuf,int esckeyaction)
 {
-		HANDLE f;
 		int searchcmd,i,j,k,from,haveatext,fadespeed,displaytime,fontnr;
-		int textxpos,textypos,textxsize,textysize,rowsize,textlines,err,deltatick,unpressmouse,curgamma;
+		int textxpos,textypos,textxsize,textysize,rowsize,textlines,err,deltatick,unpressmouse;
 		int changesbackgnd,texttype;
 		PCX backgnd,fontpcx;
 		char pal[256*4],prevchar;
 		char *txtstr;
 		TIMER_TICK tick;
-		char *fonttable;
 		char *fntadr;
 		fntadr = NULL;
 		fadespeed = FADESPEED_DEFAULT;
@@ -215,7 +213,7 @@ void ShowPreviewBuff(char *cmpbuf,int sizebuf,int esckeyaction)
 										err = backgnd.openMpqPcx(txtstr,install2mpq);
 										if (err != OKPCX)
 											break;
-									}	
+									}
 									backgnd.readPalFromPcx(pal,0);//readfourbytepalette
 //									memcpy(gameconf.grmode.videobuff,backgnd.GetPcxRawBytes(),backgnd.xsizePcx()*backgnd.ysizePcx());
 									break;
@@ -229,7 +227,7 @@ void ShowPreviewBuff(char *cmpbuf,int sizebuf,int esckeyaction)
 										err = fontpcx.openMpqPcx(txtstr,install2mpq);
 										if (err != OKPCX)
 											break;
-									}	
+									}
 									fntadr = fontpcx.GetPcxRawBytes();//for glowtext
 									fntadr[21] = fntadr[11];
 									fntadr[22] = fntadr[12];
@@ -314,7 +312,7 @@ void FadeScreen(int fadespeed,char *pal,int typeoffade) //0-fadetoimage 1-fadeto
 	int deltatick;
 	float gamma,prevgamma;
 	TIMER_TICK tick;
-	
+
 	tick = mytimer.GetCurrentTimerTick();
 	prevgamma=-256;
 	deltatick=0;
@@ -384,13 +382,13 @@ void PlayVideoSmk(const char *smkfile)
 	unsigned char nextimage,endsmk,palflag,scalemode,trackmask,audiochannels[7],bitdepth[7],firstframe;
 	unsigned char palbuf[3*256];
 	unsigned char *smkpal;
-	int i,snderr,err,frame,newframe,unpressmouse;
+	int err,frame,newframe,unpressmouse;
 	HANDLE hmpq;
 	smk_t *smk;
 	unsigned char *vidbuff,*audiobuff;
 	TIMER_TICK curtick,prevtick;
 	double timeshowoneframe;
-	
+
 	hmpq=FindFileTryAllMpqs(smkfile);
 	if (hmpq)
 	{
@@ -416,7 +414,7 @@ void PlayVideoSmk(const char *smkfile)
 						newbitdepth = AUDIO_S8;
 					else
 						newbitdepth = MIX_DEFAULT_FORMAT;
-						
+
 					audiostream->audio.convertaudio = PrepareForConvertAudio(&audiostream->audio.CVT,newbitdepth,
 																			audiochannels[SMKAUDIOCHANNEL],
 																			audio_rate[SMKAUDIOCHANNEL]);

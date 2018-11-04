@@ -38,9 +38,9 @@ void FLINGYLIST::DeleteMarked(void)		//delete marked
 			delete flingy;
 			if (i != lastelem)
 			{
-				elements[i] = elements[lastelem];						
-				((SC_FLINGY *)(elements[i]))->flingylist_elemnr = i;	
-				deletemarked[i] = deletemarked[lastelem];						
+				elements[i] = elements[lastelem];
+				((SC_FLINGY *)(elements[i]))->flingylist_elemnr = i;
+				deletemarked[i] = deletemarked[lastelem];
 			}
 			deletemarked[lastelem] = 0;
 			totalelem--;
@@ -51,7 +51,6 @@ void FLINGYLIST::DeleteMarked(void)		//delete marked
 //=========================================
 void FLINGYLIST::FreeAndEmptyAll(void)									//mark all,delete all,empty all
 {
-	int i;
 	SC_FLINGY *flingy;
 	weaponflingy.EnumListInit();
 	while( (flingy = (SC_FLINGY *) weaponflingy.GetNextListElem(NULL)) )
@@ -101,7 +100,7 @@ void FLINGYLIST::MoveAllWeaponFlingy(void)
 				flingy->DieFlingy();
 			}
 		}
-	}	 
+	}
 }
 //=========================================
 int SC_FLINGY::DieFlingy(void)
@@ -328,7 +327,6 @@ SC_FLINGY *Create2FlingyID(OBJ *a,OBJ *destobj,int xstart256,int ystart256,int x
 SC_FLINGY *CreateWeaponFlingy(OBJ *a,OBJ *destobj,int xstart256,int ystart256,int xdest256,int ydest256,
 						  unsigned char weapon_id,unsigned char flingy_id,signed char launchspin,int deltaelevation)
 {
-	MAIN_IMG *img;
 	unsigned char elevation,launchside;
 	signed char weaponxoffs,weaponyoffs;
 	short sprites_id,images_id;

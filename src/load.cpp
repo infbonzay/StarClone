@@ -462,16 +462,16 @@ const char *dlgtilegrpname[4]={
 //==============================
 int loadtilegrp(int race)
 {
-	int err;
-	if (race==ZERGRACE||race==TERRANRACE||race==PROTOSSRACE)
-				err=mpqloadfile(dlgtilegrpname[race],(char **)&gamedlggrp);
+	int err = -1;
+	if (race == ZERGRACE || race == TERRANRACE || race == PROTOSSRACE)
+		err = mpqloadfile(dlgtilegrpname[race],(char **)&gamedlggrp);
 	if (err)
-				return(-1);
-	err=mpqloadfile(dlgtilegrpname[3],(char **)&gametilegrp);
+		return(-1);
+	err = mpqloadfile(dlgtilegrpname[3],(char **)&gametilegrp);
 	if (err)
 	{
-				unloadtilegrp();
-				return(-1);
+		unloadtilegrp();
+		return(-1);
 	}
 	return(0);
 }
@@ -695,7 +695,7 @@ void unloadramka(void)
 //=======================================
 int loadramka(int needrace)		//0-z,1-t,2-p
 {
-	int err,i;
+	int err;
 	char race[2],filename[200];
 	race[0] = racename[needrace][0];
 	race[1] = 0;
@@ -834,9 +834,6 @@ void savelog(const char *mes,int i)
 //============================================
 int LoadDatTblFiles(DATTBLSTRUCT *dattbl)
 {
-	char tblstring;
-	int i,portdata_id,nrofstr;
-	char *str;
 	if (mpqloadfile(SC_IMAGES_DAT,(char **)&dattbl->images_dat))
 				;//return(-1);
 	if (mpqloadfile(SC_SPRITES_DAT,(char **)&dattbl->sprites_dat))
@@ -1211,8 +1208,7 @@ int missionid2missiontbl(int campaignnr,int selected_id)
 //==========================
 int getcampaignname(int campaignnr,int selected_id)
 {
-	int fromtblnr,i,lines,missiontype,mission_tbl;
-	char *campname;
+	int fromtblnr,missiontype,mission_tbl;
 	missiontype = curplayer[0].missions[campaignnr].seq_missions[selected_id];
 	SELECTMAP[0]=0;
 	if (missiontype ==0x00)
@@ -1239,7 +1235,7 @@ int getcampaignname(int campaignnr,int selected_id)
 //==========================
 void getmissionidformmissionname(char *mname,int *mission_id)
 {
-	int i,j,fromtblname,maxtblnr,fromtbl;
+	int i,j,maxtblnr,fromtbl;
 	char *tbltxt;
 	char missionname[20];
 	strcpy(missionname,mname);

@@ -24,8 +24,6 @@
 void BARMESSAGES::addbarmessage(char *mes,int fontnr,int color,int showedtime,int flags)
 {
 	int i,meslen,from,nrofmes,curtick;
-	BARMES *bm;
-	BARMES *newmes;
 	if (!mes)
 	{
 //		DEBUGMESSCR("mes is NULL\n");
@@ -48,7 +46,7 @@ void BARMESSAGES::addbarmessage(char *mes,int fontnr,int color,int showedtime,in
 		{
 			if (mes[i]=='\n'||i==meslen-1)
 			{
-				
+
 				BARMES *newmes=(BARMES *)wmalloc(sizeof(BARMES));
 				newmes->mes=(char *)wmalloc(i-from+1);
 				strncpy(newmes->mes,mes+from,i-from);
@@ -116,7 +114,7 @@ void BARMESSAGES::showallmessages(int x,int y,int sizexbar,int heightoneline)
 			if (bm->flags&BF_MALIGN)
 				putmessageinrectangleM(x,y+(this->maxmessages-maxelems+ypos)*heightoneline,
 					sizexbar,lines*heightoneline,heightoneline,bm->mes,bm->fontnr,bm->color,tfontgamp,gamedlggrp,flags);
-			else 
+			else
 				if (bm->flags&BF_RALIGN)
 				putmessageinrectangleR(x,y+(this->maxmessages-maxelems+ypos)*heightoneline,
 					sizexbar,lines*heightoneline,heightoneline,bm->mes,bm->fontnr,bm->color,tfontgamp,gamedlggrp,flags);

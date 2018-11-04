@@ -69,11 +69,7 @@ void unloadstaticsmk(void)
 //===================================
 int loadstaticsmk(void)
 {
-	MPQIDS tempfile;
-	HANDLE hmpq;
 	smk_t *tempsmk;
-	int mpqfilenr;
-
 	staticport.flags = 0;
 	staticport.smkplay.smkfile.hmpq=NULL;
 	staticport.smkplay.smkfile.mpqfilenr=-1;
@@ -186,7 +182,7 @@ void showportrait(void)
 			}
 		}
 	}
-	if (!merged)		
+	if (!merged)
 	{
 		drawmainportrait(SMKSIZEPORTRAITX,SMKSIZEPORTRAITY,staticport.smkplay.vidbuff);
 	}
@@ -273,7 +269,7 @@ static unsigned char ITERPIXELS[5]={0,50,70,80,100};
 //===================================
 void mergepixels(int iteration,unsigned char *outbuf,unsigned char *mixbuf,unsigned char *origbuffer)
 {
-	int i,j,pixel,mixpixel;
+	int i,j,mixpixel;
 	for (i=0;i<SMKSIZEPORTRAITY;i++)
 	{
 		for (j=0;j<SMKSIZEPORTRAITX;j++)
@@ -333,7 +329,7 @@ int SetPortrait(SCUNIT SC_Unit,int typeofport,int soundfilenr,int showedtime)
 				cursmk=staticport.talksmk;
 			}
 			staticport.typeofport=typeofport;
-			
+
 			hmpq=b->portraits->hmpq;
 			mpqfilenr=b->portraits->mpqfilenr[typeofport][cursmk];
 			if (typeofport==SMKNORMAL)
@@ -381,7 +377,6 @@ void ShowAdvisorPortrait(void)
 //===================================
 int GetTimeBeforeEndPortrait(void)
 {
-	smk_t *tempsmk=staticport.smkplay.smk;
 	unsigned int curframe,allframes;
 	double usf;
 	smk_info_all(staticport.smkplay.smk,&curframe,&allframes,&usf);

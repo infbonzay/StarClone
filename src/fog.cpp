@@ -47,7 +47,6 @@ int FOGAROUND[4][3][2]= {
 int getborderfogs(int x,int y,unsigned char centerfog,long *borders)
 {
 	int i,j,newx,newy,sumfog,sumborders=0;
-	unsigned char nearfog;
 	for (i=0;i<4;i++)
 	{
 		sumfog=FOGDIAP[gameconf.videoconf.visiblemap][centerfog];
@@ -144,10 +143,9 @@ void copywhitefogtoblackfog(int player)
 //================================================
 void calculatefog(int bitplayers)
 {
-	FILE *f;
 	int bh,eh,bw,ew,ii,jj,mask;
 	unsigned char scrfognr[PLAYEDPLAYERS];
-	int i,j,player,map1,map2;
+	int i,j,player;
 	unsigned char fogvalue;
 	if (CODEFORSCREEN)
 		return;

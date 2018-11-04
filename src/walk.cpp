@@ -76,7 +76,7 @@ int CanBuildOnPlace(int xb,int yb,int xsize,int ysize,unsigned short *returnedar
 				constrerror=TOBECONSTRUCT_WRONGPLACE;
 			ret&=ret2;
 			break;
-	}	
+	}
 	*error=constrerror;
 	return(ret);
 }
@@ -109,7 +109,7 @@ int CanBuildOnPlaceWithAddon(int xb,int yb,int xparent,int yparent,int xsize,int
 int CanBuildOnPylonArea(int xb,int yb,int xsize,int ysize,
 						unsigned short *returnedarray,int playernr)
 {
-	int i,j,pylonarray,offset,totalpower=0;
+	int i,j,offset,totalpower=0;
 	unsigned short ret=0xffff;
 	unsigned char *parea;
 	parea=map.pylonarea[playernr];
@@ -175,7 +175,7 @@ int CanBuildOnTile(int xb,int yb,int xsize,int ysize,
 int	 CanBuildOnEarth(int xb,int yb,int xsize,int ysize,
 			 unsigned short *returnedarray,char *ignorecells)
 {
-	int i,j,offset,k=0,ii;
+	int i,j,k=0;
 	unsigned short ret=0xffff,tempret;
 	if (returnedarray)
 		if (ignorecells)
@@ -286,7 +286,7 @@ int CanBuildOnCreep(int xb,int yb,int xsize,int ysize, unsigned short *returneda
 			}
 			else
 				returnedarray[i*xsize+j]&=0x0;
-			
+
 	}
 	if (totalcreep!=xsize*ysize)
 	{
@@ -432,7 +432,7 @@ int GetMapWalk8(int x,int y,int sx,int sy)//coords and size divided by 8
 void SetObjWalk8(struct mapinfo *map,OBJ *a,int flag)
 {
 	int xbeg,ybeg,sx,sy;
-	if (a->SC_Unit==SC_EXTRACTOROBJ||a->SC_Unit==SC_REFINERYOBJ||a->SC_Unit==SC_ASSIMILATOROBJ) 
+	if (a->SC_Unit==SC_EXTRACTOROBJ||a->SC_Unit==SC_REFINERYOBJ||a->SC_Unit==SC_ASSIMILATOROBJ)
 		return;//this build can do this because the geyser do this for them
 	if (IsBuild(a->SC_Unit))
 	{

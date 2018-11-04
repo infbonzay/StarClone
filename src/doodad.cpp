@@ -36,7 +36,7 @@ void CreateDoodadsFromMAP(doodad_on_map *doodad,mapinfo *loadedmap)
 {
 	MAIN_IMG *newimg;
 	unsigned short image_id,flags;
-	
+
 	image_id  = alldattbl.sprites_dat->images_id[doodad->sprites_id];
 	flags = 0;
 	flags |= SC_IMAGE_FLAG_NOCHECKFORFOG;
@@ -49,9 +49,6 @@ void CreateDoodadsFromMAP(doodad_on_map *doodad,mapinfo *loadedmap)
 //=====================================
 void CreateDoodadsFromLists(mylist *mapdoodads,mapinfo *loadedmap)
 {
-	int iscript_flg;
-	int maxelem;
-	int i,doodadtype;
 	OBJ *a;
 	doodad_on_map *doodad;
 	DEBUGMESSCR("total doodads = %d \n",mapdoodads->GetMaxElements());
