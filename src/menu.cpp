@@ -38,7 +38,7 @@ MOUSEALLSPOTS *currentmousehottable;
 void addnewmousehotpos(void (*func)(int),int maxspots)
 {
 	currentmousehottable = (MOUSEALLSPOTS *)
-		wmalloc(sizeof(MOUSEALLSPOTS)+maxspots*sizeof(MOUSEHOTSPOT));
+	wmalloc(sizeof(MOUSEALLSPOTS)+maxspots*sizeof(MOUSEHOTSPOT));
 	currentmousehottable->callbackwork=0;
 	mousehotspot.AddList(currentmousehottable);
 	currentmousehottable->maxhotspots = maxspots;
@@ -50,13 +50,13 @@ void addnewmousehotpos(void (*func)(int),int maxspots)
 void incrcallbackwork(void)
 {
 	if (currentmousehottable)
-				currentmousehottable->callbackwork++;
+		currentmousehottable->callbackwork++;
 }
 //==========================================
 void decrcallbackwork(void)
 {
 	if (currentmousehottable)
-				currentmousehottable->callbackwork--;
+		currentmousehottable->callbackwork--;
 }
 //==========================================
 void delnewmousehotpos(void)
@@ -64,16 +64,16 @@ void delnewmousehotpos(void)
 	//delete current hotspot
 	int lastelem;
 	if (currentmousehottable)
-				wfree(currentmousehottable);
+		wfree(currentmousehottable);
 	mousehotspot.DelList(currentmousehottable);
 	lastelem = mousehotspot.GetMaxElements();
 	if (!lastelem)
 	{
-				currentmousehottable = NULL;
+		currentmousehottable = NULL;
 		highMouse->UninstallMoveEvent();
 	}
 	else
-				currentmousehottable = (MOUSEALLSPOTS *) mousehotspot.GetElemNr(lastelem-1);
+		currentmousehottable = (MOUSEALLSPOTS *) mousehotspot.GetElemNr(lastelem-1);
 }
 //==========================================
 void addmousehotpos(int x,int y,int sizex,int sizey,int *dialogflags)

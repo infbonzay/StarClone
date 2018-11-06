@@ -562,18 +562,10 @@ void mylistsimple::FreeAndEmptyAll(void)
 	EnumListInit();
 }
 //=========================================
-void mylistsimple::CopyTo(mylistsimple *copy)
+void mylistsimple::CopyTo(mylistsimple *copyTo)
 {
-	copy->totalelem = this->totalelem;
-	copy->totalmarked = this->totalmarked;
-	copy->curenumelemnr = this->curenumelemnr;
-
-	wfree(copy->elements);
-	wfree(copy->deletemarked);
-	copy->elements = (void **) wmalloc(allocatedelem*sizeof(void *));
-	copy->deletemarked = (char *)wmalloc(allocatedelem*sizeof(char));
-	memcpy(copy->elements,this->elements,allocatedelem*sizeof(void *));
-	memcpy(copy->deletemarked,this->deletemarked,allocatedelem*sizeof(char));
+	copyTo->FreeAndEmptyAll();
+	this->AppendTo(copyTo);
 }
 //=========================================
 void mylistsimple::AppendTo(mylistsimple *appendTo)

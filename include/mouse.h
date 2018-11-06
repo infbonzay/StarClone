@@ -118,13 +118,13 @@ public:
 	HighMouse(void);
 	~HighMouse(void);
 
+
 	int			LoadOneCursor(char *filename,int typemouse);
 	int			LoadAllCursors(void);
 	void		UnloadCursors(void);
 	void		DrawMouse(void);
 	void		DrawSelectionArea(void);
 	void		ScrollMouse(void);
-	void		MouseOnObjClear(void);
 	void		GetMouseOnObj(void);
 	void		SaveImageUnder();
 	void		LoadImageUnder();
@@ -143,8 +143,12 @@ public:
 	float		ScrollMapX(int border,float factor);
 	float		ScrollMapY(int border,float factor);
 	void		RefreshMouseType(int xk,int yk);
+	void		MouseOnObjClear(void);
 
 	inline int	GetButtonStatus(void) { return MouseButtons; };
+
+private:
+	void		ClearCursors(void);
 
 };
 

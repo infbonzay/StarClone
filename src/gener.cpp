@@ -1478,11 +1478,11 @@ void gameend(const char *mes)
 	printf("%s\n",mes);
 	if (map.valid_vcode)
 		unload_starmap(&map);
+
+	deletemainscreenmouseevents();
 	highMouse->UnloadCursors();
 	delete highMouse;
 	delete screenMapInfo;
-
-	deletemainscreenmouseevents();
 //	  freeOBJstructs(1);
 //	  freeMAGEstructs();
 	usleep(300000);//wait to finish playng sounds

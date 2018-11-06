@@ -35,7 +35,9 @@ HighMouse::HighMouse(void)
 	MouseOnSelectionMode = false;
 	WaitToPressLeftButton = false;
 	MouseButtons = 0;
+	Construct = { .SC_BuildUnit = 0, .CanDo = 0, .PosX = 0, PosY = 0 };
 	MouseOnObjClear();
+	ClearCursors();
 	lowMouse.Init();
 	lowMouse.LowInMoveEvent(&MouseMoveEvent);
 	lowMouse.LowInClickEvent(&MouseClickEvent);
@@ -50,12 +52,14 @@ HighMouse::~HighMouse(void)
 //==============================
 int HighMouse::LoadOneCursor(char *filename,int typemouse)
 {
+	cursors[typemouse].curentposition = 0;
+	cursors[typemouse].maxpositions = 0;
+	cursors[typemouse].mousegrp = NULL;
 	if (mpqloadfile(filename,(char **)&cursors[typemouse].mousegrp))
 	{
 		if (loadgrp(filename,&cursors[typemouse].mousegrp))
 			return -1;
 	}
-	cursors[typemouse].curentposition = 0;
 	cursors[typemouse].maxpositions = cursors[typemouse].mousegrp->CountPictures;
 	return 0;
 }
@@ -71,6 +75,16 @@ int HighMouse::LoadAllCursors(void)
 	if (LoadOneCursor(makefilename(GAMECURSOR_NAME,GAMECURSOR_OFFSET,0,0,ARROW_STR),i))
 		return i+1;
 	return 0;
+}
+//==============================
+void HighMouse::ClearCursors(void)
+{
+	for (int i=0;i<TYPEOFCURSORS;i++)
+	{
+		cursors[i].curentposition = 0;
+		cursors[i].maxpositions = 0;
+		cursors[i].mousegrp = NULL;
+	}
 }
 //==============================
 void HighMouse::UnloadCursors(void)
@@ -626,12 +640,15 @@ void HighMouse::RefreshMouseType(int xk,int yk)
 			}//if & switch
 		}
 
-		if ((GetButtonStatus() == WMRIGHTKEY) && (!mouseClear) && select_aria && (!WaitToReleaseRightButton))
-		{
-			mouseClear = true;
-			MouseModeMove = MODEMOVE;
-			DoRightClickAction(DestMouseOBJ,PosX+xk,PosY+yk,1);
-		}
+		if (GetButtonStatus() == WMRIGHTKEY)
+			if (!mouseClear)
+				if (select_aria)
+					if (!WaitToReleaseRightButton)
+					{
+						mouseClear = true;
+						MouseModeMove = MODEMOVE;
+						DoRightClickAction(DestMouseOBJ,PosX+xk,PosY+yk,1);
+					}
 	}//game
 
 	if (selectionArea && !movieminikarta)
