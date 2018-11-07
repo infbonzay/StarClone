@@ -208,6 +208,7 @@ int loadandplaywav(HANDLE mpq,struct OBJ *a,const char *filesound,int repeatedfl
 		i = wPlayChannel(-1,sample,0);
 		if (i == -1)
 		{
+			wFreeChunk(sample);
 			return -5;
 		}
 		SetChannelVolume(i,chunkvolume);
@@ -222,7 +223,7 @@ int loadandplaywav(HANDLE mpq,struct OBJ *a,const char *filesound,int repeatedfl
 		unitsound[i].prevdistance = distance;
 		unitsound[i].obj = a;
 		SetMPQFileID(&unitsound[i].fileID,&fileaudioID);
-		if (repeatedflag==-2)
+		if (repeatedflag == -2)
 			unitsound[i].presence |= SOUNDPLAYINFINITE;
 	}
 	return i;
@@ -251,9 +252,9 @@ int unloadwav(int channel)
 			unitsound[i].prevdistance = 0;
 
 			wFreeChunk(unitsound[i].sample);
+			unitsound[i].sample=NULL;
 
 			ClearMPQFileID(&unitsound[i].fileID);
-			unitsound[i].sample=NULL;
 			if (!(unitsound[i].presence & OBJADREMPTY))
 				TerminateAudioObj(unitsound[i].obj);
 			unitsound[i].obj = NULL;

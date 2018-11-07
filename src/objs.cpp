@@ -2803,9 +2803,9 @@ int makemove(struct OBJ *a,struct OBJ *destobj,int locx,int locy,int mode,int pl
 	cqe.queueaction.param1 = locy;
 	cqe.queueaction.param2 = modemoveflags | PLAYERDOMOVE;
 	if (!NETWORKGAME)
-		cqe.executeTick = commandqueuetick + 0;
+		cqe.executeTick = commandqueuetick + 1;
 	else
-		cqe.executeTick = commandqueuetick + 0;//TODO need to change if network latency selected
+		cqe.executeTick = commandqueuetick + 1;//TODO need to change if network latency selected
 	UnitsCommandQueue.AppendToQueue(&cqe);
 	return(1);
 }

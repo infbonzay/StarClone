@@ -165,6 +165,7 @@ public:
 
 	bool		Presence;
 	DestCursor();
+	~DestCursor();
 
 	void 		SetDestinationCursor(int x,int y);
 	void		DrawDestinationCursor();

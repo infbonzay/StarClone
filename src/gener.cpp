@@ -956,6 +956,9 @@ int gogame(struct mapinfo *info)
 //	  gameconf.speedconf.gamespeed=SPEED6X;
 	clearopenseeKarta();
 	clearopenseeKarta();
+	karta_aria = 0;
+	select_aria = 0;
+	movieminikarta = false;
 
 
 	do{

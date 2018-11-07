@@ -690,6 +690,15 @@ DestCursor::DestCursor(void)
 	MouseDestImg = NULL;
 }
 //==========================================
+DestCursor::~DestCursor(void)
+{
+	if (MouseDestImg)
+	{
+		delete MouseDestImg;
+		MouseDestImg = NULL;
+	}
+}
+//==========================================
 void DestCursor::ExecuteScript(void)
 {
 	if (MouseDestImg)
