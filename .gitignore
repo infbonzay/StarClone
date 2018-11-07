@@ -5,6 +5,7 @@ cmake_install.cmake
 *.kdev4
 compile*
 autom4te.cache/
+bin/mem*
 bin/characters/*
 bin/StarClone*
 bin/core*

@@ -83,6 +83,7 @@ void StopPlayChannel(int channel)
 {
 	unitsound[channel].presence &= ~SOUNDPLAYINFINITE;//prevent play infinitely, just stop it
 	wStopChannel(channel);
+	unloadwav(channel);
 }
 //==============================================
 void ChannelFinished(int channel)
@@ -243,16 +244,20 @@ int unloadwav(int channel)
 			wPlayChannel(i,unitsound[i].sample,0);
 			return 0;
 		}
-		wFreeChunk(unitsound[i].sample);
-		//get next sample
-		unitsound[i].presence &= ~SOUNDEXIST;
-		unitsound[i].distance = 0;
-		unitsound[i].prevdistance = 0;
-		ClearMPQFileID(&unitsound[i].fileID);
-		unitsound[i].sample=NULL;
-		if (!(unitsound[i].presence & OBJADREMPTY))
-			TerminateAudioObj(unitsound[i].obj);
-		unitsound[i].obj = NULL;
+		if (unitsound[i].presence & SOUNDEXIST)
+		{
+			unitsound[i].presence &= ~SOUNDEXIST;
+			unitsound[i].distance = 0;
+			unitsound[i].prevdistance = 0;
+
+			wFreeChunk(unitsound[i].sample);
+
+			ClearMPQFileID(&unitsound[i].fileID);
+			unitsound[i].sample=NULL;
+			if (!(unitsound[i].presence & OBJADREMPTY))
+				TerminateAudioObj(unitsound[i].obj);
+			unitsound[i].obj = NULL;
+		}
 	}
 	return 0;
 }
