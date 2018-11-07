@@ -88,8 +88,6 @@ int installvectors(void)
 //==========================
 void uninstallvectors(void)
 {
-//	  SDL_FreeSurface(sdlsurface);
-	SDL_Quit();
 }
 //==========================
 void keyrefresh(void)
@@ -247,7 +245,9 @@ void activatepalette256x3(unsigned char *pal3)	//4*256 bytes palette
 //==========================
 void settextmode(void)
 {
-	changemode(gameconf.grmode.x,gameconf.grmode.y,gameconf.grmode.s,0,NULL);
+	//changemode(gameconf.grmode.x,gameconf.grmode.y,gameconf.grmode.s,0,NULL);
+	SDL_QuitSubSystem(SDL_INIT_VIDEO);
+	SDL_Quit();
 }
 //==========================
 int eventwindowloop(void) //return 1 - on quit

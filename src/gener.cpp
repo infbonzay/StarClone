@@ -1501,8 +1501,8 @@ void gameend(const char *mes)
 
 //	  unloadtexturegrp();
 //	  Unload_SC_Images_List();
-	settextmode();
 	QuitGrpLib();
+	settextmode();
 	uninstallvectors();
 	UnLoadAllMpqs();
 	unloadcfg();

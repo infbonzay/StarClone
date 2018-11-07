@@ -20,6 +20,7 @@ CommandQueue::~CommandQueue(void)
 //==========================================
 void CommandQueue::EmptyQueue(void)
 {
+	void *adr;
 	do{
 		if (IsEmpty())
 			break;
@@ -57,6 +58,7 @@ int CommandQueue::QueueMain(long tickNr)
 			return(queuedProceed);
 		tempqueue = PopElem();
 		(*EndQueueCallBackFunction)(tempqueue);
+        wfree(tempqueue);
 		queuedProceed++;
 	}while(1);
 }
