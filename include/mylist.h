@@ -20,10 +20,10 @@ class  mylist
 {
 	int maxelements;
 	int maxelemnr;
-	listelem *first;
 	int enumvalue;
 	int globalenumvalue;
 	listelem *curentenum;
+	listelem *first;
 private:
 	void resetvars(void);
 public:

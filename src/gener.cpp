@@ -1098,7 +1098,8 @@ int gogame(struct mapinfo *info)
 					IfTimeForTrigger(info,&prevgameticks);
 					if (!PAUSEGAME && !PAUSEINTRIG)
 					{
-						AddObjsRevealMap();							//open map by moved units
+						//AddObjsRevealMap();							//open map by moved units
+						revealMap->OpenMapByObjs();
 						if (MAPREGENERATIONBIT)
 						{
 							calcfullinvandsee();
