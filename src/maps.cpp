@@ -38,6 +38,7 @@ struct mapinfo map;
 float factorx,factory;
 int sizemaprectx,sizemaprecty;
 ScreenMapInfo *screenMapInfo;
+RevealMap *revealMap;
 //==============================
 void CreateMiniMapPixels(struct mapinfo *map)
 {
@@ -595,7 +596,7 @@ void clearopenseeKarta(void)
 //=====================================
 //objects who moved and need to reveal map for them
 //=====================================
-void AddObjsRevealMap(void)
+/*void AddObjsRevealMap(void)
 {
 	OBJ *a;
 	OBJstruct *b;
@@ -609,6 +610,7 @@ void AddObjsRevealMap(void)
 	}
 	MaxObjsRevealMap=0;
 }
+*/
 //=====================================
 void makeopenseeKarta(int beginobj,int endobj)
 {
@@ -1102,3 +1104,48 @@ int GetMapFog(int x,int y)
 			return(0);
 }
 //==============================================
+void RevealMap::Clear(void)
+{
+	delete AdditionalObjs;
+	AdditionalObjs = NULL;
+}
+//==============================================
+void RevealMap::Init(void)
+{
+	AdditionalObjs->Clear();
+	EnumerateObjs = NULL;
+}
+//==============================================
+void RevealMap::OpenMapByObjs(void)
+{
+	OBJ *a;
+	OBJstruct *b;
+	EnumerateObjs = new Enumerate<OBJ*>(AdditionalObjs); 
+	while ( (a = EnumerateObjs->GetNextElem() ) )
+	{
+		b = loadobj(a->SC_Unit);
+		makeoneobjseeopen(a,b);
+	}
+	delete EnumerateObjs;
+	EnumerateObjs = NULL;
+	AdditionalObjs->Clear();
+}
+//==============================================
+void RevealMap::AddObjs(OBJ *a)
+{
+	AdditionalObjs->Add(a);
+}
+//==============================================
+RevealMap::RevealMap()
+{
+	AdditionalObjs = new List<OBJ*>();
+	Init();
+}
+//==============================================
+RevealMap::~RevealMap()
+{
+	Clear();
+}
+
+
+

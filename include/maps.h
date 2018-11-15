@@ -4,6 +4,7 @@
 #include "vars.h"
 #include "man.h"
 #include "starmap.h"
+#include "List.h"
 
 #define CHECKFORMAPBORDERS(xkart,ykart) ( (ykart) < 0 || (xkart) < 0 || (ykart) >= MAXYMAP || (xkart) >= MAXXMAP )
 
@@ -22,7 +23,7 @@ void SetVisualMapPositionCenter(int x,int y);
 void xchgkart(void);
 void putlansh(int xglob,int yglob,int x,int y,int indextile32,char wfog,char bfog);
 void clearopenseeKarta(void);
-void AddObjsRevealMap(void);
+//void AddObjsRevealMap(void);
 void makeopenseeKarta(int beginobj,int endobj);
 void makeoneobjseeopen(struct OBJ *b,struct OBJstruct *c);
 void calcfullinvandsee(void);
@@ -75,7 +76,22 @@ public:
 	int		MinimapEndY;		//
 };
 
+
+class RevealMap
+{
+	Enumerate<OBJ *> *EnumerateObjs;
+	List<OBJ*> *AdditionalObjs;
+public:
+	void Clear(void);
+	void Init(void);
+	void OpenMapByObjs(void);
+	void AddObjs(OBJ *a);
+	RevealMap();
+	~RevealMap();
+};
+
+
 extern float 			factorx,factory;
 extern ScreenMapInfo	*screenMapInfo;
-
+extern RevealMap		*revealMap;
 #endif /*_MAPS_W*/

@@ -50,9 +50,9 @@
 #define MAXWAIT_SEARCHATACK_TICK		(MAXGAMECYCLESPERSECOND*1)
 
 
-extern	struct OBJ *ObjsRevealMap[];
+//extern	struct OBJ *ObjsRevealMap[];
 
-extern	int MaxObjsRevealMap;
+//extern	int MaxObjsRevealMap;
 
 //==========================================
 void destroyobj(struct OBJ *a);
