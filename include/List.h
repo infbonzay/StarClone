@@ -1,5 +1,5 @@
-#ifndef _LISTH_W
-#define _LISTH_W
+#if !defined(_LIST_W)
+#define _LIST_W
 
 #define MAXLISTELEMENTS	64
 
@@ -7,7 +7,7 @@
 template <typename T>
 struct ListElem
 {
-public:
+protected:
 	int	 			EmptyElem;
 	int	 			FirstEmptyElem;
 	ListElem<T>		*Next;
@@ -22,19 +22,18 @@ class List
 protected:
 	int				Capacity;
 	int				Count;
+	ListElem<T> 	*First;
 
 	void			Remove(ListElem<T> current, int elemnr);
 
 public:
-	ListElem<T> 	*First;
-
 	void			Clear(void);
 	void			Add(T elem);
 	void			Remove(T elemnr);
 	bool			Contains(T elem);
 
-	List<T>();
-	List<T>(int maxElements);
+	List();
+	List(int maxElements);
 	~List();
 };
 //=========================================
@@ -50,10 +49,12 @@ protected:
 public:
 	T	GetNextElem(void);
 
-	Enumerate<T>(List<T> *list);
-	~Enumerate<T>();
+	Enumerate(List<T> *list);
+	~Enumerate();
 };
 
-#include "../src/List.cpp"
 
-#endif	/*		_LISTH_W  */
+
+#endif	/*		_MYLIST_W  */
+
+
