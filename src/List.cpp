@@ -7,6 +7,13 @@
 template <typename T>
 void List<T>::Clear(void)
 {
+	ListElem<T> *next,*curent;
+	next = curent = First;
+	while(next)
+	{
+		next = curent->Next;
+		delete curent;
+	}
 	Count = 0;
 	First = NULL;
 }
@@ -26,13 +33,6 @@ List<T>::List(void) : List(INT_MAX)
 template <typename T>
 List<T>::~List(void)
 {
-	ListElem<T> *next,*curent;
-	next = curent = First;
-	while(next)
-	{
-		next = curent->Next;
-		delete curent;
-	}
 	Clear();
 }
 //=========================================
@@ -77,7 +77,7 @@ void List<T>::Add(T elem)
 	if (curent->EmptyElem)
 	{
 		for ( i=nrreturn+1; i<MAXLISTELEMENTS; i++ )
-			if (curent->PresenceFlag[i])
+			if (!curent->PresenceFlag[i])
 			{
 				curent->FirstEmptyElem = i;
 				break;
@@ -148,8 +148,7 @@ bool List<T>::Contains(T elem)
 	while(curent)
 	{
 		for (i=0;i<MAXLISTELEMENTS;i++)
-			if (curent->PresenceFlag[i])
-			if (curent->Elements[i] == elem)
+			if (curent->PresenceFlag[i] && (curent->Elements[i] == elem)
 				return true;
 		j += MAXLISTELEMENTS;
 		curent = curent->Next;
@@ -188,9 +187,10 @@ T Enumerate<T>::GetNextElem(void)
 				EnumValue = 0;
 			}while(CurrentEnum->EmptyElem == MAXLISTELEMENTS);	//repeat at next if we have empty entire slot
 		}
+		if (CurrentEnum->PresenceFlag[EnumValue])
+			break;
 		GlobalEnumValue++;
-	}while(CurrentEnum->PresenceFlag[EnumValue++]);
-	retval = CurrentEnum->Elements[--EnumValue];
-	return(retval);
+	}while(1);
+	return(CurrentEnum->Elements[EnumValue++]);
 }
 
