@@ -1433,7 +1433,6 @@ int load_starmap( const char *mapfile,char *fname, struct mapinfo *info,GAMECONF
 		if (map.pl_iowner[i] == OWNER_RESCUABLE)
 			ifhaverescuableplayers++;
 	}
-	revealMap = new RevealMap();
 	return(0);
 }
 //=================================================
@@ -1644,10 +1643,8 @@ void unload_starmap(struct mapinfo *info )
 		}
 	}
 	info->valid_vcode = 0;
-
-	delete revealMap;
-	revealMap = NULL;
-	//MaxObjsRevealMap=0;
+//	  RemoveUnitsFromLists(&map_units);
+	MaxObjsRevealMap=0;
 }
 //=================================================
 void CreateAliance(struct mapinfo *info,int player1,int player2,int flag)

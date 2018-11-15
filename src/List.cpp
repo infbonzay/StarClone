@@ -1,10 +1,8 @@
-#ifndef _LISTCPP_W
-#define _LISTCPP_W
-
 #include <stdlib.h>
 #include <limits.h>
 
 #include "List.h"
+
 //=========================================
 template <typename T>
 void List<T>::Clear(void)
@@ -73,7 +71,7 @@ void List<T>::Add(T elem)
 	}
 	nrreturn = curent->FirstEmptyElem;
 	curent->Elements[nrreturn] = elem;
-	curent->PresenceFlag[nrreturn] = true;
+	curent->PrecenseFlag[nrreturn] = true;
 	Count++;
 	curent->EmptyElem--;
 	if (curent->EmptyElem)
@@ -196,4 +194,3 @@ T Enumerate<T>::GetNextElem(void)
 	return(CurrentEnum->Elements[EnumValue++]);
 }
 
-#endif

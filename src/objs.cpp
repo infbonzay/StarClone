@@ -52,8 +52,8 @@
 #endif
 
 //===========================================
-//	struct OBJ *ObjsRevealMap[MAXOBJDEFSCR];
-//	int MaxObjsRevealMap;
+	struct OBJ *ObjsRevealMap[MAXOBJDEFSCR];
+	int MaxObjsRevealMap;
 
 //==========================================
 //Unicitojiti OBJECT
@@ -3752,7 +3752,7 @@ void RemoveFromDestination(OBJ *a)
 	}
 }
 //==================================
-/*void AddRefreshedOBJ(OBJ *a)
+void AddRefreshedOBJ(OBJ *a)
 {
 	ObjsRevealMap[MaxObjsRevealMap++]=a;
 	if (MaxObjsRevealMap == MAXOBJDEFSCR)
@@ -3761,7 +3761,6 @@ void RemoveFromDestination(OBJ *a)
 		exit(-1);
 	}
 }
-*/
 //==================================
 void FinishMainUnitConstruct(OBJ *a)
 {
@@ -5103,8 +5102,7 @@ void ForceKartChanges(OBJ *a)
 	a->xkart = (GetOBJx256(a)>>8)/32;
 	a->ykart = (GetOBJy256(a)>>8)/32;
 	a->prop |= VARKARTCHANGES;
-	revealMap->AddObjs(a);
-	//AddRefreshedOBJ(a);
+	AddRefreshedOBJ(a);
 }
 //=================================
 void ForceKartChanges(OBJ *a,int xpos,int ypos)
@@ -5112,8 +5110,7 @@ void ForceKartChanges(OBJ *a,int xpos,int ypos)
 	a->xkart = (xpos>>8) / 32;
 	a->ykart = (ypos>>8) / 32;
 	a->prop |= VARKARTCHANGES;
-	revealMap->AddObjs(a);
-	//AddRefreshedOBJ(a);
+	AddRefreshedOBJ(a);
 }
 //=================================
 void CheckForKartChanges(OBJ *a,int xpos,int ypos)
@@ -5126,8 +5123,7 @@ void CheckForKartChanges(OBJ *a,int xpos,int ypos)
 		a->xkart = newxkart;
 		a->ykart = newykart;
 		a->prop |= VARKARTCHANGES;
-		revealMap->AddObjs(a);
-		//AddRefreshedOBJ(a);
+		AddRefreshedOBJ(a);
 //		DEBUGMESSCR("kart changes %dx%d\n",a->xkart,a->ykart);
 	}
 }
