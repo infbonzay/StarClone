@@ -148,7 +148,7 @@ bool List<T>::Contains(T elem)
 	while(curent)
 	{
 		for (i=0;i<MAXLISTELEMENTS;i++)
-			if (curent->PresenceFlag[i] && (curent->Elements[i] == elem)
+			if (curent->PresenceFlag[i] && curent->Elements[i] == elem)
 				return true;
 		j += MAXLISTELEMENTS;
 		curent = curent->Next;
