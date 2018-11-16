@@ -11,6 +11,8 @@
 		#define ltoa(i,aa) sprintf(aa,"%ld",(long) i)
 		#define itoa2(i,aa) sprintf(aa,"%d",(int) i)
 		#define itoa(i,aa,format) itoa2(i,aa)
+		#define min(a,b)		(((a)<(b)) ? (a) : (b) )
+		#define max(a,b)		(((a)>(b)) ? (a) : (b) )
 #endif
 
 #define createmaxkubik(a,b,sizex) \
@@ -24,8 +26,6 @@
 #define MAXMAPFILESIZE					(5*1024*1024)			//5MB
 //==================================
 #define sqr(a) ((a)*(a))
-#define min(a,b)		(((a)<(b)) ? (a) : (b) )
-#define max(a,b)		(((a)>(b)) ? (a) : (b) )
 
 char *filename2dos(const char *fn);
 char *filename2unix(const char *fn);

@@ -1,6 +1,7 @@
 
 #include "wmem.h"
 
+#include "CrossPlatform.h"
 #include "vars.h"
 #include "man.h"
 #include "diap.h"

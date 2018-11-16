@@ -68,14 +68,17 @@ int wStopChannel(int channel_nr)
 //=============================================
 Mix_Chunk *Mix_LoadWAV_RW(void *,long )
 {
+	return NULL;
 }
 //=============================================
 wCHUNK *PlayMpqWav(RWOPS *buff,int closeflag)
 {
+	return NULL;
 }
 //=============================================
 void *SDL_RWFromMem(void *,long)
 {
+	return NULL;
 }
 //=============================================
 RWOPS *My_RWFromMpqFile(HANDLE mpqid,const char *file, unsigned int SearchScope)

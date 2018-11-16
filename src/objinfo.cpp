@@ -134,7 +134,7 @@ int GetDestUnitHalfSize(SCUNIT SC_Unit, int deltax, int deltay)
 //====================================
 int GetDistances(int x, int y, int x2, int y2)
 {
-	return(hypot(x2 - x, y2 - y));
+	return((int)hypot(x2 - x, y2 - y));
 }
 //====================================
 int GetDistanceMinusSizes(int unit1, int unit2, int deltax, int deltay)
@@ -228,7 +228,7 @@ int UnitWeaponMask(SCUNIT SC_Unit)
 		return((1 << GROUNDATACKER) | (1 << AIRATACKER));
 	}
 	int weaponmask = 1 << NOATACKER;
-	Subunit1 = alldattbl.units_dat->Subunit1[SC_Unit];
+	Subunit1 = (SCUNIT) alldattbl.units_dat->Subunit1[SC_Unit];
 	if (Subunit1 < MAX_UNITS_ELEM)
 		SC_Unit = Subunit1;
 	if (alldattbl.units_dat->GroundWeapon[SC_Unit] < MAX_WEAPONS_ELEM)

@@ -49,10 +49,10 @@ int loadweapons(void)
 		return(-1);
 	while (!feof(f))
 	{
-		strcpy(strid, "");
-		strcpy(strvalue, "");
-		fscanf(f, "%s \n", strid);
-		strupr(strid);
+		strcpy_s(strid, "");
+		strcpy_s(strvalue, "");
+		fscanf_s(f, "%s \n", strid);
+		_strupr(strid);
 		flags = 0;
 		fscanf(f, "%s \n", strvalue);//read '='
 		fscanf(f, "%s \n", strvalue);//read flags
@@ -118,7 +118,7 @@ int IfCanCreateWeapon(OBJ *atacker, OBJ *destobj, int *errmes, unsigned char *we
 				*errmes = 875;
 			return(CREATEDWEAPONSTATUS_CANTATACKTHISUNIT);
 		}
-		Subunit1 = alldattbl.units_dat->Subunit1[atacker->SC_Unit];
+		Subunit1 = (SCUNIT) alldattbl.units_dat->Subunit1[atacker->SC_Unit];
 		if (Subunit1 < MAX_UNITS_ELEM)
 			SC_Unit = Subunit1;
 		groundweapon_id = alldattbl.units_dat->GroundWeapon[SC_Unit];

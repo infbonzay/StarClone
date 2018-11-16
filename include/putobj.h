@@ -45,35 +45,31 @@
 #define IMAGES_DAT_FIRSTCIRCLEDASHED	571
 
 //========================================
-void desenlife(int x,int y,
-			   int sizex,int statusplayer,
-			   int health,int shield,
-			   int mage,int timelife,
-			   int maxhealth,int maxshield,
-			   int maxmage,int maxtimelife);
+void desenlife(int x, int y,
+	int sizex, int statusplayer,
+	int health, int shield,
+	int mage, int timelife,
+	int maxhealth, int maxshield,
+	int maxmage, int maxtimelife);
 //========================================
-void desenhealth(int x,int y,int kubik,int count,int max);
-void desenhealth2(int x,int y,int kubik,int count,int max);
-int	 drawcircle(int x,int y,int st,struct OBJ *a);
+void desenhealth(int x, int y, int kubik, int count, int max);
+void desenhealth2(int x, int y, int kubik, int count, int max);
+int	 drawcircle(int x, int y, int st, struct OBJ *a);
 void workingbuilds(struct OBJ *a);
 void minimap_showobjs(void);
 void putobjsonminimap(void);
 void printobjparam(void);
 
 
-void resetmode(struct OBJ *a,int mode,
-				int sprmode,int newmode,
-				int newsprmode,int posmode);
-int addmaninbuild(struct OBJ *a,int nrunit,int maxtimes);
-void FindLineOfProp(struct OBJ *a,struct OBJstruct *b);
-void drawunitsintransport(int XWINPOS,int YWINPOS,struct OBJ *a);
-void drawmineralinbar(int x,int y,GRPFILE *grp,int iconnr);
-void drawunitinbar( int x,int y,int weight,int objtype,int ramka,
-					int shield_pers,int life_pers,
-					GRPFILE *grp1,GRPFILE *grp2,int iconnr2);
-int getlifepercent(int number,int maxnumber);
-void drawallunitsinbar(int XWINPOS,int YWINPOS);
-void AnalizeAllTransportUnits(struct OBJ *a,unsigned char *rettransp,struct OBJ **trtplobj);
+void resetmode(struct OBJ *a, int mode, int sprmode, int newmode, int newsprmode, int posmode);
+int addmaninbuild(struct OBJ *a, int nrunit, int maxtimes);
+void FindLineOfProp(struct OBJ *a, struct OBJstruct *b);
+void drawunitsintransport(int XWINPOS, int YWINPOS, struct OBJ *a);
+void drawmineralinbar(int x, int y, GRPFILE *grp, int iconnr);
+void drawunitinbar(int x, int y, int weight, int objtype, int ramka, int shield_pers, int life_pers, GRPFILE *, GRPFILE *, int iconnr2);
+int getlifepercent(int number, int maxnumber);
+void drawallunitsinbar(int XWINPOS, int YWINPOS);
+void AnalizeAllTransportUnits(struct OBJ *a, unsigned char *rettransp, struct OBJ **trtplobj);
 void putbuildneededtodraw(struct OBJ *a);
 void clearshowgoods(void);
 void showgoods(void);
@@ -83,7 +79,7 @@ void ifselectedDAMAGEDBUILD(OBJ *a);
 
 void showadvisortext(int stat_txt_nr);
 void putbuildplacemessage(int errorstate);
-OBJ	 *CreateUnitInUnit(struct OBJ *a,int obj_id,int playsound,int xpos,int ypos);
+OBJ	 *CreateUnitInUnit(struct OBJ *a, int obj_id, int playsound, int xpos, int ypos);
 void DrawBuildPlace(void);
 
 //====================================================

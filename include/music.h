@@ -28,15 +28,17 @@ public:
 	void		(*OnFinishPlay)(void);
 	struct
 	{
-		unsigned short	channels;
-		unsigned short	bitdepth;
-		unsigned int	frequency;		
+		RWOPS			*RWops;
 		unsigned long	alen;			//audio data in bytes
+		unsigned long	remainbytes;	//remain bytes to play
+		unsigned int	frequency;
+		Audio_CVT		CVT;
+		//unsigned short	channels;
+		//unsigned short	bitdepth;
+		unsigned char	channels;
+		unsigned char	bitdepth;
 		signed char		repeatplay;		//0-1time, 1-2times -1 infinitly
 		signed char		convertaudio;	//0-no need convertion, 1- need convertion
-		unsigned long	remainbytes;	//remain bytes to play
-		Audio_CVT		CVT;
-		RWOPS			*RWops;
 	}audio;
 
 	wMUSIC(int maxbuffers);

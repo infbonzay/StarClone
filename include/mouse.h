@@ -1,6 +1,7 @@
 #if !defined(_MOUSENEW_W)
 #define _MOUSENEW_W
 
+#include <stdint.h>
 #include <grplib/grp.h>
 
 #ifdef WITHSDL

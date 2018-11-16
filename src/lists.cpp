@@ -369,7 +369,7 @@ struct OBJ *GetNearCenter(struct OBJ *a)
 		a2 = objects[i];
 		if (a2->playernr == a->playernr && IsUnitBaseBuild(a2) == 1)
 		{
-			tempdist = hypot(GetOBJx(a) - GetOBJx(a2), GetOBJy(a) - GetOBJy(a2));
+			tempdist = (float)hypot(GetOBJx(a) - GetOBJx(a2), GetOBJy(a) - GetOBJy(a2));
 			if (tempdist < distance)
 			{
 				distance = tempdist;

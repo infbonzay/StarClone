@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <dirent.h>
-#include <unistd.h>
+//#include <unistd.h>
 #include <signal.h>
 
 #include <grplib/palette.h>

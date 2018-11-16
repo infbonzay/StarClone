@@ -16,15 +16,9 @@
 	#define TRUE 1
 #endif
 
-/*
-#ifdef WITHSDL
-	   //#include "sdl/grsdl.h"
+#if defined (_MSC_VER)
+#pragma warning( disable : 4200 )								//disable 0 size array ex.    int myarray[];
 #endif
-#ifdef UNDERDOS
-	   //#include "dos/gr8dos.h"
-	   //#include "dos/handlers.h"
-#endif
-*/
 
 #define ITEMSHOW_DISABLED		0
 #define ITEMSHOW_NOFOCUS		1

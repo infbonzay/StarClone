@@ -326,7 +326,7 @@ int ISCRIPT::CompilePass1(FILE *f)
 					stridlen = strlen(strid);
 					if (strid[0] == '0' && strid[1] == 'x')
 					{
-						intval = strtoll(strid, NULL, 16);
+						intval = strtol(strid, NULL, 16);
 					}
 					else
 					{
@@ -571,7 +571,7 @@ void ShowCommand(MAIN_IMG *img, OVERLAY_IMG *img2, uint8_t iscriptcmd, uint8_t *
 int ISCRIPT::ExecuteScript(MAIN_IMG *img)
 {
 	unsigned char iscriptcmd, iscriptcmdsize;
-	int offset, status, rot;
+	int status;
 	if (img->flags & (SC_IMAGE_FLAG_DISABLEEXECSCRIPT | SC_IMAGE_FLAG_MARKFORDELETE))
 		return(0);
 	if (img->flags & SC_IMAGE_FLAG_NEEDROTATIONTODIRECTION)

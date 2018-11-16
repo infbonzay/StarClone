@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "CrossPlatform.h"
 #include "audiolowlevel.h"
 #include "debug.h"
 #include "myfifo.h"
@@ -272,7 +273,7 @@ int PlayMusic(const char *filename, int repeatflag, void(*onfinishplay)(void))
 	//this is riff wave we can process fill wave info in stream struct
 	audiostream = new wMUSIC(MUSIC_AUDIOBUFFERS);
 
-	audiostream->audio.channels = wavheader.numChannels;
+	audiostream->audio.channels = (char)wavheader.numChannels;
 	audiostream->audio.frequency = wavheader.sampleRate;
 	if (wavheader.bitsPerSample == 8)
 		audiostream->audio.bitdepth = AUDIO_S8;

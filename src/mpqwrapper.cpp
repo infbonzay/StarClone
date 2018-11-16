@@ -7,7 +7,7 @@
 int wr_SFileReadFile(HANDLE hFile, void *lpBuffer, unsigned int dwToRead, unsigned int *pdwRead, void *lpOverlapped)
 {
 	LockAudio();
-	int ret = SFileReadFile(hFile, lpBuffer, dwToRead, pdwRead, lpOverlapped);
+	int ret = SFileReadFile(hFile, lpBuffer, dwToRead, pdwRead, (LPOVERLAPPED) lpOverlapped);
 	UnlockAudio();
 	return(ret);
 }
