@@ -28,7 +28,6 @@ include_directories(include/network)
 include_directories(include/smacker)
 
 set(SOURCES
-	src/List.cpp
 	src/ScreenDraw.cpp
 	src/MenuItem.cpp
 	src/gener.cpp
@@ -66,7 +65,6 @@ set(SOURCES
 	src/mpq.cpp
 	src/mpqwrapper.cpp
 	src/music.cpp
-	src/mycycle.cpp
 	src/myfifo.cpp
 	src/mylist.cpp
 	src/mytime.cpp

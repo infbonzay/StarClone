@@ -294,9 +294,9 @@ void drawMAP(int ignorefirstwaiting)
 					}
 					else
 					{
-						//						if (creepnr>=MAXCREEPNR)
-						//							minimapcolor = (map.creeptileminimapcolors[CREEPCOLOR-MAXCREEPNR]>>creepoffset)&0xff;
-						//						else
+						//if (creepnr>=MAXCREEPNR)
+						//	minimapcolor = (map.creeptileminimapcolors[CREEPCOLOR-MAXCREEPNR]>>creepoffset)&0xff;
+						//else
 						minimapcolor = CREEPCOLOR;
 					}
 				if (mapSEE(jj, ii) > 1)
@@ -753,8 +753,6 @@ void makeoneobjseeopen(OBJ *a, OBJstruct *b)
 		cmdoffs = &mapvisiontables[objxysize]->mapelement[elemnr];
 		for (;;cmdoffs++)
 		{
-			//			if (cmdoffs->xoffset>15 || cmdoffs->yoffset>15 || cmdoffs->rangevision>14)
-			//				DEBUGMESSCR("OOOPS= g=%d r=%d x=%d y=%d\n",g,cmdoffs->rangevision,cmdoffs->xoffset,cmdoffs->yoffset);
 			vis = cmdoffs->rangevision;
 			if (!vis)
 				break;
@@ -995,8 +993,6 @@ int mapSEE(int xkart, int ykart, int player)
 {
 	if (!map.mapbits.whitefog[player])
 		return 0;
-	//	  if (ykart<0||xkart<0||ykart>=MAXYMAP||xkart>=MAXXMAP)
-	//		return 0;
 	return(map.mapbits.whitefog[player][ykart*MAXXMAP + xkart]);
 }
 //=============================================
@@ -1004,8 +1000,6 @@ int mapSEE2(int xkart, int ykart, int player)
 {
 	if (!map.mapbits.whitefog2[player])
 		return 0;
-	//	  if (ykart<0||xkart<0||ykart>=MAXYMAP||xkart>=MAXXMAP)
-	//		return 0;
 	return(map.mapbits.whitefog2[player][ykart*MAXXMAP + xkart]);
 }
 //=============================================
@@ -1020,8 +1014,6 @@ int mapOPEN(int xkart, int ykart, int player)
 {
 	if (!map.mapbits.blackfog[player])
 		return 0;
-	//	  if (ykart<0||xkart<0||ykart>=MAXYMAP||xkart>=MAXXMAP)
-	//		return 0;
 	return(map.mapbits.blackfog[player][ykart*MAXXMAP + xkart]);
 }
 //=============================================
@@ -1029,8 +1021,6 @@ int mapSEE(int xkart, int ykart)
 {
 	int i;
 	unsigned char fogvalue = 0;
-	//	  if (ykart<0||xkart<0||ykart>=MAXYMAP||xkart>=MAXXMAP)
-	//		return 0;
 	for (i = 0;i < PLAYEDPLAYERS;i++)
 	{
 		if (IfPlayerHaveStartLocation(&map, i) != -1)
@@ -1047,8 +1037,6 @@ int mapOPEN(int xkart, int ykart)
 {
 	int i;
 	unsigned char fogvalue = 0;
-	//	  if (ykart<0||xkart<0||ykart>=MAXYMAP||xkart>=MAXXMAP)
-	//		return 0;
 	for (i = 0;i < PLAYEDPLAYERS;i++)
 	{
 		if (IfPlayerHaveStartLocation(&map, i) != -1)
