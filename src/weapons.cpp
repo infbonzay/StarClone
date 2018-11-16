@@ -49,10 +49,10 @@ int loadweapons(void)
 		return(-1);
 	while (!feof(f))
 	{
-		strcpy_s(strid, "");
-		strcpy_s(strvalue, "");
-		fscanf_s(f, "%s \n", strid);
-		_strupr(strid);
+		strcpy(strid, "");
+		strcpy(strvalue, "");
+		fscanf(f, "%s \n", strid);
+		strupr(strid);
 		flags = 0;
 		fscanf(f, "%s \n", strvalue);//read '='
 		fscanf(f, "%s \n", strvalue);//read flags

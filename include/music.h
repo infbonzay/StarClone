@@ -33,10 +33,8 @@ public:
 		unsigned long	remainbytes;	//remain bytes to play
 		unsigned int	frequency;
 		Audio_CVT		CVT;
-		//unsigned short	channels;
-		//unsigned short	bitdepth;
-		unsigned char	channels;
-		unsigned char	bitdepth;
+		unsigned short	channels;
+		unsigned short	bitdepth;
 		signed char		repeatplay;		//0-1time, 1-2times -1 infinitly
 		signed char		convertaudio;	//0-no need convertion, 1- need convertion
 	}audio;

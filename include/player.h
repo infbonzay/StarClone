@@ -1,7 +1,7 @@
 #ifndef _PLAYER_W
 #define _PLAYER_W
 
-#ifdef UNDERLUNUX
+#ifdef UNDERLINUX
 #include <arpa/inet.h>
 #endif
 
