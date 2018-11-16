@@ -7,9 +7,9 @@
 template <typename T>
 void List<T>::Clear(void)
 {
-	ListElem<T> *next,*curent;
+	ListElem<T> *next, *curent;
 	next = curent = First;
-	while(next)
+	while (next)
 	{
 		next = curent->Next;
 		delete curent;
@@ -39,25 +39,25 @@ List<T>::~List(void)
 template <typename T>
 void List<T>::Add(T elem)
 {
-	int i,nrreturn,next_parsetimes = 0;
-	ListElem<T> *curent,*next;
+	int i, nrreturn, next_parsetimes = 0;
+	ListElem<T> *curent, *next;
 	if (Capacity == Count)
 		return;
 	if (!First)
 	{
 		First = new ListElem<T>();
-		memset(First,0,sizeof(ListElem<T>));
+		memset(First, 0, sizeof(ListElem<T>));
 		First->EmptyElem = MAXLISTELEMENTS;
 		First->FirstEmptyElem = 0;
 	}
 	curent = First;
-	while(!curent->EmptyElem)
+	while (!curent->EmptyElem)
 	{
 		next_parsetimes++;
 		if (!curent->Next)
 		{
 			curent->Next = new ListElem<T>;
-			memset(curent->Next,0,sizeof(ListElem<T>));
+			memset(curent->Next, 0, sizeof(ListElem<T>));
 			next = curent->Next;
 			next->Prev = curent;
 			next->EmptyElem = MAXLISTELEMENTS;
@@ -76,7 +76,7 @@ void List<T>::Add(T elem)
 	curent->EmptyElem--;
 	if (curent->EmptyElem)
 	{
-		for ( i=nrreturn+1; i<MAXLISTELEMENTS; i++ )
+		for (i = nrreturn + 1; i < MAXLISTELEMENTS; i++)
 			if (!curent->PresenceFlag[i])
 			{
 				curent->FirstEmptyElem = i;
@@ -113,7 +113,7 @@ void List<T>::Remove(ListElem<T> current, int elemNr)
 		{
 			First = current->Next;
 			if (current->Next)
-				current->Next->Prev=NULL;
+				current->Next->Prev = NULL;
 		}
 		delete current;
 	}
@@ -123,15 +123,15 @@ void List<T>::Remove(ListElem<T> current, int elemNr)
 template <typename T>
 void List<T>::Remove(T elem)
 {
-	int i,j=0;
+	int i, j = 0;
 	ListElem<T> *curent = First;
 	if (!First)
 		return;
-	while(curent)
+	while (curent)
 	{
-		for (i=0;i<MAXLISTELEMENTS;i++)
+		for (i = 0;i < MAXLISTELEMENTS;i++)
 			if (curent->PresenceFlag[i] && curent->Elements[i] == elem)
-				return(Remove(curent,j+i));
+				return(Remove(curent, j + i));
 		j += MAXLISTELEMENTS;
 		curent = curent->Next;
 	}
@@ -141,13 +141,13 @@ void List<T>::Remove(T elem)
 template <typename T>
 bool List<T>::Contains(T elem)
 {
-	int i,j=0;
+	int i, j = 0;
 	ListElem<T> *curent = First;
 	if (!First)
 		return false;
-	while(curent)
+	while (curent)
 	{
-		for (i=0;i<MAXLISTELEMENTS;i++)
+		for (i = 0;i < MAXLISTELEMENTS;i++)
 			if (curent->PresenceFlag[i] && curent->Elements[i] == elem)
 				return true;
 		j += MAXLISTELEMENTS;
@@ -177,20 +177,20 @@ T Enumerate<T>::GetNextElem(void)
 	T retval;
 	if (!CurrentEnum)
 		return NULL;
-	do{
-		while(EnumValue >= MAXLISTELEMENTS)
+	do {
+		while (EnumValue >= MAXLISTELEMENTS)
 		{
-			do{
+			do {
 				CurrentEnum = CurrentEnum->Next;	//go to next slot
 				if (!CurrentEnum)
 					return NULL;
 				EnumValue = 0;
-			}while(CurrentEnum->EmptyElem == MAXLISTELEMENTS);	//repeat at next if we have empty entire slot
+			} while (CurrentEnum->EmptyElem == MAXLISTELEMENTS);	//repeat at next if we have empty entire slot
 		}
 		if (CurrentEnum->PresenceFlag[EnumValue])
 			break;
 		GlobalEnumValue++;
-	}while(1);
+	} while (1);
 	return(CurrentEnum->Elements[EnumValue++]);
 }
 

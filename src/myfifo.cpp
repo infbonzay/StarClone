@@ -12,15 +12,15 @@
 myfifo::myfifo(int elems)
 {
 	totalelem = elems;
-	curelem=0;
-	poselem=0;
-	elements = (void **) wmalloc (elems * sizeof (void *));
-	memset(elements,0,elems * sizeof( void *) );
+	curelem = 0;
+	poselem = 0;
+	elements = (void **)wmalloc(elems * sizeof(void *));
+	memset(elements, 0, elems * sizeof(void *));
 }
 //=========================================
 myfifo::~myfifo()
 {
-	for (int i=0;i<totalelem;i++)
+	for (int i = 0;i < totalelem;i++)
 	{
 		DelElem(i);
 	}
@@ -32,18 +32,18 @@ void myfifo::DelElem(int i)
 	if (elements[i])
 	{
 		wfree(elements[i]);
-		elements[i]=NULL;
+		elements[i] = NULL;
 	}
 }
 //=========================================
 void myfifo::EmptyElemFifo(void)
 {
-	for (int i=0;i<totalelem;i++)
+	for (int i = 0;i < totalelem;i++)
 	{
 		DelElem(i);
 	}
-	curelem=0;
-	poselem=0;
+	curelem = 0;
+	poselem = 0;
 }
 //=========================================
 void *myfifo::AddElem(int len)
@@ -53,8 +53,8 @@ void *myfifo::AddElem(int len)
 		return(NULL);
 	a = elements[curelem] = wmalloc(len);
 	curelem++;
-	if (curelem>=totalelem)
-		curelem=0; 
+	if (curelem >= totalelem)
+		curelem = 0;
 	return(a);
 }
 //=========================================
@@ -62,7 +62,7 @@ void *myfifo::InsertElem(int len)
 {
 	void *a;
 	int newelem = poselem - 1;
-	if (newelem<0)
+	if (newelem < 0)
 		newelem = totalelem - 1;
 	if (elements[newelem])
 		return(NULL);
@@ -84,21 +84,21 @@ void myfifo::DelCurElem(void)
 	{
 		DelElem(poselem);
 		poselem++;
-		if (poselem>=totalelem)
-			poselem=0;
+		if (poselem >= totalelem)
+			poselem = 0;
 	}
 }
 //=========================================
 int myfifo::GetUsedElem(void)
 {
-	if (curelem<poselem)
+	if (curelem < poselem)
 	{
-		return(totalelem+curelem-poselem);
+		return(totalelem + curelem - poselem);
 	}
 	else
-		if (curelem>poselem)
+		if (curelem > poselem)
 		{
-			return(curelem-poselem);
+			return(curelem - poselem);
 		}
 		else
 		{
@@ -111,7 +111,7 @@ int myfifo::GetUsedElem(void)
 //=========================================
 int myfifo::GetFreeElem(void)
 {
-	return(totalelem-GetUsedElem());
+	return(totalelem - GetUsedElem());
 }
 //=========================================
 

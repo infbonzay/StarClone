@@ -8,7 +8,7 @@
 int myseedval;
 void setseed(int seedval)
 {
-	myseedval=seedval;
+	myseedval = seedval;
 }
 //==========================================
 int getseed(void)
@@ -23,16 +23,16 @@ int myrand(void)
 //==========================================
 int myrand(int value)
 {
-	myseedval = ( myseedval*214013 + 2531011 ) & INT_MAX;
-	return((myseedval>>16) % value);
+	myseedval = (myseedval * 214013 + 2531011) & INT_MAX;
+	return((myseedval >> 16) % value);
 }
 //==========================================
-int myrand(int from,int to)				//get random numbers from..to included
+int myrand(int from, int to)				//get random numbers from..to included
 {
-	return (myrand(to-from+1)+from);
+	return (myrand(to - from + 1) + from);
 }
 //==========================================
-int my2rand(int numb1,int numb2)
+int my2rand(int numb1, int numb2)
 {
 	if (myrand(2))
 		return(numb1);

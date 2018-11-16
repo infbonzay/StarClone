@@ -32,55 +32,55 @@ void UnloadDoodadList(mylist *mapdoodads)
 }
 //=================================================
 #define DOODAD_ELEVATION_LEVEL	4
-void CreateDoodadsFromMAP(doodad_on_map *doodad,mapinfo *loadedmap)
+void CreateDoodadsFromMAP(doodad_on_map *doodad, mapinfo *loadedmap)
 {
 	MAIN_IMG *newimg;
-	unsigned short image_id,flags;
+	unsigned short image_id, flags;
 
-	image_id  = alldattbl.sprites_dat->images_id[doodad->sprites_id];
+	image_id = alldattbl.sprites_dat->images_id[doodad->sprites_id];
 	flags = 0;
 	flags |= SC_IMAGE_FLAG_NOCHECKFORFOG;
-	newimg = new MAIN_IMG(image_id,doodad->xpos<<8,doodad->ypos<<8,DOODAD_ELEVATION_LEVEL,
-							0,0,0,doodad->playernr,flags,ISCRIPTNR_INIT);
+	newimg = new MAIN_IMG(image_id, doodad->xpos << 8, doodad->ypos << 8, DOODAD_ELEVATION_LEVEL,
+		0, 0, 0, doodad->playernr, flags, ISCRIPTNR_INIT);
 	newimg->whocreate = SC_IMAGE_DOODAD_CREATOR;
 	imageslist_doodads.AddElem(newimg);
 	iscriptinfo.ExecuteScript(newimg);
 }
 //=====================================
-void CreateDoodadsFromLists(mylist *mapdoodads,mapinfo *loadedmap)
+void CreateDoodadsFromLists(mylist *mapdoodads, mapinfo *loadedmap)
 {
 	OBJ *a;
 	doodad_on_map *doodad;
-	DEBUGMESSCR("total doodads = %d \n",mapdoodads->GetMaxElements());
+	DEBUGMESSCR("total doodads = %d \n", mapdoodads->GetMaxElements());
 	mapdoodads->EnumListInit();
-	while( (doodad = (doodad_on_map *)mapdoodads->GetNextListElem()) )
+	while ((doodad = (doodad_on_map *)mapdoodads->GetNextListElem()))
 	{
-//			printf("%i.nrd=%d x=%d y=%d spr=%d flagunit=0x%x playernr=%d\n",i,
-//				doodad->sprites_id,doodad->xpos,doodad->ypos,doodad->sprpos,doodad->flags,doodad->playernr);
-			if (doodad->flags & DOODADISUNIT)
+		//			printf("%i.nrd=%d x=%d y=%d spr=%d flagunit=0x%x playernr=%d\n",i,
+		//				doodad->sprites_id,doodad->xpos,doodad->ypos,doodad->sprpos,doodad->flags,doodad->playernr);
+		if (doodad->flags & DOODADISUNIT)
+		{
+			//				doodad->playernr=NUMBGAMER;
+			a = CreateUnitsFromMAP(doodad->xpos, doodad->ypos, doodad->sprites_id, doodad->playernr, loadedmap);
+			if (!a)
+				continue;
+			if (doodad->flags & DOODADBOTTOMSTATE)
 			{
-//				doodad->playernr=NUMBGAMER;
-				a = CreateUnitsFromMAP(doodad->xpos,doodad->ypos,doodad->sprites_id,doodad->playernr,loadedmap);
-				if (!a)
-					continue;
-				if (doodad->flags & DOODADBOTTOMSTATE)
-				{
-					SetOrder(a,1,&SIGOrder_DoodadAfterBottom);
-					SetDoodadState(a,DOODAD_TOP_STATE);
-					SetOBJIScriptNr(a,ISCRIPTNR_ALMOSTBUILT,ISCRIPTNR_EXECUTE); //needed for doors
-					DoodadChangeState(a,DOODAD_BOTTOM_STATE);
-				}
-				else
-				{
-					SetOrder(a,1,&SIGOrder_DoodadAfterTop);
-					SetDoodadState(a,DOODAD_BOTTOM_STATE);
-					DoodadChangeState(a,DOODAD_TOP_STATE);
-				}
+				SetOrder(a, 1, &SIGOrder_DoodadAfterBottom);
+				SetDoodadState(a, DOODAD_TOP_STATE);
+				SetOBJIScriptNr(a, ISCRIPTNR_ALMOSTBUILT, ISCRIPTNR_EXECUTE); //needed for doors
+				DoodadChangeState(a, DOODAD_BOTTOM_STATE);
 			}
 			else
 			{
-				CreateDoodadsFromMAP(doodad,loadedmap);
+				SetOrder(a, 1, &SIGOrder_DoodadAfterTop);
+				SetDoodadState(a, DOODAD_BOTTOM_STATE);
+				DoodadChangeState(a, DOODAD_TOP_STATE);
 			}
+		}
+		else
+		{
+			CreateDoodadsFromMAP(doodad, loadedmap);
+		}
 	}
 	UnloadDoodadList(mapdoodads);
 }
@@ -105,24 +105,24 @@ void SetDoodadMoveDirection(OBJ *a,int movedirection)
 	a->data.doodad.movedirection = movedirection;
 }
 //=====================================================
-void DoodadChangeState(OBJ *a,int state)
+void DoodadChangeState(OBJ *a, int state)
 {
-	int sound_id,scriptseterrorstatus;
-//	  printf("change doodad state = %d\n",state);
+	int sound_id, scriptseterrorstatus;
+	//	  printf("change doodad state = %d\n",state);
 	if (state == DOODAD_BOTTOM_STATE)
 	{
-		switch(GetDoodadState(a))
+		switch (GetDoodadState(a))
 		{
-			case DOODAD_TOP_STATE:
-				//go bottom
-				SetOrder(a,1,&SIGOrder_DoodadAfterBottom);
-				scriptseterrorstatus = SetOBJIScriptNr(a,ISCRIPTNR_DOODADGOBOTTOM,ISCRIPTNR_EXECUTE);
-				if (!scriptseterrorstatus)
-				{
-					sound_id = GetUnitSound(a,UNITSOUND_WHATFIRST,UNITSOUND_WHATFIRST);
-					Play_sfxdata(GetOBJx(a),GetOBJy(a),sound_id,2);
-				}
-				SetDoodadMoveDirection(a,DOODAD_MOVE_TOBOTTOM);
+		case DOODAD_TOP_STATE:
+			//go bottom
+			SetOrder(a, 1, &SIGOrder_DoodadAfterBottom);
+			scriptseterrorstatus = SetOBJIScriptNr(a, ISCRIPTNR_DOODADGOBOTTOM, ISCRIPTNR_EXECUTE);
+			if (!scriptseterrorstatus)
+			{
+				sound_id = GetUnitSound(a, UNITSOUND_WHATFIRST, UNITSOUND_WHATFIRST);
+				Play_sfxdata(GetOBJx(a), GetOBJy(a), sound_id, 2);
+			}
+			SetDoodadMoveDirection(a, DOODAD_MOVE_TOBOTTOM);
 			break;
 		}
 	}
@@ -131,22 +131,22 @@ void DoodadChangeState(OBJ *a,int state)
 		//after first go top trap is set to automatic top/bottom at enemy visibility
 		if (!IsInvincibleUnit(a->SC_Unit))
 			a->prop |= VARAUTOMATICDOODAD;
-		switch(GetDoodadState(a))
+		switch (GetDoodadState(a))
 		{
-			case DOODAD_BOTTOM_STATE:
-				SetOrder(a,1,&SIGOrder_DoodadAfterTop);
-				if (CheckIscriptNr(a->mainimage,ISCRIPTNR_SPECIALSTATE1))
-				{
-					scriptseterrorstatus = SetOBJIScriptNr(a,ISCRIPTNR_SPECIALSTATE1,ISCRIPTNR_EXECUTE);
-				}
-				else
-					scriptseterrorstatus = SetOBJIScriptNr(a,ISCRIPTNR_DOODADGOTOP,ISCRIPTNR_EXECUTE);
-				if (!scriptseterrorstatus)
-				{
-					sound_id = GetUnitSound(a,UNITSOUND_WHATLAST,UNITSOUND_WHATLAST);
-					Play_sfxdata(GetOBJx(a),GetOBJy(a),sound_id,2);
-				}
-				SetDoodadMoveDirection(a,DOODAD_MOVE_TOTOP);
+		case DOODAD_BOTTOM_STATE:
+			SetOrder(a, 1, &SIGOrder_DoodadAfterTop);
+			if (CheckIscriptNr(a->mainimage, ISCRIPTNR_SPECIALSTATE1))
+			{
+				scriptseterrorstatus = SetOBJIScriptNr(a, ISCRIPTNR_SPECIALSTATE1, ISCRIPTNR_EXECUTE);
+			}
+			else
+				scriptseterrorstatus = SetOBJIScriptNr(a, ISCRIPTNR_DOODADGOTOP, ISCRIPTNR_EXECUTE);
+			if (!scriptseterrorstatus)
+			{
+				sound_id = GetUnitSound(a, UNITSOUND_WHATLAST, UNITSOUND_WHATLAST);
+				Play_sfxdata(GetOBJx(a), GetOBJy(a), sound_id, 2);
+			}
+			SetDoodadMoveDirection(a, DOODAD_MOVE_TOTOP);
 			break;
 		}
 	}

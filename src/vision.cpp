@@ -50,12 +50,12 @@ void setvisiontable(int table,int addx,int addy)
 //=============================================
 void SetVisionTables(void)
 {
-/*	  memset(MAPvision,0xff,sizeof(MAPvision));
-	setvisiontable(0,0,0);
-	setvisiontable(1,1,0);
-	setvisiontable(2,0,1);
-	setvisiontable(3,1,1);
-*/
+	/*	  memset(MAPvision,0xff,sizeof(MAPvision));
+		setvisiontable(0,0,0);
+		setvisiontable(1,1,0);
+		setvisiontable(2,0,1);
+		setvisiontable(3,1,1);
+	*/
 	LoadVisionBinTables();
 }
 //=============================================
@@ -65,10 +65,10 @@ void SetVisionTables(void)
 #define MAPVISIONTABLES3_DAT	"map\\vision3.dat"
 void LoadVisionBinTables(void)
 {
-	mpqloadfile(MAPVISIONTABLES0_DAT,(char **)&mapvisiontables[0]);
-	mpqloadfile(MAPVISIONTABLES1_DAT,(char **)&mapvisiontables[1]);
-	mpqloadfile(MAPVISIONTABLES2_DAT,(char **)&mapvisiontables[2]);
-	mpqloadfile(MAPVISIONTABLES3_DAT,(char **)&mapvisiontables[3]);
+	mpqloadfile(MAPVISIONTABLES0_DAT, (char **)&mapvisiontables[0]);
+	mpqloadfile(MAPVISIONTABLES1_DAT, (char **)&mapvisiontables[1]);
+	mpqloadfile(MAPVISIONTABLES2_DAT, (char **)&mapvisiontables[2]);
+	mpqloadfile(MAPVISIONTABLES3_DAT, (char **)&mapvisiontables[3]);
 }
 //============================================
 void UnloadVisionBinTables(void)

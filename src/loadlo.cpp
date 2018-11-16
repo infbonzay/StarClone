@@ -41,22 +41,22 @@ void unloadlo(LOFILE *temp)
 }
 */
 //===============================================
-signed char *GetLoXY(LOFILE *temp,int nr_side,int nr_pos)
+signed char *GetLoXY(LOFILE *temp, int nr_side, int nr_pos)
 {
 	if (!temp)
 		return NULL;
 	else
 	{
-		if (nr_side>=temp->CountSides)
+		if (nr_side >= temp->CountSides)
 		{
 			nr_side = 0;
 		}
 		else
 		{
-			if (nr_pos>=temp->CountPictsPerSides)
+			if (nr_pos >= temp->CountPictsPerSides)
 				nr_pos = 0;
 		}
-		return ((signed char*)( (long)(temp) + (temp->offseteachline[nr_side]))+nr_pos*2);
+		return ((signed char*)((long)(temp)+(temp->offseteachline[nr_side])) + nr_pos * 2);
 	}
 }
 //===============================================
@@ -104,7 +104,7 @@ void GetXYFromLO(OBJstruct *b,int mode,int line,int *x,int *y)
 	else
 	{
 		xoffs = 0;
-		yoffs = 0;	  
+		yoffs = 0;
 	}
 	xo=xoffs;
 	if (b->allmove[mode][line].loinf.status&LOFIRSTINV)

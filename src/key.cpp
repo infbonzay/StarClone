@@ -27,12 +27,12 @@
 #include "key.h"
 
 #ifdef WITHSDL
-	   #include "sdl/grsdl.h"
-	   #include "sdl/keysdl.h"
+#include "sdl/grsdl.h"
+#include "sdl/keysdl.h"
 #endif
 #ifdef UNDERDOS
-	   #include "dos/handlers.h"
-	   #include "dos/keydos.h"
+#include "dos/handlers.h"
+#include "dos/keydos.h"
 #endif
 
 #define	 TIMEFORKEY	 4
@@ -41,55 +41,55 @@
 //================================
 void keyscroll(void)
 {
-/*	if (KEYPRESS(LEFTKEY))
-		screenMapInfo->ScrollX-=factorscrollkey;
-	if (KEYPRESS(RIGHTKEY))
-		screenMapInfo->ScrollX+=factorscrollkey;
-	if (KEYPRESS(UPKEY))
-		screenMapInfo->ScrollY-=factorscrollkey;
-	if (KEYPRESS(DOWNKEY))
-		screenMapInfo->ScrollY+=factorscrollkey;
-*/
+	/*	if (KEYPRESS(LEFTKEY))
+			screenMapInfo->ScrollX-=factorscrollkey;
+		if (KEYPRESS(RIGHTKEY))
+			screenMapInfo->ScrollX+=factorscrollkey;
+		if (KEYPRESS(UPKEY))
+			screenMapInfo->ScrollY-=factorscrollkey;
+		if (KEYPRESS(DOWNKEY))
+			screenMapInfo->ScrollY+=factorscrollkey;
+	*/
 }
 //==================================
 void keyup(void)
 {
-  do{
-  }while(!keyactive);
+	do {
+	} while (!keyactive);
 }
 //===================================================
 void keydown(void)
 {
-  do{
-  }while(keyactive);
+	do {
+	} while (keyactive);
 }
 //====================================
 void pausekey(void)
 {
-	 keydown();
-	 keyup();
+	keydown();
+	keyup();
 }
 //==================================
 int readkey(void)
 {
-	static int timeoldkey=0;
-	int a=0;
-	if (tick_timer>timeoldkey)
+	static int timeoldkey = 0;
+	int a = 0;
+	if (tick_timer > timeoldkey)
 	{
 		if (keyactive)
 		{
 			a = lastkey;
-			timeoldkey = tick_timer+KEYSLAY;
+			timeoldkey = tick_timer + KEYSLAY;
 		}
 	}
 	return(a);
 }
 //====================================
-int strcmpw(char *a,char *b)
+int strcmpw(char *a, char *b)
 {
-  int i,l=strlen(b);
-	for (i=1;i<=l;i++)
-		if (*a++!=*b++) return(0);
+	int i, l = strlen(b);
+	for (i = 1;i <= l;i++)
+		if (*a++ != *b++) return(0);
 	return(1);
 }
 //====================================
@@ -98,54 +98,54 @@ void keyhandler(void)
 #ifdef DEBUG
 	OBJ *o = NULL;
 	if (SelectedUnits.totalelem)
-		o = (OBJ *)SelectedUnits.GetElem(0,NULL);
+		o = (OBJ *)SelectedUnits.GetElem(0, NULL);
 	if (KEYPRESS(F12))
 	{
-//		logend();
+		//		logend();
 		menustatus = EXITGAME;
 		return;
 	}
 	if (KEYPRESS(F11))
 	{
-		SHOWCELLS=1-SHOWCELLS;
+		SHOWCELLS = 1 - SHOWCELLS;
 	}
 	if (KEYPRESS(ALTKEY))
 	{
 	}
 	if (curentreadkey == NUMB1KEY)
 	{
-		for (int g=0;g<PLAYEDPLAYERS;g++)
+		for (int g = 0;g < PLAYEDPLAYERS;g++)
 			deselectallobj(g);
-		do{
+		do {
 			if (++NUMBGAMER >= PLAYEDPLAYERS)
 				NUMBGAMER = 0;
-		}while(IfPlayerHaveStartLocation(&map,NUMBGAMER)==-1);
-		changegoods=0;
-		map.clearfog[NUMBGAMER]=1;
+		} while (IfPlayerHaveStartLocation(&map, NUMBGAMER) == -1);
+		changegoods = 0;
+		map.clearfog[NUMBGAMER] = 1;
 		bitsplayer = GetVisionBitsPlayer(NUMBGAMER);
-		MAPREGENERATIONBIT=1;
-		MAPUNITSREGENERATIONBIT=1;
+		MAPREGENERATIONBIT = 1;
+		MAPUNITSREGENERATIONBIT = 1;
 	}
-/*	  if (keyactive==F1)
-	{
-		testmenu();
-	}
-	if (keyactive==F2)
-	{
-		for (int i=0;i<MaxObjects;i++)
+	/*	  if (keyactive==F1)
 		{
-			if (objects[i]->playernr==1)
-				dieobj(objects[i]);
+			testmenu();
 		}
-	}
-	if (keyactive==F2)
-	{
-//		WaitingPlayersMenu(0x0fff);
-		showedmenu.prepareforshowmenu(&WaitingPlayersMenu,0xffff);
-															//all 12 players (0000 1111 1111 1111)
-//																				0	f	 f	  f
-	}
-*/
+		if (keyactive==F2)
+		{
+			for (int i=0;i<MaxObjects;i++)
+			{
+				if (objects[i]->playernr==1)
+					dieobj(objects[i]);
+			}
+		}
+		if (keyactive==F2)
+		{
+	//		WaitingPlayersMenu(0x0fff);
+			showedmenu.prepareforshowmenu(&WaitingPlayersMenu,0xffff);
+																//all 12 players (0000 1111 1111 1111)
+	//																				0	f	 f	  f
+		}
+	*/
 	if (curentreadkey == F5)
 	{
 		if (o)
@@ -157,7 +157,7 @@ void keyhandler(void)
 	{
 		if (o)
 		{
-			LowLevelDamage(NULL,o,WEAPONID_NUCLEARMISSILE,DAMAGE_INDEPENDENT,25<<8,0,0);
+			LowLevelDamage(NULL, o, WEAPONID_NUCLEARMISSILE, DAMAGE_INDEPENDENT, 25 << 8, 0, 0);
 		}
 	}
 #endif
@@ -183,9 +183,9 @@ void keyhandler(void)
 			terr_menu &= ~GAMEBUTTON_KEYPRESS;
 			terr_menu |= GAMEBUTTON_KEYRELEASE;
 		}
-	if (MENUACTIVE==0 && (keyactive == ENTERKEY || keyactive == ENTERKEY2))
+	if (MENUACTIVE == 0 && (keyactive == ENTERKEY || keyactive == ENTERKEY2))
 	{
-		showedmenu.prepareforshowmenu(&chatboxmenu,NULL);
+		showedmenu.prepareforshowmenu(&chatboxmenu, NULL);
 	}
 	menustatus = CONTINUEGAME;
 	return;

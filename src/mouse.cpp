@@ -35,7 +35,7 @@ HighMouse::HighMouse(void)
 	MouseOnSelectionMode = false;
 	WaitToPressLeftButton = false;
 	MouseButtons = 0;
-	Construct = { .SC_BuildUnit = 0, .CanDo = 0, .PosX = 0, PosY = 0 };
+	Construct = { .SC_BuildUnit = 0,.CanDo = 0,.PosX = 0, PosY = 0 };
 	MouseOnObjClear();
 	ClearCursors();
 	lowMouse.Init();
@@ -50,14 +50,14 @@ HighMouse::~HighMouse(void)
 	lowMouse.LowUnMoveEvent();
 }
 //==============================
-int HighMouse::LoadOneCursor(char *filename,int typemouse)
+int HighMouse::LoadOneCursor(char *filename, int typemouse)
 {
 	cursors[typemouse].curentposition = 0;
 	cursors[typemouse].maxpositions = 0;
 	cursors[typemouse].mousegrp = NULL;
-	if (mpqloadfile(filename,(char **)&cursors[typemouse].mousegrp))
+	if (mpqloadfile(filename, (char **)&cursors[typemouse].mousegrp))
 	{
-		if (loadgrp(filename,&cursors[typemouse].mousegrp))
+		if (loadgrp(filename, &cursors[typemouse].mousegrp))
 			return -1;
 	}
 	cursors[typemouse].maxpositions = cursors[typemouse].mousegrp->CountPictures;
@@ -67,19 +67,19 @@ int HighMouse::LoadOneCursor(char *filename,int typemouse)
 int HighMouse::LoadAllCursors(void)
 {
 	int i;
-	for (i=0;i<TYPEOFCURSORS-1;i++)
+	for (i = 0;i < TYPEOFCURSORS - 1;i++)
 	{
-		if (LoadOneCursor(makefilename(GAMECURSOR_NAME,GAMECURSOR_OFFSET,'\\',0,allfilescursors[i]),i))
-			return i+1;
+		if (LoadOneCursor(makefilename(GAMECURSOR_NAME, GAMECURSOR_OFFSET, '\\', 0, allfilescursors[i]), i))
+			return i + 1;
 	}
-	if (LoadOneCursor(makefilename(GAMECURSOR_NAME,GAMECURSOR_OFFSET,0,0,ARROW_STR),i))
-		return i+1;
+	if (LoadOneCursor(makefilename(GAMECURSOR_NAME, GAMECURSOR_OFFSET, 0, 0, ARROW_STR), i))
+		return i + 1;
 	return 0;
 }
 //==============================
 void HighMouse::ClearCursors(void)
 {
-	for (int i=0;i<TYPEOFCURSORS;i++)
+	for (int i = 0;i < TYPEOFCURSORS;i++)
 	{
 		cursors[i].curentposition = 0;
 		cursors[i].maxpositions = 0;
@@ -89,7 +89,7 @@ void HighMouse::ClearCursors(void)
 //==============================
 void HighMouse::UnloadCursors(void)
 {
-	for (int i=0;i<TYPEOFCURSORS;i++)
+	for (int i = 0;i < TYPEOFCURSORS;i++)
 	{
 		cursors[i].curentposition = 0;
 		cursors[i].maxpositions = 0;
@@ -117,27 +117,27 @@ void HighMouse::DrawMouse(void)
 				{
 					if (DestMouseOBJ)
 					{
-						switch(DestMouseType)
+						switch (DestMouseType)
 						{
-							case MOUSEON_ENEMYUNIT:
-							case MOUSEON_ENEMYBUILD:
-								MouseType = TARGREDMOUSE;
-								break;
-							case MOUSEON_NEUTRALUNIT:
-							case MOUSEON_NEUTRALBUILD:
-								MouseType = TARGYELLOWMOUSE;
-								break;
-							case MOUSEON_ALLIANCEUNIT:
-							case MOUSEON_ALLIANCEBUILD:
-								MouseType = TARGYELLOWMOUSE;
-								break;
-							case MOUSEON_MYUNIT:
-							case MOUSEON_MYBUILD:
-								MouseType = TARGGREENMOUSE;
-								break;
-							default:
-								MouseType = -1;
-								break;
+						case MOUSEON_ENEMYUNIT:
+						case MOUSEON_ENEMYBUILD:
+							MouseType = TARGREDMOUSE;
+							break;
+						case MOUSEON_NEUTRALUNIT:
+						case MOUSEON_NEUTRALBUILD:
+							MouseType = TARGYELLOWMOUSE;
+							break;
+						case MOUSEON_ALLIANCEUNIT:
+						case MOUSEON_ALLIANCEBUILD:
+							MouseType = TARGYELLOWMOUSE;
+							break;
+						case MOUSEON_MYUNIT:
+						case MOUSEON_MYBUILD:
+							MouseType = TARGGREENMOUSE;
+							break;
+						default:
+							MouseType = -1;
+							break;
 						}
 					}
 					else
@@ -147,27 +147,27 @@ void HighMouse::DrawMouse(void)
 				{
 					if ((DestMouseOBJ) && select_aria && !MouseOnSelectionMode)
 					{
-						switch(DestMouseType)
+						switch (DestMouseType)
 						{
-							case MOUSEON_ENEMYUNIT:
-							case MOUSEON_ENEMYBUILD:
-								MouseType = MOUSEONOBJRED;
-								break;
-							case MOUSEON_NEUTRALUNIT:
-							case MOUSEON_NEUTRALBUILD:
-								MouseType = MOUSEONOBJYELLOW;
-								break;
-							case MOUSEON_ALLIANCEUNIT:
-							case MOUSEON_ALLIANCEBUILD:
-								MouseType = MOUSEONOBJYELLOW;
-								break;
-							case MOUSEON_MYUNIT:
-							case MOUSEON_MYBUILD:
-								MouseType = MOUSEONOBJGREEN;
-								break;
-							default:
-								MouseType = -1;
-								break;
+						case MOUSEON_ENEMYUNIT:
+						case MOUSEON_ENEMYBUILD:
+							MouseType = MOUSEONOBJRED;
+							break;
+						case MOUSEON_NEUTRALUNIT:
+						case MOUSEON_NEUTRALBUILD:
+							MouseType = MOUSEONOBJYELLOW;
+							break;
+						case MOUSEON_ALLIANCEUNIT:
+						case MOUSEON_ALLIANCEBUILD:
+							MouseType = MOUSEONOBJYELLOW;
+							break;
+						case MOUSEON_MYUNIT:
+						case MOUSEON_MYBUILD:
+							MouseType = MOUSEONOBJGREEN;
+							break;
+						default:
+							MouseType = -1;
+							break;
 						}
 					}
 					else
@@ -178,17 +178,17 @@ void HighMouse::DrawMouse(void)
 			}
 		}
 	}
-	if (MouseType < 0 )
+	if (MouseType < 0)
 	{
 		DEBUGMESSCR("MouseType < 0 ");
 		return;
 	}
 	if (highMouse->cursors[MouseType].mousegrp)
 	{
-		int deltax = -highMouse->cursors[MouseType].mousegrp->SizeX/2;
-		int deltay = -highMouse->cursors[MouseType].mousegrp->SizeY/2;
-		putgrpspr(PosX+deltax,PosY+deltay,highMouse->cursors[MouseType].mousegrp,NORMAL,
-				  0,0,NULL,highMouse->cursors[MouseType].curentposition);
+		int deltax = -highMouse->cursors[MouseType].mousegrp->SizeX / 2;
+		int deltay = -highMouse->cursors[MouseType].mousegrp->SizeY / 2;
+		putgrpspr(PosX + deltax, PosY + deltay, highMouse->cursors[MouseType].mousegrp, NORMAL,
+			0, 0, NULL, highMouse->cursors[MouseType].curentposition);
 	}
 }
 //==========================
@@ -196,13 +196,13 @@ void HighMouse::DrawSelectionArea(void)
 {
 	if (highMouse->MouseOnSelectionMode)
 	{
-		wrectangle(COLORHR,PrevX,PrevY,PosX,PosY);
+		wrectangle(COLORHR, PrevX, PrevY, PosX, PosY);
 	}
 }
 //=================================
 void HighMouse::ScrollMouse(void)
 {
-	for (int i=0;i<TYPEOFCURSORS;i++)
+	for (int i = 0;i < TYPEOFCURSORS;i++)
 	{
 		cursors[i].curentposition++;
 		if (cursors[i].curentposition >= cursors[i].maxpositions)
@@ -212,7 +212,7 @@ void HighMouse::ScrollMouse(void)
 //=================================
 void HighMouse::MouseOnObjClear(void)
 {
-	for (int i=0;i<MOUSEON_MAXVALUE;i++)
+	for (int i = 0;i < MOUSEON_MAXVALUE;i++)
 		MouseOnOBJS[i] = NULL;
 	DestMouseOBJ = NULL;
 	DestMouseType = MOUSEON_NONE;
@@ -221,7 +221,7 @@ void HighMouse::MouseOnObjClear(void)
 //=================================
 void HighMouse::GetMouseOnObj(void)
 {
-	for (int i=0;i<MOUSEON_MAXVALUE;i++)
+	for (int i = 0;i < MOUSEON_MAXVALUE;i++)
 	{
 		if (MouseOnOBJS[i])
 		{
@@ -234,8 +234,8 @@ void HighMouse::GetMouseOnObj(void)
 //==================================
 void HighMouse::SaveImageUnder(void)
 {
-	SavedUnder.PosX = PosX - MAXMOUSESIZEX/2;
-	SavedUnder.PosY = PosY - MAXMOUSESIZEY/2;
+	SavedUnder.PosX = PosX - MAXMOUSESIZEX / 2;
+	SavedUnder.PosY = PosY - MAXMOUSESIZEY / 2;
 	if (SavedUnder.PosX < 0)
 		SavedUnder.PosX = 0;
 	if (SavedUnder.PosY < 0)
@@ -246,17 +246,17 @@ void HighMouse::SaveImageUnder(void)
 		SavedUnder.SizeX = GRP_wmaxx - SavedUnder.PosX + 1;
 	if (SavedUnder.PosY + SavedUnder.SizeY > GRP_wmaxy)
 		SavedUnder.SizeY = GRP_wmaxy - SavedUnder.PosY + 1;
-	CGetImage8(SavedUnder.PosX,SavedUnder.PosY,SavedUnder.SizeX,SavedUnder.SizeY,SavedUnder.SavedPixels);
+	CGetImage8(SavedUnder.PosX, SavedUnder.PosY, SavedUnder.SizeX, SavedUnder.SizeY, SavedUnder.SavedPixels);
 }
 //==========================
 void HighMouse::LoadImageUnder(void)
 {
-	CPutImage8(SavedUnder.PosX,SavedUnder.PosY,SavedUnder.SizeX,SavedUnder.SizeY,SavedUnder.SavedPixels);
+	CPutImage8(SavedUnder.PosX, SavedUnder.PosY, SavedUnder.SizeX, SavedUnder.SizeY, SavedUnder.SavedPixels);
 }
 //==========================
-bool HighMouse::CheckForBorder(int x1,int y1,int x2,int y2)
+bool HighMouse::CheckForBorder(int x1, int y1, int x2, int y2)
 {
-	if(PosX >= x1 && PosY >= y1 && PosX <= x2 && PosY <= y2)
+	if (PosX >= x1 && PosY >= y1 && PosX <= x2 && PosY <= y2)
 		return(1);
 	else
 		return(0);
@@ -267,7 +267,7 @@ void HighMouse::SetRestrictCoords(int restrictNr)
 	RestrictNr = restrictNr;
 }
 //==========================================
-void HighMouse::SetRestrictCoords(int restrictNr,int x1,int y1,int x2,int y2)
+void HighMouse::SetRestrictCoords(int restrictNr, int x1, int y1, int x2, int y2)
 {
 	RestrictXY[restrictNr].x1 = x1;
 	RestrictXY[restrictNr].y1 = y1;
@@ -275,7 +275,7 @@ void HighMouse::SetRestrictCoords(int restrictNr,int x1,int y1,int x2,int y2)
 	RestrictXY[restrictNr].y2 = y2;
 }
 //==========================================
-void HighMouse::FixRestrict(int *x,int *y)
+void HighMouse::FixRestrict(int *x, int *y)
 {
 	bool change = false;
 	if (*x > RestrictXY[RestrictNr].x2)
@@ -308,7 +308,7 @@ void HighMouse::FixRestrict(int *x,int *y)
 	PosY = *y;
 	if (change)
 	{
-		lowMouse.SetPos(PosX,PosY);
+		lowMouse.SetPos(PosX, PosY);
 	}
 }
 //==========================================
@@ -342,21 +342,21 @@ void HighMouse::UninstallDblClickEvent(void)
 	DblClickFunc = NULL;
 }
 //==========================
-void HighMouse::SetPos(int x,int y)
+void HighMouse::SetPos(int x, int y)
 {
-	lowMouse.SetPos(x,y);
+	lowMouse.SetPos(x, y);
 	PosX = x;
 	PosY = y;
 }
 //==========================
-void HighMouse::DoRightClickAction(OBJ *destobj,int xm,int ym,int rightclick)
+void HighMouse::DoRightClickAction(OBJ *destobj, int xm, int ym, int rightclick)
 {
 	int race;
-    if (PLAYER[NUMBGAMER].isobserverflag)
+	if (PLAYER[NUMBGAMER].isobserverflag)
 		return;
 	OBJ *o = NULL;
 	if (SelectedUnits.totalelem)
-		o = (OBJ *)SelectedUnits.GetElem(0,NULL);
+		o = (OBJ *)SelectedUnits.GetElem(0, NULL);
 	if (!highMouse->WaitToPressLeftButton)
 	{
 		if (Construct.SC_BuildUnit != SC_NOUNITNR)
@@ -372,7 +372,7 @@ void HighMouse::DoRightClickAction(OBJ *destobj,int xm,int ym,int rightclick)
 						if (o)
 						{
 							race = GetUnitRace(o->SC_Unit);
-							Play_sfxdata_id(o,sfx_buildplace[race],2,0);
+							Play_sfxdata_id(o, sfx_buildplace[race], 2, 0);
 						}
 					}
 				}
@@ -388,7 +388,7 @@ void HighMouse::DoRightClickAction(OBJ *destobj,int xm,int ym,int rightclick)
 						{
 							if (IsWorkerUnit(o->SC_Unit))
 							{
-								activatesound(o,MODESOUNDERROR,2,NOSTOPCURRENTSOUNDS);
+								activatesound(o, MODESOUNDERROR, 2, NOSTOPCURRENTSOUNDS);
 							}
 							else
 							{
@@ -396,7 +396,7 @@ void HighMouse::DoRightClickAction(OBJ *destobj,int xm,int ym,int rightclick)
 								{
 									Construct.CanDo = TOBELAND_CANTLANDHERE;
 								}
-								Play_sfxdata_id(o,PUTLIFTDOWNERROR,2,0);
+								Play_sfxdata_id(o, PUTLIFTDOWNERROR, 2, 0);
 							}
 						}
 					}
@@ -406,31 +406,31 @@ void HighMouse::DoRightClickAction(OBJ *destobj,int xm,int ym,int rightclick)
 				else
 				{
 					highMouse->WaitToPressLeftButton = 1;
-					SetVisualMapPosition((int) (((highMouse->PosX - screenMapInfo->SizeX32 - screenMapInfo->MinimapStartX) / factorx)-screenMapInfo->SizeX32/2)*SIZESPRLANSHX,
-										 (int) (((highMouse->PosY - screenMapInfo->SizeY32 - screenMapInfo->MinimapStartY) / factory)-screenMapInfo->SizeY32/2)*SIZESPRLANSHY);
+					SetVisualMapPosition((int)(((highMouse->PosX - screenMapInfo->SizeX32 - screenMapInfo->MinimapStartX) / factorx) - screenMapInfo->SizeX32 / 2)*SIZESPRLANSHX,
+						(int)(((highMouse->PosY - screenMapInfo->SizeY32 - screenMapInfo->MinimapStartY) / factory) - screenMapInfo->SizeY32 / 2)*SIZESPRLANSHY);
 					return;
 				}
 			}
 		}
-		if (selectedobjmove(destobj,xm,ym,MouseModeMove,NUMBGAMER,SHOWERRORTEXT,rightclick))
+		if (selectedobjmove(destobj, xm, ym, MouseModeMove, NUMBGAMER, SHOWERRORTEXT, rightclick))
 		{
-			destCursor->SetDestinationCursor(xm,ym);
+			destCursor->SetDestinationCursor(xm, ym);
 			SetBlinkOBJ(destobj);
 		}
 	}
 }
 //==========================================
-float HighMouse::ScrollMapX(int border,float factor)
+float HighMouse::ScrollMapX(int border, float factor)
 {
 	return 0;
 }
 //==========================================
-float HighMouse::ScrollMapY(int border,float factor)
+float HighMouse::ScrollMapY(int border, float factor)
 {
 	return 0;
 }
 //==========================================
-void HighMouse::RefreshMouseType(int xk,int yk)
+void HighMouse::RefreshMouseType(int xk, int yk)
 {
 	int borderBits;
 	static bool selectionArea;
@@ -440,12 +440,12 @@ void HighMouse::RefreshMouseType(int xk,int yk)
 		return;
 	if (GAME)
 	{
-// 		if (DoubleClick && DestMouseOBJ)
-// 		{
-// 			selectMAN(PosX,PosX,PosX,PosY,0);
-// 			DoubleClick = false;
-// 			return;
-// 		}
+		// 		if (DoubleClick && DestMouseOBJ)
+		// 		{
+		// 			selectMAN(PosX,PosX,PosX,PosY,0);
+		// 			DoubleClick = false;
+		// 			return;
+		// 		}
 		borderBits = 0;
 		if (!(GetButtonStatus() & WMLEFTKEY))
 			WaitToReleaseLeftButton = 0;
@@ -467,9 +467,9 @@ void HighMouse::RefreshMouseType(int xk,int yk)
 					if (selectionArea)
 					{
 						if (KEYPRESS(SHIFTLKEY) || KEYPRESS(SHIFTRKEY))
-							selectMAN(PrevX,PrevY,PosX,PosY,1);
+							selectMAN(PrevX, PrevY, PosX, PosY, 1);
 						else
-							selectMAN(PrevX,PrevY,PosX,PosY,0);
+							selectMAN(PrevX, PrevY, PosX, PosY, 0);
 						selectionArea = false;
 					}
 					PrevX = PosX;
@@ -493,150 +493,150 @@ void HighMouse::RefreshMouseType(int xk,int yk)
 				WaitToReleaseLeftButton = 1;
 			}
 		}
-		if (WaitToPressLeftButton==1 && select_aria)
+		if (WaitToPressLeftButton == 1 && select_aria)
 		{
 			if (GetButtonStatus() & WMLEFTKEY)
 			{
 				WaitToPressLeftButton = 0;
 				if (karta_aria)
-					DoRightClickAction(	DestMouseOBJ,
-										(int)((PosX-screenMapInfo->SizeX32-screenMapInfo->MinimapStartX)/factorx)*SIZESPRLANSHX,
-										(int)((PosY-screenMapInfo->SizeY32-screenMapInfo->MinimapStartY)/factory)*SIZESPRLANSHY,
-										0);
+					DoRightClickAction(DestMouseOBJ,
+					(int)((PosX - screenMapInfo->SizeX32 - screenMapInfo->MinimapStartX) / factorx)*SIZESPRLANSHX,
+						(int)((PosY - screenMapInfo->SizeY32 - screenMapInfo->MinimapStartY) / factory)*SIZESPRLANSHY,
+						0);
 				else
-					DoRightClickAction(	DestMouseOBJ,
-										PosX + xk,
-										PosY + yk,
-										0);
+					DoRightClickAction(DestMouseOBJ,
+						PosX + xk,
+						PosY + yk,
+						0);
 			}
 		}
 
-		MouseOnBorder=0;
-		if ( PosX <= BORDERMOUSE )
+		MouseOnBorder = 0;
+		if (PosX <= BORDERMOUSE)
 			borderBits |= 0x01;
 		else
-			if ( PosX >= gameconf.grmode.x - BORDERMOUSE )
+			if (PosX >= gameconf.grmode.x - BORDERMOUSE)
 				borderBits |= 0x02;
-		if ( PosY <= BORDERMOUSE	 )
+		if (PosY <= BORDERMOUSE)
 			borderBits |= 0x04;
 		else
-			if (PosY >= gameconf.grmode.y - BORDERMOUSE )
+			if (PosY >= gameconf.grmode.y - BORDERMOUSE)
 				borderBits |= 0x08;
 		if (MOUSESCROLLON)
 		{
-			switch(borderBits)
+			switch (borderBits)
 			{
-				case 0:
+			case 0:
+				if (!screenMapInfo->ScrollX)
+					screenMapInfo->ScrollX = (int)ScrollMapX(0, SMOUTHMOUSE);
+				if (!screenMapInfo->ScrollY)
+					screenMapInfo->ScrollY = (int)ScrollMapY(0, SMOUTHMOUSE);
+				break;
+			case 1:
+				if (xk)
+				{
+					MouseOnBorder = 1;
+					MouseType = MOUSELEFTSCROLL;
 					if (!screenMapInfo->ScrollX)
-						screenMapInfo->ScrollX = (int)ScrollMapX(0,SMOUTHMOUSE);
+						screenMapInfo->ScrollX = (int)ScrollMapX(-1, SMOUTHMOUSE);
 					if (!screenMapInfo->ScrollY)
-						screenMapInfo->ScrollY = (int)ScrollMapY(0,SMOUTHMOUSE);
-					break;
-				case 1:
-					if (xk)
-					{
-						MouseOnBorder=1;
-						MouseType = MOUSELEFTSCROLL;
-						if (!screenMapInfo->ScrollX)
-							screenMapInfo->ScrollX = (int)ScrollMapX(-1,SMOUTHMOUSE);
-						if (!screenMapInfo->ScrollY)
-							screenMapInfo->ScrollY = (int)ScrollMapY(0,SMOUTHMOUSE);
-					}
-					else
-						MouseType = NORMALMOUSE;
-					break;
-				case 2:
-					if (xk<(MAXXMAP-screenMapInfo->SizeX32)*SIZESPRLANSHX)
-					{
-						MouseOnBorder=1;
-						MouseType = MOUSERIGHTSCROLL;
-						if (!screenMapInfo->ScrollX)
-							screenMapInfo->ScrollX = (int)ScrollMapX(1,SMOUTHMOUSE);
-						if (!screenMapInfo->ScrollY)
-							screenMapInfo->ScrollY = (int)ScrollMapY(0,SMOUTHMOUSE);
-					}
-					else
-						MouseType = NORMALMOUSE;
-					break;
-				case 4:
-					if (yk)
-					{
-						MouseOnBorder=1;
-						MouseType = MOUSEUPSCROLL;
-						if (!screenMapInfo->ScrollX)
-							screenMapInfo->ScrollX = (int)ScrollMapX(0,SMOUTHMOUSE);
-						if (!screenMapInfo->ScrollY)
-							screenMapInfo->ScrollY = (int)ScrollMapY(-1,SMOUTHMOUSE);
-					}
-					else
-						MouseType = NORMALMOUSE;
-					break;
-				case 5:
-					if (xk||yk)
-					{
-						MouseOnBorder=1;
-						MouseType = MOUSELEFTUPSCROLL;
-						if (!screenMapInfo->ScrollX)
-							screenMapInfo->ScrollX = (int)ScrollMapX(-1,SMOUTHMOUSE);
-						if (!screenMapInfo->ScrollY)
-							screenMapInfo->ScrollY = (int)ScrollMapY(-1,SMOUTHMOUSE);
-					}
-					else
-						MouseType = NORMALMOUSE;
-					break;
-				case 6:
-					if (xk<(MAXXMAP-screenMapInfo->SizeX32)*SIZESPRLANSHX||yk)
-					{
-						MouseOnBorder=1;
-						MouseType = MOUSERIGHTUPSCROLL;
-						if (!screenMapInfo->ScrollX)
-							screenMapInfo->ScrollX = (int)ScrollMapX(1,SMOUTHMOUSE);
-						if (!screenMapInfo->ScrollY)
-							screenMapInfo->ScrollY = (int)ScrollMapY(-1,SMOUTHMOUSE);
-					}
-					else
-						MouseType = NORMALMOUSE;
-					break;
-				case 8:
-					if (yk<(MAXYMAP-screenMapInfo->SizeY32)*SIZESPRLANSHY)
-					{
-						MouseOnBorder=1;
-						MouseType = MOUSEDOWNSCROLL;
-						if (!screenMapInfo->ScrollX)
-							screenMapInfo->ScrollX = (int)ScrollMapX(0,SMOUTHMOUSE);
-						if (!screenMapInfo->ScrollY)
-							screenMapInfo->ScrollY = (int)ScrollMapY(1,SMOUTHMOUSE);
-					}
-					else
-						MouseType = NORMALMOUSE;
-					break;
-				case 9:
-					if (xk||yk<(MAXYMAP-screenMapInfo->SizeY32)*SIZESPRLANSHY)
-					{
-						MouseOnBorder=1;
-						MouseType = MOUSELEFTDOWNSCROLL;
-						if (!screenMapInfo->ScrollX)
-							screenMapInfo->ScrollX = (int)ScrollMapX(-1,SMOUTHMOUSE);
-						if (!screenMapInfo->ScrollY)
-							screenMapInfo->ScrollY = (int)ScrollMapY(1,SMOUTHMOUSE);
-					}
-					else
-						MouseType = NORMALMOUSE;
-					break;
-				case 0xa:
-					if (xk<(MAXXMAP-screenMapInfo->SizeX32)*SIZESPRLANSHX||
-						yk<(MAXYMAP-screenMapInfo->SizeY32)*SIZESPRLANSHY)
-					{
-						MouseOnBorder=1;
-						MouseType = MOUSERIGHTDOWNSCROLL;
-						if (!screenMapInfo->ScrollX)
-							screenMapInfo->ScrollX = (int)ScrollMapX(1,SMOUTHMOUSE);
-						if (!screenMapInfo->ScrollY)
-							screenMapInfo->ScrollY = (int)ScrollMapY(1,SMOUTHMOUSE);
-					}
-					else
-						MouseType = NORMALMOUSE;
-					break;
+						screenMapInfo->ScrollY = (int)ScrollMapY(0, SMOUTHMOUSE);
+				}
+				else
+					MouseType = NORMALMOUSE;
+				break;
+			case 2:
+				if (xk < (MAXXMAP - screenMapInfo->SizeX32)*SIZESPRLANSHX)
+				{
+					MouseOnBorder = 1;
+					MouseType = MOUSERIGHTSCROLL;
+					if (!screenMapInfo->ScrollX)
+						screenMapInfo->ScrollX = (int)ScrollMapX(1, SMOUTHMOUSE);
+					if (!screenMapInfo->ScrollY)
+						screenMapInfo->ScrollY = (int)ScrollMapY(0, SMOUTHMOUSE);
+				}
+				else
+					MouseType = NORMALMOUSE;
+				break;
+			case 4:
+				if (yk)
+				{
+					MouseOnBorder = 1;
+					MouseType = MOUSEUPSCROLL;
+					if (!screenMapInfo->ScrollX)
+						screenMapInfo->ScrollX = (int)ScrollMapX(0, SMOUTHMOUSE);
+					if (!screenMapInfo->ScrollY)
+						screenMapInfo->ScrollY = (int)ScrollMapY(-1, SMOUTHMOUSE);
+				}
+				else
+					MouseType = NORMALMOUSE;
+				break;
+			case 5:
+				if (xk || yk)
+				{
+					MouseOnBorder = 1;
+					MouseType = MOUSELEFTUPSCROLL;
+					if (!screenMapInfo->ScrollX)
+						screenMapInfo->ScrollX = (int)ScrollMapX(-1, SMOUTHMOUSE);
+					if (!screenMapInfo->ScrollY)
+						screenMapInfo->ScrollY = (int)ScrollMapY(-1, SMOUTHMOUSE);
+				}
+				else
+					MouseType = NORMALMOUSE;
+				break;
+			case 6:
+				if (xk < (MAXXMAP - screenMapInfo->SizeX32)*SIZESPRLANSHX || yk)
+				{
+					MouseOnBorder = 1;
+					MouseType = MOUSERIGHTUPSCROLL;
+					if (!screenMapInfo->ScrollX)
+						screenMapInfo->ScrollX = (int)ScrollMapX(1, SMOUTHMOUSE);
+					if (!screenMapInfo->ScrollY)
+						screenMapInfo->ScrollY = (int)ScrollMapY(-1, SMOUTHMOUSE);
+				}
+				else
+					MouseType = NORMALMOUSE;
+				break;
+			case 8:
+				if (yk < (MAXYMAP - screenMapInfo->SizeY32)*SIZESPRLANSHY)
+				{
+					MouseOnBorder = 1;
+					MouseType = MOUSEDOWNSCROLL;
+					if (!screenMapInfo->ScrollX)
+						screenMapInfo->ScrollX = (int)ScrollMapX(0, SMOUTHMOUSE);
+					if (!screenMapInfo->ScrollY)
+						screenMapInfo->ScrollY = (int)ScrollMapY(1, SMOUTHMOUSE);
+				}
+				else
+					MouseType = NORMALMOUSE;
+				break;
+			case 9:
+				if (xk || yk < (MAXYMAP - screenMapInfo->SizeY32)*SIZESPRLANSHY)
+				{
+					MouseOnBorder = 1;
+					MouseType = MOUSELEFTDOWNSCROLL;
+					if (!screenMapInfo->ScrollX)
+						screenMapInfo->ScrollX = (int)ScrollMapX(-1, SMOUTHMOUSE);
+					if (!screenMapInfo->ScrollY)
+						screenMapInfo->ScrollY = (int)ScrollMapY(1, SMOUTHMOUSE);
+				}
+				else
+					MouseType = NORMALMOUSE;
+				break;
+			case 0xa:
+				if (xk < (MAXXMAP - screenMapInfo->SizeX32)*SIZESPRLANSHX ||
+					yk < (MAXYMAP - screenMapInfo->SizeY32)*SIZESPRLANSHY)
+				{
+					MouseOnBorder = 1;
+					MouseType = MOUSERIGHTDOWNSCROLL;
+					if (!screenMapInfo->ScrollX)
+						screenMapInfo->ScrollX = (int)ScrollMapX(1, SMOUTHMOUSE);
+					if (!screenMapInfo->ScrollY)
+						screenMapInfo->ScrollY = (int)ScrollMapY(1, SMOUTHMOUSE);
+				}
+				else
+					MouseType = NORMALMOUSE;
+				break;
 			}//if & switch
 		}
 
@@ -647,7 +647,7 @@ void HighMouse::RefreshMouseType(int xk,int yk)
 					{
 						mouseClear = true;
 						MouseModeMove = MODEMOVE;
-						DoRightClickAction(DestMouseOBJ,PosX+xk,PosY+yk,1);
+						DoRightClickAction(DestMouseOBJ, PosX + xk, PosY + yk, 1);
 					}
 	}//game
 
@@ -655,7 +655,7 @@ void HighMouse::RefreshMouseType(int xk,int yk)
 	{
 		if (PosX != PrevX || PosY != PrevY)
 		{
-			MouseOnSelectionMode=1;
+			MouseOnSelectionMode = 1;
 			//screenMapInfo->ScrollX = 0;
 			//screenMapInfo->ScrollY = 0;
 			if (PrevX > gameconf.grmode.x)
@@ -705,7 +705,7 @@ void DestCursor::ExecuteScript(void)
 		iscriptinfo.ExecuteScript(MouseDestImg);
 }
 //==========================================
-void DestCursor::SetDestinationCursor(int x,int y)
+void DestCursor::SetDestinationCursor(int x, int y)
 {
 	Presence = true;
 	PosX = x;
@@ -720,10 +720,10 @@ void DestCursor::DrawDestinationCursor(void)
 		if (!MouseDestImg)
 		{
 			MouseDestImg = new MAIN_IMG(IMAGEID_MOUSEDEST,
-										PosX << 8,
-										PosY << 8,
-										MOUSEDESTELEVATION,0,0,0,0,
-										SC_IMAGE_FLAG_NOCHECKFORFOG | SC_IMAGE_FLAG_AIRIMG,ISCRIPTNR_GNDATTKINIT);
+				PosX << 8,
+				PosY << 8,
+				MOUSEDESTELEVATION, 0, 0, 0, 0,
+				SC_IMAGE_FLAG_NOCHECKFORFOG | SC_IMAGE_FLAG_AIRIMG, ISCRIPTNR_GNDATTKINIT);
 		}
 		else
 		{
@@ -756,7 +756,7 @@ void DestCursor::DrawDestinationCursor(void)
 void MouseMoveEvent(int x, int y)
 {
 	if (highMouse->MoveFunc)
-		(highMouse->MoveFunc)(x,y);
+		(highMouse->MoveFunc)(x, y);
 }
 //==========================================
 void MouseClickEvent(bool type, int buttons)

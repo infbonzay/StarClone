@@ -196,196 +196,196 @@ int WorkersAction(struct OBJ *a,MAIN_IMG *img)
 	OBJ *newobj,*res;
 	int constrerror,rescnt,resval;
 	signed char xlo,ylo;
-	switch(a->modemove)
+	switch (a->modemove)
 	{
-		case MODELANDING:
-			//only drone come here
-			img->ydelta++;
-			if (--a->deltavertpos == 0)
+	case MODELANDING:
+		//only drone come here
+		img->ydelta++;
+		if (--a->deltavertpos == 0)
+		{
+			//check if have resources and decrement
+			if (!DecrUnitCost(a->SC_ConstrUnit, a->playernr))
 			{
-				//check if have resources and decrement
-				if (!DecrUnitCost(a->SC_ConstrUnit,a->playernr))
+				SIGOrder_DroneLiftOff(a);
+				SetOBJIScriptNr(a, ISCRIPTNR_LIFTOFF, ISCRIPTNR_EXECUTE);
+				return(0);
+			}
+			//check if can construct on this place
+			if (!CheckIfCanBuild(a, a->SC_ConstrUnit, a->finalx >> 8, a->finaly >> 8, &constrerror))
+			{
+				if (a->playernr == NUMBGAMER)
 				{
-					SIGOrder_DroneLiftOff(a);
-					SetOBJIScriptNr(a,ISCRIPTNR_LIFTOFF,ISCRIPTNR_EXECUTE);
-					return(0);
+					activatesound(a, MODESOUNDERROR, 2, NOSTOPCURRENTSOUNDS);
+					putbuildplacemessage(-constrerror);
 				}
-				//check if can construct on this place
-				if (!CheckIfCanBuild(a,a->SC_ConstrUnit,a->finalx>>8,a->finaly>>8,&constrerror))
-				{
-					if (a->playernr == NUMBGAMER)
-					{
-						activatesound(a,MODESOUNDERROR,2,NOSTOPCURRENTSOUNDS);
-						putbuildplacemessage(-constrerror);
-					}
-					SIGOrder_DroneLiftOff(a);
-					SetOBJIScriptNr(a,ISCRIPTNR_LIFTOFF,ISCRIPTNR_EXECUTE);
-					return(0);
-				}
-				//if carry obj, carry obj is destroyed
-				if (a->carryobj)
-				{
-					dieobj_silently(a->carryobj);
-				}
-				//we landing, construct build
-				SetObjWalk8(&map,a,CLEARWALK);
-				a->modemove = MODESTOP;
-				a->SC_FromUnit = a->SC_Unit;					//save previous unit
-				a->temphealth = a->health;
-				a->tempshield = a->shield;
-				a->mainimage->DeleteMainImgAndChilds();
-
-				ChangeSC_Unit(a,a->playernr,a->SC_ConstrUnit,CHANGESC_UNIT_CONSTR);
-				CreateImageAndAddToList(a,a->finalx,a->finaly,0,NOLOIMAGE);
-				SetUnitPercentHealth(a,1);
-				SetUnitPercentShield(a,1);
-				SetBeginSelfConstruct(a);
-				a->selfconstruct.currentconstrstep = CONSTR_STEP_ZERGBUILDLESS33;
-				SetOBJIScriptNr(a,ISCRIPTNR_INIT,ISCRIPTNR_SETONLY);
-				ChangeTypeOfProp(a,PROPDECONSTRUCT);
-//				a->lastdamageoverlays = -1;
-				AddRemoveBloodFlameOverlays(a);			//remove any bloodflame if any
-				SetObjWalk8(&map,a,SETWALK);
-				if (a->SC_ConstrUnit == SC_EXTRACTOROBJ)
-				{
-					//geyser is occupied
-					SetOBJxy256(a,GetOBJx256(a->data.geyserdest.obj),GetOBJy256(a->data.geyserdest.obj));
-					GeyserDisactivate(a,a->data.geyserdest.obj);
-				}
+				SIGOrder_DroneLiftOff(a);
+				SetOBJIScriptNr(a, ISCRIPTNR_LIFTOFF, ISCRIPTNR_EXECUTE);
+				return(0);
 			}
-			break;
-		case MODELIFTOFF:
-			//only drone come here
-			img->ydelta--;
-			if (--a->deltavertpos == 0)
-			{
-				a->modemove = MODESTOP;
-			}
-			break;
-		case MODEGATHERMINERAL:
-			if (--a->data.gather.gathertime == 0 )
-			{
-				//gather complete, need to return
-				a->finalOBJ = NULL;
-				res = a->resourceobj;
-				ReleaseResource(a);
-				rescnt = decrresourceobj(res,NORMALGETRESOURCES);
-				GetOBJXYSideOffsets(a,a->mainimage,IMAGE_OVERLAY_SPECIAL,&xlo,&ylo);
-
-				newobj = createreschunk(a,GetOBJx(a)+xlo,GetOBJy(a)+ylo,SC_CARRY_MIN[GetUnitRace(a->SC_Unit)]);
-				//carry obj setmode to carry, this parameter give to carryobj change they coords depend on scv/drone/probe
-				newobj->modemove = MODECARRYME;
-				newobj->prop |= VARCANTSELECT;
-
-
-				newobj->data.resourcechunk.restype = SC_CARRY_MINERAL1;
-				newobj->data.resourcechunk.rescnt  = rescnt;
-
-				newobj->mainimage->side = a->mainimage->side;
-				newobj->mainimage->neededside = a->mainimage->side;
-
-				moveobj(a,NULL,MODERETURNCARGO,NOSHOWERROR);
-			}
-			break;
-		case MODEGATHERGAS:
-			if (--a->data.gather.gathertime == 0 )
-			{
-				//gather complete, need to return
-				a->finalOBJ = NULL;
-				res = a->resourceobj;
-				ReleaseResource(a);
-				rescnt = decrresourceobj(res,NORMALGETRESOURCES);
-				GetOBJXYSideOffsets(a,a->mainimage,IMAGE_OVERLAY_SPECIAL,&xlo,&ylo);
-
-				newobj = createreschunk(a,GetOBJx(a)+xlo,GetOBJy(a)+ylo,SC_CARRY_GAS[GetUnitRace(a->SC_Unit)]);
-
-				//carry obj setmode to carry, this parameter give to carryobj change they coords depend on scv/drone/probe
-				newobj->modemove = MODECARRYME;
-				newobj->prop |= VARCANTSELECT;
-
-				a->mainimage->ShowChildsImgFlag();		//show worker
-				a->mainimage->ShowImgFlag();
-				a->prop &= ~VARNOTHERE;
-
-				newobj->data.resourcechunk.restype = SC_CARRY_GAS[0];
-				newobj->data.resourcechunk.rescnt  = rescnt;
-
-				newobj->mainimage->side = a->mainimage->side;
-				newobj->mainimage->neededside = a->mainimage->side;
-
-				moveobj(a,NULL,MODERETURNCARGO,NOSHOWERROR);
-			}
-			break;
-		case MODEWAITHARVESTMINERAL:
-			if (--a->data.gather.waittoharvest == 0 )
-			{
-				newobj = GetNearResource(a,SC_MINERAL1OBJ,&resval);
-				if (newobj)
-					moveobj(a,newobj,MODEGATHER,NOSHOWERROR);
-				else
-					if (resval)
-						a->data.gather.waittoharvest = WAITTOHARVEST;
-					else
-						moveobj(a,NULL,MODESTOP,NOSHOWERROR);
-			}
-			break;
-		case MODEWAITHARVESTGAS:
-			if (--a->data.gather.waittoharvest == 0 )
-			{
-				if (a->finalOBJ)
-					if (!a->finalOBJ->resourceobj)//if is not occupied gather
-						moveobj(a,a->finalOBJ,MODEGATHERGAS,NOSHOWERROR);
-					else
-						a->data.gather.waittoharvest = WAITTOHARVEST;
-				else
-					moveobj(a,NULL,MODESTOP,NOSHOWERROR);
-			}
-			break;
-		case MODEWAITRETURNCARGO:
-			if (--a->data.gather.waittoharvest == 0 )
-			{
-				newobj = GetNearCenter(a);
-				if (newobj)
-				{
-					a->modemove = MODERETURNCARGO;
-					initmoveaction(a,newobj,MODERETURNCARGO,0,0,GetOBJx(newobj),GetOBJy(newobj));
-					AddModeMove(a,newobj,MODERETURNCARGO,GetOBJx(newobj),GetOBJy(newobj),NOSHOWERROR);
-				}
-				else
-				{
-					a->data.gather.waittoharvest = WAITTOHARVEST;
-				}
-			}
-			break;
-		case MODESTOP:
+			//if carry obj, carry obj is destroyed
 			if (a->carryobj)
 			{
-				if (a->prop & VARAUTOMATRESOURCERET)
-					if (IsPickupUnit(a->carryobj->SC_Unit) && !IsInvincibleUnit(a->carryobj->SC_Unit))
-					{
-						//if it is mineral or gas orb
-						moveobj(a,NULL,MODERETURNCARGO,NOSHOWERROR);
-					}
-				return(0);
+				dieobj_silently(a->carryobj);
+			}
+			//we landing, construct build
+			SetObjWalk8(&map, a, CLEARWALK);
+			a->modemove = MODESTOP;
+			a->SC_FromUnit = a->SC_Unit;					//save previous unit
+			a->temphealth = a->health;
+			a->tempshield = a->shield;
+			a->mainimage->DeleteMainImgAndChilds();
+
+			ChangeSC_Unit(a, a->playernr, a->SC_ConstrUnit, CHANGESC_UNIT_CONSTR);
+			CreateImageAndAddToList(a, a->finalx, a->finaly, 0, NOLOIMAGE);
+			SetUnitPercentHealth(a, 1);
+			SetUnitPercentShield(a, 1);
+			SetBeginSelfConstruct(a);
+			a->selfconstruct.currentconstrstep = CONSTR_STEP_ZERGBUILDLESS33;
+			SetOBJIScriptNr(a, ISCRIPTNR_INIT, ISCRIPTNR_SETONLY);
+			ChangeTypeOfProp(a, PROPDECONSTRUCT);
+			//				a->lastdamageoverlays = -1;
+			AddRemoveBloodFlameOverlays(a);			//remove any bloodflame if any
+			SetObjWalk8(&map, a, SETWALK);
+			if (a->SC_ConstrUnit == SC_EXTRACTOROBJ)
+			{
+				//geyser is occupied
+				SetOBJxy256(a, GetOBJx256(a->data.geyserdest.obj), GetOBJy256(a->data.geyserdest.obj));
+				GeyserDisactivate(a, a->data.geyserdest.obj);
+			}
+		}
+		break;
+	case MODELIFTOFF:
+		//only drone come here
+		img->ydelta--;
+		if (--a->deltavertpos == 0)
+		{
+			a->modemove = MODESTOP;
+		}
+		break;
+	case MODEGATHERMINERAL:
+		if (--a->data.gather.gathertime == 0)
+		{
+			//gather complete, need to return
+			a->finalOBJ = NULL;
+			res = a->resourceobj;
+			ReleaseResource(a);
+			rescnt = decrresourceobj(res, NORMALGETRESOURCES);
+			GetOBJXYSideOffsets(a, a->mainimage, IMAGE_OVERLAY_SPECIAL, &xlo, &ylo);
+
+			newobj = createreschunk(a, GetOBJx(a) + xlo, GetOBJy(a) + ylo, SC_CARRY_MIN[GetUnitRace(a->SC_Unit)]);
+			//carry obj setmode to carry, this parameter give to carryobj change they coords depend on scv/drone/probe
+			newobj->modemove = MODECARRYME;
+			newobj->prop |= VARCANTSELECT;
+
+
+			newobj->data.resourcechunk.restype = SC_CARRY_MINERAL1;
+			newobj->data.resourcechunk.rescnt = rescnt;
+
+			newobj->mainimage->side = a->mainimage->side;
+			newobj->mainimage->neededside = a->mainimage->side;
+
+			moveobj(a, NULL, MODERETURNCARGO, NOSHOWERROR);
+		}
+		break;
+	case MODEGATHERGAS:
+		if (--a->data.gather.gathertime == 0)
+		{
+			//gather complete, need to return
+			a->finalOBJ = NULL;
+			res = a->resourceobj;
+			ReleaseResource(a);
+			rescnt = decrresourceobj(res, NORMALGETRESOURCES);
+			GetOBJXYSideOffsets(a, a->mainimage, IMAGE_OVERLAY_SPECIAL, &xlo, &ylo);
+
+			newobj = createreschunk(a, GetOBJx(a) + xlo, GetOBJy(a) + ylo, SC_CARRY_GAS[GetUnitRace(a->SC_Unit)]);
+
+			//carry obj setmode to carry, this parameter give to carryobj change they coords depend on scv/drone/probe
+			newobj->modemove = MODECARRYME;
+			newobj->prop |= VARCANTSELECT;
+
+			a->mainimage->ShowChildsImgFlag();		//show worker
+			a->mainimage->ShowImgFlag();
+			a->prop &= ~VARNOTHERE;
+
+			newobj->data.resourcechunk.restype = SC_CARRY_GAS[0];
+			newobj->data.resourcechunk.rescnt = rescnt;
+
+			newobj->mainimage->side = a->mainimage->side;
+			newobj->mainimage->neededside = a->mainimage->side;
+
+			moveobj(a, NULL, MODERETURNCARGO, NOSHOWERROR);
+		}
+		break;
+	case MODEWAITHARVESTMINERAL:
+		if (--a->data.gather.waittoharvest == 0)
+		{
+			newobj = GetNearResource(a, SC_MINERAL1OBJ, &resval);
+			if (newobj)
+				moveobj(a, newobj, MODEGATHER, NOSHOWERROR);
+			else
+				if (resval)
+					a->data.gather.waittoharvest = WAITTOHARVEST;
+				else
+					moveobj(a, NULL, MODESTOP, NOSHOWERROR);
+		}
+		break;
+	case MODEWAITHARVESTGAS:
+		if (--a->data.gather.waittoharvest == 0)
+		{
+			if (a->finalOBJ)
+				if (!a->finalOBJ->resourceobj)//if is not occupied gather
+					moveobj(a, a->finalOBJ, MODEGATHERGAS, NOSHOWERROR);
+				else
+					a->data.gather.waittoharvest = WAITTOHARVEST;
+			else
+				moveobj(a, NULL, MODESTOP, NOSHOWERROR);
+		}
+		break;
+	case MODEWAITRETURNCARGO:
+		if (--a->data.gather.waittoharvest == 0)
+		{
+			newobj = GetNearCenter(a);
+			if (newobj)
+			{
+				a->modemove = MODERETURNCARGO;
+				initmoveaction(a, newobj, MODERETURNCARGO, 0, 0, GetOBJx(newobj), GetOBJy(newobj));
+				AddModeMove(a, newobj, MODERETURNCARGO, GetOBJx(newobj), GetOBJy(newobj), NOSHOWERROR);
 			}
 			else
 			{
-				if (a->SC_Unit == SC_SCVOBJ && UnitDoAiAction(a->playernr))		//if scv and computer control try to repair if need something
-				{
-					if (--a->data.gather.waitforrepair <= 0)
-					{
-						a->data.gather.waitforrepair = WAITTICKBEFORESEARCHREPAIR;
-						newobj = SearchOBJforOBJ(a,MODEREPAIR);
-						if (newobj)
-						{
-							moveobj(a,newobj,MODEREPAIR,NOSHOWERROR);
-							return(1);
-						}
-					}
-					return(0);
-				}
+				a->data.gather.waittoharvest = WAITTOHARVEST;
 			}
-			break;
+		}
+		break;
+	case MODESTOP:
+		if (a->carryobj)
+		{
+			if (a->prop & VARAUTOMATRESOURCERET)
+				if (IsPickupUnit(a->carryobj->SC_Unit) && !IsInvincibleUnit(a->carryobj->SC_Unit))
+				{
+					//if it is mineral or gas orb
+					moveobj(a, NULL, MODERETURNCARGO, NOSHOWERROR);
+				}
+			return(0);
+		}
+		else
+		{
+			if (a->SC_Unit == SC_SCVOBJ && UnitDoAiAction(a->playernr))		//if scv and computer control try to repair if need something
+			{
+				if (--a->data.gather.waitforrepair <= 0)
+				{
+					a->data.gather.waitforrepair = WAITTICKBEFORESEARCHREPAIR;
+					newobj = SearchOBJforOBJ(a, MODEREPAIR);
+					if (newobj)
+					{
+						moveobj(a, newobj, MODEREPAIR, NOSHOWERROR);
+						return(1);
+					}
+				}
+				return(0);
+			}
+		}
+		break;
 	}
 	if (a->SC_Unit == SC_SCVOBJ)
 		SCVConstructAction(a,img);
@@ -397,54 +397,54 @@ int AirBuildings(struct OBJ *a,MAIN_IMG *img)
 	MAIN_IMG *tempimg;
 	if (a->modemove == MODELANDING)
 	{
-			//any flyed buildings come here
-			//change ypos of build
-			img->ypos += (1 << 8);
-			//change ydelta of build shadow
-			if (img->childlists)
+		//any flyed buildings come here
+		//change ypos of build
+		img->ypos += (1 << 8);
+		//change ydelta of build shadow
+		if (img->childlists)
+		{
+			img->childlists->EnumListInit();
+			while ((tempimg = (MAIN_IMG *)img->childlists->GetNextListElem(NULL)))
 			{
-				img->childlists->EnumListInit();
-				while( (tempimg = (MAIN_IMG *) img->childlists->GetNextListElem(NULL)) )
-				{
-					if (tempimg->flags & SC_IMAGE_FLAG_IMGUNDER)
-						tempimg->ydelta--;
-				}
+				if (tempimg->flags & SC_IMAGE_FLAG_IMGUNDER)
+					tempimg->ydelta--;
 			}
-			if (--a->deltavertpos == 0)
-			{
-				ChangeTypeOfProp(a,PROPNORMAL1);
-				ForceKartChanges(a);
-				SetObjWalk8(&map,a,SETWALK);
-				a->modemove = MODESTOP;
-				AttachNearestAddon(a);
-				AddDustImages(a,IMAGE_OVERLAY_LANDDUST);
-				a->prop &= ~VARDONOTAPPLYNEXTMOVE;
-				ApplyNextModeMove(a);
-			}
-			return(1);
+		}
+		if (--a->deltavertpos == 0)
+		{
+			ChangeTypeOfProp(a, PROPNORMAL1);
+			ForceKartChanges(a);
+			SetObjWalk8(&map, a, SETWALK);
+			a->modemove = MODESTOP;
+			AttachNearestAddon(a);
+			AddDustImages(a, IMAGE_OVERLAY_LANDDUST);
+			a->prop &= ~VARDONOTAPPLYNEXTMOVE;
+			ApplyNextModeMove(a);
+		}
+		return(1);
 	}
 	else if (a->modemove == MODELIFTOFF)
 	{
-			//any flyed buildings come here
-			//change ypos of build
-			img->ypos -= (1 << 8);
-			//change ydelta of build shadow
-			if (img->childlists)
+		//any flyed buildings come here
+		//change ypos of build
+		img->ypos -= (1 << 8);
+		//change ydelta of build shadow
+		if (img->childlists)
+		{
+			img->childlists->EnumListInit();
+			while ((tempimg = (MAIN_IMG *)img->childlists->GetNextListElem(NULL)))
 			{
-				img->childlists->EnumListInit();
-				while( (tempimg = (MAIN_IMG *) img->childlists->GetNextListElem(NULL)) )
-				{
-					if (tempimg->flags & SC_IMAGE_FLAG_IMGUNDER)
-						tempimg->ydelta++;
-				}
+				if (tempimg->flags & SC_IMAGE_FLAG_IMGUNDER)
+					tempimg->ydelta++;
 			}
-			if (--a->deltavertpos == 0)
-			{
-				a->modemove = MODESTOP;
-				a->prop &= ~VARDONOTAPPLYNEXTMOVE;
-				ApplyNextModeMove(a);
-			}
-			return(1);
+		}
+		if (--a->deltavertpos == 0)
+		{
+			a->modemove = MODESTOP;
+			a->prop &= ~VARDONOTAPPLYNEXTMOVE;
+			ApplyNextModeMove(a);
+		}
+		return(1);
 	}
 	return(0);
 }
@@ -495,20 +495,20 @@ int MedicAction(struct OBJ *a,MAIN_IMG *img)
 	if (a->data.medic.ishealtime-- == 0)
 	{
 		a->data.medic.ishealtime = MEDICWAITFORHEAL;
-		switch(a->modemove)
+		switch (a->modemove)
 		{
-			case MODESTOP:
-			case MODEPATROL:
-				if (a->mana >= (1<<8))
+		case MODESTOP:
+		case MODEPATROL:
+			if (a->mana >= (1 << 8))
+			{
+				c = SearchOBJforOBJ(a, MODEHEAL);
+				if (c)
 				{
-					c = SearchOBJforOBJ(a,MODEHEAL);
-					if (c)
-					{
-						moveobj(a,c,MODEHEAL,NOSHOWERROR);
-						return(1);
-					}
+					moveobj(a, c, MODEHEAL, NOSHOWERROR);
+					return(1);
 				}
-				return(0);
+			}
+			return(0);
 		}
 	}
 	return(0);
@@ -609,16 +609,16 @@ int QueenAction(struct OBJ *a,MAIN_IMG *img)
 	if (a->data.queeninfest.infestrefreshbit-- == 0)
 	{
 		a->data.queeninfest.infestrefreshbit = QUEENINFEST_TICK;
-		switch(a->modemove)
+		switch (a->modemove)
 		{
-			case MODESTOP:
-				c = SearchOBJforOBJ(a,MODEINFEST);
-				if (c)
-				{
-					moveobj(a,c,MODEINFEST,NOSHOWERROR);
-					return(1);
-				}
-				return(0);
+		case MODESTOP:
+			c = SearchOBJforOBJ(a, MODEINFEST);
+			if (c)
+			{
+				moveobj(a, c, MODEINFEST, NOSHOWERROR);
+				return(1);
+			}
+			return(0);
 		}
 	}
 	return 0;
@@ -788,6 +788,7 @@ int AdditionalUnitProceed(OBJ *a,MAIN_IMG *img)
 	if ((a->prop & (VARNOTWORK | VARPOWEROFF)) || GetMageAtr(&a->atrobj,ATRSTASIS) > 0)
 		return 0;
 	if (a->atackcooldowntime && !(a->mainimage->flags & SC_IMAGE_FLAG_NEEDROTATIONTODIRECTION))
+	{
 		if (--a->atackcooldowntime == 0)
 		{
 			if (a->modemove == MODEATACK)
@@ -797,9 +798,9 @@ int AdditionalUnitProceed(OBJ *a,MAIN_IMG *img)
 					if (a->prop & VARMOVEINATACKMODE)
 					{
 						if (IsSubUnit(a->SC_Unit))
-							moveobj(a->subunit,NULL,MODEATACK,a->subunit->finalxatack,a->subunit->finalyatack,NOSHOWERROR|ATACKMOVEBIT);
+							moveobj(a->subunit, NULL, MODEATACK, a->subunit->finalxatack, a->subunit->finalyatack, NOSHOWERROR | ATACKMOVEBIT);
 						else
-							moveobj(a,NULL,MODEATACK,a->finalxatack,a->finalyatack,NOSHOWERROR|ATACKMOVEBIT);
+							moveobj(a, NULL, MODEATACK, a->finalxatack, a->finalyatack, NOSHOWERROR | ATACKMOVEBIT);
 					}
 					else
 					{
@@ -807,26 +808,27 @@ int AdditionalUnitProceed(OBJ *a,MAIN_IMG *img)
 					}
 					return 0;
 				}
-				switch(AtackCoolDownEnds(a,a->finalOBJ,1,NOSHOWERROR))
+				switch (AtackCoolDownEnds(a, a->finalOBJ, 1, NOSHOWERROR))
 				{
-					case MOVEOBJ_NOACT:
-						EndAtackAction(a);
-						if (a->prop & VARMOVEINATACKMODE)
-						{
-							moveobj(a,NULL,MODEATACK,a->finalxatack,a->finalyatack,NOSHOWERROR|ATACKMOVEBIT);
-						}
-						else
-						{
-							a->finalOBJ = NULL;
-							SetModeMove(a,MODESTOP);
-						}
-						return(0);
-					case MOVEOBJ_WAITUNTIL:		//under disruption
-						a->atackcooldowntime = GetAtackCoolDown(a,a->usedweapon_id);
-						break;
+				case MOVEOBJ_NOACT:
+					EndAtackAction(a);
+					if (a->prop & VARMOVEINATACKMODE)
+					{
+						moveobj(a, NULL, MODEATACK, a->finalxatack, a->finalyatack, NOSHOWERROR | ATACKMOVEBIT);
+					}
+					else
+					{
+						a->finalOBJ = NULL;
+						SetModeMove(a, MODESTOP);
+					}
+					return(0);
+				case MOVEOBJ_WAITUNTIL:		//under disruption
+					a->atackcooldowntime = GetAtackCoolDown(a, a->usedweapon_id);
+					break;
 				}
 			}
 		}
+	}
 //	  if ((a->prop & (VARNOTWORK | VARPOWEROFF))||GetMageAtr(&a->atrobj,ATRSTASIS)>0)
 //		return 0;
 	if (a->prop & VARWAITDISTANCE)
@@ -862,96 +864,96 @@ unitactiondefaultend:
 //=================================
 int AtackCoolDownEnds(OBJ *a,OBJ *destobj,int continueatack,int modemoveflags)
 {
-		int resval,errmes;
-		//need to check if range is ok for atack again
-		resval = IfCanCreateWeapon(a,destobj,&errmes,&a->usedweapon_id,CREATEWEAPON_IGNOREVISION);
-		switch(resval)
+	int resval,errmes;
+	//need to check if range is ok for atack again
+	resval = IfCanCreateWeapon(a,destobj,&errmes,&a->usedweapon_id,CREATEWEAPON_IGNOREVISION);
+	switch (resval)
+	{
+	case CREATEDWEAPONSTATUS_NOTAMMO:
+	case CREATEDWEAPONSTATUS_UNDERDISRUPTION://atacker in disruption can't atack and no message to appear
+		if (!a->atackcooldowntime)
+			a->atackcooldowntime = 1;
+		return(MOVEOBJ_WAITUNTIL);
+	case CREATEDWEAPONSTATUS_DESTOUTOFRANGE://out of range
+		//if sub unit - tell to base to move in that direction
+		if (a->prop & VARHOLDPOSBIT)
+			return(MOVEOBJ_NOACT);
+		if (IsSubUnit(a->SC_Unit))
 		{
-			case CREATEDWEAPONSTATUS_NOTAMMO:
-			case CREATEDWEAPONSTATUS_UNDERDISRUPTION://atacker in disruption can't atack and no message to appear
-				if (!a->atackcooldowntime)
-					a->atackcooldowntime = 1;
-				return(MOVEOBJ_WAITUNTIL);
-			case CREATEDWEAPONSTATUS_DESTOUTOFRANGE://out of range
-				//if sub unit - tell to base to move in that direction
-				if (a->prop & VARHOLDPOSBIT)
-						return(MOVEOBJ_NOACT);
-				if (IsSubUnit(a->SC_Unit))
-				{
-					a->subunit->modemove = MODEATACK;
-					a->atackcooldowntime = 0;
-					initmoveaction(a->subunit,destobj,MODEATACK,a->usedweapon_id,0,GetOBJx(destobj),GetOBJy(destobj));
-					InsertModeMove(a->subunit,destobj,MODEATACKREADY,0,0,NOSHOWERROR);
-				}
-				else
-				{
-					if (!accesstomove(a,loadobj(a->SC_Unit),MODEMOVE,a->playernr) || a->in_transport)
-					{
-						if (modemoveflags & SHOWERRORTEXT)
-						{
-							//invalid target
-							Play_sfxdata_id(NULL,TARGETERROR[GetUnitRace(a->SC_Unit)],3,0);
-							showadvisortext(errmes);
-						}
-						return(MOVEOBJ_NOACT);
-					}
-					a->modemove = MODEATACK;
-					a->atackcooldowntime = 0;
-					initmoveaction(a,destobj,MODEATACK,a->usedweapon_id,0,GetOBJx(destobj),GetOBJy(destobj));
-					InsertModeMove(a,destobj,MODEATACKREADY,0,0,NOSHOWERROR);
-				}
-				return(MOVEOBJ_CONTINUEJOB);
-			case CREATEDWEAPONSTATUS_DESTTOCLOSE://to close
-			case CREATEDWEAPONSTATUS_CANTATACKTHISUNIT:
+			a->subunit->modemove = MODEATACK;
+			a->atackcooldowntime = 0;
+			initmoveaction(a->subunit, destobj, MODEATACK, a->usedweapon_id, 0, GetOBJx(destobj), GetOBJy(destobj));
+			InsertModeMove(a->subunit, destobj, MODEATACKREADY, 0, 0, NOSHOWERROR);
+		}
+		else
+		{
+			if (!accesstomove(a, loadobj(a->SC_Unit), MODEMOVE, a->playernr) || a->in_transport)
+			{
 				if (modemoveflags & SHOWERRORTEXT)
 				{
 					//invalid target
-					Play_sfxdata_id(NULL,TARGETERROR[GetUnitRace(a->SC_Unit)],3,0);
+					Play_sfxdata_id(NULL, TARGETERROR[GetUnitRace(a->SC_Unit)], 3, 0);
 					showadvisortext(errmes);
 				}
 				return(MOVEOBJ_NOACT);
-			case CREATEDWEAPONSTATUS_ATACKSUCCESS:
-				a->prop |= VARMOVEOBJACT;
-				a->prop &= ~VARACCELERATIONBIT;
-				if (!a->currentspeed)
-					a->currentspeed = 1;
-				a->finalOBJ = destobj;
-				SetAtackType(a,destobj);
-				if (!a->atackcooldowntime)
-				{
-					AtackAction(a,destobj,continueatack);
-					return(MOVEOBJ_DONE);
-				}
-				return(MOVEOBJ_NOACT);
-			case CREATEDWEAPONSTATUS_ATACKSUCCESSWITHROTATION:
-				a->prop |= VARMOVEOBJACT;
-				a->prop &= ~VARACCELERATIONBIT;
-				if (!a->currentspeed)
-					a->currentspeed = 1;
-				a->finalOBJ = destobj;
-				a->finalx = GetOBJx256(destobj);
-				a->finaly = GetOBJy256(destobj);
-				SetAtackType(a,destobj);
-				return(MOVEOBJ_STOPANDCONTINUEJOB);
-			case CREATEDWEAPONSTATUS_LAUNCHINTERCEPTORS:
-				a->prop |= VARNEEDTOLAUNCHINTERCEPTORS;
-				//stop moving
-				a->prop &= ~VARACCELERATIONBIT;
-				if (!a->currentspeed)
-					a->currentspeed = 1;
-				a->finalOBJ = destobj;
-				LaunchInterceptors(a,destobj);
-				return(MOVEOBJ_DONE);
-			case CREATEDWEAPONSTATUS_INTERCEPTORFARAWAY:
-//				if (CALLBACK_OBJ_AtackedOBJISNULL(a))
-//					return(MOVEOBJ_DONE);
-				DelAllModeMoves(a,0);
-				moveobj(a,a->myparent,MODEGOTORECHARGE,NOSHOWERROR);
-				return(MOVEOBJ_NOACT);
-			default:
-				DEBUGMESSCR("error resval from ifcancreateweapon\n");
-				return(MOVEOBJ_NOACT);
+			}
+			a->modemove = MODEATACK;
+			a->atackcooldowntime = 0;
+			initmoveaction(a, destobj, MODEATACK, a->usedweapon_id, 0, GetOBJx(destobj), GetOBJy(destobj));
+			InsertModeMove(a, destobj, MODEATACKREADY, 0, 0, NOSHOWERROR);
 		}
+		return(MOVEOBJ_CONTINUEJOB);
+	case CREATEDWEAPONSTATUS_DESTTOCLOSE://to close
+	case CREATEDWEAPONSTATUS_CANTATACKTHISUNIT:
+		if (modemoveflags & SHOWERRORTEXT)
+		{
+			//invalid target
+			Play_sfxdata_id(NULL, TARGETERROR[GetUnitRace(a->SC_Unit)], 3, 0);
+			showadvisortext(errmes);
+		}
+		return(MOVEOBJ_NOACT);
+	case CREATEDWEAPONSTATUS_ATACKSUCCESS:
+		a->prop |= VARMOVEOBJACT;
+		a->prop &= ~VARACCELERATIONBIT;
+		if (!a->currentspeed)
+			a->currentspeed = 1;
+		a->finalOBJ = destobj;
+		SetAtackType(a, destobj);
+		if (!a->atackcooldowntime)
+		{
+			AtackAction(a, destobj, continueatack);
+			return(MOVEOBJ_DONE);
+		}
+		return(MOVEOBJ_NOACT);
+	case CREATEDWEAPONSTATUS_ATACKSUCCESSWITHROTATION:
+		a->prop |= VARMOVEOBJACT;
+		a->prop &= ~VARACCELERATIONBIT;
+		if (!a->currentspeed)
+			a->currentspeed = 1;
+		a->finalOBJ = destobj;
+		a->finalx = GetOBJx256(destobj);
+		a->finaly = GetOBJy256(destobj);
+		SetAtackType(a, destobj);
+		return(MOVEOBJ_STOPANDCONTINUEJOB);
+	case CREATEDWEAPONSTATUS_LAUNCHINTERCEPTORS:
+		a->prop |= VARNEEDTOLAUNCHINTERCEPTORS;
+		//stop moving
+		a->prop &= ~VARACCELERATIONBIT;
+		if (!a->currentspeed)
+			a->currentspeed = 1;
+		a->finalOBJ = destobj;
+		LaunchInterceptors(a, destobj);
+		return(MOVEOBJ_DONE);
+	case CREATEDWEAPONSTATUS_INTERCEPTORFARAWAY:
+		//				if (CALLBACK_OBJ_AtackedOBJISNULL(a))
+		//					return(MOVEOBJ_DONE);
+		DelAllModeMoves(a, 0);
+		moveobj(a, a->myparent, MODEGOTORECHARGE, NOSHOWERROR);
+		return(MOVEOBJ_NOACT);
+	default:
+		DEBUGMESSCR("error resval from ifcancreateweapon\n");
+		return(MOVEOBJ_NOACT);
+	}
 }
 //=================================
 void SetAtackType(OBJ *a,OBJ *destobj)

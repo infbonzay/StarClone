@@ -13,23 +13,23 @@
 
 TIMER_TICK begintime;
 TIMER mytimer;
-int cursorblink,tick_timer;
+int cursorblink, tick_timer;
 //===========================================
-long timewaitvalue[10]=
+long timewaitvalue[10] =
 {
-					TICKS_RES/SLOWESTSPEED_TICKS,
-					TICKS_RES/SLOWERSPEED_TICKS,
-					TICKS_RES/SLOWSPEED_TICKS,
-					TICKS_RES/NORMALSPEED_TICKS,
-					TICKS_RES/FASTSPEED_TICKS,
-					TICKS_RES/FASTERSPEED_TICKS,
-					TICKS_RES/FASTESTSPEED_TICKS,
-					TICKS_RES/SPEED2X_TICKS,
-					TICKS_RES/SPEED4X_TICKS,
-					TICKS_RES/SPEED6X_TICKS
+					TICKS_RES / SLOWESTSPEED_TICKS,
+					TICKS_RES / SLOWERSPEED_TICKS,
+					TICKS_RES / SLOWSPEED_TICKS,
+					TICKS_RES / NORMALSPEED_TICKS,
+					TICKS_RES / FASTSPEED_TICKS,
+					TICKS_RES / FASTERSPEED_TICKS,
+					TICKS_RES / FASTESTSPEED_TICKS,
+					TICKS_RES / SPEED2X_TICKS,
+					TICKS_RES / SPEED4X_TICKS,
+					TICKS_RES / SPEED6X_TICKS
 };
 //====================================================================
-unsigned char timewaitticks[10]=
+unsigned char timewaitticks[10] =
 {
 					SLOWESTSPEED_TICKS,
 					SLOWERSPEED_TICKS,
@@ -44,13 +44,13 @@ unsigned char timewaitticks[10]=
 };
 //====================================================================
 #ifdef UNDERLINUX
-	#include <sys/time.h>
-	TIMER_TICK TIMER::gettimeticks(void)
-	{
-		struct timespec ticks;
-		clock_gettime(CLOCK_MONOTONIC,&ticks);
-		return((TIMER_TICK) (ticks.tv_sec) * TICKS_RES + ticks.tv_nsec);
-	}
+#include <sys/time.h>
+TIMER_TICK TIMER::gettimeticks(void)
+{
+	struct timespec ticks;
+	clock_gettime(CLOCK_MONOTONIC, &ticks);
+	return((TIMER_TICK)(ticks.tv_sec) * TICKS_RES + ticks.tv_nsec);
+}
 #endif
 /*#ifdef UNDERDOS
 	long long GetCPUCurentTick(void)
@@ -87,14 +87,14 @@ unsigned char timewaitticks[10]=
 void TIMER::MyNanoSleep(long nanoseconds)
 {
 	long prev = gettimeticks();
-	do{
+	do {
 
-	}while(gettimeticks()-prev<nanoseconds);
+	} while (gettimeticks() - prev < nanoseconds);
 }
 //===========================================
 void TIMER::ClearGameTimer(void)
 {
-	gametick_current=0;
+	gametick_current = 0;
 }
 //===========================================
 int TIMER::GetCurrentGameTimeTick(void)
@@ -104,7 +104,7 @@ int TIMER::GetCurrentGameTimeTick(void)
 //===========================================
 int TIMER::GetCurrentGameTime(void)
 {
-	return(gametick_current/MAXGAMECYCLESPERSECOND);
+	return(gametick_current / MAXGAMECYCLESPERSECOND);
 }
 //===========================================
 TIMER_TICK TIMER::GetCurrentTimerTick(void)
@@ -114,72 +114,72 @@ TIMER_TICK TIMER::GetCurrentTimerTick(void)
 //===========================================
 void TIMER::SetTickTimerFrequency(int microsec)
 {
-	tick_prev=gettimeticks();
-	tick_current=tick_prev;
-	tick_delta=TICKS_RES/microsec;
+	tick_prev = gettimeticks();
+	tick_current = tick_prev;
+	tick_delta = TICKS_RES / microsec;
 }
 //===========================================
 //return value in seconds
 int TIMER::GetTimeParced(void)
 {
-	return((tick_current-begintime)/TICKS_RES);
+	return((tick_current - begintime) / TICKS_RES);
 }
 //===========================================
 void TIMER::CallTimer(int mode)
 {
 	tick_current = gettimeticks();
-	if (tick_prev+tick_delta<=tick_current)
+	if (tick_prev + tick_delta <= tick_current)
 	{
-		if (mode==MYTIMER_ASINCHRONMODE)
+		if (mode == MYTIMER_ASINCHRONMODE)
 		{
-			tick_prev+=tick_delta;
-			tick_timer+=(tick_current-tick_prev)/tick_delta;
+			tick_prev += tick_delta;
+			tick_timer += (tick_current - tick_prev) / tick_delta;
 		}
 		else
 		{
-			tick_prev=tick_current;
+			tick_prev = tick_current;
 			tick_timer++;
 		}
 		if (MyTimerFunc)
-			(*MyTimerFunc)(MyTimerParam,MYTIMERFUNC_EVERYTICKENTER);//launch everytime
+			(*MyTimerFunc)(MyTimerParam, MYTIMERFUNC_EVERYTICKENTER);//launch everytime
 	}
 }
 //===========================================
-void TIMER::SetMyTimerFunc(void (*TFunc)(void *,int),void *TFuncParam)
+void TIMER::SetMyTimerFunc(void(*TFunc)(void *, int), void *TFuncParam)
 {
-	(*TFunc)(TFuncParam,MYTIMERFUNC_FIRSTTIMEENTER);//launch first time
-	MyTimerFunc=TFunc;
-	MyTimerParam=TFuncParam;
+	(*TFunc)(TFuncParam, MYTIMERFUNC_FIRSTTIMEENTER);//launch first time
+	MyTimerFunc = TFunc;
+	MyTimerParam = TFuncParam;
 }
 //===========================================
 void TIMER::ClearMyTimerFunc(void)
 {
 	if (MyTimerFunc)
 	{
-		(*MyTimerFunc)(MyTimerParam,MYTIMERFUNC_LASTTIMEENTER);//launch last time
-		MyTimerFunc=NULL;
-		MyTimerParam=NULL;
+		(*MyTimerFunc)(MyTimerParam, MYTIMERFUNC_LASTTIMEENTER);//launch last time
+		MyTimerFunc = NULL;
+		MyTimerParam = NULL;
 	}
 }
 //===========================================
 TICKCOUNTER * TIMER::CreateTickCounter(void)
 {
-	TICKCOUNTER *t=(TICKCOUNTER *)wmalloc(sizeof (TICKCOUNTER));
-	t->starttick=tick_current;
+	TICKCOUNTER *t = (TICKCOUNTER *)wmalloc(sizeof(TICKCOUNTER));
+	t->starttick = tick_current;
 	return(t);
 }
 //====================================================================
 TIMER_TICK TIMER::GetDeltaCounter(TICKCOUNTER *t)
 {
-	TIMER_TICK delta=tick_current-t->starttick;
-	t->starttick=tick_current;
+	TIMER_TICK delta = tick_current - t->starttick;
+	t->starttick = tick_current;
 	return(delta);
 }
 //====================================================================
 void TIMER::DestroyTickCounter(TICKCOUNTER *t)
 {
 	if (t)
-				wfree(t);
+		wfree(t);
 }
 //====================================================================
 //starcraft time slowest,slower,slow,normal,fast,faster,fastest
@@ -189,24 +189,24 @@ void TIMER::DestroyTickCounter(TICKCOUNTER *t)
 //					   0,50,40,30,20,10
 int TIMER::TimeIsCome(int gamespeed)
 {
-	static TIMER_TICK prevmsec=0;
+	static TIMER_TICK prevmsec = 0;
 	long retvalue;
-	TIMER_TICK microsec=GetCurrentTimerTick();
-	if (microsec-prevmsec<timewaitvalue[gamespeed]-CNTTIMETOSLEEP)
-		{
-//		  retvalue=TIMETOSLEEP;
-		retvalue=TIMETONOSLEEP;
+	TIMER_TICK microsec = GetCurrentTimerTick();
+	if (microsec - prevmsec < timewaitvalue[gamespeed] - CNTTIMETOSLEEP)
+	{
+		//		  retvalue=TIMETOSLEEP;
+		retvalue = TIMETONOSLEEP;
 	}
 	else
 	{
-		if (microsec-prevmsec<timewaitvalue[gamespeed])
+		if (microsec - prevmsec < timewaitvalue[gamespeed])
 		{
-			retvalue=TIMETONOSLEEP;
+			retvalue = TIMETONOSLEEP;
 		}
 		else
 		{
-			retvalue=TIMETOACT;
-			prevmsec=microsec;
+			retvalue = TIMETOACT;
+			prevmsec = microsec;
 			gametick_current++;
 		}
 	}
@@ -224,30 +224,30 @@ void mousescrolling(void)
 void cursorblinkfunc(void)
 {
 	int tempcursorblink;
-	tempcursorblink=tick_timer%CURSORBLINKTIME;
-	if (tempcursorblink<CURSORBLINKTIME/2)
-		cursorblink=0;
+	tempcursorblink = tick_timer % CURSORBLINKTIME;
+	if (tempcursorblink < CURSORBLINKTIME / 2)
+		cursorblink = 0;
 	else
-			cursorblink=1;
+		cursorblink = 1;
 }
 //=================================
-void scrollportraitfunc(int scrollticks,int mixticks)
+void scrollportraitfunc(int scrollticks, int mixticks)
 {
 	if (!(tick_timer%scrollticks))
-		scrollportrait=1;
+		scrollportrait = 1;
 	if (!(tick_timer%mixticks))
-		mixportrait=1;
+		mixportrait = 1;
 }
 //=================================
 void fadeinouttextvideo(int scrollticks)
 {
 	if (!(tick_timer%scrollticks))
-		fadeinout=1;
+		fadeinout = 1;
 }
 //=================================
-void gametimer(void *empty,int param)
+void gametimer(void *empty, int param)
 {
-	if (param!=MYTIMERFUNC_EVERYTICKENTER)
+	if (param != MYTIMERFUNC_EVERYTICKENTER)
 		return;
 	mousescrolling();
 	if (GAME)
@@ -261,30 +261,30 @@ void gametimer(void *empty,int param)
 				}
 		}
 	}
-	scrollportraitfunc(TIMETOSCROLLPORTRAIT,TIMETOMIXPORTRAIT);
+	scrollportraitfunc(TIMETOSCROLLPORTRAIT, TIMETOMIXPORTRAIT);
 	cursorblinkfunc();
 	if ((!(tick_timer%TIMETOMENUUPDATE)))
-		menutimerupdate=1;
-	networkgametick=1;
+		menutimerupdate = 1;
+	networkgametick = 1;
 }
 //=================================
-void mainmenutimer(void *empty,int param)
+void mainmenutimer(void *empty, int param)
 {
-	if (param!=MYTIMERFUNC_EVERYTICKENTER)
+	if (param != MYTIMERFUNC_EVERYTICKENTER)
 		return;
 	mousescrolling();
-	scrollportraitfunc(TIMETOSCROLLSMKVIDEO1,TIMETOMIXPORTRAIT);
+	scrollportraitfunc(TIMETOSCROLLSMKVIDEO1, TIMETOMIXPORTRAIT);
 	fadeinouttextvideo(TIMETOFADETEXTVIDEO);
 	if ((!(tick_timer%TIMETOMAINMENUUPDATE)))
-		menutimerupdate=1;
+		menutimerupdate = 1;
 }
 //=================================
-void campaignselecttimer(void *empty,int param)
+void campaignselecttimer(void *empty, int param)
 {
-	if (param!=MYTIMERFUNC_EVERYTICKENTER)
+	if (param != MYTIMERFUNC_EVERYTICKENTER)
 		return;
 	mousescrolling();
-	scrollportraitfunc(TIMETOSCROLLSMKVIDEO2,TIMETOMIXPORTRAIT);
+	scrollportraitfunc(TIMETOSCROLLSMKVIDEO2, TIMETOMIXPORTRAIT);
 	fadeinouttextvideo(TIMETOFADETEXTVIDEO);
 }
 //=================================
@@ -293,35 +293,35 @@ int getcursorblinktype(void)
 	return(cursorblink);
 }
 //=================================
-void menutimer(void *empty,int param)
+void menutimer(void *empty, int param)
 {
-	if (param!=MYTIMERFUNC_EVERYTICKENTER)
+	if (param != MYTIMERFUNC_EVERYTICKENTER)
 		return;
 	mousescrolling();
 	cursorblinkfunc();
-	scrollportraitfunc(TIMETOSCROLLSMKVIDEO2,TIMETOMIXPORTRAIT);
+	scrollportraitfunc(TIMETOSCROLLSMKVIDEO2, TIMETOMIXPORTRAIT);
 	fadeinouttextvideo(TIMETOFADETEXTVIDEO);
 	if ((!(tick_timer%TIMETOMAINMENUUPDATE)))
-		menutimerupdate=1;
+		menutimerupdate = 1;
 }
 //=================================
-void scoremenutimer(void *empty,int param)
+void scoremenutimer(void *empty, int param)
 {
-	if (param!=MYTIMERFUNC_EVERYTICKENTER)
+	if (param != MYTIMERFUNC_EVERYTICKENTER)
 		return;
-	menutimer(empty,param);
+	menutimer(empty, param);
 	if ((!(tick_timer%TIMETOCHANGESCOREMENU)))
 		updatescoremenu();
 }
 //=================================
-void menutimerandnetwork(void *empty,int param)
+void menutimerandnetwork(void *empty, int param)
 {
-	if (param!=MYTIMERFUNC_EVERYTICKENTER)
+	if (param != MYTIMERFUNC_EVERYTICKENTER)
 		return;
-	menutimer(empty,param);
+	menutimer(empty, param);
 	if ((!(tick_timer%TIMETOSENDDATA)))
-		networkresend=1;
+		networkresend = 1;
 	if ((!(tick_timer%TIMETORECVDATA)))
-		networkreceive=1;
+		networkreceive = 1;
 }
 //=================================

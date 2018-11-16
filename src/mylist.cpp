@@ -21,11 +21,11 @@ mylist::mylist()
 //=========================================
 mylist::~mylist()
 {
-//	  FlushList();
-	listelem *curent,*nextprocess;
+	//	  FlushList();
+	listelem *curent, *nextprocess;
 	curent = first;
 	if (curent)
-		while(curent)
+		while (curent)
 		{
 			if (!curent->next)
 			{
@@ -41,17 +41,17 @@ mylist::~mylist()
 	resetvars();
 }
 //=========================================
-void mylist::AllocAndAddList(void *elem,int elemsize)
+void mylist::AllocAndAddList(void *elem, int elemsize)
 {
 	//prevent allocation 0 bytes
 	if (!elemsize)
 		elemsize = 1;
 	void *adrnewelem = wmalloc(elemsize);
-	strncpy((char *)adrnewelem,(char *)elem,elemsize);
+	strncpy((char *)adrnewelem, (char *)elem, elemsize);
 	AddList(adrnewelem);
 }
 //=========================================
-void mylist::FreeAndDelList(int elemnr,void (*deallocfunc)(void *elem))
+void mylist::FreeAndDelList(int elemnr, void(*deallocfunc)(void *elem))
 {
 	void *adrelem = GetElemNr(elemnr);
 	if (adrelem)
@@ -63,7 +63,7 @@ void mylist::FreeAndDelList(int elemnr,void (*deallocfunc)(void *elem))
 	}
 }
 //=========================================
-void mylist::FreeAndDelList(void *adrelem,void (*deallocfunc)(void *elem))
+void mylist::FreeAndDelList(void *adrelem, void(*deallocfunc)(void *elem))
 {
 	if (adrelem)
 	{
@@ -79,11 +79,11 @@ void mylist::DeallocList(void)
 	DeallocList(NULL);
 }
 //=========================================
-void mylist::DeallocList(void (*deallocfunc)(void *elem))
+void mylist::DeallocList(void(*deallocfunc)(void *elem))
 {
-	for (int i = maxelemnr - 1; i>=0; i--)
+	for (int i = maxelemnr - 1; i >= 0; i--)
 	{
-		FreeAndDelList(i,deallocfunc);
+		FreeAndDelList(i, deallocfunc);
 	}
 }
 //=========================================
@@ -92,7 +92,7 @@ void mylist::FlushList(void)
 {
 	listelem *curent = first;
 	listelem *next;
-	while(curent)
+	while (curent)
 	{
 		next = curent->next;
 		wfree(curent);
@@ -103,24 +103,24 @@ void mylist::FlushList(void)
 //=========================================
 int mylist::AddList(void *elem)
 {
-	int i,nrreturn,next_parsetimes = 0;
-	listelem *curent,*next;
+	int i, nrreturn, next_parsetimes = 0;
+	listelem *curent, *next;
 	if (!first)
 	{
-		first = (listelem *) wmalloc(sizeof(listelem));
-		memset(first,0,sizeof(listelem));
+		first = (listelem *)wmalloc(sizeof(listelem));
+		memset(first, 0, sizeof(listelem));
 		first->emptyelem = MAXLISTELEMENTS;
 		maxelemnr += MAXLISTELEMENTS;
 		first->firstemptyelem = 0;
 	}
 	curent = first;
-	while(!curent->emptyelem)
+	while (!curent->emptyelem)
 	{
 		next_parsetimes++;
 		if (!curent->next)
 		{
-			curent->next = (listelem *) wmalloc(sizeof(listelem));
-			memset(curent->next,0,sizeof(listelem));
+			curent->next = (listelem *)wmalloc(sizeof(listelem));
+			memset(curent->next, 0, sizeof(listelem));
 			next = curent->next;
 			next->prev = curent;
 			next->emptyelem = MAXLISTELEMENTS;
@@ -140,15 +140,15 @@ int mylist::AddList(void *elem)
 	curent->emptyelem--;
 	if (curent->emptyelem)
 	{
-		for ( i=0; i<MAXLISTELEMENTS; i++ )
-//!!!!	for ( i=nrreturn+1; i<MAXLISTELEMENTS; i++ )
+		for (i = 0; i < MAXLISTELEMENTS; i++)
+			//!!!!	for ( i=nrreturn+1; i<MAXLISTELEMENTS; i++ )
 			if (curent->bitelements[i] == MYLIST_EMPTY)
 			{
 				curent->firstemptyelem = i;
 				break;
 			}
 	}
-	return (nrreturn  +	 next_parsetimes * MAXLISTELEMENTS);
+	return (nrreturn + next_parsetimes * MAXLISTELEMENTS);
 }
 //=========================================
 int mylist::DelList(int elemnr)
@@ -157,7 +157,7 @@ int mylist::DelList(int elemnr)
 	curent = first;
 	if (!curent)
 		return -1;
-	while(elemnr >= MAXLISTELEMENTS)
+	while (elemnr >= MAXLISTELEMENTS)
 	{
 		curent = curent->next;
 		if (!curent)
@@ -207,34 +207,34 @@ int mylist::DelList(int elemnr)
 //=========================================
 int mylist::DelList(void *elem)
 {
-	int i,j=0;
+	int i, j = 0;
 	listelem *curent;
 	curent = first;
 	if (!first)
 		return -1;
-	while(curent)
+	while (curent)
 	{
-		for (i=0;i<MAXLISTELEMENTS;i++)
+		for (i = 0;i < MAXLISTELEMENTS;i++)
 			if (curent->elements[i] == elem)
-				return(DelList(j+i));
+				return(DelList(j + i));
 		j += MAXLISTELEMENTS;
 		curent = curent->next;
 	}
 	return -1;
 }
 //=========================================
-int mylist::SwapElements(int elemnr1,int elemnr2)
+int mylist::SwapElements(int elemnr1, int elemnr2)
 {
 	void *tempelem;
 	char tempelembit;
 	int elemnrtemp;
-	listelem *curent1,*curent2;
+	listelem *curent1, *curent2;
 	curent1 = first;
 	if (!first)
 		return -1;
-	if (elemnr1==elemnr2)
+	if (elemnr1 == elemnr2)
 		return -1;
-	if (elemnr1>elemnr2)
+	if (elemnr1 > elemnr2)
 	{
 		elemnrtemp = elemnr1;
 		elemnr1 = elemnr2;
@@ -242,7 +242,7 @@ int mylist::SwapElements(int elemnr1,int elemnr2)
 	}
 	if (elemnr2 >= maxelemnr)
 		return -2;
-	while(elemnr1 >= MAXLISTELEMENTS)
+	while (elemnr1 >= MAXLISTELEMENTS)
 	{
 		curent1 = curent1->next;
 		if (!curent1)
@@ -251,7 +251,7 @@ int mylist::SwapElements(int elemnr1,int elemnr2)
 		elemnr2 -= MAXLISTELEMENTS;
 	}
 	curent2 = curent1;
-	while(elemnr2 >= MAXLISTELEMENTS)
+	while (elemnr2 >= MAXLISTELEMENTS)
 	{
 		curent2 = curent2->next;
 		if (!curent2)
@@ -265,9 +265,9 @@ int mylist::SwapElements(int elemnr1,int elemnr2)
 	curent2->bitelements[elemnr2] = curent1->bitelements[elemnr1];
 	curent1->bitelements[elemnr1] = tempelembit;
 	if (!curent2->bitelements[elemnr2])
-			curent2->firstemptyelem = elemnr2;
+		curent2->firstemptyelem = elemnr2;
 	if (!curent1->bitelements[elemnr1])
-			curent1->firstemptyelem = elemnr1;
+		curent1->firstemptyelem = elemnr1;
 	return 0;
 }
 //=========================================
@@ -277,7 +277,7 @@ void *mylist::GetElemNr(int elemnr)
 	curent = first;
 	if (!first)
 		return NULL;
-	while(elemnr >= MAXLISTELEMENTS)
+	while (elemnr >= MAXLISTELEMENTS)
 	{
 		curent = curent->next;
 		if (!curent)
@@ -292,26 +292,26 @@ void *mylist::GetElemNrNoNULL(int *elemnr)
 	int elemcur;
 	listelem *curent;
 	elemcur = *elemnr;
-//	  if (*elemnr >= maxelements)
-//		return NULL;
+	//	  if (*elemnr >= maxelements)
+	//		return NULL;
 	curent = first;
 	if (!first)
 		return NULL;
-	do{
-		while(elemcur >= MAXLISTELEMENTS)
+	do {
+		while (elemcur >= MAXLISTELEMENTS)
 		{
 			curent = curent->next;
 			if (!curent)
 				return NULL;
 			elemcur -= MAXLISTELEMENTS;
 		}
-		for (;elemcur<MAXLISTELEMENTS;elemcur++,(*elemnr)++)
+		for (;elemcur < MAXLISTELEMENTS;elemcur++, (*elemnr)++)
 		{
 			if (curent->elements[elemcur])
-//!!!!		if (curent->bitelements[elemcur] != MYLIST_EMPTY)
+				//!!!!		if (curent->bitelements[elemcur] != MYLIST_EMPTY)
 				return (curent->elements[elemcur]);
 		}
-	}while(1);
+	} while (1);
 }
 //=========================================
 int mylist::GetMaxElements(void)
@@ -326,37 +326,37 @@ int mylist::GetMaxElemNr(void)
 //=========================================
 void mylist::SortA(void)
 {
-	int i,j;
+	int i, j;
 	char *elem1;
 	char *elem2;
-	for (i=0;i<GetMaxElements();i++)
+	for (i = 0;i < GetMaxElements();i++)
 	{
-		for (j=i+1;j<GetMaxElements();j++)
+		for (j = i + 1;j < GetMaxElements();j++)
 		{
 			elem1 = (char *)GetElemNr(i);
 			elem2 = (char *)GetElemNr(j);
-			if (strcmp(elem1,elem2) > 0)
-				SwapElements(i,j);
+			if (strcmp(elem1, elem2) > 0)
+				SwapElements(i, j);
 		}
 	}
 }
 //=========================================
 void mylist::Shift(void)
 {
-	int i,ii,j,swapedtimes = 0;
-	void *elem,*elem2;
+	int i, ii, j, swapedtimes = 0;
+	void *elem, *elem2;
 	j = GetMaxElemNr();
-	for (i=0;i<j;i++)
+	for (i = 0;i < j;i++)
 	{
 		elem = GetElemNr(i);
 		if (!elem)
 		{
-			for (ii=i+1;ii<j;ii++)
+			for (ii = i + 1;ii < j;ii++)
 			{
 				elem2 = GetElemNr(ii);
 				if (elem2)
 				{
-					SwapElements(i,ii);
+					SwapElements(i, ii);
 					if (++swapedtimes >= maxelements)
 					{
 						return;
@@ -375,9 +375,9 @@ int mylist::HaveElem(void *elem)
 	int i;
 	listelem *curent;
 	curent = first;
-	while(curent)
+	while (curent)
 	{
-		for (i=0;i<MAXLISTELEMENTS;i++)
+		for (i = 0;i < MAXLISTELEMENTS;i++)
 		{
 			if (curent->elements[i] == elem)
 				return(1);
@@ -411,38 +411,38 @@ void *mylist::GetNextListElem(int *posinlist)
 	void *retval;
 	if (!curentenum)
 		return NULL;
-	do{
-		while(enumvalue >= MAXLISTELEMENTS)
+	do {
+		while (enumvalue >= MAXLISTELEMENTS)
 		{
-			do{
+			do {
 				curentenum = curentenum->next;	//go to next slot
 				if (!curentenum)
 					return NULL;
 				enumvalue = 0;
-			}while(curentenum->emptyelem == MAXLISTELEMENTS);	//repeat at next if we have empty entire slot
+			} while (curentenum->emptyelem == MAXLISTELEMENTS);	//repeat at next if we have empty entire slot
 		}
 		retval = curentenum->elements[enumvalue++];
 		globalenumvalue++;
-	}while(!retval);							//find next elem if curent is NULL
+	} while (!retval);							//find next elem if curent is NULL
 	if (posinlist)
-		*posinlist = globalenumvalue-1;
+		*posinlist = globalenumvalue - 1;
 	return(retval);
 }
 //=========================================
 int mylist::GetLastElemNr(void)
 {
-	listelem *curent,*prev;
-	int i,find = -1;
+	listelem *curent, *prev;
+	int i, find = -1;
 	curent = first;
 	if (!curent)
 		return(-1);
-	while(curent)
+	while (curent)
 	{
 		prev = curent;
 		curent = curent->next;
 	}
 	i = MAXLISTELEMENTS - 1;
-	while(i >= 0 && find == -1)
+	while (i >= 0 && find == -1)
 	{
 		if (prev->bitelements[i])
 			find = i;
@@ -454,19 +454,19 @@ int mylist::GetLastElemNr(void)
 //=========================================
 void *mylist::GetLastElem(void)
 {
-	listelem *curent,*prev;
+	listelem *curent, *prev;
 	int i;
 	void *find = NULL;
 	curent = first;
 	if (!curent)
 		return(NULL);
-	while(curent)
+	while (curent)
 	{
 		prev = curent;
 		curent = curent->next;
 	}
 	i = MAXLISTELEMENTS - 1;
-	while(i >= 0 && find == NULL)
+	while (i >= 0 && find == NULL)
 	{
 		find = prev->elements[i--];
 	}
@@ -477,8 +477,8 @@ void *mylist::GetLastElem(void)
 mylistsimple::mylistsimple(int neededelem)
 {
 	allocatedelem = neededelem;
-	elements = (void **) wmalloc(allocatedelem*sizeof(void *));
-	deletemarked = (char *)wmalloc(allocatedelem*sizeof(char));
+	elements = (void **)wmalloc(allocatedelem * sizeof(void *));
+	deletemarked = (char *)wmalloc(allocatedelem * sizeof(char));
 	FreeAndEmptyAll();
 }
 //=========================================
@@ -491,7 +491,7 @@ mylistsimple::~mylistsimple()
 void mylistsimple::DeleteOneElem(int elemnr)
 {
 	int lastelem;
-	lastelem = totalelem-1;
+	lastelem = totalelem - 1;
 	if (elemnr != lastelem)
 	{
 		elements[elemnr] = elements[lastelem];
@@ -504,12 +504,12 @@ void mylistsimple::DeleteOneElem(int elemnr)
 //=========================================
 void mylistsimple::DeleteMarked(void)
 {
-	int i,lastelem;
+	int i, lastelem;
 	if (!totalmarked)
 		return;
 	totalmarked = 0;
-	lastelem = totalelem-1;
-	for (i=lastelem;i>=0;i--)
+	lastelem = totalelem - 1;
+	for (i = lastelem;i >= 0;i--)
 	{
 		if (deletemarked[i])
 		{
@@ -538,12 +538,12 @@ void *mylistsimple::GetNextListElem(int *retelemnr)
 {
 	if (curenumelemnr >= totalelem)
 		return(NULL);
-	return(GetElem(curenumelemnr++,retelemnr));
+	return(GetElem(curenumelemnr++, retelemnr));
 }
 //=========================================
-void *mylistsimple::GetElem(int elemnr,int *retelem)
+void *mylistsimple::GetElem(int elemnr, int *retelem)
 {
-	while(deletemarked[elemnr])
+	while (deletemarked[elemnr])
 	{
 		if (++elemnr >= totalelem)
 			return(NULL);
@@ -557,8 +557,8 @@ void mylistsimple::FreeAndEmptyAll(void)
 {
 	totalelem = 0;
 	totalmarked = 0;
-	memset(elements,0,allocatedelem*sizeof(void *));
-	memset(deletemarked,0,allocatedelem*sizeof(char));
+	memset(elements, 0, allocatedelem * sizeof(void *));
+	memset(deletemarked, 0, allocatedelem * sizeof(char));
 	EnumListInit();
 }
 //=========================================
@@ -572,7 +572,7 @@ void mylistsimple::AppendTo(mylistsimple *appendTo)
 {
 	this->EnumListInit();
 	void *elem;
-	while( ( elem = this->GetNextListElem(NULL) ))
+	while ((elem = this->GetNextListElem(NULL)))
 	{
 		if (appendTo->Contains(elem) < 0)
 		{
@@ -584,8 +584,8 @@ void mylistsimple::AppendTo(mylistsimple *appendTo)
 void mylistsimple::DelElem(void *elem)
 {
 	int i;
-	int lastelem = totalelem-1;
-	for (i=0;i<totalelem;i++)
+	int lastelem = totalelem - 1;
+	for (i = 0;i < totalelem;i++)
 	{
 		if (elements[i] == elem)
 		{
@@ -603,7 +603,7 @@ void mylistsimple::DelElem(void *elem)
 //=========================================
 int mylistsimple::Contains(void *elem)
 {
-	for (int i=0;i<totalelem;i++)
+	for (int i = 0;i < totalelem;i++)
 	{
 		if (elements[i] == elem)
 		{

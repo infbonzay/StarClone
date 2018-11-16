@@ -27,124 +27,125 @@
 #include "maps.h"
 
 #ifdef WITHSDL
-	   #include "sdl/grsdl.h"
+#include "sdl/grsdl.h"
 #endif
 #ifdef UNDERDOS
-	   #include "dos/gr8dos.h"
-	   #include "dos/handlers.h"
+#include "dos/gr8dos.h"
+#include "dos/handlers.h"
 #endif
 
 struct mapinfo map;
-float factorx,factory;
-int sizemaprectx,sizemaprecty;
+float factorx, factory;
+int sizemaprectx, sizemaprecty;
 ScreenMapInfo *screenMapInfo;
+RevealMap *revealMap;
 //==============================
 void CreateMiniMapPixels(struct mapinfo *map)
 {
 	MAXXMAP = map->map_width;
 	MAXYMAP = map->map_height;
-	MAXXMAP8 = map->map_width*4;
-	MAXYMAP8 = map->map_height*4;
+	MAXXMAP8 = map->map_width * 4;
+	MAXYMAP8 = map->map_height * 4;
 	screenMapInfo->MinimapStartX = map->minimap_startx;
 	screenMapInfo->MinimapStartY = map->minimap_starty;
 	screenMapInfo->MinimapEndX = map->minimap_endx;
 	screenMapInfo->MinimapEndY = map->minimap_endy;
-	highMouse->SetRestrictCoords(MOUSEMODE4,screenMapInfo->MinimapPosX+screenMapInfo->MinimapStartX,screenMapInfo->MinimapPosY+screenMapInfo->MinimapStartY,screenMapInfo->MinimapPosX+screenMapInfo->MinimapEndX,screenMapInfo->MinimapPosY+screenMapInfo->MinimapEndY);
-	factorx=(float)((screenMapInfo->MinimapEndX-screenMapInfo->MinimapStartX))/MAXXMAP;
-	factory=(float)((screenMapInfo->MinimapEndY-screenMapInfo->MinimapStartY))/MAXYMAP;
-	sizemaprectx=(int)(screenMapInfo->SizeX32*factorx);
-	sizemaprecty=(int)(screenMapInfo->SizeY32*factory);
+	highMouse->SetRestrictCoords(MOUSEMODE4, screenMapInfo->MinimapPosX + screenMapInfo->MinimapStartX, screenMapInfo->MinimapPosY + screenMapInfo->MinimapStartY, screenMapInfo->MinimapPosX + screenMapInfo->MinimapEndX, screenMapInfo->MinimapPosY + screenMapInfo->MinimapEndY);
+	factorx = (float)((screenMapInfo->MinimapEndX - screenMapInfo->MinimapStartX)) / MAXXMAP;
+	factory = (float)((screenMapInfo->MinimapEndY - screenMapInfo->MinimapStartY)) / MAXYMAP;
+	sizemaprectx = (int)(screenMapInfo->SizeX32*factorx);
+	sizemaprecty = (int)(screenMapInfo->SizeY32*factory);
 }
 //==============================
 //x32,y32 - coords in map 128x128 for example,
 //sizex,sizey - size of object 1 - is 32 pixels
 //==============================
-void GetMiniMapCoord(int x32,int y32,
-					 int sizex,int sizey,
-					 int *xminimap,int *yminimap,
-					 int *sizexinpixels,int *sizeyinpixels)
+void GetMiniMapCoord(int x32, int y32,
+	int sizex, int sizey,
+	int *xminimap, int *yminimap,
+	int *sizexinpixels, int *sizeyinpixels)
 {
-	*xminimap = screenMapInfo->MinimapPosX+screenMapInfo->MinimapStartX+(int)(x32*factorx);
-	*yminimap = screenMapInfo->MinimapPosY+screenMapInfo->MinimapStartY+(int)(y32*factory);
-	*sizexinpixels=(int)(sizex*factorx+0.5);
-	*sizeyinpixels=(int)(sizey*factory+0.5);
+	*xminimap = screenMapInfo->MinimapPosX + screenMapInfo->MinimapStartX + (int)(x32*factorx);
+	*yminimap = screenMapInfo->MinimapPosY + screenMapInfo->MinimapStartY + (int)(y32*factory);
+	*sizexinpixels = (int)(sizex*factorx + 0.5);
+	*sizeyinpixels = (int)(sizey*factory + 0.5);
 }
 //==============================
 void minimap_showobj(OBJ *a)
 {
-	int sx,sy;
+	int sx, sy;
 	if (a->SC_Unit == SC_MAPREVEALEROBJ)
 		return;
-	if (!OBJ_VAR_CHK(a,obj_notdetect,NUMBGAMER) || (IsDoodadState(a->SC_Unit) && GetDoodadState(a) == DOODAD_TOP_STATE))
+	if (!OBJ_VAR_CHK(a, obj_notdetect, NUMBGAMER) || (IsDoodadState(a->SC_Unit) && GetDoodadState(a) == DOODAD_TOP_STATE))
 	{
-		sx=GetUnitBoxWidth(a->SC_Unit);
-		sy=GetUnitBoxHeight(a->SC_Unit);
-		ObjOnMiniMap(a->xkart-sx/64,a->ykart-sy/64,sx,sy,tableforminimap[a->color],Minimap);
+		sx = GetUnitBoxWidth(a->SC_Unit);
+		sy = GetUnitBoxHeight(a->SC_Unit);
+		ObjOnMiniMap(a->xkart - sx / 64, a->ykart - sy / 64, sx, sy, tableforminimap[a->color], Minimap);
 	}
 }
 //==============================================
-void getminimapcoord(struct mapinfo *info,int x,int y,int *xm,int *ym)
+void getminimapcoord(struct mapinfo *info, int x, int y, int *xm, int *ym)
 {
-	*xm = (int) ((x*factorx/SIZESPRLANSHX)+screenMapInfo->MinimapStartX)+screenMapInfo->MinimapPosX;
-	*ym = (int) ((y*factory/SIZESPRLANSHY)+screenMapInfo->MinimapStartY)+screenMapInfo->MinimapPosY;
+	*xm = (int)((x*factorx / SIZESPRLANSHX) + screenMapInfo->MinimapStartX) + screenMapInfo->MinimapPosX;
+	*ym = (int)((y*factory / SIZESPRLANSHY) + screenMapInfo->MinimapStartY) + screenMapInfo->MinimapPosY;
 }
 //==============================================
-void ObjOnMiniMap(int xkart,int ykart,int sizex,int sizey,char color,char *minimapadr)
+void ObjOnMiniMap(int xkart, int ykart, int sizex, int sizey, char color, char *minimapadr)
 {
-	int i,j,minix,miniy,pixx,pixy;
-	pixx=(int)((sizex+16)/32*factorx+0.5);
-	pixy=(int)((sizey+16)/32*factory+0.5);
-	minix = (int) ((xkart*factorx)+screenMapInfo->MinimapStartX);
-	for (i=0;i<pixy;i++)
+	int i, j, minix, miniy, pixx, pixy;
+	pixx = (int)((sizex + 16) / 32 * factorx + 0.5);
+	pixy = (int)((sizey + 16) / 32 * factory + 0.5);
+	minix = (int)((xkart*factorx) + screenMapInfo->MinimapStartX);
+	for (i = 0;i < pixy;i++)
 	{
-		miniy = (int)((ykart*factory)+screenMapInfo->MinimapStartY+i)*MAXIMSIZEMINIMAP;
-		for (j=0;j<pixx;j++)
+		miniy = (int)((ykart*factory) + screenMapInfo->MinimapStartY + i)*MAXIMSIZEMINIMAP;
+		for (j = 0;j < pixx;j++)
 		{
-			minimapadr[miniy+minix+j] = color;
+			minimapadr[miniy + minix + j] = color;
 		}
 	}
 }
 //==============================
 void drawMINIMAP(void)
 {
-	int xbeg,ybeg,xend,yend;
+	int xbeg, ybeg, xend, yend;
 	if (MAPDEF)
 	{
-		CPutPartVisibleSpr( screenMapInfo->MinimapPosX,screenMapInfo->MinimapPosY,128,128,Minimap);
-		GetMiniMapCoord(map.MAPX,map.MAPY,screenMapInfo->SizeX32,screenMapInfo->SizeY32,&xbeg,&ybeg,&xend,&yend);
-		xend+=xbeg;
-		yend+=ybeg;
-		wrectangle(WHITECOLOR,xbeg,ybeg,xend,yend);
-		if (screenMapInfo->MinimapStartY>0)
-			horizline(WHITECOLOR,screenMapInfo->MinimapStartX+screenMapInfo->MinimapPosX-1,screenMapInfo->MinimapEndX+screenMapInfo->MinimapPosX+1,screenMapInfo->MinimapStartY+screenMapInfo->MinimapPosY);
-		if (screenMapInfo->MinimapEndY<128)
-			horizline(WHITECOLOR,screenMapInfo->MinimapStartX+screenMapInfo->MinimapPosX-1,screenMapInfo->MinimapEndX+screenMapInfo->MinimapPosX+1,screenMapInfo->MinimapEndY+screenMapInfo->MinimapPosY);
-		if (screenMapInfo->MinimapStartX>0)
-			vertline(WHITECOLOR,screenMapInfo->MinimapStartX+screenMapInfo->MinimapPosX,screenMapInfo->MinimapStartY+screenMapInfo->MinimapPosY-1,screenMapInfo->MinimapEndY+screenMapInfo->MinimapPosY+1);
-		if (screenMapInfo->MinimapEndX<128)
-			vertline(WHITECOLOR,screenMapInfo->MinimapEndX+screenMapInfo->MinimapPosX,screenMapInfo->MinimapStartY+screenMapInfo->MinimapPosY-1,screenMapInfo->MinimapEndY+screenMapInfo->MinimapPosY+1);
+		CPutPartVisibleSpr(screenMapInfo->MinimapPosX, screenMapInfo->MinimapPosY, 128, 128, Minimap);
+		GetMiniMapCoord(map.MAPX, map.MAPY, screenMapInfo->SizeX32, screenMapInfo->SizeY32, &xbeg, &ybeg, &xend, &yend);
+		xend += xbeg;
+		yend += ybeg;
+		wrectangle(WHITECOLOR, xbeg, ybeg, xend, yend);
+		if (screenMapInfo->MinimapStartY > 0)
+			horizline(WHITECOLOR, screenMapInfo->MinimapStartX + screenMapInfo->MinimapPosX - 1, screenMapInfo->MinimapEndX + screenMapInfo->MinimapPosX + 1, screenMapInfo->MinimapStartY + screenMapInfo->MinimapPosY);
+		if (screenMapInfo->MinimapEndY < 128)
+			horizline(WHITECOLOR, screenMapInfo->MinimapStartX + screenMapInfo->MinimapPosX - 1, screenMapInfo->MinimapEndX + screenMapInfo->MinimapPosX + 1, screenMapInfo->MinimapEndY + screenMapInfo->MinimapPosY);
+		if (screenMapInfo->MinimapStartX > 0)
+			vertline(WHITECOLOR, screenMapInfo->MinimapStartX + screenMapInfo->MinimapPosX, screenMapInfo->MinimapStartY + screenMapInfo->MinimapPosY - 1, screenMapInfo->MinimapEndY + screenMapInfo->MinimapPosY + 1);
+		if (screenMapInfo->MinimapEndX < 128)
+			vertline(WHITECOLOR, screenMapInfo->MinimapEndX + screenMapInfo->MinimapPosX, screenMapInfo->MinimapStartY + screenMapInfo->MinimapPosY - 1, screenMapInfo->MinimapEndY + screenMapInfo->MinimapPosY + 1);
 	}
 }
 //==================================
-int MAPAROUND[8][2]={
+int MAPAROUND[8][2] = {
 						{-1,-1},{ 0,-1},{ 1,-1},
 						{-1, 0},		{ 1, 0},
 						{-1, 1},{ 0, 1},{ 1, 1}
-						};
+};
 
 //==================================
 //return 0 if around not open map
-int checkaroundtile(int x,int y)
+int checkaroundtile(int x, int y)
 {
-	int i,newx,newy,ret=0;
-	for (i=0;i<8;i++)
+	int i, newx, newy, ret = 0;
+	for (i = 0;i < 8;i++)
 	{
-		newx=x+MAPAROUND[i][0];
-		newy=y+MAPAROUND[i][1];
-		if (CHECKFORMAPBORDERS(newx,newy))
+		newx = x + MAPAROUND[i][0];
+		newy = y + MAPAROUND[i][1];
+		if (CHECKFORMAPBORDERS(newx, newy))
 			continue;
-		if (mapSEE(newx,newy)>0||mapOPEN(newx,newy)>0)
-			ret+=1;
+		if (mapSEE(newx, newy) > 0 || mapOPEN(newx, newy) > 0)
+			ret += 1;
 	}
 	return(ret);
 }
@@ -156,43 +157,43 @@ int checkaroundtile(int x,int y)
 
 void saveoldtileandcreep(void)
 {
-	int i,j,nosave,indextile32;
-	unsigned char wf,bf;
+	int i, j, nosave, indextile32;
+	unsigned char wf, bf;
 	signed char creepnr;
-	for (i=0;i<MAXYMAP;i++)
-		for (j=0;j<MAXXMAP;j++)
+	for (i = 0;i < MAXYMAP;i++)
+		for (j = 0;j < MAXXMAP;j++)
 		{
-			nosave=0;
-			wf=mapSEE(j,i);
-			bf=mapOPEN(j,i);
-			if (wf>1||bf>1)//if opened map
+			nosave = 0;
+			wf = mapSEE(j, i);
+			bf = mapOPEN(j, i);
+			if (wf > 1 || bf > 1)//if opened map
 			{
-				indextile32=map.display_map[i*MAXXMAP+j];
-				creepnr = GetCreepAroundWithFog(j,i,indextile32);
-				if (wf<=0)//if we see it before,but now fog we put saved pictures
+				indextile32 = map.display_map[i*MAXXMAP + j];
+				creepnr = GetCreepAroundWithFog(j, i, indextile32);
+				if (wf <= 0)//if we see it before,but now fog we put saved pictures
 				{
 					if (map.mapbits.savedtile[NUMBGAMER])
-						if (map.mapbits.savedtile[NUMBGAMER][i*MAXXMAP+j]!=0xffff)
-							indextile32=map.mapbits.savedtile[NUMBGAMER][i*MAXXMAP+j];
-					nosave=1;
+						if (map.mapbits.savedtile[NUMBGAMER][i*MAXXMAP + j] != 0xffff)
+							indextile32 = map.mapbits.savedtile[NUMBGAMER][i*MAXXMAP + j];
+					nosave = 1;
 				}
-				if (creepnr==-1)
+				if (creepnr == -1)
 				{
 					if (!nosave)
-						savemaptileadr(j,i,indextile32);
+						savemaptileadr(j, i, indextile32);
 				}
 				if (!nosave)
-					savemapcreepadr(j,i,map.creepflagplace[i*MAXXMAP+j]);
+					savemapcreepadr(j, i, map.creepflagplace[i*MAXXMAP + j]);
 			}
 		}
 }
 //==================================
 void drawMAP(int ignorefirstwaiting)
 {
-	unsigned char wf,bf;
+	unsigned char wf, bf;
 	signed char creepnr;
-	int i,j,indextile32,method,open,see;
-	int bh,eh,bw,ew,ii,jj,xk,yk,xkk,ykk;
+	int i, j, indextile32, method, open, see;
+	int bh, eh, bw, ew, ii, jj, xk, yk, xkk, ykk;
 	char minimapcolor;
 	if (!CODEFORSCREEN)
 		wclrscr(0);
@@ -200,178 +201,178 @@ void drawMAP(int ignorefirstwaiting)
 	{
 		if (ignorefirstwaiting)
 		{
-			for (i=0;i<PLAYEDPLAYERS;i++)
+			for (i = 0;i < PLAYEDPLAYERS;i++)
 			{
-				if (IfPlayerHaveStartLocation(&map,i)!=-1)
+				if (IfPlayerHaveStartLocation(&map, i) != -1)
 				{
-					memset(map.mapbits.whitefog[i],0x4,map.map_width*map.map_height);
-					memset(map.mapbits.whitefog2[i],0x4,map.map_width*map.map_height);
-					memset(map.mapbits.blackfog[i],0x4,map.map_width*map.map_height);
+					memset(map.mapbits.whitefog[i], 0x4, map.map_width*map.map_height);
+					memset(map.mapbits.whitefog2[i], 0x4, map.map_width*map.map_height);
+					memset(map.mapbits.blackfog[i], 0x4, map.map_width*map.map_height);
 				}
 			}
 		}
 	}
-	bh=map.MAPY;
-	eh=bh+screenMapInfo->SizeY32+1;
+	bh = map.MAPY;
+	eh = bh + screenMapInfo->SizeY32 + 1;
 	if (eh > MAXYMAP)
 		eh = MAXYMAP;
-	bw=map.MAPX;
-	ew=bw+screenMapInfo->SizeX32+1;
+	bw = map.MAPX;
+	ew = bw + screenMapInfo->SizeX32 + 1;
 	if (ew > MAXXMAP)
 		ew = MAXXMAP;
-	xk=map.MAPXGLOBAL;
-	yk=map.MAPYGLOBAL;
+	xk = map.MAPXGLOBAL;
+	yk = map.MAPYGLOBAL;
 	xkk = xk % SIZESPRLANSHX;
 	ykk = yk % SIZESPRLANSHY;
-	memset(screenmapused,0,(screenMapInfo->SizeY32+1)*(screenMapInfo->SizeX32+1));
-	for (ii=0,i=bh;i<eh;i++,ii++)
+	memset(screenmapused, 0, (screenMapInfo->SizeY32 + 1)*(screenMapInfo->SizeX32 + 1));
+	for (ii = 0, i = bh;i < eh;i++, ii++)
 	{
-		for (jj=0,j=bw;j<ew;j++,jj++)
+		for (jj = 0, j = bw;j < ew;j++, jj++)
 		{
-			wf=mapSEE(j,i);
-			bf=mapOPEN(j,i);
-			if (wf>1||bf>1)//if opened map
+			wf = mapSEE(j, i);
+			bf = mapOPEN(j, i);
+			if (wf > 1 || bf > 1)//if opened map
 			{
-				indextile32=map.display_map[i*MAXXMAP+j];
-				putlansh(jj*SIZESPRLANSHX-xkk,ii*SIZESPRLANSHY-ykk,j,i,indextile32,wf,bf);
-				screenmapused[ii*(screenMapInfo->SizeX32+1)+jj]=1;
+				indextile32 = map.display_map[i*MAXXMAP + j];
+				putlansh(jj*SIZESPRLANSHX - xkk, ii*SIZESPRLANSHY - ykk, j, i, indextile32, wf, bf);
+				screenmapused[ii*(screenMapInfo->SizeX32 + 1) + jj] = 1;
 			}
 			else
-				if (gameconf.videoconf.visiblemap||checkaroundtile(j,i))//if around not open we don't show tile
-					{
-						indextile32=map.display_map[i*MAXXMAP+j];
-						putlansh(jj*SIZESPRLANSHX-xkk,ii*SIZESPRLANSHY-ykk,j,i,indextile32,wf,bf);
-						screenmapused[ii*(screenMapInfo->SizeX32+1)+jj]=1;
-					}
+				if (gameconf.videoconf.visiblemap || checkaroundtile(j, i))//if around not open we don't show tile
+				{
+					indextile32 = map.display_map[i*MAXXMAP + j];
+					putlansh(jj*SIZESPRLANSHX - xkk, ii*SIZESPRLANSHY - ykk, j, i, indextile32, wf, bf);
+					screenmapused[ii*(screenMapInfo->SizeX32 + 1) + jj] = 1;
+				}
 			if (SHOWCELLS)
 			{
-				if (mapEFFECT(j,i,DSWARMEFFECT))
-					CSetImage8x(jj*SIZESPRLANSHX-xkk,ii*SIZESPRLANSHY-ykk,32,32,200);
-				if (mapEFFECT(j,i,DISRUPTEFFECT))
-					CSetImage8x(jj*SIZESPRLANSHX-xkk,ii*SIZESPRLANSHY-ykk,32,32,200);
+				if (mapEFFECT(j, i, DSWARMEFFECT))
+					CSetImage8x(jj*SIZESPRLANSHX - xkk, ii*SIZESPRLANSHY - ykk, 32, 32, 200);
+				if (mapEFFECT(j, i, DISRUPTEFFECT))
+					CSetImage8x(jj*SIZESPRLANSHX - xkk, ii*SIZESPRLANSHY - ykk, 32, 32, 200);
 			}
 		}
 	}
 	//if time to regeniration minimap and need to put terrain
-	if (MAPREGENERATIONBIT&&(MAPDEF&(TERRAIN|UNITS)))
-		setmemd(Minimap,MAXIMSIZEMINIMAP*MAXIMSIZEMINIMAP/4,BLACKCOLOR);
+	if (MAPREGENERATIONBIT && (MAPDEF&(TERRAIN | UNITS)))
+		setmemd(Minimap, MAXIMSIZEMINIMAP*MAXIMSIZEMINIMAP / 4, BLACKCOLOR);
 	//drawminimap terrain with creep
-	if ((MAPREGENERATIONBIT&&(MAPDEF&TERRAIN))||ignorefirstwaiting)
+	if ((MAPREGENERATIONBIT && (MAPDEF&TERRAIN)) || ignorefirstwaiting)
 	{
-	//if time to regeniration minimap
-		for (i=screenMapInfo->MinimapStartY;i<screenMapInfo->MinimapEndY;i++)
+		//if time to regeniration minimap
+		for (i = screenMapInfo->MinimapStartY;i < screenMapInfo->MinimapEndY;i++)
 		{
-			ii = (int)((i-screenMapInfo->MinimapStartY)/factory);
-			for (j=screenMapInfo->MinimapStartX;j<screenMapInfo->MinimapEndX;j++)
+			ii = (int)((i - screenMapInfo->MinimapStartY) / factory);
+			for (j = screenMapInfo->MinimapStartX;j < screenMapInfo->MinimapEndX;j++)
 			{
-				jj = (int) ((j-screenMapInfo->MinimapStartX)/factorx);
-				if (mapSEE(jj,ii)>1)
-					creepnr=map.creepflagplace[ii*MAXXMAP+jj];
+				jj = (int)((j - screenMapInfo->MinimapStartX) / factorx);
+				if (mapSEE(jj, ii) > 1)
+					creepnr = map.creepflagplace[ii*MAXXMAP + jj];
 				else
 					if (map.mapbits.savedcreep[NUMBGAMER])
-						creepnr=map.mapbits.savedcreep[NUMBGAMER][ii*MAXXMAP+jj];
+						creepnr = map.mapbits.savedcreep[NUMBGAMER][ii*MAXXMAP + jj];
 					else
-						creepnr=0;
-				if (map.mapbits.underfog[NUMBGAMER]&&
-					map.mapbits.underfog[NUMBGAMER][ii*MAXXMAP+jj]&&
-					(map.mapbits.underfog[NUMBGAMER][ii*MAXXMAP+jj]->nrofslots>0))
+						creepnr = 0;
+				if (map.mapbits.underfog[NUMBGAMER] &&
+					map.mapbits.underfog[NUMBGAMER][ii*MAXXMAP + jj] &&
+					(map.mapbits.underfog[NUMBGAMER][ii*MAXXMAP + jj]->nrofslots > 0))
 				{
-						if (map.mapbits.underfog[NUMBGAMER][ii*MAXXMAP+jj]->pictureslot[0].flags & UNDERFOG_MAINIMAGE)
-						{
-							minimapcolor=map.mapbits.underfog[NUMBGAMER][ii*MAXXMAP+jj]->pictureslot[0].grcolor;		//putobjonminimap
-							if (!minimapcolor)
-								continue;
-						}
-						else
+					if (map.mapbits.underfog[NUMBGAMER][ii*MAXXMAP + jj]->pictureslot[0].flags & UNDERFOG_MAINIMAGE)
+					{
+						minimapcolor = map.mapbits.underfog[NUMBGAMER][ii*MAXXMAP + jj]->pictureslot[0].grcolor;		//putobjonminimap
+						if (!minimapcolor)
 							continue;
-						//previous color
+					}
+					else
+						continue;
+					//previous color
 				}
 				else
-					if (creepnr==0)
+					if (creepnr == 0)
 					{
-						minimapcolor = map.minimap[i*MAXIMSIZEMINIMAP+j];
+						minimapcolor = map.minimap[i*MAXIMSIZEMINIMAP + j];
 					}
 					else
 					{
-//						if (creepnr>=MAXCREEPNR)
-//							minimapcolor = (map.creeptileminimapcolors[CREEPCOLOR-MAXCREEPNR]>>creepoffset)&0xff;
-//						else
-							minimapcolor = CREEPCOLOR;
+						//						if (creepnr>=MAXCREEPNR)
+						//							minimapcolor = (map.creeptileminimapcolors[CREEPCOLOR-MAXCREEPNR]>>creepoffset)&0xff;
+						//						else
+						minimapcolor = CREEPCOLOR;
 					}
-				if (mapSEE(jj,ii)>1)
-//					if (minimapcolor)
-						Minimap[i*MAXIMSIZEMINIMAP+j] = minimapcolor;
+				if (mapSEE(jj, ii) > 1)
+					//					if (minimapcolor)
+					Minimap[i*MAXIMSIZEMINIMAP + j] = minimapcolor;
 				else
-					if (mapOPEN(jj,ii)>1)
-						Minimap[i*MAXIMSIZEMINIMAP+j] = _toblack_[minimapcolor+256*SHADOWFOROPENEDCELLMAP];
+					if (mapOPEN(jj, ii) > 1)
+						Minimap[i*MAXIMSIZEMINIMAP + j] = _toblack_[minimapcolor + 256 * SHADOWFOROPENEDCELLMAP];
 					else
 						if (gameconf.videoconf.visiblemap)
-							Minimap[i*MAXIMSIZEMINIMAP+j] = _toblack_[minimapcolor+256*SHADOWFORCLOSEDCELLMAP];
+							Minimap[i*MAXIMSIZEMINIMAP + j] = _toblack_[minimapcolor + 256 * SHADOWFORCLOSEDCELLMAP];
 			}
 		}
 	}
 	//put objects under fog if any
-	for (ii=0,i=bh-2;i<=eh;i++,ii++)
+	for (ii = 0, i = bh - 2;i <= eh;i++, ii++)
 	{
-		if (i<0)
+		if (i < 0)
 			continue;
-		if (i>=MAXYMAP)
+		if (i >= MAXYMAP)
 			break;
-		for (jj=0,j=bw-2;j<=ew;j++,jj++)
+		for (jj = 0, j = bw - 2;j <= ew;j++, jj++)
 		{
-			if (j<0)
+			if (j < 0)
 				continue;
-			if (j>=MAXXMAP)
+			if (j >= MAXXMAP)
 				break;
 
-			see=mapSEE(j,i);
-			open=mapOPEN(j,i);
-			if (see<=1&&open>1)
-				method=0;
+			see = mapSEE(j, i);
+			open = mapOPEN(j, i);
+			if (see <= 1 && open > 1)
+				method = 0;
 			else
-				if (see<=1 && open<1)
+				if (see <= 1 && open < 1)
 					if (gameconf.videoconf.visiblemap)
-						method=2;
+						method = 2;
 					else
-						method=1;
+						method = 1;
 				else
-					method=1;
-			switch(method)
+					method = 1;
+			switch (method)
 			{
-				case 0:
-				case 2:
-					if (map.mapbits.underfog[NUMBGAMER])
-						if (map.mapbits.underfog[NUMBGAMER][i*MAXXMAP+j])
-							if (map.mapbits.underfog[NUMBGAMER][i*MAXXMAP+j]->nrofslots)
-								loadandputimage(i*MAXXMAP+j);
-					break;
-				case 1:
-					if (map.mapbits.underfog[NUMBGAMER])
-						if (map.mapbits.underfog[NUMBGAMER][i*MAXXMAP+j])
-						{
-							map.mapbits.underfog[NUMBGAMER][i*MAXXMAP+j]->nrofslots=0;
-//							wfree(map.mapbits.underfog[NUMBGAMER][i*MAXXMAP+j]);
-//							map.mapbits.underfog[NUMBGAMER][i*MAXXMAP+j]=NULL;
-						}
-					break;
+			case 0:
+			case 2:
+				if (map.mapbits.underfog[NUMBGAMER])
+					if (map.mapbits.underfog[NUMBGAMER][i*MAXXMAP + j])
+						if (map.mapbits.underfog[NUMBGAMER][i*MAXXMAP + j]->nrofslots)
+							loadandputimage(i*MAXXMAP + j);
+				break;
+			case 1:
+				if (map.mapbits.underfog[NUMBGAMER])
+					if (map.mapbits.underfog[NUMBGAMER][i*MAXXMAP + j])
+					{
+						map.mapbits.underfog[NUMBGAMER][i*MAXXMAP + j]->nrofslots = 0;
+						//							wfree(map.mapbits.underfog[NUMBGAMER][i*MAXXMAP+j]);
+						//							map.mapbits.underfog[NUMBGAMER][i*MAXXMAP+j]=NULL;
+					}
+				break;
 			}
 		}
 	}
 
-/*	  FILE *f=fopen("screenmapused.txt","w");
-	if (f)
-	{
-		for (i=0;i<screenMapInfo->SizeY32+1;i++)
+	/*	  FILE *f=fopen("screenmapused.txt","w");
+		if (f)
 		{
-			for (j=0;j<screenMapInfo->SizeX32+1;j++)
+			for (i=0;i<screenMapInfo->SizeY32+1;i++)
 			{
-				fprintf(f,"%02d ",screenmapused[i*(screenMapInfo->SizeX32+1)+j]);
+				for (j=0;j<screenMapInfo->SizeX32+1;j++)
+				{
+					fprintf(f,"%02d ",screenmapused[i*(screenMapInfo->SizeX32+1)+j]);
+				}
+				fprintf(f,"\n");
 			}
-			fprintf(f,"\n");
+			fclose(f);
 		}
-		fclose(f);
-	}
-*/
+	*/
 }
 //==================================
 #define MAPMOVETIMES			4
@@ -379,22 +380,22 @@ void AutoMoveMap(void)
 {
 	if (map.flags & STARMAP_FLAG_AUTOMOVE)
 	{
-		int mapmovedone=0;
+		int mapmovedone = 0;
 		map.flags |= STARMAP_FLAG_MAPMOVE;
 		map.totaldeltax -= map.deltax;
 		map.totaldeltay -= map.deltay;
-//		if (!mapmovedone)
-			if (map.deltax < 0)
+		//		if (!mapmovedone)
+		if (map.deltax < 0)
+		{
+			if (map.totaldeltax >= 0)
+				mapmovedone = 1;
+		}
+		else
+			if (map.deltax > 0)
 			{
-				if (map.totaldeltax >= 0)
+				if (map.totaldeltax <= 0)
 					mapmovedone = 1;
 			}
-			else
-				if (map.deltax > 0)
-				{
-					if (map.totaldeltax <= 0)
-						mapmovedone = 1;
-				}
 		if (!mapmovedone)
 		{
 			if (map.deltay < 0)
@@ -428,16 +429,16 @@ void AutoMoveMap(void)
 	}
 }
 //==================================
-void MoveVisualMapPosition(int x,int y)
+void MoveVisualMapPosition(int x, int y)
 {
-	if (x<0)
-		x=0;
-	if (y<0)
-		y=0;
-	if (x>SIZESPRLANSHX*(MAXXMAP-screenMapInfo->SizeX32))
-		x=SIZESPRLANSHX*(MAXXMAP-screenMapInfo->SizeX32);
-	if (y>SIZESPRLANSHY*(MAXYMAP-screenMapInfo->SizeY32))
-		y=SIZESPRLANSHY*(MAXYMAP-screenMapInfo->SizeY32);
+	if (x < 0)
+		x = 0;
+	if (y < 0)
+		y = 0;
+	if (x > SIZESPRLANSHX*(MAXXMAP - screenMapInfo->SizeX32))
+		x = SIZESPRLANSHX * (MAXXMAP - screenMapInfo->SizeX32);
+	if (y > SIZESPRLANSHY*(MAXYMAP - screenMapInfo->SizeY32))
+		y = SIZESPRLANSHY * (MAXYMAP - screenMapInfo->SizeY32);
 	map.newx = x;
 	map.newy = y;
 	map.totaldeltax = x - map.MAPXGLOBAL;
@@ -450,234 +451,219 @@ void MoveVisualMapPosition(int x,int y)
 	}
 }
 //==================================
-void MoveVisualMapPositionCenter(int x,int y)
+void MoveVisualMapPositionCenter(int x, int y)
 {
-	MoveVisualMapPosition(x-screenMapInfo->SizeX32*SIZESPRLANSHX/2,y-screenMapInfo->SizeY32*SIZESPRLANSHY/2-SIZESPRLANSHY);
+	MoveVisualMapPosition(x - screenMapInfo->SizeX32*SIZESPRLANSHX / 2, y - screenMapInfo->SizeY32*SIZESPRLANSHY / 2 - SIZESPRLANSHY);
 }
 //==================================
-bool SetVisualMapPosition(int x,int y)//x,y-0..MAX?MAP*32
+bool SetVisualMapPosition(int x, int y)//x,y-0..MAX?MAP*32
 {
 	bool retval = false;
 	if (map.flags & STARMAP_FLAG_AUTOMOVE)
 		return(0);
 	x &= ~0x1f;
 	y &= ~0x1f;
-	if (x<0)
-		x=0;
-	if (y<0)
-		y=0;
-	if (x>SIZESPRLANSHX*(MAXXMAP-screenMapInfo->SizeX32))
-		x=SIZESPRLANSHX*(MAXXMAP-screenMapInfo->SizeX32);
-	if (y>SIZESPRLANSHY*(MAXYMAP-screenMapInfo->SizeY32))
-		y=SIZESPRLANSHY*(MAXYMAP-screenMapInfo->SizeY32);
+	if (x < 0)
+		x = 0;
+	if (y < 0)
+		y = 0;
+	if (x > SIZESPRLANSHX*(MAXXMAP - screenMapInfo->SizeX32))
+		x = SIZESPRLANSHX * (MAXXMAP - screenMapInfo->SizeX32);
+	if (y > SIZESPRLANSHY*(MAXYMAP - screenMapInfo->SizeY32))
+		y = SIZESPRLANSHY * (MAXYMAP - screenMapInfo->SizeY32);
 	map.MAPXGLOBAL = x;
 	map.MAPYGLOBAL = y;
-	if (map.MAPX != x/SIZESPRLANSHX || map.MAPY != y/SIZESPRLANSHX)
+	if (map.MAPX != x / SIZESPRLANSHX || map.MAPY != y / SIZESPRLANSHX)
 	{
 		map.flags |= STARMAP_FLAG_MAPMOVE;
 		retval = true;
-		map.MAPX = x/SIZESPRLANSHX;
-		map.MAPY = y/SIZESPRLANSHY;
+		map.MAPX = x / SIZESPRLANSHX;
+		map.MAPY = y / SIZESPRLANSHY;
 		map.newx = x;
 		map.newy = y;
 	}
 	return(retval);
 }
 //==================================
-void SetVisualMapPositionCenter(int x,int y)
+void SetVisualMapPositionCenter(int x, int y)
 {
-	SetVisualMapPosition(x-screenMapInfo->SizeX32*SIZESPRLANSHX/2,y-screenMapInfo->SizeY32*SIZESPRLANSHY/2-SIZESPRLANSHY);
+	SetVisualMapPosition(x - screenMapInfo->SizeX32*SIZESPRLANSHX / 2, y - screenMapInfo->SizeY32*SIZESPRLANSHY / 2 - SIZESPRLANSHY);
 }
 //==================================
-void putfullcreep(int xglob,int yglob,int x,int y,int creepnrspr)
+void putfullcreep(int xglob, int yglob, int x, int y, int creepnrspr)
 {
-	char *adrspr=map.creeptiles+creepnrspr*32*32;
-	putspr32x32(xglob,yglob,adrspr);
+	char *adrspr = map.creeptiles + creepnrspr * 32 * 32;
+	putspr32x32(xglob, yglob, adrspr);
 }
 //==================================
 //save tile for later use
-void savemaptileadr(int x,int y,int indextile32)
+void savemaptileadr(int x, int y, int indextile32)
 {
 	if (map.mapbits.savedtile[NUMBGAMER])
-		map.mapbits.savedtile[NUMBGAMER][y*MAXXMAP+x]=indextile32;
+		map.mapbits.savedtile[NUMBGAMER][y*MAXXMAP + x] = indextile32;
 }
 //==================================
 //save creepnr for later use
-void savemapcreepadr(int x,int y,int creepnr)
+void savemapcreepadr(int x, int y, int creepnr)
 {
 	if (map.mapbits.savedcreep[NUMBGAMER])
-		map.mapbits.savedcreep[NUMBGAMER][y*MAXXMAP+x]=creepnr;
+		map.mapbits.savedcreep[NUMBGAMER][y*MAXXMAP + x] = creepnr;
 }
 //==================================
 //risovati lanshaft xglob,yglob (0-639,0-479) x,y 0-maxxmap 0-maxymap
-void putlansh(int xglob,int yglob,int x,int y,int indextile32,char wfog,char bfog)
+void putlansh(int xglob, int yglob, int x, int y, int indextile32, char wfog, char bfog)
 {
 	signed char creepnr;
-//	  if (indextile32==1)
-//		return;
-	char *adrspr=&map.tiles[indextile32*32*32];
-	int nosave=0;
-	creepnr = GetCreepAroundWithFog(x,y,indextile32);		//get creep picture with fog and without fog
-	if (wfog<=0)//if we see it before,but now fog we put saved pictures
+	//	  if (indextile32==1)
+	//		return;
+	char *adrspr = &map.tiles[indextile32 * 32 * 32];
+	int nosave = 0;
+	creepnr = GetCreepAroundWithFog(x, y, indextile32);		//get creep picture with fog and without fog
+	if (wfog <= 0)//if we see it before,but now fog we put saved pictures
 	{
 		if (map.mapbits.savedtile[NUMBGAMER])
-			if (map.mapbits.savedtile[NUMBGAMER][y*MAXXMAP+x]!=0xffff)
-				indextile32=map.mapbits.savedtile[NUMBGAMER][y*MAXXMAP+x];//get previous tile
-		nosave=1;
+			if (map.mapbits.savedtile[NUMBGAMER][y*MAXXMAP + x] != 0xffff)
+				indextile32 = map.mapbits.savedtile[NUMBGAMER][y*MAXXMAP + x];//get previous tile
+		nosave = 1;
 	}
-	if (creepnr==-1)
+	if (creepnr == -1)
 	{
-		putspr32x32(xglob,yglob,adrspr);
+		putspr32x32(xglob, yglob, adrspr);
 		if (!nosave)
-			savemaptileadr(x,y,indextile32);
-/*		struct XY a;
-		for (int i=0;i<4;i++)
-			for (int j=0;j<4;j++)
-			{
-				a.x1 = xglob + j*8;
-				a.y1 = yglob + i*8;
-				a.x2 = a.x1 + 8;
-				a.y2 = a.y1 + 8;
-				if (!GetMapWalk8(x*4+j,y*4+i,1,1))
-					wsetimage8x(DISABLECONSTRUCT,&a);
-//					wrectangle(DISABLECONSTRUCT,a.x1,a.y1,a.x2,a.y2);
-			}
-*/
+			savemaptileadr(x, y, indextile32);
+		/*		struct XY a;
+				for (int i=0;i<4;i++)
+					for (int j=0;j<4;j++)
+					{
+						a.x1 = xglob + j*8;
+						a.y1 = yglob + i*8;
+						a.x2 = a.x1 + 8;
+						a.y2 = a.y1 + 8;
+						if (!GetMapWalk8(x*4+j,y*4+i,1,1))
+							wsetimage8x(DISABLECONSTRUCT,&a);
+		//					wrectangle(DISABLECONSTRUCT,a.x1,a.y1,a.x2,a.y2);
+					}
+		*/
 	}
 	else
 	{
-		if (creepnr<MAXCREEPNR)
+		if (creepnr < MAXCREEPNR)
 		{
-			putspr32x32(xglob,yglob,adrspr);
-			putgrpspr(xglob,yglob,creepgrp,NORMAL,255,0,NULL,creepnr);
-//			putgrp(xglob,yglob,creepgrp,creepnr,0);
+			putspr32x32(xglob, yglob, adrspr);
+			putgrpspr(xglob, yglob, creepgrp, NORMAL, 255, 0, NULL, creepnr);
+			//			putgrp(xglob,yglob,creepgrp,creepnr,0);
 		}
 		else
 		{
-			putfullcreep(xglob,yglob,x,y,creepnr-MAXCREEPNR);
+			putfullcreep(xglob, yglob, x, y, creepnr - MAXCREEPNR);
 		}
 	}
 	if (!nosave)
-		savemapcreepadr(x,y,map.creepflagplace[y*MAXXMAP+x]);
+		savemapcreepadr(x, y, map.creepflagplace[y*MAXXMAP + x]);
 
 }
 //==================================
 void clearopenseeKarta(void)
 {
 	int i;
-	memcpy(map.mapbits.seedetector,map.mapbits.seedetector2,MAXXMAP*MAXYMAP);
-	memcpy(map.mapbits.arbiterfield,map.mapbits.arbiterfield2,MAXXMAP*MAXYMAP);
+	memcpy(map.mapbits.seedetector, map.mapbits.seedetector2, MAXXMAP*MAXYMAP);
+	memcpy(map.mapbits.arbiterfield, map.mapbits.arbiterfield2, MAXXMAP*MAXYMAP);
 
 
-	for (i=0;i<PLAYEDPLAYERS;i++)
+	for (i = 0;i < PLAYEDPLAYERS;i++)
 	{
-		if (IfPlayerHaveStartLocation(&map,i)!=-1)
+		if (IfPlayerHaveStartLocation(&map, i) != -1)
 		{
-			memcpy(map.mapbits.whitefog[i],map.mapbits.whitefog2[i],MAXXMAP*MAXYMAP);
+			memcpy(map.mapbits.whitefog[i], map.mapbits.whitefog2[i], MAXXMAP*MAXYMAP);
 		}
 	}
-	memset(map.mapbits.seedetector2,0,MAXXMAP*MAXYMAP);
-	memset(map.mapbits.arbiterfield2,0,MAXXMAP*MAXYMAP);
+	memset(map.mapbits.seedetector2, 0, MAXXMAP*MAXYMAP);
+	memset(map.mapbits.arbiterfield2, 0, MAXXMAP*MAXYMAP);
 	if (CODEFORSCREEN)
 	{
 	}
 	else
 	{
-		for (i=0;i<PLAYEDPLAYERS;i++)
+		for (i = 0;i < PLAYEDPLAYERS;i++)
 		{
-			if (IfPlayerHaveStartLocation(&map,i)!=-1)
+			if (IfPlayerHaveStartLocation(&map, i) != -1)
 			{
-				memset(map.mapbits.whitefog2[i],0,MAXXMAP*MAXYMAP);
+				memset(map.mapbits.whitefog2[i], 0, MAXXMAP*MAXYMAP);
 			}
 		}
 	}
 }
 //=====================================
-//objects who moved and need to reveal map for them
-//=====================================
-void AddObjsRevealMap(void)
-{
-	OBJ *a;
-	OBJstruct *b;
-	int i;
-//	  printf("%d\n",MaxObjsRevealMap);
-	for (i=0;i<MaxObjsRevealMap;i++)
-	{
-		a=ObjsRevealMap[i];
-		b=loadobj(a->SC_Unit);
-		makeoneobjseeopen(a,b);			//open map
-	}
-	MaxObjsRevealMap=0;
-}
-//=====================================
-void makeopenseeKarta(int beginobj,int endobj)
+void makeopenseeKarta(int beginobj, int endobj)
 {
 	OBJ *a;
 	OBJstruct *b;
 	int i;
 	if (!MaxObjects)
 		return;
-	if (beginobj==-1||endobj==-1)
+	if (beginobj == -1 || endobj == -1)
 		return;
-	for (i=beginobj;i<=endobj;i++)
+	for (i = beginobj;i <= endobj;i++)
 	{
-		a=objects[i];
-		b=loadobj(a->SC_Unit);
-		if (GetUnitSightRange(a,b)>0)
+		a = objects[i];
+		b = loadobj(a->SC_Unit);
+		if (GetUnitSightRange(a, b) > 0)
 		{
-			makeoneobjseeopen(a,b);
-			arbitermakewarpfield(a,b);
+			makeoneobjseeopen(a, b);
+			arbitermakewarpfield(a, b);
 		}
 	}//for
-	for (i=beginobj;i<=endobj;i++)
+	for (i = beginobj;i <= endobj;i++)
 	{
-		a=objects[i];
-//		if (IsPermanentCloak(a->SC_Unit))
-//			continue;
+		a = objects[i];
+		//		if (IsPermanentCloak(a->SC_Unit))
+		//			continue;
 		if (!IsBuild(a->SC_Unit))
-			   if (a->SC_Unit!=SC_ARBITEROBJ&&a->SC_Unit!=SC_HERO_DANIMOTHOBJ)
-			   {
-				  if (a->playernr<PLAYEDPLAYERS)
-				  {
-					if (map.mapbits.arbiterfield[a->ykart*MAXXMAP+a->xkart]&(1<<a->playernr))
+		{
+			if (a->SC_Unit != SC_ARBITEROBJ && a->SC_Unit != SC_HERO_DANIMOTHOBJ)
+			{
+				if (a->playernr < PLAYEDPLAYERS)
+				{
+					if (map.mapbits.arbiterfield[a->ykart*MAXXMAP + a->xkart] & (1 << a->playernr))
 					{
-						if (GetMageAtr(&a->atrobj,ATRINVISIBLE)<=MAXATRMAGE)
+						if (GetMageAtr(&a->atrobj, ATRINVISIBLE) <= MAXATRMAGE)
 						{
-							if (GetMageAtr(&a->atrobj,ATRINVISIBLE)>0)
+							if (GetMageAtr(&a->atrobj, ATRINVISIBLE) > 0)
 								//esli cloakwrite pod arbiterom
-								addmage(a,ATRINVISIBLE,WRAITHEPODARBITEROM);
+								addmage(a, ATRINVISIBLE, WRAITHEPODARBITEROM);
 							else
 								//esli drug iuniti pod arbiterom
-								addmage(a,ATRINVISIBLE,NEWRAITHEPODARBITEROM);
+								addmage(a, ATRINVISIBLE, NEWRAITHEPODARBITEROM);
 						}
 					}
 					else
 					{
-						 if (GetMageAtr(&a->atrobj,ATRINVISIBLE)==NEWRAITHEPODARBITEROM)
-							 addmage(a,ATRINVISIBLE,0);//prostoi obj pod arbit
-						 else
-							 if (GetMageAtr(&a->atrobj,ATRINVISIBLE)==WRAITHEPODARBITEROM)
-								 addmage(a,ATRINVISIBLE,a->mana);//writhe clockanii
-							 else
-								if (GetMageAtr(&a->atrobj,ATRINVISIBLE)>MAXATRMAGE&&
-									GetMageAtr(&a->atrobj,ATRINVISIBLE)<ATRMAGEINFINITE)
-									addmage(a,ATRINVISIBLE,0);//others obj
+						if (GetMageAtr(&a->atrobj, ATRINVISIBLE) == NEWRAITHEPODARBITEROM)
+							addmage(a, ATRINVISIBLE, 0);//prostoi obj pod arbit
+						else
+							if (GetMageAtr(&a->atrobj, ATRINVISIBLE) == WRAITHEPODARBITEROM)
+								addmage(a, ATRINVISIBLE, a->mana);//writhe clockanii
+							else
+								if (GetMageAtr(&a->atrobj, ATRINVISIBLE) > MAXATRMAGE&&
+									GetMageAtr(&a->atrobj, ATRINVISIBLE) < ATRMAGEINFINITE)
+									addmage(a, ATRINVISIBLE, 0);//others obj
 					}
-				  }
-			   }
+				}
+			}
+		}
 	}//for
 }
 //=================================
-char xypos[2][4]={{0,1,0,1},{0,0,1,1}};
+char xypos[2][4] = { {0,1,0,1},{0,0,1,1} };
 //=================================
-void arbitermakewarpfield(OBJ *a,OBJstruct *b)
+void arbitermakewarpfield(OBJ *a, OBJstruct *b)
 {
-	int g,x,y,mybits,xcenter,ycenter,see,objxysize;
+	int g, x, y, mybits, xcenter, ycenter, see, objxysize;
 	signed char vis;
 	int elemnr;
 	MAPOFFSETELEMENT *cmdoffs;
 
-	if (a->SC_Unit!=SC_ARBITEROBJ&&a->SC_Unit!=SC_HERO_DANIMOTHOBJ)
+	if (a->SC_Unit != SC_ARBITEROBJ && a->SC_Unit != SC_HERO_DANIMOTHOBJ)
 		return;
 	if (a->prop&VARNOTWORK)
 		return;
@@ -686,47 +672,47 @@ void arbitermakewarpfield(OBJ *a,OBJstruct *b)
 	if (PLAYER[a->playernr].isobserverflag)
 		return;
 	see = GetUnitCloakRange(b);
-	objxysize = GetRangeObjSize(a->SC_Unit,NULL,NULL);
+	objxysize = GetRangeObjSize(a->SC_Unit, NULL, NULL);
 
-	xcenter=a->xkart-xypos[0][objxysize];
-	ycenter=a->ykart-xypos[1][objxysize];
-//	  xcenter=a->xkart;
-//	  ycenter=a->ykart;
-	mybits=1<<a->playernr;
+	xcenter = a->xkart - xypos[0][objxysize];
+	ycenter = a->ykart - xypos[1][objxysize];
+	//	  xcenter=a->xkart;
+	//	  ycenter=a->ykart;
+	mybits = 1 << a->playernr;
 
-	for (g=0;g<MAXANGLES;g++)
+	for (g = 0;g < MAXANGLES;g++)
 	{
 		elemnr = mapvisiontables[objxysize]->offsetelemnr[g];
 		cmdoffs = &mapvisiontables[objxysize]->mapelement[elemnr];
 		for (;;cmdoffs++)
 		{
 			vis = cmdoffs->rangevision;
-			if (!vis || vis>see)
+			if (!vis || vis > see)
 				break;
 			y = ycenter + cmdoffs->yoffset;
-			if (y<0)
+			if (y < 0)
 				continue;
-			if (y>=MAXYMAP)
+			if (y >= MAXYMAP)
 				continue;
 			x = xcenter + cmdoffs->xoffset;
-			if (x<0)
+			if (x < 0)
 				continue;
-			if (x>=MAXXMAP)
+			if (x >= MAXXMAP)
 				continue;
-			map.mapbits.arbiterfield[y*MAXXMAP+x] |= mybits;
-			map.mapbits.arbiterfield2[y*MAXXMAP+x] |= mybits;
+			map.mapbits.arbiterfield[y*MAXXMAP + x] |= mybits;
+			map.mapbits.arbiterfield2[y*MAXXMAP + x] |= mybits;
 		}
 	}
 }
 //=================================
-void makeoneobjseeopen(OBJ *a,OBJstruct *b)
+void makeoneobjseeopen(OBJ *a, OBJstruct *b)
 {
-	int x,y,opendelta,mapchanges=0,objxysize;
-	int g,pp,see,prst=0,opn,onsky=0;
-	int xcenter,ycenter,level;
+	int x, y, opendelta, mapchanges = 0, objxysize;
+	int g, pp, see, prst = 0, opn, onsky = 0;
+	int xcenter, ycenter, level;
 
-	int nosave,indextile32;
-	signed char creepnr,vis;
+	int nosave, indextile32;
+	signed char creepnr, vis;
 
 	int elemnr;
 	MAPOFFSETELEMENT *cmdoffs;
@@ -735,7 +721,7 @@ void makeoneobjseeopen(OBJ *a,OBJstruct *b)
 		a->prop &= ~VARKARTCHANGES;
 	else
 		return;
-	if ((a->prop & VARNOTHERE) && GetMageAtr(&a->atrobj,ATRSTASIS)==0)
+	if ((a->prop & VARNOTHERE) && GetMageAtr(&a->atrobj, ATRSTASIS) == 0)
 		return;
 	if (a->in_transport)//in buncker/transport
 		return;
@@ -745,42 +731,42 @@ void makeoneobjseeopen(OBJ *a,OBJstruct *b)
 		return;
 	if (!IsOBJUnderConstruct(a))
 	{
-		prst=GetMageAtr(&a->atrobj,ATRPARASITEFROM);
-		see=GetUnitSightRange(a,b)+2;
+		prst = GetMageAtr(&a->atrobj, ATRPARASITEFROM);
+		see = GetUnitSightRange(a, b) + 2;
 	}
 	else
-		see=SEERANGEIFNOTREADY;
+		see = SEERANGEIFNOTREADY;
 	if (IsOnSkyOBJ(a))
-		onsky=1;
-	objxysize = GetRangeObjSize(a->SC_Unit,NULL,NULL);
+		onsky = 1;
+	objxysize = GetRangeObjSize(a->SC_Unit, NULL, NULL);
 
-	xcenter=a->xkart-xypos[0][objxysize];
-	ycenter=a->ykart-xypos[1][objxysize];
+	xcenter = a->xkart - xypos[0][objxysize];
+	ycenter = a->ykart - xypos[1][objxysize];
 
-	level=map.maplevel[a->ykart*MAXXMAP+a->xkart];
-	opn=GetVisionBitsPlayer(a->playernr);
+	level = map.maplevel[a->ykart*MAXXMAP + a->xkart];
+	opn = GetVisionBitsPlayer(a->playernr);
 	if (!opn && !prst)
 		return;
-	for (g=0;g<MAXANGLES;g++)
+	for (g = 0;g < MAXANGLES;g++)
 	{
 		elemnr = mapvisiontables[objxysize]->offsetelemnr[g];
 		cmdoffs = &mapvisiontables[objxysize]->mapelement[elemnr];
 		for (;;cmdoffs++)
 		{
-//			if (cmdoffs->xoffset>15 || cmdoffs->yoffset>15 || cmdoffs->rangevision>14)
-//				DEBUGMESSCR("OOOPS= g=%d r=%d x=%d y=%d\n",g,cmdoffs->rangevision,cmdoffs->xoffset,cmdoffs->yoffset);
+			//			if (cmdoffs->xoffset>15 || cmdoffs->yoffset>15 || cmdoffs->rangevision>14)
+			//				DEBUGMESSCR("OOOPS= g=%d r=%d x=%d y=%d\n",g,cmdoffs->rangevision,cmdoffs->xoffset,cmdoffs->yoffset);
 			vis = cmdoffs->rangevision;
 			if (!vis)
 				break;
 			y = ycenter + cmdoffs->yoffset;
-			if (y<0)
+			if (y < 0)
 				continue;
-			if (y>=MAXYMAP)
+			if (y >= MAXYMAP)
 				continue;
 			x = xcenter + cmdoffs->xoffset;
-			if (x<0)
+			if (x < 0)
 				continue;
-			if (x>=MAXXMAP)
+			if (x >= MAXXMAP)
 				continue;
 			opendelta = see - vis + 1;
 			if (opendelta < 1)
@@ -788,104 +774,104 @@ void makeoneobjseeopen(OBJ *a,OBJstruct *b)
 			if (opendelta > 4)
 				opendelta = 4;
 			if (!onsky)
-				if (map.maplevel[y*MAXXMAP+x]>level)
+				if (map.maplevel[y*MAXXMAP + x] > level)
 					break;
 			if (!CODEFORSCREEN)
 			{
-						pp=a->playernr;
-						if (opn&(1<<pp))
+				pp = a->playernr;
+				if (opn&(1 << pp))
+				{
+					if (mapSEE(x, y, pp) < opendelta)
+					{
+						map.mapbits.whitefog[pp][y*MAXXMAP + x] = opendelta;
+						mapchanges = 1;
+					}
+					if (mapSEE2(x, y, pp) < opendelta)
+					{
+						map.mapbits.whitefog2[pp][y*MAXXMAP + x] = opendelta;
+						mapchanges = 1;
+					}
+				}
+				if (prst)
+				{
+					for (pp = 0;pp < PLAYEDPLAYERS;pp++)
+					{
+						if (prst&(1 << pp))
 						{
-								if (mapSEE(x,y,pp)<opendelta)
-								{
-									map.mapbits.whitefog[pp][y*MAXXMAP+x]=opendelta;
-									mapchanges=1;
-								}
-								if (mapSEE2(x,y,pp)<opendelta)
-								{
-									map.mapbits.whitefog2[pp][y*MAXXMAP+x]=opendelta;
-									mapchanges=1;
-								}
-						}
-						if (prst)
-						{
-							for (pp=0;pp<PLAYEDPLAYERS;pp++)
+							if (mapSEE(x, y, pp) < opendelta)
 							{
-								if (prst&(1<<pp))
-								{
-									if (mapSEE(x,y,pp)<opendelta)
-									{
-										map.mapbits.whitefog[pp][y*MAXXMAP+x]=opendelta;
-										mapchanges=1;
-									}
-									if (mapSEE2(x,y,pp)<opendelta)
-									{
-										map.mapbits.whitefog2[pp][y*MAXXMAP+x]=opendelta;
-										mapchanges=1;
-									}
-								}
+								map.mapbits.whitefog[pp][y*MAXXMAP + x] = opendelta;
+								mapchanges = 1;
+							}
+							if (mapSEE2(x, y, pp) < opendelta)
+							{
+								map.mapbits.whitefog2[pp][y*MAXXMAP + x] = opendelta;
+								mapchanges = 1;
 							}
 						}
-						if (opendelta==1)
-							continue;
-						a->visibleby=opn;
+					}
+				}
+				if (opendelta == 1)
+					continue;
+				a->visibleby = opn;
 			}//codeforscreen
-			if (IsDetector(a->SC_Unit) && GetMageAtr(&a->atrobj,ATRBLIND) == 0)
+			if (IsDetector(a->SC_Unit) && GetMageAtr(&a->atrobj, ATRBLIND) == 0)
 			{
 				if ((!(a->prop & VARNOTWORK)) && !IsOBJUnderConstruct(a) && !(a->prop & VARPOWEROFF))//esli dvigaetsea
 				{
-								if	(opn)//esli alienseobj|parasite
-								{
-									map.mapbits.seedetector2[y*MAXXMAP+x]|=opn;
-									map.mapbits.seedetector[y*MAXXMAP+x]|=opn;
-								}
+					if (opn)//esli alienseobj|parasite
+					{
+						map.mapbits.seedetector2[y*MAXXMAP + x] |= opn;
+						map.mapbits.seedetector[y*MAXXMAP + x] |= opn;
+					}
 				}
 			}
-			nosave=0;
+			nosave = 0;
 			if (mapchanges && a->playernr == NUMBGAMER)
 			{
-						indextile32=map.display_map[y*MAXXMAP+x];
-						creepnr = GetCreepAroundWithFog(x,y,indextile32);
-						if (creepnr==-1)
-						{
-							savemaptileadr(x,y,indextile32);
-						}
-						savemapcreepadr(x,y,map.creepflagplace[y*MAXXMAP+x]);
+				indextile32 = map.display_map[y*MAXXMAP + x];
+				creepnr = GetCreepAroundWithFog(x, y, indextile32);
+				if (creepnr == -1)
+				{
+					savemaptileadr(x, y, indextile32);
+				}
+				savemapcreepadr(x, y, map.creepflagplace[y*MAXXMAP + x]);
 			}
 		}//for
 	}//for g
 	if (mapchanges)
-		map.clearfog[a->playernr]=1;
+		map.clearfog[a->playernr] = 1;
 }
 //=================================
-void opentempmap(int playernr,int xkart,int ykart,int sizex,int sizey)
+void opentempmap(int playernr, int xkart, int ykart, int sizex, int sizey)
 {
-	int i,j,fromx,fromy,tox,toy;
-	if (playernr >= PLAYEDPLAYERS || !map.mapbits.whitefog[playernr] )
+	int i, j, fromx, fromy, tox, toy;
+	if (playernr >= PLAYEDPLAYERS || !map.mapbits.whitefog[playernr])
 		return;
-	fromx = xkart - sizex/2;
-	if (fromx<0)
-		fromx=0;
-	fromy = ykart - sizey/2;
-	if (fromy<0)
-		fromy=0;
-	tox = xkart + sizex/2;
-	if (tox>=MAXXMAP)
-		tox=MAXXMAP-1;
-	toy = ykart + sizey/2;
-	if (toy>=MAXYMAP)
-		toy=MAXYMAP-1;
-	for (i=fromy;i<=toy;i++)
-		for (j=fromx;j<=tox;j++)
+	fromx = xkart - sizex / 2;
+	if (fromx < 0)
+		fromx = 0;
+	fromy = ykart - sizey / 2;
+	if (fromy < 0)
+		fromy = 0;
+	tox = xkart + sizex / 2;
+	if (tox >= MAXXMAP)
+		tox = MAXXMAP - 1;
+	toy = ykart + sizey / 2;
+	if (toy >= MAXYMAP)
+		toy = MAXYMAP - 1;
+	for (i = fromy;i <= toy;i++)
+		for (j = fromx;j <= tox;j++)
 		{
-			map.mapbits.whitefog[playernr][i*MAXXMAP+j]=4;
-			map.mapbits.whitefog2[playernr][i*MAXXMAP+j]=4;
+			map.mapbits.whitefog[playernr][i*MAXXMAP + j] = 4;
+			map.mapbits.whitefog2[playernr][i*MAXXMAP + j] = 4;
 		}
 	map.clearfog[playernr] = 1;
 }
 //=================================
 void calcfullinvandsee(void)
 {
-	for (int i=0;i<MaxObjects;i++)
+	for (int i = 0;i < MaxObjects;i++)
 	{
 		calcfullinvandseeobj(objects[i]);
 	}
@@ -893,46 +879,46 @@ void calcfullinvandsee(void)
 //=================================
 void calcfullinvandseeobj(OBJ *a)
 {
-	int i,decloaked,cloaked;
-	unsigned char visbits,plmask;
-	OBJ_VAR_MASK_CLR(a,obj_invsee,0xff);
-	OBJ_VAR_MASK_CLR(a,obj_see,0xff);
+	int i, decloaked, cloaked;
+	unsigned char visbits, plmask;
+	OBJ_VAR_MASK_CLR(a, obj_invsee, 0xff);
+	OBJ_VAR_MASK_CLR(a, obj_see, 0xff);
 	if (IsCloaked(a) || IsOBJBurrowed(a))
 	{
-		cloaked=1;
-		OBJ_VAR_MASK_SET(a,obj_notdetect,0xff);
+		cloaked = 1;
+		OBJ_VAR_MASK_SET(a, obj_notdetect, 0xff);
 		decloaked = existatrdecloak(a);
 		if (decloaked)
 		{
-			OBJ_VAR_MASK_SET(a,obj_invsee,0xff);
+			OBJ_VAR_MASK_SET(a, obj_invsee, 0xff);
 			cloaked = 0;
 		}
 	}
 	else
 	{
-		cloaked=0;
-		OBJ_VAR_MASK_CLR(a,obj_notdetect,0xff);
+		cloaked = 0;
+		OBJ_VAR_MASK_CLR(a, obj_notdetect, 0xff);
 	}
-	for (i=0,plmask=1;i<PLAYEDPLAYERS;i++,plmask<<=1)
+	for (i = 0, plmask = 1;i < PLAYEDPLAYERS;i++, plmask <<= 1)
 	{
-		if (map.pl_vision[i][a->playernr]						||				//if player i see OBJ or OBJaliance or OBJparasite
-			player_aliance(i,a->playernr) == ALLIANCEOBJ		||
-			existparasitebit(a,i))
+		if (map.pl_vision[i][a->playernr] ||				//if player i see OBJ or OBJaliance or OBJparasite
+			player_aliance(i, a->playernr) == ALLIANCEOBJ ||
+			existparasitebit(a, i))
 		{
-			OBJ_VAR_MASK_SET(a,obj_invsee,plmask);
-			OBJ_VAR_MASK_SET(a,obj_see,plmask);
-			OBJ_VAR_MASK_CLR(a,obj_notdetect,plmask);
+			OBJ_VAR_MASK_SET(a, obj_invsee, plmask);
+			OBJ_VAR_MASK_SET(a, obj_see, plmask);
+			OBJ_VAR_MASK_CLR(a, obj_notdetect, plmask);
 		}
 		else
 		{
-			if (mapSEE(a->xkart,a->ykart,i)>1)
-				OBJ_VAR_MASK_SET(a,obj_see,plmask);
+			if (mapSEE(a->xkart, a->ykart, i) > 1)
+				OBJ_VAR_MASK_SET(a, obj_see, plmask);
 			visbits = GetVisionBitsPlayer(i);
-			if (map.mapbits.seedetector[a->ykart*MAXXMAP+a->xkart] & visbits)
+			if (map.mapbits.seedetector[a->ykart*MAXXMAP + a->xkart] & visbits)
 			{
 				//esli vidim detectorom
-				OBJ_VAR_MASK_SET(a,obj_invsee,plmask);
-				OBJ_VAR_MASK_CLR(a,obj_notdetect,plmask);
+				OBJ_VAR_MASK_SET(a, obj_invsee, plmask);
+				OBJ_VAR_MASK_CLR(a, obj_notdetect, plmask);
 			}
 		}
 	}//for
@@ -943,54 +929,54 @@ void calcfullinvandseeobj(OBJ *a)
 void ClearFinalOBJ(OBJ *a0)
 {
 	OBJ *a;
-	int i=0;
-	for (i=0;i<MaxObjects;i++)
+	int i = 0;
+	for (i = 0;i < MaxObjects;i++)
 	{
 		a = objects[i];
 		if (a0 == a->finalOBJ)
 		{
-			if (OBJ_VAR_CHK(a0,obj_notdetect,a->playernr))
-				moveobj(a,NULL,MODESTOP,NOSHOWERROR);
+			if (OBJ_VAR_CHK(a0, obj_notdetect, a->playernr))
+				moveobj(a, NULL, MODESTOP, NOSHOWERROR);
 		}
 	}
 }
 //==================================
 void _putcells(void)
 {
-	int i,j,xkk,ykk;
-	xkk=map.MAPXGLOBAL%SIZESPRLANSHX;
-	ykk=map.MAPYGLOBAL%SIZESPRLANSHY;
-	for (i=0;i<screenMapInfo->SizeY32+1;i++)
+	int i, j, xkk, ykk;
+	xkk = map.MAPXGLOBAL%SIZESPRLANSHX;
+	ykk = map.MAPYGLOBAL%SIZESPRLANSHY;
+	for (i = 0;i < screenMapInfo->SizeY32 + 1;i++)
 	{
-		horizline(245,GRP_wminx,GRP_wmaxx,i*SIZESPRLANSHY-ykk);
+		horizline(245, GRP_wminx, GRP_wmaxx, i*SIZESPRLANSHY - ykk);
 	}
-	for (j=0;j<screenMapInfo->SizeX32+1;j++)
+	for (j = 0;j < screenMapInfo->SizeX32 + 1;j++)
 	{
-		vertline(245,j*SIZESPRLANSHX-xkk,GRP_wminy,GRP_wmaxy);
-	}
-}
-//==================================
-int CorrectRaceType(int ret,int playernr)
-{
-	switch(ret)
-	{
-		case RACE_ZERG:
-		case RACE_TERRAN:
-		case RACE_PROTOSS:
-			return(ret);
-		case RACE_INDEPENDENT:
-		case RACE_USER_SELECT:
-			return(gameconf.pl_race[playernr]);
-		default:
-			return(RACE_TERRAN);
+		vertline(245, j*SIZESPRLANSHX - xkk, GRP_wminy, GRP_wmaxy);
 	}
 }
 //==================================
-int getplayerrace(struct mapinfo *map,int playernr)
+int CorrectRaceType(int ret, int playernr)
 {
-	int ret,i;
+	switch (ret)
+	{
+	case RACE_ZERG:
+	case RACE_TERRAN:
+	case RACE_PROTOSS:
+		return(ret);
+	case RACE_INDEPENDENT:
+	case RACE_USER_SELECT:
+		return(gameconf.pl_race[playernr]);
+	default:
+		return(RACE_TERRAN);
+	}
+}
+//==================================
+int getplayerrace(struct mapinfo *map, int playernr)
+{
+	int ret, i;
 	ret = CorrectRaceType(map->pl_race[playernr], playernr);
-	for (i=0;i<3;i++)
+	for (i = 0;i < 3;i++)
 	{
 		xicon[i] = iconxcoord[ret][i];
 		yicon[i] = iconycoord[ret][i];
@@ -998,78 +984,78 @@ int getplayerrace(struct mapinfo *map,int playernr)
 	return ret;
 }
 //=============================================
-int mapSEE(OBJ *a,int player)
+int mapSEE(OBJ *a, int player)
 {
 	if (!map.mapbits.whitefog[player])
 		return(0);
-	return(map.mapbits.whitefog[player][a->ykart*MAXXMAP+a->xkart]);
+	return(map.mapbits.whitefog[player][a->ykart*MAXXMAP + a->xkart]);
 }
 //=============================================
-int mapSEE(int xkart,int ykart,int player)
+int mapSEE(int xkart, int ykart, int player)
 {
 	if (!map.mapbits.whitefog[player])
 		return 0;
-//	  if (ykart<0||xkart<0||ykart>=MAXYMAP||xkart>=MAXXMAP)
-//		return 0;
-	return(map.mapbits.whitefog[player][ykart*MAXXMAP+xkart]);
+	//	  if (ykart<0||xkart<0||ykart>=MAXYMAP||xkart>=MAXXMAP)
+	//		return 0;
+	return(map.mapbits.whitefog[player][ykart*MAXXMAP + xkart]);
 }
 //=============================================
-int mapSEE2(int xkart,int ykart,int player)
+int mapSEE2(int xkart, int ykart, int player)
 {
 	if (!map.mapbits.whitefog2[player])
 		return 0;
-//	  if (ykart<0||xkart<0||ykart>=MAXYMAP||xkart>=MAXXMAP)
-//		return 0;
-	return(map.mapbits.whitefog2[player][ykart*MAXXMAP+xkart]);
+	//	  if (ykart<0||xkart<0||ykart>=MAXYMAP||xkart>=MAXXMAP)
+	//		return 0;
+	return(map.mapbits.whitefog2[player][ykart*MAXXMAP + xkart]);
 }
 //=============================================
-int mapOPEN(OBJ *a,int player)
+int mapOPEN(OBJ *a, int player)
 {
 	if (!map.mapbits.blackfog[player])
 		return 0;
-	return(map.mapbits.blackfog[player][a->ykart*MAXXMAP+a->xkart]);
+	return(map.mapbits.blackfog[player][a->ykart*MAXXMAP + a->xkart]);
 }
 //=============================================
-int mapOPEN(int xkart,int ykart,int player)
+int mapOPEN(int xkart, int ykart, int player)
 {
 	if (!map.mapbits.blackfog[player])
 		return 0;
-//	  if (ykart<0||xkart<0||ykart>=MAXYMAP||xkart>=MAXXMAP)
-//		return 0;
-	return(map.mapbits.blackfog[player][ykart*MAXXMAP+xkart]);
+	//	  if (ykart<0||xkart<0||ykart>=MAXYMAP||xkart>=MAXXMAP)
+	//		return 0;
+	return(map.mapbits.blackfog[player][ykart*MAXXMAP + xkart]);
 }
 //=============================================
-int mapSEE(int xkart,int ykart)
+int mapSEE(int xkart, int ykart)
 {
 	int i;
-	unsigned char fogvalue=0;
-//	  if (ykart<0||xkart<0||ykart>=MAXYMAP||xkart>=MAXXMAP)
-//		return 0;
-	for (i=0;i<PLAYEDPLAYERS;i++)
+	unsigned char fogvalue = 0;
+	//	  if (ykart<0||xkart<0||ykart>=MAXYMAP||xkart>=MAXXMAP)
+	//		return 0;
+	for (i = 0;i < PLAYEDPLAYERS;i++)
 	{
-		if (IfPlayerHaveStartLocation(&map,i)!=-1)
+		if (IfPlayerHaveStartLocation(&map, i) != -1)
 		{
-			if (player_vision(NUMBGAMER,i))
-				if (fogvalue<map.mapbits.whitefog[i][ykart*MAXXMAP+xkart])
-					fogvalue=map.mapbits.whitefog[i][ykart*MAXXMAP+xkart];
+			if (player_vision(NUMBGAMER, i))
+				if (fogvalue < map.mapbits.whitefog[i][ykart*MAXXMAP + xkart])
+					fogvalue = map.mapbits.whitefog[i][ykart*MAXXMAP + xkart];
 		}
 	}
 	return(fogvalue);
 }
 //=============================================
-int mapOPEN(int xkart,int ykart)
+int mapOPEN(int xkart, int ykart)
 {
 	int i;
-	unsigned char fogvalue=0;
-//	  if (ykart<0||xkart<0||ykart>=MAXYMAP||xkart>=MAXXMAP)
-//		return 0;
-	for (i=0;i<PLAYEDPLAYERS;i++)
+	unsigned char fogvalue = 0;
+	//	  if (ykart<0||xkart<0||ykart>=MAXYMAP||xkart>=MAXXMAP)
+	//		return 0;
+	for (i = 0;i < PLAYEDPLAYERS;i++)
 	{
-		if (IfPlayerHaveStartLocation(&map,i)!=-1)
+		if (IfPlayerHaveStartLocation(&map, i) != -1)
 		{
-			if (player_vision(NUMBGAMER,i))
-				if (fogvalue<map.mapbits.blackfog[i][ykart*MAXXMAP+xkart])
-					fogvalue=map.mapbits.blackfog[i][ykart*MAXXMAP+xkart];
+			if (player_vision(NUMBGAMER, i))
+				if (fogvalue < map.mapbits.blackfog[i][ykart*MAXXMAP + xkart])
+					fogvalue = map.mapbits.blackfog[i][ykart*MAXXMAP + xkart];
 		}
 	}
 	return(fogvalue);
@@ -1077,28 +1063,57 @@ int mapOPEN(int xkart,int ykart)
 //=============================================
 int CreateAlianceBitsPlayer(int playernr)
 {
-	int i,allbits=0;
-	for (i=0;i<PLAYEDPLAYERS;i++)
+	int i, allbits = 0;
+	for (i = 0;i < PLAYEDPLAYERS;i++)
 	{
-		if (IfPlayerHaveStartLocation(&map,i)!=-1)
+		if (IfPlayerHaveStartLocation(&map, i) != -1)
 		{
-			if (player_aliance(playernr,i)==PLAYER_VISION)
-				allbits|=(1<<i);
+			if (player_aliance(playernr, i) == PLAYER_VISION)
+				allbits |= (1 << i);
 		}
 	}
 	return(allbits);
 }
 //================================================
-int GetMapFog(int x,int y)
+int GetMapFog(int x, int y)
 {
-	if (CHECKFORMAPBORDERS(x/32,y/32))
+	if (CHECKFORMAPBORDERS(x / 32, y / 32))
 		return(0);
-	if (mapSEE(x/32,y/32)>1)
+	if (mapSEE(x / 32, y / 32) > 1)
 		return(2);
 	else
-		if (mapOPEN(x/32,y/32)>1)
+		if (mapOPEN(x / 32, y / 32) > 1)
 			return(1);
 		else
 			return(0);
 }
 //==============================================
+RevealMap::RevealMap() : mylistsimple(MAXOBJDEFSCR)
+{
+}
+//==============================================
+RevealMap::~RevealMap()
+{
+}
+//==============================================
+void RevealMap::AdditionalOpen(void)
+{
+	OBJ *o;
+	OBJstruct *b;
+	this->EnumListInit();
+	while ((o = (OBJ *)this->GetNextListElem(NULL)))
+	{
+		b = loadobj(o->SC_Unit);
+		makeoneobjseeopen(o, b);
+	}
+	totalelem = 0;
+	totalmarked = 0;
+}
+//=====================================
+void RevealMap::AddObj(OBJ *o)
+{
+	if (player_aliance(o->playernr, NUMBGAMER) == MYOBJ || player_aliance(o->playernr, NUMBGAMER) == ALLIANCEOBJ)
+	{
+		revealMap->AddElem(o);
+	}
+}

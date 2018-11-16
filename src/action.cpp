@@ -280,68 +280,68 @@ int MageDepend(OBJ *a,int playernr,int modemovetype)
 	if (mageprop[modemovetype].type_id==ORDERS_UPGRADE)
 	{
 		i=GetUpgradeTree(&map,playernr,mageprop[modemovetype].obj_id);
-		switch(mageprop[modemovetype].depend.type_id[i])
+		switch (mageprop[modemovetype].depend.type_id[i])
 		{
-			case ORDERS_NONE:
+		case ORDERS_NONE:
+			break;
+		case ORDERS_UNIT:	//check depend on exist someunit
+			if (mageprop[modemovetype].depend.obj_id[i] == SC_NOUNITNR)//no unit dependancy
 				break;
-			case ORDERS_UNIT:	//check depend on exist someunit
-				if (mageprop[modemovetype].depend.obj_id[i]==SC_NOUNITNR)//no unit dependancy
-					break;
-				if (!FindSC_UnitType(a,playernr,mageprop[modemovetype].depend.obj_id[i],SC_NOUNITNR))
-					return(0);
-				break;
-			case ORDERS_UPGRADE:		//check depend on upgrade
-					if (!GetUpgradeTree(&map,playernr,mageprop[modemovetype].depend.obj_id[i]))
-						return(0);
-					break;
-			case ORDERS_TECHNOLOGY:		//check depend on technology
-					if (!GetTechTree(&map,playernr,mageprop[modemovetype].depend.obj_id[i]))
-						return(0);
-					break;
+			if (!FindSC_UnitType(a, playernr, mageprop[modemovetype].depend.obj_id[i], SC_NOUNITNR))
+				return(0);
+			break;
+		case ORDERS_UPGRADE:		//check depend on upgrade
+			if (!GetUpgradeTree(&map, playernr, mageprop[modemovetype].depend.obj_id[i]))
+				return(0);
+			break;
+		case ORDERS_TECHNOLOGY:		//check depend on technology
+			if (!GetTechTree(&map, playernr, mageprop[modemovetype].depend.obj_id[i]))
+				return(0);
+			break;
 		}
 		return(1);
 	}
 	for (i=0;i<maxdepend;i++)
 	{
-		switch(mageprop[modemovetype].depend.type_id[i])
+		switch (mageprop[modemovetype].depend.type_id[i])
 		{
-			case ORDERS_NONE:
+		case ORDERS_NONE:
+			break;
+		case ORDERS_UNIT:	//check depend on exist someunit
+			if (mageprop[modemovetype].depend.obj_id[i] == SC_NOUNITNR)		//no unit dependancy
 				break;
-			case ORDERS_UNIT:	//check depend on exist someunit
-				if (mageprop[modemovetype].depend.obj_id[i]==SC_NOUNITNR)		//no unit dependancy
-					break;
-				//if addon check only for addon build
-				if (IsAddon(mageprop[modemovetype].depend.obj_id[i]))
+			//if addon check only for addon build
+			if (IsAddon(mageprop[modemovetype].depend.obj_id[i]))
+			{
+				if (a->addonobj)
 				{
-					if (a->addonobj)
-					{
-						if (a->addonobj->SC_Unit==mageprop[modemovetype].depend.obj_id[i])
-							break;
-					}
-					return(0);
+					if (a->addonobj->SC_Unit == mageprop[modemovetype].depend.obj_id[i])
+						break;
+				}
+				return(0);
+			}
+			else
+				if (mageprop[modemovetype].depend.obj_id2[i] == SC_NOUNITNR)
+				{
+					//check only one build
+					if (!FindSC_UnitType(a, playernr, mageprop[modemovetype].depend.obj_id[i], SC_NOUNITNR))
+						return(0);
 				}
 				else
-					if (mageprop[modemovetype].depend.obj_id2[i]==SC_NOUNITNR)
-					{
-						//check only one build
-						if (!FindSC_UnitType(a,playernr,mageprop[modemovetype].depend.obj_id[i],SC_NOUNITNR))
-							return(0);
-					}
-					else
-					{
-						//check build with addon
-						if (!FindSC_UnitType(a,playernr,mageprop[modemovetype].depend.obj_id[i],
-							mageprop[modemovetype].depend.obj_id2[i]))
-							return(0);
-					}
-				break;
-			case ORDERS_UPGRADE:		//check depend on upgrade
-				if (!GetUpgradeTree(&map,playernr,mageprop[modemovetype].depend.obj_id[i]))
-					return(0);
-				break;
-			case ORDERS_TECHNOLOGY:		//check depend on technology
-				if (!GetTechTree(&map,playernr,mageprop[modemovetype].depend.obj_id[i]))
-					return(0);
+				{
+					//check build with addon
+					if (!FindSC_UnitType(a, playernr, mageprop[modemovetype].depend.obj_id[i],
+						mageprop[modemovetype].depend.obj_id2[i]))
+						return(0);
+				}
+			break;
+		case ORDERS_UPGRADE:		//check depend on upgrade
+			if (!GetUpgradeTree(&map, playernr, mageprop[modemovetype].depend.obj_id[i]))
+				return(0);
+			break;
+		case ORDERS_TECHNOLOGY:		//check depend on technology
+			if (!GetTechTree(&map, playernr, mageprop[modemovetype].depend.obj_id[i]))
+				return(0);
 			break;
 		}
 	}
@@ -551,39 +551,39 @@ void addremoveuniteffectfrommap(OBJ *a,int plusminus,mapinfo *testmap)
 	int i,j,x,y,sx1,sy1,sx2,sy2,mageobjnr;
 	x = GetOBJx(a);
 	y = GetOBJy(a);
-	switch(a->SC_Unit)
+	switch (a->SC_Unit)
 	{
-		case SC_MISC_DISRUPTIONWEB:
-			mageobjnr = DISRUPTEFFECT;
-			sx1 = x/32 - 2;
-			sx2 = x/32 + 1;
-			if (x%32 > 16)
-			{
-				sx2++;					//the position is more to the right, need to change map position +1 to right
-				sx1++;
-			}
-			sy2 = y/32 + 1;
-			sy1 = y/32 - 1;
-			break;
-		case SC_MISC_DARKSWARM:
-			mageobjnr = DSWARMEFFECT;
-			sx1 = x/32 - 3;
-			sx2 = x/32 + 2;
-			if (x%32 > 16)
-			{
-				sx2++;					//the position is more to the right, need to change map position +1 to right
-				sx1++;
-			}
-			sy1 = y/32 - 3;
-			sy2 = y/32 + 2;
-			if (y%32 > 16)
-			{
-				sy2++;					//the position is more to the bottom, need to change map position +1 to bottom
-				sy1++;
-			}
-			break;
-		default:
-			return;
+	case SC_MISC_DISRUPTIONWEB:
+		mageobjnr = DISRUPTEFFECT;
+		sx1 = x / 32 - 2;
+		sx2 = x / 32 + 1;
+		if (x % 32 > 16)
+		{
+			sx2++;					//the position is more to the right, need to change map position +1 to right
+			sx1++;
+		}
+		sy2 = y / 32 + 1;
+		sy1 = y / 32 - 1;
+		break;
+	case SC_MISC_DARKSWARM:
+		mageobjnr = DSWARMEFFECT;
+		sx1 = x / 32 - 3;
+		sx2 = x / 32 + 2;
+		if (x % 32 > 16)
+		{
+			sx2++;					//the position is more to the right, need to change map position +1 to right
+			sx1++;
+		}
+		sy1 = y / 32 - 3;
+		sy2 = y / 32 + 2;
+		if (y % 32 > 16)
+		{
+			sy2++;					//the position is more to the bottom, need to change map position +1 to bottom
+			sy1++;
+		}
+		break;
+	default:
+		return;
 	}
 	for (i=sy1;i<=sy2;i++)
 	{

@@ -84,29 +84,31 @@ int BCondition_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int actiononplayers,MENU
 {
 	int i,applycond,allcond;
 	if (!Briefing_GetPause())
-	for (i=0;i<TRIG_MAX_CONDITIONS;i++)
 	{
-			applycond=0;
-			allcond=0;
-			if (temptrg->condition[i].SwitchState&(TRIGGERCONDITIONSTATE_CHECKED|TRIGGERCONDITIONSTATE_DISABLED))
+		for (i = 0;i < TRIG_MAX_CONDITIONS;i++)
+		{
+			applycond = 0;
+			allcond = 0;
+			if (temptrg->condition[i].SwitchState&(TRIGGERCONDITIONSTATE_CHECKED | TRIGGERCONDITIONSTATE_DISABLED))
 				break;	//ignore this trigger
-			if (temptrg->condition[i].conditiontype==TRG_CONDITIONTYPE_NONE)
+			if (temptrg->condition[i].conditiontype == TRG_CONDITIONTYPE_NONE)
 				return(0);//ignore all next triggers
-			switch(temptrg->condition[i].conditiontype)
+			switch (temptrg->condition[i].conditiontype)
 			{
-				case TRG_CONDITIONTYPE_MISSIONBRIEFING:
-					applycond=1;
-					break;
-				default:
-//					printf("br conditiontype %d for trigger unknown\n",temptrg->condition[i].conditiontype);
-					break;
+			case TRG_CONDITIONTYPE_MISSIONBRIEFING:
+				applycond = 1;
+				break;
+			default:
+				//					printf("br conditiontype %d for trigger unknown\n",temptrg->condition[i].conditiontype);
+				break;
 			}
 			if (applycond)
-				allcond = BAction_Prepare(info,temptrg,actiononplayers,i,allmenus);
+				allcond = BAction_Prepare(info, temptrg, actiononplayers, i, allmenus);
 			if (allcond)//prevent second trigger action
-				temptrg->condition[i].SwitchState|=TRIGGERCONDITIONSTATE_CHECKED;
+				temptrg->condition[i].SwitchState |= TRIGGERCONDITIONSTATE_CHECKED;
 			if (Briefing_GetPause())
 				return(0);
+		}
 	}
 	return(0);//no conditions
 }
@@ -121,47 +123,47 @@ int BAction_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int actiononplayers,int con
 	err=0;
 	triggcnt=0;
 	soundid=-1;
-	for (i=0;i<TRIG_MAX_ACTIONS;i++)
+	for (i = 0;i < TRIG_MAX_ACTIONS;i++)
 	{
-			triggset=0;
-			if (temptrg->action[i].TriggerEntryFlags & (TRIGGERENTRYFLAG_STATEDISABLED|TRIGGERENTRYFLAG_EXECUTED))
+		triggset = 0;
+		if (temptrg->action[i].TriggerEntryFlags & (TRIGGERENTRYFLAG_STATEDISABLED | TRIGGERENTRYFLAG_EXECUTED))
+		{
+			triggset = 1;
+			triggcnt += triggset;
+			continue;		//ignore this trigger
+		}
+		//			printf("actiontype %d\n",temptrg->action[i].actiontype);
+		slotnr = temptrg->action[i].actiononplayers;
+		switch (temptrg->action[i].actiontype)
+		{
+		case BTRG_ACTIONTYPE_NONE://0
+			triggcnt += TRIG_MAX_ACTIONS - i;
+			return(triggcnt == TRIG_MAX_ACTIONS);
+		case BTRG_ACTIONTYPE_PAUSESOMETIME://1
+			triggset = 1;
+			waittime = temptrg->action[i].pauseatime;
+			Briefing_SetPause(-1, waittime);
+			needbreakparce = 1;
+			break;
+		case BTRG_ACTIONTYPE_PLAYWAV://2
+			waveid = temptrg->action[i].waveID - 1;
+			FULLFILENAME[0] = 0;
+			if (prefix_campaignpath)
 			{
-				triggset=1;
-				triggcnt+=triggset;
-				continue;		//ignore this trigger
+				strcpy(FULLFILENAME, prefix_campaignpath);
+				strcat(FULLFILENAME, "\\");
 			}
-//			printf("actiontype %d\n",temptrg->action[i].actiontype);
-			slotnr=temptrg->action[i].actiononplayers;
-			switch(temptrg->action[i].actiontype)
+			strcat(FULLFILENAME, getmapSTR(info, waveid));
+			soundid = loadandplaywav(info->mpqid, NULL, FULLFILENAME, 1, 0);
+			if (soundid >= 0)
 			{
-				case BTRG_ACTIONTYPE_NONE://0
-					triggcnt+=TRIG_MAX_ACTIONS-i;
-					return(triggcnt==TRIG_MAX_ACTIONS);
-				case BTRG_ACTIONTYPE_PAUSESOMETIME://1
-					triggset=1;
-					waittime=temptrg->action[i].pauseatime;
-					Briefing_SetPause(-1,waittime);
-					needbreakparce=1;
-					break;
-				case BTRG_ACTIONTYPE_PLAYWAV://2
-					waveid=temptrg->action[i].waveID-1;
-					FULLFILENAME[0]=0;
-					if (prefix_campaignpath)
-					{
-						strcpy(FULLFILENAME,prefix_campaignpath);
-						strcat(FULLFILENAME,"\\");
-					}
-					strcat(FULLFILENAME,getmapSTR(info,waveid));
-					soundid = loadandplaywav(info->mpqid,NULL,FULLFILENAME,1,0);
-					if (soundid >= 0)
-					{
-						brief_slots[slotnr].talkingtime = getchannelplaylength(soundid);
-						Briefing_SetPause(-1,brief_slots[slotnr].talkingtime);
-					}
-					triggset=1;
-					needbreakparce=1;
-					break;
-				case BTRG_ACTIONTYPE_DISPLAYBRIEFTEXT://3
+				brief_slots[slotnr].talkingtime = getchannelplaylength(soundid);
+				Briefing_SetPause(-1, brief_slots[slotnr].talkingtime);
+			}
+			triggset = 1;
+			needbreakparce = 1;
+			break;
+		case BTRG_ACTIONTYPE_DISPLAYBRIEFTEXT://3
 /*					textid=temptrg->action[i].stringID-1;
 					txtstr=getmapSTR(info,textid);
 					waittime=temptrg->action[i].pauseatime;
@@ -174,120 +176,120 @@ int BAction_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int actiononplayers,int con
 					triggset=1;
 					break;
 */
-					textid=temptrg->action[i].stringID-1;
-					txtstr=getmapSTR(info,textid);
-					waittime=temptrg->action[i].pauseatime;
-					Briefing_SetPause(-1,waittime);
-//					setmenuitem_VISIBLED(allmenus,brief_delta+BRIEFTEXT,FALSE);
-//					setmenuitem_VISIBLED(allmenus,brief_delta+18,TRUE);
-					setmenuitem_VISIBLED(allmenus,brief_delta+BRIEFTEXT,TRUE);
-					setmenuitem_DISABLED(allmenus,brief_delta+BRIEFTEXT,FALSE);
-					changetextitem(allmenus,brief_delta+BRIEFTEXT,txtstr);
-					Play_sfxdata_id(NULL,SFXDATA_TRANSMISSION,1,0);
-					triggset=1;
-					needbreakparce=1;
-					fontnr=allmenus->menu[brief_delta+BRIEFTEXT].fontnr;
-					sx=allmenus->menu[brief_delta+BRIEFTEXT].hotxsize;
-					sy=allmenus->menu[brief_delta+BRIEFTEXT].hotysize;
-					getmaxsymbolsize(fontnr,NULL,&maxysymbsize);
-					maxlines=getlinesintext(fontnr,txtstr,strlen(txtstr),sx)+1;
-					maxlinepixels=maxlines*maxysymbsize;
-					maxlinepixels-=sy;
-					if (maxlinepixels<0)
-						maxlinepixels=0;
-					brief_slots[slotnr].skippixels = 0;
-					brief_slots[slotnr].maxskippixels=-maxlinepixels;
-					brief_slots[slotnr].command = PORTRAIT_NONE_MESSAGESCROLL;
-					break;
-				case BTRG_ACTIONTYPE_MISSIONOBJ://4
-					textid=temptrg->action[i].stringID-1;
-					txtstr=getmapSTR(info,textid);
-					fill_missionobjectives(txtstr);
-					changetextitem(allmenus,brief_delta+BRIEFMISSION,txtstr);
-					setmenuitem_VISIBLED(allmenus,brief_delta+BRIEFMISSION,TRUE);
-					triggset=1;
-					break;
-				case BTRG_ACTIONTYPE_SHOWPORTRAIT://5
-					brief_slots[slotnr].unitid=temptrg->action[i].unitorrestype;
-					if (brief_slots[slotnr].portraits)
-					{
-//						wfree(brief_slots[slotnr].portraits);
-						FreeSMKInfo(brief_slots[slotnr].portraits);
-					}
-					brief_slots[slotnr].portraits=FillSMKInfo(brief_slots[slotnr].unitid);
-					brief_slots[slotnr].command = PORTRAIT_APPEAR;
-					Brief_ShowPortrait(slotnr,brief_slots[slotnr].command);
-					triggset=1;
-					break;
-				case BTRG_ACTIONTYPE_HIDEPORTRAIT://6
-					brief_slots[slotnr].command = PORTRAIT_DISAPPEAR;
-					Brief_ShowPortrait(slotnr,brief_slots[slotnr].command);
-					triggset=1;
-					break;
-				case BTRG_ACTIONTYPE_SPEAKINGANIMATION://7
-					brief_slots[slotnr].command = PORTRAIT_TALKING;
-					brief_slots[slotnr].talkingtime = temptrg->action[i].pauseatime;
-					Briefing_SetPause(slotnr,brief_slots[slotnr].talkingtime);
-					triggset=1;
-					needbreakparce=1;
-					break;
-				case BTRG_ACTIONTYPE_TRANSMISSION://8
-					deltapaused=temptrg->action[i].rescount;
-					comparefunc=ConditionFunctions[temptrg->action[i].subaction];
-
-					brief_slots[slotnr].command = PORTRAIT_TALKING;
-					textid=temptrg->action[i].stringID-1;
-					txtstr=getmapSTR(info,textid);
-					waveid=temptrg->action[i].waveID-1;
-					setmenuitem_VISIBLED(allmenus,brief_delta+BRIEFTEXT,TRUE);
-					changetextitem(allmenus,brief_delta+BRIEFTEXT,txtstr);
-					fontnr=allmenus->menu[brief_delta+BRIEFTEXT].fontnr;
-					sx=allmenus->menu[brief_delta+BRIEFTEXT].hotxsize;
-					sy=allmenus->menu[brief_delta+BRIEFTEXT].hotysize;
-					getmaxsymbolsize(fontnr,NULL,&maxysymbsize);
-					maxlines=getlinesintext(fontnr,txtstr,strlen(txtstr),sx)+1;
-					maxlinepixels=maxlines*maxysymbsize;
-					maxlinepixels-=sy;
-					if (maxlinepixels<0)
-						maxlinepixels=0;
-					brief_slots[slotnr].skippixels = 40;
-					brief_slots[slotnr].maxskippixels=-maxlinepixels;
-					brief_slots[slotnr].command = PORTRAIT_TALKING;
-					Brief_ShowPortrait(slotnr,brief_slots[slotnr].command);
-					FULLFILENAME[0]=0;
-					if (prefix_campaignpath)
-					{
-						strcpy(FULLFILENAME,prefix_campaignpath);
-						strcat(FULLFILENAME,"\\");
-					}
-					strcat(FULLFILENAME,getmapSTR(info,waveid));
-					soundid = loadandplaywav(info->mpqid,NULL,FULLFILENAME,1,0);
-					if (soundid >= 0)
-					{
-						playtime = temptrg->action[i].pauseatime;
-						(*comparefunc)(&playtime,deltapaused);
-						brief_slots[slotnr].talkingtime = playtime;
-						Briefing_SetPause(slotnr,brief_slots[slotnr].talkingtime);
-					}
-//					printf("playtime = %d talkingtime = %d\n",playtime,brief_slots[slotnr].talkingtime);
-					triggset=1;
-					needbreakparce=1;
-					break;
-				case BTRG_ACTIONTYPE_UNUSED://9
-					triggset=1;
-					break;
-				default:
-					printf("br actiontype %d for trigger unknown\n",temptrg->action[i].actiontype);
-					triggset=1;
-					break;
-			}
-			if (triggset)
+			textid = temptrg->action[i].stringID - 1;
+			txtstr = getmapSTR(info, textid);
+			waittime = temptrg->action[i].pauseatime;
+			Briefing_SetPause(-1, waittime);
+			//					setmenuitem_VISIBLED(allmenus,brief_delta+BRIEFTEXT,FALSE);
+			//					setmenuitem_VISIBLED(allmenus,brief_delta+18,TRUE);
+			setmenuitem_VISIBLED(allmenus, brief_delta + BRIEFTEXT, TRUE);
+			setmenuitem_DISABLED(allmenus, brief_delta + BRIEFTEXT, FALSE);
+			changetextitem(allmenus, brief_delta + BRIEFTEXT, txtstr);
+			Play_sfxdata_id(NULL, SFXDATA_TRANSMISSION, 1, 0);
+			triggset = 1;
+			needbreakparce = 1;
+			fontnr = allmenus->menu[brief_delta + BRIEFTEXT].fontnr;
+			sx = allmenus->menu[brief_delta + BRIEFTEXT].hotxsize;
+			sy = allmenus->menu[brief_delta + BRIEFTEXT].hotysize;
+			getmaxsymbolsize(fontnr, NULL, &maxysymbsize);
+			maxlines = getlinesintext(fontnr, txtstr, strlen(txtstr), sx) + 1;
+			maxlinepixels = maxlines * maxysymbsize;
+			maxlinepixels -= sy;
+			if (maxlinepixels < 0)
+				maxlinepixels = 0;
+			brief_slots[slotnr].skippixels = 0;
+			brief_slots[slotnr].maxskippixels = -maxlinepixels;
+			brief_slots[slotnr].command = PORTRAIT_NONE_MESSAGESCROLL;
+			break;
+		case BTRG_ACTIONTYPE_MISSIONOBJ://4
+			textid = temptrg->action[i].stringID - 1;
+			txtstr = getmapSTR(info, textid);
+			fill_missionobjectives(txtstr);
+			changetextitem(allmenus, brief_delta + BRIEFMISSION, txtstr);
+			setmenuitem_VISIBLED(allmenus, brief_delta + BRIEFMISSION, TRUE);
+			triggset = 1;
+			break;
+		case BTRG_ACTIONTYPE_SHOWPORTRAIT://5
+			brief_slots[slotnr].unitid = temptrg->action[i].unitorrestype;
+			if (brief_slots[slotnr].portraits)
 			{
-				temptrg->action[i].TriggerEntryFlags|=TRIGGERENTRYFLAG_EXECUTED;
-				triggcnt+=triggset;
+				//						wfree(brief_slots[slotnr].portraits);
+				FreeSMKInfo(brief_slots[slotnr].portraits);
 			}
-			if (needbreakparce)
-				return(0);
+			brief_slots[slotnr].portraits = FillSMKInfo(brief_slots[slotnr].unitid);
+			brief_slots[slotnr].command = PORTRAIT_APPEAR;
+			Brief_ShowPortrait(slotnr, brief_slots[slotnr].command);
+			triggset = 1;
+			break;
+		case BTRG_ACTIONTYPE_HIDEPORTRAIT://6
+			brief_slots[slotnr].command = PORTRAIT_DISAPPEAR;
+			Brief_ShowPortrait(slotnr, brief_slots[slotnr].command);
+			triggset = 1;
+			break;
+		case BTRG_ACTIONTYPE_SPEAKINGANIMATION://7
+			brief_slots[slotnr].command = PORTRAIT_TALKING;
+			brief_slots[slotnr].talkingtime = temptrg->action[i].pauseatime;
+			Briefing_SetPause(slotnr, brief_slots[slotnr].talkingtime);
+			triggset = 1;
+			needbreakparce = 1;
+			break;
+		case BTRG_ACTIONTYPE_TRANSMISSION://8
+			deltapaused = temptrg->action[i].rescount;
+			comparefunc = ConditionFunctions[temptrg->action[i].subaction];
+
+			brief_slots[slotnr].command = PORTRAIT_TALKING;
+			textid = temptrg->action[i].stringID - 1;
+			txtstr = getmapSTR(info, textid);
+			waveid = temptrg->action[i].waveID - 1;
+			setmenuitem_VISIBLED(allmenus, brief_delta + BRIEFTEXT, TRUE);
+			changetextitem(allmenus, brief_delta + BRIEFTEXT, txtstr);
+			fontnr = allmenus->menu[brief_delta + BRIEFTEXT].fontnr;
+			sx = allmenus->menu[brief_delta + BRIEFTEXT].hotxsize;
+			sy = allmenus->menu[brief_delta + BRIEFTEXT].hotysize;
+			getmaxsymbolsize(fontnr, NULL, &maxysymbsize);
+			maxlines = getlinesintext(fontnr, txtstr, strlen(txtstr), sx) + 1;
+			maxlinepixels = maxlines * maxysymbsize;
+			maxlinepixels -= sy;
+			if (maxlinepixels < 0)
+				maxlinepixels = 0;
+			brief_slots[slotnr].skippixels = 40;
+			brief_slots[slotnr].maxskippixels = -maxlinepixels;
+			brief_slots[slotnr].command = PORTRAIT_TALKING;
+			Brief_ShowPortrait(slotnr, brief_slots[slotnr].command);
+			FULLFILENAME[0] = 0;
+			if (prefix_campaignpath)
+			{
+				strcpy(FULLFILENAME, prefix_campaignpath);
+				strcat(FULLFILENAME, "\\");
+			}
+			strcat(FULLFILENAME, getmapSTR(info, waveid));
+			soundid = loadandplaywav(info->mpqid, NULL, FULLFILENAME, 1, 0);
+			if (soundid >= 0)
+			{
+				playtime = temptrg->action[i].pauseatime;
+				(*comparefunc)(&playtime, deltapaused);
+				brief_slots[slotnr].talkingtime = playtime;
+				Briefing_SetPause(slotnr, brief_slots[slotnr].talkingtime);
+			}
+			//					printf("playtime = %d talkingtime = %d\n",playtime,brief_slots[slotnr].talkingtime);
+			triggset = 1;
+			needbreakparce = 1;
+			break;
+		case BTRG_ACTIONTYPE_UNUSED://9
+			triggset = 1;
+			break;
+		default:
+			printf("br actiontype %d for trigger unknown\n", temptrg->action[i].actiontype);
+			triggset = 1;
+			break;
+		}
+		if (triggset)
+		{
+			temptrg->action[i].TriggerEntryFlags |= TRIGGERENTRYFLAG_EXECUTED;
+			triggcnt += triggset;
+		}
+		if (needbreakparce)
+			return(0);
 	}
 	return(triggcnt==TRIG_MAX_ACTIONS);
 }
@@ -353,13 +355,13 @@ void Briefing_ScrollText(MENUSTR *allmenus)
 //=================================================
 void StopTransmission(MENUSTR *allmenus,int slotnr)
 {
-	switch(brief_slots[slotnr].command)
+	switch (brief_slots[slotnr].command)
 	{
-		case PORTRAIT_TALKING:
-			brief_slots[slotnr].command=PORTRAIT_IDLE;
-			Brief_ShowPortrait(slotnr,brief_slots[slotnr].command);
-			setmenuitem_VISIBLED(allmenus,brief_delta+BRIEFTEXT,FALSE);
-			break;
+	case PORTRAIT_TALKING:
+		brief_slots[slotnr].command = PORTRAIT_IDLE;
+		Brief_ShowPortrait(slotnr, brief_slots[slotnr].command);
+		setmenuitem_VISIBLED(allmenus, brief_delta + BRIEFTEXT, FALSE);
+		break;
 	}
 }
 //=================================================
@@ -369,18 +371,18 @@ void Reload_Briefing(struct mapinfo *info,MENUSTR *allmenus)
 	MAP_TRIGS	*temptrg;
 	MAP_TRIGS	(*alltrigs)[]=(MAP_TRIGS (*)[]) info->BRIEFS;
 	Briefing_SetPause(-1,0);
-	for (i=0;i<TRIG_MAX_CONDITIONS;i++)
+	for (i = 0;i < TRIG_MAX_CONDITIONS;i++)
 	{
-			temptrg = &(*alltrigs)[i];
-			if (temptrg->condition[i].conditiontype == TRG_CONDITIONTYPE_NONE)
+		temptrg = &(*alltrigs)[i];
+		if (temptrg->condition[i].conditiontype == TRG_CONDITIONTYPE_NONE)
+			break;
+		temptrg->condition[i].SwitchState &= ~TRIGGERCONDITIONSTATE_CHECKED;
+		for (j = 0;j < TRIG_MAX_ACTIONS;j++)
+		{
+			if (temptrg->action[j].actiontype == BTRG_ACTIONTYPE_NONE)
 				break;
-			temptrg->condition[i].SwitchState &= ~TRIGGERCONDITIONSTATE_CHECKED;
-			for (j=0;j<TRIG_MAX_ACTIONS;j++)
-			{
-				if (temptrg->action[j].actiontype == BTRG_ACTIONTYPE_NONE)
-					break;
-				temptrg->action[j].TriggerEntryFlags &= ~TRIGGERENTRYFLAG_EXECUTED;
-			}
+			temptrg->action[j].TriggerEntryFlags &= ~TRIGGERENTRYFLAG_EXECUTED;
+		}
 	}
 	if (soundid>=0)
 	{
@@ -402,30 +404,30 @@ void drawportraitinslot(MENUSTR *allmenus,int slotnr)
 	int hlframe=0;
 	if (brief_slots[slotnr].drawsmk)
 	{
-		setmenuitem_VISIBLED(allmenus,menunr,TRUE);
-		if (brief_slots[slotnr].typeofport==SMKTALK)
-			hlframe=4;
-		mixbriefframes(allmenus,menunr,slotnr,slotnr+hlframe,(char *)brief_slots[slotnr].smkplay.vidbuff);
-		if (smk_next(brief_slots[slotnr].smkplay.smk,SMK_FULL_DECODE)==SMK_DONE)
+		setmenuitem_VISIBLED(allmenus, menunr, TRUE);
+		if (brief_slots[slotnr].typeofport == SMKTALK)
+			hlframe = 4;
+		mixbriefframes(allmenus, menunr, slotnr, slotnr + hlframe, (char *)brief_slots[slotnr].smkplay.vidbuff);
+		if (smk_next(brief_slots[slotnr].smkplay.smk, SMK_FULL_DECODE) == SMK_DONE)
 		{
-			switch(brief_slots[slotnr].typeofport)
+			switch (brief_slots[slotnr].typeofport)
 			{
-				case SMKIN:
-					Brief_ShowPortrait(slotnr,PORTRAIT_IDLE);
-					return;
-				case SMKNORMAL:
-					Brief_ShowPortrait(slotnr,PORTRAIT_IDLE);
-					break;
-				case SMKTALK:
-					Brief_ShowPortrait(slotnr,PORTRAIT_TALKING);
-					break;
-				case SMKOUT:
-					Brief_ShowPortrait(slotnr,PORTRAIT_NONE);
-					return;
+			case SMKIN:
+				Brief_ShowPortrait(slotnr, PORTRAIT_IDLE);
+				return;
+			case SMKNORMAL:
+				Brief_ShowPortrait(slotnr, PORTRAIT_IDLE);
+				break;
+			case SMKTALK:
+				Brief_ShowPortrait(slotnr, PORTRAIT_TALKING);
+				break;
+			case SMKOUT:
+				Brief_ShowPortrait(slotnr, PORTRAIT_NONE);
+				return;
 			}
-			smk_first(brief_slots[slotnr].smkplay.smk,SMK_FULL_DECODE);
+			smk_first(brief_slots[slotnr].smkplay.smk, SMK_FULL_DECODE);
 		}
-		brief_slots[slotnr].smkplay.vidbuff=smk_get_video(brief_slots[slotnr].smkplay.smk);
+		brief_slots[slotnr].smkplay.vidbuff = smk_get_video(brief_slots[slotnr].smkplay.smk);
 	}
 	else
 	{
@@ -447,27 +449,27 @@ void mixbriefframes(MENUSTR *allmenus,int menunr,int slotnr,int framenr,char *pi
 	offset=DRAWFRAMEFROMY*sx;
 
 	memcpy(newbufpixels,framepcxs[framenr]->GetPcxRawBytes(),sx*sy);
-	for (i=DRAWFRAMEFROMY;i<sy-DRAWFRAMEFROMY;i++)
+	for (i = DRAWFRAMEFROMY;i < sy - DRAWFRAMEFROMY;i++)
 	{
-		if (i&1)
+		if (i & 1)
 		{
 			//interlace line
 		}
 		else
 		{
-			for (j=DRAWFRAMEFROMX,jj=DRAWFRAMEFROMX/2;j<sx-DRAWFRAMEFROMX;j++)
+			for (j = DRAWFRAMEFROMX, jj = DRAWFRAMEFROMX / 2;j < sx - DRAWFRAMEFROMX;j++)
 			{
-				if (!newbufpixels[offset+j])
+				if (!newbufpixels[offset + j])
 				{
-					newbufpixels[offset+j+0]=pixbuff[jj];
-					newbufpixels[offset+j+1]=pixbuff[jj];
+					newbufpixels[offset + j + 0] = pixbuff[jj];
+					newbufpixels[offset + j + 1] = pixbuff[jj];
 					j++;
 					jj++;
 				}
 			}
-			pixbuff+=SMKSIZEPORTRAITX;
+			pixbuff += SMKSIZEPORTRAITX;
 		}
-		offset+=sx;
+		offset += sx;
 	}
 
 	updateimageitem(allmenus,menunr,newbufpixels);
@@ -477,40 +479,40 @@ void mixbriefframes(MENUSTR *allmenus,int menunr,int slotnr,int framenr,char *pi
 void Brief_SetPortrait(int slotnr,int typeofport)
 {
 	int smkid;
-	switch(typeofport)
+	switch (typeofport)
 	{
-		case SMKIN:
-			brief_slots[slotnr].smkplay.smkfile.hmpq=smkin.hmpq;
-			brief_slots[slotnr].smkplay.smkfile.mpqfilenr=smkin.mpqfilenr;
-			break;
-		case SMKOUT:
-			brief_slots[slotnr].smkplay.smkfile.hmpq=smkout.hmpq;
-			brief_slots[slotnr].smkplay.smkfile.mpqfilenr=smkout.mpqfilenr;
-			break;
-		case SMKNORMAL:
-			if (brief_slots[slotnr].portraits)
+	case SMKIN:
+		brief_slots[slotnr].smkplay.smkfile.hmpq = smkin.hmpq;
+		brief_slots[slotnr].smkplay.smkfile.mpqfilenr = smkin.mpqfilenr;
+		break;
+	case SMKOUT:
+		brief_slots[slotnr].smkplay.smkfile.hmpq = smkout.hmpq;
+		brief_slots[slotnr].smkplay.smkfile.mpqfilenr = smkout.mpqfilenr;
+		break;
+	case SMKNORMAL:
+		if (brief_slots[slotnr].portraits)
+		{
+			if (brief_slots[slotnr].nrof_smks)
 			{
-				if (brief_slots[slotnr].nrof_smks)
-				{
-					brief_slots[slotnr].smkplay.smkfile.hmpq=brief_slots[slotnr].portraits->hmpq;
-					smkid=brief_slots[slotnr].idlesmks[brief_slots[slotnr].cursmk];
-					if (smkid<=0)
-						brief_slots[slotnr].smkplay.smkfile.mpqfilenr=brief_slots[slotnr].portraits->mpqfilenr[SMKNORMAL][0];
-					else
-						brief_slots[slotnr].smkplay.smkfile.mpqfilenr=brief_slots[slotnr].portraits->mpqfilenr[SMKNORMAL2][smkid];
-				}
+				brief_slots[slotnr].smkplay.smkfile.hmpq = brief_slots[slotnr].portraits->hmpq;
+				smkid = brief_slots[slotnr].idlesmks[brief_slots[slotnr].cursmk];
+				if (smkid <= 0)
+					brief_slots[slotnr].smkplay.smkfile.mpqfilenr = brief_slots[slotnr].portraits->mpqfilenr[SMKNORMAL][0];
+				else
+					brief_slots[slotnr].smkplay.smkfile.mpqfilenr = brief_slots[slotnr].portraits->mpqfilenr[SMKNORMAL2][smkid];
 			}
-			break;
-		default:
-			if (brief_slots[slotnr].portraits)
+		}
+		break;
+	default:
+		if (brief_slots[slotnr].portraits)
+		{
+			if (brief_slots[slotnr].nrof_smks)
 			{
-				if (brief_slots[slotnr].nrof_smks)
-				{
-					brief_slots[slotnr].smkplay.smkfile.hmpq=brief_slots[slotnr].portraits->hmpq;
-					brief_slots[slotnr].smkplay.smkfile.mpqfilenr=brief_slots[slotnr].portraits->mpqfilenr[typeofport][brief_slots[slotnr].cursmk];
-				}
+				brief_slots[slotnr].smkplay.smkfile.hmpq = brief_slots[slotnr].portraits->hmpq;
+				brief_slots[slotnr].smkplay.smkfile.mpqfilenr = brief_slots[slotnr].portraits->mpqfilenr[typeofport][brief_slots[slotnr].cursmk];
 			}
-			break;
+		}
+		break;
 	}
 	loadSMK(&brief_slots[slotnr].smkplay,SMK_FULL_DECODE);
 }
@@ -525,71 +527,71 @@ void Brief_ShowPortrait(int slotnr,int typeofportrait)
 	int i,j,jj;
 	unloadSMK(&brief_slots[slotnr].smkplay);
 	memset(&brief_slots[slotnr].smkplay,0,sizeof(brief_slots[slotnr].smkplay));
-	switch(typeofportrait)
+	switch (typeofportrait)
 	{
-		case PORTRAIT_NONE:
-			brief_slots[slotnr].typeofport=SMKNONE;
-			memset(&brief_slots[slotnr].smkplay,0,sizeof(brief_slots[slotnr].smkplay));
-			brief_slots[slotnr].nrof_smks=0;
-			brief_slots[slotnr].cursmk=0;
-			brief_slots[slotnr].drawsmk=0;
-			break;
-		case PORTRAIT_APPEAR:
-			brief_slots[slotnr].typeofport=SMKIN;
-			brief_slots[slotnr].cursmk=0;
-			brief_slots[slotnr].nrof_smks=1;
-			Brief_SetPortrait(slotnr,brief_slots[slotnr].typeofport);
-			brief_slots[slotnr].drawsmk=1;
-			brief_slots[slotnr].idlesmks[0]=-2;
-			break;
-		case PORTRAIT_IDLE:
-			if (brief_slots[slotnr].typeofport!=SMKNORMAL)
+	case PORTRAIT_NONE:
+		brief_slots[slotnr].typeofport = SMKNONE;
+		memset(&brief_slots[slotnr].smkplay, 0, sizeof(brief_slots[slotnr].smkplay));
+		brief_slots[slotnr].nrof_smks = 0;
+		brief_slots[slotnr].cursmk = 0;
+		brief_slots[slotnr].drawsmk = 0;
+		break;
+	case PORTRAIT_APPEAR:
+		brief_slots[slotnr].typeofport = SMKIN;
+		brief_slots[slotnr].cursmk = 0;
+		brief_slots[slotnr].nrof_smks = 1;
+		Brief_SetPortrait(slotnr, brief_slots[slotnr].typeofport);
+		brief_slots[slotnr].drawsmk = 1;
+		brief_slots[slotnr].idlesmks[0] = -2;
+		break;
+	case PORTRAIT_IDLE:
+		if (brief_slots[slotnr].typeofport != SMKNORMAL)
+		{
+			brief_slots[slotnr].typeofport = SMKNORMAL;
+			brief_slots[slotnr].cursmk = 0;
+			brief_slots[slotnr].nrof_smks = MAXIDLESEQUENCES;
+			if (brief_slots[slotnr].idlesmks[0] == -2)
 			{
-				brief_slots[slotnr].typeofport=SMKNORMAL;
-				brief_slots[slotnr].cursmk=0;
-				brief_slots[slotnr].nrof_smks=MAXIDLESEQUENCES;
-				if (brief_slots[slotnr].idlesmks[0]==-2)
+				memset(brief_slots[slotnr].idlesmks, -1, MAXIDLESEQUENCES);
+				for (i = 0, j = 0, jj = 0;i < MAXIDLESEQUENCES && jj < 3;i++)
 				{
-					memset(brief_slots[slotnr].idlesmks,-1,MAXIDLESEQUENCES);
-					for (i=0,j=0,jj=0;i<MAXIDLESEQUENCES && jj < 3;i++)
+					if (!myrand(4))
 					{
-						if (!myrand(4))
-						{
-							jj++;
-							brief_slots[slotnr].idlesmks[i]=j++;
-							if (j>=brief_slots[slotnr].portraits->max[SMKNORMAL2])
-								j=0;
-						}
+						jj++;
+						brief_slots[slotnr].idlesmks[i] = j++;
+						if (j >= brief_slots[slotnr].portraits->max[SMKNORMAL2])
+							j = 0;
 					}
 				}
 			}
-			else
-			{
-				if (++brief_slots[slotnr].cursmk==MAXIDLESEQUENCES)
-					brief_slots[slotnr].cursmk=0;
-			}
-			Brief_SetPortrait(slotnr,brief_slots[slotnr].typeofport);
-			break;
-		case PORTRAIT_TALKING:
-			if (brief_slots[slotnr].typeofport!=SMKTALK)
-			{
-				brief_slots[slotnr].typeofport=SMKTALK;
-				brief_slots[slotnr].cursmk=0;
-				brief_slots[slotnr].nrof_smks=brief_slots[slotnr].portraits->max[brief_slots[slotnr].typeofport];
-			}
-			else
-			{
-				if (++brief_slots[slotnr].cursmk==brief_slots[slotnr].nrof_smks)
-					brief_slots[slotnr].cursmk=0;
-			}
-			Brief_SetPortrait(slotnr,brief_slots[slotnr].typeofport);
-			break;
-		case PORTRAIT_DISAPPEAR:
-			brief_slots[slotnr].typeofport=SMKOUT;
-			brief_slots[slotnr].cursmk=0;
-			brief_slots[slotnr].nrof_smks=1;
-			Brief_SetPortrait(slotnr,brief_slots[slotnr].typeofport);
-			break;
+		}
+		else
+		{
+			if (++brief_slots[slotnr].cursmk == MAXIDLESEQUENCES)
+				brief_slots[slotnr].cursmk = 0;
+		}
+		Brief_SetPortrait(slotnr, brief_slots[slotnr].typeofport);
+		break;
+	case PORTRAIT_TALKING:
+		if (brief_slots[slotnr].typeofport != SMKTALK)
+		{
+			brief_slots[slotnr].typeofport = SMKTALK;
+			brief_slots[slotnr].cursmk = 0;
+			brief_slots[slotnr].nrof_smks = brief_slots[slotnr].portraits->max[brief_slots[slotnr].typeofport];
+		}
+		else
+		{
+			if (++brief_slots[slotnr].cursmk == brief_slots[slotnr].nrof_smks)
+				brief_slots[slotnr].cursmk = 0;
+		}
+		Brief_SetPortrait(slotnr, brief_slots[slotnr].typeofport);
+		break;
+	case PORTRAIT_DISAPPEAR:
+		brief_slots[slotnr].typeofport = SMKOUT;
+		brief_slots[slotnr].cursmk = 0;
+		brief_slots[slotnr].nrof_smks = 1;
+		Brief_SetPortrait(slotnr, brief_slots[slotnr].typeofport);
+		break;
 	}
 }
 //===================================

@@ -15,7 +15,7 @@
 #include "images.h"
 #include "pylon.h"
 //=================================
-unsigned char PylonTable[PYLONAREAY][PYLONAREAX]=
+unsigned char PylonTable[PYLONAREAY][PYLONAREAX] =
 {
 	{0,0,0,0,0,1,1,1,1,1,1,0,0,0,0,0},
 	{0,0,0,1,1,1,1,1,1,1,1,1,1,0,0,0},
@@ -32,88 +32,88 @@ unsigned char PylonTable[PYLONAREAY][PYLONAREAX]=
 void FreePylonArea(struct mapinfo *mymap)
 {
 	int i;
-	for (i=0;i<MAXPLAYERS;i++)
+	for (i = 0;i < MAXPLAYERS;i++)
 	{
 		if (mymap->pylonarea[i])
 		{
 			wfree(mymap->pylonarea[i]);
-			mymap->pylonarea[i]=NULL;
+			mymap->pylonarea[i] = NULL;
 		}
 	}
 }
 //=================================
-unsigned char *CreatePylonAreaArray(struct mapinfo *mymap,int playernr)
+unsigned char *CreatePylonAreaArray(struct mapinfo *mymap, int playernr)
 {
 	unsigned char *parea;
-	parea=(unsigned char*)wmalloc(mymap->map_width*mymap->map_height);
-	memset(parea,0x00,mymap->map_width*mymap->map_height);
-	mymap->pylonarea[playernr]=parea;
+	parea = (unsigned char*)wmalloc(mymap->map_width*mymap->map_height);
+	memset(parea, 0x00, mymap->map_width*mymap->map_height);
+	mymap->pylonarea[playernr] = parea;
 	return(parea);
 }
 //=================================
-void AddPylonArea(struct mapinfo *mymap,OBJ *a,int playernr)
+void AddPylonArea(struct mapinfo *mymap, OBJ *a, int playernr)
 {
-	int xp,yp,i,j,offset,x,y;
-	unsigned char *parea=mymap->pylonarea[playernr];
+	int xp, yp, i, j, offset, x, y;
+	unsigned char *parea = mymap->pylonarea[playernr];
 	if (!parea)
-		parea=CreatePylonAreaArray(mymap,playernr);
-	xp = GetOBJx(a)/SIZESPRLANSHX-PYLONAREAX/2;
-	yp = GetOBJy(a)/SIZESPRLANSHY-PYLONAREAY/2;
-	for (i=0;i<PYLONAREAY;i++)
+		parea = CreatePylonAreaArray(mymap, playernr);
+	xp = GetOBJx(a) / SIZESPRLANSHX - PYLONAREAX / 2;
+	yp = GetOBJy(a) / SIZESPRLANSHY - PYLONAREAY / 2;
+	for (i = 0;i < PYLONAREAY;i++)
 	{
-		y=yp+i;
-		if (y<0)
+		y = yp + i;
+		if (y < 0)
 			continue;
-		if (y>=MAXYMAP)
+		if (y >= MAXYMAP)
 			break;
-		offset=y*MAXXMAP;
-		for (j=0;j<PYLONAREAX;j++)
+		offset = y * MAXXMAP;
+		for (j = 0;j < PYLONAREAX;j++)
 		{
-			x=xp+j;
-			if (x<0)
+			x = xp + j;
+			if (x < 0)
 				continue;
-			if (x>=MAXXMAP)
+			if (x >= MAXXMAP)
 				break;
-			parea[offset+x] += PylonTable[i][j];
+			parea[offset + x] += PylonTable[i][j];
 		}
 	}
-	AddBuildsInPower(parea,playernr);
+	AddBuildsInPower(parea, playernr);
 }
 //=================================
-void DelPylonArea(struct mapinfo *mymap,OBJ *a,int playernr)
+void DelPylonArea(struct mapinfo *mymap, OBJ *a, int playernr)
 {
-	int xp,yp,i,j,offset,x,y;
-	unsigned char *parea=mymap->pylonarea[playernr];
+	int xp, yp, i, j, offset, x, y;
+	unsigned char *parea = mymap->pylonarea[playernr];
 	if (!parea)
-		parea=CreatePylonAreaArray(mymap,playernr);
-	xp = GetOBJx(a)/SIZESPRLANSHX-PYLONAREAX/2;
-	yp = GetOBJy(a)/SIZESPRLANSHY-PYLONAREAY/2;
-	for (i=0;i<PYLONAREAY;i++)
+		parea = CreatePylonAreaArray(mymap, playernr);
+	xp = GetOBJx(a) / SIZESPRLANSHX - PYLONAREAX / 2;
+	yp = GetOBJy(a) / SIZESPRLANSHY - PYLONAREAY / 2;
+	for (i = 0;i < PYLONAREAY;i++)
 	{
-		y=yp+i;
-		if (y<0)
+		y = yp + i;
+		if (y < 0)
 			continue;
-		if (y>=MAXYMAP)
+		if (y >= MAXYMAP)
 			break;
-		offset=y*MAXXMAP;
-		for (j=0;j<PYLONAREAX;j++)
+		offset = y * MAXXMAP;
+		for (j = 0;j < PYLONAREAX;j++)
 		{
-			x=xp+j;
-			if (x<0)
+			x = xp + j;
+			if (x < 0)
 				continue;
-			if (x>=MAXXMAP)
+			if (x >= MAXXMAP)
 				break;
-			parea[offset+x]-=PylonTable[i][j];
+			parea[offset + x] -= PylonTable[i][j];
 		}
 	}
-	DelBuildsFromPower(parea,playernr);
+	DelBuildsFromPower(parea, playernr);
 }
 //=================================
-void AddBuildsInPower(unsigned char *pylonarea,int playernr)
+void AddBuildsInPower(unsigned char *pylonarea, int playernr)
 {
-	int i,j,k,nrofpower,xp,yp,xs,ys;
+	int i, j, k, nrofpower, xp, yp, xs, ys;
 	OBJ *a;
-	for (k=0;k<MaxObjects;k++)
+	for (k = 0;k < MaxObjects;k++)
 	{
 		a = objects[k];
 		if (a->playernr != playernr)
@@ -123,82 +123,82 @@ void AddBuildsInPower(unsigned char *pylonarea,int playernr)
 			if (RequiresPylonEnergy(a->SC_Unit))
 			{
 				nrofpower = 0;
-				xp = (GetOBJx(a) - GetUnitWidthAndHeight(a->SC_Unit,UNITDIM_WIDTH)/2)/SIZESPRLANSHX;
-				yp = (GetOBJy(a) - GetUnitWidthAndHeight(a->SC_Unit,UNITDIM_HEIGHT)/2)/SIZESPRLANSHY;
-				xs = GetUnitWidthAndHeight(a->SC_Unit,UNITDIM_WIDTH)/SIZESPRLANSHX;
-				ys = GetUnitWidthAndHeight(a->SC_Unit,UNITDIM_HEIGHT)/SIZESPRLANSHY;
-				for (i=0;i<ys;i++)
-					for (j=0;j<xs;j++)
-						if (pylonarea[(i+yp)*MAXXMAP+j+xp])
+				xp = (GetOBJx(a) - GetUnitWidthAndHeight(a->SC_Unit, UNITDIM_WIDTH) / 2) / SIZESPRLANSHX;
+				yp = (GetOBJy(a) - GetUnitWidthAndHeight(a->SC_Unit, UNITDIM_HEIGHT) / 2) / SIZESPRLANSHY;
+				xs = GetUnitWidthAndHeight(a->SC_Unit, UNITDIM_WIDTH) / SIZESPRLANSHX;
+				ys = GetUnitWidthAndHeight(a->SC_Unit, UNITDIM_HEIGHT) / SIZESPRLANSHY;
+				for (i = 0;i < ys;i++)
+					for (j = 0;j < xs;j++)
+						if (pylonarea[(i + yp)*MAXXMAP + j + xp])
 							nrofpower++;
-				if (nrofpower >= xs*ys/2)
+				if (nrofpower >= xs * ys / 2)
 				{
-					moveobj(a,NULL,MODEPOWERON,NOSHOWERROR);
+					moveobj(a, NULL, MODEPOWERON, NOSHOWERROR);
 				}
 			}
 		}
 	}
 }
 //=================================
-void DelBuildsFromPower(unsigned char *pylonarea,int playernr)
+void DelBuildsFromPower(unsigned char *pylonarea, int playernr)
 {
-	int i,j,k,nrofpower,xp,yp,xs,ys;
+	int i, j, k, nrofpower, xp, yp, xs, ys;
 	OBJ *a;
-	for (k=0;k<MaxObjects;k++)
+	for (k = 0;k < MaxObjects;k++)
 	{
 		a = objects[k];
 		if (a->playernr != playernr)
 			continue;
-		if ( !(a->prop & VARPOWEROFF) && a->modemove != MODEDIE )
+		if (!(a->prop & VARPOWEROFF) && a->modemove != MODEDIE)
 		{
 			if (!IsOBJUnderConstruct(a))
 				if (RequiresPylonEnergy(a->SC_Unit))
 				{
-					nrofpower=0;
-					xp = (GetOBJx(a) - GetUnitWidthAndHeight(a->SC_Unit,UNITDIM_WIDTH)/2)/SIZESPRLANSHX;
-					yp = (GetOBJy(a) - GetUnitWidthAndHeight(a->SC_Unit,UNITDIM_HEIGHT)/2)/SIZESPRLANSHY;
-					xs = GetUnitWidthAndHeight(a->SC_Unit,UNITDIM_WIDTH)/SIZESPRLANSHX;
-					ys = GetUnitWidthAndHeight(a->SC_Unit,UNITDIM_HEIGHT)/SIZESPRLANSHY;
-					for (i=0;i<ys;i++)
-						for (j=0;j<xs;j++)
-						if (pylonarea[(i+yp)*MAXXMAP+j+xp])
-							nrofpower++;
-					if (nrofpower < xs*ys/2)
+					nrofpower = 0;
+					xp = (GetOBJx(a) - GetUnitWidthAndHeight(a->SC_Unit, UNITDIM_WIDTH) / 2) / SIZESPRLANSHX;
+					yp = (GetOBJy(a) - GetUnitWidthAndHeight(a->SC_Unit, UNITDIM_HEIGHT) / 2) / SIZESPRLANSHY;
+					xs = GetUnitWidthAndHeight(a->SC_Unit, UNITDIM_WIDTH) / SIZESPRLANSHX;
+					ys = GetUnitWidthAndHeight(a->SC_Unit, UNITDIM_HEIGHT) / SIZESPRLANSHY;
+					for (i = 0;i < ys;i++)
+						for (j = 0;j < xs;j++)
+							if (pylonarea[(i + yp)*MAXXMAP + j + xp])
+								nrofpower++;
+					if (nrofpower < xs*ys / 2)
 					{
 						if (gameconf.audioconf.buildsounds && a->playernr == NUMBGAMER)
-							Play_sfxdata_id(a,sfx_powerdown[PROTOSSRACE],2,0);
-						moveobj(a,NULL,MODEPOWEROFF,NOSHOWERROR);
+							Play_sfxdata_id(a, sfx_powerdown[PROTOSSRACE], 2, 0);
+						moveobj(a, NULL, MODEPOWEROFF, NOSHOWERROR);
 					}
 				}
 		}
 	}
 }
 //=================================
-void CheckBuildForPower(struct mapinfo *mymap,OBJ *a,int playernr)
+void CheckBuildForPower(struct mapinfo *mymap, OBJ *a, int playernr)
 {
-	int i,j,nrofpower,xp,yp,xs,ys;
-	unsigned char *parea=mymap->pylonarea[playernr];
+	int i, j, nrofpower, xp, yp, xs, ys;
+	unsigned char *parea = mymap->pylonarea[playernr];
 	if (!parea)
-		parea = CreatePylonAreaArray(mymap,playernr);
-	if (IsReadyOBJ(a) && !(a->modemove & MODEDIE) )
+		parea = CreatePylonAreaArray(mymap, playernr);
+	if (IsReadyOBJ(a) && !(a->modemove & MODEDIE))
 		if (RequiresPylonEnergy(a->SC_Unit))
 		{
 			nrofpower = 0;
-			xp = (GetOBJx(a) - GetUnitWidthAndHeight(a->SC_Unit,UNITDIM_WIDTH)/2)/SIZESPRLANSHX;
-			yp = (GetOBJy(a) - GetUnitWidthAndHeight(a->SC_Unit,UNITDIM_HEIGHT)/2)/SIZESPRLANSHY;
-			xs = GetUnitWidthAndHeight(a->SC_Unit,UNITDIM_WIDTH)/SIZESPRLANSHX;
-			ys = GetUnitWidthAndHeight(a->SC_Unit,UNITDIM_HEIGHT)/SIZESPRLANSHY;
-			for (i=0;i<ys;i++)
-				for (j=0;j<xs;j++)
-					if (parea[(i+yp)*MAXXMAP+j+xp])
+			xp = (GetOBJx(a) - GetUnitWidthAndHeight(a->SC_Unit, UNITDIM_WIDTH) / 2) / SIZESPRLANSHX;
+			yp = (GetOBJy(a) - GetUnitWidthAndHeight(a->SC_Unit, UNITDIM_HEIGHT) / 2) / SIZESPRLANSHY;
+			xs = GetUnitWidthAndHeight(a->SC_Unit, UNITDIM_WIDTH) / SIZESPRLANSHX;
+			ys = GetUnitWidthAndHeight(a->SC_Unit, UNITDIM_HEIGHT) / SIZESPRLANSHY;
+			for (i = 0;i < ys;i++)
+				for (j = 0;j < xs;j++)
+					if (parea[(i + yp)*MAXXMAP + j + xp])
 						nrofpower++;
-			if (nrofpower < xs*ys/2)
+			if (nrofpower < xs*ys / 2)
 			{
-				moveobj(a,NULL,MODEPOWEROFF,NOSHOWERROR);
+				moveobj(a, NULL, MODEPOWEROFF, NOSHOWERROR);
 			}
 			else
 			{
-				moveobj(a,NULL,MODEPOWERON,NOSHOWERROR);
+				moveobj(a, NULL, MODEPOWERON, NOSHOWERROR);
 			}
 		}
 }
@@ -207,12 +207,12 @@ void CheckProtossBuildsForPower(struct mapinfo *mymap)
 {
 	int i;
 	unsigned char *parea;
-	for (i=0;i<PLAYEDPLAYERS;i++)
+	for (i = 0;i < PLAYEDPLAYERS;i++)
 	{
-		parea=mymap->pylonarea[i];
+		parea = mymap->pylonarea[i];
 		if (!parea)
-			parea=CreatePylonAreaArray(mymap,i);
-		DelBuildsFromPower(parea,i);
+			parea = CreatePylonAreaArray(mymap, i);
+		DelBuildsFromPower(parea, i);
 	}
 }
 //=================================

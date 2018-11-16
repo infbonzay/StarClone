@@ -13,7 +13,7 @@ mycycle<T>::mycycle(int elems, int flg)
 		flags = flg;
 		totalelem = elems;
 		this->Flush();
-		elements = (T *) wmalloc (elems * sizeof( T ));
+		elements = (T *)wmalloc(elems * sizeof(T));
 	}
 }
 //=========================================
@@ -35,9 +35,9 @@ void mycycle<T>::Flush(void)
 template <typename T>
 int mycycle<T>::PushElem(T elem)
 {
-	if ( (flags & MYCYCLE_STOPTHENFULL) && IsFull())
+	if ((flags & MYCYCLE_STOPTHENFULL) && IsFull())
 		return MYCYCLE_FAILED;
-		
+
 	elements[firstelem++] = elem;
 	if (firstelem >= totalelem)
 		firstelem = 0;

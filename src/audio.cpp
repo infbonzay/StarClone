@@ -1,5 +1,6 @@
 
 #include <math.h>
+#include <string.h>
 
 #include "wmem.h"
 #include "mpqwrapper.h"
@@ -343,26 +344,26 @@ int activatesound(struct OBJ *a,int soundmode,int addfactor,int stopprevsound)
 	}
 	if (!needsong)
 		return -1;
-	switch(addfactor)
+	switch (addfactor)
 	{
-		case 1:
-			if (!a->sfxplay.nextmusicplay && a->sfxplay.nrofmusicsplayed)
-			{
-				//need to prevent to play same sound :)
-				if (soundmode == a->sfxplay.sfxtypeplayed)
-					return -1;
-				a->sfxplay.nextmusicplay = soundmode+1;
+	case 1:
+		if (!a->sfxplay.nextmusicplay && a->sfxplay.nrofmusicsplayed)
+		{
+			//need to prevent to play same sound :)
+			if (soundmode == a->sfxplay.sfxtypeplayed)
 				return -1;
-			}
-			break;
-		case 2:
-			repeatedsongs = -1;
-			break;
-		case 3:
-			repeatedsongs = 1;
-			break;
-		default:
-			break;
+			a->sfxplay.nextmusicplay = soundmode + 1;
+			return -1;
+		}
+		break;
+	case 2:
+		repeatedsongs = -1;
+		break;
+	case 3:
+		repeatedsongs = 1;
+		break;
+	default:
+		break;
 	}
 	if (a->sfxplay.sfxtypeplayed != soundmode && a->sfxplay.sfxtypeplayed != MODESOUNDPSS)
 	{
@@ -445,37 +446,37 @@ int activatesound(struct OBJ *a,int soundmode,int addfactor,int stopprevsound)
 //==============================================
 void getsoundIDfromunitdat(SCUNIT SC_Unit,int soundmode,short *from,short *to)
 {
-	switch(soundmode)
+	switch (soundmode)
 	{
-		case MODESOUNDREADY:
-			if (SC_Unit < MAX_UNITS_ELEM2)
-			{
-				*from = alldattbl.units_dat->ReadySound[SC_Unit];
-				*to = alldattbl.units_dat->ReadySound[SC_Unit];
-				return;
-			}
-			break;
-		case MODESOUNDACTION:
-			if (SC_Unit < MAX_UNITS_ELEM2)
-			{
-				*from = alldattbl.units_dat->YesSoundStart[SC_Unit];
-				*to = alldattbl.units_dat->YesSoundEnd[SC_Unit];
-				return;
-			}
-			break;
-		case MODESOUNDSELECT:
-			*from = alldattbl.units_dat->WhatSoundStart[SC_Unit];
-			*to = alldattbl.units_dat->WhatSoundEnd[SC_Unit];
+	case MODESOUNDREADY:
+		if (SC_Unit < MAX_UNITS_ELEM2)
+		{
+			*from = alldattbl.units_dat->ReadySound[SC_Unit];
+			*to = alldattbl.units_dat->ReadySound[SC_Unit];
 			return;
-			break;
-		case MODESOUNDPSS:
-			if (SC_Unit < MAX_UNITS_ELEM2)
-			{
-				*from = alldattbl.units_dat->PissSoundStart[SC_Unit];
-				*to = alldattbl.units_dat->PissSoundEnd[SC_Unit];
-				return;
-			}
-			break;
+		}
+		break;
+	case MODESOUNDACTION:
+		if (SC_Unit < MAX_UNITS_ELEM2)
+		{
+			*from = alldattbl.units_dat->YesSoundStart[SC_Unit];
+			*to = alldattbl.units_dat->YesSoundEnd[SC_Unit];
+			return;
+		}
+		break;
+	case MODESOUNDSELECT:
+		*from = alldattbl.units_dat->WhatSoundStart[SC_Unit];
+		*to = alldattbl.units_dat->WhatSoundEnd[SC_Unit];
+		return;
+		break;
+	case MODESOUNDPSS:
+		if (SC_Unit < MAX_UNITS_ELEM2)
+		{
+			*from = alldattbl.units_dat->PissSoundStart[SC_Unit];
+			*to = alldattbl.units_dat->PissSoundEnd[SC_Unit];
+			return;
+		}
+		break;
 	}
 	*from = 0;
 	*to = 0;

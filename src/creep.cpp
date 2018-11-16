@@ -116,19 +116,19 @@ int CREEPAROUND[9][2]={
 						{-1, 1},{ 0, 1},{ 1, 1}
 };
 //===========================================
-int GetCreepAroundWithFog(int x,int y,int indextile32)
+int GetCreepAroundWithFog(int x, int y, int indextile32)
 {
 	signed char creepnr;
-	int mycreepbits=0,creepbits=0,newx,newy;
-	for (int i=0;i<9;i++)
+	int mycreepbits = 0, creepbits = 0, newx, newy;
+	for (int i = 0;i < 9;i++)
 	{
-		newx=x+CREEPAROUND[i][0];
-		newy=y+CREEPAROUND[i][1];
-		if (CHECKFORMAPBORDERS(newx,newy))
+		newx = x + CREEPAROUND[i][0];
+		newy = y + CREEPAROUND[i][1];
+		if (CHECKFORMAPBORDERS(newx, newy))
 			continue;
-		if (mapSEE(newx,newy) > 1)
+		if (mapSEE(newx, newy) > 1)
 		{
-			if (map.creepflagplace[newy*MAXXMAP+newx] >= 1)
+			if (map.creepflagplace[newy*MAXXMAP + newx] >= 1)
 			{
 				creepbits |= allcreepbits[i];
 				mycreepbits++;
@@ -136,9 +136,9 @@ int GetCreepAroundWithFog(int x,int y,int indextile32)
 		}
 		else
 		{
-			if (mapOPEN(newx,newy) > 1)
+			if (mapOPEN(newx, newy) > 1)
 			{
-				if (map.mapbits.savedcreep[NUMBGAMER]&&map.mapbits.savedcreep[NUMBGAMER][newy*MAXXMAP+newx] >= 1)
+				if (map.mapbits.savedcreep[NUMBGAMER] && map.mapbits.savedcreep[NUMBGAMER][newy*MAXXMAP + newx] >= 1)
 				{
 					creepbits |= allcreepbits[i];
 					mycreepbits++;
@@ -146,48 +146,48 @@ int GetCreepAroundWithFog(int x,int y,int indextile32)
 			}
 		}
 	}
-	creepnr=AllCreep[creepbits];
-	if (creepnr>=MAXCREEPNR)
+	creepnr = AllCreep[creepbits];
+	if (creepnr >= MAXCREEPNR)
 	{
 		if (map.creeptilecnt)
 		{
-			creepnr = MAXCREEPNR+indextile32%map.creeptilecnt;
+			creepnr = MAXCREEPNR + indextile32 % map.creeptilecnt;
 		}
 		else
-			creepnr = MAXCREEPNR-1;
+			creepnr = MAXCREEPNR - 1;
 	}
 	return(creepnr);
 }
 //===========================================
-int GetCreepNr(int x,int y,int *myret)
+int GetCreepNr(int x, int y, int *myret)
 {
 	signed char creepnr;
-	int mycreepbits=0,creepbits=0,newx,newy;
-	for (int i=0;i<9;i++)
+	int mycreepbits = 0, creepbits = 0, newx, newy;
+	for (int i = 0;i < 9;i++)
 	{
-		newx=x+CREEPAROUND[i][0];
-		newy=y+CREEPAROUND[i][1];
-		if (CHECKFORMAPBORDERS(newx,newy))
+		newx = x + CREEPAROUND[i][0];
+		newy = y + CREEPAROUND[i][1];
+		if (CHECKFORMAPBORDERS(newx, newy))
 			continue;
-//		if (newx<0||newy<0||newx>=MAXXMAP||newy>=MAXYMAP)
-//			continue;
-		if (map.creepflagplace[newy*MAXXMAP+newx]>=1)
+		//		if (newx<0||newy<0||newx>=MAXXMAP||newy>=MAXYMAP)
+		//			continue;
+		if (map.creepflagplace[newy*MAXXMAP + newx] >= 1)
 		{
 			creepbits |= allcreepbits[i];
 			mycreepbits++;
 		}
 	}
 	if (myret)
-		*myret=mycreepbits;
-	creepnr=AllCreep[creepbits];
-	if (creepnr>=MAXCREEPNR)
+		*myret = mycreepbits;
+	creepnr = AllCreep[creepbits];
+	if (creepnr >= MAXCREEPNR)
 	{
 		if (map.creeptilecnt)
 		{
-			creepnr = MAXCREEPNR+map.display_map[y*MAXXMAP+x]%map.creeptilecnt;
+			creepnr = MAXCREEPNR + map.display_map[y*MAXXMAP + x] % map.creeptilecnt;
 		}
 		else
-			creepnr = MAXCREEPNR-1;
+			creepnr = MAXCREEPNR - 1;
 	}
 	return(creepnr);
 }
@@ -255,243 +255,243 @@ void EmptyAllCreeps(void)
 		}
 }
 //===========================================
-void FillWithCreepNowByTable(struct OBJ *a,struct OBJstruct *b,int tabletype)
+void FillWithCreepNowByTable(struct OBJ *a, struct OBJstruct *b, int tabletype)
 {
 	CreepAddRemoveTables *tempcreeptable;
 	signed char *creeptable;
-	int i,x,y,deltax,deltay,creepbits,maxcreeps;
-	if (tabletype==BEGINCREEPTABLE)
+	int i, x, y, deltax, deltay, creepbits, maxcreeps;
+	if (tabletype == BEGINCREEPTABLE)
 	{
-		if (b->creeptype==CREEPBUILDTYPE0)
+		if (b->creeptype == CREEPBUILDTYPE0)
 		{
-			creeptable=begincreeptable0;
-			maxcreeps=BEGINCREEPTABLE0;
+			creeptable = begincreeptable0;
+			maxcreeps = BEGINCREEPTABLE0;
 		}
 		else
 		{
-			creeptable=begincreeptable1;
-			maxcreeps=BEGINCREEPTABLE1;
+			creeptable = begincreeptable1;
+			maxcreeps = BEGINCREEPTABLE1;
 		}
 	}
 	else
 	{
-		if (b->creeptype==CREEPBUILDTYPE0)
+		if (b->creeptype == CREEPBUILDTYPE0)
 		{
-			creeptable=maxcreeptable0;
-			maxcreeps=MAXCREEPTABLE0;
+			creeptable = maxcreeptable0;
+			maxcreeps = MAXCREEPTABLE0;
 		}
 		else
 		{
-			creeptable=maxcreeptable1;
-			maxcreeps=MAXCREEPTABLE1;
+			creeptable = maxcreeptable1;
+			maxcreeps = MAXCREEPTABLE1;
 		}
 	}
-	if (a->creepbuildlist_ID!=CREEPLISTEMPTY)
-		tempcreeptable=(CreepAddRemoveTables *)creepbuilds.GetElemNr(a->creepbuildlist_ID);
+	if (a->creepbuildlist_ID != CREEPLISTEMPTY)
+		tempcreeptable = (CreepAddRemoveTables *)creepbuilds.GetElemNr(a->creepbuildlist_ID);
 	else
-		tempcreeptable=NULL;
-	for (i=0;i<maxcreeps;i++)
+		tempcreeptable = NULL;
+	for (i = 0;i < maxcreeps;i++)
 	{
-		deltax=creeptable[i*2+0];
-		x=a->xkart+deltax;
-		if (x>=MAXXMAP||x<0)
+		deltax = creeptable[i * 2 + 0];
+		x = a->xkart + deltax;
+		if (x >= MAXXMAP || x < 0)
 			continue;
-		deltay=creeptable[i*2+1];
-		y=a->ykart+deltay;
-		if (y>=MAXYMAP||y<0)
+		deltay = creeptable[i * 2 + 1];
+		y = a->ykart + deltay;
+		if (y >= MAXYMAP || y < 0)
 			continue;
-		GetCreepNr(x,y,&creepbits);
+		GetCreepNr(x, y, &creepbits);
 		if (creepbits)
-			if (SetCreep(x,y))//if not placed creep need to memorize to creep later
+			if (SetCreep(x, y))//if not placed creep need to memorize to creep later
 			{
 				if (tempcreeptable)
-					AddToFilledCreepTable(tempcreeptable,deltax,deltay);
+					AddToFilledCreepTable(tempcreeptable, deltax, deltay);
 				continue;
 			}
 		if (tempcreeptable)
-			AddToNeededCreepTable(tempcreeptable,deltax,deltay);//add to creep later
+			AddToNeededCreepTable(tempcreeptable, deltax, deltay);//add to creep later
 	}
 }
 //===========================================
-void FillWithCreepTimedByTable(struct OBJ *a,struct OBJstruct *b,int tabletype,int creeplater)
+void FillWithCreepTimedByTable(struct OBJ *a, struct OBJstruct *b, int tabletype, int creeplater)
 {
 	CreepAddRemoveTables *tempcreeptable;
 	signed char *creeptable;
-	int i,x,y,deltax,deltay,maxcreeps;
-	if (tabletype==BEGINCREEPTABLE)
+	int i, x, y, deltax, deltay, maxcreeps;
+	if (tabletype == BEGINCREEPTABLE)
 	{
-		if (b->creeptype==CREEPBUILDTYPE0)
+		if (b->creeptype == CREEPBUILDTYPE0)
 		{
-			creeptable=begincreeptable0;
-			maxcreeps=BEGINCREEPTABLE0;
+			creeptable = begincreeptable0;
+			maxcreeps = BEGINCREEPTABLE0;
 		}
 		else
 		{
-			creeptable=begincreeptable1;
-			maxcreeps=BEGINCREEPTABLE1;
+			creeptable = begincreeptable1;
+			maxcreeps = BEGINCREEPTABLE1;
 		}
 	}
 	else
 	{
-		if (b->creeptype==CREEPBUILDTYPE0)
+		if (b->creeptype == CREEPBUILDTYPE0)
 		{
-			creeptable=maxcreeptable0;
-			maxcreeps=MAXCREEPTABLE0;
+			creeptable = maxcreeptable0;
+			maxcreeps = MAXCREEPTABLE0;
 		}
 		else
 		{
-			creeptable=maxcreeptable1;
-			maxcreeps=MAXCREEPTABLE1;
+			creeptable = maxcreeptable1;
+			maxcreeps = MAXCREEPTABLE1;
 		}
 	}
-	if (a->creepbuildlist_ID!=CREEPLISTEMPTY)
-		tempcreeptable=(CreepAddRemoveTables *)creepbuilds.GetElemNr(a->creepbuildlist_ID);
+	if (a->creepbuildlist_ID != CREEPLISTEMPTY)
+		tempcreeptable = (CreepAddRemoveTables *)creepbuilds.GetElemNr(a->creepbuildlist_ID);
 	else
-		tempcreeptable=NULL;
-	for (i=0;i<maxcreeps;i++)
+		tempcreeptable = NULL;
+	for (i = 0;i < maxcreeps;i++)
 	{
-		deltax=creeptable[i*2+0];
-		x=a->xkart+deltax;
-		if (x>=MAXXMAP||x<0)
+		deltax = creeptable[i * 2 + 0];
+		x = a->xkart + deltax;
+		if (x >= MAXXMAP || x < 0)
 			continue;
-		deltay=creeptable[i*2+1];
-		y=a->ykart+deltay;
-		if (y>=MAXYMAP||y<0)
+		deltay = creeptable[i * 2 + 1];
+		y = a->ykart + deltay;
+		if (y >= MAXYMAP || y < 0)
 			continue;
-		AddCreep(x,y);
-		if (creeplater==WITHCREEPLATER&&tempcreeptable)
-			AddToNeededCreepTable(tempcreeptable,deltax,deltay);//add to creep later
+		AddCreep(x, y);
+		if (creeplater == WITHCREEPLATER && tempcreeptable)
+			AddToNeededCreepTable(tempcreeptable, deltax, deltay);//add to creep later
 	}
 }
 //===========================================
 //main function to create creep
 //===========================================
-void FillWithCreepNow(struct OBJ *a,struct OBJstruct *b,int tabletype)
+void FillWithCreepNow(struct OBJ *a, struct OBJstruct *b, int tabletype)
 {
 	ForceKartChanges(a);
 
-	AddOBJCreepTable(a,b->creeptype,tabletype);//create creep arrays
+	AddOBJCreepTable(a, b->creeptype, tabletype);//create creep arrays
 	FillWithCreepUnderBuild(a);
-	if (b->creeptype!=CREEPUNDERBUILD)
+	if (b->creeptype != CREEPUNDERBUILD)
 	{
-		FillWithCreepNowByTable(a,b,BEGINCREEPTABLE);
-		FillWithCreepTimedByTable(a,b,BEGINCREEPTABLE,NOCREEPLATER);
-		if (tabletype==MAXCREEPTABLE)
+		FillWithCreepNowByTable(a, b, BEGINCREEPTABLE);
+		FillWithCreepTimedByTable(a, b, BEGINCREEPTABLE, NOCREEPLATER);
+		if (tabletype == MAXCREEPTABLE)
 		{
-			FillWithCreepNowByTable(a,b,MAXCREEPTABLE);
-			FillWithCreepTimedByTable(a,b,MAXCREEPTABLE,NOCREEPLATER);
+			FillWithCreepNowByTable(a, b, MAXCREEPTABLE);
+			FillWithCreepTimedByTable(a, b, MAXCREEPTABLE, NOCREEPLATER);
 		}
 		else
 		{
-			FillWithCreepTimedByTable(a,b,MAXCREEPTABLE,WITHCREEPLATER);
+			FillWithCreepTimedByTable(a, b, MAXCREEPTABLE, WITHCREEPLATER);
 		}
 	}
 }
 //===========================================
-void EmptyCreepTimedByTable(struct OBJ *a,struct OBJstruct *b,int tabletype)
+void EmptyCreepTimedByTable(struct OBJ *a, struct OBJstruct *b, int tabletype)
 {
 	signed char *creeptable;
-	int i,x,y,deltax,deltay,maxcreeps;
-	if (tabletype==BEGINCREEPTABLE)
+	int i, x, y, deltax, deltay, maxcreeps;
+	if (tabletype == BEGINCREEPTABLE)
 	{
-		if (b->creeptype==CREEPBUILDTYPE0)
+		if (b->creeptype == CREEPBUILDTYPE0)
 		{
-			creeptable=begincreeptable0;
-			maxcreeps=BEGINCREEPTABLE0;
+			creeptable = begincreeptable0;
+			maxcreeps = BEGINCREEPTABLE0;
 		}
 		else
 		{
-			creeptable=begincreeptable1;
-			maxcreeps=BEGINCREEPTABLE1;
+			creeptable = begincreeptable1;
+			maxcreeps = BEGINCREEPTABLE1;
 		}
 	}
 	else
 	{
-		if (b->creeptype==CREEPBUILDTYPE0)
+		if (b->creeptype == CREEPBUILDTYPE0)
 		{
-			creeptable=maxcreeptable0;
-			maxcreeps=MAXCREEPTABLE0;
+			creeptable = maxcreeptable0;
+			maxcreeps = MAXCREEPTABLE0;
 		}
 		else
 		{
-			creeptable=maxcreeptable1;
-			maxcreeps=MAXCREEPTABLE1;
+			creeptable = maxcreeptable1;
+			maxcreeps = MAXCREEPTABLE1;
 		}
 	}
-	for (i=0;i<maxcreeps;i++)
+	for (i = 0;i < maxcreeps;i++)
 	{
-		deltax=creeptable[i*2+0];
-		x=a->xkart+deltax;
-		if (x>=MAXXMAP||x<0)
+		deltax = creeptable[i * 2 + 0];
+		x = a->xkart + deltax;
+		if (x >= MAXXMAP || x < 0)
 			continue;
-		deltay=creeptable[i*2+1];
-		y=a->ykart+deltay;
-		if (y>=MAXYMAP||y<0)
+		deltay = creeptable[i * 2 + 1];
+		y = a->ykart + deltay;
+		if (y >= MAXYMAP || y < 0)
 			continue;
-		RemoveCreep(x,y);
+		RemoveCreep(x, y);
 	}
 }
 //===========================================
 //main function to remove creep
 //===========================================
-void EmptyCreepTimed(struct OBJ *a,struct OBJstruct *b)
+void EmptyCreepTimed(struct OBJ *a, struct OBJstruct *b)
 {
 	CreepAddRemoveTables *creeptable;
 	ForceKartChanges(a);
-	if (b->creeptype==CREEPUNDERBUILD)
+	if (b->creeptype == CREEPUNDERBUILD)
 	{
-		EmptyCreepUnderBuild(a,AFTERREMOVECLEARCREEP);
+		EmptyCreepUnderBuild(a, AFTERREMOVECLEARCREEP);
 	}
 	else
 	{
-		EmptyCreepUnderBuild(a,AFTERREMOVENOCLEARCREEP);
-		EmptyCreepTimedByTable(a,b,BEGINCREEPTABLE);
-		EmptyCreepTimedByTable(a,b,MAXCREEPTABLE);
+		EmptyCreepUnderBuild(a, AFTERREMOVENOCLEARCREEP);
+		EmptyCreepTimedByTable(a, b, BEGINCREEPTABLE);
+		EmptyCreepTimedByTable(a, b, MAXCREEPTABLE);
 	}
-	if (a->creepbuildlist_ID!=CREEPLISTEMPTY)
+	if (a->creepbuildlist_ID != CREEPLISTEMPTY)
 	{
-		creeptable=(CreepAddRemoveTables *)creepbuilds.GetElemNr(a->creepbuildlist_ID);
-		creeptable->growthcreepflag&=~FLAG_CREEP_INCREASE;
+		creeptable = (CreepAddRemoveTables *)creepbuilds.GetElemNr(a->creepbuildlist_ID);
+		creeptable->growthcreepflag &= ~FLAG_CREEP_INCREASE;
 	}
 }
 //===========================================
 void FillWithCreepUnderBuild(struct OBJ *a)
 {
-	int i,j,xp,yp,szx,szy;
+	int i, j, xp, yp, szx, szy;
 	CreepAddRemoveTables *tempcreeptable;
 	ForceKartChanges(a);
-	szx = GetUnitWidthAndHeight(a->SC_Unit,UNITDIM_WIDTH)/SIZESPRLANSHX;
-	szy = GetUnitWidthAndHeight(a->SC_Unit,UNITDIM_HEIGHT)/SIZESPRLANSHY;
-	xp=a->xkart-szx/2;
-	yp=a->ykart-szy/2;
-	if (a->creepbuildlist_ID!=CREEPLISTEMPTY)
-		tempcreeptable=(CreepAddRemoveTables *)creepbuilds.GetElemNr(a->creepbuildlist_ID);
+	szx = GetUnitWidthAndHeight(a->SC_Unit, UNITDIM_WIDTH) / SIZESPRLANSHX;
+	szy = GetUnitWidthAndHeight(a->SC_Unit, UNITDIM_HEIGHT) / SIZESPRLANSHY;
+	xp = a->xkart - szx / 2;
+	yp = a->ykart - szy / 2;
+	if (a->creepbuildlist_ID != CREEPLISTEMPTY)
+		tempcreeptable = (CreepAddRemoveTables *)creepbuilds.GetElemNr(a->creepbuildlist_ID);
 	else
-		tempcreeptable=NULL;
-	for (i=0;i<szy;i++)
-		for (j=0;j<szx;j++)
+		tempcreeptable = NULL;
+	for (i = 0;i < szy;i++)
+		for (j = 0;j < szx;j++)
 		{
-			SetCreepNoCheck(xp+j,yp+i);					//set tile to be creeped
+			SetCreepNoCheck(xp + j, yp + i);					//set tile to be creeped
 			if (tempcreeptable)
-				AddToFilledCreepTable(tempcreeptable,j-szx/2,i-szy/2);	//fill table for future uncreep
-			AddCreepNoCheck(xp+j,yp+i);					//add creep value)
+				AddToFilledCreepTable(tempcreeptable, j - szx / 2, i - szy / 2);	//fill table for future uncreep
+			AddCreepNoCheck(xp + j, yp + i);					//add creep value)
 		}
 }
 //===========================================
-void EmptyCreepUnderBuild(struct OBJ *a,int clearcreepflag)
+void EmptyCreepUnderBuild(struct OBJ *a, int clearcreepflag)
 {
-	int i,j,xp,yp,szx,szy;
+	int i, j, xp, yp, szx, szy;
 	ForceKartChanges(a);
-	szx = GetUnitWidthAndHeight(a->SC_Unit,UNITDIM_WIDTH)/SIZESPRLANSHX;
-	szy = GetUnitWidthAndHeight(a->SC_Unit,UNITDIM_HEIGHT)/SIZESPRLANSHY;
-	xp=a->xkart-szx/2;
-	yp=a->ykart-szy/2;
-	for (i=0;i<szy;i++)
-		for (j=0;j<szx;j++)
+	szx = GetUnitWidthAndHeight(a->SC_Unit, UNITDIM_WIDTH) / SIZESPRLANSHX;
+	szy = GetUnitWidthAndHeight(a->SC_Unit, UNITDIM_HEIGHT) / SIZESPRLANSHY;
+	xp = a->xkart - szx / 2;
+	yp = a->ykart - szy / 2;
+	for (i = 0;i < szy;i++)
+		for (j = 0;j < szx;j++)
 		{
-			if (!RemoveCreepNoCheck(xp+j,yp+i))
+			if (!RemoveCreepNoCheck(xp + j, yp + i))
 				if (clearcreepflag)
-					ClearCreepNoCheck(xp+j,yp+i);
+					ClearCreepNoCheck(xp + j, yp + i);
 		}
 }
 //===========================================
@@ -517,116 +517,116 @@ void EmptyOneElemInArray(signed char *myarray,int elemnr,unsigned char *maxelem)
 	*maxelem=*maxelem-1;
 }
 //===========================================
-void AddOBJCreepTable(OBJ *a,int typecreep,int table)
+void AddOBJCreepTable(OBJ *a, int typecreep, int table)
 {
-	int maxnrofcreep=0;
+	int maxnrofcreep = 0;
 	CreepAddRemoveTables *creeptable;
-	if (a->creepbuildlist_ID==CREEPLISTEMPTY)
+	if (a->creepbuildlist_ID == CREEPLISTEMPTY)
 	{
-		creeptable=(CreepAddRemoveTables *)wmalloc(sizeof(CreepAddRemoveTables));
-		memset(creeptable,0,sizeof(CreepAddRemoveTables));
-		switch(typecreep)
+		creeptable = (CreepAddRemoveTables *)wmalloc(sizeof(CreepAddRemoveTables));
+		memset(creeptable, 0, sizeof(CreepAddRemoveTables));
+		switch (typecreep)
 		{
-			case CREEPBUILDTYPE0:
-				maxnrofcreep=MAXCREEPTABLE0+BEGINCREEPTABLE0;
-				creeptable->growthcreepflag|=FLAG_CREEP_TABLEID0;
-				if (table!=MAXCREEPTABLE)
-					creeptable->growthcreepflag|=FLAG_CREEP_INCREASE;
-				break;
-			case CREEPBUILDTYPE1:
-				maxnrofcreep=MAXCREEPTABLE1+BEGINCREEPTABLE1;
-				creeptable->growthcreepflag|=FLAG_CREEP_TABLEID1;
-				if (table!=MAXCREEPTABLE)
-					creeptable->growthcreepflag|=FLAG_CREEP_INCREASE;
-				break;
-			case CREEPUNDERBUILD:
-				break;
+		case CREEPBUILDTYPE0:
+			maxnrofcreep = MAXCREEPTABLE0 + BEGINCREEPTABLE0;
+			creeptable->growthcreepflag |= FLAG_CREEP_TABLEID0;
+			if (table != MAXCREEPTABLE)
+				creeptable->growthcreepflag |= FLAG_CREEP_INCREASE;
+			break;
+		case CREEPBUILDTYPE1:
+			maxnrofcreep = MAXCREEPTABLE1 + BEGINCREEPTABLE1;
+			creeptable->growthcreepflag |= FLAG_CREEP_TABLEID1;
+			if (table != MAXCREEPTABLE)
+				creeptable->growthcreepflag |= FLAG_CREEP_INCREASE;
+			break;
+		case CREEPUNDERBUILD:
+			break;
 		}
-		creeptable->xpos=a->xkart;
-		creeptable->ypos=a->ykart;
-		creeptable->creepinfo=(signed char *)wmalloc((maxnrofcreep+4*4)*2);
-		creeptable->needcreepinfo=(signed char *)wmalloc((maxnrofcreep+4*4)*2);
-		a->creepbuildlist_ID=creepbuilds.AddList(creeptable);
+		creeptable->xpos = a->xkart;
+		creeptable->ypos = a->ykart;
+		creeptable->creepinfo = (signed char *)wmalloc((maxnrofcreep + 4 * 4) * 2);
+		creeptable->needcreepinfo = (signed char *)wmalloc((maxnrofcreep + 4 * 4) * 2);
+		a->creepbuildlist_ID = creepbuilds.AddList(creeptable);
 	}
 }
 //===========================================
 void IncreaseCreep(void)
 {
-	int j,x,y;
-	int creepbits,allempty,creepnr,place,need;
-	signed char deltax,deltay;
+	int j, x, y;
+	int creepbits, allempty, creepnr, place, need;
+	signed char deltax, deltay;
 	CreepAddRemoveTables *tempcreeptable;
 	creepbuilds.EnumListInit();
-	while( (tempcreeptable=(CreepAddRemoveTables *)creepbuilds.GetNextListElem()) )
+	while ((tempcreeptable = (CreepAddRemoveTables *)creepbuilds.GetNextListElem()))
 	{
-			if (tempcreeptable->growthcreepflag&FLAG_CREEP_INCREASE)
+		if (tempcreeptable->growthcreepflag&FLAG_CREEP_INCREASE)
+		{
+			allempty = 0;
+			for (j = 0;j < tempcreeptable->remaintogrowth;j++)
 			{
-				allempty=0;
-				for (j=0;j<tempcreeptable->remaintogrowth;j++)
+				deltax = tempcreeptable->needcreepinfo[j * 2 + 0];
+				if (deltax == CREEPNEEDTABLEEMPTYFLAG)
 				{
-					deltax=tempcreeptable->needcreepinfo[j*2+0];
-					if (deltax==CREEPNEEDTABLEEMPTYFLAG)
-					{
-						allempty++;
-						continue;
-					}
-					deltay=tempcreeptable->needcreepinfo[j*2+1];
-					x = tempcreeptable->xpos+deltax;
-					y = tempcreeptable->ypos+deltay;
-					creepnr=GetCreepNr(x,y,&creepbits);
-					if (creepnr != NOCREEPNR)
-					{
-						place = map.creepflagplace[y*MAXXMAP+x];
-						need  = map.creepflagneeded[y*MAXXMAP+x];
-						if ((!place)&&need)
-							if (SetCreep(x,y))
-							{
-								AddToFilledCreepTable(tempcreeptable,deltax,deltay);
-								EmptyOneElemInArray(tempcreeptable->needcreepinfo,j,&tempcreeptable->remaintogrowth);
-								break;
-							}
-					}
+					allempty++;
+					continue;
 				}
-				if (allempty==tempcreeptable->remaintogrowth)
-					tempcreeptable->remaintogrowth=0;//no need to growth any more
+				deltay = tempcreeptable->needcreepinfo[j * 2 + 1];
+				x = tempcreeptable->xpos + deltax;
+				y = tempcreeptable->ypos + deltay;
+				creepnr = GetCreepNr(x, y, &creepbits);
+				if (creepnr != NOCREEPNR)
+				{
+					place = map.creepflagplace[y*MAXXMAP + x];
+					need = map.creepflagneeded[y*MAXXMAP + x];
+					if ((!place) && need)
+						if (SetCreep(x, y))
+						{
+							AddToFilledCreepTable(tempcreeptable, deltax, deltay);
+							EmptyOneElemInArray(tempcreeptable->needcreepinfo, j, &tempcreeptable->remaintogrowth);
+							break;
+						}
+				}
 			}
+			if (allempty == tempcreeptable->remaintogrowth)
+				tempcreeptable->remaintogrowth = 0;//no need to growth any more
+		}
 	}
 }
 //===========================================
 void DecreaseCreep(void)
 {
-	int j,x,y;
-	int creepbits,place,need;
-	signed char deltax,deltay;
+	int j, x, y;
+	int creepbits, place, need;
+	signed char deltax, deltay;
 	CreepAddRemoveTables *tempcreeptable;
 	creepbuilds.EnumListInit();
-	while( (tempcreeptable=(CreepAddRemoveTables *)creepbuilds.GetNextListElem()) )
+	while ((tempcreeptable = (CreepAddRemoveTables *)creepbuilds.GetNextListElem()))
 	{
-			if (!(tempcreeptable->growthcreepflag&FLAG_CREEP_INCREASE))
+		if (!(tempcreeptable->growthcreepflag&FLAG_CREEP_INCREASE))
+		{
+			for (j = tempcreeptable->curnrofcreep - 1;j >= 0;j--)
 			{
-				for (j=tempcreeptable->curnrofcreep-1;j>=0;j--)
+				deltax = tempcreeptable->creepinfo[j * 2 + 0];
+				deltay = tempcreeptable->creepinfo[j * 2 + 1];
+				x = tempcreeptable->xpos + deltax;
+				y = tempcreeptable->ypos + deltay;
+				place = map.creepflagplace[y*MAXXMAP + x];
+				need = map.creepflagneeded[y*MAXXMAP + x];
+				GetCreepNr(x, y, &creepbits);
+				if (!place)
 				{
-					deltax=tempcreeptable->creepinfo[j*2+0];
-					deltay=tempcreeptable->creepinfo[j*2+1];
-					x = tempcreeptable->xpos+deltax;
-					y = tempcreeptable->ypos+deltay;
-					place = map.creepflagplace[y*MAXXMAP+x];
-					need  = map.creepflagneeded[y*MAXXMAP+x];
-					GetCreepNr(x,y,&creepbits);
-					if (!place)
-					{
-						EmptyOneElemInArray(tempcreeptable->creepinfo,j,&tempcreeptable->curnrofcreep);
-						if (!tempcreeptable->curnrofcreep)
-							RemoveOBJCreepTable(tempcreeptable);
-						continue;
-					}
-					if ((!need)&&creepbits<=5)// we need 5 around creep, no more, to decresea without coasts
-					{
-						ClearCreep(x,y);
-						break;
-					}
+					EmptyOneElemInArray(tempcreeptable->creepinfo, j, &tempcreeptable->curnrofcreep);
+					if (!tempcreeptable->curnrofcreep)
+						RemoveOBJCreepTable(tempcreeptable);
+					continue;
+				}
+				if ((!need) && creepbits <= 5)// we need 5 around creep, no more, to decresea without coasts
+				{
+					ClearCreep(x, y);
+					break;
 				}
 			}
+		}
 	}
 }
 //===========================================

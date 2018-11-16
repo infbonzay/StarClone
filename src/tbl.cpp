@@ -10,61 +10,61 @@
 #include "tbl.h"
 //===========================================
 int TBL::loadTBL(const char *filename)
-	{
-		tbl=NULL;
-		if (mpqloadfile(filename,(char **)&tbl))
-			return(-1);
-//		DEBUGMES("***********************%s\n",filename);
-//		log_STRS();
+{
+	tbl = NULL;
+	if (mpqloadfile(filename, (char **)&tbl))
+		return(-1);
+	//		DEBUGMES("***********************%s\n",filename);
+	//		log_STRS();
 
-		return(0);
-	}
+	return(0);
+}
 //===========================================
-	TBL::~TBL(void)
+TBL::~TBL(void)
+{
+	if (tbl)
 	{
-		if (tbl)
-		{
-			wfree(tbl);
-			tbl=NULL;
-		}
+		wfree(tbl);
+		tbl = NULL;
 	}
+}
 //===========================================
 char * TBL::get_TBL_STR(int stringnr)
 {
-	if (stringnr>=tbl->strnr)
+	if (stringnr >= tbl->strnr)
 		return NULL;
-	return(((char *)tbl)+tbl->offsetfrombegin[stringnr]);
+	return(((char *)tbl) + tbl->offsetfrombegin[stringnr]);
 }
 //==========================================
-char * TBL::get_TBL_SUBSTR(int stringnr,int substring)
+char * TBL::get_TBL_SUBSTR(int stringnr, int substring)
 {
-	char *adr=this->get_TBL_STR(stringnr);
+	char *adr = this->get_TBL_STR(stringnr);
 	if (!substring)
 		return(adr);
-	do{
-		while(*adr++==0)
+	do {
+		while (*adr++ == 0)
 		{
-			if (--substring==0)
+			if (--substring == 0)
 				return(adr);
 		}
-	}while(1);
+	} while (1);
 }
 //==========================================
 int TBL::get_TBL_STRSize(int stringnr)
 {
-	int nrofstr=0;
-	char *adr1,*adr2;
-	if (stringnr>=tbl->strnr)
+	int nrofstr = 0;
+	char *adr1, *adr2;
+	if (stringnr >= tbl->strnr)
 		return 0;
-	adr1=this->get_TBL_STR(stringnr++);
-	if (stringnr>=tbl->strnr)
+	adr1 = this->get_TBL_STR(stringnr++);
+	if (stringnr >= tbl->strnr)
 		return 1;
-	adr2=this->get_TBL_STR(stringnr);
-	if (adr2<=adr1)
+	adr2 = this->get_TBL_STR(stringnr);
+	if (adr2 <= adr1)
 		return(1);
-	while(adr1<adr2)
+	while (adr1 < adr2)
 	{
-		if (*adr1++==0)
+		if (*adr1++ == 0)
 			nrofstr++;
 	}
 	return(nrofstr);
@@ -77,24 +77,24 @@ int TBL::get_STRS(void)
 //==========================================
 void TBL::log_STRS(void)
 {
-	for (int i=1;i<this->get_STRS();i++)
+	for (int i = 1;i < this->get_STRS();i++)
 	{
-		DEBUGMES("%s %d\n",this->get_TBL_STR(i),i);
+		DEBUGMES("%s %d\n", this->get_TBL_STR(i), i);
 	}
 }
 //==========================================
-int checkfordublicate(char *textdata,int sizex,char *textcmp)
+int checkfordublicate(char *textdata, int sizex, char *textcmp)
 {
-	int i,j,len,mfind;
-	len=strlen(textcmp)+1;		//find with 0-terminating string
-	for (i=0;i<sizex-len+1;i++)
+	int i, j, len, mfind;
+	len = strlen(textcmp) + 1;		//find with 0-terminating string
+	for (i = 0;i < sizex - len + 1;i++)
 	{
-		mfind=0;
-		for (j=0;j<len;j++)
+		mfind = 0;
+		for (j = 0;j < len;j++)
 		{
-			if (textdata[i+j]!=textcmp[j])
+			if (textdata[i + j] != textcmp[j])
 			{
-				mfind=1;
+				mfind = 1;
 				break;
 			}
 		}
@@ -106,43 +106,43 @@ int checkfordublicate(char *textdata,int sizex,char *textcmp)
 	return(-1);
 }
 //==========================================
-void saveTBL(int strnr,const char *filename,char *arrayofstrs[])
+void saveTBL(int strnr, const char *filename, char *arrayofstrs[])
 {
-	int tbloffset,i,len,firstnull=-1;
+	int tbloffset, i, len, firstnull = -1;
 	char *tbldata;
 	TBL_FILE *tblfile;
-	tbldata=(char *) wmalloc(50000);
-	memset(tbldata,0,50000);
-	tblfile=(TBL_FILE *)tbldata;
-	tblfile->strnr=strnr;
-	tbloffset=sizeof(unsigned short)+sizeof(unsigned short)*strnr;
-	for (i=0;i<strnr;i++)
+	tbldata = (char *)wmalloc(50000);
+	memset(tbldata, 0, 50000);
+	tblfile = (TBL_FILE *)tbldata;
+	tblfile->strnr = strnr;
+	tbloffset = sizeof(unsigned short) + sizeof(unsigned short)*strnr;
+	for (i = 0;i < strnr;i++)
 	{
 		if (arrayofstrs[i])
 		{
-			int havetxt=checkfordublicate(tbldata,tbloffset,arrayofstrs[i]);
-			if (havetxt==-1)
+			int havetxt = checkfordublicate(tbldata, tbloffset, arrayofstrs[i]);
+			if (havetxt == -1)
 			{
-				tblfile->offsetfrombegin[i]=tbloffset;
-				len=strlen(arrayofstrs[i])+1;
-				strncpy(tbldata+tbloffset,arrayofstrs[i],len);
+				tblfile->offsetfrombegin[i] = tbloffset;
+				len = strlen(arrayofstrs[i]) + 1;
+				strncpy(tbldata + tbloffset, arrayofstrs[i], len);
 			}
 			else
 			{
-				tblfile->offsetfrombegin[i]=havetxt;
-				len=0;
+				tblfile->offsetfrombegin[i] = havetxt;
+				len = 0;
 			}
 		}
 		else
 		{
-			tblfile->offsetfrombegin[i]=firstnull;
-			len=0;
+			tblfile->offsetfrombegin[i] = firstnull;
+			len = 0;
 		}
-		tbloffset+=len;
-		if (firstnull==-1)
-			firstnull=tbloffset-1;
+		tbloffset += len;
+		if (firstnull == -1)
+			firstnull = tbloffset - 1;
 	}
-	savebuff(filename,tbldata,tbloffset);
+	savebuff(filename, tbldata, tbloffset);
 	wfree(tbldata);
 }
 

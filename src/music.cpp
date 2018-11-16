@@ -23,7 +23,7 @@ wMUSIC::wMUSIC(int maxbuffers)
 	fade = 0;
 	AddPCMDataFunc = NULL;
 	OnFinishPlay = NULL;
-	memset(&audio,0,sizeof(audio));
+	memset(&audio, 0, sizeof(audio));
 }
 //==========================================
 wMUSIC::~wMUSIC()
@@ -45,7 +45,7 @@ int wMUSIC::onfinishaudiodatabuffer(int channel)
 {
 	//delete data what finish to play this portion of pcm data
 	musicbuffers->DelCurElem();
-//	  wFreeChunk(musicsample);
+	//	  wFreeChunk(musicsample);
 	if (AddPCMDataFunc)
 		(*AddPCMDataFunc)(this);
 	//play next data
@@ -53,7 +53,7 @@ int wMUSIC::onfinishaudiodatabuffer(int channel)
 	{
 		if (nextplayPCMdata())
 		{
-			void (*onfinish)(void) = audiostream->OnFinishPlay;
+			void(*onfinish)(void) = audiostream->OnFinishPlay;
 			StopMusic(MUSIC_STOP);
 			if (onfinish)
 				(*onfinish)();
@@ -63,10 +63,10 @@ int wMUSIC::onfinishaudiodatabuffer(int channel)
 	return(0);
 }
 //==========================================
-int wMUSIC::queuePCMdata(unsigned char *audiobuff,int audiosize)
+int wMUSIC::queuePCMdata(unsigned char *audiobuff, int audiosize)
 {
 	AUDIOPACKET *apacket;
-	apacket = (AUDIOPACKET *) musicbuffers->AddElem(sizeof(AUDIOPACKET)+audiosize);
+	apacket = (AUDIOPACKET *)musicbuffers->AddElem(sizeof(AUDIOPACKET) + audiosize);
 	if (!apacket)
 	{
 		return(-1);
@@ -74,47 +74,47 @@ int wMUSIC::queuePCMdata(unsigned char *audiobuff,int audiosize)
 	else
 	{
 		apacket->len = audiosize;
-		memcpy(apacket->packetdata,audiobuff,audiosize);
+		memcpy(apacket->packetdata, audiobuff, audiosize);
 		return(0);
 	}
 }
 //=======================================
 void wMUSIC::ChangeMusicVolume(int volume)
 {
-	if (chunkplay!=-1)
-		SetChannelVolume(chunkplay,volume*MIX_MAX_VOLUME/100);
+	if (chunkplay != -1)
+		SetChannelVolume(chunkplay, volume*MIX_MAX_VOLUME / 100);
 }
 //=======================================
 int wMUSIC::playPCMdata(int firstrun)
 {
 	wCHUNK		*endmusicsample;
 	AUDIOPACKET *apacket;
-	apacket = (AUDIOPACKET *) musicbuffers->GetCurElem();
+	apacket = (AUDIOPACKET *)musicbuffers->GetCurElem();
 	if (apacket)
 	{
-/*		if (fade)
-		{
-			if (fade)
-				return(-1);
-			//make fade operation
-//			if (fade is zero)
-			signed short *samples=(signed short *)apacket->packetdata;
-			signed short sample;
-			float fsample,delta;
-			int fadelen = apacket->len/2;
-			for (int i=0;i<fadelen;i++)
-			{
-				fsample = (samples[i]);
-				delta = (float)i/fadelen;
-				fsample *=delta;
-				samples[i] -= fsample;
-			}
-			fade = 0;
-		}
-*/
+		/*		if (fade)
+				{
+					if (fade)
+						return(-1);
+					//make fade operation
+		//			if (fade is zero)
+					signed short *samples=(signed short *)apacket->packetdata;
+					signed short sample;
+					float fsample,delta;
+					int fadelen = apacket->len/2;
+					for (int i=0;i<fadelen;i++)
+					{
+						fsample = (samples[i]);
+						delta = (float)i/fadelen;
+						fsample *=delta;
+						samples[i] -= fsample;
+					}
+					fade = 0;
+				}
+		*/
 		endmusicsample = musicsample;
-		musicsample = PlayRAWMem(apacket->packetdata,apacket->len);
-		chunkplay = wPlayChannel(chunkplay,musicsample,0);
+		musicsample = PlayRAWMem(apacket->packetdata, apacket->len);
+		chunkplay = wPlayChannel(chunkplay, musicsample, 0);
 		if (endmusicsample)
 		{
 			//free previous music sample
@@ -138,7 +138,7 @@ int wMUSIC::playPCMdata(int firstrun)
 int wMUSIC::StopPCMPlay(void)
 {
 	stopchannel = 1;
-	if (chunkplay!=-1)
+	if (chunkplay != -1)
 		wStopChannel(chunkplay);
 	if (musicsample)
 	{
@@ -154,18 +154,18 @@ int wMUSIC::StopPCMPlay(void)
 //=======================================
 void LoadNextAudioData(void *info)
 {
-	unsigned int readed,nextbuffersize;
+	unsigned int readed, nextbuffersize;
 	int result;
 	unsigned char *buff;
-	wMUSIC *stream = (wMUSIC *) info;
+	wMUSIC *stream = (wMUSIC *)info;
 	RWOPS *rwops = stream->audio.RWops;
 
-	do{
+	do {
 		if (!stream->musicbuffers->GetFreeElem())
 		{
 			return;		//no free buffers
 		}
-		if (stream->audio.remainbytes==0)
+		if (stream->audio.remainbytes == 0)
 		{
 			//reach end of music data
 			if (stream->audio.repeatplay)
@@ -173,23 +173,23 @@ void LoadNextAudioData(void *info)
 				if (stream->audio.repeatplay > 0)
 					stream->audio.repeatplay--;
 				//go to the begining of audio data (repeat play)
-				result = rwops->seek(rwops,sizeof(WAVHEADER), SEEK_SET);
+				result = rwops->seek(rwops, sizeof(WAVHEADER), SEEK_SET);
 				if (result == -1)
 					return;
 				audiostream->audio.remainbytes = audiostream->audio.alen;
-//				DEBUGMESSCR("repeat play\n");
+				//				DEBUGMESSCR("repeat play\n");
 			}
 			else
 			{
 				return;
 			}
 		}
-		if (stream->audio.remainbytes >= SIZEONEAUDIOBUFFER*2)
+		if (stream->audio.remainbytes >= SIZEONEAUDIOBUFFER * 2)
 			nextbuffersize = SIZEONEAUDIOBUFFER;
 		else
 			nextbuffersize = stream->audio.remainbytes;
-		buff = (unsigned char *) wmalloc(nextbuffersize);
-		readed = rwops->read(rwops,buff,nextbuffersize,1);
+		buff = (unsigned char *)wmalloc(nextbuffersize);
+		readed = rwops->read(rwops, buff, nextbuffersize, 1);
 		if (readed != 1)
 		{
 			//error read
@@ -198,16 +198,16 @@ void LoadNextAudioData(void *info)
 		}
 		if (stream->audio.convertaudio)
 		{
-			stream->audio.CVT.buf = (unsigned char *) wmalloc(nextbuffersize * stream->audio.CVT.len_mult);
+			stream->audio.CVT.buf = (unsigned char *)wmalloc(nextbuffersize * stream->audio.CVT.len_mult);
 			stream->audio.CVT.len = nextbuffersize;
 			memcpy(stream->audio.CVT.buf, buff, nextbuffersize);
 			result = ConvertAudio(&stream->audio.CVT);
-			result = stream->queuePCMdata(stream->audio.CVT.buf,nextbuffersize * stream->audio.CVT.len_mult);
+			result = stream->queuePCMdata(stream->audio.CVT.buf, nextbuffersize * stream->audio.CVT.len_mult);
 			wfree(stream->audio.CVT.buf);
 		}
 		else
 		{
-			result = stream->queuePCMdata(buff,nextbuffersize);
+			result = stream->queuePCMdata(buff, nextbuffersize);
 		}
 		if (result == -1)
 		{
@@ -215,33 +215,33 @@ void LoadNextAudioData(void *info)
 		}
 		wfree(buff);
 		stream->audio.remainbytes -= nextbuffersize;
-//		DEBUGMESSCR("load next audio data\n");
-	}while(1);
+		//		DEBUGMESSCR("load next audio data\n");
+	} while (1);
 }
 //=======================================
-int PlayMusic(const char *filename,int repeatflag)
+int PlayMusic(const char *filename, int repeatflag)
 {
-	return(PlayMusic(filename,repeatflag,NULL));
+	return(PlayMusic(filename, repeatflag, NULL));
 }
 //=======================================
-int PlayMusic(const char *filename,int repeatflag, void (*onfinishplay)(void))
+int PlayMusic(const char *filename, int repeatflag, void(*onfinishplay)(void))
 {
 	int i;
 	unsigned int readed;
 	WAVHEADER wavheader;
 	HANDLE hmpq;
 	RWOPS *rwops;
-	if (gameconf.audioconf.musicvolume<5)
+	if (gameconf.audioconf.musicvolume < 5)
 		return(-1);
-	DEBUGMESSCR("play %s\n",filename);
+	DEBUGMESSCR("play %s\n", filename);
 	if (audiostream)
 	{
 		if (audiostream->fade)
 		{
 			//wait until fade in out
-			do{
+			do {
 				usleep(1000);
-			}while(audiostream);
+			} while (audiostream);
 		}
 		else
 		{
@@ -252,10 +252,10 @@ int PlayMusic(const char *filename,int repeatflag, void (*onfinishplay)(void))
 	hmpq = FindFileTryAllMpqs(filename);
 	if (!hmpq)
 		return(-3);
-	rwops = My_RWFromMpqFile(hmpq,filename,SFILE_OPEN_FROM_MPQ);
+	rwops = My_RWFromMpqFile(hmpq, filename, SFILE_OPEN_FROM_MPQ);
 	if (!rwops)
 		return (-4);
-	readed = rwops->read(rwops,&wavheader,sizeof(struct WAVHEADER),1);
+	readed = rwops->read(rwops, &wavheader, sizeof(struct WAVHEADER), 1);
 	if (readed != 1)
 	{
 		rwops->close(rwops);
@@ -264,7 +264,7 @@ int PlayMusic(const char *filename,int repeatflag, void (*onfinishplay)(void))
 	//check the audio file
 	if (wavheader.chunkId != WAV_RIFF || wavheader.format != WAV_WAVE || wavheader.subchunk1Id != WAV_FMT ||
 		wavheader.audioFormat != WAV_PCM_CODE || wavheader.subchunk2Id != WAV_DATA ||
-		(wavheader.bitsPerSample != 8 && wavheader.bitsPerSample != 16) )
+		(wavheader.bitsPerSample != 8 && wavheader.bitsPerSample != 16))
 	{
 		rwops->close(rwops);
 		return(-6);
@@ -284,9 +284,9 @@ int PlayMusic(const char *filename,int repeatflag, void (*onfinishplay)(void))
 	audiostream->audio.remainbytes = audiostream->audio.alen;
 	audiostream->audio.RWops = rwops;
 	audiostream->audio.convertaudio = PrepareForConvertAudio(&audiostream->audio.CVT,
-														audiostream->audio.bitdepth,
-														audiostream->audio.channels,
-														audiostream->audio.frequency);
+		audiostream->audio.bitdepth,
+		audiostream->audio.channels,
+		audiostream->audio.frequency);
 	if (audiostream->audio.convertaudio == -1)	//cannot do converting to desire audio format
 	{
 		StopMusic(MUSIC_STOP);
@@ -295,7 +295,7 @@ int PlayMusic(const char *filename,int repeatflag, void (*onfinishplay)(void))
 	//fill audio buffers
 	audiostream->AddPCMDataFunc = &LoadNextAudioData;
 	audiostream->OnFinishPlay = onfinishplay;
-	for (i=0;i<MUSIC_AUDIOBUFFERS;i++)
+	for (i = 0;i < MUSIC_AUDIOBUFFERS;i++)
 	{
 		LoadNextAudioData(audiostream);
 	}
@@ -307,13 +307,13 @@ void StopMusic(int fade)
 {
 	if (audiostream)
 	{
-/*		if (fade == MUSIC_STOPWITHFADE)
-		{
-			audiostream->fade = 100;
-			return;
-		}
-*/
-//		sleep(1);
+		/*		if (fade == MUSIC_STOPWITHFADE)
+				{
+					audiostream->fade = 100;
+					return;
+				}
+		*/
+		//		sleep(1);
 		audiostream->StopPCMPlay();
 		RWOPS *rwops = audiostream->audio.RWops;
 		if (rwops)
