@@ -153,16 +153,15 @@ extern struct MAGEP mageprop[];
 class SelectionObjs : public ListSimple<OBJ*>
 {
 public:
-	SelectionObjs(int elements);
-	~SelectionObjs();
+	SelectionObjs(int elems) : ListSimple(elems) {};
+	~SelectionObjs(){};
 };
 
 extern SelectionObjs SelectedUnits;
 extern int 			SelectedUnitTypes;
-extern struct  OBJ *curentoperationobj;
-extern short	int xpoint1l,xpoint2l,wmaxcol,wmaxrow;
-//extern				int xk,yk;
-extern short	int maxway;
+extern OBJ			*curentoperationobj;
+extern short 		xpoint1l,xpoint2l,wmaxcol,wmaxrow;
+extern short 		maxway;
 
 extern const char		*cmpgn_cmd[12];
 extern const char		*rezu[14];

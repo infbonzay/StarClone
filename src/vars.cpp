@@ -89,13 +89,6 @@ struct _BE_ diapazone[MAPREGENERATION];
 unsigned short MaxRegen = 0;
 struct MAGEP mageprop[MAXIMMODE + 1];//pointer to MAGEP array
 
-SelectionObjs::SelectionObjs(int elements) : ListSimple<OBJ *>(elements)
-{
-}
-SelectionObjs::~SelectionObjs()
-{
-}
-
 SelectionObjs	SelectedUnits(MAXSELECTMAN);
 int 			SelectedUnitTypes;
 

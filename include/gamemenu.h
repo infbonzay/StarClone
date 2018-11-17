@@ -4,14 +4,14 @@
 #include "defs.h"
 #include "menu.h"
 #include "mylist.h"
+#include "MenuItem.h"
 #include "pcx.h"
 
-
-class MENUAPPEAR : public mylistsimple
+class MENUAPPEAR : public ListSimple<MenuItemPcx *>
 {
 public:
-	MENUAPPEAR(int elems);
-	~MENUAPPEAR();
+	MENUAPPEAR(int elems) : ListSimple(elems){};
+	~MENUAPPEAR(){};
 };
 
 #define MAXGATEWAYS				4

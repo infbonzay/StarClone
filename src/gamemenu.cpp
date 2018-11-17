@@ -78,14 +78,6 @@ char	CHATBOXDIALOGFILE[] = "rez\\?textbox.bin";
 char	REZBRIEFFRAMEPCX_NAME[] = "glue\\ready?\\?Frame??.pcx";
 
 //==========================================
-MENUAPPEAR::MENUAPPEAR(int elems) : mylistsimple(elems)
-{
-}
-//==========================================
-MENUAPPEAR::~MENUAPPEAR()
-{
-}
-//==========================================
 FORCE_SLOTS::~FORCE_SLOTS()
 {
 	for (int i = 0;i < 4;i++)
@@ -345,7 +337,7 @@ void MenuAppearDrawCycle(MENUAPPEAR *items, MENUSTR *staticmenu, TICKCOUNTER *ti
 		//draw all elements
 		for (i = 0; i < items->GetMaxElements(); i++)
 		{
-			oneitem = (MenuItemPcx *)items->GetElem(i, NULL);
+			oneitem = items->GetElem(i, NULL);
 			if (oneitem->moveaction)
 				stopscript -= oneitem->moveaction->Move();		//decrement if one script finishes
 			oneitem->Draw();
@@ -383,7 +375,7 @@ void MenuDisappear(MENUSTR *allmenus, MENUAPPEAR *items, MENUSTR *staticmenu)
 	//enable move scripting
 	for (i = 0; i < items->GetMaxElements(); i++)
 	{
-		oneitem = (MenuItemPcx *)items->GetElem(i, NULL);
+		oneitem = items->GetElem(i, NULL);
 		oneitem->moveaction->EnableMoveScript();
 	}
 
@@ -407,7 +399,7 @@ MENUAPPEAR *MenuAppear(MENUSTR *allmenus, int elems, MENUFIRSTDATA *menudata, ME
 		e = menudata[i].elemid;
 		if (allmenus->menu[e].itemtype != ISIMAGE)
 			printf("Error elem(%d) is not IMAGE\n", e);
-		items->AddElem(oneitem = new MenuItemPcx(allmenus->menu[e].item.image->pcx));
+		items->Add(oneitem = new MenuItemPcx(allmenus->menu[e].item.image->pcx));
 		oneitem->AddMoveAction();
 		if (menudata[i].disabled == 0)
 			oneitem->EnableVisible();
@@ -446,7 +438,7 @@ MENUAPPEAR *MenuAppear(MENUSTR *allmenus, int elems, MENUFIRSTDATA *menudata, ME
 	//enable move scripting
 	for (i = 0; i < items->GetMaxElements(); i++)
 	{
-		oneitem = (MenuItemPcx *)items->GetElem(i, NULL);
+		oneitem = items->GetElem(i, NULL);
 		oneitem->moveaction->EnableMoveScript();
 	}
 	mytimer.GetDeltaCounter(time1);			//reset delta time

@@ -118,7 +118,6 @@ public:
 class MAIN_IMG : public OVERLAY_IMG
 {
 public:
-//	  mylistsimple		*childlists;
 	OVERLAYIMGLIST		*childlists;
 
 	signed	 short		imglist_elemnr;
