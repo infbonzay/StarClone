@@ -1076,14 +1076,6 @@ int GetMapFog(int x, int y)
 			return(0);
 }
 //==============================================
-RevealMap::RevealMap() : ListSimple(MAXOBJDEFSCR)
-{
-}
-//==============================================
-RevealMap::~RevealMap()
-{
-}
-//==============================================
 void RevealMap::AdditionalOpen(void)
 {
 	OBJ *o;
@@ -1095,7 +1087,6 @@ void RevealMap::AdditionalOpen(void)
 		makeoneobjseeopen(o, b);
 	}
 	totalelem = 0;
-	totalmarked = 0;
 }
 //=====================================
 void RevealMap::AddObj(OBJ *o)

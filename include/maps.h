@@ -84,9 +84,8 @@ public:
 	void AdditionalOpen(void);
 	void AddObj(OBJ *o);
 
-	RevealMap();
-	~RevealMap();
-
+	RevealMap() : ListSimple(MAXOBJDEFSCR){};
+	~RevealMap(){};
 };
 
 extern float 			factorx,factory;
