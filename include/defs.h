@@ -323,8 +323,11 @@ typedef unsigned char SCUNIT;
 #define MAGEATRNOMYUNITS		0x2000
 #define MAGEATRONOTHER			0x4000
 
-#define BLINKTICKS				0x10
-#define BLINKTIME				BLINKTICKS*5
+#define BLINKINGTIMES			3				//3 times blinking unit then select to or triggered
+
+#define BLINKSHOWHIDETICKS		0x10			//tick to show/hide blink
+#define BLINKINGTICKS			(BLINKSHOWHIDETICKS * BLINKINGTIMES *2)
+
 
 #define MAPSCROLLTICKS			3
 #define NEXTLARVAEMOVETICK		100

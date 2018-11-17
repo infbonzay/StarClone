@@ -3573,7 +3573,7 @@ void makeallblinking(void)
 void SetBlinkOBJ(struct OBJ *destobj)
 {
 	if (destobj)
-		destobj->blinkvalue = BLINKTIME;
+		destobj->blinkvalue = BLINKINGTICKS;
 }
 //=================================
 int getcoordfrompatrate(int sx, int sy, int *retx, int *rety)
@@ -4681,7 +4681,7 @@ void ShowCircleAndBar(OBJ *a)
 	//		return;
 	if (a->blinkvalue)
 	{
-		if (a->blinkvalue & BLINKTICKS)
+		if (a->blinkvalue & BLINKSHOWHIDETICKS)
 			showcircle = 1;
 	}
 	if (ifselectedOBJbit(a, NUMBGAMER))
