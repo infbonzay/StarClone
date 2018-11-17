@@ -2092,7 +2092,8 @@ int moveobj(struct OBJ *a, struct OBJ *destobj, int mode, int x, int y, int mode
 				a->mainimage->offsetcmdinbuf = 0;
 				a->mainimage->SetIScriptNr(ISCRIPTNR_INIT);
 			}
-			a->mainimage->newgrpmethod = NORMAL;
+			if (a->mainimage->newgrpmethod == DISTORTION)
+				 a->mainimage->newgrpmethod = TRANSPARENT;				//need to see how unit dies
 			SetOBJIScriptNr(a, ISCRIPTNR_DEATH, ISCRIPTNR_SETONLY);
 			break;
 		case MODELANDING:

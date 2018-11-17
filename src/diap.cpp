@@ -89,7 +89,7 @@ int probeconstruct(int nb)
 		while( (o = (OBJ *)SelectedUnits.GetNextListElem(NULL)) )
 		{
 			groupmove = 2;
-			ChangeTypeOfProp(0,PROPBUILDADVANCED);
+			ChangeTypeOfProp(o,PROPBUILDADVANCED);
 			return(1);
 		}
 	}
