@@ -467,11 +467,11 @@ void deselectallexcludeone(struct OBJ *a1)
 	{
 		if (a != a1)
 		{
-			SelectedUnits.MarkForDelElem(i);
+			SelectedUnits.MarkForRemove(i);
 			doselectedOBJbit(a, NUMBGAMER, 0);
 		}
 	}
-	SelectedUnits.DeleteMarked();
+	SelectedUnits.RemoveMarked();
 }
 //=====================================
 void deselectallexcludeonetypeobj(struct OBJ *a1)
@@ -483,11 +483,11 @@ void deselectallexcludeonetypeobj(struct OBJ *a1)
 	{
 		if (a->SC_Unit != a1->SC_Unit)
 		{
-			SelectedUnits.MarkForDelElem(i);
+			SelectedUnits.MarkForRemove(i);
 			doselectedOBJbit(a, NUMBGAMER, 0);
 		}
 	}
-	SelectedUnits.DeleteMarked();
+	SelectedUnits.RemoveMarked();
 }
 //=====================================
 void DetectIfAnyPylonOnSelected(void)
@@ -867,7 +867,7 @@ int deselectobj(struct OBJ *a)
 	int i = SelectedUnits.RetIfContains(a);
 	if (i >= 0)
 	{
-		SelectedUnits.DeleteOneElem(i);
+		SelectedUnits.Remove(i);
 		if (GetPortraitOBJ() == a)
 			ShowAdvisorPortrait();
 		doselectedOBJbit(a, NUMBGAMER, 0);
@@ -3674,7 +3674,7 @@ void DeleteOldObjPointers(struct OBJ *a)
 	while ((o = (OBJ *)SelectedUnits.GetNextListElem(NULL)))
 	{
 		if (o == a)
-			SelectedUnits.DelElem(a);
+			SelectedUnits.Remove(a);
 	}
 	//find pointers in sound channels
 	FreeChannelWithObj(a);

@@ -262,6 +262,7 @@ protected:
 	int				CountMarked;
 	int				CurrentEnum;
 
+
 public:
 
 	ListSimple<T>(int capacity);
@@ -276,7 +277,7 @@ public:
 		else
 			DEBUGMESSCR("ListSimple:max elems(%d) exceeded\n",_Count);
 	};
-	inline void MarkForDelElem(int elemnr)
+	inline void MarkForRemove(int elemnr)
 	{
 		if (!Marked[elemnr])
 		{
@@ -291,11 +292,11 @@ public:
 	int 		RetIfContains(T elem);
 	bool		Contains(T elem);
 	T			GetABSNextListElem(bool *deleteflag);
-	void		DeleteOneElem(int elemnr);
-	void		DeleteMarked(void);
+	void		RemoveMarked(void);
 	void		FreeAndEmptyAll(void);
 	inline int	GetFreeElements(void){ return(Capacity - _Count); };
-	void		DelElem(T elem);
+	void		Remove(int elemnr);
+	void		Remove(T elem);
 	void		CopyTo(ListSimple *copyIn);
 	void		AppendTo(ListSimple *appendTo);
 
@@ -318,7 +319,7 @@ ListSimple<T>::~ListSimple()
 }
 //=========================================
 template <typename T>
-void ListSimple<T>::DeleteOneElem(int elemnr)
+void ListSimple<T>::Remove(int elemnr)
 {
 	int lastelem;
 	lastelem = _Count - 1;
@@ -333,7 +334,7 @@ void ListSimple<T>::DeleteOneElem(int elemnr)
 }
 //=========================================
 template <typename T>
-void ListSimple<T>::DeleteMarked(void)
+void ListSimple<T>::RemoveMarked(void)
 {
 	int i, lastelem;
 	if (!CountMarked)
@@ -344,7 +345,7 @@ void ListSimple<T>::DeleteMarked(void)
 	{
 		if (Marked[i])
 		{
-			DeleteOneElem(i);
+			Remove(i);
 		}
 	}
 }
@@ -413,24 +414,25 @@ void ListSimple<T>::AppendTo(ListSimple *appendTo)
 }
 //=========================================
 template <typename T>
-void ListSimple<T>::DelElem(T	elem)
+void ListSimple<T>::Remove(T elem)
 {
 	for (int i = 0;i < _Count;i++)
 	{
 		if (elements[i] == elem)
 		{
-			DeleteOneElem(i);
+			Remove(i);
 			return;
 		}
 	}
 }
 //=========================================
 template <typename T>
-int ListSimple<T>::RetIfContains(T	elem)
+int ListSimple<T>::RetIfContains(T elem)
 {
 	for (int i = 0;i < _Count;i++)
 	{
 		if (elements[i] == elem)
+		//if (elements[i] == elem && !Marked[i])	//TODO
 		{
 			return i;
 		}
@@ -439,7 +441,7 @@ int ListSimple<T>::RetIfContains(T	elem)
 }
 //=========================================
 template <typename T>
-bool ListSimple<T>::Contains(T	elem)
+bool ListSimple<T>::Contains(T elem)
 {
 	return (RetIfContains(elem) >= 0);
 }

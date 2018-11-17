@@ -654,13 +654,13 @@ void MAIN_IMG::CheckForMouseOver(OBJ *a)
 void MAIN_IMG::DeleteMainImg(MAINIMGLIST *mainimglist)
 {
 	flags |= SC_IMAGE_FLAG_MARKFORDELETE;
-	mainimglist->MarkForDelElem(imglist_elemnr);
+	mainimglist->MarkForRemove(imglist_elemnr);
 }
 //============================================
 void MAIN_IMG::DeleteMainImg(void)
 {
 	flags |= SC_IMAGE_FLAG_MARKFORDELETE;
-	mainimageslist.MarkForDelElem(imglist_elemnr);
+	mainimageslist.MarkForRemove(imglist_elemnr);
 }
 //============================================
 void MAIN_IMG::DeleteChilds(int flags)
@@ -675,7 +675,7 @@ void MAIN_IMG::DeleteChilds(int flags)
 			if (tempimg->flags & flags)
 			{
 				tempimg->flags |= SC_IMAGE_FLAG_MARKFORDELETE;
-				childlists->MarkForDelElem(elemnr);
+				childlists->MarkForRemove(elemnr);
 			}
 		}
 	}
@@ -705,7 +705,7 @@ void OVERLAY_IMG::DeleteChildImg(void)
 			if (tempimg == this)
 			{
 				tempimg->flags |= SC_IMAGE_FLAG_MARKFORDELETE;
-				parentimg->childlists->MarkForDelElem(elemnr);
+				parentimg->childlists->MarkForRemove(elemnr);
 				return;
 			}
 		}

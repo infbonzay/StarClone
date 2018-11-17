@@ -156,7 +156,7 @@ int SC_FLINGY::DieFlingy(void)
 void SC_FLINGY::DelFlingy(void)
 {
 	img->flags |= SC_IMAGE_FLAG_MARKFORDELETE;
-	weaponflingy.MarkForDelElem(flingylist_elemnr);
+	weaponflingy.MarkForRemove(flingylist_elemnr);
 	img = NULL;
 }
 //=========================================
