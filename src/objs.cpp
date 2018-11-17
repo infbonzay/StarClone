@@ -1228,7 +1228,7 @@ void CreateImageAndAddToList(OBJ *a, int x256, int y256, int readyatbegin, unsig
 	}
 	groundair = IsOnSkyOBJ(a);
 	img = OBJCreateImage(a, x256, y256, initscriptnr, groundair, constr_id, imagelo_id);
-	mainimageslist.AddElem(img);
+	mainimageslist.Add(img);
 	if (IsBuild(a->SC_Unit))
 	{
 		switch (readyatbegin)

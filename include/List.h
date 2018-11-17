@@ -1,6 +1,7 @@
 #if !defined(_LIST_W)
 #define _LIST_W
 
+#include <string.h>
 #include <stdlib.h>
 #include <limits.h>
 #include "debug.h"
@@ -253,12 +254,14 @@ template <typename T>
 class ListSimple
 {
 public:
+
 	int				allocatedelem;
 	int				totalelem;
 	int				totalmarked;
 	int				curenumelemnr;
 	T				*elements;
 	bool			*deletemarked;
+	
 
 	ListSimple<T>(int neededelem);
 	~ListSimple<T>();
@@ -278,17 +281,17 @@ public:
 			deletemarked[elemnr] = true;
 		}
 	};
-	inline int  GetMaxElements(void) { return (totalelem); };
+	inline	int	GetMaxElements(void) { return (totalelem); };
 	inline void EnumListInit(void) { curenumelemnr = 0; };
 	inline void Set(int elemnr,T elem) { elements[elemnr] = elem; };
 	T			GetNextListElem(int *elemnr);
 	T			GetElem(int elemnr,int *retelemnr);
 	int 		RetIfContains(T elem);
-	bool 		Contains(T elem);
+	bool		Contains(T elem);
 	T			GetABSNextListElem(bool *deleteflag);
-	void 		DeleteOneElem(int elemnr);
-	void 		DeleteMarked(void);
-	void 		FreeAndEmptyAll(void);
+	void		DeleteOneElem(int elemnr);
+	void		DeleteMarked(void);
+	void		FreeAndEmptyAll(void);
 	inline int	GetFreeElements(void){ return(allocatedelem - totalelem); };
 	void		DelElem(T elem);
 	void		CopyTo(ListSimple *copyIn);
@@ -380,10 +383,11 @@ void ListSimple<T>::FreeAndEmptyAll(void)
 {
 	totalelem = 0;
 	totalmarked = 0;
-	memset(elements, 0, allocatedelem * sizeof(void *));
-	memset(deletemarked, 0, allocatedelem * sizeof(char));
+	memset(elements, 0, allocatedelem * sizeof(T));
+	memset(deletemarked, 0, allocatedelem * sizeof(bool));
 	EnumListInit();
 }
+
 //=========================================
 template <typename T>
 void ListSimple<T>::CopyTo(ListSimple *copyTo)

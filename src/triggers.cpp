@@ -276,7 +276,6 @@ int CheckForUnit(int(*ConditionFunction)(int *, int),
 	int i, nrofunits = 0, checkready = 0;
 	int(*UnitTypeFunc) (SCUNIT);
 	struct OBJ *a, *last = NULL;
-	//	  mylistsimple *objlist = new mylistsimple(MaxObjects);
 	if (unitid >= MAX_UNITS_ELEM)
 	{
 		UnitTypeFunc = CheckUnit[unitid - MAX_UNITS_ELEM];			//>228 (0xe5-0xe8)

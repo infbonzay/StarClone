@@ -537,7 +537,7 @@ int CreateNuke(OBJ *a,int x,int y)
 
 				newimg = new MAIN_IMG(IMAGEID_NUKE_TARGET_DOT,x<<8,y<<8,NUKEDOT_ELEVATIONLEVEL,0,0,0,0,0,ISCRIPTNR_INIT);
 				newimg->whocreate = SC_IMAGE_SELF_CREATOR;
-				mainimageslist.AddElem(newimg);
+				mainimageslist.Add(newimg);
 				nuke->data.nukehitdot.hitdot = newimg;
 				return(0);
 			}

@@ -471,7 +471,7 @@ void WeaponDoDamage(OBJ *atacker, OBJ *destobj, int x256, int y256, SCUNIT SC_Un
 	case WEFFECT_MAELSTROM:
 		newimg = new MAIN_IMG(IMAGEID_MAELSTROMHIT, x256, y256, atacker->mainimage->elevationlevel + 1, 0, 0, 0, 0, 0, ISCRIPTNR_INIT);
 		newimg->whocreate = SC_IMAGE_SELF_CREATOR;
-		mainimageslist.AddElem(newimg);
+		mainimageslist.Add(newimg);
 
 		if (castmagenr != -1)
 			mindist[0] = mageprop[castmagenr].diapazone;
@@ -607,7 +607,7 @@ void WeaponDoDamage(OBJ *atacker, OBJ *destobj, int x256, int y256, SCUNIT SC_Un
 		newimg = new MAIN_IMG(IMAGEID_ENSNARECLOUD, x256, y256, atacker->mainimage->elevationlevel + 1, 0, 0, 0, 0,
 			SC_IMAGE_FLAG_AIRIMG, ISCRIPTNR_INIT);
 		newimg->whocreate = SC_IMAGE_SELF_CREATOR;
-		mainimageslist.AddElem(newimg);
+		mainimageslist.Add(newimg);
 
 		if (castmagenr != -1)
 			mindist[0] = mageprop[castmagenr].diapazone;
@@ -718,7 +718,7 @@ void WeaponDoDamage(OBJ *atacker, OBJ *destobj, int x256, int y256, SCUNIT SC_Un
 		newimg = new MAIN_IMG(IMAGEID_STASISFIELDHIT, x256, y256, atacker->mainimage->elevationlevel + 1, 0, 0, 0, 0,
 			SC_IMAGE_FLAG_AIRIMG, ISCRIPTNR_INIT);
 		newimg->whocreate = SC_IMAGE_SELF_CREATOR;
-		mainimageslist.AddElem(newimg);
+		mainimageslist.Add(newimg);
 
 		if (castmagenr != -1)
 			mindist[0] = mageprop[castmagenr].diapazone;

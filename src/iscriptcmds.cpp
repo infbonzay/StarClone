@@ -187,7 +187,7 @@ int IScriptCmd_sprol(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)			//0x0f
 							img->elevationlevel + 1,
 							buf[2],buf[3],0,img->parentimg->imageusercolor,flags,ISCRIPTNR_INIT);
 	newimg->whocreate = SC_IMAGE_SELF_CREATOR;
-	mainimageslist.AddElem(newimg);
+	mainimageslist.Add(newimg);
 
 	img->offsetcmdinbuf += cmdsize;
 	return(0);
@@ -207,7 +207,7 @@ int IScriptCmd_lowsprul(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)		//0x11
 							img->elevationlevel - 1,
 							buf[2],buf[3],0,img->parentimg->imageusercolor,flags,ISCRIPTNR_INIT);
 	newimg->whocreate = SC_IMAGE_SELF_CREATOR;
-	mainimageslist.AddElem(newimg);
+	mainimageslist.Add(newimg);
 	img->offsetcmdinbuf += cmdsize;
 	return(0);
 }
@@ -223,7 +223,7 @@ int IScriptCmd_spruluselo(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)		//14
 	newimg = new MAIN_IMG(	image_id,img->parentimg->xpos,img->parentimg->ypos,
 							img->elevationlevel + 1,
 							buf[2],buf[3],img->parentimg->side,img->parentimg->imageusercolor,flags,ISCRIPTNR_INIT);
-	mainimageslist.AddElem(newimg);
+	mainimageslist.Add(newimg);
 	newimg->whocreate = SC_IMAGE_SELF_CREATOR;
 	newimg->newgrpmethod = img->parentimg->newgrpmethod;		//copy grp method from parent
 
@@ -261,7 +261,7 @@ int IScriptCmd_sproluselo(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)		//15
 	newimg = new MAIN_IMG(	image_id,img->parentimg->xpos,img->parentimg->ypos,
 							img->elevationlevel + 1,
 							xlo,ylo,img->parentimg->side,img->parentimg->imageusercolor,flags,ISCRIPTNR_INIT);
-	mainimageslist.AddElem(newimg);
+	mainimageslist.Add(newimg);
 	newimg->whocreate = SC_IMAGE_SELF_CREATOR;
 
 	img->offsetcmdinbuf += cmdsize;
@@ -593,7 +593,7 @@ int IScriptCmd_attackwith(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
 											adrxyoffs[0],adrxyoffs[1],side,tr->mainimage->imageusercolor,
 											tr->mainimage->flags | SC_IMAGE_FLAG_IMGOVER,ISCRIPTNR_INIT);
 					newimg->whocreate = SC_IMAGE_SELF_CREATOR;
-					mainimageslist.AddElem(newimg);
+					mainimageslist.Add(newimg);
 
 				}
 				if (CreateWeaponID( a,a->finalOBJ,GetOBJx256(a->finalOBJ),GetOBJy256(a->finalOBJ),weapon_id,1))

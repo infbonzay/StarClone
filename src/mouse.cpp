@@ -34,6 +34,8 @@ HighMouse::HighMouse(void)
 	MouseOnBorder = false;
 	MouseOnSelectionMode = false;
 	WaitToPressLeftButton = false;
+	WaitToReleaseLeftButton = false;
+	WaitToReleaseRightButton = false;
 	MouseButtons = 0;
 	Construct = { .SC_BuildUnit = 0,.CanDo = 0,.PosX = 0, PosY = 0 };
 	MouseOnObjClear();

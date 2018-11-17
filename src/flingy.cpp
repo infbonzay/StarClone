@@ -49,7 +49,7 @@ void FLINGYLIST::DeleteMarked(void)		//delete marked
 	}
 }
 //=========================================
-void FLINGYLIST::FreeAndEmptyAll(void)									//mark all,delete all,empty all
+void FLINGYLIST::Free(void)									//mark all,delete all,empty all
 {
 	SC_FLINGY *flingy;
 	weaponflingy.EnumListInit();
@@ -59,11 +59,7 @@ void FLINGYLIST::FreeAndEmptyAll(void)									//mark all,delete all,empty all
 	}
 	DeleteMarked();
 
-	totalelem = 0;
-	totalmarked = 0;
-	memset(elements, 0, allocatedelem * sizeof(void *));
-	memset(deletemarked, 0, allocatedelem * sizeof(char));
-	EnumListInit();
+	FreeAndEmptyAll();
 }
 //=========================================
 void FLINGYLIST::RemoveOBJFromFlingyobj(OBJ *obj, OBJ *newatacker)
@@ -353,7 +349,7 @@ SC_FLINGY *CreateWeaponFlingy(OBJ *a, OBJ *destobj, int xstart256, int ystart256
 			flags |= SC_IMAGE_FLAG_AIRIMG;
 	}
 	flingy->img = new MAIN_IMG(images_id, xstart256 + (weaponxoffs << 8), ystart256 + (weaponyoffs << 8), elevation + deltaelevation, 0, 0, launchside, a->color, flags, ISCRIPTNR_INIT);
-	mainimageslist.AddElem(flingy->img);
+	mainimageslist.Add(flingy->img);
 
 	flingy->img->whocreate = SC_IMAGE_FLINGY_CREATOR;
 	flingy->img->creator.flingycreator.flingy = flingy;

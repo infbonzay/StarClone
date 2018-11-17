@@ -1509,7 +1509,7 @@ void unload_starmap(struct mapinfo *info)
 
 	freeOBJS();//remove all objects
 
-	weaponflingy.FreeAndEmptyAll();
+	weaponflingy.Free();
 
 	mytimer.ClearMyTimerFunc();
 	//	  UnloadDoodadList();		//unload list with all doodads

@@ -4,7 +4,7 @@
 #include <grplib/grp.h>
 
 #include "debug.h"
-#include "mylist.h"
+#include "List.h"
 #include "loadlo.h"
 #include "man.h"
 //============================================
@@ -173,21 +173,33 @@ public:
 
 };
 
-class MAINIMGLIST:public mylistsimple
+class MAINIMGLIST : public ListSimple<MAIN_IMG *>
 {
 public:
-	MAINIMGLIST(int nrofelems) : mylistsimple(nrofelems) {};
-	inline void AddElem(void *elem) { if (totalelem<allocatedelem) { elements[totalelem] = elem; ((MAIN_IMG *)elem)->imglist_elemnr = totalelem; totalelem++; } else DEBUGMESSCR("MAINIMGLIST:max elems exceeded\n");};
-
+	MAINIMGLIST(int nrofelems) : ListSimple(nrofelems) {};
+	inline void Add(MAIN_IMG *elem) 
+	{ 
+		if (totalelem < allocatedelem)
+		{
+			elements[totalelem] = elem;
+			elem->imglist_elemnr = totalelem;
+			totalelem++;
+		}
+		else
+		{
+			DEBUGMESSCR("MAINIMGLIST:max elems(%d) exceeded\n",totalelem);
+		}
+	};
 	void DeleteMarked(void);
-	void FreeAndEmptyAll(void);
+	void Free(void);
 };
 
-class OVERLAYIMGLIST:public mylistsimple
+class OVERLAYIMGLIST :  public ListSimple<OVERLAY_IMG *>
 {
 public:
-	OVERLAYIMGLIST(int nrofelems) : mylistsimple(nrofelems) {};
+	OVERLAYIMGLIST(int nrofelems) : ListSimple(nrofelems) {};
 	void DeleteMarked(void);
+	void Free(void);
 };
 
 

@@ -43,7 +43,7 @@ void CreateDoodadsFromMAP(doodad_on_map *doodad, mapinfo *loadedmap)
 	newimg = new MAIN_IMG(image_id, doodad->xpos << 8, doodad->ypos << 8, DOODAD_ELEVATION_LEVEL,
 		0, 0, 0, doodad->playernr, flags, ISCRIPTNR_INIT);
 	newimg->whocreate = SC_IMAGE_DOODAD_CREATOR;
-	imageslist_doodads.AddElem(newimg);
+	imageslist_doodads.Add(newimg);
 	iscriptinfo.ExecuteScript(newimg);
 }
 //=====================================

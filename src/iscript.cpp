@@ -624,7 +624,7 @@ int ISCRIPT::ExecuteScript(OVERLAY_IMG *img)
 //============================================
 void AllImages_ExecuteIScript(void)
 {
-	char deleteflag;
+	bool deleteflag;
 	MAIN_IMG *img;
 	OVERLAY_IMG *oimg;
 	mainimageslist.EnumListInit();

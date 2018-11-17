@@ -56,7 +56,7 @@ public:
 	FLINGYLIST(int nrofelems) : ListSimple(nrofelems) {};
 	inline void Add(SC_FLINGY *elem) { elements[totalelem] = elem; elem->flingylist_elemnr = totalelem; totalelem++; };
 	void DeleteMarked(void);
-	void FreeAndEmptyAll(void);
+	void Free(void);
 
 	void RemoveOBJFromFlingyobj(OBJ *obj,OBJ *newatacker);
 	void MoveAllWeaponFlingy(void);

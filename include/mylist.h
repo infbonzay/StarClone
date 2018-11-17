@@ -56,36 +56,6 @@ public:
 	~mylist();
 };
 //=========================================
-class mylistsimple
-{
-public:
-	unsigned short allocatedelem;
-	unsigned short totalelem;
-	unsigned short totalmarked;
-	unsigned short curenumelemnr;
-	void **elements;
-	char *deletemarked;
-	mylistsimple(int neededelem);
-	~mylistsimple();
-	inline void AddElem(void *elem) { if (totalelem<allocatedelem) elements[totalelem++] = elem; else DEBUGMESSCR("mylistsimple:max elems exceeded\n"); };
-	inline void MarkForDelElem(int elemnr) { if (!deletemarked[elemnr]) { totalmarked++; deletemarked[elemnr] = 1; } };
-	inline int GetMaxElements(void) { return (totalelem); };
-	inline void EnumListInit(void) { curenumelemnr = 0; };
-	inline void Set(int elemnr,void *elem) { elements[elemnr] = elem; };
-	void *GetNextListElem(int *elemnr);
-	void *GetElem(int elemnr,int *retelemnr);
-	int  RetIfContains(void *elem);
-	bool Contains(void *elem);
-	void *GetABSNextListElem(char *deleteflag);
-	void DeleteOneElem(int elemnr);
-	void DeleteMarked(void);
-	void FreeAndEmptyAll(void);
-	inline int	 GetFreeElements(void){ return(allocatedelem - totalelem); };
-	void  DelElem(void *);
-	void CopyTo(mylistsimple *copyIn);
-	void AppendTo(mylistsimple *appendTo);
-
-};
 
 #endif	/*		_MYLIST_W  */
 
