@@ -262,8 +262,22 @@ public:
 
 	ListSimple<T>(int neededelem);
 	~ListSimple<T>();
-	inline void Add(T elem) { if (totalelem < allocatedelem) elements[totalelem++] = elem; else DEBUGMESSCR("ListSimple:max elems exceeded\n"); };
-	inline void MarkForDelElem(int elemnr) { if (!deletemarked[elemnr]) { totalmarked++; deletemarked[elemnr] = true; } };
+	
+	inline void Add(T elem) 
+	{
+		if (totalelem < allocatedelem) 
+			elements[totalelem++] = elem;
+		else
+			DEBUGMESSCR("ListSimple:max elems(%d) exceeded\n",totalelem);
+	};
+	inline void MarkForDelElem(int elemnr)
+	{
+		if (!deletemarked[elemnr])
+		{
+			totalmarked++;
+			deletemarked[elemnr] = true;
+		}
+	};
 	inline int  GetMaxElements(void) { return (totalelem); };
 	inline void EnumListInit(void) { curenumelemnr = 0; };
 	inline void Set(int elemnr,T elem) { elements[elemnr] = elem; };

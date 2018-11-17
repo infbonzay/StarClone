@@ -29,7 +29,7 @@ void FLINGYLIST::DeleteMarked(void)		//delete marked
 	{
 		if (deletemarked[i])
 		{
-			flingy = (SC_FLINGY *)elements[i];
+			flingy = elements[i];
 			if (flingy->listdamaged)
 			{
 				flingy->listdamaged->FlushList();
@@ -39,7 +39,7 @@ void FLINGYLIST::DeleteMarked(void)		//delete marked
 			if (i != lastelem)
 			{
 				elements[i] = elements[lastelem];
-				((SC_FLINGY *)(elements[i]))->flingylist_elemnr = i;
+				elements[i]->flingylist_elemnr = i;
 				deletemarked[i] = deletemarked[lastelem];
 			}
 			deletemarked[lastelem] = 0;
@@ -53,7 +53,7 @@ void FLINGYLIST::FreeAndEmptyAll(void)									//mark all,delete all,empty all
 {
 	SC_FLINGY *flingy;
 	weaponflingy.EnumListInit();
-	while ((flingy = (SC_FLINGY *)weaponflingy.GetNextListElem(NULL)))
+	while ((flingy = weaponflingy.GetNextListElem(NULL)))
 	{
 		flingy->DelFlingy();
 	}
@@ -70,7 +70,7 @@ void FLINGYLIST::RemoveOBJFromFlingyobj(OBJ *obj, OBJ *newatacker)
 {
 	SC_FLINGY *flingy;
 	weaponflingy.EnumListInit();
-	while ((flingy = (SC_FLINGY *)weaponflingy.GetNextListElem(NULL)))
+	while ((flingy = weaponflingy.GetNextListElem(NULL)))
 	{
 		if (flingy->destobj == obj)
 		{
@@ -87,7 +87,7 @@ void FLINGYLIST::MoveAllWeaponFlingy(void)
 {
 	SC_FLINGY *flingy;
 	EnumListInit();
-	while ((flingy = (SC_FLINGY *)GetNextListElem(NULL)))
+	while ((flingy = GetNextListElem(NULL)))
 	{
 		if (flingy->flags & FLINGY_FLAG_STAYANDWAITTIME)
 			flingy->StayAndWaitTime();
@@ -334,7 +334,7 @@ SC_FLINGY *CreateWeaponFlingy(OBJ *a, OBJ *destobj, int xstart256, int ystart256
 	launchside = a->mainimage->side + launchspin;
 	flingy = new SC_FLINGY(a, destobj, xdest256, ydest256, flingy_id);
 	flingy->timer = alldattbl.weapons_dat->RemoveAfter[weapon_id];
-	weaponflingy.AddElem(flingy);
+	weaponflingy.Add(flingy);
 	sprites_id = alldattbl.flingy_dat->sprites_id[flingy_id];
 	if (!alldattbl.sprites_dat->is_visible[sprites_id])
 		flags |= SC_IMAGE_FLAG_DISABLEDRAW;

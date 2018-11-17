@@ -2,7 +2,7 @@
 #define _FLINGY_W
 
 #include "man.h"
-#include "mylist.h"
+#include "List.h"
 
 #define FLINGYMOVECONTROL_FLINGY		0
 #define FLINGYMOVECONTROL_WEAPON		1
@@ -50,11 +50,11 @@ public:
 };
 
 //===================================================
-class FLINGYLIST:public mylistsimple
+class FLINGYLIST:public ListSimple<SC_FLINGY *>
 {
 public:
-	FLINGYLIST(int nrofelems) : mylistsimple(nrofelems) {};
-	inline void AddElem(void *elem) { elements[totalelem] = elem; ((SC_FLINGY *)elem)->flingylist_elemnr = totalelem; totalelem++; };
+	FLINGYLIST(int nrofelems) : ListSimple(nrofelems) {};
+	inline void Add(SC_FLINGY *elem) { elements[totalelem] = elem; elem->flingylist_elemnr = totalelem; totalelem++; };
 	void DeleteMarked(void);
 	void FreeAndEmptyAll(void);
 
