@@ -1,6 +1,6 @@
 
-#if !defined(_LIST_W)
-#define _LIST_W
+#if !defined(_LISTS_W)
+#define _LISTS_W
 
 #include "tbl.h"
 #include "vars.h"
@@ -81,5 +81,5 @@ inline int	IsBattleReactions(SCUNIT SC_Unit){ return((alldattbl.units_dat->Speci
 inline int	IsFullAutoAttack(SCUNIT SC_Unit){ return((alldattbl.units_dat->SpecialAbilityFlags[SC_Unit] & SPECIAL_FULLAUTOATTACK)!=0);};
 
 
-#endif /*_LIST_W*/
+#endif /*_LISTS_W*/
 

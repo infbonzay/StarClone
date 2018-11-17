@@ -3,6 +3,7 @@
 
 #include <stdlib.h>
 #include <limits.h>
+#include "debug.h"
 
 #define MAXLISTELEMENTS	64
 
@@ -246,6 +247,183 @@ T Enumerate<T>::GetNextElem(void)
 	} while (1);
 	return(CurrentEnum->Elements[EnumValue++]);
 }
+
+//=========================================
+template <typename T>
+class ListSimple
+{
+public:
+	int				allocatedelem;
+	int				totalelem;
+	int				totalmarked;
+	int				curenumelemnr;
+	T				*elements;
+	bool			*deletemarked;
+
+	ListSimple<T>(int neededelem);
+	~ListSimple<T>();
+	inline void Add(T elem) { if (totalelem < allocatedelem) elements[totalelem++] = elem; else DEBUGMESSCR("ListSimple:max elems exceeded\n"); };
+	inline void MarkForDelElem(int elemnr) { if (!deletemarked[elemnr]) { totalmarked++; deletemarked[elemnr] = true; } };
+	inline int  GetMaxElements(void) { return (totalelem); };
+	inline void EnumListInit(void) { curenumelemnr = 0; };
+	inline void Set(int elemnr,void *elem) { elements[elemnr] = elem; };
+	T			GetNextListElem(int *elemnr);
+	T			GetElem(int elemnr,int *retelemnr);
+	int 		RetIfContains(T elem);
+	bool 		Contains(T elem);
+	T			GetABSNextListElem(bool *deleteflag);
+	void 		DeleteOneElem(int elemnr);
+	void 		DeleteMarked(void);
+	void 		FreeAndEmptyAll(void);
+	inline int	GetFreeElements(void){ return(allocatedelem - totalelem); };
+	void		DelElem(T elem);
+	void		CopyTo(ListSimple *copyIn);
+	void		AppendTo(ListSimple *appendTo);
+
+};
+//=========================================
+template <typename T>
+ListSimple<T>::ListSimple(int neededelem)
+{
+	allocatedelem = neededelem;
+	elements = new T[neededelem];
+	deletemarked = new bool[neededelem];
+	FreeAndEmptyAll();
+}
+//=========================================
+template <typename T>
+ListSimple<T>::~ListSimple()
+{
+	delete elements;
+	delete deletemarked;
+}
+//=========================================
+template <typename T>
+void ListSimple<T>::DeleteOneElem(int elemnr)
+{
+	int lastelem;
+	lastelem = totalelem - 1;
+	if (elemnr != lastelem)
+	{
+		elements[elemnr] = elements[lastelem];
+		deletemarked[elemnr] = deletemarked[lastelem];
+	}
+	deletemarked[lastelem] = false;
+	totalelem--;
+	lastelem--;
+}
+//=========================================
+template <typename T>
+void ListSimple<T>::DeleteMarked(void)
+{
+	int i, lastelem;
+	if (!totalmarked)
+		return;
+	totalmarked = 0;
+	lastelem = totalelem - 1;
+	for (i = lastelem;i >= 0;i--)
+	{
+		if (deletemarked[i])
+		{
+			DeleteOneElem(i);
+		}
+	}
+}
+//=========================================
+template <typename T>
+T	ListSimple<T>::GetABSNextListElem(bool *deleteflag)
+{
+	if (curenumelemnr >= totalelem)
+		return(NULL);
+	if (deleteflag)
+		*deleteflag = deletemarked[curenumelemnr];
+	return(elements[curenumelemnr++]);
+}
+//=========================================
+template <typename T>
+T	ListSimple<T>::GetNextListElem(int *retelemnr)
+{
+	if (curenumelemnr >= totalelem)
+		return(NULL);
+	return(GetElem(curenumelemnr++, retelemnr));
+}
+//=========================================
+template <typename T>
+T	ListSimple<T>::GetElem(int elemnr, int *retelem)
+{
+	while (deletemarked[elemnr])
+	{
+		if (++elemnr >= totalelem)
+			return(NULL);
+	}
+	if (retelem)
+		*retelem = elemnr;
+	return(elements[elemnr]);
+}
+//=========================================
+template <typename T>
+void ListSimple<T>::FreeAndEmptyAll(void)
+{
+	totalelem = 0;
+	totalmarked = 0;
+	memset(elements, 0, allocatedelem * sizeof(void *));
+	memset(deletemarked, 0, allocatedelem * sizeof(char));
+	EnumListInit();
+}
+//=========================================
+template <typename T>
+void ListSimple<T>::CopyTo(ListSimple *copyTo)
+{
+	copyTo->FreeAndEmptyAll();
+	this->AppendTo(copyTo);
+}
+//=========================================
+template <typename T>
+void ListSimple<T>::AppendTo(ListSimple *appendTo)
+{
+	this->EnumListInit();
+	void *elem;
+	while ((elem = this->GetNextListElem(NULL)))
+	{
+		if (appendTo->Contains(elem) < 0)
+		{
+			appendTo->AddElem(elem);
+		}
+	}
+}
+//=========================================
+template <typename T>
+void ListSimple<T>::DelElem(T	elem)
+{
+	for (int i = 0;i < totalelem;i++)
+	{
+		if (elements[i] == elem)
+		{
+			DeleteOneElem(i);
+			return;
+		}
+	}
+}
+//=========================================
+template <typename T>
+int ListSimple<T>::RetIfContains(T	elem)
+{
+	for (int i = 0;i < totalelem;i++)
+	{
+		if (elements[i] == elem)
+		{
+			return i;
+		}
+	}
+	return -1;
+}
+//=========================================
+template <typename T>
+bool ListSimple<T>::Contains(T	elem)
+{
+	return (RetIfContains(elem) != -1);
+}
+
 
 #endif	/*		_MYLIST_W  */
 

@@ -1076,7 +1076,7 @@ int GetMapFog(int x, int y)
 			return(0);
 }
 //==============================================
-RevealMap::RevealMap() : mylistsimple(MAXOBJDEFSCR)
+RevealMap::RevealMap() : ListSimple(MAXOBJDEFSCR)
 {
 }
 //==============================================
@@ -1088,8 +1088,8 @@ void RevealMap::AdditionalOpen(void)
 {
 	OBJ *o;
 	OBJstruct *b;
-	this->EnumListInit();
-	while ((o = (OBJ *)this->GetNextListElem(NULL)))
+	EnumListInit();
+	while ((o = GetNextListElem(NULL)))
 	{
 		b = loadobj(o->SC_Unit);
 		makeoneobjseeopen(o, b);
@@ -1102,6 +1102,6 @@ void RevealMap::AddObj(OBJ *o)
 {
 	if (player_aliance(o->playernr, NUMBGAMER) == MYOBJ || player_aliance(o->playernr, NUMBGAMER) == ALLIANCEOBJ)
 	{
-		revealMap->AddElem(o);
+		revealMap->Add(o);
 	}
 }

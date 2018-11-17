@@ -1,9 +1,11 @@
+
 #if !defined(_MAPS_W)
 #define _MAPS_W
 
 #include "vars.h"
 #include "man.h"
 #include "starmap.h"
+#include "List.h"
 
 #define CHECKFORMAPBORDERS(xkart,ykart) ( (ykart) < 0 || (xkart) < 0 || (ykart) >= MAXYMAP || (xkart) >= MAXXMAP )
 
@@ -75,7 +77,8 @@ public:
 	int		MinimapEndY;		//
 };
 
-class RevealMap : public mylistsimple
+//=========================================
+class RevealMap : public ListSimple<OBJ*>
 {
 public:
 	void AdditionalOpen(void);
@@ -83,7 +86,7 @@ public:
 
 	RevealMap();
 	~RevealMap();
-	
+
 };
 
 extern float 			factorx,factory;
