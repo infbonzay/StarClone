@@ -66,7 +66,7 @@ void delnewmousehotpos(void)
 	if (currentmousehottable)
 		wfree(currentmousehottable);
 	mousehotspot.DelList(currentmousehottable);
-	lastelem = mousehotspot.GetMaxElements();
+	lastelem = mousehotspot.Count();
 	if (!lastelem)
 	{
 		currentmousehottable = NULL;
@@ -337,7 +337,7 @@ int actiondblclick(MENUSTR *allmenus, int downmenu)
 					itemselected = (highMouse->PosY - item->hotdeltay) / item->item.listbox->pixelsbetweenlines;
 					if (itemselected < item->item.listbox->lines)
 						itemselected += item->item.listbox->from;
-					if (itemselected < item->item.listbox->flist->GetMaxElements())
+					if (itemselected < item->item.listbox->flist->Count())
 					{
 						item->item.listbox->selectednr = itemselected;
 						if (allmenus->selectmenusnd)
@@ -437,7 +437,7 @@ int actionmenuonpressmouse(MENUSTR *allmenus, int downmenu, int *selectedmenu)
 				itemselected = (highMouse->PosY - item->hotdeltay) / item->item.listbox->pixelsbetweenlines;
 				if (itemselected < item->item.listbox->lines)
 					itemselected += item->item.listbox->from;
-				if (itemselected < item->item.listbox->flist->GetMaxElements())
+				if (itemselected < item->item.listbox->flist->Count())
 				{
 					if (item->item.listbox->selectednr != itemselected)
 					{
@@ -1346,7 +1346,7 @@ int RunCallBackFuncs(MENUSTR *allmenus)
 	void *callbackdata;
 	if (allmenus->CallBackInfo)
 	{
-		max = allmenus->CallBackInfo->CallBackFunc.GetMaxElements();
+		max = allmenus->CallBackInfo->CallBackFunc.Count();
 		for (i = 0;i < max;i++)
 		{
 			callbackadr = (int(*)(MENUSTR *, void *))allmenus->CallBackInfo->CallBackFunc.GetElemNr(i);
@@ -3485,7 +3485,7 @@ void calclistboxbuttonbarpos(MENUSTR *allmenus, int nr)
 	bar = menuitem->item.listbox->bar;
 	if (bar)
 	{
-		maxelem = menuitem->item.listbox->flist->GetMaxElements() - menuitem->item.listbox->lines;
+		maxelem = menuitem->item.listbox->flist->Count() - menuitem->item.listbox->lines;
 		if (maxelem <= 0)
 		{
 			wfree(menuitem->item.listbox->bar);
@@ -3511,7 +3511,7 @@ void listbox_addtext(MENUSTR *allmenus, int nr, char *text)
 		if (listbox)
 		{
 			listbox->AddList(text);
-			listelements = listbox->GetMaxElements();
+			listelements = listbox->Count();
 			menuitem->item.listbox->selectednr = listelements - 1;
 			if (listelements > menuitem->item.listbox->lines)
 			{
@@ -3552,10 +3552,10 @@ void setlistbox_lists(MENUSTR *allmenus, int nr, int selectednr, mylist *listbox
 				DEBUGMESSCR("missing listboxlineitems(MENU, %d , lines, pixelsbetweenlines);\n" \
 					"not initialized for item %d (lines & pixelsbetweenlines equals with zero)\n", nr, nr);
 			}
-			prevlistelements = listbox->GetMaxElements();
+			prevlistelements = listbox->Count();
 			if (menuitem->item.listbox->flist != listbox)
 				dellistboxitem(allmenus, nr, 0, MENUITEM_LISTBOX_DEALLOCLIST);
-			listelements = listbox->GetMaxElements();
+			listelements = listbox->Count();
 			menuitem->item.listbox->flist = listbox;
 			if ((prevlistelements != listelements || menuitem->item.listbox->selectednr != selectednr) && listelements == 0)
 				menuitem->item.listbox->selectednr = 0;
@@ -3622,7 +3622,7 @@ void drawlistboxitem(MENUSTR *allmenus, int itemnr)
 	//draw items
 	for (jj = 0, j = from;j <= to;jj++, j++)
 	{
-		if (listbox&&listbox->GetMaxElements())
+		if (listbox&&listbox->Count())
 			mes = (char *)listbox->GetElemNr(j);
 		else
 			break;
@@ -3709,7 +3709,7 @@ int changelistbox_selectednr(MENUSTR *allmenus, int itemnr, int delta)
 		}
 		if (delta >= 0)
 		{
-			maxelem = menuitem->item.listbox->flist->GetMaxElements();
+			maxelem = menuitem->item.listbox->flist->Count();
 			if (menuitem->item.listbox->selectednr >= maxelem)
 				menuitem->item.listbox->selectednr = maxelem - 1;
 			if (menuitem->item.listbox->selectednr > menuitem->item.listbox->to)
@@ -3741,7 +3741,7 @@ void changelistbox_fromto(MENUSTR *allmenus, int itemnr, int delta)
 	{
 		if (!menuitem->item.listbox->flist)
 			return;
-		maxelem = menuitem->item.listbox->flist->GetMaxElements();
+		maxelem = menuitem->item.listbox->flist->Count();
 		menuitem->item.listbox->from += delta;
 		if (delta <= 0)
 		{
@@ -3836,7 +3836,7 @@ void changelistbox_buttonbarpos(MENUSTR *allmenus, int nr, int mouseypos)
 			if (bar)
 			{
 				posy = mouseypos - bar->yh_1;
-				maxelem = menuitem->item.listbox->flist->GetMaxElements() - menuitem->item.listbox->lines;
+				maxelem = menuitem->item.listbox->flist->Count() - menuitem->item.listbox->lines;
 				from = maxelem * (posy - DLGGRP_SIZEY(LISTBOX_BUTTONBAR) / 2) / (bar->buttonbarymax - bar->yh_1);
 				if (from > maxelem)
 					from = maxelem;

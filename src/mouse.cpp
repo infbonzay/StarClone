@@ -357,7 +357,7 @@ void HighMouse::DoRightClickAction(OBJ *destobj, int xm, int ym, int rightclick)
 	if (PLAYER[NUMBGAMER].isobserverflag)
 		return;
 	OBJ *o = NULL;
-	if (SelectedUnits.totalelem)
+	if (SelectedUnits.Count())
 		o = (OBJ *)SelectedUnits.GetElem(0, NULL);
 	if (!highMouse->WaitToPressLeftButton)
 	{

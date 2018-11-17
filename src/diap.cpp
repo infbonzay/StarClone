@@ -360,7 +360,7 @@ void desenproperties(int *localprop, char *selectableicons)
 		}
 		if (selectedicon != -1)
 		{
-			if (!SelectedUnits.totalelem)
+			if (!SelectedUnits.Count())
 			{
 				highMouse->WaitToPressLeftButton = 0;
 			}
@@ -678,7 +678,7 @@ int CreateMenuProperties(int *prop, char *selectableicons, int player)
 		return 0;
 	}
 	//create all properties for selected units
-	selobj = SelectedUnits.totalelem;
+	selobj = SelectedUnits.Count();
 	if (selobj)
 	{
 		SelectedUnits.EnumListInit();
@@ -700,7 +700,7 @@ int CreateMenuProperties(int *prop, char *selectableicons, int player)
 			}
 		}
 	}
-	if (selobj == 1 && SelectedUnits.totalelem && ((OBJ *)SelectedUnits.GetElem(0, NULL))->SC_Unit == SC_MEDICOBJ)
+	if (selobj == 1 && SelectedUnits.Count() && ((OBJ *)SelectedUnits.GetElem(0, NULL))->SC_Unit == SC_MEDICOBJ)
 		propunits[0][2] = MODENON;				//do not show atack
 	//combine all properties of units to have same one
 	if (maxprop && selobj)

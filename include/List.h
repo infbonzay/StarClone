@@ -253,36 +253,38 @@ T Enumerate<T>::GetNextElem(void)
 template <typename T>
 class ListSimple
 {
+protected:
+	T				*elements;
+	bool			*Marked;
+
+	int				_Count;
+	int				Capacity;
+	int				CountMarked;
+	int				CurrentEnum;
+
 public:
 
-	int				allocatedelem;
-	int				totalelem;
-	int				totalmarked;
-	int				curenumelemnr;
-	T				*elements;
-	bool			*deletemarked;
-	
-
-	ListSimple<T>(int neededelem);
+	ListSimple<T>(int capacity);
 	~ListSimple<T>();
-	
-	inline void Add(T elem) 
+
+	inline int Count(void) { return _Count; };
+
+	inline void Add(T elem)
 	{
-		if (totalelem < allocatedelem) 
-			elements[totalelem++] = elem;
+		if (_Count < Capacity)
+			elements[_Count++] = elem;
 		else
-			DEBUGMESSCR("ListSimple:max elems(%d) exceeded\n",totalelem);
+			DEBUGMESSCR("ListSimple:max elems(%d) exceeded\n",_Count);
 	};
 	inline void MarkForDelElem(int elemnr)
 	{
-		if (!deletemarked[elemnr])
+		if (!Marked[elemnr])
 		{
-			totalmarked++;
-			deletemarked[elemnr] = true;
+			CountMarked++;
+			Marked[elemnr] = true;
 		}
 	};
-	inline	int	GetMaxElements(void) { return (totalelem); };
-	inline void EnumListInit(void) { curenumelemnr = 0; };
+	inline void EnumListInit(void) { CurrentEnum = 0; };
 	inline void Set(int elemnr,T elem) { elements[elemnr] = elem; };
 	T			GetNextListElem(int *elemnr);
 	T			GetElem(int elemnr,int *retelemnr);
@@ -292,7 +294,7 @@ public:
 	void		DeleteOneElem(int elemnr);
 	void		DeleteMarked(void);
 	void		FreeAndEmptyAll(void);
-	inline int	GetFreeElements(void){ return(allocatedelem - totalelem); };
+	inline int	GetFreeElements(void){ return(Capacity - _Count); };
 	void		DelElem(T elem);
 	void		CopyTo(ListSimple *copyIn);
 	void		AppendTo(ListSimple *appendTo);
@@ -300,11 +302,11 @@ public:
 };
 //=========================================
 template <typename T>
-ListSimple<T>::ListSimple(int neededelem)
+ListSimple<T>::ListSimple(int capacity)
 {
-	allocatedelem = neededelem;
-	elements = new T[neededelem];
-	deletemarked = new bool[neededelem];
+	Capacity = capacity;
+	elements = new T[capacity];
+	Marked = new bool[capacity];
 	FreeAndEmptyAll();
 }
 //=========================================
@@ -312,21 +314,21 @@ template <typename T>
 ListSimple<T>::~ListSimple()
 {
 	delete[] elements;
-	delete[] deletemarked;
+	delete[] Marked;
 }
 //=========================================
 template <typename T>
 void ListSimple<T>::DeleteOneElem(int elemnr)
 {
 	int lastelem;
-	lastelem = totalelem - 1;
+	lastelem = _Count - 1;
 	if (elemnr != lastelem)
 	{
 		elements[elemnr] = elements[lastelem];
-		deletemarked[elemnr] = deletemarked[lastelem];
+		Marked[elemnr] = Marked[lastelem];
 	}
-	deletemarked[lastelem] = false;
-	totalelem--;
+	Marked[lastelem] = false;
+	_Count--;
 	lastelem--;
 }
 //=========================================
@@ -334,13 +336,13 @@ template <typename T>
 void ListSimple<T>::DeleteMarked(void)
 {
 	int i, lastelem;
-	if (!totalmarked)
+	if (!CountMarked)
 		return;
-	totalmarked = 0;
-	lastelem = totalelem - 1;
+	CountMarked = 0;
+	lastelem = _Count - 1;
 	for (i = lastelem;i >= 0;i--)
 	{
-		if (deletemarked[i])
+		if (Marked[i])
 		{
 			DeleteOneElem(i);
 		}
@@ -350,27 +352,27 @@ void ListSimple<T>::DeleteMarked(void)
 template <typename T>
 T	ListSimple<T>::GetABSNextListElem(bool *deleteflag)
 {
-	if (curenumelemnr >= totalelem)
+	if (CurrentEnum >= _Count)
 		return(NULL);
 	if (deleteflag)
-		*deleteflag = deletemarked[curenumelemnr];
-	return(elements[curenumelemnr++]);
+		*deleteflag = Marked[CurrentEnum];
+	return(elements[CurrentEnum++]);
 }
 //=========================================
 template <typename T>
 T	ListSimple<T>::GetNextListElem(int *retelemnr)
 {
-	if (curenumelemnr >= totalelem)
+	if (CurrentEnum >= _Count)
 		return(NULL);
-	return(GetElem(curenumelemnr++, retelemnr));
+	return(GetElem(CurrentEnum++, retelemnr));
 }
 //=========================================
 template <typename T>
 T	ListSimple<T>::GetElem(int elemnr,int *retelem)
 {
-	while (deletemarked[elemnr])
+	while (Marked[elemnr])
 	{
-		if (++elemnr >= totalelem)
+		if (++elemnr >= _Count)
 			return(NULL);
 	}
 	if (retelem)
@@ -381,10 +383,10 @@ T	ListSimple<T>::GetElem(int elemnr,int *retelem)
 template <typename T>
 void ListSimple<T>::FreeAndEmptyAll(void)
 {
-	totalelem = 0;
-	totalmarked = 0;
-	memset(elements, 0, allocatedelem * sizeof(T));
-	memset(deletemarked, 0, allocatedelem * sizeof(bool));
+	_Count = 0;
+	CountMarked = 0;
+	memset(elements, 0, Capacity * sizeof(T));
+	memset(Marked, 0, Capacity * sizeof(bool));
 	EnumListInit();
 }
 
@@ -413,7 +415,7 @@ void ListSimple<T>::AppendTo(ListSimple *appendTo)
 template <typename T>
 void ListSimple<T>::DelElem(T	elem)
 {
-	for (int i = 0;i < totalelem;i++)
+	for (int i = 0;i < _Count;i++)
 	{
 		if (elements[i] == elem)
 		{
@@ -426,7 +428,7 @@ void ListSimple<T>::DelElem(T	elem)
 template <typename T>
 int ListSimple<T>::RetIfContains(T	elem)
 {
-	for (int i = 0;i < totalelem;i++)
+	for (int i = 0;i < _Count;i++)
 	{
 		if (elements[i] == elem)
 		{

@@ -21,13 +21,13 @@ void FLINGYLIST::DeleteMarked(void)		//delete marked
 {
 	SC_FLINGY *flingy;
 	int i, lastelem;
-	if (!totalmarked)
+	if (!CountMarked)
 		return;
-	totalmarked = 0;
-	lastelem = totalelem - 1;
+	CountMarked = 0;
+	lastelem = _Count - 1;
 	for (i = lastelem;i >= 0;i--)
 	{
-		if (deletemarked[i])
+		if (Marked[i])
 		{
 			flingy = elements[i];
 			if (flingy->listdamaged)
@@ -40,10 +40,10 @@ void FLINGYLIST::DeleteMarked(void)		//delete marked
 			{
 				elements[i] = elements[lastelem];
 				elements[i]->flingylist_elemnr = i;
-				deletemarked[i] = deletemarked[lastelem];
+				Marked[i] = Marked[lastelem];
 			}
-			deletemarked[lastelem] = 0;
-			totalelem--;
+			Marked[lastelem] = 0;
+			_Count--;
 			lastelem--;
 		}
 	}

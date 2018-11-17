@@ -34,7 +34,7 @@ public:
 	int	 SwapElements(int elemnr1,int elemnr2);
 	void *GetElemNr(int elemnr);
 	void *GetElemNrNoNULL(int *elemnr);
-	int	 GetMaxElements(void);
+	int	 Count(void);
 	int	 GetMaxElemNr(void);
 	void AllocAndAddList(void *elem,int elemsize);
 	void FreeAndDelList(int elemnr,void (*deallocfunc)(void *elem));

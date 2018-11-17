@@ -39,7 +39,7 @@ public:
 	SCUNIT				SC_Unit;
 	unsigned char		movedticks;
 	int					sizedestobj;
-	
+
 	SC_FLINGY(OBJ *a,OBJ *dest,int xdest,int ydest,unsigned char flingy_id);
 
 	int	 DieFlingy(void);
@@ -54,7 +54,7 @@ class FLINGYLIST:public ListSimple<SC_FLINGY *>
 {
 public:
 	FLINGYLIST(int nrofelems) : ListSimple(nrofelems) {};
-	inline void Add(SC_FLINGY *elem) { elements[totalelem] = elem; elem->flingylist_elemnr = totalelem; totalelem++; };
+	inline void Add(SC_FLINGY *elem) { elements[_Count] = elem; elem->flingylist_elemnr = _Count++; };
 	void DeleteMarked(void);
 	void Free(void);
 
@@ -69,7 +69,7 @@ SC_FLINGY *CreateFlingyID(OBJ *a,OBJ *dest,int xstart256,int ystart256,int xdest
 						  unsigned char weapon_id,unsigned char flingy_id,int deltaelevation);
 SC_FLINGY *Create2FlingyID(OBJ *a,OBJ *destobj,int xstart256,int ystart256,int xdest256,int ydest256,int xdest256_2,int ydest256_2,
 						  unsigned char weapon_id,unsigned char flingy_id,int deltaelevation);
-						  
+
 SC_FLINGY *CreateWeaponFlingy(OBJ *a,OBJ *dest,int xstart256,int ystart256,int xdest256,int ydest256,
 						  unsigned char weapon_id,unsigned char flingy_id,signed char launchspin,int deltaelevation);
 

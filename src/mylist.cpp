@@ -314,7 +314,7 @@ void *mylist::GetElemNrNoNULL(int *elemnr)
 	} while (1);
 }
 //=========================================
-int mylist::GetMaxElements(void)
+int mylist::Count(void)
 {
 	return(maxelements);
 }
@@ -329,9 +329,9 @@ void mylist::SortA(void)
 	int i, j;
 	char *elem1;
 	char *elem2;
-	for (i = 0;i < GetMaxElements();i++)
+	for (i = 0;i < Count();i++)
 	{
-		for (j = i + 1;j < GetMaxElements();j++)
+		for (j = i + 1;j < Count();j++)
 		{
 			elem1 = (char *)GetElemNr(i);
 			elem2 = (char *)GetElemNr(j);

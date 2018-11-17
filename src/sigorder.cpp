@@ -153,7 +153,7 @@ int	 SIGOrder_ProtossBuildWhiteAppear(OBJ *a)
 	iscriptinfo.ExecuteScript(img);
 	img->SetIScriptNr(ISCRIPTNR_WARPIN);
 	iscriptinfo.ExecuteScript(img);
-	nrofwarpimg = img->childlists->GetMaxElements();
+	nrofwarpimg = img->childlists->Count();
 	whitewarpimg = (OVERLAY_IMG *)img->childlists->GetElem(nrofwarpimg - 1, NULL);
 	if (whitewarpimg)
 	{

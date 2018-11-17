@@ -97,7 +97,7 @@ void keyhandler(void)
 {
 #ifdef DEBUG
 	OBJ *o = NULL;
-	if (SelectedUnits.totalelem)
+	if (SelectedUnits.Count())
 		o = (OBJ *)SelectedUnits.GetElem(0, NULL);
 	if (KEYPRESS(F12))
 	{

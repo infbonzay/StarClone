@@ -1086,7 +1086,7 @@ void RevealMap::AdditionalOpen(void)
 		b = loadobj(o->SC_Unit);
 		makeoneobjseeopen(o, b);
 	}
-	totalelem = 0;
+	_Count = 0;
 }
 //=====================================
 void RevealMap::AddObj(OBJ *o)

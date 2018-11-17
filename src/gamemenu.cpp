@@ -152,7 +152,7 @@ int FORCE_SLOTS::GetPlayerNr(int player)
 int parselistfiles(mylist *flist)
 {
 	char *oneelem;
-	for (int i = 0;i < flist->GetMaxElements();i++)
+	for (int i = 0;i < flist->Count();i++)
 	{
 		oneelem = (char *)flist->GetElemNr(i);
 		if (oneelem[0] == COMMANDSYMB)
@@ -333,9 +333,9 @@ void MenuAppearDrawCycle(MENUAPPEAR *items, MENUSTR *staticmenu, TICKCOUNTER *ti
 
 	savedscreen = savescreen();
 	do {
-		stopscript = items->GetMaxElements();
+		stopscript = items->Count();
 		//draw all elements
-		for (i = 0; i < items->GetMaxElements(); i++)
+		for (i = 0; i < items->Count(); i++)
 		{
 			oneitem = items->GetElem(i, NULL);
 			if (oneitem->moveaction)
@@ -359,7 +359,7 @@ void MenuAppearDrawCycle(MENUAPPEAR *items, MENUSTR *staticmenu, TICKCOUNTER *ti
 void MenuDisappearDestroy(MENUAPPEAR *items)
 {
 	int i;
-	for (i = 0; i < items->GetMaxElements(); i++)
+	for (i = 0; i < items->Count(); i++)
 		delete (MenuItemPcx *)items->GetElem(i, NULL);
 	delete items;
 }
@@ -373,7 +373,7 @@ void MenuDisappear(MENUSTR *allmenus, MENUAPPEAR *items, MENUSTR *staticmenu)
 	time1 = mytimer.CreateTickCounter();
 	Play_sfxdata_id(NULL, SFXDATA_SNDMENUOUT, -1, 0);
 	//enable move scripting
-	for (i = 0; i < items->GetMaxElements(); i++)
+	for (i = 0; i < items->Count(); i++)
 	{
 		oneitem = items->GetElem(i, NULL);
 		oneitem->moveaction->EnableMoveScript();
@@ -436,7 +436,7 @@ MENUAPPEAR *MenuAppear(MENUSTR *allmenus, int elems, MENUFIRSTDATA *menudata, ME
 	}
 	Play_sfxdata_id(NULL, SFXDATA_SNDMENUIN, -1, 0);
 	//enable move scripting
-	for (i = 0; i < items->GetMaxElements(); i++)
+	for (i = 0; i < items->Count(); i++)
 	{
 		oneitem = items->GetElem(i, NULL);
 		oneitem->moveaction->EnableMoveScript();
@@ -869,7 +869,7 @@ int glu_loadgame(void)
 		mkdir(LOADPATH, 0755);
 		listfiles(LOADPATH, &saves, ".sav", LOADPATH, ".sav", NOADDDIRTOLIST);
 		setlistbox_lists(gluload, 4, gluload->menu[4].item.listbox->selectednr, &saves, NULL);
-		if (!saves.GetMaxElements())
+		if (!saves.Count())
 		{
 			setmenuitem_DISABLED(gluload, 5, TRUE);	//ok
 			setmenuitem_DISABLED(gluload, 7, TRUE);	//delete
@@ -987,7 +987,7 @@ int glu_loadreplay(void)
 		strcpy(LOADPATH, REPLAYS_DIRECTORY);
 		listfiles(LOADPATH, &saves, ".rep", LOADPATH, ".rep", NOADDDIRTOLIST);
 		setlistbox_lists(gluloadrep, 4, gluloadrep->menu[4].item.listbox->selectednr, &saves, NULL);
-		if (!saves.GetMaxElements())
+		if (!saves.Count())
 		{
 			setmenuitem_DISABLED(gluloadrep, 5, TRUE);	//ok
 			setmenuitem_DISABLED(gluloadrep, 7, TRUE);	//delete
@@ -1946,7 +1946,7 @@ int glu_conn(void)
 
 	repeat = 1;
 	do {
-		if (!saves.GetMaxElements())
+		if (!saves.Count())
 		{
 			setmenuitem_DISABLED(gluconn, 13, TRUE);	//ok
 		}
@@ -2365,7 +2365,7 @@ int glu_login(void)
 
 	mylist ulist;
 	listusers(USERS_DIRECTORY, &ulist);
-	int nrofusers = ulist.GetMaxElements();
+	int nrofusers = ulist.Count();
 	ulist.DeallocList();
 
 	MENUFIRSTDATA menushow[3] = {
@@ -2389,7 +2389,7 @@ int glu_login(void)
 		else
 			flags = MENUFLAGS_EMPTY;
 		setlistbox_lists(singammenu, 7, singammenu->menu[7].item.listbox->selectednr, &ulist, NULL);
-		if (!ulist.GetMaxElements())
+		if (!ulist.Count())
 		{
 			setmenuitem_DISABLED(singammenu, 3, TRUE);
 			setmenuitem_DISABLED(singammenu, 6, TRUE);
@@ -3129,7 +3129,7 @@ int selectmapmenu(void)
 					//			changelistbox_fromto(selmap,6,elemnr);
 				}
 			}
-			if (!filelist.GetMaxElements())
+			if (!filelist.Count())
 			{
 				setmenuitem_DISABLED(selmap, 15, TRUE);
 			}
@@ -3787,7 +3787,7 @@ void SendTextToChatItem(MENUSTR *gluchat, int nr, char *txt)
 		//	gluchat->menu[nr].item.listbox->flist->AddList(chattxt);
 	} while (txt[txtoffset] != 0);
 	//	  setlistbox_lists(gluchat,nr,0,gluchat->menu[nr].item.listbox->flist);
-	changelistbox_fromto(gluchat, nr, gluchat->menu[nr].item.listbox->flist->GetMaxElements() - 1);
+	changelistbox_fromto(gluchat, nr, gluchat->menu[nr].item.listbox->flist->Count() - 1);
 }
 //==========================================
 void createplayerslottabs(char *str, int withobserverslot)
@@ -5233,7 +5233,7 @@ int wmission(MENUDRAW *menudraw, MENUPARAMS *menuparams)
 	int ret, i;
 	if (!menudraw->menutodraw)
 	{
-		menudraw->CloseMultiplesMenus(ALLMENUS.GetMaxElements());
+		menudraw->CloseMultiplesMenus(ALLMENUS.Count());
 		menudraw->menutodraw = LoadDialogBin("rez\\wmission.bin", DIALOGBIN_GAMEDIALOGS | DIALOGBIN_DONOTSAVEUNDERMENU, IDFONT16);
 		if (!menudraw->menutodraw)
 			return(-1);
@@ -5268,7 +5268,7 @@ int lmission(MENUDRAW *menudraw, MENUPARAMS *menuparams)
 	int ret;
 	if (!menudraw->menutodraw)
 	{
-		menudraw->CloseMultiplesMenus(ALLMENUS.GetMaxElements());
+		menudraw->CloseMultiplesMenus(ALLMENUS.Count());
 		menudraw->menutodraw = LoadDialogBin("rez\\lmission.bin", DIALOGBIN_GAMEDIALOGS | DIALOGBIN_DONOTSAVEUNDERMENU, IDFONT16);
 		if (!menudraw->menutodraw)
 			return(-1);
@@ -5339,7 +5339,7 @@ int quitgame(MENUDRAW *menudraw, MENUPARAMS *menuparams)
 	switch (ret)
 	{
 	case 0:
-		menudraw->CloseMultiplesMenus(ALLMENUS.GetMaxElements());
+		menudraw->CloseMultiplesMenus(ALLMENUS.Count());
 		menustatus = EXITGAME;
 		return(1);
 		break;
@@ -5366,7 +5366,7 @@ int restartgame(MENUDRAW *menudraw, MENUPARAMS *menuparams)
 	switch (ret)
 	{
 	case 0://ok
-		menudraw->CloseMultiplesMenus(ALLMENUS.GetMaxElements());
+		menudraw->CloseMultiplesMenus(ALLMENUS.Count());
 		menustatus = RESTARTGAME;
 		return(1);
 		break;
@@ -5398,7 +5398,7 @@ int leavegame(MENUDRAW *menudraw, MENUPARAMS *menuparams)
 	switch (ret)
 	{
 	case 0://ok
-		menudraw->CloseMultiplesMenus(ALLMENUS.GetMaxElements());
+		menudraw->CloseMultiplesMenus(ALLMENUS.Count());
 		menustatus = QUITMISSION;
 		return(1);
 		break;
@@ -5501,7 +5501,7 @@ int networkopt(MENUDRAW *menudraw, MENUPARAMS *menuparams)
 			saveconf();
 			netplay.SetNetworkLatency(gameconf.networkconf.networklatency, NUMBGAMER);
 		}
-		menudraw->CloseMultiplesMenus(ALLMENUS.GetMaxElements());
+		menudraw->CloseMultiplesMenus(ALLMENUS.Count());
 		menustatus = CONTINUEGAME;
 		return(1);
 		break;
@@ -5837,7 +5837,7 @@ int savegame(MENUDRAW *menudraw, MENUPARAMS *menuparams)
 			strcat(fileforsaveload, ".sav");
 			if (savegametofile())
 			{
-				menudraw->CloseMultiplesMenus(ALLMENUS.GetMaxElements() + 1);
+				menudraw->CloseMultiplesMenus(ALLMENUS.Count() + 1);
 				menustatus = CONTINUEGAME;
 				return(0);
 			}
@@ -5965,7 +5965,7 @@ int xputokmenu(MENUDRAW *menudraw, MENUPARAMS *menuparams)
 		if (menuparams->onselectmenuitem)
 			if (menuparams->onselectmenuitem(menudraw->menutodraw, ret))
 			{
-				menudraw->CloseMultiplesMenus(ALLMENUS.GetMaxElements() + 1);
+				menudraw->CloseMultiplesMenus(ALLMENUS.Count() + 1);
 			}
 		return(0);//return 0 after closemultiplesmenus
 	}
@@ -5990,7 +5990,7 @@ int xputokcancelmenu(MENUDRAW *menudraw, MENUPARAMS *menuparams)
 		{
 			if (menuparams->onselectmenuitem(menudraw->menutodraw, ret))
 			{
-				menudraw->CloseMultiplesMenus(ALLMENUS.GetMaxElements() + 1);
+				menudraw->CloseMultiplesMenus(ALLMENUS.Count() + 1);
 			}
 			return(0);//return 0 after closemultiplesmenus
 		}

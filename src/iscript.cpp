@@ -453,7 +453,7 @@ int ISCRIPT::CompilePass2(FILE *f)
 	}
 endcompilepass2:
 	//set labels on commands
-	maxlabels = nameoflabels.GetMaxElements();
+	maxlabels = nameoflabels.Count();
 	for (i = 0;i < maxlabels;i++)
 	{
 		cmdlabel = (char *)nameoflabels.GetElemNr(i);
@@ -503,7 +503,7 @@ int ISCRIPT::CompileIScripts(const char *filename)
 	}
 	else
 	{
-		//			printf("totallabels=%d, labelreferiences=%d\n",labels.GetMaxElements(),nameoflabels.GetMaxElements());
+		//			printf("totallabels=%d, labelreferiences=%d\n",labels.Count(),nameoflabels.Count());
 		printf("DONE\ncompile iscript pass 2 ... ");
 		if (CompilePass2(f))
 		{
@@ -519,7 +519,7 @@ int ISCRIPT::CompileIScripts(const char *filename)
 	DEBUGMESSCR("compiled iscript size = %d\n", compilediscriptssize);
 	//		  savebuff("iscript.bin",compilediscripts,compilediscriptssize);
 			//remove all label & offset lists
-	/*		for (i=0;i<labels.GetMaxElements();i++)
+	/*		for (i=0;i<labels.Count();i++)
 			{
 				printf("[%03d][%s] = %04x\n",i,(char*)labels.GetElemNr(i),(int) labeloffsets.GetElemNr(i));
 			}

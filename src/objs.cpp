@@ -629,7 +629,7 @@ void ifselectedprobe(void)
 //=====================================
 void ifselectTEMPLARS(void)
 {
-	if (SelectedUnits.totalelem >= 2)
+	if (SelectedUnits.Count() >= 2)
 	{
 		warparchon = 1;
 	}
@@ -719,7 +719,7 @@ void selectMAN(int x1, int y1, int x2, int y2, int mode)
 				map.MAPYGLOBAL,
 				map.MAPXGLOBAL + screenMapInfo->SizeX32 * SIZESPRLANSHX,
 				map.MAPYGLOBAL + screenMapInfo->SizeY32 * SIZESPRLANSHY);
-			totalselected = selectnow[unittype]->totalelem;
+			totalselected = selectnow[unittype]->Count();
 		}
 		else
 		{
@@ -768,7 +768,7 @@ void selectMAN(int x1, int y1, int x2, int y2, int mode)
 		if (!mode)
 		{
 			for (i = SELECTUNITTYPES - 1; i >= 0; i--)
-				if (selectnow[i]->totalelem)
+				if (selectnow[i]->Count())
 				{
 					selectnow[i]->CopyTo(&SelectedUnits);
 					SelectedUnitTypes = i;
@@ -788,7 +788,7 @@ void selectMAN(int x1, int y1, int x2, int y2, int mode)
 		{
 			doselectedOBJbit(a, NUMBGAMER, 1);
 		}
-		if (SelectedUnits.totalelem)
+		if (SelectedUnits.Count())
 		{
 			ifselectedprobe();
 			firstobj = (OBJ *)SelectedUnits.GetElem(0, NULL);
@@ -810,7 +810,7 @@ void selectMAN(int x1, int y1, int x2, int y2, int mode)
 			}
 		}
 		ifselectTEMPLARS();
-		if (SelectedUnits.totalelem == 1)
+		if (SelectedUnits.Count() == 1)
 		{
 			OBJ *o = (OBJ *)SelectedUnits.GetElem(0, NULL);
 			ifselectTRANSPORTS(o);
@@ -3124,7 +3124,7 @@ void LoadObjInObj(struct OBJ *a, struct OBJ *c)
 		transportanalizeobj(c);
 		doselectedOBJbit(a, a->playernr, 0);
 		deselectobj(a);
-		if (SelectedUnits.totalelem == 1)
+		if (SelectedUnits.Count() == 1)
 		{
 			ifselectTRANSPORTS((OBJ *)SelectedUnits.GetElem(0, NULL));
 		}

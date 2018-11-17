@@ -78,7 +78,7 @@ public:
 	unsigned short		imageid;		//ref to image.dat
 	unsigned short		iscriptid;		//scriptnr fot image (last is 411)
 	unsigned char		iscriptnr;		//type of script (init,death,walking,specialstate1,....)
-	
+
 	char				grpmethod;
 	char				remaptable;
 
@@ -129,16 +129,16 @@ public:
 	unsigned char		invisiblecolors;		//0 - (0 - 0 colors invisible) full visible, 255 - (0-255 colors are invisible) invisible
 	unsigned char		imageusercolor; //0-15	playernrcolor,16-tored,17-togreen,18-toblue,19-tomono
 	unsigned char		side;			//0-255			div to 8 to see actual side
-	unsigned char		neededside;		
-	unsigned char		TurnRadius;				//turn radius from associated flingy 
+	unsigned char		neededside;
+	unsigned char		TurnRadius;				//turn radius from associated flingy
 	char				whocreate;				//unknown,obj,flingy,...(see defines creators)
-	IMAGECREATOR		creator;	
-	
+	IMAGECREATOR		creator;
+
 	MAIN_IMG(	unsigned short image_id,int x,int y,int elevation,
 				signed char xoffs,signed char yoffs,
 				unsigned char unitside256,unsigned char plcolor,unsigned short unitflags,
 				unsigned char usescriptnr);
-				
+
 	MAIN_IMG(	unsigned short image_id,int x,int y,int elevation,
 				unsigned short imagelo_tbl,
 				unsigned char unitside256,unsigned char plcolor,unsigned short unitflags,
@@ -177,17 +177,17 @@ class MAINIMGLIST : public ListSimple<MAIN_IMG *>
 {
 public:
 	MAINIMGLIST(int nrofelems) : ListSimple(nrofelems) {};
-	inline void Add(MAIN_IMG *elem) 
-	{ 
-		if (totalelem < allocatedelem)
+	inline void Add(MAIN_IMG *elem)
+	{
+		if (_Count < Capacity)
 		{
-			elements[totalelem] = elem;
-			elem->imglist_elemnr = totalelem;
-			totalelem++;
+			elements[_Count] = elem;
+			elem->imglist_elemnr = _Count;
+			_Count++;
 		}
 		else
 		{
-			DEBUGMESSCR("MAINIMGLIST:max elems(%d) exceeded\n",totalelem);
+			DEBUGMESSCR("MAINIMGLIST:max elems(%d) exceeded\n",_Count);
 		}
 	};
 	void DeleteMarked(void);

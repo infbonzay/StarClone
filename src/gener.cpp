@@ -1311,7 +1311,7 @@ int gogame(struct mapinfo *info)
 			PAUSEGAME = 1;
 
 	} while (menustatus == CONTINUEGAME);
-	if (ALLMENUS.GetMaxElements() > 0)
+	if (ALLMENUS.Count() > 0)
 		DEBUGMESSCR("REMAIN ALLMENUS lists\n");
 	ALLMENUS.DeallocList();
 	netplay.DeInitNetworkTicks();

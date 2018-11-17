@@ -30,7 +30,7 @@ void BARMESSAGES::addbarmessage(char *mes, int fontnr, int color, int showedtime
 	}
 	if (this->maxmessages == 1)
 		flags |= BF_FORCEADD;
-	nrofmes = barmes.GetMaxElements();
+	nrofmes = barmes.Count();
 	if (nrofmes >= this->maxmessages)
 	{
 		if (!(flags&BF_FORCEADD))
@@ -56,7 +56,7 @@ void BARMESSAGES::addbarmessage(char *mes, int fontnr, int color, int showedtime
 				newmes->flags = flags;
 				newmes->dissapeartime = curtick + showedtime * MAXGAMECYCLESPERSECOND / 1000;
 				this->barmes.AddList(newmes);
-				nrofmes = barmes.GetMaxElements();
+				nrofmes = barmes.Count();
 				if (nrofmes >= this->maxmessages)
 				{
 					this->clearonemessage(0);
@@ -82,7 +82,7 @@ void BARMESSAGES::showallmessages(int x, int y, int sizexbar, int heightoneline)
 {
 	int i, ypos = 0, szx, lines, flags, maxelems;
 	BARMES *bm;
-	if (!this->barmes.GetMaxElements())
+	if (!this->barmes.Count())
 		return;
 	barmes.EnumListInit();
 	while ((bm = (BARMES *)barmes.GetNextListElem(&i)))
@@ -95,7 +95,7 @@ void BARMESSAGES::showallmessages(int x, int y, int sizexbar, int heightoneline)
 		}
 	}
 	//	  this->barmes.Shift();
-	maxelems = this->barmes.GetMaxElements();
+	maxelems = this->barmes.Count();
 	barmes.EnumListInit();
 	while ((bm = (BARMES *)barmes.GetNextListElem()))
 	{

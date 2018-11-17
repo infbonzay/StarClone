@@ -34,22 +34,22 @@ mylist elevationIMG[MAXIMAGELEVELS];
 void OVERLAYIMGLIST::DeleteMarked(void)
 {
 	int i, lastelem;
-	if (!totalmarked)
+	if (!CountMarked)
 		return;
-	totalmarked = 0;
-	lastelem = totalelem - 1;
+	CountMarked = 0;
+	lastelem = _Count - 1;
 	for (i = lastelem;i >= 0;i--)
 	{
-		if (deletemarked[i])
+		if (Marked[i])
 		{
 			delete elements[i];
 			if (i != lastelem)
 			{
 				elements[i] = elements[lastelem];
-				deletemarked[i] = deletemarked[lastelem];
+				Marked[i] = Marked[lastelem];
 			}
-			deletemarked[lastelem] = 0;
-			totalelem--;
+			Marked[lastelem] = 0;
+			_Count--;
 			lastelem--;
 		}
 	}
@@ -59,26 +59,26 @@ void MAINIMGLIST::DeleteMarked(void)
 {
 	MAIN_IMG *img;
 	int i, lastelem;
-	if (totalmarked)
+	if (CountMarked)
 	{
 		img = NULL;
 	}
-	//	  if (!totalmarked)
+	//	  if (!CountMarked)
 	//		return;
-	lastelem = totalelem - 1;
+	lastelem = _Count - 1;
 	for (i = lastelem;i >= 0;i--)
 	{
 		img = elements[i];
 		if (img->childlists)
 		{
 			img->childlists->DeleteMarked();
-			if (!img->childlists->totalelem)
+			if (!img->childlists->Count())
 			{
 				delete img->childlists;
 				img->childlists = NULL;
 			}
 		}
-		if (deletemarked[i])
+		if (Marked[i])
 		{
 			if (!img->childlists)
 			{
@@ -86,13 +86,13 @@ void MAINIMGLIST::DeleteMarked(void)
 				if (i != lastelem)
 				{
 					elements[i] = elements[lastelem];					//last imaget move to deleted image
-					deletemarked[i] = deletemarked[lastelem];
+					Marked[i] = Marked[lastelem];
 					elements[i]->imglist_elemnr = i;	//global nr of moved image also changes
 				}
-				deletemarked[lastelem] = 0;
-				totalelem--;
+				Marked[lastelem] = 0;
+				_Count--;
 				lastelem--;
-				totalmarked--;
+				CountMarked--;
 			}
 			else
 			{
@@ -106,7 +106,7 @@ void MAINIMGLIST::Free(void)
 {
 	int i;
 	MAIN_IMG *img;
-	for (i = 0;i < totalelem;i++)
+	for (i = 0;i < _Count;i++)
 	{
 		img = elements[i];
 		img->DeleteMainImgAndChilds(this);
@@ -115,10 +115,10 @@ void MAINIMGLIST::Free(void)
 
 	FreeAndEmptyAll();
 /*
-    totalelem=0;
-    totalmarked=0;
+    _Count=0;
+    CountMarked=0;
     memset(elements,0,allocatedelem*sizeof(MAIN_IMG *));
-    memset(deletemarked,0,allocatedelem*sizeof(bool));
+    memset(Marked,0,allocatedelem*sizeof(bool));
     EnumListInit();
 */
 }
@@ -1053,7 +1053,7 @@ void MinimapImages_Draw(void)
 //============================================
 void AllImages_DeleteMarked(void)
 {
-	mainimageslist.DeleteMarked();				//deletemarked childs images
+	mainimageslist.DeleteMarked();				//Marked childs images
 	imageslist_minimap.DeleteMarked();
 	imageslist_doodads.DeleteMarked();
 }

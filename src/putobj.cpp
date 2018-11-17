@@ -623,7 +623,7 @@ void printobjparam(void)
 	struct OBJ *a;
 	struct OBJstruct *b;
 	existinbuildconstr = 0;
-	objcount = SelectedUnits.totalelem;
+	objcount = SelectedUnits.Count();
 	if (objcount == 1)
 	{
 		a = (OBJ *)SelectedUnits.GetElem(0, NULL);
@@ -1209,7 +1209,7 @@ void drawallunitsinbar(int XWINPOS, int YWINPOS)
 	int shield_pers, life_pers, mbuttonpress, shiftpress, ctrlpress;
 	int objtype;//objtype=0-darkblue,1-white,2-green,3-lightblue
 	struct OBJ *a1;
-	if (SelectedUnits.totalelem)
+	if (SelectedUnits.Count())
 	{
 		mbuttonpress = (highMouse->GetButtonStatus() & WMLEFTKEY) && (!highMouse->MouseOnSelectionMode);
 		shiftpress = KEYPRESS(SHIFTLKEY) | KEYPRESS(SHIFTRKEY);

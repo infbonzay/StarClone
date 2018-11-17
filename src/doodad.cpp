@@ -51,7 +51,7 @@ void CreateDoodadsFromLists(mylist *mapdoodads, mapinfo *loadedmap)
 {
 	OBJ *a;
 	doodad_on_map *doodad;
-	DEBUGMESSCR("total doodads = %d \n", mapdoodads->GetMaxElements());
+	DEBUGMESSCR("total doodads = %d \n", mapdoodads->Count());
 	mapdoodads->EnumListInit();
 	while ((doodad = (doodad_on_map *)mapdoodads->GetNextListElem()))
 	{

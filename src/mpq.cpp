@@ -66,7 +66,7 @@ void unloadfilefrommpq(void *mem)
 //============================================
 HANDLE MpqsFindFile(const char *filename)
 {
-	int nrmpqfiles = allmpq.GetMaxElements();
+	int nrmpqfiles = allmpq.Count();
 	for (int i = 0;i < nrmpqfiles;i++)				//find file with priority
 	{
 		int err = SFileHasFile(allmpq.GetElemNr(i), filename);
@@ -89,7 +89,7 @@ HANDLE LoadMpq(const char *MPQFileName)
 //============================================
 void UnLoadAllMpqs(void)
 {
-	for (int i = 0;i < allmpq.GetMaxElements();i++)
+	for (int i = 0;i < allmpq.Count();i++)
 		wr_SFileCloseArchive(allmpq.GetElemNr(i));
 	allmpq.FlushList();
 	if (install1mpq)

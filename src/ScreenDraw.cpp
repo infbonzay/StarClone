@@ -40,7 +40,7 @@ void ScreenDraw::TopMessage(void)
 	char ss[50];
 	s[0] = 0;
 	OBJ *o = NULL;
-	if (SelectedUnits.totalelem)
+	if (SelectedUnits.Count())
 	{
 		o = (OBJ *)SelectedUnits.GetElem(0, NULL);
 	}

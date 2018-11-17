@@ -949,7 +949,7 @@ int read_starmap(HANDLE mpq, const char *filename, struct mapinfo *info, int fla
 		}
 		else if (!strcmp(name, "UNIT"))
 		{
-			if (map_units.GetMaxElements())
+			if (map_units.Count())
 			{
 				printf("Error unit lists not empty\n");
 				return(-1);
