@@ -74,7 +74,8 @@ public:
 	inline void Set(int elemnr,void *elem) { elements[elemnr] = elem; };
 	void *GetNextListElem(int *elemnr);
 	void *GetElem(int elemnr,int *retelemnr);
-	int Contains(void *elem);
+	int  RetIfContains(void *elem);
+	bool Contains(void *elem);
 	void *GetABSNextListElem(char *deleteflag);
 	void DeleteOneElem(int elemnr);
 	void DeleteMarked(void);

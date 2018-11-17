@@ -4,6 +4,7 @@
 #include "images.h"
 #include "defs.h"
 #include "man.h"
+#include "vars.h"
 
 #define TANKSIEGESIDE			(12*8)
 #define TANKNORMALSIDE			(28*8)
@@ -50,10 +51,6 @@
 #define MAXWAIT_SEARCHATACK_TICK		(MAXGAMECYCLESPERSECOND*1)
 
 
-extern	struct OBJ *ObjsRevealMap[];
-
-extern	int MaxObjsRevealMap;
-
 //==========================================
 void destroyobj(struct OBJ *a);
 OBJ *CreateArchon(OBJ *a,OBJ *a2);
@@ -76,9 +73,9 @@ void deselectallobj(int nr_player);
 void controlbu(int typeunits,int typeb_or_u,int mode);
 void grupingobj(int mode);
 int foundonetypeobj(struct OBJ *a,struct OBJstruct *b);
-struct OBJ *founduniqueobj(int x1,int y1,int x2,int y2);
+OBJ *founduniqueobj(int x1,int y1,int x2,int y2);
 void selectMAN(int x1,int y1,int x2,int y2,int mode);
-struct OBJ* GetMaxRankOBJ(mylistsimple *obj);
+OBJ* GetMaxRankOBJ(SelectionObjs *obj);
 void changedeselectobj(struct OBJ *a,struct OBJ *aa);
 int selectobjcount(void);
 int selectobj(struct OBJ *a);

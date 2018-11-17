@@ -574,7 +574,7 @@ void mylistsimple::AppendTo(mylistsimple *appendTo)
 	void *elem;
 	while ((elem = this->GetNextListElem(NULL)))
 	{
-		if (appendTo->Contains(elem) < 0)
+		if (!appendTo->Contains(elem))
 		{
 			appendTo->AddElem(elem);
 		}
@@ -601,7 +601,7 @@ void mylistsimple::DelElem(void *elem)
 	}
 }
 //=========================================
-int mylistsimple::Contains(void *elem)
+int mylistsimple::RetIfContains(void *elem)
 {
 	for (int i = 0;i < totalelem;i++)
 	{
@@ -611,5 +611,10 @@ int mylistsimple::Contains(void *elem)
 		}
 	}
 	return -1;
+}
+//=========================================
+bool mylistsimple::Contains(void *elem)
+{
+	return(RetIfContains(elem) >= 0);
 }
 

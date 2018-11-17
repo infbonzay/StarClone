@@ -543,7 +543,7 @@ void deselectallobj(int playernr)
 	SelectedUnits.FreeAndEmptyAll();
 }
 //=====================================
-void addtolist_onetypeobj(mylistsimple *list, OBJ *a, int x1, int y1, int x2, int y2)
+void addtolist_onetypeobj(SelectionObjs *list, OBJ *a, int x1, int y1, int x2, int y2)
 {
 	int i, x, y;
 	struct OBJ *c;
@@ -563,7 +563,7 @@ void addtolist_onetypeobj(mylistsimple *list, OBJ *a, int x1, int y1, int x2, in
 					x < x2 + GetUnitWidthAndHeight(a->SC_Unit, UNITDIM_WIDTH) / 2 &&
 					y < y2 + GetUnitWidthAndHeight(a->SC_Unit, UNITDIM_HEIGHT) / 2)
 				{
-					list->AddElem(c);
+					list->Add(c);
 				}
 			}
 		}
@@ -685,16 +685,16 @@ void selectMAN(int x1, int y1, int x2, int y2, int mode)
 {
 	int i, x, y, unittype, totalselected = 0;
 	OBJ *firstobj, *a, *speakOBJ;
-	mylistsimple *selectnow[SELECTUNITTYPES] =
+	SelectionObjs *selectnow[SELECTUNITTYPES] =
 	{
-		new mylistsimple(1),
-		new mylistsimple(1),
-		new mylistsimple(1),
-		new mylistsimple(1),
-		new mylistsimple(1),
-		new mylistsimple(1),
-		new mylistsimple(MAXSELECTMAN),
-		new mylistsimple(MAXSELECTMAN),
+		new SelectionObjs(1),
+		new SelectionObjs(1),
+		new SelectionObjs(1),
+		new SelectionObjs(1),
+		new SelectionObjs(1),
+		new SelectionObjs(1),
+		new SelectionObjs(MAXSELECTMAN),
+		new SelectionObjs(MAXSELECTMAN),
 	};
 	deselectvars();
 	if (x2 < x1)
@@ -723,7 +723,7 @@ void selectMAN(int x1, int y1, int x2, int y2, int mode)
 		}
 		else
 		{
-			selectnow[unittype]->AddElem(a);
+			selectnow[unittype]->Add(a);
 			totalselected++;
 		}
 	}
@@ -749,83 +749,82 @@ void selectMAN(int x1, int y1, int x2, int y2, int mode)
 					if (IfUnitIsSelectable(a))
 					{
 						unittype = GetSelectedUnitType(a->SC_Unit, a->playernr);
-						selectnow[unittype]->AddElem(a);
+						selectnow[unittype]->Add(a);
 						totalselected++;
 					}
 				}
 			}
 		}
 	}
-	if ((!mode) && (!totalselected))
+	if (mode || totalselected)
 	{
-		for (i = 0;i < SELECTUNITTYPES; i++)
-			delete selectnow[i];
-		return;
-	}
-	//deselect all selected units
-	SelectedUnits.EnumListInit();
-	while ((a = (OBJ *)SelectedUnits.GetNextListElem(NULL)))
-	{
-		doselectedOBJbit(a, NUMBGAMER, 0);
-	}
-
-	if (!mode)
-	{
-		for (i = SELECTUNITTYPES - 1; i >= 0; i--)
-			if (selectnow[i]->totalelem)
-			{
-				selectnow[i]->CopyTo(&SelectedUnits);
-				SelectedUnitTypes = i;
-				break;
-			}
-	}
-	else
-	{
-		if (SelectedUnitTypes == SELECT_UNIT_MY)
-			selectnow[SELECT_UNIT_MY]->AppendTo(&SelectedUnits);
-		else
-			selectnow[SELECT_UNIT_MY]->CopyTo(&SelectedUnits);
-		SelectedUnitTypes = SELECT_UNIT_MY;
-	}
-	SelectedUnits.EnumListInit();
-	while ((a = (OBJ *)SelectedUnits.GetNextListElem(NULL)))
-	{
-		doselectedOBJbit(a, NUMBGAMER, 1);
-	}
-	if (SelectedUnits.totalelem)
-	{
-		ifselectedprobe();
-		firstobj = (OBJ *)SelectedUnits.GetElem(0, NULL);
-		if (firstobj->prop & VARREADY)
+		//deselect all selected units
+		SelectedUnits.EnumListInit();
+		while ((a = (OBJ *)SelectedUnits.GetNextListElem(NULL)))
 		{
-			if (firstobj->prop & VARPOWEROFF)
-			{
-				if (gameconf.audioconf.buildsounds)
-					if (firstobj && firstobj->playernr == NUMBGAMER)
-						if (mapSEE(firstobj, NUMBGAMER) > 1)
-							Play_sfxdata_id(firstobj, sfx_powerdown[GetUnitRace(firstobj->SC_Unit)], 2, 0);
-			}
+			doselectedOBJbit(a, NUMBGAMER, 0);
+		}
+
+		if (!mode)
+		{
+			for (i = SELECTUNITTYPES - 1; i >= 0; i--)
+				if (selectnow[i]->totalelem)
+				{
+					selectnow[i]->CopyTo(&SelectedUnits);
+					SelectedUnitTypes = i;
+					break;
+				}
+		}
+		else
+		{
+			if (SelectedUnitTypes == SELECT_UNIT_MY)
+				selectnow[SELECT_UNIT_MY]->AppendTo(&SelectedUnits);
 			else
+				selectnow[SELECT_UNIT_MY]->CopyTo(&SelectedUnits);
+			SelectedUnitTypes = SELECT_UNIT_MY;
+		}
+		SelectedUnits.EnumListInit();
+		while ((a = (OBJ *)SelectedUnits.GetNextListElem(NULL)))
+		{
+			doselectedOBJbit(a, NUMBGAMER, 1);
+		}
+		if (SelectedUnits.totalelem)
+		{
+			ifselectedprobe();
+			firstobj = (OBJ *)SelectedUnits.GetElem(0, NULL);
+			if (firstobj->prop & VARREADY)
 			{
-				speakOBJ = GetMaxRankOBJ(&SelectedUnits);
-				if (speakOBJ)
-					activatesound(speakOBJ, MODESOUNDSELECT, 0, NOSTOPCURRENTSOUNDS);
+				if (firstobj->prop & VARPOWEROFF)
+				{
+					if (gameconf.audioconf.buildsounds)
+						if (firstobj && firstobj->playernr == NUMBGAMER)
+							if (mapSEE(firstobj, NUMBGAMER) > 1)
+								Play_sfxdata_id(firstobj, sfx_powerdown[GetUnitRace(firstobj->SC_Unit)], 2, 0);
+				}
+				else
+				{
+					speakOBJ = GetMaxRankOBJ(&SelectedUnits);
+					if (speakOBJ)
+						activatesound(speakOBJ, MODESOUNDSELECT, 0, NOSTOPCURRENTSOUNDS);
+				}
 			}
 		}
-	}
-	ifselectTEMPLARS();
-	if (SelectedUnits.totalelem == 1)
-	{
-		OBJ *o = (OBJ *)SelectedUnits.GetElem(0, NULL);
-		ifselectTRANSPORTS(o);
-		ifselectedDAMAGEDBUILD(o);
-	}
-	else
-	{
-		transportplaceobj = NULL;
+		ifselectTEMPLARS();
+		if (SelectedUnits.totalelem == 1)
+		{
+			OBJ *o = (OBJ *)SelectedUnits.GetElem(0, NULL);
+			ifselectTRANSPORTS(o);
+			ifselectedDAMAGEDBUILD(o);
+		}
+		else
+		{
+			transportplaceobj = NULL;
+		}
 	}
 	for (i = 0;i < SELECTUNITTYPES; i++)
+	{
 		delete selectnow[i];
+	}
 }
 //=====================================
 void changedeselectobj(struct OBJ *a, struct OBJ *aa)
@@ -865,7 +864,7 @@ int selectobj(struct OBJ *a)
 //========================================
 int deselectobj(struct OBJ *a)
 {
-	int i = SelectedUnits.Contains(a);
+	int i = SelectedUnits.RetIfContains(a);
 	if (i >= 0)
 	{
 		SelectedUnits.DeleteOneElem(i);
@@ -881,10 +880,9 @@ int addselectobj(struct OBJ *a)
 {
 	if (a->prop & VARCANTSELECT)
 		return 0;
-	int i = SelectedUnits.Contains(a);
-	if (i >= 0)
+	if (!SelectedUnits.Contains(a))
 	{
-		SelectedUnits.AddElem(a);
+		SelectedUnits.Add(a);
 	}
 	return(0);
 }
@@ -2811,7 +2809,7 @@ int selectedobjmove(struct OBJ *destobj, int locx, int locy, int mode, int playe
 	int minx, miny, maxx, maxy, midx = 0, midy = 0, deltax = 0, deltay = 0, flags = SHOWERRORTEXT;
 	int k = 0;
 	struct OBJ *speakOBJ, *todestobj;
-	mylistsimple *moveobjects = new mylistsimple(MAXSELECTMAN);
+	SelectionObjs *moveobjects = new SelectionObjs(MAXSELECTMAN);
 	OBJ *o;
 	SelectedUnits.EnumListInit();
 	while ((o = (OBJ *)SelectedUnits.GetNextListElem(NULL)))
@@ -2822,7 +2820,7 @@ int selectedobjmove(struct OBJ *destobj, int locx, int locy, int mode, int playe
 		{
 			if (movefrommouse(o))
 			{
-				moveobjects->AddElem(o);
+				moveobjects->Add(o);
 			}
 		}
 	}
@@ -3015,7 +3013,7 @@ int GetDefaultModeForRightClick(OBJ *a, OBJ *destobj, int playernr)
 	return(modemove);
 }
 //=================================
-struct OBJ* GetMaxRankOBJ(mylistsimple *list)
+OBJ* GetMaxRankOBJ(SelectionObjs *list)
 {
 	int maxrank = -1, unitrank;
 	struct OBJ *maxrankOBJ = NULL;

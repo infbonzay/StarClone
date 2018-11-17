@@ -12,6 +12,7 @@
 #include "fonts.h"
 #include "tbl.h"
 #include "messages.h"
+#include "List.h"
 
 #define	 SC_CONFIGFILE	GAMENAME".conf"
 //=============================
@@ -149,7 +150,14 @@ extern struct _BE_ diapazone[];
 extern unsigned short MaxRegen;
 extern struct MAGEP mageprop[];
 
-extern mylistsimple SelectedUnits;
+class SelectionObjs : public ListSimple<OBJ*>
+{
+public:
+	SelectionObjs(int elements);
+	~SelectionObjs();
+};
+
+extern SelectionObjs SelectedUnits;
 extern int 			SelectedUnitTypes;
 extern struct  OBJ *curentoperationobj;
 extern short	int xpoint1l,xpoint2l,wmaxcol,wmaxrow;

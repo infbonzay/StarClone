@@ -266,7 +266,7 @@ public:
 	inline void MarkForDelElem(int elemnr) { if (!deletemarked[elemnr]) { totalmarked++; deletemarked[elemnr] = true; } };
 	inline int  GetMaxElements(void) { return (totalelem); };
 	inline void EnumListInit(void) { curenumelemnr = 0; };
-	inline void Set(int elemnr,void *elem) { elements[elemnr] = elem; };
+	inline void Set(int elemnr,T elem) { elements[elemnr] = elem; };
 	T			GetNextListElem(int *elemnr);
 	T			GetElem(int elemnr,int *retelemnr);
 	int 		RetIfContains(T elem);
@@ -294,8 +294,8 @@ ListSimple<T>::ListSimple(int neededelem)
 template <typename T>
 ListSimple<T>::~ListSimple()
 {
-	delete elements;
-	delete deletemarked;
+	delete[] elements;
+	delete[] deletemarked;
 }
 //=========================================
 template <typename T>
@@ -349,7 +349,7 @@ T	ListSimple<T>::GetNextListElem(int *retelemnr)
 }
 //=========================================
 template <typename T>
-T	ListSimple<T>::GetElem(int elemnr, int *retelem)
+T	ListSimple<T>::GetElem(int elemnr,int *retelem)
 {
 	while (deletemarked[elemnr])
 	{
@@ -382,12 +382,12 @@ template <typename T>
 void ListSimple<T>::AppendTo(ListSimple *appendTo)
 {
 	this->EnumListInit();
-	void *elem;
+	T elem;
 	while ((elem = this->GetNextListElem(NULL)))
 	{
-		if (appendTo->Contains(elem) < 0)
+		if (!appendTo->Contains(elem))
 		{
-			appendTo->AddElem(elem);
+			appendTo->Add(elem);
 		}
 	}
 }
@@ -421,7 +421,7 @@ int ListSimple<T>::RetIfContains(T	elem)
 template <typename T>
 bool ListSimple<T>::Contains(T	elem)
 {
-	return (RetIfContains(elem) != -1);
+	return (RetIfContains(elem) >= 0);
 }
 
 
