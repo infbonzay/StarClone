@@ -448,6 +448,9 @@
 *209 click atack button then selected unit died
  210 problem with spore acid remain on earth and bugged but unit was died.
  211 bug create lurker and cancel psy error
+*212 exit from bunker bug
+ 213 around 936 cycle bad fog in imperator flight
+ 214 makeopenseekarta - beginobj,endobj need rewrite
     if interceptors kill destobj return to carrier but carrier in atackmode & interceptors dont launch again
     interceptors fly to atack far then carrier range
     carrier stop move if atack to ground and stops to atack somebody

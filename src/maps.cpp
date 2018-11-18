@@ -1091,7 +1091,7 @@ void RevealMap::AdditionalOpen(void)
 //=====================================
 void RevealMap::AddObj(OBJ *o)
 {
-	if (player_aliance(o->playernr, NUMBGAMER) == MYOBJ || player_aliance(o->playernr, NUMBGAMER) == ALLIANCEOBJ)
+//	if (player_aliance(o->playernr, NUMBGAMER) == MYOBJ || player_aliance(o->playernr, NUMBGAMER) == ALLIANCEOBJ)
 	{
 		revealMap->Add(o);
 	}

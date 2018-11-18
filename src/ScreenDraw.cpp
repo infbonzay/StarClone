@@ -61,6 +61,9 @@ void ScreenDraw::TopMessage(void)
 	itoa(clc, ss, 10);
 	strcat(s, ss);
 
+	strcat(s, "C:");
+	itoa(gamecycle, ss, 10);
+	strcat(s, ss);
 	strcat(s, " maxobjs:");
 	itoa(MaxObjects, ss, 10);
 	strcat(s, ss);

@@ -485,8 +485,7 @@ void desenproperties(int *localprop, char *selectableicons)
 		if (selectedunloadunit != -1)
 		{
 			//x is nr of unloaded unit, y is 0
-			makemove(transportplaceobj, NULL, selectedunloadunit, 0, MODEUNLOADUNITNR, transportplaceobj->playernr, NOSHOWERROR);
-			//			moveobj(transportplaceobj,NULL,MODEUNLOADUNITNR,selectedunloadunit,0,NOSHOWERROR);
+			makemove(transportplaceobj, NULL, selectedunloadunit, 0, MODEUNLOADUNITNR, transportplaceobj->playernr, NOSHOWERROR | XYNOTCOORDS);
 		}
 	}//if !patrate
 }
