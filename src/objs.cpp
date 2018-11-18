@@ -570,44 +570,54 @@ void addtolist_onetypeobj(SelectionObjs *list, OBJ *a, int x1, int y1, int x2, i
 	}//for
 }//end func
 //=====================================
-struct OBJ *founduniqueobj(int x1, int y1, int x2, int y2)
+struct OBJ *founduniqueobj(int x1, int y1)
 {
-	int i, nodoodad, x, y;
-	struct OBJ *a, *minobj = NULL;
-	int yn, distx, disty, mindist = 0x7fffffff;
+	int i, nodoodad, x, y, unittype;
+	struct OBJ *o;
+	SelectionObjs *selectunique[SELECTUNITTYPES] =
+	{
+		new SelectionObjs(1),
+		new SelectionObjs(1),
+		new SelectionObjs(1),
+		new SelectionObjs(1),
+		new SelectionObjs(1),
+		new SelectionObjs(1),
+		new SelectionObjs(MAXSELECTMAN),
+		new SelectionObjs(MAXSELECTMAN),
+	};
 	for (i = 0;i < MaxObjects;i++)
 	{
-		a = objects[i];
-		if (a->mainimage->flags & SC_IMAGE_FLAG_DISABLEDRAW)
+		o = objects[i];
+		if (o->mainimage->flags & SC_IMAGE_FLAG_DISABLEDRAW)
 			continue;
-		yn = y1;
 		nodoodad = 1;
-		if (IsDoodadState(a->SC_Unit) && (IsInvincibleUnit(a->SC_Unit) || GetDoodadState(a) == DOODAD_BOTTOM_STATE))
+		if (IsDoodadState(o->SC_Unit) && (IsInvincibleUnit(o->SC_Unit) || GetDoodadState(o) == DOODAD_BOTTOM_STATE))
 			nodoodad = 0;
-		if (IfCanClickOBJ(a->SC_Unit) && nodoodad && (!a->carryobj || !IsPickupUnit(a->SC_Unit)))
+		if (IfCanClickOBJ(o->SC_Unit) && nodoodad && (!o->carryobj || !IsPickupUnit(o->SC_Unit)))
 		{
-			x = GetOBJx(a);
-			y = GetOBJy(a);
-			if (x > x1 - GetUnitWidthAndHeight(a->SC_Unit, UNITDIM_WIDTH) / 2 &&
-				y > y1 - GetUnitWidthAndHeight(a->SC_Unit, UNITDIM_HEIGHT) / 2 &&
-				x < x2 + GetUnitWidthAndHeight(a->SC_Unit, UNITDIM_WIDTH) / 2 &&
-				y < y2 + GetUnitWidthAndHeight(a->SC_Unit, UNITDIM_HEIGHT) / 2)
+			x = GetOBJx(o);
+			y = GetOBJy(o);
+			if (x > x1 - GetUnitWidthAndHeight(o->SC_Unit, UNITDIM_WIDTH) / 2 &&
+				y > y1 - GetUnitWidthAndHeight(o->SC_Unit, UNITDIM_HEIGHT) / 2 &&
+				x < x1 + GetUnitWidthAndHeight(o->SC_Unit, UNITDIM_WIDTH) / 2 &&
+				y < y1 + GetUnitWidthAndHeight(o->SC_Unit, UNITDIM_HEIGHT) / 2)
 			{
-				if (IfUnitIsSelectable(a))
+				if (IfUnitIsSelectable(o))
 				{
-					distx = abs(x - x1);
-					disty = abs(y - yn);
-					distx = (int)hypot(distx, disty);
-					if (distx < mindist)
-					{
-						mindist = distx;
-						minobj = a;
-					}
+					unittype = GetSelectedUnitType(o->SC_Unit, o->playernr);
+					selectunique[unittype]->Add(o);
 				}
 			}
 		}
 	}//for
-	return(minobj);
+	for (i = SELECTUNITTYPES - 1; i >= 0; i--)
+	{
+		if (selectunique[i]->Count())
+		{
+			return(selectunique[i]->GetElem(0,NULL));
+		}
+	}
+	return(NULL);
 }//end func
 //=====================================
 void ifselectedprobe(void)
@@ -708,7 +718,7 @@ void selectMAN(int x1, int y1, int x2, int y2, int mode)
 	a = NULL;
 	int ctrl = KEYPRESS(CTRLLKEY) || KEYPRESS(CTRLRKEY) || highMouse->DoubleClick;
 	if (ctrl || ((x2 - x1 <= MINHAP) && (y2 - y1 <= MINHAP)))
-		a = founduniqueobj(x1, y1, x2, y2);
+		a = founduniqueobj(x1, y1);
 	if (a)
 	{
 		unittype = GetSelectedUnitType(a->SC_Unit, a->playernr);
@@ -2092,8 +2102,9 @@ int moveobj(struct OBJ *a, struct OBJ *destobj, int mode, int x, int y, int mode
 				a->mainimage->offsetcmdinbuf = 0;
 				a->mainimage->SetIScriptNr(ISCRIPTNR_INIT);
 			}
-			if (a->mainimage->newgrpmethod == DISTORTION)
-				 a->mainimage->newgrpmethod = TRANSPARENT;				//need to see how unit dies
+			 a->mainimage->newgrpmethod = NORMAL;				//need to see how unit dies
+			//if (a->mainimage->newgrpmethod == DISTORTION)
+			//	 a->mainimage->newgrpmethod = TRANSPARENT;				//need to see how unit dies
 			SetOBJIScriptNr(a, ISCRIPTNR_DEATH, ISCRIPTNR_SETONLY);
 			break;
 		case MODELANDING:

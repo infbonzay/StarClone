@@ -73,7 +73,7 @@ void deselectallobj(int nr_player);
 void controlbu(int typeunits,int typeb_or_u,int mode);
 void grupingobj(int mode);
 int foundonetypeobj(struct OBJ *a,struct OBJstruct *b);
-OBJ *founduniqueobj(int x1,int y1,int x2,int y2);
+OBJ *founduniqueobj(int x1,int y1);
 void selectMAN(int x1,int y1,int x2,int y2,int mode);
 OBJ* GetMaxRankOBJ(SelectionObjs *obj);
 void changedeselectobj(struct OBJ *a,struct OBJ *aa);

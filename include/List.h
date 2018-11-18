@@ -275,7 +275,7 @@ public:
 		if (_Count < Capacity)
 			elements[_Count++] = elem;
 		else
-			DEBUGMESSCR("ListSimple:max elems(%d) exceeded\n",_Count);
+			DEBUGMESSCR("%s: max elems(%d) exceeded\n",__PRETTY_FUNCTION__,_Count);
 	};
 	inline void MarkForRemove(int elemnr)
 	{
