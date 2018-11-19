@@ -477,9 +477,7 @@ void MakeMindControl(OBJ *a, int playernr, int ncolor)
 		if (a->doubleunit->playernr != playernr)
 			MakeMindControl(a->doubleunit, playernr, ncolor);
 	}
-	//	  makeoneobjseeopen(a,loadobj(a->SC_Unit));
-
-	//	  moveobj(a,NULL,MODESTOP,NOSHOWERROR);
+//	revealMap->AddObj(a);
 }
 //==============================================
 //return 1 if atribute can work on me

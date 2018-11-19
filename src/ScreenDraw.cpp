@@ -97,7 +97,7 @@ void ScreenDraw::TopMessage(void)
 
 	if (o)
 	{
-		strcat(s, " pl:");
+		strcat(s, " objpl:");
 		itoa(o->playernr, ss, 10);
 		strcat(s, ss);
 		strcat(s, " move:");

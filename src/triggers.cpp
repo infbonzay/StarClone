@@ -1444,13 +1444,13 @@ int Action_Prepare(mapinfo *info, MAP_TRIGS *temptrg, int trig_nr, int playernr,
 						//done by previous trigger
 						SetTriggeredOBJState(objects[j], CLEARSTATE);
 						MakeMindControl(objects[j], playernr, PLAYER[playernr].colorRACE);
-						//revealMap->AddObj(objects[j]);
 						moveobj(objects[j], NULL, MODESTOP, NOSHOWERROR);
 						SetBlinkOBJ(objects[j]);
 						if (--nrofunits == 0)
 							break;
 					}
 				}
+				map.clearfog[playernr] = 1;	//need to recalc fog
 			}
 			triggset = 1;
 			break;

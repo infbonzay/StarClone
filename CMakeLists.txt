@@ -161,8 +161,6 @@ else()
 	add_compile_definitions(WITHSDL)
 	add_compile_definitions(MPQLIB)
 	include_directories(..)
-	include_directories(../grplib/include)
-	include_directories(../mpqlib/include)
 	include_directories(include/win)
 
 endif()
