@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 #include <stdio.h>
+#include "CrossPlatform.h"
 
 #define SETMAXPAUSE				3
 

@@ -5571,6 +5571,7 @@ int audioopt(MENUDRAW *menudraw, MENUPARAMS *menuparams)
 		menudraw->menutodraw = LoadDialogBin("rez\\snd_dlg.bin", DIALOGBIN_GAMEDIALOGS | DIALOGBIN_DONOTSAVEUNDERMENU, IDFONT16);
 		if (!menudraw->menutodraw)
 			return(-1);
+
 		menuspecialtables(menudraw->menutodraw, tfontgamp, gamedlggrp);
 		setcheckboxstate(menudraw->menutodraw, 4, gameconf.audioconf.unitspeach);
 		setcheckboxstate(menudraw->menutodraw, 5, gameconf.audioconf.advisorsounds);
@@ -5580,19 +5581,22 @@ int audioopt(MENUDRAW *menudraw, MENUPARAMS *menuparams)
 		sethorizbuttonpos(menudraw->menutodraw, 2, gameconf.audioconf.musicvolume);
 		addhorizbutton_params(menudraw->menutodraw, 3, 100, 7, 3, NULL);
 		sethorizbuttonpos(menudraw->menutodraw, 3, gameconf.audioconf.soundvolume);
-		if (gameconf.audioconf.audioflags&AUDIOFLAGS_MUSICDISABLE)
+		if (gameconf.audioconf.audioflags & AUDIOFLAGS_MUSICDISABLE)
 		{
 			setmenuitem_DISABLED(menudraw->menutodraw, 2, TRUE);//music volume horizbar
 			setmenuitem_DISABLED(menudraw->menutodraw, 8, TRUE);//music volume
-			setmenuitem_DISABLED(menudraw->menutodraw, 10, TRUE);;//music volume min
-			setmenuitem_DISABLED(menudraw->menutodraw, 12, TRUE);;//music volume max
+			setmenuitem_DISABLED(menudraw->menutodraw, 10, TRUE);//music volume min
+			setmenuitem_DISABLED(menudraw->menutodraw, 12, TRUE);//music volume max
 		}
-		if (gameconf.audioconf.audioflags&AUDIOFLAGS_SOUNDDISABLE)
+		if (gameconf.audioconf.audioflags & AUDIOFLAGS_SOUNDDISABLE)
 		{
 			setmenuitem_DISABLED(menudraw->menutodraw, 3, TRUE);//sound volume horizbar
 			setmenuitem_DISABLED(menudraw->menutodraw, 9, TRUE);//sound volume
-			setmenuitem_DISABLED(menudraw->menutodraw, 11, TRUE);;//sound volume min
-			setmenuitem_DISABLED(menudraw->menutodraw, 13, TRUE);;//sound volume max
+			setmenuitem_DISABLED(menudraw->menutodraw, 11, TRUE);//sound volume min
+			setmenuitem_DISABLED(menudraw->menutodraw, 13, TRUE);//sound volume max
+			setmenuitem_DISABLED(menudraw->menutodraw, 4, TRUE);
+			setmenuitem_DISABLED(menudraw->menutodraw, 5, TRUE);
+			setmenuitem_DISABLED(menudraw->menutodraw, 6, TRUE);
 		}
 	}
 	ret = drawmenu_ONETICK(menudraw->menutodraw);
