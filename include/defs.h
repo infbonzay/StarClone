@@ -3,18 +3,7 @@
 
 //#define DEBUGOUTPUT
 
-/*
-#ifdef WITHSDL
-		//#include "sdl/keysdl.h"
-#endif
-#ifdef UNDERDOS
-		//#include "dos/keydos.h"
-#endif
-*/
-
 typedef unsigned char SCUNIT;
-
-//#include "wmem.h"
 
 #define MAXFILENAMESYMBOLS		1024
 #define SOUNDONCAST				0
@@ -72,8 +61,6 @@ typedef unsigned char SCUNIT;
 //=============================
 #define GREYNEUTRALCOLORPLAYER	11				//player 12 is neutral - minerals, gas, etc
 //=============================
-//#include "defsunits.h"
-//#include "defsmodes.h"
 
 #define MAXPLAYERS				12
 #define PLAYEDPLAYERS			8
@@ -153,8 +140,6 @@ typedef unsigned char SCUNIT;
 
 #define MAXBUILDSPRSIZE 8		//=8*sizesprlashx pixels
 #define WIDTHRAMKA 2
-//#define NUMBRSPRLANSH 500 //max type of lanshaft parts
-//#define ROCKETUNITS	500
 
 #define NUMBRSPROBJ	  230
 
@@ -268,10 +253,6 @@ typedef unsigned char SCUNIT;
 //===========================================
 #define MAXPSI	  (200*2)
 //===========================================
-//#define NOCLEARPOSINPOS -2
-//#define CLEARPOSINPOS	  -1
-//#define BEGINPOS (0)
-//===========================================
 #define MAXFACEDIRECTIONS		32
 //===========================================
 #define ZERGRACE		0
@@ -295,7 +276,6 @@ typedef unsigned char SCUNIT;
 #define ATRPLAGUE				12
 #define ATRIRRADIATE			13
 #define ATRRECALL				14
-//#define ATRRECHARGESHIELD		15
 
 #define MAXMAGEATR				15
 //===========================================

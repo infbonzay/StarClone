@@ -3,8 +3,6 @@
 #include <string.h>
 #include <stdio.h>
 
-#include "audio.h"
-
 #include "man.h"
 #include "vars.h"
 #include "maps.h"
@@ -22,6 +20,7 @@
 #include "images.h"
 #include "iscript.h"
 #include "sigorder.h"
+#include "audio.h"
 #include "doodad.h"
 
 //#define TESTDOODAD

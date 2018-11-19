@@ -22,10 +22,7 @@
 #define WAVFILEFORMAT	2
 
 #define TIMEMULL		20
-#ifdef UNDERLINUX
-	 void strupr(char *str);
-	 void strlwr(char *str);
-#endif
+
 //=====================================================
 int getallnumbers(char *strvalue,int *maxnrforread,int maxnrs);
 GRPFILE *getgrpnr(int nr_grp);

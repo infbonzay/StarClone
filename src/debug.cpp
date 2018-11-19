@@ -25,7 +25,7 @@ void DEBUG_INIT(int flags)
 	DEBUGFLAGS=flags;
 	if (!DEBUGOUTFILE[0])
 		MAKEDEBUGOUTFILE();
-	unlink(DEBUGOUTFILE);
+	remove(DEBUGOUTFILE);
 #endif
 }
 //===========================================

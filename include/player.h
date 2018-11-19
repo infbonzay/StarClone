@@ -1,10 +1,6 @@
 #ifndef _PLAYER_W
 #define _PLAYER_W
 
-#ifdef UNDERLINUX
-#include <arpa/inet.h>
-#endif
-
 #include <stdint.h>
 #include <stdio.h>
 

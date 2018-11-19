@@ -5,8 +5,8 @@
 #include <grplib/grp.h>
 
 #ifdef WITHSDL
-	   #include "sdl/mousesdl.h"
-	   #include "sdl/keysdl.h"
+#include "sdl/mousesdl.h"
+#include "sdl/keysdl.h"
 #endif
 
 #include "man.h"

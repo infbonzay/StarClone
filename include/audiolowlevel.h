@@ -1,14 +1,19 @@
 #ifndef _AUDIOLOWLEVEL_W
 #define _AUDIOLOWLEVEL_W
 
-#include "mpq.h"
 
 #ifdef WITHSDLMIXER
 	#include <SDL/SDL_mixer.h>
+	
+	#include "mpq.h"
+	
 	typedef Mix_Chunk wCHUNK;
 	typedef SDL_AudioCVT Audio_CVT;
 	typedef SDL_RWops RWOPS;
 #else
+	
+	#include "mpq.h"
+	
 	typedef int Mix_Chunk;
 	typedef int wCHUNK;
 	

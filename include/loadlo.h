@@ -1,7 +1,6 @@
 #if !defined(_LOADLO_W)
 #define _LOADLO_W
 
-//#include "man.h"
 //===============================================
 struct LOFILE
 {

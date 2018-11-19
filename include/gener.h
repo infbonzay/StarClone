@@ -3,7 +3,7 @@
 #define _GENER_W
 
 #ifdef WITHSDL
-#		include "sdl/grsdl.h"
+#include "sdl/grsdl.h"
 #endif
 
 #include "commandqueue.h"
@@ -115,10 +115,6 @@ void drawGAMEMENUbutton(char *button,DIALOGBIN_INFO *menuinfo,int buttonnr,
 bool ShowButtonMenu(char *button,int (*adrmenu)(MENUDRAW *menudraw,MENUPARAMS *menuparams));
 void ChangeTerrain(void);
 
-//void showF10menu(char *button);
-//void showTERRAINmenu(char *button);
-//void showMESSAGEmenu(char *button);
-//void showDIPLOMACYmenu(char *button);
 int	 ChangeMenuStatus(int mstatus);
 int	 IfTimeForTrigger(struct mapinfo *info,int *prevgameticks);
 void ShowFirstRunVideo(int ignorefirstrunbit);

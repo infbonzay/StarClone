@@ -1,9 +1,7 @@
 #if !defined(_NETWORK_W)
 #define _NETWORK_W
 
-#include <arpa/inet.h>
-#include <sys/socket.h>
-//#include <unistd.h>
+#include "CrossPlatform.h"
 
 #include "defs.h"
 #include "player.h"

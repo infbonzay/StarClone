@@ -275,7 +275,7 @@ public:
 		if (_Count < Capacity)
 			elements[_Count++] = elem;
 		else
-			DEBUGMESSCR("%s: max elems(%d) exceeded\n",__PRETTY_FUNCTION__,_Count);
+			DEBUGMESSCR("%s: max elems(%d) exceeded\n",__FUNCTION__,_Count);
 	};
 	inline void MarkForRemove(int elemnr)
 	{
@@ -447,6 +447,6 @@ bool ListSimple<T>::Contains(T elem)
 }
 
 
-#endif	/*		_MYLIST_W  */
+#endif	/*		_LIST_W  */
 
 

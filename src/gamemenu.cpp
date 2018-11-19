@@ -3,11 +3,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include <dirent.h>
-//#include <unistd.h>
 #include <signal.h>
 
 #include <grplib/palette.h>
 
+#include "man.h"
 #include "tempobj.h"
 #include "briefing.h"
 #include "MenuItem.h"
@@ -18,7 +18,6 @@
 #include "music.h"
 #include "scripts.h"
 #include "gr.h"
-#include "audio.h"
 #include "maps.h"
 #include "gener.h"
 #include "dialogbin.h"
@@ -29,9 +28,8 @@
 #include "fonts.h"
 #include "version.hxx"
 #include "mytime.h"
-#include "audio.h"
 #include "netwgame.h"
-#include "man.h"
+#include "audio.h"
 #include "gamemenu.h"
 
 #define CHECKFORINSTALLEXE
@@ -513,7 +511,8 @@ int campaignselect(void)
 
 	MENUFIRSTDATA menushow[2] = {
 				{.elemid = 0,.appearposition = MENUAPPEAR_FROMLEFT,.disabled = 0},
-				{.elemid = 1,.appearposition = MENUAPPEAR_FROMRIGHT,.disabled = 0} };
+				{.elemid = 1,.appearposition = MENUAPPEAR_FROMRIGHT,.disabled = 0}
+	};
 
 	MENUAPPEAR *items = MenuAppear(raceselection, 2, menushow, NULL);
 

@@ -2,7 +2,6 @@
 #include <math.h>
 
 #include "mage.h"
-#include "audio.h"
 #include "putobj.h"
 #include "load.h"
 #include "auxil.h"
@@ -26,6 +25,7 @@
 #include "images.h"
 #include "weapons.h"
 #include "music.h"
+#include "audio.h"
 #include "triggers.h"
 
 //#define				TRIG_DEBUG

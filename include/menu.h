@@ -8,16 +8,13 @@
 #include "menu.h"
 #include "pcx.h"
 #include "smacker/smacker.h"
+#include "CrossPlatform.h"
 
 #ifndef FALSE
 	#define FALSE 0
 #endif
 #ifndef TRUE
 	#define TRUE 1
-#endif
-
-#if defined (_MSC_VER)
-#pragma warning( disable : 4200 )								//disable 0 size array ex.    int myarray[];
 #endif
 
 #define ITEMSHOW_DISABLED		0

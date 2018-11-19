@@ -4,7 +4,6 @@
 #include "load.h"
 
 #include "auxil.h"
-#include "audio.h"
 #include "doodad.h"
 #include "gr.h"
 #include "vars.h"
@@ -22,8 +21,7 @@
 #include "action.h"
 #include "images.h"
 #include "portrait.h"
-
-
+#include "audio.h"
 #include "key.h"
 
 #ifdef WITHSDL

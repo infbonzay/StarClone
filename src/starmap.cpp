@@ -3,10 +3,14 @@
 #include <stdlib.h>
 #include <string.h>
 
+#ifdef WITHSDL
+#include "sdl/grsdl.h"
+#endif
+
+#include <grplib/gr8.h>
 #include "mpqwrapper.h"
 #include "maps.h"
 #include "creep.h"
-#include "audio.h"
 #include "pylon.h"
 
 #include "defs.h"
@@ -33,13 +37,9 @@
 #include "briefing.h"
 #include "fog.h"
 #include "iscript.h"
+#include "audio.h"
 #include "starmap.h"
 
-#ifdef WITHSDL
-#include "sdl/grsdl.h"
-#endif
-
-#include <grplib/gr8.h>
 //=================================================
 struct starmap_section
 {

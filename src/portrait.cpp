@@ -10,11 +10,10 @@
 #include "objinfo.h"
 #include "load.h"
 #include "rand.h"
-#include "audio.h"
 #include "tempobj.h"
-#include "audio.h"
 #include "gener.h"
 #include "putobj.h"
+#include "audio.h"
 #include "portrait.h"
 
 #define OC_SMK_STAT_IN	(char *)"portrait\\static\\statin.smk"

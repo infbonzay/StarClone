@@ -8,7 +8,6 @@
 #include "myfifo.h"
 #include "construct.h"
 #include "mpq.h"
-//#include "images.h"
 
 #define MAXRANDOMSPR			3
 #define MAXSMKTYPEOFPORTRAITS	4
