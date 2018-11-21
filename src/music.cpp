@@ -17,7 +17,7 @@ wMUSIC *audiostream;
 //==========================================
 wMUSIC::wMUSIC(int maxbuffers)
 {
-	musicbuffers = new myfifo(maxbuffers);
+	musicbuffers = new AUDIOPACKETS(maxbuffers);
 	musicsample = NULL;
 	stopchannel = 0;
 	chunkplay = -1;
@@ -67,7 +67,7 @@ int wMUSIC::onfinishaudiodatabuffer(int channel)
 int wMUSIC::queuePCMdata(unsigned char *audiobuff, int audiosize)
 {
 	AUDIOPACKET *apacket;
-	apacket = (AUDIOPACKET *)musicbuffers->Add(sizeof(AUDIOPACKET) + audiosize);
+	apacket = musicbuffers->Add(sizeof(AUDIOPACKET) + audiosize);
 	if (!apacket)
 	{
 		return(-1);
@@ -90,7 +90,7 @@ int wMUSIC::playPCMdata(int firstrun)
 {
 	wCHUNK		*endmusicsample;
 	AUDIOPACKET *apacket;
-	apacket = (AUDIOPACKET *)musicbuffers->GetCurElem();
+	apacket = musicbuffers->GetCurElem();
 	if (apacket)
 	{
 		/*		if (fade)

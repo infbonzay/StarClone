@@ -3,32 +3,6 @@
 
 #include "wmem.h"
 
-class myfifo
-{
-protected:
-	int			_Capacity;
-	int			_Count;
-	int			PosElem;
-	char		flags;
-	void		**elements;
-public:
-
-
-	myfifo(int capacity);
-	~myfifo();
-
-	inline int	Count() { return _Count; };
-	inline int	Capacity(){ return _Capacity; };
-	void		Clear();
-	void		Remove(int elemnr);
-	void 		*Add(int len);
-	void 		*Insert(int len);
-	void 		*GetCurElem();
-	inline void *At(int elemnr) { return elements[elemnr]; };
-	void		DelCurElem();
-	int			GetFreeElem();
-	int			GetUsedElem();
-};
 //=========================================
 template <typename T>
 class MyFifo
@@ -80,7 +54,7 @@ void MyFifo<T>::Remove(int i)
 {
 	if (elements[i])
 	{
-		delete elements[i];
+		wfree(elements[i]);
 		elements[i] = NULL;
 	}
 }
@@ -102,7 +76,7 @@ T	MyFifo<T>::Add(int elemsize)
 	T a;
 	if (elements[_Count])
 		return(NULL);
-	a = elements[_Count] = new char[elemsize];
+	a = elements[_Count] = (T) wmalloc(elemsize);
 	_Count++;
 	if (_Count >= _Capacity)
 		_Count = 0;
@@ -119,7 +93,7 @@ T MyFifo<T>::Insert(int elemsize)
 	if (elements[newelem])
 		return(NULL);
 	PosElem = newelem;
-	a = elements[PosElem] = new char[elemsize];
+	a = elements[PosElem] = (T) wmalloc(elemsize);
 	return(a);
 }
 //=========================================
@@ -148,7 +122,7 @@ int MyFifo<T>::GetUsedElem(void)
 {
 	if (_Count < PosElem)
 	{
-		return(Capacity + _Count - PosElem);
+		return(_Capacity + _Count - PosElem);
 	}
 	else
 	{

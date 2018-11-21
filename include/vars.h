@@ -150,12 +150,7 @@ extern struct _BE_ diapazone[];
 extern unsigned short MaxRegen;
 extern struct MAGEP mageprop[];
 
-class SelectionObjs : public ListSimple<OBJ*>
-{
-public:
-	SelectionObjs(int elems) : ListSimple(elems) {};
-	~SelectionObjs(){};
-};
+typedef ListSimple<OBJ*> SelectionObjs;
 
 extern SelectionObjs SelectedUnits;
 extern int 			SelectedUnitTypes;

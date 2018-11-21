@@ -7,12 +7,7 @@
 #include "MenuItem.h"
 #include "pcx.h"
 
-class MENUAPPEAR : public ListSimple<MenuItemPcx *>
-{
-public:
-	MENUAPPEAR(int elems) : ListSimple(elems){};
-	~MENUAPPEAR(){};
-};
+typedef ListSimple<MenuItemPcx*> MENUAPPEAR;
 
 #define MAXGATEWAYS				4
 
@@ -287,7 +282,7 @@ public:
 	void		CreatePlayersNr();
 	int			GetPlayerNr(int playerslot);
 	void		Clear(void);
-	
+
 	~FORCE_SLOTS();
 };
 

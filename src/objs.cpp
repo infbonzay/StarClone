@@ -5324,14 +5324,14 @@ void InsertModeMove(OBJ *a, OBJ *destobj, int mode, int x, int y, int showmesfla
 	ONEMODEMOVE *onemodemove;
 	if (!a->movelist)
 	{
-		a->movelist = new myfifo(5);
+		a->movelist = new MODEMOVES(5);
 	}
 	if (!a->movelist->GetFreeElem())
 	{
 		DEBUGMESSCR("list of mode moves is full\n");
 		return;
 	}
-	onemodemove = (ONEMODEMOVE *)a->movelist->Insert(sizeof(ONEMODEMOVE));
+	onemodemove = a->movelist->Insert(sizeof(ONEMODEMOVE));
 	if (!onemodemove)
 	{
 		DEBUGMESSCR("cannot insert to list of mode moves :( \n");
@@ -5349,14 +5349,14 @@ void AddModeMove(OBJ *a, OBJ *destobj, int mode, int x, int y, int showmesflag)
 	ONEMODEMOVE *onemodemove;
 	if (!a->movelist)
 	{
-		a->movelist = new myfifo(5);
+		a->movelist = new MODEMOVES(5);
 	}
 	if (!a->movelist->GetFreeElem())
 	{
 		DEBUGMESSCR("list of mode moves is full\n");
 		return;
 	}
-	onemodemove = (ONEMODEMOVE *)a->movelist->Add(sizeof(ONEMODEMOVE));
+	onemodemove = a->movelist->Add(sizeof(ONEMODEMOVE));
 	if (!onemodemove)
 	{
 		DEBUGMESSCR("cannot add to list of mode moves :( \n");
@@ -5389,7 +5389,7 @@ int ApplyNextModeMove(OBJ *a)
 				return(moveobj(a, NULL, MODESTOP, NOSHOWERROR));
 			return(0);
 		}
-		onemodemove = (ONEMODEMOVE *)a->movelist->GetCurElem();
+		onemodemove = a->movelist->GetCurElem();
 		modemove = onemodemove->modemove;
 		dx = onemodemove->destx;
 		dy = onemodemove->desty;
@@ -5411,7 +5411,7 @@ void DelOBJFromModeList(struct OBJ *a, struct OBJ *searchobj)
 		{
 			for (i = 0;i < a->movelist->Capacity();i++)
 			{
-				onemodemove = (ONEMODEMOVE *)a->movelist->At(i);
+				onemodemove = a->movelist->At(i);
 				if (onemodemove && onemodemove->destobj == searchobj)
 				{
 					//emtpy modemove

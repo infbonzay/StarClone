@@ -120,7 +120,6 @@
 
 #define MENUITEM_LISTBOX_FLUSHLIST		0
 #define MENUITEM_LISTBOX_DEALLOCLIST	1
-class MENUAPPEAR;
 
 struct BAR
 {
@@ -181,12 +180,12 @@ struct ALLSMKS
 struct LISTBOXBAR
 {
 			short int	xt_1;			//top
-			short int	xt_2;			
+			short int	xt_2;
 
 			short int	yt_1;			//top button top_y_coord
 			short int	yt_2;			//top button bottom_y_coord
 			char		showtypet;
-		
+
 			short int	yh_1;			//horizbar top_y_coord
 			short int	yh_2;			//horizbar bottom_y_coord
 			short int	yh_last;
@@ -194,7 +193,7 @@ struct LISTBOXBAR
 			short int	yb_1;			//bottom button top_y_coord
 			short int	yb_2;			//bottom button bottom_y_coord
 			char		showtypeb;
-			
+
 			char		elemtodraw;
 			short int	buttonbary1;	//y-top-position of buttonbar
 			short int	buttonbary2;	//y-bottom-position of buttonbar
@@ -298,7 +297,7 @@ struct IMAGE
 			unsigned char		color1;
 			unsigned char		color2;
 			unsigned char		transvalue;
-			unsigned char		flags;			//bit0 - 1 - GRP image , 0 -pcx image 
+			unsigned char		flags;			//bit0 - 1 - GRP image , 0 -pcx image
 												//bit1 - 0- topalign  1 - bottom-alighn
 };
 
@@ -325,7 +324,7 @@ struct MENUPOS
 	unsigned int colors4;
 
 	int	 dialogbin_flags;								//from dialogbin
-	char dialogbin_smk_flags[MAX_SMK_IN_DIALOG];		//from dialogbin		
+	char dialogbin_smk_flags[MAX_SMK_IN_DIALOG];		//from dialogbin
 	unsigned int decorcolors4;
 	char		alwayszero;
 	struct RELATION

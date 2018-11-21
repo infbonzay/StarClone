@@ -24,12 +24,13 @@ struct SFXPLAY
 {
 		unsigned char	nrofmusicsplayed;				//max played sounds by unit
 		unsigned char	nextmusicplay;					//next sound to play
-		signed	 char	nrsfxplayed;					//type of play sound 
+		signed	 char	nrsfxplayed;					//type of play sound
 		signed	 char	sfxtypeplayed;					//nr of typesound play
 		unsigned char	nrselectplayed;					//nr select play need for pss play
 };
 
 struct CHILDS;
+struct ONEMODEMOVE;
 //=======================================
 struct LOADED
 {
@@ -132,6 +133,8 @@ union SOMEINFO
 	}beforestartplay;
 };
 //=======================================
+typedef MyFifo<ONEMODEMOVE*> MODEMOVES;
+
 struct OBJ
 {
 		MAIN_IMG		*mainimage;
@@ -141,15 +144,15 @@ struct OBJ
 		OBJ				*carryobj;				//kakoi obj nesiom
 		OBJ				*replaceobj;			//obj who not work (under me)
 		OBJ				*addonobj;				//addon obj)
-		
+
 		OBJ				*resourceobj;			//object from what we know get resources
 		OBJ				*prevresourceobj;		//prev object from what we get resources
-		
+
 		OBJ				*subunit;
-		
+
 		OBJ				*constrobj;		  //ili kakoi object tebea stroit(terran build)
 
-		myfifo			*movelist;
+		MODEMOVES		*movelist;
 		CONSTRUCT		*construct;
 		SELFCONSTRUCT	selfconstruct;
 		CHILDS			*childs;
@@ -193,7 +196,7 @@ struct OBJ
 		signed char		lastdamageoverlays;
 		unsigned char	selectedbits;
 		unsigned char	SC_Unit;		//starcraft unit number
-		unsigned char	SC_ConstrUnit;	//starcraft constr unit number 
+		unsigned char	SC_ConstrUnit;	//starcraft constr unit number
 		unsigned char	SC_FromUnit;	//from what unit nr, this unit morphing, or 255 if none
 		unsigned char	timerepair;		//timeme for repair in one position
 		unsigned char	searchforatack_tick;
@@ -221,7 +224,7 @@ struct OBJ
 		unsigned char	shielddamageenabled;	//if 1 the shield appear on damaged unit
 		unsigned char	shieldrechargeenabled;	//if 1 the recharge shield appear
 
-		
+
 		ATROBJ			atrobj;			  //atribute(inv,ensn,plague,...)
 		SOMEINFO		data;
 		SFXPLAY			sfxplay;
@@ -249,11 +252,11 @@ struct CHILDS
 //=======================================
 struct ONEMODEMOVE
 {
-	struct OBJ *destobj;
-	int			destx;
-	int			desty;
-	unsigned short modemove;
-	unsigned char showerrflag;
+	OBJ 			*destobj;
+	int				destx;
+	int				desty;
+	unsigned short	modemove;
+	unsigned char	showerrflag;
 };
 //=======================================
 struct OBJstruct
@@ -287,7 +290,7 @@ struct OBJstruct
 //		  signed		char	nrupgrade;
 		unsigned char	cloakrange;				//only arbiter
 //		unsigned char	race;
-		unsigned char	UNITprop; 
+		unsigned char	UNITprop;
 };
 //=======================================
 //=======================================
@@ -314,14 +317,14 @@ struct MAGEP
 				 short			obj_id;					//depend on type_id
 				 short			stattxt_id_disable[3];	//disabled 3 strings(for every level of upgrade)
 				 short			stattxt_id_enable;		///enabled string
-		
+
 		//unsigned char			orderdatid;				//point to orders.dat
 		unsigned char			techid;					//use technology id
 		signed	 char			race;					//race if mage is create unit
 		signed	 char			atronobj;				//or -1 if no atr offset
 		signed	 char			soundmode;
 		unsigned char			keyfororder;
-		unsigned char			atr;	
+		unsigned char			atr;
 									//0-bit - rightway
 									//1-bit - ignore mineral,gas,mana,psi requirements
 									//2-bit - can be queued to list of moves

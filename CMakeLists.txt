@@ -65,7 +65,6 @@ set(SOURCES
 	src/mpq.cpp
 	src/mpqwrapper.cpp
 	src/music.cpp
-	src/myfifo.cpp
 	src/mylist.cpp
 	src/mytime.cpp
 	src/objinfo.cpp

@@ -12,20 +12,22 @@ struct AUDIOPACKET
 	unsigned char packetdata[];
 };
 
+typedef MyFifo<AUDIOPACKET*> AUDIOPACKETS;
+
 class wMUSIC
 {
 private:
-	
-	wCHUNK		*musicsample;
-	signed char chunkplay;
 
-	int			playPCMdata(int firstrun);
-public:	   
-	char		stopchannel;
-	signed char fade;
-	myfifo		*musicbuffers;
-	void		(*AddPCMDataFunc)(void *buf);
-	void		(*OnFinishPlay)(void);
+	wCHUNK			*musicsample;
+	signed char 	chunkplay;
+
+	int				playPCMdata(int firstrun);
+public:
+	char			stopchannel;
+	signed char 	fade;
+	AUDIOPACKETS	*musicbuffers;
+	void			(*AddPCMDataFunc)(void *buf);
+	void			(*OnFinishPlay)(void);
 	struct
 	{
 		RWOPS			*RWops;
@@ -41,7 +43,7 @@ public:
 
 	wMUSIC(int maxbuffers);
 	~wMUSIC();
-	
+
 	int			onfinishaudiodatabuffer(int channel);
 	int			queuePCMdata(unsigned char *audiobuff,int audiosize);
 	inline int	beginplayPCMdata(void) { return(playPCMdata(1)); };
