@@ -20,7 +20,6 @@
 #include "gamemenu.h"
 #include "gr.h"
 #include "vars.h"
-#include "myfifo.h"
 #include "music.h"
 
 

@@ -12,6 +12,14 @@
 #define getcwd _getcwd
 #define readlink(a,b,c) -1
 #define strncasecmp(x,y,z) _strnicmp(x,y,z)
+inline int strchrnul(char *text, char symb) 
+{
+	char *poschar = strchr(text,symb);
+	if (poschar)
+		return poschar;
+	else 
+		return text + strlen(text);
+}
 
 #endif
 

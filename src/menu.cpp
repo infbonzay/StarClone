@@ -2627,12 +2627,7 @@ void addbuttontosmk(MENUSTR *allmenus, int nr, int xpos, int ypos, int smksizex,
 	memset(menuitem->item.smkvideo->smkbutton, 0, sizeof(BUTTON));
 
 	len = strlen(text);
-	poschar = strchr(text, '\n');
-	if (poschar) 
-		len2 = poschar - text;
-	else 
-		len2 = len;
-	???? //len2 = strchrnul(text, '\n') - text;	//TODO
+	len2 = strchrnul(text, '\n') - text;	//TODO
 	for (i = 0;i < ITEMSHOW_MAXPOS;i++)
 	{
 		menuitem->item.smkvideo->smkbutton->menustr.text[i] = (char *)wmalloc(len + 1);
@@ -2642,37 +2637,37 @@ void addbuttontosmk(MENUSTR *allmenus, int nr, int xpos, int ypos, int smksizex,
 		else
 			parce_special_text(menuitem->item.smkvideo->smkbutton->menustr.text[i], len2, colors4, BUTTONCOLORS[i]);
 	}
-	if (dialogbin_flags&DIALOGBIN_FLAGS_SMKBUTTON_HORIZLEFT)
+	if (dialogbin_flags & DIALOGBIN_FLAGS_SMKBUTTON_HORIZLEFT)
 	{
 		//		xpos=0;
 		menuitem->item.smkvideo->buttonalign = 0;
 	}
 	else
-		if (dialogbin_flags&DIALOGBIN_FLAGS_SMKBUTTON_HORIZCENTER)
+		if (dialogbin_flags & DIALOGBIN_FLAGS_SMKBUTTON_HORIZCENTER)
 		{
 			//			xpos=xpos+(smksizex-sizextext)/2;
 			menuitem->item.smkvideo->buttonalign = 1;
 		}
 		else
-			if (dialogbin_flags&DIALOGBIN_FLAGS_SMKBUTTON_HORIZRIGHT)
+			if (dialogbin_flags & DIALOGBIN_FLAGS_SMKBUTTON_HORIZRIGHT)
 			{
 				xpos = xpos + smksizex - sizextext;
 				menuitem->item.smkvideo->buttonalign = 2;
 			}
 			else
 				menuitem->item.smkvideo->buttonalign = 3;
-	if (dialogbin_flags&DIALOGBIN_FLAGS_SMKBUTTON_VERTTOP)
+	if (dialogbin_flags & DIALOGBIN_FLAGS_SMKBUTTON_VERTTOP)
 	{
 		//		ypos=0;
 	}
 	else
-		if (dialogbin_flags&DIALOGBIN_FLAGS_SMKBUTTON_VERTMIDDLE)
+		if (dialogbin_flags & DIALOGBIN_FLAGS_SMKBUTTON_VERTMIDDLE)
 		{
 			if (!menuitem->item.smkvideo->smks)			//vertical align the text in button if not smkvideo in item
 				ypos = ypos + (smksizey - sizeytext) / 2;
 		}
 		else
-			if (dialogbin_flags&DIALOGBIN_FLAGS_SMKBUTTON_VERTBOTTOM)
+			if (dialogbin_flags & DIALOGBIN_FLAGS_SMKBUTTON_VERTBOTTOM)
 			{
 				ypos = ypos + smksizey - sizeytext;
 			}
