@@ -610,14 +610,20 @@ struct OBJ *founduniqueobj(int x1, int y1)
 			}
 		}
 	}//for
+	o = NULL;
 	for (i = SELECTUNITTYPES - 1; i >= 0; i--)
 	{
 		if (selectunique[i]->Count())
 		{
-			return(selectunique[i]->GetElem(0,NULL));
+			o = selectunique[i]->GetElem(0,NULL);
+			break;
 		}
 	}
-	return(NULL);
+	for (i = 0;i < SELECTUNITTYPES; i++)
+	{
+		delete selectunique[i];
+	}
+	return(o);
 }//end func
 //=====================================
 void ifselectedprobe(void)
@@ -5325,7 +5331,7 @@ void InsertModeMove(OBJ *a, OBJ *destobj, int mode, int x, int y, int showmesfla
 		DEBUGMESSCR("list of mode moves is full\n");
 		return;
 	}
-	onemodemove = (ONEMODEMOVE *)a->movelist->InsertElem(sizeof(ONEMODEMOVE));
+	onemodemove = (ONEMODEMOVE *)a->movelist->Insert(sizeof(ONEMODEMOVE));
 	if (!onemodemove)
 	{
 		DEBUGMESSCR("cannot insert to list of mode moves :( \n");
@@ -5350,7 +5356,7 @@ void AddModeMove(OBJ *a, OBJ *destobj, int mode, int x, int y, int showmesflag)
 		DEBUGMESSCR("list of mode moves is full\n");
 		return;
 	}
-	onemodemove = (ONEMODEMOVE *)a->movelist->AddElem(sizeof(ONEMODEMOVE));
+	onemodemove = (ONEMODEMOVE *)a->movelist->Add(sizeof(ONEMODEMOVE));
 	if (!onemodemove)
 	{
 		DEBUGMESSCR("cannot add to list of mode moves :( \n");
@@ -5403,9 +5409,9 @@ void DelOBJFromModeList(struct OBJ *a, struct OBJ *searchobj)
 	{
 		if (a->movelist->GetUsedElem())
 		{
-			for (i = 0;i < a->movelist->totalelem;i++)
+			for (i = 0;i < a->movelist->Capacity();i++)
 			{
-				onemodemove = (ONEMODEMOVE *)a->movelist->elements[i];
+				onemodemove = (ONEMODEMOVE *)a->movelist->At(i);
 				if (onemodemove && onemodemove->destobj == searchobj)
 				{
 					//emtpy modemove
@@ -5421,7 +5427,7 @@ void DelAllModeMoves(struct OBJ *a, int dealloc)
 {
 	if (a->movelist)
 	{
-		a->movelist->EmptyElemFifo();
+		a->movelist->Clear();
 		if (dealloc)
 		{
 			delete a->movelist;

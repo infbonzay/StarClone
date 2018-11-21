@@ -67,7 +67,7 @@ int wMUSIC::onfinishaudiodatabuffer(int channel)
 int wMUSIC::queuePCMdata(unsigned char *audiobuff, int audiosize)
 {
 	AUDIOPACKET *apacket;
-	apacket = (AUDIOPACKET *)musicbuffers->AddElem(sizeof(AUDIOPACKET) + audiosize);
+	apacket = (AUDIOPACKET *)musicbuffers->Add(sizeof(AUDIOPACKET) + audiosize);
 	if (!apacket)
 	{
 		return(-1);

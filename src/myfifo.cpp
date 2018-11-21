@@ -11,23 +11,23 @@
 //=========================================
 myfifo::myfifo(int elems)
 {
-	totalelem = elems;
-	curelem = 0;
-	poselem = 0;
+	_Capacity = elems;
+	_Count = 0;
+	PosElem = 0;
 	elements = (void **)wmalloc(elems * sizeof(void *));
 	memset(elements, 0, elems * sizeof(void *));
 }
 //=========================================
 myfifo::~myfifo()
 {
-	for (int i = 0;i < totalelem;i++)
+	for (int i = 0;i < _Capacity;i++)
 	{
-		DelElem(i);
+		Remove(i);
 	}
 	wfree(elements);
 }
 //=========================================
-void myfifo::DelElem(int i)
+void myfifo::Remove(int i)
 {
 	if (elements[i])
 	{
@@ -36,82 +36,82 @@ void myfifo::DelElem(int i)
 	}
 }
 //=========================================
-void myfifo::EmptyElemFifo(void)
+void myfifo::Clear(void)
 {
-	for (int i = 0;i < totalelem;i++)
+	for (int i = 0;i < _Capacity;i++)
 	{
-		DelElem(i);
+		Remove(i);
 	}
-	curelem = 0;
-	poselem = 0;
+	_Count = 0;
+	PosElem = 0;
 }
 //=========================================
-void *myfifo::AddElem(int len)
+void *myfifo::Add(int len)
 {
 	void *a;
-	if (elements[curelem])
+	if (elements[_Count])
 		return(NULL);
-	a = elements[curelem] = wmalloc(len);
-	curelem++;
-	if (curelem >= totalelem)
-		curelem = 0;
+	a = elements[_Count] = wmalloc(len);
+	_Count++;
+	if (_Count >= _Capacity)
+		_Count = 0;
 	return(a);
 }
 //=========================================
-void *myfifo::InsertElem(int len)
+void *myfifo::Insert(int len)
 {
 	void *a;
-	int newelem = poselem - 1;
+	int newelem = PosElem - 1;
 	if (newelem < 0)
-		newelem = totalelem - 1;
+		newelem = _Capacity - 1;
 	if (elements[newelem])
 		return(NULL);
-	poselem = newelem;
-	a = elements[poselem] = wmalloc(len);
+	PosElem = newelem;
+	a = elements[PosElem] = wmalloc(len);
 	return(a);
 }
 //=========================================
 void *myfifo::GetCurElem(void)
 {
-	return(elements[poselem]);
+	return(elements[PosElem]);
 }
 //=========================================
 void myfifo::DelCurElem(void)
 {
 	void *a;
-	a = elements[poselem];
+	a = elements[PosElem];
 	if (a)
 	{
-		DelElem(poselem);
-		poselem++;
-		if (poselem >= totalelem)
-			poselem = 0;
+		Remove(PosElem);
+		PosElem++;
+		if (PosElem >= _Capacity)
+			PosElem = 0;
 	}
 }
 //=========================================
 int myfifo::GetUsedElem(void)
 {
-	if (curelem < poselem)
+	if (_Count < PosElem)
 	{
-		return(totalelem + curelem - poselem);
+		return(_Capacity + _Count - PosElem);
 	}
 	else
-		if (curelem > poselem)
+		if (_Count > PosElem)
 		{
-			return(curelem - poselem);
+			return(_Count - PosElem);
 		}
 		else
 		{
-			if (!elements[curelem])
+			if (!elements[_Count])
 				return(0);
 			else
-				return(totalelem);
+				return(_Capacity);
 		}
 }
 //=========================================
 int myfifo::GetFreeElem(void)
 {
-	return(totalelem - GetUsedElem());
+	return(_Capacity - GetUsedElem());
 }
 //=========================================
 
