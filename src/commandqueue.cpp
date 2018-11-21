@@ -20,7 +20,6 @@ CommandQueue::~CommandQueue(void)
 //==========================================
 void CommandQueue::EmptyQueue(void)
 {
-	void *adr;
 	do{
 		if (IsEmpty())
 			break;

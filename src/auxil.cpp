@@ -184,7 +184,7 @@ int rmdirrec(const char *dirname)
 				rmdirrec(path);
 			}
 //			  printf("(not really) Deleting: %s\n", path);
-			unlink(path);
+			remove(path);
 		}
 
 	}
@@ -349,14 +349,13 @@ char *makefilename(char *firstbuf,int offsetbuf,char f1,char f2,const char *f4)
 int check_ifhavewget(void)
 {
 	int len,ret;
-	unlink(".temp");
+	remove(".temp");
 	ret=system("wget --version > .temp");
 	len=FILElength(".temp");
-	unlink(".temp");
+	remove(".temp");
 	if (len>1)
 		return (1);
 	else
 		return(0);
 }
-//==========================================
 //==========================================

@@ -9,6 +9,8 @@
 #include <grplib/gr8.h>
 #include <grplib/usegrp.h>
 
+#include "CrossPlatform.h"
+
 #include "vars.h"
 #include "market.h"
 
@@ -109,7 +111,8 @@ int main(int c, char **parm, char **env)
 	printf("SIZEOF SOMEINFO UNION=%d\n", (int)sizeof(SOMEINFO));
 	printf("OBJ=%d OBJstruct=%d\n", (int)sizeof(OBJ), (int)sizeof(OBJstruct));
 	do {
-		printf("Loading config file " SC_CONFIGFILE "\n");
+		//printf("Loading config file " SC_CONFIGFILE "\n");
+		printf("Loading config file " "torba" "\n");
 		UnLoadAllMpqs();
 		unloadcfg();
 		i = loadcfg(SC_CONFIGFILE, &firsttimelaunch);
