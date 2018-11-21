@@ -509,11 +509,13 @@ int campaignselect(void)
 	highMouse->SetRestrictCoords(MOUSEMODE1);
 	highMouse->InstallMoveEvent(&mymousemoveevent);
 
-	MENUFIRSTDATA menushow[2] = {
+	MENUFIRSTDATA menushow[2]{ {0,MENUAPPEAR_FROMLEFT, 0 },{1, MENUAPPEAR_FROMRIGHT,0 } };
+
+/*	MENUFIRSTDATA menushow[2] = {
 				{.elemid = 0,.appearposition = MENUAPPEAR_FROMLEFT,.disabled = 0},
 				{.elemid = 1,.appearposition = MENUAPPEAR_FROMRIGHT,.disabled = 0}
 	};
-
+*/
 	MENUAPPEAR *items = MenuAppear(raceselection, 2, menushow, NULL);
 
 	setdefaultbutton(raceselection, -1);
@@ -691,10 +693,11 @@ int xcampaignselect(void)
 	highMouse->SetRestrictCoords(MOUSEMODE1);
 	highMouse->InstallMoveEvent(&mymousemoveevent);
 
-	MENUFIRSTDATA menushow[2] = {
+	MENUFIRSTDATA menushow[2]{ { 0,MENUAPPEAR_FROMLEFT, 0 },{ 1, MENUAPPEAR_FROMRIGHT,0 } };
+/*	MENUFIRSTDATA menushow[2] = {
 				{.elemid = 0,.appearposition = MENUAPPEAR_FROMLEFT,.disabled = 0},
 				{.elemid = 1,.appearposition = MENUAPPEAR_FROMRIGHT,.disabled = 0} };
-
+*/
 	MENUAPPEAR *items = MenuAppear(raceselection, 2, menushow, NULL);
 
 	setdefaultbutton(raceselection, -1);
@@ -852,12 +855,13 @@ int glu_loadgame(void)
 	highMouse->SetRestrictCoords(MOUSEMODE1);
 	highMouse->InstallMoveEvent(&mymousemoveevent);
 
-	MENUFIRSTDATA menushow[3] = {
+	MENUFIRSTDATA menushow[3]{ { 0,MENUAPPEAR_FROMLEFT, 0 },{ 1,MENUAPPEAR_FROMBOTTOM, 0 },{ 2, MENUAPPEAR_FROMRIGHT,0 } };
+/*	MENUFIRSTDATA menushow[3] = {
 				{.elemid = 0,.appearposition = MENUAPPEAR_FROMLEFT,.disabled = 0},
 				{.elemid = 1,.appearposition = MENUAPPEAR_FROMBOTTOM,.disabled = 0},
 				{.elemid = 2,.appearposition = MENUAPPEAR_FROMRIGHT,.disabled = 0}
 	};
-
+*/
 	MENUAPPEAR *items = MenuAppear(gluload, 3, menushow, NULL);
 
 	mylist saves;
@@ -974,11 +978,13 @@ int glu_loadreplay(void)
 	highMouse->SetRestrictCoords(MOUSEMODE1);
 	highMouse->InstallMoveEvent(&mymousemoveevent);
 
-	MENUFIRSTDATA menushow[3] = {
+	MENUFIRSTDATA menushow[3]{ { 0,MENUAPPEAR_FROMLEFT, 0 },{ 1,MENUAPPEAR_FROMBOTTOM, 0 },{ 2, MENUAPPEAR_FROMRIGHT,0 } };
+/*	MENUFIRSTDATA menushow[3] = {
 				{.elemid = 0,.appearposition = MENUAPPEAR_FROMLEFT,.disabled = 0},
 				{.elemid = 1,.appearposition = MENUAPPEAR_FROMBOTTOM,.disabled = 0},
 				{.elemid = 2,.appearposition = MENUAPPEAR_FROMRIGHT,.disabled = 0}
 	};
+*/
 	MENUAPPEAR *items = MenuAppear(gluloadrep, 3, menushow, NULL);
 
 	mylist saves;
@@ -1604,10 +1610,11 @@ void glu_score(struct mapinfo *info)
 	int mousetype = NORMALMOUSE;
 	highMouse->LoadOneCursor(makefilename(GLUEPAL_NAME, GLUEPAL_OFFSET, RACE_CHAR[race], LOSEWIN_STR[losewin], ARROW_STR), mousetype);
 
-	MENUFIRSTDATA menushow[1] = {
+	MENUFIRSTDATA menushow[1]{ { 0,MENUAPPEAR_FROMLEFT, 0 }};
+/*	MENUFIRSTDATA menushow[1] = {
 				{.elemid = 0,.appearposition = MENUAPPEAR_FROMLEFT,.disabled = 0}
 	};
-
+*/
 	MENUAPPEAR *items = MenuAppear(gluscore, 1, menushow, NULL);
 	memcpy(gameconf.grmode.videobuff, backgnd.GetPcxRawBytes(), backgnd.xsizePcx()*backgnd.ysizePcx());
 	//	  backgnd.PutPcx(DELTASCREENX,DELTASCREENY2,PCX_EMPTYCOLOR1);
@@ -1794,6 +1801,10 @@ char CONNMAXPLAYERS[MAXCONNTYPES] = { 8,2,2,8,8 };
 char *savedscreen;
 MENUAPPEAR *gatewayitem;
 MENUAPPEAR *menunetwitems;
+
+MENUFIRSTDATA menunetw[5]{ { 0,MENUAPPEAR_FROMLEFT, 0 },{ 1, MENUAPPEAR_FROMRIGHT,0 },{ 2,MENUAPPEAR_FROMBOTTOM, 0 },{ 3, MENUAPPEAR_FROMRIGHT,0 },{4,MENUAPPEAR_FROMLEFT, 1 } };
+
+/*
 MENUFIRSTDATA menunetw[5] = {
 			{.elemid = 0,.appearposition = MENUAPPEAR_FROMLEFT,.disabled = 0 },
 			{.elemid = 1,.appearposition = MENUAPPEAR_FROMRIGHT,.disabled = 0 },
@@ -1801,6 +1812,7 @@ MENUFIRSTDATA menunetw[5] = {
 			{.elemid = 3,.appearposition = MENUAPPEAR_FROMRIGHT,.disabled = 0  },
 			{.elemid = 4,.appearposition = MENUAPPEAR_FROMLEFT,.disabled = 1 }
 };
+*/
 
 #define GATEWAYITEM (MYINFO_TBL_NETTYPE5 - MYINFO_TBL_NETTYPE1)
 void selconn_callback(MENUSTR *allmenus, int nr, int listnr)
@@ -2157,13 +2169,15 @@ int glu_join(FORCE_SLOTS *fslots)
 	highMouse->SetRestrictCoords(MOUSEMODE1);
 	highMouse->InstallMoveEvent(&mymousemoveevent);
 
-	MENUFIRSTDATA menushow[4] = {
+	MENUFIRSTDATA menushow[4]{ { 0,MENUAPPEAR_FROMLEFT, 0 },{ 1, MENUAPPEAR_FROMRIGHT,0 }, { 2,MENUAPPEAR_FROMBOTTOM, 0 },{ 3, MENUAPPEAR_FROMRIGHT,0 } };
+	
+/*	MENUFIRSTDATA menushow[4] = {
 				{.elemid = 0,.appearposition = MENUAPPEAR_FROMLEFT,.disabled = 0},
 				{.elemid = 1,.appearposition = MENUAPPEAR_FROMRIGHT,.disabled = 0} ,
 				{.elemid = 2,.appearposition = MENUAPPEAR_FROMBOTTOM,.disabled = 0},
 				{.elemid = 3,.appearposition = MENUAPPEAR_FROMRIGHT,.disabled = 0}
 	};
-
+*/
 	MENUAPPEAR *items;
 	if (error < 0)
 		items = MenuAppear(glujoin, 4, menushow, gluerr);
@@ -2367,12 +2381,13 @@ int glu_login(void)
 	int nrofusers = ulist.Count();
 	ulist.DeallocList();
 
-	MENUFIRSTDATA menushow[3] = {
+	MENUFIRSTDATA menushow[3]{ { 0,MENUAPPEAR_FROMLEFT, 0 },{ 1,MENUAPPEAR_FROMBOTTOM, 0 },{ 2, MENUAPPEAR_FROMRIGHT,0 } };
+/*	MENUFIRSTDATA menushow[3] = {
 				{.elemid = 0,.appearposition = MENUAPPEAR_FROMLEFT,.disabled = 0},
 				{.elemid = 1,.appearposition = MENUAPPEAR_FROMBOTTOM,.disabled = 0},
 				{.elemid = 2,.appearposition = MENUAPPEAR_FROMRIGHT,.disabled = 0}
 	};
-
+*/
 
 	MENUAPPEAR *items;
 	if (!nrofusers)
@@ -3027,14 +3042,15 @@ int selectmapmenu(void)
 	highMouse->SetRestrictCoords(MOUSEMODE1);
 	highMouse->InstallMoveEvent(&mymousemoveevent);
 
-	MENUFIRSTDATA menushow[5] = {
+	MENUFIRSTDATA menushow[5]{ { 0,MENUAPPEAR_FROMLEFT, 0 },{ 1,MENUAPPEAR_FROMTOP, 0 },{ 2,MENUAPPEAR_FROMBOTTOM, 0 },{ 3,MENUAPPEAR_FROMBOTTOM, 0 }, { 4, MENUAPPEAR_FROMRIGHT,0 } };
+/*	MENUFIRSTDATA menushow[5] = {
 				{.elemid = 0,.appearposition = MENUAPPEAR_FROMLEFT,.disabled = 0},
 				{.elemid = 1,.appearposition = MENUAPPEAR_FROMTOP,.disabled = 0},
 				{.elemid = 2,.appearposition = MENUAPPEAR_FROMBOTTOM,.disabled = 0},
 				{.elemid = 3,.appearposition = MENUAPPEAR_FROMBOTTOM,.disabled = 0},
 				{.elemid = 4,.appearposition = MENUAPPEAR_FROMRIGHT,.disabled = 0}
 	};
-
+*/
 	MENUAPPEAR *items = MenuAppear(selmap, 5, menushow, NULL);
 
 	chdir(GAMEMAPPATH);
@@ -3347,13 +3363,14 @@ int glu_creat(FORCE_SLOTS *fslots)
 	highMouse->SetRestrictCoords(MOUSEMODE1);
 	highMouse->InstallMoveEvent(&mymousemoveevent);
 
-	MENUFIRSTDATA menushow[4] = {
+	MENUFIRSTDATA menushow[4]{ { 0,MENUAPPEAR_FROMLEFT, 0 },{ 1, MENUAPPEAR_FROMRIGHT,0 },{ 2,MENUAPPEAR_FROMBOTTOM, 0 },{ 3, MENUAPPEAR_FROMRIGHT,0 } };
+/*	MENUFIRSTDATA menushow[4] = {
 				{.elemid = 0,.appearposition = MENUAPPEAR_FROMLEFT,.disabled = 0},
 				{.elemid = 1,.appearposition = MENUAPPEAR_FROMRIGHT,.disabled = 0},
 				{.elemid = 2,.appearposition = MENUAPPEAR_FROMBOTTOM,.disabled = 0},
 				{.elemid = 3,.appearposition = MENUAPPEAR_FROMRIGHT,.disabled = 0}
 	};
-
+*/
 	MENUAPPEAR *items = MenuAppear(glucreat, 4, menushow, NULL);
 
 	chdir(GAMEMAPPATH);
@@ -3899,6 +3916,8 @@ int glu_chat(int masterjoin, int playernr, FORCE_SLOTS *fslots)
 	highMouse->SetRestrictCoords(MOUSEMODE1);
 	highMouse->InstallMoveEvent(&mymousemoveevent);
 
+	MENUFIRSTDATA menushow[5]{ { 0,MENUAPPEAR_FROMBOTTOM, 0 },{ 1, MENUAPPEAR_FROMRIGHT,0 }, { 2,MENUAPPEAR_FROMLEFT, 0 },{ 3,MENUAPPEAR_FROMBOTTOM, 0 },{ 4, MENUAPPEAR_FROMRIGHT,0 } };
+/*
 	MENUFIRSTDATA menushow[5] = {
 				{.elemid = 0,.appearposition = MENUAPPEAR_FROMBOTTOM,.disabled = 0},
 				{.elemid = 1,.appearposition = MENUAPPEAR_FROMRIGHT,.disabled = 0},
@@ -3906,7 +3925,7 @@ int glu_chat(int masterjoin, int playernr, FORCE_SLOTS *fslots)
 				{.elemid = 3,.appearposition = MENUAPPEAR_FROMBOTTOM,.disabled = 0},
 				{.elemid = 4,.appearposition = MENUAPPEAR_FROMRIGHT,.disabled = 0}
 	};
-
+*/
 	MENUAPPEAR *items;
 	if (error < 0)
 		items = MenuAppear(gluchat, menuappear, menushow, gluerr);

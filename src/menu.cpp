@@ -2612,6 +2612,7 @@ void addbuttontosmk(MENUSTR *allmenus, int nr, int xpos, int ypos, int smksizex,
 	int buttonsize, int buttontype, int buttonflags)
 {
 	int i, len, len2, smkposx, smkposy, sizextext, sizeytext;
+	char *poschar;
 	MENUPOS *menuitem = &allmenus->menu[nr];
 	menuitem->colors4 = colors4;
 	menuitem->fontnr = fontnr;
@@ -2626,7 +2627,12 @@ void addbuttontosmk(MENUSTR *allmenus, int nr, int xpos, int ypos, int smksizex,
 	memset(menuitem->item.smkvideo->smkbutton, 0, sizeof(BUTTON));
 
 	len = strlen(text);
-	len2 = strchrnul(text, '\n') - text;
+	poschar = strchr(text, '\n');
+	if (poschar) 
+		len2 = poschar - text;
+	else 
+		len2 = len;
+	???? //len2 = strchrnul(text, '\n') - text;	//TODO
 	for (i = 0;i < ITEMSHOW_MAXPOS;i++)
 	{
 		menuitem->item.smkvideo->smkbutton->menustr.text[i] = (char *)wmalloc(len + 1);

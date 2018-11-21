@@ -27,57 +27,56 @@ BRIEF_SLOTS		brief_slots[MAX_BRIEF_SLOTS];
 #define			BRIEFTEXT		15
 #define			BRIEFMISSION	16
 //=================================================
-void First_Briefing_Prepare(struct mapinfo *info,int e,char *path,PCX *pcxs)
+void First_Briefing_Prepare(struct mapinfo *info, int e, char *path, PCX *pcxs)
 {
 	int i;
 	MAP_TRIGS	*temptrg;
-	MAP_TRIGS	(*alltrigs)[]=(MAP_TRIGS (*)[]) info->BRIEFS;
-	Briefing_SetPause(-1,0);
+	MAP_TRIGS(*alltrigs)[] = (MAP_TRIGS(*)[]) info->BRIEFS;
+	Briefing_SetPause(-1, 0);
 	brief_delta = e;
 	prefix_campaignpath = path;
-	soundid=-1;
-	for (i=0;i<info->BRIEFS_NR;i++)
+	soundid = -1;
+	for (i = 0;i < info->BRIEFS_NR;i++)
 	{
-		temptrg=&(*alltrigs)[i];
-		temptrg->groupinfo.playersmask=AllGroups_Prepare(info,temptrg);
+		temptrg = &(*alltrigs)[i];
+		temptrg->groupinfo.playersmask = AllGroups_Prepare(info, temptrg);
 	}
-//	  for (i=0;i<MAX_BRIEF_SLOTS;i++)
-//		Brief_ShowPortrait(i,PORTRAIT_NONE);
-	memset(brief_slots,0,sizeof(brief_slots));
-	for (i=0;i<8;i++)
-		framepcxs[i]=&pcxs[i];
-	brief_counter=mytimer.CreateTickCounter();
+	//	  for (i=0;i<MAX_BRIEF_SLOTS;i++)
+	//		Brief_ShowPortrait(i,PORTRAIT_NONE);
+	memset(brief_slots, 0, sizeof(brief_slots));
+	for (i = 0;i < 8;i++)
+		framepcxs[i] = &pcxs[i];
+	brief_counter = mytimer.CreateTickCounter();
 }
 //=================================================
-void Briefing_Parce(struct mapinfo *info,MENUSTR *allmenus,int deltatick)
+void Briefing_Parce(struct mapinfo *info, MENUSTR *allmenus, int deltatick)
 {
-	int tick,pause;
+	int pause;
+	TIMER_TICK tick;
 	int i;
 	MAP_TRIGS	*temptrg;
-	MAP_TRIGS	(*alltrigs)[]=(MAP_TRIGS (*)[]) info->BRIEFS;
-	pause=Briefing_GetPause();
-//	  tick=pause-deltatick;
-//	  printf("%lld\n",mytimer.GetDeltaCounter(brief_counter)*1000/TICKS_RES);
-	tick=pause-mytimer.GetDeltaCounter(brief_counter)*1000/TICKS_RES;
-	if (tick<=0)
+	MAP_TRIGS(*alltrigs)[] = (MAP_TRIGS(*)[]) info->BRIEFS;
+	pause = Briefing_GetPause();
+	tick = pause - mytimer.GetDeltaCounter(brief_counter) * 1000 / TICKS_RES;
+	if (tick <= 0)
 	{
-		if (pause&&brief_pauseslot!=-1)
+		if (pause && brief_pauseslot != -1)
 		{
-			StopTransmission(allmenus,brief_pauseslot);
+			StopTransmission(allmenus, brief_pauseslot);
 		}
-		Briefing_SetPause(-1,0);
-		for (i=0;i<info->BRIEFS_NR;i++)
+		Briefing_SetPause(-1, 0);
+		for (i = 0;i < info->BRIEFS_NR;i++)
 		{
-			temptrg=&(*alltrigs)[i];
+			temptrg = &(*alltrigs)[i];
 			if (temptrg->groupinfo.playersmask)
-				BCondition_Prepare(info,temptrg,temptrg->groupinfo.playersmask,allmenus);
+				BCondition_Prepare(info, temptrg, temptrg->groupinfo.playersmask, allmenus);
 		}
 	}
 	else
-		Briefing_SetPause(brief_pauseslot,tick);
+		Briefing_SetPause(brief_pauseslot, tick);
 	Briefing_ScrollText(allmenus);
-	for (i=0;i<MAX_BRIEF_SLOTS;i++)
-		drawportraitinslot(allmenus,i);
+	for (i = 0;i < MAX_BRIEF_SLOTS;i++)
+		drawportraitinslot(allmenus, i);
 }
 //=================================================
 int BCondition_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int actiononplayers,MENUSTR *allmenus)

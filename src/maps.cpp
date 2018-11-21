@@ -194,7 +194,7 @@ void drawMAP(int ignorefirstwaiting)
 	signed char creepnr;
 	int i, j, indextile32, method, open, see;
 	int bh, eh, bw, ew, ii, jj, xk, yk, xkk, ykk;
-	char minimapcolor;
+	unsigned char minimapcolor;
 	if (!CODEFORSCREEN)
 		wclrscr(0);
 	else
