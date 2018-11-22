@@ -1,18 +1,39 @@
 #ifndef _CROSSPLATFORM_W
 
+#define _CROSSPLATFORM_W
 #if defined (_MSC_VER)
 
 #include <direct.h>
 #pragma warning( disable : 4200 )								//disable 0 size array ex.    int myarray[];
 
-#define usleep(waitms) Sleep(waitms)
+#include <windows.h>
+#include <string.h>
+
+#define usleep Sleep
 #define mkdir(a,b) _mkdir(a)
-#define chdir(a) _chdir(a)
-#define rmdir(a) _rmdir(a)
+#define chdir _chdir
+#define rmdir _rmdir
+#define access _access
 #define getcwd _getcwd
 #define readlink(a,b,c) -1
-#define strncasecmp(x,y,z) _strnicmp(x,y,z)
-inline int strchrnul(char *text, char symb) 
+#define strncasecmp _strnicmp
+#define SIGKILL PROCESS_TERMINATE
+#define R_OK 0
+#define strcasestr stricmp
+
+inline bool kill(int dwProcessId, int uExitCode)
+{
+	DWORD dwDesiredAccess = uExitCode;
+	BOOL  bInheritHandle = FALSE;
+	HANDLE hProcess = OpenProcess(dwDesiredAccess, bInheritHandle, dwProcessId);
+	if (hProcess == NULL)
+		return FALSE;
+	BOOL result = TerminateProcess(hProcess, -1);
+	CloseHandle(hProcess);
+	return TRUE;
+}
+
+inline char *strchrnul(char *text, char symb) 
 {
 	char *poschar = strchr(text,symb);
 	if (poschar)

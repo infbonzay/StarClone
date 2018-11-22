@@ -1069,22 +1069,21 @@ void FindLineOfProp(struct OBJ *a, struct OBJstruct *b)
 }
 //=====================================
 void drawunitinbar(int x, int y, int weight, int type, int ramka,
-	int shield_pers, int life_pers,
-	GRPFILE *grp1, GRPFILE *grp2, int iconnr2)
+	int shield_pers, int life_pers,	GRPFILE *_grp1, GRPFILE *_grp2, int iconnr2)
 {
 	int iconnr, life, shield;
 	if (ramka)
 	{
 		iconnr = icontype[weight - 1] + type * 6 + 1;
-		putgrpspr(x, y, grp1, NORMAL, 255, 0, NULL, iconnr);
+		putgrpspr(x, y, _grp1, NORMAL, 255, 0, NULL, iconnr);
 	}
 	life = LIFE1 + life_pers * (LIFEMAXPOS - 1) / 100;
 	shield = shield_pers * (SHIELDMAXPOS - 1) / 100;
 	SetPlayerColors(life, 1, 0xc0, 2, &shield_pos[shield]);
 	if (weight == 4)
-		putgrpspr(x + 3, y + 3, grp2, NORMAL, 255, life, NULL, iconnr2);
+		putgrpspr(x + 3, y + 3, _grp2, NORMAL, 255, life, NULL, iconnr2);
 	else
-		putgrpspr(x, y, grp2, NORMAL, 255, life, NULL, iconnr2);
+		putgrpspr(x, y, _grp2, NORMAL, 255, life, NULL, iconnr2);
 }
 //=====================================
 void drawunitsintransport(int XWINPOS, int YWINPOS, struct OBJ *a)

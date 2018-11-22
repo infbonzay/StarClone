@@ -4966,11 +4966,11 @@ void wgetlauchdownloadfile(int nrmpq)
 	switch (nrmpq)
 	{
 	case 1://broodat.mpq
-		unlink(WGET_FILESIZE2);
+		remove(WGET_FILESIZE2);
 		system("./download.broodat test &");
 		break;
 	case 2://stardat.mpq
-		unlink(WGET_FILESIZE1);
+		remove(WGET_FILESIZE1);
 		system("./download.stardat test &");
 		break;
 	}

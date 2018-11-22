@@ -66,7 +66,7 @@ int addmaninbuild(struct OBJ *a, int nrunit, int maxtimes);
 void FindLineOfProp(struct OBJ *a, struct OBJstruct *b);
 void drawunitsintransport(int XWINPOS, int YWINPOS, struct OBJ *a);
 void drawmineralinbar(int x, int y, GRPFILE *grp, int iconnr);
-void drawunitinbar(int x, int y, int weight, int objtype, int ramka, int shield_pers, int life_pers, GRPFILE *, GRPFILE *, int iconnr2);
+void drawunitinbar(int x, int y, int weight, int objtype, int ramka, int shield_pers, int life_pers, GRPFILE *_grp1, GRPFILE *_grp2, int iconnr2);
 int getlifepercent(int number, int maxnumber);
 void drawallunitsinbar(int XWINPOS, int YWINPOS);
 void AnalizeAllTransportUnits(struct OBJ *a, unsigned char *rettransp, struct OBJ **trtplobj);

@@ -45,7 +45,13 @@ void resetinfoplayers(void)
 //=============================================
 void CreateDefaultInfoForPlayer(FILE *f)
 {
-	IdPlayerFile pl_id = { .c_id = {IDPLAYERFILE_0,IDPLAYERFILE_1,IDPLAYERFILE_2,IDPLAYERFILE_3} };
+	//	IdPlayerFile pl_id = { .c_id = {IDPLAYERFILE_0,IDPLAYERFILE_1,IDPLAYERFILE_2,IDPLAYERFILE_3} };
+	IdPlayerFile pl_id;
+	pl_id.c_id[0] = IDPLAYERFILE_0;
+	pl_id.c_id[1] = IDPLAYERFILE_1;
+	pl_id.c_id[2] = IDPLAYERFILE_2;
+	pl_id.c_id[3] = IDPLAYERFILE_3;
+
 	fwrite(&pl_id, sizeof(IdPlayerFile), 1, f);
 
 	curplayer[0].missions[STAR_ZERG_CAMPAIGN].campaigndone = 0;
@@ -88,7 +94,9 @@ static char lastplayerfile[MAXFILENAMESYMBOLS + 1];
 int loadandsetplayerinfo(char *player_filename)
 {
 	int readed;
-	IdPlayerFile pl_id = { .i_id = 0x00000000 };
+//	IdPlayerFile pl_id = { .i_id = 0x00000000 };
+	IdPlayerFile pl_id;
+	pl_id.i_id = 0x00000000;
 	FILE *f = fopen(player_filename, "r");
 	if (f)
 	{
@@ -112,7 +120,12 @@ int loadandsetplayerinfo(char *player_filename)
 //=============================================
 void saveplayerinfo(void)
 {
-	IdPlayerFile pl_id = { .c_id = {IDPLAYERFILE_0,IDPLAYERFILE_1,IDPLAYERFILE_2,IDPLAYERFILE_3} };
+//	IdPlayerFile pl_id = { .c_id = { IDPLAYERFILE_0,IDPLAYERFILE_1,IDPLAYERFILE_2,IDPLAYERFILE_3 } };
+	IdPlayerFile pl_id;
+	pl_id.c_id[0] = IDPLAYERFILE_0;
+	pl_id.c_id[1] = IDPLAYERFILE_1;
+	pl_id.c_id[2] = IDPLAYERFILE_2;
+	pl_id.c_id[3] = IDPLAYERFILE_3;
 	FILE *f = fopen(lastplayerfile, "w");
 	if (f)
 	{
