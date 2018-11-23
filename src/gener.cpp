@@ -21,7 +21,6 @@
 #include "mytime.h"
 #include "lists.h"
 #include "key.h"
-#include "vars.h"
 #include "gr.h"
 #include "objs.h"
 #include "objinfo.h"
@@ -99,7 +98,6 @@ int main(int c, char **parm, char **env)
 	int i, err, firsttimelaunch = 0, videook = 0;
 	int status, status2, gamequitstatus, mission_id, selected_id, missionfrommenu, runonemission;
 	mapinfo *testmap;
-	char temppath[1024];
 #ifdef TESTMALLOC
 	char *testmem = (char *)wmalloc(16);
 	wfree(testmem);
@@ -645,6 +643,7 @@ int main(int c, char **parm, char **env)
 	StopMusic(MUSIC_STOP);
 	iscriptinfo.~ISCRIPT();
 	gameend("end from menu");
+	return (0);
 }
 //==========================
 #define MAXGAMEMUSIC	3

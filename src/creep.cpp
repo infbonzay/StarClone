@@ -41,7 +41,7 @@ signed char begincreeptable0[BEGINCREEPTABLE0*2]=
 	-4,-2, 3,-2, -5,-1, 4,-1, -5,0, 4,0, -5,1, 4,1, -4,2, 3,2
 	};
 
-signed char begincreeptable1[BEGINCREEPTABLE1*2]=
+signed char begincreeptable1[BEGINCREEPTABLE1*2+1]=
 	{
 	};
 

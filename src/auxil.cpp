@@ -5,6 +5,8 @@
 #include <math.h>
 #include <sys/stat.h>
 
+#include "CrossPlatform.h"
+
 #include "debug.h"
 #include "wmem.h"
 #include "network_general.h"

@@ -7,7 +7,9 @@
 #pragma warning( disable : 4200 )								//disable 0 size array ex.    int myarray[];
 
 #include <windows.h>
+#include <winsock.h>
 #include <string.h>
+#include <io.h>
 
 #define usleep Sleep
 #define mkdir(a,b) _mkdir(a)
@@ -20,7 +22,6 @@
 #define SIGKILL PROCESS_TERMINATE
 #define R_OK 0
 #define strcasestr stricmp
-
 inline bool kill(int dwProcessId, int uExitCode)
 {
 	DWORD dwDesiredAccess = uExitCode;

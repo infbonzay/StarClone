@@ -40,9 +40,9 @@
 	};
 	#define MIX_MAX_VOLUME		0
 	#define MIX_DEFAULT_FORMAT	0
-#ifndef AUDIO_S8
-	#define AUDIO_S8			0
-#endif
+	#ifndef AUDIO_S8
+		#define AUDIO_S8			0
+	#endif
 #endif
 
 wCHUNK *PlayRAWMem(unsigned char *buff,int len);

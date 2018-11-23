@@ -90,7 +90,8 @@ int NETW_PLAY::ReceiveGame_InfoFromPlayers(ALLNETWCONNECTION *conn)
 //==========================================
 int NETW_PLAY::CheckPlayPacket(NETWORK_INFO *recvsock)
 {
-	int i, pl, tick, nspeed, gspeed, gameparam, maxpkts, packetnr, lostpackettick, totallost, savetick;
+	int i, pl, nspeed, gspeed, gameparam, maxpkts, packetnr, lostpackettick, totallost, savetick;
+	unsigned int tick;
 	char newstr[SIZESENDSTR];
 	char loststr[SIZESENDSTR];
 	char received_cmds[SIZESENDSTR];

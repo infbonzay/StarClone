@@ -908,7 +908,7 @@ int glu_loadgame(void)
 			if (retstatus2 == 1)
 			{
 				//confirmed delete file
-				err = unlink(LOADPATH);
+				err = remove(LOADPATH);
 			}
 			if (err)
 			{
@@ -1028,7 +1028,7 @@ int glu_loadreplay(void)
 			if (retstatus2 == 1)
 			{
 				//confirmed delete file
-				err = unlink(LOADPATH);
+				err = remove(LOADPATH);
 			}
 			if (err)
 			{
@@ -2525,7 +2525,7 @@ int glu_login(void)
 				strcpy(tempname, USERS_DIRECTORY);
 				strcat(tempname, nickname);
 				strcat(tempname, STARCLONEEXT);
-				err = unlink(tempname);
+				err = remove(tempname);
 			}
 			if (err)
 			{
@@ -5109,8 +5109,8 @@ int DownloadMpqMenu(int mpqcfgresult)
 	highMouse->UnloadCursors();
 	fontpcx.closePcx();
 	backgnd.closePcx();
-	unlink(WGET_FILESIZE2);
-	unlink(WGET_FILESIZE1);
+	remove(WGET_FILESIZE2);
+	remove(WGET_FILESIZE1);
 	return(exitstatus);
 }
 //==========================================
@@ -5814,7 +5814,7 @@ int savegame_ondeleteaction(MENUSTR *allmenus, int menuitem)
 	switch (menuitem)
 	{
 	case 0://confirm delete
-		unlink(fileforsaveload);//???? if error delete savegame
+		remove(fileforsaveload);//???? if error delete savegame
 		break;
 	default:
 		break;//cancel delete
