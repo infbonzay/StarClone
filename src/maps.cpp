@@ -1096,3 +1096,26 @@ void RevealMap::AddObj(OBJ *o)
 		revealMap->Add(o);
 	}
 }
+//=====================================
+void RevealMap::RefreshMap(void)
+{
+
+	if (NrObjRegen >= MaxRegen)
+	{
+		NrObjRegen = 0;
+	}
+	else
+		NrObjRegen++;
+	if (MaxObjects >= 1000 || needclearmap)
+	{
+		if (NrObjRegen == 0)
+		{
+			needclearmap = 0;
+			map.clearfog[NUMBGAMER] = 1;
+			clearopenseeKarta();	//clear map
+			UnitsMAPRefresh();
+		}
+	}
+	makeopenseeKarta(diapazone[NrObjRegen].begin, diapazone[NrObjRegen].end);//open map by some of units
+}
+//=====================================

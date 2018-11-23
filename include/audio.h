@@ -71,6 +71,7 @@ void deinitsoundengine(void);
 int	 play_race_rescue(int race,int repeatflag,int distance);
 int	 Play_sfxdata_id(OBJ *a,int sfxdata_id,int repeatflag,int distance);
 int	 Play_sfxdata(int x,int y,int sfxdata_id,int repeatedsongs);
+int	 Play_sfxdata(int x,int y,int sfxdata_id,int repeatedsongs, int ignorevisibility);
 int	 loadandplaywav(HANDLE mpq,struct OBJ *a,const char *filesound,int repeatedflag,int distance);
 int	 unloadwav(int channel);
 int	 activatesound(struct OBJ *a,int soundmode,int addfactor,int stopprevsound);

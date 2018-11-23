@@ -572,7 +572,7 @@ void OVERLAY_IMG::DrawImageXY(int x, int y)
 	switch (fogvalue)
 	{
 	case 2:
-		drawedimgs++;
+		//drawedimgs++;
 		if (grpmethod != NORMAL)
 			format = grpmethod;
 		else
@@ -581,16 +581,16 @@ void OVERLAY_IMG::DrawImageXY(int x, int y)
 			else
 				format = grpmethod;
 		saveandputimage(x + xlo,
-			y + ylo,
-			xdelta, newydelta,
-			grp,
-			format,
-			drawedcolor,
-			parentimg->imageusercolor,
-			remaptable,
-			framenr + oneside,
-			flags | mirror,
-			protossbuildwhite);
+						y + ylo,
+						xdelta, newydelta,
+						grp,
+						format,
+						drawedcolor,
+						parentimg->imageusercolor,
+						remaptable,
+						framenr + oneside,
+						flags | mirror,
+						protossbuildwhite);
 
 		if (alldattbl.images_dat->Clickable[imageid])
 		{

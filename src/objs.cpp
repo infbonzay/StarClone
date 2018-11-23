@@ -4075,7 +4075,10 @@ struct OBJ* GroundCloakableUnitAtackFunc(OBJ *a, unsigned char weaponmask, unsig
 {
 	OBJ *a2 = NULL;
 	if (IsCloaked(a))
-		return(NULL);
+	{
+		if (a->modemove != MODEPATROL && !(a->prop & VARMOVEINATACKMODE))
+			return(NULL);
+	}
 	if (weaponmask)
 	{
 		a2 = FindObjForAtack(a, weaponmask, groundweapon, airweapon, NULL);
@@ -4117,10 +4120,11 @@ struct OBJ* OneUnitSearchGoal(OBJ *a, int ignoremodes, int facedirectionatackonl
 			unitatack_id = GetOBJAtackWithoutWeapons(SC_Unit);
 			switch (unitatack_id)
 			{
-			case UNITATACKFUNCTYPE_EVERYUNITS:			//all units that not have a scpecial functions
+			case UNITATACKFUNCTYPE_EVERYUNITS:			//all units that not have a special functions
 			case UNITATACKFUNCTYPE_DOODADS:				//doodadunits
 			case UNITATACKFUNCTYPE_VULTUREMINES:		//vulturemine
 			case UNITATACKFUNCTYPE_INTERCEPTORS:
+			case UNITATACKFUNCTYPE_NOTATACKINCLOAKEDMODE:
 				weaponmask = 0;
 				groundweapon = alldattbl.units_dat->GroundWeapon[SC_Unit];
 				if (groundweapon < MAX_WEAPONS_ELEM)
@@ -4139,8 +4143,6 @@ struct OBJ* OneUnitSearchGoal(OBJ *a, int ignoremodes, int facedirectionatackonl
 				break;
 			case UNITATACKFUNCTYPE_NONE:		//base/turret
 				return(NULL);
-				break;
-			case UNITATACKFUNCTYPE_NOTATACKINCLOAKEDMODE:
 				break;
 			}
 			weaponmask |= facedirectionatackonly;

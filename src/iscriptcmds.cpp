@@ -342,7 +342,7 @@ int IScriptCmd_playsnd(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
 	unsigned short sndid = *((unsigned short *)&buf[0]);
 //	  if (!(img->flags & SC_IMAGE_FLAG_DISABLEDRAW))
 	{
-		Play_sfxdata(img->parentimg->xpos>>8,img->parentimg->ypos>>8,sndid,2);
+		Play_sfxdata(img->parentimg->xpos>>8,img->parentimg->ypos>>8,sndid,2,1);
 	}
 	img->offsetcmdinbuf += cmdsize;
 	return(0);
@@ -358,7 +358,7 @@ int IScriptCmd_playsndrand(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
 		nrofrandomsnds = buf[0];
 		sndnr = myrand(nrofrandomsnds);
 		sndid = *((unsigned short *)&buf[1+sndnr*2]);
-		Play_sfxdata(img->parentimg->xpos>>8,img->parentimg->ypos>>8,sndid,2);
+		Play_sfxdata(img->parentimg->xpos>>8,img->parentimg->ypos>>8,sndid,2,1);
 	}
 	img->offsetcmdinbuf += nrofrandomsnds * 2+1;
 	return(0);
@@ -371,7 +371,7 @@ int IScriptCmd_playsndbtwn(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
 	{
 		sndid1 = *((unsigned short *)&buf[0]);
 		sndid2 = *((unsigned short *)&buf[2]);
-		Play_sfxdata(img->parentimg->xpos>>8,img->parentimg->ypos>>8,sndid1+myrand(sndid2-sndid1+1),2);
+		Play_sfxdata(img->parentimg->xpos>>8,img->parentimg->ypos>>8,sndid1+myrand(sndid2-sndid1+1),2,1);
 	}
 	img->offsetcmdinbuf += cmdsize;
 	return(0);
@@ -414,7 +414,7 @@ int IScriptCmd_attackmelee(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
 	nrofrandomsnds = buf[0];
 	sndnr = myrand(nrofrandomsnds);
 	sndid = *((unsigned short *)&buf[1+sndnr*2]);
-	Play_sfxdata(img->parentimg->xpos>>8,img->parentimg->ypos>>8,sndid,2);
+	Play_sfxdata(img->parentimg->xpos>>8,img->parentimg->ypos>>8,sndid,2,1);
 
 	if (img->parentimg->whocreate == SC_IMAGE_OBJ_CREATOR)
 	{

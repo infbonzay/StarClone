@@ -83,6 +83,7 @@ class RevealMap : public ListSimple<OBJ*>
 public:
 	void AdditionalOpen(void);
 	void AddObj(OBJ *o);
+	void RefreshMap(void);
 
 	RevealMap() : ListSimple(MAXOBJDEFSCR){};
 	~RevealMap(){};

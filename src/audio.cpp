@@ -153,13 +153,18 @@ int Play_sfxdata_id(OBJ *a,int sfxdata_id,int repeatflag,int distance)
 	return(-1);
 }
 //=======================================
-int Play_sfxdata(int x,int y,int sfxdata_id,int repeatedsongs)
+int Play_sfxdata(int x,int y,int sfxdata_id,int repeatedsongs,int ignorevisibility)
 {
 	if (CHECKFORMAPBORDERS(x/32,y/32))
 		return(-1);
-	if (mapSEE(x/32,y/32) > 1)
+	if (mapSEE(x/32,y/32) > 1 || ignorevisibility)
 		return( Play_sfxdata_id(NULL,sfxdata_id,repeatedsongs,DistanceForAudio(x,y)));
 	return(-1);
+}
+//=======================================
+int Play_sfxdata(int x,int y,int sfxdata_id,int repeatedsongs)
+{
+	return (Play_sfxdata(x,y,sfxdata_id,repeatedsongs,0));
 }
 //==============================================
 int loadandplaywav(HANDLE mpq,struct OBJ *a,const char *filesound,int repeatedflag,int distance)
