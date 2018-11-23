@@ -17,7 +17,7 @@
 #define rmdir _rmdir
 #define access _access
 #define getcwd _getcwd
-#define readlink(a,b,c) -1
+#define readlink(a,b,c) strncpy(b,a,c)
 #define strncasecmp _strnicmp
 #define SIGKILL PROCESS_TERMINATE
 #define R_OK 0

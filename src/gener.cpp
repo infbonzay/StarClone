@@ -97,6 +97,7 @@ int main(int c, char **parm, char **env)
 
 	int i, err, firsttimelaunch = 0, videook = 0;
 	int status, status2, gamequitstatus, mission_id, selected_id, missionfrommenu, runonemission;
+	char temppath[MAXFILENAMESYMBOLS];
 	mapinfo *testmap;
 #ifdef TESTMALLOC
 	char *testmem = (char *)wmalloc(16);
@@ -935,10 +936,10 @@ int gogame(struct mapinfo *info)
 	highMouse->MouseOnObjClear();
 	destCursor = new DestCursor();
 	screenDraw = new ScreenDraw();
-	totalimgs = 0;
-	drawedimgs = 0;
+	//totalimgs = 0;
+	//drawedimgs = 0;
 	AllImages_Draw();
-	DEBUGMESSCR("At begin totalimgs=%d drawedimgs=%d\n", totalimgs, drawedimgs);		//to check for leaks
+	//DEBUGMESSCR("At begin totalimgs=%d drawedimgs=%d\n", totalimgs, drawedimgs);		//to check for leaks
 
 	putfog();			//show fogofwar
 	drawMINIMAP();
@@ -1101,7 +1102,7 @@ int gogame(struct mapinfo *info)
 				IfTimeForTrigger(info, &prevgameticks);
 				if (!PAUSEGAME && !PAUSEINTRIG)
 				{
-					revealMap->AdditionalOpen();
+					revealMap->AdditionalOpen();	//TODO need to remove objs if they exist in diapazone[nrobjregen] :)
 					if (MAPREGENERATIONBIT)
 					{
 						calcfullinvandsee();
@@ -1135,8 +1136,8 @@ int gogame(struct mapinfo *info)
 
 				DestroyMarked();			//destroy unit previously marked
 
-				totalimgs = 0;
-				drawedimgs = 0;
+				//totalimgs = 0;
+				//drawedimgs = 0;
 				highMouse->MouseOnObjClear();
 				AllImages_Draw();
 

@@ -223,7 +223,7 @@ char	PREFIX_UNIT[200] = "unit\\";
 
 //=============== MAGEICONS FEEDBACK VARIABLES =============
 unsigned char warparchon;
-int totalimgs, drawedimgs;
+//int totalimgs, drawedimgs;
 int irradiatedamagepertick, plaguedamagepertick;
 //============================CHEAT CODES===================
 char	CODEFORSCREEN = 0;

@@ -951,7 +951,7 @@ int SendInfoToMaster(int command, const char *txtchat, NETWORK_INFO *sendsock, N
 		return(NETWORK_ERROR_SEND);
 	sendsock->Addr.sin_family = AF_INET;
 	sendsock->Addr.sin_port = htons(PORT);
-	err = inet_pton(GAMEHOSTIP, &sendsock->Addr.sin_addr) == 0;
+	err = inet_aton(GAMEHOSTIP, &sendsock->Addr.sin_addr) == 0;
 	sendsock->COMMAND = command;
 	sendsock->PCID = SERVER_PCID;
 	switch (command)

@@ -393,8 +393,8 @@ MAIN_IMG::~MAIN_IMG()
 //============================================
 void MAIN_IMG::DrawOnScreenImage(void)
 {
-	totalimgs++;
-	drawedimgs++;
+	//totalimgs++;
+	//drawedimgs++;
 	if (flags & SC_IMAGE_FLAG_MIRRORIMAGE)
 		iputgrpspr(xpos - grp->SizeX / 2, ypos - grp->SizeY / 2, grp, TOTABLE, 0, 0, adrtabls[remaptable] + imageusercolor * 8, framenr);
 	else
@@ -414,8 +414,7 @@ void OVERLAY_IMG::DrawImageXY(int x, int y)
 	char format;
 	signed char *adrxyoffs, xlo, ylo;
 	OBJ *a;
-	//	  return;
-	totalimgs++;
+	//totalimgs++;
 	if (flags & (SC_IMAGE_FLAG_DISABLEDRAW | SC_IMAGE_FLAG_MARKFORDELETE))
 		return;
 	side = parentimg->side;

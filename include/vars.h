@@ -280,7 +280,7 @@ extern char		MAXPLRS,PAUSEGAME,PAUSEINTRIG,MENUACTIVE,gamestatus;
 extern unsigned char gamestatusremainticks,warparchon;
 
 extern unsigned short PORT;
-extern int totalimgs,drawedimgs;
+//extern int totalimgs,drawedimgs;
 extern int irradiatedamagepertick,plaguedamagepertick;
 
 //============================CHEAT CODES===================
