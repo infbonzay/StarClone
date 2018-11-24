@@ -236,8 +236,6 @@ typedef unsigned char SCUNIT;
 #define TERRAIN					0x01
 #define UNITS					0x02
 
-#define MAPREGENERATION			60
-
 //OBJstruct
 #define NOADDSTATSATCONSTR		0x01
 #define VARSELECT4NOTSEEPROP	0x02

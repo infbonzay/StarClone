@@ -15,6 +15,7 @@
 #include "market.h"
 
 #include "ScreenDraw.h"
+#include "RefreshMap.h"
 #include "commandqueue.h"
 #include "debug.h"
 #include "auxil.h"
@@ -82,6 +83,7 @@ int 			menustatus, startmission, campaign_id;
 HighMouse 		*highMouse;
 DestCursor		*destCursor;
 ScreenDraw		*screenDraw;
+RefreshMap		*refreshMap;
 
 char			select_aria, karta_aria, mode_aria;
 bool			movieminikarta;
@@ -949,7 +951,8 @@ int gogame(struct mapinfo *info)
 	//make minimap regeneration queue
 	gamecycle = 0;
 	pregameQUEUE();
-	NrObjRegen = INT_MAX;
+
+	refreshMap->Init();
 
 	netplay.MakeFirstNetworkCycle();
 	menustatus = CONTINUEGAME;
@@ -1081,7 +1084,7 @@ int gogame(struct mapinfo *info)
 					{
 						RemoveAddOneCreep();
 					}
-					revealMap->RefreshMap();
+					refreshMap->OpenMapByRangeOfUnits();
 				}
 				IfTimeForTrigger(info, &prevgameticks);
 				if (!PAUSEGAME && !PAUSEINTRIG)

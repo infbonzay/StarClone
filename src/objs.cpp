@@ -99,13 +99,13 @@ void destroyobj(struct OBJ *a)
 			a->subunit = NULL;
 		}
 		delobjlist(a);
-		MinObjRegen = MaxObjects / MAPREGENERATION;
-		if (MaxObjects%MAPREGENERATION)
-			MinObjRegen++;
+
+		refreshMap->UpdateSequenseObjs();
+
 
 		DelAllModeMoves(a, 1);
 		wfree(a);
-		createobjregen();
+		refreshMap->CreateObjRegen();
 	}
 }
 //==========================================
@@ -315,9 +315,10 @@ struct OBJ *createobjlowlevel(OBJ *workerobj, int x, int y, SCUNIT SC_Unit, int 
 	}
 	a->creepbuildlist_ID = CREEPLISTEMPTY;
 	addobjlist(a);
-	MinObjRegen = MaxObjects / MAPREGENERATION;
-	if (MaxObjects%MAPREGENERATION)
-		MinObjRegen++;
+
+	refreshMap->UpdateSequenseObjs();
+
+
 	//	  for (i=0;i<PLAYEDPLAYERS;i++)
 	//		  a->select[i] = b->UNITprop & (VARINVSEE|VARSEE);
 
@@ -347,7 +348,7 @@ struct OBJ *createobjlowlevel(OBJ *workerobj, int x, int y, SCUNIT SC_Unit, int 
 		a->shield = STARTBUILDSHIELD;
 		a->health = STARTBUILDLIFE;
 	}
-	createobjregen();
+	refreshMap->CreateObjRegen();
 	a->sfxplay.sfxtypeplayed = -1;
 	a->sfxplay.nrsfxplayed = -1;
 	a->sfxplay.nrselectplayed = 0;
@@ -901,30 +902,6 @@ int addselectobj(struct OBJ *a)
 		SelectedUnits.Add(a);
 	}
 	return(0);
-}
-//========================================
-//========================================
-//========================================
-void createobjregen(void)
-{
-	int i, nrobj = 0, regen = 0;
-	struct OBJ *a;
-	for (i = 0;i < MAPREGENERATION;i++)
-		diapazone[i].begin = -1;
-	for (i = 0;i < MaxObjects;i++)
-	{
-		a = objects[i];
-		if (++nrobj > MinObjRegen)
-		{
-			nrobj = 0;
-			regen++;
-		}
-		a->whenregen = regen;
-		if (diapazone[regen].begin == -1)
-			diapazone[regen].begin = i;
-		diapazone[regen].end = i;
-	}
-	MaxRegen = regen;
 }
 //========================================
 #define REGENERATESHIELD		5

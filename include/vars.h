@@ -122,9 +122,9 @@ extern int		maxlanshaftparts;
 extern int		changegoods;
 extern long		gamecycle;
 extern int		helpgame;
-extern int		MinObjRegen;
+
 extern int		MaxObjects;
-extern int		NrObjRegen;
+
 extern int		oldselectbuton,existinbuildconstr;
 extern int		mouseonconstrunit,selecteddeconstrunit,selectedunloadunit;
 extern int		oldmouseonconstrunit;
@@ -146,8 +146,7 @@ extern struct  XYcoord nextpoint[];
 extern struct  XYcoord found[];
 
 extern struct GEN_ANIM_LANSH *alllansh[];
-extern struct _BE_ diapazone[];
-extern unsigned short MaxRegen;
+
 extern struct MAGEP mageprop[];
 
 typedef ListSimple<OBJ*> SelectionObjs;

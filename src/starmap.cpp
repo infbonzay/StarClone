@@ -1,3 +1,4 @@
+
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -12,6 +13,7 @@
 #include "maps.h"
 #include "creep.h"
 #include "pylon.h"
+#include "RefreshMap.h"
 
 #include "defs.h"
 #include "vars.h"
@@ -1376,6 +1378,7 @@ int load_starmap(const char *mapfile, char *fname, struct mapinfo *info, GAMECON
 		}
 	}
 	revealMap = new RevealMap();
+	refreshMap = new RefreshMap();
 	mytimer.SetMyTimerFunc(&gametimer, NULL);
 	BlockSoundToPlay();
 	TRIG_ChangeStat = 0;
@@ -1645,6 +1648,8 @@ void unload_starmap(struct mapinfo *info)
 	info->valid_vcode = 0;
 	delete revealMap;
 	revealMap = NULL;
+	delete refreshMap;
+	refreshMap = NULL;
 }
 //=================================================
 void CreateAliance(struct mapinfo *info, int player1, int player2, int flag)

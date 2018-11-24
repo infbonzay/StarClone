@@ -1,3 +1,4 @@
+#include "RefreshMap.h"
 
 #if !defined(_GENER_W)
 #define _GENER_W
@@ -152,7 +153,7 @@ extern HighMouse		*highMouse;
 extern DestCursor		*destCursor;
 extern bool				movieminikarta;
 extern int				mousehotpos;
-
+extern RefreshMap		*refreshMap;
 
 
 

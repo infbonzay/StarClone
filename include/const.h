@@ -16,30 +16,31 @@ struct DISPLAY{
 //====================
 struct XYcoord
 {
-	   int x;
-	   int y;
+	int x;
+	int y;
 };
 //====================
 struct XY
 {
-		int x1;
-		int y1;
-		int x2;
-		int y2;
+	int x1;
+	int y1;
+	int x2;
+	int y2;
 };
 //====================
 struct BARofMENU
 {
-	   char *mesage;
-	   short x1;
-	   short y1;
-	   short yesselect;
+	char *mesage;
+	short x1;
+	short y1;
+	short yesselect;
 };
 //====================
 struct _BE_{
-	   short begin;
-	   short end;
+	int begin;
+	int end;
 };
+
 struct POSINFILE
 {
 	long long	pos;

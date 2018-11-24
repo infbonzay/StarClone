@@ -61,9 +61,8 @@ int		curentreadkey;
 int		changegoods = 1;
 long	gamecycle;
 int		helpgame;
-int		MinObjRegen;
 int		MaxObjects;
-int		NrObjRegen;
+
 int		oldselectbuton, existinbuildconstr;
 int		mouseonconstrunit, selecteddeconstrunit, selectedunloadunit;
 int		oldmouseonconstrunit = -1;
@@ -85,8 +84,7 @@ struct	XYcoord nextpoint[1000];
 struct	XYcoord found[1000];
 
 struct DISPLAY grmode;
-struct _BE_ diapazone[MAPREGENERATION];
-unsigned short MaxRegen = 0;
+
 struct MAGEP mageprop[MAXIMMODE + 1];//pointer to MAGEP array
 
 SelectionObjs	SelectedUnits(MAXSELECTMAN);
