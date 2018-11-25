@@ -15,7 +15,7 @@
 #include "market.h"
 
 #include "ScreenDraw.h"
-#include "RefreshMap.h"
+#include "RegenObjMap.h"
 #include "commandqueue.h"
 #include "debug.h"
 #include "auxil.h"
@@ -83,7 +83,7 @@ int 			menustatus, startmission, campaign_id;
 HighMouse 		*highMouse;
 DestCursor		*destCursor;
 ScreenDraw		*screenDraw;
-RefreshMap		*refreshMap;
+RegenObjMap		*regenObjMap;
 
 char			select_aria, karta_aria, mode_aria;
 bool			movieminikarta;
@@ -923,11 +923,8 @@ int gogame(struct mapinfo *info)
 	commandqueuetick = 0;
 	for (i = 0;i < PLAYEDPLAYERS;i++)
 		map.clearfog[i] = 1;
-	//	  clearopenseeKarta();
-	//	  clearopenseeKarta();	//clear map
 	UnitsMAPRefresh();
-	//	  allobjtypemove();			//calculate what sprites will be placed
-	makeopenseeKarta(0, MaxObjects - 1);
+	regenObjMap->OpenMapByRange(0, MaxObjects - 1);
 	calcfullinvandsee();
 	bitsplayer = GetVisionBitsPlayer(NUMBGAMER);
 	MAPREGENERATIONBIT = 1;
@@ -952,7 +949,7 @@ int gogame(struct mapinfo *info)
 	gamecycle = 0;
 	pregameQUEUE();
 
-	refreshMap->Init();
+	regenObjMap->Init();
 
 	netplay.MakeFirstNetworkCycle();
 	menustatus = CONTINUEGAME;
@@ -1084,7 +1081,7 @@ int gogame(struct mapinfo *info)
 					{
 						RemoveAddOneCreep();
 					}
-					refreshMap->OpenMapByRangeOfUnits();
+					regenObjMap->OpenMapCycle();
 				}
 				IfTimeForTrigger(info, &prevgameticks);
 				if (!PAUSEGAME && !PAUSEINTRIG)

@@ -16,8 +16,6 @@
 #define UNITSOUND_YESLAST		6
 
 void UnitsMAPRefresh(void);
-void addobjlist(struct OBJ *a);
-void delobjlist(struct OBJ *a);
 void freeOBJS(void);
 void freeOBJstructs(int withupgrades);
 void freeMAGEstructs(void);

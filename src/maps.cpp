@@ -593,66 +593,6 @@ void clearopenseeKarta(void)
 		}
 	}
 }
-//=====================================
-void makeopenseeKarta(int beginobj, int endobj)
-{
-	OBJ *a;
-	OBJstruct *b;
-	int i;
-	if (!MaxObjects)
-		return;
-	if (beginobj == -1 || endobj == -1)
-		return;
-	for (i = beginobj;i <= endobj;i++)
-	{
-		a = objects[i];
-		b = loadobj(a->SC_Unit);
-		if (GetUnitSightRange(a, b) > 0)
-		{
-			makeoneobjseeopen(a, b);
-			arbitermakewarpfield(a, b);
-		}
-	}//for
-	for (i = beginobj;i <= endobj;i++)
-	{
-		a = objects[i];
-		//		if (IsPermanentCloak(a->SC_Unit))
-		//			continue;
-		if (!IsBuild(a->SC_Unit))
-		{
-			if (a->SC_Unit != SC_ARBITEROBJ && a->SC_Unit != SC_HERO_DANIMOTHOBJ)
-			{
-				if (a->playernr < PLAYEDPLAYERS)
-				{
-					if (map.mapbits.arbiterfield[a->ykart*MAXXMAP + a->xkart] & (1 << a->playernr))
-					{
-						if (GetMageAtr(&a->atrobj, ATRINVISIBLE) <= MAXATRMAGE)
-						{
-							if (GetMageAtr(&a->atrobj, ATRINVISIBLE) > 0)
-								//esli cloakwrite pod arbiterom
-								addmage(a, ATRINVISIBLE, WRAITHEPODARBITEROM);
-							else
-								//esli drug iuniti pod arbiterom
-								addmage(a, ATRINVISIBLE, NEWRAITHEPODARBITEROM);
-						}
-					}
-					else
-					{
-						if (GetMageAtr(&a->atrobj, ATRINVISIBLE) == NEWRAITHEPODARBITEROM)
-							addmage(a, ATRINVISIBLE, 0);//prostoi obj pod arbit
-						else
-							if (GetMageAtr(&a->atrobj, ATRINVISIBLE) == WRAITHEPODARBITEROM)
-								addmage(a, ATRINVISIBLE, a->mana);//writhe clockanii
-							else
-								if (GetMageAtr(&a->atrobj, ATRINVISIBLE) > MAXATRMAGE&&
-									GetMageAtr(&a->atrobj, ATRINVISIBLE) < ATRMAGEINFINITE)
-									addmage(a, ATRINVISIBLE, 0);//others obj
-					}
-				}
-			}
-		}
-	}//for
-}
 //=================================
 char xypos[2][4] = { {0,1,0,1},{0,0,1,1} };
 //=================================

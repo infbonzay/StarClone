@@ -28,23 +28,7 @@ void UnitsMAPRefresh(void)
 		a->prop |= VARKARTCHANGES;
 	}
 }
-//=====================================
-void addobjlist(struct OBJ *a)
-{
-	objects[MaxObjects] = a;
-	a->nrobject = MaxObjects;
-	MaxObjects++;
-}
-//==========================================
-void delobjlist(struct OBJ *a)
-{
-	int xx;
-	MaxObjects--;
-	xx = objcmp(objects, a, MaxObjects + 1);
-	objects[xx] = objects[MaxObjects];
-	objects[xx]->nrobject = xx;
-	objects[MaxObjects] = NULL;
-}
+
 //==========================================
 void freeOBJS(void)
 {

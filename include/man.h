@@ -208,7 +208,6 @@ struct OBJ
 		unsigned char	ammo;
 
 		unsigned char	color;				 //tsvet unita
-		unsigned char	whenregen;
 
 		unsigned char	playernr;			 //nomer igroca
 		signed	 char	atackernr;			 //nomer atakuiushego igroca

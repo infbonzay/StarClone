@@ -25,7 +25,6 @@ void xchgkart(void);
 void putlansh(int xglob,int yglob,int x,int y,int indextile32,char wfog,char bfog);
 void clearopenseeKarta(void);
 //void AddObjsRevealMap(void);
-void makeopenseeKarta(int beginobj,int endobj);
 void makeoneobjseeopen(struct OBJ *b,struct OBJstruct *c);
 void calcfullinvandsee(void);
 void calcfullinvandseeobj(struct OBJ *v1);

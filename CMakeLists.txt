@@ -28,7 +28,7 @@ include_directories(include/network)
 include_directories(include/smacker)
 
 set(SOURCES
-	src/RefreshMap.cpp
+	src/RegenObjMap.cpp
 	src/ScreenDraw.cpp
 	src/MenuItem.cpp
 	src/gener.cpp

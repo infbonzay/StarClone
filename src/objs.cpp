@@ -98,14 +98,14 @@ void destroyobj(struct OBJ *a)
 			a->subunit->subunit = NULL;
 			a->subunit = NULL;
 		}
-		delobjlist(a);
+		regenObjMap->DelObjList(a);
 
-		refreshMap->UpdateSequenseObjs();
+		//refreshMap->DelUpdateSequenseObjs();
 
 
 		DelAllModeMoves(a, 1);
 		wfree(a);
-		refreshMap->CreateObjRegen();
+		//refreshMap->CreateObjRegen();
 	}
 }
 //==========================================
@@ -314,9 +314,9 @@ struct OBJ *createobjlowlevel(OBJ *workerobj, int x, int y, SCUNIT SC_Unit, int 
 		a->tempshield = GetUnitMaxShield(a->SC_FromUnit);
 	}
 	a->creepbuildlist_ID = CREEPLISTEMPTY;
-	addobjlist(a);
+	regenObjMap->AddObjList(a);
 
-	refreshMap->UpdateSequenseObjs();
+	//refreshMap->AddUpdateSequenseObjs();
 
 
 	//	  for (i=0;i<PLAYEDPLAYERS;i++)
@@ -348,7 +348,7 @@ struct OBJ *createobjlowlevel(OBJ *workerobj, int x, int y, SCUNIT SC_Unit, int 
 		a->shield = STARTBUILDSHIELD;
 		a->health = STARTBUILDLIFE;
 	}
-	refreshMap->CreateObjRegen();
+	//refreshMap->CreateObjRegen();
 	a->sfxplay.sfxtypeplayed = -1;
 	a->sfxplay.nrsfxplayed = -1;
 	a->sfxplay.nrselectplayed = 0;
