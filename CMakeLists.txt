@@ -113,6 +113,7 @@ set(SOURCES
 if (UNIX)
 
 	add_definitions(-DUNDERLINUX)
+	add_definitions(-DWITHNETUDP)
 
 	find_package(SDL 1.2.5 REQUIRED)
 

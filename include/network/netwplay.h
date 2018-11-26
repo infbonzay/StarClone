@@ -29,7 +29,7 @@ private:
 	unsigned char		netwlatency;	
 
 	signed char			networksendcycle,networkreceivecycle;
-	int					networkticknr;
+	unsigned int		networkticknr;
 
 	unsigned int		tickreceived[MAXPLAYERS];
 	char				netwspeedvalue;

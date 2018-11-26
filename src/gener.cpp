@@ -11,6 +11,7 @@
 
 #include "CrossPlatform.h"
 
+#include "defs.h"
 #include "vars.h"
 #include "market.h"
 

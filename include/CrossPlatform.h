@@ -10,6 +10,7 @@
 #include <winsock.h>
 #include <string.h>
 #include <io.h>
+//#include <ws2tcpip.h>
 
 #define usleep Sleep
 #define mkdir(a,b) _mkdir(a)
@@ -17,11 +18,13 @@
 #define rmdir _rmdir
 #define access _access
 #define getcwd _getcwd
-#define readlink(a,b,c) strncpy(b,a,c)
+#define readlink(a,b,c) (strncpy(b,a,c) != NULL)
 #define strncasecmp _strnicmp
 #define SIGKILL PROCESS_TERMINATE
 #define R_OK 0
 #define strcasestr stricmp
+#define inet_aton(a,b) 0
+
 inline bool kill(int dwProcessId, int uExitCode)
 {
 	DWORD dwDesiredAccess = uExitCode;

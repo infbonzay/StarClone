@@ -6,6 +6,7 @@
 #include "sdl/grsdl.h"
 #endif
 
+#include "CrossPlatform.h"
 #include "gener.h"
 #include "audio.h"
 #include "auxil.h"

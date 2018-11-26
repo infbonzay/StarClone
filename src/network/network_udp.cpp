@@ -2,12 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include <arpa/inet.h>
-#include <sys/socket.h>
-#include <sys/ioctl.h>
-#include <unistd.h>
-#include <ifaddrs.h>
-#include <net/if.h>
+#include "CrossPlatform.h"
 #include <fcntl.h>
 #include <errno.h>
 
@@ -35,8 +30,11 @@ void closesock(NETWORK_INFO *info)
 //=============================================
 int NETWORKGAME_UDP(NETWORK_INFO *info)
 {
-	static unsigned int PCID, NETWORKCARDS = 0, BCAST[MAXNETWORKCARDS];
-	int i, ret, flag, sflags, readed, CRC, waitbytes;
+#ifndef WITHNETDUP
+	return NETWORK_ERROR_INIT;
+#else
+	static unsigned int PCID, BCAST[MAXNETWORKCARDS];
+	int i, ret, flag, sflags, readed, CRC, waitbytes, NETWORKCARDS = 0;
 	socklen_t recvlength;
 	pid_t mypid;
 	struct sockaddr_in myaddr;
@@ -271,5 +269,6 @@ int NETWORKGAME_UDP(NETWORK_INFO *info)
 	default:
 		return(NETWORK_ERROR_CMD);
 	}
+#endif	
 }
 //====================================================
