@@ -30,11 +30,11 @@ void closesock(NETWORK_INFO *info)
 //=============================================
 int NETWORKGAME_UDP(NETWORK_INFO *info)
 {
-#ifndef WITHNETDUP
+#ifndef WITHNETUDP
 	return NETWORK_ERROR_INIT;
 #else
-	static unsigned int PCID, BCAST[MAXNETWORKCARDS];
-	int i, ret, flag, sflags, readed, CRC, waitbytes, NETWORKCARDS = 0;
+	static unsigned int NETWORKCARDS = 0,PCID, BCAST[MAXNETWORKCARDS];
+	int i, ret, flag, sflags, readed, CRC, waitbytes;
 	socklen_t recvlength;
 	pid_t mypid;
 	struct sockaddr_in myaddr;

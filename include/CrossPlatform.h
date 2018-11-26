@@ -53,6 +53,9 @@ inline char *strchrnul(char *text, char symb)
 #include <arpa/inet.h>
 #include <sys/socket.h>
 #include <unistd.h>
+#include <sys/ioctl.h>
+#include <ifaddrs.h>
+#include <net/if.h>
 
 void strupr(char *str);
 void strlwr(char *str);
