@@ -2701,6 +2701,7 @@ void drawsmkvideo(MENUSTR *allmenus, int itemnr)
 	unsigned int w, h;
 	unsigned char *vidbuff;
 	if (menuitem->item.smkvideo->smks)
+	{
 		for (i = 0;i < menuitem->item.smkvideo->smks->totalsmks;i++)
 		{
 			showsmk = 0;
@@ -2708,83 +2709,75 @@ void drawsmkvideo(MENUSTR *allmenus, int itemnr)
 			smk = menuitem->item.smkvideo->smks->smkid[i].smk;
 			if ((smk) && !(menuitem->dialogbin_smk_flags[i] & DIALOGBIN_SMKFLAGS_NODRAW))
 			{
-				/*			static int oldcurf=-1;
-							if (i==1)
-							{
-								if (oldcurf!=smk->cur_frame)
-								{
-									printf("%d-%d(%d)\n",i,smk->cur_frame,smk->f);
-									oldcurf=smk->cur_frame;
-								}
-							}
-				*/			if (menuitem->dialogbin_smk_flags[i] & DIALOGBIN_SMKFLAGS_SHOWONMOUSEOVER)
+				if (menuitem->dialogbin_smk_flags[i] & DIALOGBIN_SMKFLAGS_SHOWONMOUSEOVER)
 				{
-					if (menuitem->typeofshow == ITEMSHOW_FOCUS)
+					if (menuitem->typeofshow == ITEMSHOW_FOCUS || menuitem->typeofshow == ITEMSHOW_CLICK)
 						showsmk = 1;
 				}
 				else
 					showsmk = 1;
-			smk_info_video(smk, &w, &h, NULL);
-			if (menuitem->dialogbin_smk_flags[i] & DIALOGBIN_SMKFLAGS_ADDED_UNPACKALLFRAMES)
-			{
-				vidbuff = menuitem->item.smkvideo->smks->smkid[i].smkallframes[smk->cur_frame];
-				if (!vidbuff)
-				{
-					vidbuff = smk_get_video(smk);
-					menuitem->item.smkvideo->smks->smkid[i].smkallframes[smk->cur_frame] = (unsigned char *)wmalloc(w*h);
-					memcpy(menuitem->item.smkvideo->smks->smkid[i].smkallframes[smk->cur_frame], vidbuff, w*h);
-					smkfull = 1;
-				}
-			}
-			else
-				vidbuff = smk_get_video(smk);
-			if (showsmk)
-			{
-				if (menuitem->dialogbin_smk_flags[i] & DIALOGBIN_SMKFLAGS_FADEMOUSEOVER)
-				{
-					puttranslucencyrow(menuitem->item.smkvideo->smks->smkid[i].posx,
-						menuitem->item.smkvideo->smks->smkid[i].posy,
-						w, h, vidbuff, menuitem->showvalue / 127 + 1);
-				}
-				else
-				{
-					putrow(menuitem->item.smkvideo->smks->smkid[i].posx,
-						menuitem->item.smkvideo->smks->smkid[i].posy,
-						w, h, vidbuff);
-				}
-			}
-			if (scrollportrait_menu)
-			{
+				smk_info_video(smk, &w, &h, NULL);
 				if (menuitem->dialogbin_smk_flags[i] & DIALOGBIN_SMKFLAGS_ADDED_UNPACKALLFRAMES)
 				{
-					if (menuitem->dialogbin_smk_flags[i] & DIALOGBIN_SMKFLAGS_ADDED_UNPACKREADY)
+					vidbuff = menuitem->item.smkvideo->smks->smkid[i].smkallframes[smk->cur_frame];
+					if (!vidbuff)
 					{
-						if (smk_next(smk, SMK_SKIP_DECODE) == SMK_DONE)
-							smk_first(smk, SMK_SKIP_DECODE);
+						vidbuff = smk_get_video(smk);
+						menuitem->item.smkvideo->smks->smkid[i].smkallframes[smk->cur_frame] = (unsigned char *)wmalloc(w*h);
+						memcpy(menuitem->item.smkvideo->smks->smkid[i].smkallframes[smk->cur_frame], vidbuff, w*h);
+						smkfull = 1;
+					}
+				}
+				else
+					vidbuff = smk_get_video(smk);
+				if (showsmk)
+				{
+					if (menuitem->dialogbin_smk_flags[i] & DIALOGBIN_SMKFLAGS_FADEMOUSEOVER)
+					{
+						puttranslucencyrow(menuitem->item.smkvideo->smks->smkid[i].posx,
+										   menuitem->item.smkvideo->smks->smkid[i].posy,
+										   w, h, vidbuff, menuitem->showvalue / 127 + 1);
 					}
 					else
 					{
-						if (smk_next(smk, SMK_FULL_DECODE) == SMK_LAST)
+						putrow(menuitem->item.smkvideo->smks->smkid[i].posx,
+								menuitem->item.smkvideo->smks->smkid[i].posy,
+								w, h, vidbuff);
+					}
+				}
+				if (scrollportrait_menu)
+				{
+					if (menuitem->dialogbin_smk_flags[i] & DIALOGBIN_SMKFLAGS_ADDED_UNPACKALLFRAMES)
+					{
+						if (menuitem->dialogbin_smk_flags[i] & DIALOGBIN_SMKFLAGS_ADDED_UNPACKREADY)
 						{
-							menuitem->dialogbin_smk_flags[i] |= DIALOGBIN_SMKFLAGS_ADDED_UNPACKREADY;
-							if (!(menuitem->dialogbin_smk_flags[i] & DIALOGBIN_SMKFLAGS_LOOPANIMATION))
+							if (smk_next(smk, SMK_SKIP_DECODE) == SMK_DONE)
+								smk_first(smk, SMK_SKIP_DECODE);
+						}
+						else
+						{
+							if (smk_next(smk, SMK_FULL_DECODE) == SMK_LAST)
 							{
-								menuitem->dialogbin_smk_flags[i] |= DIALOGBIN_SMKFLAGS_NODRAW;
+								menuitem->dialogbin_smk_flags[i] |= DIALOGBIN_SMKFLAGS_ADDED_UNPACKREADY;
+								if (!(menuitem->dialogbin_smk_flags[i] & DIALOGBIN_SMKFLAGS_LOOPANIMATION))
+								{
+									menuitem->dialogbin_smk_flags[i] |= DIALOGBIN_SMKFLAGS_NODRAW;
+								}
 							}
 						}
 					}
+					else
+						if (smk_next(smk, SMK_FULL_DECODE) == SMK_DONE)
+						{
+							if (menuitem->dialogbin_smk_flags[i] & DIALOGBIN_SMKFLAGS_LOOPANIMATION)
+								smk_first(smk, SMK_FULL_DECODE);
+							else
+								menuitem->dialogbin_smk_flags[i] |= DIALOGBIN_SMKFLAGS_NODRAW;
+						}
 				}
-				else
-					if (smk_next(smk, SMK_FULL_DECODE) == SMK_DONE)
-					{
-						if (menuitem->dialogbin_smk_flags[i] & DIALOGBIN_SMKFLAGS_LOOPANIMATION)
-							smk_first(smk, SMK_FULL_DECODE);
-						else
-							menuitem->dialogbin_smk_flags[i] |= DIALOGBIN_SMKFLAGS_NODRAW;
-					}
-			}
 			}
 		}
+	}
 	drawsmkbuttonitem(allmenus, itemnr, menuitem->item.smkvideo->smkbutton,
 		menuitem->item.smkvideo->smkbuttonxpos,
 		menuitem->item.smkvideo->smkbuttonypos);

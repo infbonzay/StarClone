@@ -50,24 +50,6 @@ void keyscroll(void)
 	*/
 }
 //==================================
-void keyup(void)
-{
-	do {
-	} while (!keyactive);
-}
-//===================================================
-void keydown(void)
-{
-	do {
-	} while (keyactive);
-}
-//====================================
-void pausekey(void)
-{
-	keydown();
-	keyup();
-}
-//==================================
 int readkey(void)
 {
 	static int timeoldkey = 0;
@@ -81,14 +63,6 @@ int readkey(void)
 		}
 	}
 	return(a);
-}
-//====================================
-int strcmpw(char *a, char *b)
-{
-	int i, l = strlen(b);
-	for (i = 1;i <= l;i++)
-		if (*a++ != *b++) return(0);
-	return(1);
 }
 //====================================
 void keyhandler(void)
