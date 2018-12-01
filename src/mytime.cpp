@@ -44,7 +44,7 @@ unsigned char timewaitticks[10] =
 };
 //====================================================================
 #ifdef UNDERLINUX
-#include <sys/time.h>
+#include <time.h>
 TIMER_TICK TIMER::gettimeticks(void)
 {
 	struct timespec ticks;

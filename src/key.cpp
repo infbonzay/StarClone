@@ -1,37 +1,17 @@
 
-#include <string.h>
-
-#include "load.h"
-
-#include "auxil.h"
-#include "doodad.h"
-#include "gr.h"
-#include "vars.h"
-#include "gener.h"
-#include "mytime.h"
-#include "objs.h"
-#include "gamemenu.h"
-#include "maps.h"
-#include "fog.h"
-#include "mage.h"
-#include "tempobj.h"
-#include "messages.h"
 #include "market.h"
-#include "weapons.h"
-#include "action.h"
-#include "images.h"
-#include "portrait.h"
-#include "audio.h"
+#include "tempobj.h"
+#include "objs.h"
+#include "gener.h"
+#include "vars.h"
+#include "man.h"
+#include "Controller.h"
 #include "key.h"
 
 #ifdef WITHSDL
-#include "sdl/grsdl.h"
 #include "sdl/keysdl.h"
 #endif
-#ifdef UNDERDOS
-#include "dos/handlers.h"
-#include "dos/keydos.h"
-#endif
+
 
 #define	 TIMEFORKEY	 4
 #define	 KEYSLAY	 2
@@ -56,19 +36,16 @@ void keyhandler(void)
 	OBJ *o = NULL;
 	if (SelectedUnits.Count())
 		o = (OBJ *)SelectedUnits.GetElem(0, NULL);
-	if (keyactive == F12)
-//	if (KEYPRESS(F12))
+	if (mainController.KeyActive == F12)
 	{
-		//		logend();
 		menustatus = EXITGAME;
 		return;
 	}
-	if (keyactive == F11)
-//	if (KEYPRESS(F11))
+	if (mainController.KeyActive == F11)
 	{
 		SHOWCELLS = 1 - SHOWCELLS;
 	}
-	if (keyactive == NUMB1KEY)
+	if (mainController.KeyActive == NUMB1KEY)
 	{
 		for (int g = 0;g < PLAYEDPLAYERS;g++)
 			deselectallobj(g);
@@ -82,11 +59,11 @@ void keyhandler(void)
 		MAPREGENERATIONBIT = 1;
 		MAPUNITSREGENERATIONBIT = 1;
 	}
-	/*	  if (keyactive==F1)
+	/*	  if (mainController.KeyActive==F1)
 		{
 			testmenu();
 		}
-		if (keyactive==F2)
+		if (mainController.KeyActive==F2)
 		{
 			for (int i=0;i<MaxObjects;i++)
 			{
@@ -94,7 +71,7 @@ void keyhandler(void)
 					dieobj(objects[i]);
 			}
 		}
-		if (keyactive==F2)
+		if (mainController.KeyActive==F2)
 		{
 	//		WaitingPlayersMenu(0x0fff);
 			showedmenu.prepareforshowmenu(&WaitingPlayersMenu,0xffff);
@@ -102,14 +79,14 @@ void keyhandler(void)
 	//																				0	f	 f	  f
 		}
 	*/
-	if (keyactive == F5)
+	if (mainController.KeyActive == F5)
 	{
 		if (o)
 		{
 			dieobj(o);
 		}
 	}
-	if (keyactive == F6)
+	if (mainController.KeyActive == F6)
 	{
 		if (o)
 		{
@@ -117,7 +94,7 @@ void keyhandler(void)
 		}
 	}
 #endif
-	if (keyactive == F10)
+	if (mainController.KeyActive == F10)
 	{
 		f10_menu |= GAMEBUTTON_KEYPRESS;
 		f10_menu &= ~GAMEBUTTON_KEYRELEASE;
@@ -128,7 +105,7 @@ void keyhandler(void)
 			f10_menu &= ~GAMEBUTTON_KEYPRESS;
 			f10_menu |= GAMEBUTTON_KEYRELEASE;
 		}
-	if (keyactive == TABKEY)
+	if (mainController.KeyActive == TABKEY)
 	{
 		terr_menu |= GAMEBUTTON_KEYPRESS;
 		terr_menu &= ~GAMEBUTTON_KEYRELEASE;
@@ -139,7 +116,7 @@ void keyhandler(void)
 			terr_menu &= ~GAMEBUTTON_KEYPRESS;
 			terr_menu |= GAMEBUTTON_KEYRELEASE;
 		}
-	if (MENUACTIVE == 0 && (keyactive == ENTERKEY || keyactive == ENTERKEY2))
+	if (MENUACTIVE == 0 && (mainController.KeyActive == ENTERKEY || mainController.KeyActive == ENTERKEY2))
 	{
 		showedmenu.prepareforshowmenu(&chatboxmenu, NULL);
 	}

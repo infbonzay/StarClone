@@ -4,10 +4,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#ifdef WITHSDL
-#include "sdl/grsdl.h"
-#endif
-
 #include <grplib/gr8.h>
 #include "mpqwrapper.h"
 #include "maps.h"
@@ -1421,7 +1417,7 @@ int load_starmap(const char *mapfile, char *fname, struct mapinfo *info, GAMECON
 
 	palchange(info->palette, gameconf.videoconf.gamma, gameconf.videoconf.saturate);
 	if (!(gameconf.grmode.flags & DISPLAYFLAGS_EMULATIONMODE))
-		wscreenon();
+		mainController.UpdateScreen();
 	if (loadstaticsmk())
 	{
 		//		  gameend("Problem with loading basic smk files");

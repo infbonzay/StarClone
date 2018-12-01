@@ -66,10 +66,10 @@ void putrow(int x,int y,int sizex,int sizey,unsigned char *buff);
 void putrowwithtable(int x,int y,int sizex,int sizey,unsigned char *buff,char *table);
 void putrow2x2(int x,int y,int sizex,int sizey,unsigned char *buff);
 void putrow2x1(int x,int y,int sizex,int sizey,unsigned char *buff);
-void palettegamma(char *palette,const char *origpalette,int factor);//factor -50 +50
-void palettemono(char *palette,const char *origpalette,int factor);//factor 0-100
-void pal3to4(char *pal4,const char *pal3);
-void pal4to3(char *pal3,const char *pal4);
+void palettegamma(char *palette,char *origpalette,int factor);//factor -50 +50
+void palettemono(char *palette,char *origpalette,int factor);//factor 0-100
+void pal3to4(char *pal4,char *pal3);
+void pal4to3(char *pal3,char *pal4);
 void ConvertColorsToNewPalette(unsigned char *pictpal,unsigned char *newpal,unsigned char *conversionarray,int palettesize);
 void putgrp_nopacked2(int x,int y,int onlyx,int onlyy,GRPFILE *grp,int pictnr);
 void drawmonoifpaused(void);

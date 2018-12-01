@@ -342,9 +342,9 @@ void MenuAppearDrawCycle(MENUAPPEAR *items, MENUSTR *staticmenu, TICKCOUNTER *ti
 		}
 		if (staticmenu)
 			checkanddrawmenu(staticmenu, ITEMNOONEACTIVE, ITEM_NOSAVELOADUNDER);
-		eventwindowloop();
+		mainController.EventsLoop();
 		highMouse->DrawMouse();
-		wscreenon();
+		mainController.UpdateScreen();
 		restorescreen(savedscreen);
 		//calculate remain time to sleep (try to sleep MAXWAITMENUAPPEAR 'minus' time of draw entire one cycle)
 		deltatime = MAXWAITMENUAPPEAR - mytimer.GetDeltaCounter(timer) / 1000;
@@ -471,7 +471,7 @@ int campaignselect(void)
 	fntadr[22] = fntadr[12];
 	palchange(pal, gameconf.videoconf.gamma, gameconf.videoconf.saturate);
 	if (!(gameconf.grmode.flags & DISPLAYFLAGS_EMULATIONMODE))
-		wscreenon();
+		mainController.UpdateScreen();
 	menutranspcolors = (char *)wmalloc(2 * 256 * 256);
 	LoadTransPal(makefilename(GLUEPAL_NAME, GLUEPAL_OFFSET, CAMPAIGN_STR[0], CAMPAIGN_STR[1], TRANS25_STR),
 		backgnd.GetRawPal768(), menutranspcolors, 0.25f);
@@ -653,7 +653,7 @@ int xcampaignselect(void)
 	fntadr[22] = fntadr[12];
 	palchange(pal, gameconf.videoconf.gamma, gameconf.videoconf.saturate);
 	if (!(gameconf.grmode.flags & DISPLAYFLAGS_EMULATIONMODE))
-		wscreenon();
+		mainController.UpdateScreen();
 	menutranspcolors = (char *)wmalloc(2 * 256 * 256);
 	LoadTransPal(makefilename(GLUEPAL_NAME, GLUEPAL_OFFSET, CAMPAIGN_STR[0], CAMPAIGN_STR[1], TRANS25_STR),
 		backgnd.GetRawPal768(), menutranspcolors, 0.25f);
@@ -831,7 +831,7 @@ int glu_loadgame(void)
 	//	  backgnd.PutPcx(DELTASCREENX,DELTASCREENY2,PCX_EMPTYCOLOR1);
 	palchange(pal, gameconf.videoconf.gamma, gameconf.videoconf.saturate);
 	if (!(gameconf.grmode.flags & DISPLAYFLAGS_EMULATIONMODE))
-		wscreenon();
+		mainController.UpdateScreen();
 	menutranspcolors = (char *)wmalloc(2 * 256 * 256);
 	LoadTransPal(makefilename(GLUEPAL_NAME, GLUEPAL_OFFSET, SINGLEGAME_STR[0], SINGLEGAME_STR[1], TRANS25_STR),
 		backgnd.GetRawPal768(), menutranspcolors, 0.25f);
@@ -953,7 +953,7 @@ int glu_loadreplay(void)
 	//	  backgnd.PutPcx(DELTASCREENX,DELTASCREENY2,PCX_EMPTYCOLOR1);
 	palchange(pal, gameconf.videoconf.gamma, gameconf.videoconf.saturate);
 	if (!(gameconf.grmode.flags & DISPLAYFLAGS_EMULATIONMODE))
-		wscreenon();
+		mainController.UpdateScreen();
 	menutranspcolors = (char *)wmalloc(2 * 256 * 256);
 	LoadTransPal(makefilename(GLUEPAL_NAME, GLUEPAL_OFFSET, SINGLEGAME_STR[0], SINGLEGAME_STR[1], TRANS25_STR),
 		backgnd.GetRawPal768(), menutranspcolors, 0.25f);
@@ -1160,7 +1160,7 @@ int glu_briefing(int race, int networksingle, struct mapinfo *info, char *prefix
 	//	  backgnd.PutPcx(DELTASCREENX,DELTASCREENY2,PCX_EMPTYCOLOR1);
 	palchange(pal, gameconf.videoconf.gamma, gameconf.videoconf.saturate);
 	if (!(gameconf.grmode.flags & DISPLAYFLAGS_EMULATIONMODE))
-		wscreenon();
+		mainController.UpdateScreen();
 	menutranspcolors = (char *)wmalloc(2 * 256 * 256);
 	LoadTransPal(makefilename(GLUEPAL_NAME, GLUEPAL_OFFSET, 'R', RACE_CHAR[race], TRANS25_STR),
 		backgnd.GetRawPal768(), menutranspcolors, 0.25f);
@@ -1557,7 +1557,7 @@ void glu_score(struct mapinfo *info)
 	//	  backgnd.PutPcx(DELTASCREENX,DELTASCREENY2,PCX_EMPTYCOLOR1);
 	palchange(pal, gameconf.videoconf.gamma, gameconf.videoconf.saturate);
 	if (!(gameconf.grmode.flags & DISPLAYFLAGS_EMULATIONMODE))
-		wscreenon();
+		mainController.UpdateScreen();
 	menutranspcolors = (char *)wmalloc(2 * 256 * 256);
 	LoadTransPal(makefilename(GLUEPAL_NAME, GLUEPAL_OFFSET, RACE_CHAR[race], LOSEWIN_STR[losewin], TRANS25_STR),
 		backgnd.GetRawPal768(), menutranspcolors, 0.25f);
@@ -1744,7 +1744,7 @@ int mainmenu(void)
 	fntadr[22] = fntadr[12];
 	palchange(newpal, gameconf.videoconf.gamma, gameconf.videoconf.saturate);
 	if (!(gameconf.grmode.flags & DISPLAYFLAGS_EMULATIONMODE))
-		wscreenon();
+		mainController.UpdateScreen();
 	highMouse->LoadOneCursor(makefilename(GLUEPAL_NAME, GLUEPAL_OFFSET, MAINMENU_STR[0], MAINMENU_STR[1], ARROW_STR), NORMALMOUSE);
 	mytimer.SetMyTimerFunc(&mainmenutimer, NULL);
 	highMouse->SetRestrictCoords(MOUSEMODE1);
@@ -1901,7 +1901,7 @@ int glu_conn(void)
 	//	  backgnd.PutPcx(DELTASCREENX,DELTASCREENY2,PCX_EMPTYCOLOR1);
 	palchange(pal, gameconf.videoconf.gamma, gameconf.videoconf.saturate);
 	if (!(gameconf.grmode.flags & DISPLAYFLAGS_EMULATIONMODE))
-		wscreenon();
+		mainController.UpdateScreen();
 	menutranspcolors = (char *)wmalloc(2 * 256 * 256);
 	LoadTransPal(makefilename(GLUEPAL_NAME, GLUEPAL_OFFSET, SINGLEGAME_STR[0], SINGLEGAME_STR[1], TRANS25_STR),
 		backgnd.GetRawPal768(), menutranspcolors, 0.25f);
@@ -2120,7 +2120,7 @@ int glu_join(FORCE_SLOTS *fslots)
 	//	  backgnd.PutPcx(DELTASCREENX,DELTASCREENY2,PCX_EMPTYCOLOR1);
 	palchange(pal, gameconf.videoconf.gamma, gameconf.videoconf.saturate);
 	if (!(gameconf.grmode.flags & DISPLAYFLAGS_EMULATIONMODE))
-		wscreenon();
+		mainController.UpdateScreen();
 	menutranspcolors = (char *)wmalloc(2 * 256 * 256);
 	LoadTransPal(makefilename(GLUEPAL_NAME, GLUEPAL_OFFSET, SINGLEGAME_STR[0], SINGLEGAME_STR[1], TRANS25_STR),
 		backgnd.GetRawPal768(), menutranspcolors, 0.25f);
@@ -2170,7 +2170,7 @@ int glu_join(FORCE_SLOTS *fslots)
 	highMouse->InstallMoveEvent(&mymousemoveevent);
 
 	MENUFIRSTDATA menushow[4]{ { 0,MENUAPPEAR_FROMLEFT, 0 },{ 1, MENUAPPEAR_FROMRIGHT,0 }, { 2,MENUAPPEAR_FROMBOTTOM, 0 },{ 3, MENUAPPEAR_FROMRIGHT,0 } };
-	
+
 /*	MENUFIRSTDATA menushow[4] = {
 				{.elemid = 0,.appearposition = MENUAPPEAR_FROMLEFT,.disabled = 0},
 				{.elemid = 1,.appearposition = MENUAPPEAR_FROMRIGHT,.disabled = 0} ,
@@ -2342,7 +2342,7 @@ int glu_login(void)
 	//	  backgnd.PutPcx(DELTASCREENX,DELTASCREENY2,PCX_EMPTYCOLOR1);
 	palchange(pal, gameconf.videoconf.gamma, gameconf.videoconf.saturate);
 	if (!(gameconf.grmode.flags & DISPLAYFLAGS_EMULATIONMODE))
-		wscreenon();
+		mainController.UpdateScreen();
 	menutranspcolors = (char *)wmalloc(2 * 256 * 256);
 	LoadTransPal(makefilename(GLUEPAL_NAME, GLUEPAL_OFFSET, SINGLEGAME_STR[0], SINGLEGAME_STR[1], TRANS25_STR),
 		backgnd.GetRawPal768(), menutranspcolors, 0.25f);
@@ -3019,7 +3019,7 @@ int selectmapmenu(void)
 	//	  backgnd.PutPcx(DELTASCREENX,DELTASCREENY2,PCX_EMPTYCOLOR1);
 	palchange(pal, gameconf.videoconf.gamma, gameconf.videoconf.saturate);
 	if (!(gameconf.grmode.flags & DISPLAYFLAGS_EMULATIONMODE))
-		wscreenon();
+		mainController.UpdateScreen();
 	menutranspcolors = (char *)wmalloc(2 * 256 * 256);
 	LoadTransPal(makefilename(GLUEPAL_NAME, GLUEPAL_OFFSET, SINGLEGAME_STR[0], SINGLEGAME_STR[1], TRANS25_STR),
 		backgnd.GetRawPal768(), menutranspcolors, 0.25f);
@@ -3340,7 +3340,7 @@ int glu_creat(FORCE_SLOTS *fslots)
 	//	  backgnd.PutPcx(DELTASCREENX,DELTASCREENY2,PCX_EMPTYCOLOR1);
 	palchange(pal, gameconf.videoconf.gamma, gameconf.videoconf.saturate);
 	if (!(gameconf.grmode.flags & DISPLAYFLAGS_EMULATIONMODE))
-		wscreenon();
+		mainController.UpdateScreen();
 	menutranspcolors = (char *)wmalloc(2 * 256 * 256);
 	LoadTransPal(makefilename(GLUEPAL_NAME, GLUEPAL_OFFSET, SINGLEGAME_STR[0], SINGLEGAME_STR[1], TRANS25_STR),
 		backgnd.GetRawPal768(), menutranspcolors, 0.25f);
@@ -3855,7 +3855,7 @@ int glu_chat(int masterjoin, int playernr, FORCE_SLOTS *fslots)
 	//	  backgnd.PutPcx(DELTASCREENX,DELTASCREENY2,PCX_EMPTYCOLOR1);
 	palchange(pal, gameconf.videoconf.gamma, gameconf.videoconf.saturate);
 	if (!(gameconf.grmode.flags & DISPLAYFLAGS_EMULATIONMODE))
-		wscreenon();
+		mainController.UpdateScreen();
 	menutranspcolors = (char *)wmalloc(2 * 256 * 256);
 	LoadTransPal(makefilename(GLUEPAL_NAME, GLUEPAL_OFFSET, SINGLEGAME_STR[0], SINGLEGAME_STR[1], TRANS25_STR),
 		backgnd.GetRawPal768(), menutranspcolors, 0.25f);
@@ -4450,7 +4450,7 @@ void titlerefresh(void *param1, int param2)
 		checkanddrawmenu(dialog, -2, ITEM_RESTOREANDFREE);
 		palchange(newpal, gameconf.videoconf.gamma, gameconf.videoconf.saturate);
 		if (!(gameconf.grmode.flags & DISPLAYFLAGS_EMULATIONMODE))
-			wscreenon();
+			mainController.UpdateScreen();
 	}
 	else
 	{
@@ -4467,9 +4467,9 @@ void titlerefresh(void *param1, int param2)
 				prev_tick = tick_timer;
 				dialog->menu[3].dialogbin_flags ^= DIALOGBIN_FLAGS_ITEMVISIBLED;
 				checkanddrawmenu(dialog, -2, ITEM_RESTOREANDFREE);
-				//		wscreenonregion(dialog->menu[3].hotdeltax,dialog->menu[3].hotdeltay,
+				//		mainController.UpdateScreenregion(dialog->menu[3].hotdeltax,dialog->menu[3].hotdeltay,
 				//					dialog->menu[3].hotxsize,dialog->menu[3].hotysize);
-				wscreenon();
+				mainController.UpdateScreen();
 			}
 		}
 	}
@@ -5003,7 +5003,7 @@ int DownloadMpqMenu(int mpqcfgresult)
 	fntadr[22] = fntadr[12];
 	palchange(newpal, gameconf.videoconf.gamma, gameconf.videoconf.saturate);
 	if (!(gameconf.grmode.flags & DISPLAYFLAGS_EMULATIONMODE))
-		wscreenon();
+		mainController.UpdateScreen();
 	highMouse->LoadOneCursor(makefilename(GLUEPAL_NAME, GLUEPAL_OFFSET, MAINMENU_STR[0], MAINMENU_STR[1], ARROW_STR), NORMALMOUSE);
 	mytimer.SetMyTimerFunc(&mainmenutimer, NULL);
 	highMouse->SetRestrictCoords(MOUSEMODE1);
@@ -5648,13 +5648,13 @@ int audioopt(MENUDRAW *menudraw, MENUPARAMS *menuparams)
 	return(0);
 }
 //==========================================
-void palchange(const char *pal, int gamma, int saturate)
+void palchange(char *pal, int gamma, int saturate)
 {
 	char newpal[256 * 4];
 	memcpy(newpal, pal, 256 * 4);
 	palettegamma(newpal, pal, gamma - MAXGAMMA / 2);
 	palettemono(newpal, newpal, saturate);
-	activatepalette(newpal);
+	mainController.ApplyPalette((unsigned char *)newpal);
 	//	  DEBUGMESSCR("gamma=%d saturate=%d\n",gamma,saturate);
 }
 //==========================================
@@ -5701,11 +5701,12 @@ int videoopt(MENUDRAW *menudraw, MENUPARAMS *menuparams)
 		gameconf.videoconf.visiblemap = getcheckboxstate(menudraw->menutodraw, 16);
 		if ((tempconf.grmode.flags & DISPLAYFLAGS_FULLSCREENMODE) != (gameconf.grmode.flags & DISPLAYFLAGS_FULLSCREENMODE))
 		{
-			switch (changemode(gameconf.grmode.x,
-				gameconf.grmode.y,
-				gameconf.grmode.s,
-				gameconf.grmode.flags & DISPLAYFLAGS_FULLSCREENMODE,
-				map.palette))
+			int result = mainController.ModifyVideoMode(gameconf.grmode.x,
+														gameconf.grmode.y,
+														gameconf.grmode.s,
+														gameconf.grmode.flags & DISPLAYFLAGS_FULLSCREENMODE,
+														(unsigned char *)map.palette);
+			switch (result)
 			{
 			case 0: //something wrong
 			case 1:

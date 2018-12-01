@@ -10,14 +10,7 @@
 #include "wmem.h"
 #include "gr.h"
 #include "gener.h"
-
-#ifdef WITHSDL
-#include "sdl/grsdl.h"
-#endif
-#ifdef UNDERDOS
-#include "dos/gr8dos.h"
-#include "dos/handlers.h"
-#endif
+#include "Controller.h"
 
 #include <grplib/grp.h>
 #include <grplib/gr8.h>
@@ -169,11 +162,10 @@ int setmode(int x, int y, int bpp, int fullscreen)
 	DELTASCREENY = gameconf.grmode.y - 480;
 	DELTASCREENY2 = (gameconf.grmode.y - 480) / 2;
 
-	a = detectmode(x, y, bpp, fullscreen);
+	a = mainController.QueryVideoMode(x, y, bpp, fullscreen);
 
 	if (a)			//video mode not set if return =0
 	{
-		SetPitchAndChunk();
 		highMouse->PosX = 0;
 		highMouse->PosY = 0;
 	}
@@ -348,7 +340,7 @@ void putrow2x1(int x, int y, int sizex, int sizey, unsigned char *buff)
 	}
 }
 /*==========================*/
-void palettegamma(char *palette, const char *origpalette, int factor)		// palette 256*4 bytes,factor -50 +49
+void palettegamma(char *palette,char *origpalette, int factor)		// palette 256*4 bytes,factor -50 +49
 {
 	int i, r, g, b, newr, newg, newb;
 
@@ -384,7 +376,7 @@ void palettegamma(char *palette, const char *origpalette, int factor)		// palett
 	}
 }
 //==========================
-void palettemono(char *palette, const char *origpalette, int factor)		// palette 256*4 bytes,factor 0 - 99
+void palettemono(char *palette,char *origpalette, int factor)		// palette 256*4 bytes,factor 0 - 99
 {
 	int i, r, g, b, grey, newr, newg, newb;
 
@@ -416,7 +408,7 @@ void palettemono(char *palette, const char *origpalette, int factor)		// palette
 	}
 }
 //==========================
-void pal3to4(char *pal4, const char *pal3)
+void pal3to4(char *pal4, char *pal3)
 {
 	for (int i = 0;i < 256; i++)
 	{
@@ -427,7 +419,7 @@ void pal3to4(char *pal4, const char *pal3)
 	}
 }
 //==========================
-void pal4to3(char *pal3, const char *pal4)
+void pal4to3(char *pal3, char *pal4)
 {
 	for (int i = 0; i < 256; i++)
 	{

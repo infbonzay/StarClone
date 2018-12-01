@@ -3,10 +3,7 @@
 #if !defined(_GENER_W)
 #define _GENER_W
 
-#ifdef WITHSDL
-#include "sdl/grsdl.h"
-#endif
-
+#include "Controller.h"
 #include "commandqueue.h"
 #include "gamemenu.h"
 #include "netwplay.h"

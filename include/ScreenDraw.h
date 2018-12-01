@@ -1,8 +1,6 @@
 #ifndef _W_SCREENDRAW
 
-#ifdef WITHSDL
-	#include "sdl/grsdl.h"
-#endif
+#include "Controller.h"
 
 #define _W_SCREENDRAW
 
@@ -16,10 +14,10 @@ public:
 		void			CloneRegion(int toRegion,int fromRegion);
 		void			TopMessage(void);
 		void			UpdateScreen(void);
-		
+
 		inline void		SetRegions(int regions){ UsedRegions = regions; };
 		inline void		ClearRegions(void){ SetRegions(0); };
-		
+
 };
 
 #endif

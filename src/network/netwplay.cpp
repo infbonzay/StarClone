@@ -3,10 +3,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#ifdef WITHSDL
-#include "sdl/grsdl.h"
-#endif
-
 #include "auxil.h"
 #include "debug.h"
 #include "mytime.h"
@@ -426,7 +422,7 @@ void NETW_PLAY::Next_CurrentPacketTick(void)
 int NETW_PLAY::Check_ReceiveFromPlayers(void)
 {
 	//	  DEBUGMESSCR("curticknr=%d sendtick=%d receivtick=%d,infopl=%d bitspl=%d\n",
-	//			curticknr,networksendtick,networkreceivetick,	 
+	//			curticknr,networksendtick,networkreceivetick,
 	//			tick_t[curticknr].infofromplayers,playersconn.bitsnetwplayers);
 	return(tick_t[curticknr].infofromplayers == playersconn.bitsnetwplayers);
 }
@@ -434,7 +430,7 @@ int NETW_PLAY::Check_ReceiveFromPlayers(void)
 int NETW_PLAY::Check_ReceiveFromServer(void)
 {
 	//	  DEBUGMESSCR("curticknr=%d sendtick=%d receivtick=%d,infopl=%d bitspl=%d\n",
-	//			curticknr,networksendtick,networkreceivetick,	 
+	//			curticknr,networksendtick,networkreceivetick,
 	//			tick_t[curticknr].infofromplayers,playersconn.bitsnetwplayers);
 	return(tick_t[curticknr].infofromplayers == ((1 << SERVERGAMER) | (1 << NUMBGAMER)));
 }

@@ -1,4 +1,3 @@
-#include "grsdl.h"
 #include "mousesdl.h"
 
 //==========================

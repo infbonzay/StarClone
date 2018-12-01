@@ -554,7 +554,7 @@ void unloadpal(void)
 	}
 }
 //==============================
-int loadpal(int tileset, char *palette4)
+int loadpal(int tileset,char *palette4)
 {
 	int s, k;
 	char tablforunit[256];

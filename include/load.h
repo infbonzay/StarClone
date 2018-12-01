@@ -26,7 +26,7 @@ void unloadpcxicons(void);
 void loadallfonts(void);
 void unloadallfonts(void);
 
-int	 loadpal(int tileset,char *palette4);
+int	 loadpal(int tileset, char *palette4);
 void unloadpal(void);
 
 void loadtexturegrp(int images_texture_id);
@@ -71,7 +71,7 @@ int	 CheckForCheats(char *txt1);
 
 
 //=======================================
-extern char				shield_pos[]; 
+extern char				shield_pos[];
 extern char				mineral_pos[];
 extern char				gas_pos[];
 extern void*			imagesreftogrpdata[];

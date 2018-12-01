@@ -24,11 +24,7 @@
 #include "vars.h"
 
 #ifdef	WITHSDL
-#include "sdl/grsdl.h"
 #include "sdl/mousesdl.h"
-#endif
-#ifdef UNDERDOS
-#include "dos/handlers.h"
 #endif
 //=============================
 unsigned char First_Unit_Build[3][2] = {
@@ -237,8 +233,8 @@ char	EXPANSIONSET = 1;
 void inivars(void)
 {
 	GAME = 0;
-	keyactive = 0;
-	lastkey = 0;
+	mainController.KeyActive = 0;
+	mainController.LastKey = 0;
 }
 //================================
 void addvars(void)

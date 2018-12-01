@@ -29,13 +29,6 @@
 #include "stringfiles.h"
 #include "scripts.h"
 
-#ifdef WITHSDL
-#include "sdl/grsdl.h"
-#endif
-#ifdef UNDERDOS
-#include "dos/gr8dos.h"
-#include "dos/handlers.h"
-#endif
 //=================================
 #ifdef UNDERLINUX
 #include <ctype.h>

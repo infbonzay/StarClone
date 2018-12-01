@@ -1,5 +1,3 @@
-#include <SDL/SDL.h>
-#include <SDL/SDL_mixer.h>
 
 #include "mpqwrapper.h"
 #include "audiolowlevel.h"
@@ -7,6 +5,7 @@
 
 #ifdef WITHSDL
 	#include <SDL/SDL.h>
+	#include <SDL/SDL_mixer.h>
 #endif
 
 #define AUDIO_FREQ				22050

@@ -603,10 +603,9 @@ int drawmenu(MENUSTR *allmenus, int flags)
 	prevmenuonbar = menuonbar;
 	menuonbar = NOSELECTMENUBAR;
 	needredraw = 0;
-	//	highMouse->DoubleClick = false;
-	keyactive = 0;
-	eventwindowloop();
-	keybuffer.Flush();
+	mainController.KeyActive = 0;
+	mainController.EventsLoop();
+	mainController.KeysBuffer->Flush();
 	regmenu(allmenus->x, allmenus->y, allmenus, &getmouseonmenubar);//set menu hotcoord for mouse
 	scrollportrait_menu = scrollportrait;
 	clearscrollportrait();
@@ -621,12 +620,12 @@ int drawmenu(MENUSTR *allmenus, int flags)
 	{
 		highMouse->RefreshMouseType(map.MAPXGLOBAL, map.MAPYGLOBAL);
 		do {
-			eventwindowloop();
+			mainController.EventsLoop();
 			getmouseonitem(&activeitemchange, &activeitem);
-			keyrefresh();
+			mainController.KeyPressRefresh();
 			highMouse->SaveImageUnder();
 			highMouse->DrawMouse();
-			wscreenon();
+			mainController.UpdateScreen();
 			highMouse->LoadImageUnder();
 
 			selectedmenu = menukeys(allmenus, &redrawbar, &needredraw);
@@ -818,7 +817,7 @@ int showlistmenu(MENUSTR *allmenus)
 	prevmenuonbar = menuonbar;
 	selectedmenu = NOSELECTMENUBAR;
 	menuonbar = NOSELECTMENUBAR;
-	eventwindowloop();
+	mainController.EventsLoop();
 	regmenu(allmenus->x, allmenus->y, allmenus, &getmouseonmenubar);						//set menu hotcoord for mouse
 	saveunderitems(allmenus);
 	mymousemoveevent(highMouse->PosX, highMouse->PosY);
@@ -828,14 +827,14 @@ int showlistmenu(MENUSTR *allmenus)
 	highMouse->RefreshMouseType(map.MAPXGLOBAL, map.MAPYGLOBAL);
 	do {
 		getmouseonitem(&activeitemchange, &activeitem);
-		eventwindowloop();
+		mainController.EventsLoop();
 		if (allmenus->prevmenu)
 			RunCallBackFuncs(allmenus->prevmenu);
 		//			if (allmenus->prevmenu->CallBackFunc)
 		//				(*allmenus->prevmenu->CallBackFunc)(allmenus->prevmenu,allmenus->prevmenu->somecallbackdata);
 		highMouse->SaveImageUnder();
 		highMouse->DrawMouse();
-		wscreenon();
+		mainController.UpdateScreen();
 		highMouse->LoadImageUnder();
 
 		allmenus->vars.BarChanges.bar = NOSELECTMENUBAR;
@@ -996,10 +995,10 @@ void drawmenuitem(MENUSTR *allmenus, int itemnr)
 int editboxaction(MENUSTR *allmenus)
 {
 	unsigned short keypressed;
-	if (!keybuffer.IsEmpty())
+	if (!mainController.KeysBuffer->IsEmpty())
 	{
 		//if keypressed and we have editbox add to edit string
-		keypressed = keybuffer.PopElem();
+		keypressed = mainController.KeysBuffer->PopElem();
 		if (allmenus->defaultbutton >= 0)
 		{
 			MENUPOS *curitem = &allmenus->menu[allmenus->defaultbutton];
@@ -1033,7 +1032,7 @@ int editboxaction(MENUSTR *allmenus)
 					break;
 				}
 				curitem->item.editbox->length = curlength;
-				keyactive = 0;
+				mainController.KeyActive = 0;
 				return(1);
 			}
 		}
@@ -1047,9 +1046,9 @@ int menukeys(MENUSTR *allmenus, int *pressed, int *needredraw)
 	int i = 0, tempkey, changelist = 0;
 	static int prevkey = 0;
 	*pressed = NOSELECTMENUBAR;
-	if (keyactive)
+	if (mainController.KeyActive)
 	{
-		if (keyactive == TABKEY) //need to parce all elements to need next active and decorated and responce to mouse&key events
+		if (mainController.KeyActive == TABKEY) //need to parce all elements to need next active and decorated and responce to mouse&key events
 		{
 			for (i = allmenus->defaultbutton + 1;i < allmenus->elements;i++)
 				if (!menuitem_ISDISABLED(allmenus, i) && menuitem_ISVISIBLED(allmenus, i))
@@ -1058,7 +1057,7 @@ int menukeys(MENUSTR *allmenus, int *pressed, int *needredraw)
 						setdefaultbutton(allmenus, i);
 						if (needredraw)
 							*needredraw = 1;
-						keyactive = 0;
+						mainController.KeyActive = 0;
 						return NOSELECTMENUBAR;
 					}
 			for (i = 0;i < allmenus->defaultbutton;i++)
@@ -1066,7 +1065,7 @@ int menukeys(MENUSTR *allmenus, int *pressed, int *needredraw)
 					if (allmenus->menu[i].dialogbin_flags&DIALOGBIN_FLAGS_KEYMOUSERESPONDEVENTS)
 					{
 						setdefaultbutton(allmenus, i);
-						keyactive = 0;
+						mainController.KeyActive = 0;
 						if (needredraw)
 							*needredraw = 1;
 						return NOSELECTMENUBAR;
@@ -1074,10 +1073,10 @@ int menukeys(MENUSTR *allmenus, int *pressed, int *needredraw)
 		}
 		if (((allmenus->defaultbutton >= 0 && allmenus->menu[allmenus->defaultbutton].itemtype != ISEDITBOX) ||
 			allmenus->defaultbutton < 0) ||
-			(allmenus->menu[allmenus->defaultbutton].itemtype == ISEDITBOX && keyactive == ESCAPEKEY))
+			(allmenus->menu[allmenus->defaultbutton].itemtype == ISEDITBOX && mainController.KeyActive == ESCAPEKEY))
 		{
-			prevkey = keyactive;
-			switch (keyactive)
+			prevkey = mainController.KeyActive;
+			switch (mainController.KeyActive)
 			{
 			case ENTERKEY:
 				if (allmenus->menu[allmenus->defaultbutton].itemtype == ISBUTTON ||
@@ -1116,7 +1115,7 @@ int menukeys(MENUSTR *allmenus, int *pressed, int *needredraw)
 						changelist = changelistbox_selectednr(allmenus, allmenus->defaultbutton, -1);
 						if (changelist)
 							*pressed = allmenus->defaultbutton;
-						keyactive = 0;
+						mainController.KeyActive = 0;
 					}
 				break;
 			case DOWNKEY:
@@ -1128,12 +1127,12 @@ int menukeys(MENUSTR *allmenus, int *pressed, int *needredraw)
 						changelist = changelistbox_selectednr(allmenus, allmenus->defaultbutton, +1);
 						if (changelist)
 							*pressed = allmenus->defaultbutton;
-						keyactive = 0;
+						mainController.KeyActive = 0;
 					}
 				break;
 			default:
 				for (i = 0;i < allmenus->elements;i++)
-					if (allmenus->menu[i].hotkey == keyactive)
+					if (allmenus->menu[i].hotkey == mainController.KeyActive)
 					{
 						if (menuitem_ISENABLED(allmenus, i) && menuitem_ISVISIBLED(allmenus, i))
 							*pressed = i;
@@ -3949,7 +3948,7 @@ void MENUDRAW::Init(void)
 void MENUDRAW::prepareforshowmenu(int(*menufunc)(MENUDRAW *menudraw, MENUPARAMS *menuparams), MENUPARAMS *params)
 {
 	MENUDRAW *prevdraw;
-	keyactive = 0;
+	mainController.KeyActive = 0;
 	if (activatedmenu)
 	{
 		prevdraw = (MENUDRAW *)wmalloc(sizeof(MENUDRAW));
@@ -3991,7 +3990,7 @@ void MENUDRAW::CloseMultiplesMenus(int nrofrecursivemenus)
 			}
 		}
 	}
-	keyactive = 0;
+	mainController.KeyActive = 0;
 }
 //==========================================
 void MENUDRAW::EndDrawMenu(void)
@@ -4056,7 +4055,7 @@ int drawmenu_ONETICK(MENUSTR *allmenus)
 
 	if (!(allmenus->mainmenuflags&DIALOGBIN_FLAGS_ENTERSEMAPHORE))
 	{
-		keybuffer.Flush();
+		mainController.KeysBuffer->Flush();
 		MENUACTIVE++;
 		allmenus->mainmenuflags |= DIALOGBIN_FLAGS_ENTERSEMAPHORE;
 		allmenus->vars.selectedmenu = NOSELECTMENUBAR;
@@ -4251,7 +4250,7 @@ int drawmenu_LASTTICK(MENUDRAW *menudraw)
 				//if we have parent of this menu, lets show parent menu
 				retmenu = showedmenu.ShowMenu();
 			}
-			keyactive = 0;
+			mainController.KeyActive = 0;
 		}
 	}
 	return(retmenu);

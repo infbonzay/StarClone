@@ -2,10 +2,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#ifdef WITHSDL
-#include "sdl/grsdl.h"
-#endif
-
 #include "CrossPlatform.h"
 #include "gener.h"
 #include "audio.h"

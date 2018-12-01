@@ -21,12 +21,7 @@
 #include "gr.h"
 #include "vars.h"
 #include "music.h"
-
-
-#ifdef WITHSDL
-#include "sdl/grsdl.h"
-#endif
-
+#include "Controller.h"
 #include "video.h"
 //==========================================
 //prev==0 show info from est
@@ -258,24 +253,24 @@ void ShowPreviewBuff(char *cmpbuf, int sizebuf, int esckeyaction)
 							}
 							palchange(pal, gameconf.videoconf.gamma, gameconf.videoconf.saturate);
 							if (!(gameconf.grmode.flags & DISPLAYFLAGS_EMULATIONMODE))
-								wscreenon();
+								mainController.UpdateScreen();
 							tick = mytimer.GetCurrentTimerTick();
-							keyactive = 0;
+							mainController.KeyActive = 0;
 							unpressmouse = 2;
-							eventwindowloop();//to clear all events
+							mainController.EventsLoop();//to clear all events
 							do {
 								if (highMouse->GetButtonStatus())
 									unpressmouse = 1;
 								else
 									if (unpressmouse != 2)
 										unpressmouse = 0;
-								eventwindowloop();
+								mainController.EventsLoop();
 								mytimer.CallTimer(MYTIMER_SINCHRONMODE);
 								deltatick = (mytimer.GetCurrentTimerTick() - tick) * 1000 / TICKS_RES;
-							} while (unpressmouse != 0 && !keyactive && deltatick < displaytime);
-							if (keyactive == ESCAPEKEY && esckeyaction)
+							} while (unpressmouse != 0 && !mainController.KeyActive && deltatick < displaytime);
+							if (mainController.KeyActive == ESCAPEKEY && esckeyaction)
 								goto exitshowtitles;
-							keyactive = 0;
+							mainController.KeyActive = 0;
 							break;
 						}//switch
 						break;
@@ -325,7 +320,7 @@ void FadeScreen(int fadespeed, char *pal, int typeoffade) //0-fadetoimage 1-fade
 				prevgamma = gamma;
 				palchange(pal, (int)gamma, gameconf.videoconf.saturate);
 				if (!(gameconf.grmode.flags & DISPLAYFLAGS_EMULATIONMODE))
-					wscreenon();
+					mainController.UpdateScreen();
 			}
 			deltatick = (mytimer.GetCurrentTimerTick() - tick) * 1000 / TICKS_RES;
 		} while (deltatick < fadespeed);
@@ -340,7 +335,7 @@ void FadeScreen(int fadespeed, char *pal, int typeoffade) //0-fadetoimage 1-fade
 				prevgamma = gamma;
 				palchange(pal, (int)gamma, gameconf.videoconf.saturate);
 				if (!(gameconf.grmode.flags & DISPLAYFLAGS_EMULATIONMODE))
-					wscreenon();
+					mainController.UpdateScreen();
 			}
 			deltatick = (mytimer.GetCurrentTimerTick() - tick) * 1000 / TICKS_RES;
 		} while (deltatick < fadespeed);
@@ -392,7 +387,7 @@ void PlayVideoSmk(const char *smkfile)
 	if (hmpq)
 	{
 		wclrscr(0);
-		wscreenon();
+		mainController.UpdateScreen();
 
 		DEBUGMESSCR("play video [%s]\n", smkfile);
 		smk = smk_open_file(hmpq, smkfile, SMK_MODE_MEMORY);//smk_mode_disk not work
@@ -430,9 +425,9 @@ void PlayVideoSmk(const char *smkfile)
 			firstframe = 1;
 			frame = 0;
 			prevtick = mytimer.GetCurrentTimerTick();
-			keyactive = 0;
+			mainController.KeyActive = 0;
 			unpressmouse = 2;
-			eventwindowloop();//to clear all events
+			mainController.EventsLoop();//to clear all events
 			do {
 				if (nextimage)
 				{
@@ -495,7 +490,7 @@ void PlayVideoSmk(const char *smkfile)
 				else
 					if (unpressmouse != 2)
 						unpressmouse = 0;
-				eventwindowloop();
+				mainController.EventsLoop();
 				mytimer.CallTimer(MYTIMER_SINCHRONMODE);
 				curtick = mytimer.GetCurrentTimerTick();
 				newframe = (curtick - prevtick) * 1000000 / TICKS_RES / timeshowoneframe;
@@ -509,18 +504,18 @@ void PlayVideoSmk(const char *smkfile)
 				}
 				if (palflag)
 				{
-					activatepalette256x3(smkpal);
+					mainController.ApplyPalette256x3(smkpal);
 					if (!(gameconf.grmode.flags & DISPLAYFLAGS_EMULATIONMODE))
-						wscreenonregion(xpos, ypos, w * 2, h);
+						mainController.UpdateScreenRegion(xpos, ypos, w * 2, h);
 				}
 				else
-					wscreenonregion(xpos, ypos, w * 2, h);
-			} while (!endsmk && !keyactive && unpressmouse != 0);
+					mainController.UpdateScreenRegion(xpos, ypos, w * 2, h);
+			} while (!endsmk && !mainController.KeyActive && unpressmouse != 0);
 			smk_close(smk);
 		}
 		StopMusic(MUSIC_STOP);
 		wclrscr(0);
-		wscreenon();
+		mainController.UpdateScreen();
 	}
 }
 //==========================================

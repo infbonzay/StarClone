@@ -34,15 +34,11 @@
 #include "weapons.h"
 #include "overlay.h"
 #include "diap.h"
+#include "Controller.h"
 
 #ifdef WITHSDL
-	   #include "sdl/grsdl.h"
 	   #include "sdl/keysdl.h"
 	   #include "sdl/mousesdl.h"
-#endif
-#ifdef UNDERDOS
-	   #include "dos/handlers.h"
-	   #include "dos/keydos.h"
 #endif
 
 //=============================================
@@ -184,9 +180,9 @@ void desenproperties(int *localprop, char *selectableicons)
 				for (j = 0;j < 3;j++)
 					if (localprop[i * 3 + j])
 					{
-						if (keyactive && mageprop[localprop[i * 3 + j]].keyfororder != 255)  //check for hotkey
+						if (mainController.KeyActive && mageprop[localprop[i * 3 + j]].keyfororder != 255)  //check for hotkey
 						{
-							if (mageprop[localprop[i * 3 + j]].keyfororder == KEYPRESSEDTABLE(rus, keyactive) - 1
+							if (mageprop[localprop[i * 3 + j]].keyfororder == KEYPRESSEDTABLE(rus, mainController.KeyActive) - 1
 								&&
 								selectableicons[i * 3 + j] != FORGRAY)
 							{

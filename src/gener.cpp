@@ -61,14 +61,10 @@
 #include "video.h"
 #include "iscript.h"
 #include "gener.h"
+#include "Controller.h"
 
 #ifdef WITHSDL
-#include "sdl/grsdl.h"
-#include "sdl/mousesdl.h"
-#endif
-#ifdef UNDERDOS
-#include "dos/gr8dos.h"
-#include "dos/handlers.h"
+	#include "sdl/mousesdl.h"
 #endif
 
 #include <stdint.h>
@@ -174,7 +170,7 @@ int main(int c, char **parm, char **env)
 			if (i == 2)
 				gameconf.grmode.flags |= DISPLAYFLAGS_EMULATIONMODE;
 			highMouse->SetPos(gameconf.grmode.x / 2, gameconf.grmode.y / 2);
-			if (installvectors())
+			if (mainController.Init())
 			{
 				gameend("Problem with install interrupts(may be timer interrupt)");
 			}
@@ -942,7 +938,7 @@ int gogame(struct mapinfo *info)
 	putfog();			//show fogofwar
 	drawMINIMAP();
 	showramka();
-	wscreenon();
+	mainController.UpdateScreen();
 	setmainscreenmouseevents();
 	//make minimap regeneration queue
 	gamecycle = 0;
@@ -967,7 +963,7 @@ int gogame(struct mapinfo *info)
 		screenDraw->ClearRegions();
 		needredesen = 0;
 		clearactionBITS();
-		eventwindowloop();
+		mainController.EventsLoop();
 
 
 		screenMapInfo->ScrollX = 0;
@@ -977,15 +973,14 @@ int gogame(struct mapinfo *info)
 			redesenscreen();
 		if (!PAUSEGAME && !PAUSEINTRIG)
 		{
-			keyrefresh();					//refresh array of keys
+			mainController.KeyPressRefresh();					//refresh array of keys
 			highMouse->RefreshMouseType(map.MAPXGLOBAL, map.MAPYGLOBAL);
 			mouseonkartaarea();
 		}
 		if (PAUSEINTRIG)
 		{
-			keyactive = 0;
-			lastkey = 0;
-			//highMouse->DoubleClick = false;
+			mainController.KeyActive = 0;
+			mainController.LastKey = 0;
 		}
 		timeid = mytimer.TimeIsCome(gameconf.speedconf.gamespeed);
 		if (PAUSEGAME)
@@ -1226,7 +1221,7 @@ int gogame(struct mapinfo *info)
 			highMouse->DestMouseOBJ = NULL;
 			highMouse->MouseType = NORMALMOUSE;
 			retmenu = showedmenu.ShowMenu();
-			keyactive = 0;
+			mainController.KeyActive = 0;
 			menustatus = ChangeMenuStatus(menustatus);
 			if (retmenu)
 			{
@@ -1283,9 +1278,9 @@ int gogame(struct mapinfo *info)
 			showedmenu.EndShowMenu();
 		}
 		//	DEBUGMESSCR("%d\n",MENUACTIVE);
-		if (needrefreshatend&scrnew)
+		if (mainController.RefreshAtEnd & scrnew)
 		{
-			needrefreshatend = 0;
+			mainController.RefreshAtEnd = 0;
 			scrnew = 0;
 		}
 		if (gamestatus != NOGAMESTATUS)
@@ -1484,8 +1479,8 @@ void gameend(const char *mes)
 	//	  unloadtexturegrp();
 	//	  Unload_SC_Images_List();
 	QuitGrpLib();
-	settextmode();
-	uninstallvectors();
+	mainController.QuitVideoMode();
+	mainController.DeInit();
 	UnLoadAllMpqs();
 	unloadcfg();
 	exit(0);

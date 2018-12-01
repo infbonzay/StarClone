@@ -1,14 +1,6 @@
 #include "starmap.h"
 #include "scrolltile.h"
 
-#ifdef WITHSDL
-#include "sdl/grsdl.h"
-#endif
-
-#ifdef UNDERDOS
-#include "dos/handlers.h"
-#endif
-
 //=================================
 void scrollpal(mapinfo *map)
 {

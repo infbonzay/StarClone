@@ -4,7 +4,6 @@
 #include <grplib/usegrp.h>
 
 #ifdef WITHSDL
-#		include "sdl/grsdl.h"
 #		include "sdl/keysdl.h"
 #		include "sdl/mousesdl.h"
 #endif

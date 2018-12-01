@@ -133,10 +133,10 @@ void ScreenDraw::UpdateScreen(void)
 		palchange(map.palette, gameconf.videoconf.gamma, gameconf.videoconf.saturate);
 		map.palettechanges = 0;
 		if (!(gameconf.grmode.flags & DISPLAYFLAGS_EMULATIONMODE))
-			wscreenonregions(UsedRegions, Regions);
+			mainController.UpdateScreenRegions(UsedRegions, Regions);
 	}
 	else
-		wscreenonregions(UsedRegions, Regions);
+		mainController.UpdateScreenRegions(UsedRegions, Regions);
 	//	  printf("totalimgs=%d drawedimgs=%d\n",totalimgs,drawedimgs);		//to check for leaks
 	//	  printf("windowactive=%d\n",gameconf.grmode.windowactive);
 }

@@ -26,14 +26,6 @@
 #include "walk.h"
 #include "maps.h"
 
-#ifdef WITHSDL
-#include "sdl/grsdl.h"
-#endif
-#ifdef UNDERDOS
-#include "dos/gr8dos.h"
-#include "dos/handlers.h"
-#endif
-
 struct mapinfo map;
 float factorx, factory;
 int sizemaprectx, sizemaprecty;

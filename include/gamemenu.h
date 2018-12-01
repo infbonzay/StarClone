@@ -321,7 +321,7 @@ int savegametofile(void);
 void loadgamefromfile(void);
 int	 savegametofile_do(void);
 
-void palchange(const char *pal,int gamma,int saturate);
+void palchange(char *pal,int gamma,int saturate);
 
 int	 glu_putmenu(MENUSTR *prevmenu,const char *dialogbinfile,char *errormessage,char *fonttable,GRPFILE *dlg,
 				int (*callbackfunc)(MENUSTR *,void *info),void *somecallbackdata,int sound);
