@@ -919,6 +919,8 @@ int RegenerateShield(OBJ *a)
 int RegenerateHealth(OBJ *a)
 {
 	int change = 0;
+	if (IsInvincibleUnit(a->SC_Unit))
+		return change;
 	if (IsRegenerate(a->SC_Unit))
 	{
 		if (a->health < GetUnitMaxHealth(a->SC_Unit))
