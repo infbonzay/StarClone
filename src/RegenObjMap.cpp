@@ -33,7 +33,6 @@ void RegenObjMap::OpenMapCycle(void)
 		NrRegenObjs = MaxObjects / FULLMAPREGENERATIONCYCLES + 1;
 		if (!NrRegenObjs)
 			NrRegenObjs++;
-		needclearmap = 0;
 		map.clearfog[NUMBGAMER] = 1;
 		clearopenseeKarta();	//clear map
 		UnitsMAPRefresh();

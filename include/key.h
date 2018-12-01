@@ -7,7 +7,6 @@
 
 //================================
 void keyscroll(void);
-int	 readkey(void);
 void keyhandler(void);
 
 extern uint8_t *keystatus;

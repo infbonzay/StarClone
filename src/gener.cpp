@@ -919,7 +919,6 @@ int gogame(struct mapinfo *info)
 	GAME = 1;
 	PAUSEGAME = 0;
 	PAUSEINTRIG = 0;
-	needclearmap = 0;
 	commandqueuetick = 0;
 	for (i = 0;i < PLAYEDPLAYERS;i++)
 		map.clearfog[i] = 1;
@@ -1029,7 +1028,6 @@ int gogame(struct mapinfo *info)
 			scrnew = 1;
 		if (scrnew && !retnet)
 		{
-			curentreadkey = readkey();	//get curent pressed key
 			keyhandler();		//analyze if some key action
 			karta_aria = (mousehotpos == MOUSEONMINIMAP);
 			select_aria = (mousehotpos == MOUSEONMAP);
@@ -1073,10 +1071,6 @@ int gogame(struct mapinfo *info)
 					allobj_dieheal();
 
 					allobjconstr();
-					if (MAPREGENERATIONBIT)
-					{
-						needclearmap = 1;
-					}
 					if (NEEDTOCHANGECREEPBIT)
 					{
 						RemoveAddOneCreep();

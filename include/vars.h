@@ -117,7 +117,6 @@ extern char		*grptexture;
 extern int		DELTASCREENX;
 extern int		DELTASCREENY,DELTASCREENY2;
 
-extern int		curentreadkey;
 extern int		maxlanshaftparts;
 extern int		changegoods;
 extern long		gamecycle;
@@ -182,7 +181,7 @@ extern int		NEEDTOMOVE1BIT;
 extern GRPFILE	*znakgrp,*grpicons,*creepgrp;
 extern GRPFILE	*grpminmineral[],*grpmingas[];
 extern char		twirep[];
-extern char		needclearmap,ifhaverescuableplayers;
+extern char		ifhaverescuableplayers;
 
 extern GRPFILE *grpwire1,*grpwire2,*grpwire3,*blinkgrp;
 

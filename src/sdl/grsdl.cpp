@@ -92,20 +92,8 @@ void uninstallvectors(void)
 //==========================
 void keyrefresh(void)
 {
-	//	  static int toggletofullscr=0;
 	keystatus = SDL_GetKeyState(NULL);
-	/*	  if (keystatus[SDLK_F4] == SDL_PRESSED && !toggletofullscr)
-		{
-			SDL_WM_ToggleFullScreen(sdlsurface);
-			setpalette((SDL_Color *)map.palette);
-		toggletofullscr = 1;
-		fullscreen = fullscreen^1;
-		}
-		if (keystatus[SDLK_F4] != SDL_PRESSED)
-		toggletofullscr = 0;
-	*/
 }
-//==========================
 //==========================
 int changemode(int x, int y, int bpp, int fullscreen, char *pal)
 {

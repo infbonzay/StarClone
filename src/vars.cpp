@@ -57,7 +57,6 @@ int		DELTASCREENX;
 int		DELTASCREENY, DELTASCREENY2;
 
 int		nextscenario;
-int		curentreadkey;
 int		changegoods = 1;
 long	gamecycle;
 int		helpgame;
@@ -131,7 +130,7 @@ int		MAPREGENERATIONBIT, MAPUNITSREGENERATIONBIT, NEEDTOCHANGEMANABIT, NEEDTOCHA
 GRPFILE *znakgrp, *grpicons, *creepgrp;
 GRPFILE *grpwire1, *grpwire2, *grpwire3, *blinkgrp;
 GRPFILE *grpminmineral[3], *grpmingas[3];
-char	needclearmap, ifhaverescuableplayers;
+char	ifhaverescuableplayers;
 int		magenrfrommageatr[MAXMAGEATR];
 OBJ		*cbuild;
 int		circl[10] = { 22,32,48,62,72,94,110,122,146,224 };

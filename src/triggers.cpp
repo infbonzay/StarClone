@@ -1624,6 +1624,7 @@ int TRG_RunAIScriptAtLocation(mapinfo *info, int aiscriptnr, int playernr, int p
 		pl = (aiscriptnr - TRG_AISCRIPT_TURNONSHAREDVISIONPLAYER0) >> 24;
 		CreateVision(info, playernr, pl, PLAYER_VISION);
 		bitsplayer = GetVisionBitsPlayer(NUMBGAMER);
+		map.clearfog[NUMBGAMER] = 1;
 		return(1);
 	case TRG_AISCRIPT_TURNOFFSHAREDVISIONPLAYER0:
 	case TRG_AISCRIPT_TURNOFFSHAREDVISIONPLAYER1:
@@ -1637,6 +1638,7 @@ int TRG_RunAIScriptAtLocation(mapinfo *info, int aiscriptnr, int playernr, int p
 		pl = (aiscriptnr - TRG_AISCRIPT_TURNOFFSHAREDVISIONPLAYER0) >> 24;
 		CreateVision(info, playernr, pl, PLAYER_NOVISION);
 		bitsplayer = GetVisionBitsPlayer(NUMBGAMER);
+		map.clearfog[NUMBGAMER] = 1;
 		return(1);
 	case TRG_AISCRIPT_FILLSILOWITHNUKE_TYPEB:
 		//			DEBUGMESSCR("fillsilowithnukes:aiscript=0x%04x\n",aiscriptnr);

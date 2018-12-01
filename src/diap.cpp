@@ -186,7 +186,7 @@ void desenproperties(int *localprop, char *selectableicons)
 					{
 						if (keyactive && mageprop[localprop[i * 3 + j]].keyfororder != 255)  //check for hotkey
 						{
-							if (mageprop[localprop[i * 3 + j]].keyfororder == KEYPRESSEDTABLE(rus, curentreadkey) - 1
+							if (mageprop[localprop[i * 3 + j]].keyfororder == KEYPRESSEDTABLE(rus, keyactive) - 1
 								&&
 								selectableicons[i * 3 + j] != FORGRAY)
 							{

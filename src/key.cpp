@@ -50,41 +50,25 @@ void keyscroll(void)
 	*/
 }
 //==================================
-int readkey(void)
-{
-	static int timeoldkey = 0;
-	int a = 0;
-	if (tick_timer > timeoldkey)
-	{
-		if (keyactive)
-		{
-			a = lastkey;
-			timeoldkey = tick_timer + KEYSLAY;
-		}
-	}
-	return(a);
-}
-//====================================
 void keyhandler(void)
 {
 #ifdef DEBUG
 	OBJ *o = NULL;
 	if (SelectedUnits.Count())
 		o = (OBJ *)SelectedUnits.GetElem(0, NULL);
-	if (KEYPRESS(F12))
+	if (keyactive == F12)
+//	if (KEYPRESS(F12))
 	{
 		//		logend();
 		menustatus = EXITGAME;
 		return;
 	}
-	if (KEYPRESS(F11))
+	if (keyactive == F11)
+//	if (KEYPRESS(F11))
 	{
 		SHOWCELLS = 1 - SHOWCELLS;
 	}
-	if (KEYPRESS(ALTKEY))
-	{
-	}
-	if (curentreadkey == NUMB1KEY)
+	if (keyactive == NUMB1KEY)
 	{
 		for (int g = 0;g < PLAYEDPLAYERS;g++)
 			deselectallobj(g);
@@ -118,14 +102,14 @@ void keyhandler(void)
 	//																				0	f	 f	  f
 		}
 	*/
-	if (curentreadkey == F5)
+	if (keyactive == F5)
 	{
 		if (o)
 		{
 			dieobj(o);
 		}
 	}
-	if (curentreadkey == F6)
+	if (keyactive == F6)
 	{
 		if (o)
 		{

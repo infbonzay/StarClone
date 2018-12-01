@@ -778,7 +778,7 @@ void makeoneobjseeopen(OBJ *a, OBJstruct *b)
 		}//for
 	}//for g
 	if (mapchanges)
-		map.clearfog[a->playernr] = 1;
+		map.clearfog[a->playernr] = 1;	//TODO may be need to open who see the playernr???
 }
 //=================================
 void opentempmap(int playernr, int xkart, int ykart, int sizex, int sizey)
