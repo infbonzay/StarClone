@@ -4,11 +4,6 @@
 #include <stdint.h>
 #include <grplib/grp.h>
 
-#ifdef WITHSDL
-#include "sdl/mousesdl.h"
-#include "sdl/keysdl.h"
-#endif
-
 #include "man.h"
 #include "const.h"
 #include "images.h"

@@ -22,10 +22,6 @@
 #include "network_general.h"
 #include "gener.h"
 #include "vars.h"
-
-#ifdef	WITHSDL
-#include "sdl/mousesdl.h"
-#endif
 //=============================
 unsigned char First_Unit_Build[3][2] = {
 							{SC_HATCHERYOBJ,SC_DRONEOBJ},

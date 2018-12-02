@@ -1,4 +1,6 @@
-#include "mousesdl.h"
+
+#include <X11/Xlib.h>
+#include "LowMouse.h"
 
 //==========================
 int LowMouse::Init(void)
@@ -8,26 +10,19 @@ int LowMouse::Init(void)
 //==========================
 int LowMouse::GetButtonStatus(void)
 {
-	return(SDL_GetMouseState(NULL, NULL));
+	return(0);
 }
 //==========================
 void LowMouse::GetPos(void)
 {
-	SDL_GetRelativeMouseState(&DeltaX,&DeltaY);
 }
 //==========================
 void LowMouse::FlushPos(void)
 {
-	int x,y;
-	SDL_GetRelativeMouseState(&x,&y);
 }
 //==========================
 void LowMouse::SetPos(int x,int y)
 {
-	int delx,dely;
-	SDL_WarpMouse(x,y);
-	SDL_PumpEvents();
-	FlushPos();
 }
 //==========================
 void LowMouse::LowInMoveEvent(MOUSEMOVEEVENTCALLBACK *eventFunc)
@@ -51,4 +46,5 @@ void LowMouse::LowUnClickEvent(void)
 }
 
 LowMouse lowMouse;
+
 

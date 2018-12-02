@@ -1,6 +1,8 @@
 #if !defined(_SDLKEY_W)
 #define _SDLKEY_W 1
 
+#include <SDL/SDL.h>
+
 #define CAPSKEY	  SDLK_CAPSLOCK
 #define F10KEY	  SDLK_F10
 #define LEFTKEY	  SDLK_LEFT

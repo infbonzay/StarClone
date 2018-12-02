@@ -42,10 +42,6 @@
 #include "key.h"
 #include "objs.h"
 
-#ifdef WITHSDL
-#include "sdl/keysdl.h"
-#endif
-
 //===========================================
 //Unicitojiti OBJECT
 void destroyobj(struct OBJ *a)

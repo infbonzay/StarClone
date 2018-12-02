@@ -6,8 +6,6 @@
 #include <grplib/gr8.h>
 #include <grplib/font.h>
 
-#include "sdl/keysdl.h"
-#include "sdl/mousesdl.h"
 #include "smacker/smacker.h"
 #include "auxil.h"
 #include "mpqwrapper.h"
@@ -439,7 +437,7 @@ void PlayVideoSmk(const char *smkfile)
 					{
 						if (audiostream->audio.convertaudio)
 						{
-							audiostream->audio.CVT.buf = (Uint8 *)wmalloc(audiosize * audiostream->audio.CVT.len_mult);
+							audiostream->audio.CVT.buf = (uint8_t *)wmalloc(audiosize * audiostream->audio.CVT.len_mult);
 							//							memset(audiostream->audio.CVT.buf,0,audiosize * audiostream->audio.CVT.len_mult);
 							audiostream->audio.CVT.len = audiosize;
 							memcpy(audiostream->audio.CVT.buf, audiobuff, audiosize);

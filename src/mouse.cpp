@@ -16,6 +16,7 @@
 #include "putobj.h"
 #include "objinfo.h"
 #include "key.h"
+#include "LowMouse.h"
 #include "mouse.h"
 
 //==============================

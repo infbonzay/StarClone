@@ -6,8 +6,8 @@
 #include "const.h"
 #include "mytime.h"
 #include "version.hxx"
-#include "mousesdl.h"
 #include "keysdl.h"
+#include "LowMouse.h"
 
 #include "Controller.h"
 

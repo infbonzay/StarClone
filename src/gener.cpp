@@ -63,10 +63,6 @@
 #include "gener.h"
 #include "Controller.h"
 
-#ifdef WITHSDL
-	#include "sdl/mousesdl.h"
-#endif
-
 #include <stdint.h>
 #include "mycycle.h"
 
@@ -160,6 +156,10 @@ int main(int c, char **parm, char **env)
 		printf("set graph mode...\n");
 		if (!videook)
 		{
+			if (mainController.Init())
+			{
+				gameend("can not initialize graph");
+			}
 			i = setmode(gameconf.grmode.x, gameconf.grmode.y, gameconf.grmode.s, gameconf.grmode.flags & DISPLAYFLAGS_FULLSCREENMODE);
 			if (!i)
 			{
@@ -170,10 +170,6 @@ int main(int c, char **parm, char **env)
 			if (i == 2)
 				gameconf.grmode.flags |= DISPLAYFLAGS_EMULATIONMODE;
 			highMouse->SetPos(gameconf.grmode.x / 2, gameconf.grmode.y / 2);
-			if (mainController.Init())
-			{
-				gameend("Problem with install interrupts(may be timer interrupt)");
-			}
 			videook = 1;
 		}
 		if (firsttimelaunch & 0xff)

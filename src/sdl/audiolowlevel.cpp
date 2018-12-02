@@ -3,10 +3,8 @@
 #include "audiolowlevel.h"
 #include "mpq.h"
 
-#ifdef WITHSDL
-	#include <SDL/SDL.h>
-	#include <SDL/SDL_mixer.h>
-#endif
+#include <SDL/SDL.h>
+#include <SDL/SDL_mixer.h>
 
 #define AUDIO_FREQ				22050
 #define AUDIO_BITDEPTH			MIX_DEFAULT_FORMAT

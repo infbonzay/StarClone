@@ -3,11 +3,6 @@
 #include <grplib/gr8.h>
 #include <grplib/usegrp.h>
 
-#ifdef WITHSDL
-#		include "sdl/keysdl.h"
-#		include "sdl/mousesdl.h"
-#endif
-
 #include "auxil.h"
 #include "man.h"
 #include "key.h"

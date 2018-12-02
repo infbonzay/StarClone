@@ -5,9 +5,6 @@
 #include <grplib/usegrp.h>
 #include <grplib/palette.h>
 
-#include "sdl/keysdl.h"
-#include "sdl/mousesdl.h"
-
 #include "auxil.h"
 #include "debug.h"
 #include "gener.h"

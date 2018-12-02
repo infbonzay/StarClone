@@ -6,9 +6,35 @@
 #define _CONTROLLER_W
 
 #ifdef WITHSDL
-	#include <SDL/SDL.h>
-	#define Controller_Surface 	SDL_Surface
-	#define SCREEN_REGION		SDL_Rect
+	#include "sdl/keysdl.h"
+
+	typedef SDL_Surface Controller_Surface;
+	typedef SDL_Rect SCREEN_REGION;
+
+	#define WMLEFTKEY  (SDL_BUTTON(1))
+	#define WMRIGHTKEY (SDL_BUTTON(3))
+
+#endif
+#ifdef WITHX
+	#include "xlib/xlibkey.h"
+
+	#define WMLEFTKEY  0x01
+	#define WMRIGHTKEY 0x03
+
+	typedef struct Controller_Surface
+	{
+		Display 	*display;
+		int			screenNr;
+		Window		window;
+		XEvent		event;
+		void		*pixels;
+	} Controller_Surface;
+
+	typedef struct SCREEN_REGION
+	{
+		int16_t  x, y;
+		uint16_t w, h;
+	} SCREEN_REGION;
 #endif
 
 #define KEYPRESS(ikey) (mainController.KeysStatus[ikey] == KEYPRESSED)

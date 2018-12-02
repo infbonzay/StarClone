@@ -8,14 +8,6 @@
 #include "Controller.h"
 #include "key.h"
 
-#ifdef WITHSDL
-#include "sdl/keysdl.h"
-#endif
-
-
-#define	 TIMEFORKEY	 4
-#define	 KEYSLAY	 2
-
 //================================
 void keyscroll(void)
 {
