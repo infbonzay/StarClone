@@ -229,12 +229,9 @@ OBJ *CreateUnitsFromMAP(struct unit_on_map *unit, struct mapinfo *loadedmap)
 			a = createunitwithproperties(unit->xpos, unit->ypos, unit->unit_type, unit->player,
 				unit->special_props, unit->special_prop2, unit->state_flags,
 				unit->hitpoints, unit->shieldpoints, unit->energypoints, unit->resource_count, unit->units_in_hangar);
-			//				a->serial1 = unit->unit_serialnumberfirst;
-			//				a->serial2 = unit->unit_serialnumbersecond;
 			a->paried = unit->paried;
-			a->data.beforestartplay.serial1 = unit->unit_serialnumberfirst;
-			a->data.beforestartplay.serial2 = unit->unit_serialnumbersecond;
-			//				a->data.beforestartplay.paried = unit->paried;
+			a->unitserial1 = unit->unit_serialnumberfirst;
+			a->unitserial2 = unit->unit_serialnumbersecond;
 		}
 		else
 		{
@@ -243,7 +240,6 @@ OBJ *CreateUnitsFromMAP(struct unit_on_map *unit, struct mapinfo *loadedmap)
 				return(NULL);
 #endif
 			a = createobjfulllife(unit->xpos, unit->ypos, unit->unit_type, unit->player);
-			//				a = createobjman(unit->xpos,unit->ypos,unit->unit_type,unit->player,0,1,1,1);
 		}
 		break;
 	}
@@ -695,20 +691,17 @@ void ConnectingPairBuilds(struct mapinfo *loadedmap)
 		{
 			a = objects[i];
 			if (a->paried == ZERGPARIED)
-				//			if (a->data.beforestartplay.paried==ZERGPARIED)
+			for (j = i + 1;j < MaxObjects;j++)
 			{
-				for (j = i + 1;j < MaxObjects;j++)
+				if (a->unitserial2 == objects[j]->unitserial1)
 				{
-					if (a->data.beforestartplay.serial2 == objects[j]->data.beforestartplay.serial1)
-					{
-						//found doubles builds
-						b = loadobj(objects[j]->SC_Unit);
-						a->doubleunit = objects[j];
-						ChangeTypeOfProp(a->doubleunit, b, PROPEMPTY);
-						objects[j]->doubleunit = a;
-						ChangeTypeOfProp(objects[j]->doubleunit, b, PROPEMPTY);
-						break;
-					}
+					//found doubles builds
+					b = loadobj(objects[j]->SC_Unit);
+					a->doubleunit = objects[j];
+					ChangeTypeOfProp(a->doubleunit, b, PROPEMPTY);
+					objects[j]->doubleunit = a;
+					ChangeTypeOfProp(objects[j]->doubleunit, b, PROPEMPTY);
+					break;
 				}
 			}
 		}

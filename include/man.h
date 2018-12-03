@@ -125,12 +125,6 @@ union SOMEINFO
 	{
 		unsigned char	waitbeforemove;
 	}critter;
-	struct
-	{
-		int serial1;
-		int serial2;
-//		char paried;
-	}beforestartplay;
 };
 //=======================================
 typedef MyFifo<ONEMODEMOVE*> MODEMOVES;
@@ -172,8 +166,8 @@ struct OBJ
 		int				currentspeed;	//for unit move by flingy control
 		int				creepbuildlist_ID;
 		int				createcycle;
-//		int				serial1;
-//		int				serial2;
+		int				unitserial1;
+		int				unitserial2;
 		int				temphealth,health;
 		int				timeleft,dmatrix;
 		int				shield,tempshield;
