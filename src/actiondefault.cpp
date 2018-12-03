@@ -870,6 +870,14 @@ int AtackCoolDownEnds(OBJ *a,OBJ *destobj,int continueatack,int modemoveflags)
 	switch (resval)
 	{
 	case CREATEDWEAPONSTATUS_NOTAMMO:
+		if (modemoveflags & SHOWERRORTEXT)
+		{
+			Play_sfxdata_id(NULL, TARGETERROR[GetUnitRace(a->SC_Unit)], 3, 0);
+			showadvisortext(errmes);
+		}
+		if (!a->atackcooldowntime)
+			a->atackcooldowntime = 1;
+		return(MOVEOBJ_WAITUNTIL);
 	case CREATEDWEAPONSTATUS_UNDERDISRUPTION://atacker in disruption can't atack and no message to appear
 		if (!a->atackcooldowntime)
 			a->atackcooldowntime = 1;

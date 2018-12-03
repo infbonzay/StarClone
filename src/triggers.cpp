@@ -939,7 +939,7 @@ int Action_Prepare(mapinfo *info, MAP_TRIGS *temptrg, int trig_nr, int playernr,
 					{
 						MAPREGENERATIONBIT = 1;
 						MAPUNITSREGENERATIONBIT = 1;
-						//								CenterXYArea(&info->gamelocations[locnr].coords,&xobj,&yobj);
+						//CenterXYArea(&info->gamelocations[locnr].coords,&xobj,&yobj);
 						getcoordofnewunit(unitnr, &xobj, &yobj, &info->gamelocations[locnr].coords);
 						newobj = createunitwithproperties(xobj, yobj, unitnr, j,
 							triggerunitprop->special_props, triggerunitprop->special_prop2, triggerunitprop->state_flags,
@@ -948,7 +948,7 @@ int Action_Prepare(mapinfo *info, MAP_TRIGS *temptrg, int trig_nr, int playernr,
 
 
 						makeoneobjseeopen(newobj, loadobj(newobj->SC_Unit));
-						//								makeprop(newobj);				//make visual/working/stasis properties;
+						//makeprop(newobj);				//make visual/working/stasis properties;
 					}
 					nrofunits = deltax;
 					ownedactiononplayers &= ~mask;

@@ -111,7 +111,6 @@ int IfCanCreateWeapon(OBJ *atacker, OBJ *destobj, int *errmes, unsigned char *we
 	unsigned char groundweapon_id, airweapon_id, usedweapon_id, atackangle, neededside;
 	if (destobj)
 	{
-		//		if (!IsActiveUnit(destobj))
 		if (!IsActiveUnitForAtack(destobj))
 		{
 			if (errmes)
@@ -133,16 +132,18 @@ int IfCanCreateWeapon(OBJ *atacker, OBJ *destobj, int *errmes, unsigned char *we
 					*errmes = 875;
 				return(CREATEDWEAPONSTATUS_CANTATACKTHISUNIT);
 			}
-			//				if (!atacker->ammo)
-			//					return(CREATEDWEAPONSTATUS_NOTAMMO);
+			if (!atacker->ammo)
+			{
+				if (errmes)
+					*errmes = 878;
+				return(CREATEDWEAPONSTATUS_NOTAMMO);
+			}
 			if (GetDistanceBetweenUnits256(atacker, destobj) <= (GetTargetAcquisitionRange(atacker->SC_Unit) << 13))		//256 * 32 (<<13)
 				rangebad = 0;
 			else
 				rangebad = 1;
 			weaponunitid = WEAPON_UNIT_ANY;
-			//				usedweapon_id = groundweapon_id;
 			usedweapon_id = WEAPONID_REAVERRANGE;
-
 			weapon_id = NULL;
 			atackangle = alldattbl.weapons_dat->AttackAngle[WEAPONID_SCARAB];
 			break;

@@ -275,7 +275,7 @@ int GetAddManaFactor(SCUNIT SC_Unit, int playernr)
 int GetNrSomeObjects(OBJ *a, int *newunit, char **iconmes)
 {
 	int weapon_id, tech_id;
-	if (player_aliance(NUMBGAMER, a->playernr != MYOBJ))
+	if (player_aliance(NUMBGAMER, a->playernr) != MYOBJ)
 		return(-1);
 	switch (a->SC_Unit)
 	{

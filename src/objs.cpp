@@ -3874,8 +3874,9 @@ void setpropertiestounit(struct OBJ *a, int special_props, int state_flags)
 //==================================
 struct OBJ *createunitwithproperties(int xpos, int ypos, int unit_id, int playernr,
 	int special_prop, int special_prop2, int state_flags,
-	int hp, int sp, int ep, int resnr, int unitsinhanger)
+	int hp, int sp, int ep, int resnr, int unitsinhangar)
 {
+	SCUNIT hangarunit;
 	OBJ *a;
 	int hp_perc, sp_perc, ep_perc;
 	if (special_prop2 & UNITONMAP_HPISVALID)
@@ -3894,6 +3895,27 @@ struct OBJ *createunitwithproperties(int xpos, int ypos, int unit_id, int player
 		ep_perc = resnr << 8;
 	a = createobjmanwithlife(xpos, ypos, unit_id, playernr, sp_perc, hp_perc, ep_perc, 1);
 	setpropertiestounit(a, special_prop, state_flags);
+	if (a && unitsinhangar)
+	{
+		switch(unit_id)
+		{
+			case SC_REAVEROBJ:
+			case SC_HERO_WARBRINGEROBJ:
+				hangarunit = SC_SCARABOBJ;
+				break;
+			case SC_CARRIEROBJ:
+			case SC_HERO_GANTRITHOROBJ:
+				hangarunit = SC_INTERCEPTOROBJ;
+				break;
+			default:
+				DEBUGMESSCR("unit(%d) with hangar nrs\n",unit_id);
+				return(a);
+		}
+		for (int i=0; i < unitsinhangar;i++)
+		{
+			CreateUnitInUnit(a, hangarunit, 0, GetOBJx(a), GetOBJy(a) );
+		}
+	}
 	return(a);
 }
 //==================================
@@ -4108,6 +4130,8 @@ struct OBJ* OneUnitSearchGoal(OBJ *a, int ignoremodes, int facedirectionatackonl
 			case UNITATACKFUNCTYPE_REAVERS://reaver
 				groundweapon = WEAPONID_SCARAB;
 				weaponmask = 1;
+				if (!a->ammo)
+					return NULL;
 				break;
 			case UNITATACKFUNCTYPE_CARRIERS://carrier
 				break;

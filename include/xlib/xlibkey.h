@@ -2,7 +2,7 @@
 #define _XLIBKEY_W
 
 #include <X11/Xlib.h>
-#include<X11/keysym.h>
+#include <X11/keysym.h>
 
 #define CAPSKEY	  	29//XK_Caps_Lock
 #define LEFTKEY	  	28//XK_Left

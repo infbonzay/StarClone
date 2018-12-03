@@ -34,27 +34,47 @@ void Controller::DeInit(void)
 //===========================================
 int Controller::QueryVideoMode(int x, int y, int bpp, int fullscreen)
 {
+	XSetWindowAttributes setwinatr;
+	XWindowAttributes winatr;
+	int *depths,totaldepths;
+	unsigned long winatrmask;
 	if ( ( Surface->display = XOpenDisplay ( NULL ) ) == NULL )
 	{
 		DEBUGMESSCR("Cannot connect to xserver\n");
 		return(-1);
 	}
 	Surface->screenNr = DefaultScreen ( Surface->display );
+	Surface->backgroundpixel = BlackPixel ( Surface->display, Surface->screenNr );
 	Surface->window = XCreateSimpleWindow ( Surface->display,
 											RootWindow ( Surface->display, Surface->screenNr ),
 											0, 0, x, y, 5,
-											BlackPixel ( Surface->display, Surface->screenNr ),
-											WhitePixel ( Surface->display, Surface->screenNr ) );
-	XSelectInput(Surface->display,Surface->window, ExposureMask | ButtonPressMask | KeyPressMask) ;
+											WhitePixel ( Surface->display, Surface->screenNr ),
+											Surface->backgroundpixel);
+	Surface->bpp = DefaultDepth(Surface->display, Surface->screenNr);
+	winatrmask = CWOverrideRedirect;
+//	setwinatr.override_redirect = true;
+//	XChangeWindowAttributes(Surface->display, Surface->window, winatrmask, &setwinatr);
+	XSelectInput(Surface->display,Surface->window,  ExposureMask | 
+													ButtonPressMask	|
+													ButtonReleaseMask | 
+													KeyPressMask |
+													KeyReleaseMask |
+													EnterWindowMask	|
+													LeaveWindowMask	|
+													PointerMotionMask |
+													VisibilityChangeMask
+													) ;
 	XMapWindow ( Surface->display, Surface->window );
 
-	XNextEvent(Surface->display,&Surface->event);
+	XFlush(Surface->display);
 
 	Surface->pixels = wmalloc(x * y * bpp / 8);
 	SetVideoBuffer(Surface->pixels);
 	gameconf.grmode.videobuff = (unsigned char *)Surface->pixels;
 	gameconf.grmode.flags |= DISPLAYFLAGS_WINDOWACTIVE;
-	
+	XGetWindowAttributes(Surface->display, Surface->window, &winatr);
+	depths = XListDepths(Surface->display,Surface->screenNr,&totaldepths);
+	XFree(depths);
 	return(2);
 }
 //===========================================
@@ -138,5 +158,39 @@ void Controller::QuitVideoMode(void)
 //===========================================
 int  Controller::EventsLoop(void)			//return 1 - on quit
 {
-	return 0;
+	if (XPending(Surface->display))
+	{
+		XNextEvent(Surface->display,&Surface->event);
+		switch(Surface->event.type)
+		{
+		case ExposureMask:
+			printf("exposed\n");
+			break;
+		case ButtonPressMask:
+			printf("buttonpress\n");
+			break;
+		case ButtonReleaseMask: 
+			printf("buttonrelease\n");
+			break;
+		case KeyPressMask:
+			printf("keypress\n");
+			break;
+		case KeyReleaseMask:
+			printf("keyrelease\n");
+			break;
+		case EnterWindowMask:
+			printf("enterwindow\n");
+			break;
+		case LeaveWindowMask:
+			printf("leavewindow\n");
+			break;
+		case PointerMotionMask:
+			printf("pointermotion\n");
+			break;
+		case VisibilityChangeMask:
+			printf("visibility\n");
+			break;
+		}
+	}
+	return(0);
 }

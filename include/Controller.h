@@ -28,6 +28,8 @@
 		Window		window;
 		XEvent		event;
 		void		*pixels;
+		long		backgroundpixel;
+		int			bpp;
 	} Controller_Surface;
 
 	typedef struct SCREEN_REGION
