@@ -28,8 +28,11 @@
 		Window		window;
 		XEvent		event;
 		void		*pixels;
+		int			DesiredBpp;
 		long		backgroundpixel;
-		int			bpp;
+		int			SavedWidth;
+		int			SavedHeight;
+		int			SavedBpp;
 	} Controller_Surface;
 
 	typedef struct SCREEN_REGION
@@ -84,6 +87,9 @@ public:
 	void KeyPressRefresh(void);
 	void QuitVideoMode(void);
 	int  EventsLoop(void);
+private:	
+	int  SetVideoMode(int x, int y);
+	int  FindVideoMode(int x, int y);
 
 
 };

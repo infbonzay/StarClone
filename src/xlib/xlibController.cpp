@@ -41,29 +41,41 @@ int Controller::QueryVideoMode(int x, int y, int bpp, int fullscreen)
 	if ( ( Surface->display = XOpenDisplay ( NULL ) ) == NULL )
 	{
 		DEBUGMESSCR("Cannot connect to xserver\n");
-		return(-1);
+		return(0);
 	}
 	Surface->screenNr = DefaultScreen ( Surface->display );
 	Surface->backgroundpixel = BlackPixel ( Surface->display, Surface->screenNr );
+    //save current screen resolution
+	Screen *defaultscreen = DefaultScreenOfDisplay(Surface->display);
+    Surface->SavedWidth  = defaultscreen->width;
+    Surface->SavedHeight = defaultscreen->height;
+	Surface->SavedBpp = DefaultDepth(Surface->display, Surface->screenNr);
+	//set screen resolution
+	if (SetVideoMode(x, y) == -1)
+	{
+		DEBUGMESSCR("Cannot set video mode\n");
+		return(0);
+	}
 	Surface->window = XCreateSimpleWindow ( Surface->display,
 											RootWindow ( Surface->display, Surface->screenNr ),
 											0, 0, x, y, 5,
 											WhitePixel ( Surface->display, Surface->screenNr ),
 											Surface->backgroundpixel);
-	Surface->bpp = DefaultDepth(Surface->display, Surface->screenNr);
 	winatrmask = CWOverrideRedirect;
-//	setwinatr.override_redirect = true;
-//	XChangeWindowAttributes(Surface->display, Surface->window, winatrmask, &setwinatr);
+	if (fullscreen)
+	{
+		//create unmanagement video mode
+		setwinatr.override_redirect = true;
+		XChangeWindowAttributes(Surface->display, Surface->window, winatrmask, &setwinatr);
+	}
+	else
+	{
+		//call WM for parameters
+	}
 	XSelectInput(Surface->display,Surface->window,  ExposureMask | 
 													ButtonPressMask	|
-													ButtonReleaseMask | 
-													KeyPressMask |
-													KeyReleaseMask |
-													EnterWindowMask	|
-													LeaveWindowMask	|
-													PointerMotionMask |
-													VisibilityChangeMask
-													) ;
+													ButtonReleaseMask
+													);
 	XMapWindow ( Surface->display, Surface->window );
 
 	XFlush(Surface->display);
@@ -72,10 +84,7 @@ int Controller::QueryVideoMode(int x, int y, int bpp, int fullscreen)
 	SetVideoBuffer(Surface->pixels);
 	gameconf.grmode.videobuff = (unsigned char *)Surface->pixels;
 	gameconf.grmode.flags |= DISPLAYFLAGS_WINDOWACTIVE;
-	XGetWindowAttributes(Surface->display, Surface->window, &winatr);
-	depths = XListDepths(Surface->display,Surface->screenNr,&totaldepths);
-	XFree(depths);
-	return(2);
+	return(1 + (Surface.SavedBpp != bpp) );
 }
 //===========================================
 int Controller::ModifyVideoMode(int x, int y, int bpp, int fullscreen, unsigned char *palette)
@@ -148,17 +157,22 @@ void Controller::KeyPressRefresh(void)
 //===========================================
 void Controller::QuitVideoMode(void)
 {
-	if (Surface->pixels)
+	if (Surface->display)
 	{
-		wfree(Surface->pixels);
-		Surface->pixels = NULL;
+		if (Surface->pixels)
+		{
+			wfree(Surface->pixels);
+			Surface->pixels = NULL;
+		}
+		SetVideoMode(Surface->SavedWidth,Surface->SavedHeight);
+		XCloseDisplay(Surface->display);
+		Surface->display = NULL;
 	}
-	XCloseDisplay(Surface->display);
 }
 //===========================================
 int  Controller::EventsLoop(void)			//return 1 - on quit
 {
-	if (XPending(Surface->display))
+	While(XPending(Surface->display))
 	{
 		XNextEvent(Surface->display,&Surface->event);
 		switch(Surface->event.type)
@@ -194,3 +208,33 @@ int  Controller::EventsLoop(void)			//return 1 - on quit
 	}
 	return(0);
 }
+//===========================================
+int Controller::SetVideoMode(int x, int y)
+{
+    videoMode = FindVideoMode(x, y);
+    if (videoMode != -1)
+    {
+        XF86VidModeSwitchToMode(display, screen, videoMode);
+        XF86VidModeSetViewPort(display, screen, 0, 0);
+        XFlush(display);
+    }
+	return(videoMode);
+}
+//===========================================
+int Controller::FindVideoMode(int x, int y)
+{
+    int modeCount;
+    XF86VidModeModeInfo **modes;
+
+    if (XF86VidModeGetAllModeLines(Surface->display, Surface->screen, &modeCount, &modes))
+    {
+        for(int i = 0; i < modeCount; i++)
+        {
+            if (x == modes[i]->hdisplay && y == modes[i]->vdisplay)
+				return i;
+        }
+        XFree(modes);
+    }
+    return -1;
+}
+//===========================================
