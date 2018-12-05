@@ -37,6 +37,9 @@
 #define BACKSPACEKEY SDLK_BACKSPACE
 #define ESCAPEKEY SDLK_ESCAPE
 
+#define WMLEFTKEY  (SDL_BUTTON(1))
+#define WMRIGHTKEY (SDL_BUTTON(3))
+
 #define KEYPRESSEDTABLE(table,scancode) (toupper((scancode)&0xff)+1)
 #define KEYPRESSED SDL_PRESSED
 

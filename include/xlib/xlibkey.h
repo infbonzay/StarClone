@@ -3,14 +3,16 @@
 
 #include <X11/Xlib.h>
 #include <X11/keysym.h>
+#include <X11/extensions/xf86vmode.h>
+#include <X11/XKBlib.h>
 
 #define CAPSKEY	  	29//XK_Caps_Lock
 #define LEFTKEY	  	28//XK_Left
 #define RIGHTKEY  	27//XK_Right
 #define UPKEY	  	26//XK_Up
 #define DOWNKEY	  	25//XK_Down
-#define ENTERKEY  	13//XK_Return
-#define ENTERKEY2 	14//XK_KP_Enter
+#define ENTERKEY  	XK_Return
+#define ENTERKEY2 	XK_KP_Enter
 #define SCROLLKEY 	23//XK_Scroll_Lock
 #define CTRLLKEY  	22//XK_Control_L
 #define CTRLRKEY  	21//XK_Control_R

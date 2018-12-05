@@ -11,25 +11,22 @@
 	typedef SDL_Surface Controller_Surface;
 	typedef SDL_Rect SCREEN_REGION;
 
-	#define WMLEFTKEY  (SDL_BUTTON(1))
-	#define WMRIGHTKEY (SDL_BUTTON(3))
-
 #endif
 #ifdef WITHX
 	#include "xlib/xlibkey.h"
-
-	#define WMLEFTKEY  0x01
-	#define WMRIGHTKEY 0x03
 
 	typedef struct Controller_Surface
 	{
 		Display 	*display;
 		int			screenNr;
 		Window		window;
-		XEvent		event;
+		bool		FullScreen;
 		void		*pixels;
-		int			DesiredBpp;
+
+		XEvent		event;
+
 		long		backgroundpixel;
+		int			DesiredBpp;
 		int			SavedWidth;
 		int			SavedHeight;
 		int			SavedBpp;
@@ -64,11 +61,11 @@ class Controller
 		'X'	  ,'Y'	 ,'Z'	,'\x00','\x00','\x00','\x00','\x00'
 	};
 
-	int 				Fullscreen;
+	int 				FullScreen;
 	Controller_Surface	*Surface;
 
 public:
-	short int 			KeyActive,LastKey;
+	long 				KeyActive,LastKey;
 	int 				RefreshAtEnd;
 	uint8_t				*KeysStatus;
 	mycycle<uint16_t> 	*KeysBuffer;
@@ -87,9 +84,9 @@ public:
 	void KeyPressRefresh(void);
 	void QuitVideoMode(void);
 	int  EventsLoop(void);
-private:	
-	int  SetVideoMode(int x, int y);
-	int  FindVideoMode(int x, int y);
+private:
+	template <typename T>
+	bool  SetVideoMode(int x, int y);
 
 
 };

@@ -5,6 +5,7 @@
 #include "const.h"
 #include "mytime.h"
 #include "version.hxx"
+#include "LowMouse.h"
 #include "Controller.h"
 
 
@@ -35,9 +36,8 @@ void Controller::DeInit(void)
 int Controller::QueryVideoMode(int x, int y, int bpp, int fullscreen)
 {
 	XSetWindowAttributes setwinatr;
-	XWindowAttributes winatr;
-	int *depths,totaldepths;
 	unsigned long winatrmask;
+	int borderSize = 5;
 	if ( ( Surface->display = XOpenDisplay ( NULL ) ) == NULL )
 	{
 		DEBUGMESSCR("Cannot connect to xserver\n");
@@ -45,20 +45,25 @@ int Controller::QueryVideoMode(int x, int y, int bpp, int fullscreen)
 	}
 	Surface->screenNr = DefaultScreen ( Surface->display );
 	Surface->backgroundpixel = BlackPixel ( Surface->display, Surface->screenNr );
-    //save current screen resolution
+	Surface->FullScreen = fullscreen;
 	Screen *defaultscreen = DefaultScreenOfDisplay(Surface->display);
-    Surface->SavedWidth  = defaultscreen->width;
-    Surface->SavedHeight = defaultscreen->height;
-	Surface->SavedBpp = DefaultDepth(Surface->display, Surface->screenNr);
-	//set screen resolution
-	if (SetVideoMode(x, y) == -1)
+	if (fullscreen)
 	{
-		DEBUGMESSCR("Cannot set video mode\n");
-		return(0);
+		//set screen resolution
+		if (SetVideoMode<XF86VidModeModeInfo *>(x, y))
+		{
+			DEBUGMESSCR("Cannot set video mode\n");
+			return(0);
+		}
+		borderSize = 0;
+		//save current screen resolution
+		Surface->SavedWidth  = defaultscreen->width;
+		Surface->SavedHeight = defaultscreen->height;
+		Surface->SavedBpp = DefaultDepth(Surface->display, Surface->screenNr);
 	}
 	Surface->window = XCreateSimpleWindow ( Surface->display,
 											RootWindow ( Surface->display, Surface->screenNr ),
-											0, 0, x, y, 5,
+											0, 0, x, y, borderSize,
 											WhitePixel ( Surface->display, Surface->screenNr ),
 											Surface->backgroundpixel);
 	winatrmask = CWOverrideRedirect;
@@ -72,9 +77,14 @@ int Controller::QueryVideoMode(int x, int y, int bpp, int fullscreen)
 	{
 		//call WM for parameters
 	}
-	XSelectInput(Surface->display,Surface->window,  ExposureMask | 
+	XSelectInput(Surface->display,Surface->window,  ExposureMask |
 													ButtonPressMask	|
-													ButtonReleaseMask
+													ButtonReleaseMask |
+													KeyPressMask |
+													KeyReleaseMask |
+													PointerMotionMask |
+													VisibilityChangeMask |
+													FocusChangeMask
 													);
 	XMapWindow ( Surface->display, Surface->window );
 
@@ -84,7 +94,7 @@ int Controller::QueryVideoMode(int x, int y, int bpp, int fullscreen)
 	SetVideoBuffer(Surface->pixels);
 	gameconf.grmode.videobuff = (unsigned char *)Surface->pixels;
 	gameconf.grmode.flags |= DISPLAYFLAGS_WINDOWACTIVE;
-	return(1 + (Surface.SavedBpp != bpp) );
+	return(1 + (Surface->SavedBpp != bpp) );
 }
 //===========================================
 int Controller::ModifyVideoMode(int x, int y, int bpp, int fullscreen, unsigned char *palette)
@@ -164,7 +174,10 @@ void Controller::QuitVideoMode(void)
 			wfree(Surface->pixels);
 			Surface->pixels = NULL;
 		}
-		SetVideoMode(Surface->SavedWidth,Surface->SavedHeight);
+		if (Surface->FullScreen)
+		{
+			SetVideoMode<XF86VidModeModeInfo *>(Surface->SavedWidth,Surface->SavedHeight);
+		}
 		XCloseDisplay(Surface->display);
 		Surface->display = NULL;
 	}
@@ -172,69 +185,103 @@ void Controller::QuitVideoMode(void)
 //===========================================
 int  Controller::EventsLoop(void)			//return 1 - on quit
 {
-	While(XPending(Surface->display))
+	int UpperKeysActive;
+	int keySym;
+	uint8_t buttons;
+	while(XPending(Surface->display))
 	{
 		XNextEvent(Surface->display,&Surface->event);
+		//DEBUGMESSCR("%02x;\n",Surface->event.type);
 		switch(Surface->event.type)
 		{
-		case ExposureMask:
-			printf("exposed\n");
+		case FocusIn:
+			gameconf.grmode.flags |= DISPLAYFLAGS_WINDOWACTIVE;
 			break;
-		case ButtonPressMask:
-			printf("buttonpress\n");
+		case FocusOut:
+			gameconf.grmode.flags &= DISPLAYFLAGS_WINDOWACTIVE;
 			break;
-		case ButtonReleaseMask: 
-			printf("buttonrelease\n");
+		case Expose:
+			//DEBUGMESSCR("exposed\n");
 			break;
-		case KeyPressMask:
-			printf("keypress\n");
+		case ButtonPress:
+			buttons = 1 << (Surface->event.xbutton.button - 1);
+			if (lowMouse.ClickEventFunc)
+				(*lowMouse.ClickEventFunc)(true, buttons);
 			break;
-		case KeyReleaseMask:
-			printf("keyrelease\n");
+		case ButtonRelease:
+			buttons = 1 << (Surface->event.xbutton.button - 1);
+			if (lowMouse.ClickEventFunc)
+				(*lowMouse.ClickEventFunc)(false, buttons);
+			RefreshAtEnd = 1;
 			break;
-		case EnterWindowMask:
-			printf("enterwindow\n");
+		case KeyPress:
+			//DEBUGMESSCR("keypress state=%04x %d\n",Surface->event.xkey.state,Surface->event.xkey.keycode);
+			UpperKeysActive = 0;
+			if (Surface->event.xkey.state & ShiftMask)
+				UpperKeysActive ^= 1;
+			if (Surface->event.xkey.state & LockMask)
+				UpperKeysActive ^= 1;
+			keySym = XkbKeycodeToKeysym( Surface->display, Surface->event.xkey.keycode, 0, 0);
+            if (UpperKeysActive)
+			{
+				if (keySym > 0 && keySym < 128)
+				{
+					KeyActive = SHIFTKEYS[keySym];
+					if (!KeyActive)
+						KeyActive = keySym;
+				}
+			}
+			else
+			{
+				KeyActive = keySym;
+			}
+			if (KeyActive == ENTERKEY2)
+			{
+				KeyActive = ENTERKEY;
+			}
+			LastKey = KeyActive;
+			KeysBuffer->PushElem(KeyActive);
 			break;
-		case LeaveWindowMask:
-			printf("leavewindow\n");
+		case KeyRelease:
+			KeyActive = 0;
 			break;
-		case PointerMotionMask:
-			printf("pointermotion\n");
+		case MotionNotify:
+			if (lowMouse.MoveEventFunc)
+				(*lowMouse.MoveEventFunc)(Surface->event.xmotion.x,Surface->event.xmotion.y);
 			break;
-		case VisibilityChangeMask:
-			printf("visibility\n");
+		default:
+//			DEBUGMESSCR("unknown event\n");
 			break;
 		}
 	}
 	return(0);
 }
 //===========================================
-int Controller::SetVideoMode(int x, int y)
-{
-    videoMode = FindVideoMode(x, y);
-    if (videoMode != -1)
-    {
-        XF86VidModeSwitchToMode(display, screen, videoMode);
-        XF86VidModeSetViewPort(display, screen, 0, 0);
-        XFlush(display);
-    }
-	return(videoMode);
-}
-//===========================================
-int Controller::FindVideoMode(int x, int y)
+template <typename T>
+bool Controller::SetVideoMode(int x, int y)
 {
     int modeCount;
-    XF86VidModeModeInfo **modes;
-
-    if (XF86VidModeGetAllModeLines(Surface->display, Surface->screen, &modeCount, &modes))
+    T *modes;
+    T findMode = NULL;
+	bool ok = false;
+    if (XF86VidModeGetAllModeLines(Surface->display, Surface->screenNr, &modeCount, &modes))
     {
-        for(int i = 0; i < modeCount; i++)
+        for (int i = 0; i < modeCount; i++)
         {
             if (x == modes[i]->hdisplay && y == modes[i]->vdisplay)
-				return i;
+				findMode = modes[i];
         }
-        XFree(modes);
     }
-    return -1;
+    if (findMode)
+    {
+		ok = XF86VidModeSwitchToMode(Surface->display, Surface->screenNr, findMode);
+		if (ok)
+		{
+			XF86VidModeSetViewPort(Surface->display, Surface->screenNr, 0, 0);
+			XFlush(Surface->display);
+		}
+		XFree(modes);
+    }
+	return(ok);
 }
 //===========================================
