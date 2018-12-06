@@ -59,8 +59,9 @@ int Controller::QueryVideoMode(int x, int y, int bpp, int fullscreen)
 		//save current screen resolution
 		Surface->SavedWidth  = defaultscreen->width;
 		Surface->SavedHeight = defaultscreen->height;
-		Surface->SavedBpp = DefaultDepth(Surface->display, Surface->screenNr);
 	}
+	Surface->DesiredBpp = bpp;
+	Surface->SavedBpp = DefaultDepth(Surface->display, Surface->screenNr);
 	Surface->window = XCreateSimpleWindow ( Surface->display,
 											RootWindow ( Surface->display, Surface->screenNr ),
 											0, 0, x, y, borderSize,
@@ -90,10 +91,13 @@ int Controller::QueryVideoMode(int x, int y, int bpp, int fullscreen)
 
 	XFlush(Surface->display);
 
-	Surface->pixels = wmalloc(x * y * bpp / 8);
+	Surface->pixelsBufferSize = x * y * bpp / 8;
+	Surface->pixels = wmalloc(Surface->pixelsBufferSize);
 	SetVideoBuffer(Surface->pixels);
 	gameconf.grmode.videobuff = (unsigned char *)Surface->pixels;
 	gameconf.grmode.flags |= DISPLAYFLAGS_WINDOWACTIVE;
+	Surface->palette = (unsigned char *)wmalloc(256 * 4);
+	memset(Surface->palette, 0, 256 * 4);
 	return(1 + (Surface->SavedBpp != bpp) );
 }
 //===========================================
@@ -129,6 +133,35 @@ void Controller::UpdateScreen(void)
 //===========================================
 void Controller::ApplyPalette(unsigned char *pal4,int from,int count)
 {
+	int to = from + count + 1;
+	if (Surface->DesiredBpp != 8)
+		return;
+	memcpy(Surface->palette, pal4 + from * 4, count * 4);
+	switch(Surface->SavedBpp)
+	{
+	case 8:
+		//TODO need to update palette
+		break;
+	case 15:
+		break;
+	case 16:
+		break;
+	case 24:
+		for (int i = 0; i < Surface->pixelsBufferSize; i++)
+		{
+			if (i >= from && i <= to)
+			{
+				Xpixels[i * 24 + 0] = Surface->palette[i * 4 + 0];
+				Xpixels[i * 24 + 1] = Surface->palette[i * 4 + 1];
+				Xpixels[i * 24 + 2] = Surface->palette[i * 4 + 2];
+			}
+		}
+		break;
+	case 32:
+		break;
+	default:
+		break;
+	}
 }
 //==========================
 void Controller::ApplyPalette(unsigned char *pal4)
@@ -174,6 +207,11 @@ void Controller::QuitVideoMode(void)
 			wfree(Surface->pixels);
 			Surface->pixels = NULL;
 		}
+		if (Surface->palette)
+		{
+			wfree(Surface->palette);
+			Surface->palette = NULL;
+		}
 		if (Surface->FullScreen)
 		{
 			SetVideoMode<XF86VidModeModeInfo *>(Surface->SavedWidth,Surface->SavedHeight);
@@ -201,7 +239,6 @@ int  Controller::EventsLoop(void)			//return 1 - on quit
 			gameconf.grmode.flags &= DISPLAYFLAGS_WINDOWACTIVE;
 			break;
 		case Expose:
-			//DEBUGMESSCR("exposed\n");
 			break;
 		case ButtonPress:
 			buttons = 1 << (Surface->event.xbutton.button - 1);
@@ -250,7 +287,6 @@ int  Controller::EventsLoop(void)			//return 1 - on quit
 				(*lowMouse.MoveEventFunc)(Surface->event.xmotion.x,Surface->event.xmotion.y);
 			break;
 		default:
-//			DEBUGMESSCR("unknown event\n");
 			break;
 		}
 	}
@@ -271,6 +307,12 @@ bool Controller::SetVideoMode(int x, int y)
             if (x == modes[i]->hdisplay && y == modes[i]->vdisplay)
 				findMode = modes[i];
         }
+		if (findMode == modes[0])
+		{
+			//current mode already active
+			FindMode = NULL;
+			ok = true;
+		}
     }
     if (findMode)
     {
@@ -280,8 +322,8 @@ bool Controller::SetVideoMode(int x, int y)
 			XF86VidModeSetViewPort(Surface->display, Surface->screenNr, 0, 0);
 			XFlush(Surface->display);
 		}
-		XFree(modes);
     }
+	XFree(modes);
 	return(ok);
 }
 //===========================================

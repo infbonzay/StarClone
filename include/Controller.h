@@ -22,6 +22,9 @@
 		Window		window;
 		bool		FullScreen;
 		void		*pixels;
+		int			pixelsBufferSize;
+		uint8_t		*palette;
+		uint8_t		*Xpixels;
 
 		XEvent		event;
 
