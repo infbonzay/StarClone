@@ -133,6 +133,7 @@ void Controller::UpdateScreen(void)
 //===========================================
 void Controller::ApplyPalette(unsigned char *pal4,int from,int count)
 {
+	return;
 	int to = from + count + 1;
 	if (Surface->DesiredBpp != 8)
 		return;
@@ -151,9 +152,9 @@ void Controller::ApplyPalette(unsigned char *pal4,int from,int count)
 		{
 			if (i >= from && i <= to)
 			{
-				Xpixels[i * 24 + 0] = Surface->palette[i * 4 + 0];
-				Xpixels[i * 24 + 1] = Surface->palette[i * 4 + 1];
-				Xpixels[i * 24 + 2] = Surface->palette[i * 4 + 2];
+				Surface->Xpixels[i * 24 + 0] = Surface->palette[i * 4 + 0];
+				Surface->Xpixels[i * 24 + 1] = Surface->palette[i * 4 + 1];
+				Surface->Xpixels[i * 24 + 2] = Surface->palette[i * 4 + 2];
 			}
 		}
 		break;
@@ -310,7 +311,7 @@ bool Controller::SetVideoMode(int x, int y)
 		if (findMode == modes[0])
 		{
 			//current mode already active
-			FindMode = NULL;
+			findMode = NULL;
 			ok = true;
 		}
     }

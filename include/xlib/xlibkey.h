@@ -6,37 +6,38 @@
 #include <X11/extensions/xf86vmode.h>
 #include <X11/XKBlib.h>
 
-#define CAPSKEY	  	29//XK_Caps_Lock
-#define LEFTKEY	  	28//XK_Left
-#define RIGHTKEY  	27//XK_Right
-#define UPKEY	  	26//XK_Up
-#define DOWNKEY	  	25//XK_Down
 #define ENTERKEY  	XK_Return
 #define ENTERKEY2 	XK_KP_Enter
-#define SCROLLKEY 	23//XK_Scroll_Lock
-#define CTRLLKEY  	22//XK_Control_L
-#define CTRLRKEY  	21//XK_Control_R
-#define SHIFTLKEY 	20//XK_Shift_L
-#define SHIFTRKEY 	19//XK_Shift_R
-#define PAGEUPKEY 	18//XK_Page_Up
-#define PAGEDOWNKEY 17//XK_Page_Down
-#define BACKSPACEKEY 15//XK_BackSpace
-#define ESCAPEKEY 	16//XK_Escape
+#define ESCAPEKEY 	XK_Escape
 
-#define ALTKEY	  	30//XK_Alt_L
+#define CAPSKEY	  	XK_Caps_Lock
+#define LEFTKEY	  	XK_Left
+#define RIGHTKEY  	XK_Right
+#define UPKEY	  	XK_Up
+#define DOWNKEY	  	XK_Down
+#define SCROLLKEY 	XK_Scroll_Lock
+#define CTRLLKEY  	XK_Control_L
+#define CTRLRKEY  	XK_Control_R
+#define SHIFTLKEY 	XK_Shift_L
+#define SHIFTRKEY 	XK_Shift_R
+#define PAGEUPKEY 	XK_Page_Up
+#define PAGEDOWNKEY XK_Page_Down
+#define BACKSPACEKEY XK_BackSpace
 
-#define TABKEY	  	1//XK_Tab
-#define F11		  	2//XK_F11
-#define F12		  	3//XK_F12
-#define F10		  	4//XK_F10
-#define F1		  	5//XK_F1
-#define F2		  	6//XK_F2
-#define F3		  	7//XK_F3
-#define F4		 	8//XK_F4
-#define F5		  	9//XK_F5
-#define F6		  	10//XK_F6
-#define F7		  	11//XK_F7
-#define F8		  	12//XK_F8
+#define ALTKEY	  	XK_Alt_L
+
+#define TABKEY	  	XK_Tab
+#define F11		  	XK_F11
+#define F12		  	XK_F12
+#define F10		  	XK_F10
+#define F1		  	XK_F1
+#define F2		  	XK_F2
+#define F3		  	XK_F3
+#define F4		 	XK_F4
+#define F5		  	XK_F5
+#define F6		  	XK_F6
+#define F7		  	XK_F7
+#define F8		  	XK_F8
 #define NUMB1KEY  	'1'
 #define NUMB2KEY  	'2'
 
