@@ -61,8 +61,8 @@ int Controller::QueryVideoMode(int x, int y, int bpp, int fullscreen)
 		return(0);
 	if (realbpp != bpp)
 	{
-		printf("Launching in emulated mode %dx%dx%d\n", x, y, realbpp);
 		emul = 1;
+		printf("Launching in emulated mode %dx%dx%d\n", x, y, realbpp);
 	}
 	Surface = SDL_SetVideoMode(x, y, bpp, flags);
 	if (Surface == NULL)
@@ -131,7 +131,7 @@ void Controller::UpdateScreenRegions(int nrregions,SCREEN_REGION regions[])
 //==========================
 void Controller::UpdateScreenRegion(int x, int y, int xsize, int ysize)
 {
-	SDL_Rect scrpart;
+	SCREEN_REGION scrpart;
 	scrpart.x = x;
 	scrpart.y = y;
 	scrpart.w = xsize;

@@ -1,4 +1,3 @@
-
 #include <grplib/grp.h>
 
 #include "vars.h"
@@ -6,6 +5,7 @@
 #include "mytime.h"
 #include "version.hxx"
 #include "LowMouse.h"
+#include "rand.h"
 #include "Controller.h"
 
 
@@ -18,6 +18,11 @@ int Controller::Init(void)
 	Surface->screenNr = 0;
 	Surface->window = 0;
 	Surface->pixels = NULL;
+	Surface->Xpixels = NULL;
+	Surface->pixelsBufferSize = 0;
+	Surface->palette = NULL;
+	Surface->flags = 0x00;
+	Surface->Ximage = NULL;
 
 	mytimer.SetTickTimerFrequency(CYCLESPERSECOND);
 	KeysBuffer = new mycycle<uint16_t>(16, MYCYCLE_INFINITE);
@@ -47,6 +52,7 @@ int Controller::QueryVideoMode(int x, int y, int bpp, int fullscreen)
 	Surface->backgroundpixel = BlackPixel ( Surface->display, Surface->screenNr );
 	Surface->FullScreen = fullscreen;
 	Screen *defaultscreen = DefaultScreenOfDisplay(Surface->display);
+	Visual *xVisual = DefaultVisual(Surface->display, 0);
 	if (fullscreen)
 	{
 		//set screen resolution
@@ -62,6 +68,10 @@ int Controller::QueryVideoMode(int x, int y, int bpp, int fullscreen)
 	}
 	Surface->DesiredBpp = bpp;
 	Surface->SavedBpp = DefaultDepth(Surface->display, Surface->screenNr);
+	if (bpp == Surface->SavedBpp)
+	{
+		Surface->flags |= CFLAG_EXACTBPP;
+	}
 	Surface->window = XCreateSimpleWindow ( Surface->display,
 											RootWindow ( Surface->display, Surface->screenNr ),
 											0, 0, x, y, borderSize,
@@ -78,6 +88,7 @@ int Controller::QueryVideoMode(int x, int y, int bpp, int fullscreen)
 	{
 		//call WM for parameters
 	}
+	Surface->gc = XCreateGC(Surface->display, Surface->window, 0, NULL);
 	XSelectInput(Surface->display,Surface->window,  ExposureMask |
 													ButtonPressMask	|
 													ButtonReleaseMask |
@@ -91,14 +102,67 @@ int Controller::QueryVideoMode(int x, int y, int bpp, int fullscreen)
 
 	XFlush(Surface->display);
 
-	Surface->pixelsBufferSize = x * y * bpp / 8;
-	Surface->pixels = wmalloc(Surface->pixelsBufferSize);
+	Surface->pixelsBufferSize = x * y * Surface->DesiredBpp / 8;
+	Surface->pixels = (char *) wmalloc(Surface->pixelsBufferSize);
 	SetVideoBuffer(Surface->pixels);
 	gameconf.grmode.videobuff = (unsigned char *)Surface->pixels;
 	gameconf.grmode.flags |= DISPLAYFLAGS_WINDOWACTIVE;
-	Surface->palette = (unsigned char *)wmalloc(256 * 4);
+	Surface->palette = (uint8_t *)wmalloc(256 * 4);
 	memset(Surface->palette, 0, 256 * 4);
-	return(1 + (Surface->SavedBpp != bpp) );
+
+	Surface->XpixelsBufferSize = x * y * 4;
+	if (Surface->flags & CFLAG_EXACTBPP)
+		Surface->Xpixels = Surface->pixels;
+	else
+	{
+		Surface->Xpixels = (char *) wmalloc(Surface->XpixelsBufferSize);
+		printf("Launching in emulated mode %dx%dx%d\n", x, y, Surface->SavedBpp);
+	}
+	Surface->Ximage = XCreateImage( Surface->display, xVisual, Surface->SavedBpp,
+									ZPixmap, 0, Surface->Xpixels,
+									x, y, 32, 0);
+	for (int i =0 ;i<Surface->XpixelsBufferSize;i++)
+		Surface->Xpixels[i] = myrand(0,255);
+	return(1 + ((Surface->flags & CFLAG_EXACTBPP) != CFLAG_EXACTBPP));
+}
+//===========================================
+void Controller::QuitVideoMode(void)
+{
+	if (Surface->display)
+	{
+		if (Surface->palette)
+		{
+			wfree(Surface->palette);
+			Surface->palette = NULL;
+		}
+		if (Surface->FullScreen)
+		{
+			SetVideoMode<XF86VidModeModeInfo *>(Surface->SavedWidth,Surface->SavedHeight);
+		}
+		Surface->Xpixels = NULL;
+		if (Surface->flags & CFLAG_EXACTBPP)
+		{
+			Surface->pixels = NULL;
+		}
+		if (Surface->Ximage)
+		{
+			XDestroyImage(Surface->Ximage);		//also this function deallocate XImage->data aka Surface->Xpixels
+												// on 8 bpp this equals with Surface->pixels
+			Surface->Ximage = NULL;
+		}
+		if (Surface->pixels)
+		{
+			wfree(Surface->pixels);
+			Surface->pixels = NULL;
+		}
+		if (Surface->gc)
+		{
+			XFreeGC(Surface->display, Surface->gc);
+			Surface->gc = NULL;
+		}
+		XCloseDisplay(Surface->display);
+		Surface->display = NULL;
+	}
 }
 //===========================================
 int Controller::ModifyVideoMode(int x, int y, int bpp, int fullscreen, unsigned char *palette)
@@ -110,8 +174,18 @@ int Controller::ModifyVideoMode(int x, int y, int bpp, int fullscreen, unsigned 
 void Controller::UpdateScreenRegions(int nrregions,SCREEN_REGION regions[])
 {
 	int nodraw = 1;
-	//...
-	//...
+	mytimer.CallTimer(MYTIMER_SINCHRONMODE);
+	if (gameconf.grmode.flags & DISPLAYFLAGS_WINDOWACTIVE)
+	{
+		for (int i=0;i<nrregions;i++)
+		{
+    		XPutImage(Surface->display, Surface->window, Surface->gc, Surface->Ximage,
+                      regions[i].x, regions[i].y, regions[i].x, regions[i].y,
+                      regions[i].w,regions[i].h);
+		}
+		nodraw = 0;
+		XFlush(Surface->display);
+	}
 	if (nodraw || gameconf.speedconf.cputhrottling)
 		usleep(4000);
 }
@@ -199,29 +273,6 @@ void Controller::KeyPressRefresh(void)
 {
 }
 //===========================================
-void Controller::QuitVideoMode(void)
-{
-	if (Surface->display)
-	{
-		if (Surface->pixels)
-		{
-			wfree(Surface->pixels);
-			Surface->pixels = NULL;
-		}
-		if (Surface->palette)
-		{
-			wfree(Surface->palette);
-			Surface->palette = NULL;
-		}
-		if (Surface->FullScreen)
-		{
-			SetVideoMode<XF86VidModeModeInfo *>(Surface->SavedWidth,Surface->SavedHeight);
-		}
-		XCloseDisplay(Surface->display);
-		Surface->display = NULL;
-	}
-}
-//===========================================
 int  Controller::EventsLoop(void)			//return 1 - on quit
 {
 	int UpperKeysActive;
@@ -297,14 +348,14 @@ int  Controller::EventsLoop(void)			//return 1 - on quit
 template <typename T>
 bool Controller::SetVideoMode(int x, int y)
 {
-    int modeCount;
-    T *modes;
-    T findMode = NULL;
-	bool ok = false;
-    if (XF86VidModeGetAllModeLines(Surface->display, Surface->screenNr, &modeCount, &modes))
-    {
-        for (int i = 0; i < modeCount; i++)
-        {
+	int modeCount;
+	T *modes;
+	T findMode = NULL;
+    bool ok = false;
+	if (XF86VidModeGetAllModeLines(Surface->display, Surface->screenNr, &modeCount, &modes))
+	{
+    	for (int i = 0; i < modeCount; i++)
+		{
             if (x == modes[i]->hdisplay && y == modes[i]->vdisplay)
 				findMode = modes[i];
         }
@@ -314,16 +365,16 @@ bool Controller::SetVideoMode(int x, int y)
 			findMode = NULL;
 			ok = true;
 		}
-    }
-    if (findMode)
-    {
+	}
+	if (findMode)
+	{
 		ok = XF86VidModeSwitchToMode(Surface->display, Surface->screenNr, findMode);
 		if (ok)
 		{
 			XF86VidModeSetViewPort(Surface->display, Surface->screenNr, 0, 0);
 			XFlush(Surface->display);
 		}
-    }
+	}
 	XFree(modes);
 	return(ok);
 }

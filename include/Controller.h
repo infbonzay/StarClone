@@ -13,18 +13,27 @@
 
 #endif
 #ifdef WITHX
+
 	#include "xlib/xlibkey.h"
 
-	typedef struct Controller_Surface
+	#define	CFLAG_EXACTBPP	0x01
+
+	typedef struct _Controller_Surface
 	{
 		Display 	*display;
 		int			screenNr;
 		Window		window;
 		bool		FullScreen;
-		void		*pixels;
-		int			pixelsBufferSize;
+		char		*pixels;
 		uint8_t		*palette;
-		uint8_t		*Xpixels;
+		int			pixelsBufferSize;
+
+		XImage		*Ximage;
+		GC			gc;
+		char		*Xpixels;
+		int			XpixelsBufferSize;
+
+		uint8_t		flags;
 
 		XEvent		event;
 
@@ -35,7 +44,7 @@
 		int			SavedBpp;
 	} Controller_Surface;
 
-	typedef struct SCREEN_REGION
+	typedef struct _SCREEN_REGION
 	{
 		int16_t  x, y;
 		uint16_t w, h;

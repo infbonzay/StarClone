@@ -168,7 +168,9 @@ int main(int c, char **parm, char **env)
 				exit(-1);
 			}
 			if (i == 2)
+			{
 				gameconf.grmode.flags |= DISPLAYFLAGS_EMULATIONMODE;
+			}
 			highMouse->SetPos(gameconf.grmode.x / 2, gameconf.grmode.y / 2);
 			videook = 1;
 		}
