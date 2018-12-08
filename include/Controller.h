@@ -24,13 +24,13 @@
 		int			screenNr;
 		Window		window;
 		bool		FullScreen;
-		char		*pixels;
+		uint8_t		*pixels;
 		uint8_t		*palette;
 		int			pixelsBufferSize;
 
 		XImage		*Ximage;
 		GC			gc;
-		char		*Xpixels;
+		uint8_t		*Xpixels;
 		int			XpixelsBufferSize;
 
 		uint8_t		flags;

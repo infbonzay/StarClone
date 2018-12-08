@@ -103,7 +103,7 @@ int Controller::QueryVideoMode(int x, int y, int bpp, int fullscreen)
 	XFlush(Surface->display);
 
 	Surface->pixelsBufferSize = x * y * Surface->DesiredBpp / 8;
-	Surface->pixels = (char *) wmalloc(Surface->pixelsBufferSize);
+	Surface->pixels = (uint8_t *) wmalloc(Surface->pixelsBufferSize);
 	SetVideoBuffer(Surface->pixels);
 	gameconf.grmode.videobuff = (unsigned char *)Surface->pixels;
 	gameconf.grmode.flags |= DISPLAYFLAGS_WINDOWACTIVE;
@@ -115,14 +115,16 @@ int Controller::QueryVideoMode(int x, int y, int bpp, int fullscreen)
 		Surface->Xpixels = Surface->pixels;
 	else
 	{
-		Surface->Xpixels = (char *) wmalloc(Surface->XpixelsBufferSize);
+		Surface->Xpixels = (uint8_t *) wmalloc(Surface->XpixelsBufferSize);
 		printf("Launching in emulated mode %dx%dx%d\n", x, y, Surface->SavedBpp);
 	}
 	Surface->Ximage = XCreateImage( Surface->display, xVisual, Surface->SavedBpp,
 									ZPixmap, 0, Surface->Xpixels,
 									x, y, 32, 0);
+
 	for (int i =0 ;i<Surface->XpixelsBufferSize;i++)
 		Surface->Xpixels[i] = myrand(0,255);
+
 	return(1 + ((Surface->flags & CFLAG_EXACTBPP) != CFLAG_EXACTBPP));
 }
 //===========================================
@@ -173,15 +175,16 @@ int Controller::ModifyVideoMode(int x, int y, int bpp, int fullscreen, unsigned 
 //===========================================
 void Controller::UpdateScreenRegions(int nrregions,SCREEN_REGION regions[])
 {
-	int nodraw = 1;
+	int i, nodraw = 1;
 	mytimer.CallTimer(MYTIMER_SINCHRONMODE);
 	if (gameconf.grmode.flags & DISPLAYFLAGS_WINDOWACTIVE)
 	{
-		for (int i=0;i<nrregions;i++)
+		for (i = 0; i < nrregions; i++)
 		{
-    		XPutImage(Surface->display, Surface->window, Surface->gc, Surface->Ximage,
+			TransformPixels(regions[i].x, regions[i].y, regions[i].w, regions[i].h);
+			XPutImage(Surface->display, Surface->window, Surface->gc, Surface->Ximage,
                       regions[i].x, regions[i].y, regions[i].x, regions[i].y,
-                      regions[i].w,regions[i].h);
+                      regions[i].w, regions[i].h);
 		}
 		nodraw = 0;
 		XFlush(Surface->display);
@@ -379,3 +382,39 @@ bool Controller::SetVideoMode(int x, int y)
 	return(ok);
 }
 //===========================================
+int  Controller::TransformPixels(int x, int y, int sizex, int sizey)
+{
+	switch (Surface->SavedBpp)
+	{
+	case 8:
+		return;
+	case 24:
+		Transform32(x, y, sizex, sizey);
+		break;
+	default:
+		DEBUGMESSCR("Transformation from %d bpp to %d bpp not implemented\n", Surface->DesiredBpp, Surface->SavedBpp);
+		return;
+	}	
+}
+//===========================================
+int  Controller::Transform32(int x, int y, int sizex, int sizey)
+{
+	int i, j, pixel;
+	int xlast = x + sizex;
+	int ylast = y + sizey;
+	uint32_t *palette4bytes = (uint32_t *)Surface->palette;
+	uint32_t *Xbuf = (uint32_t *)Surface->Xpixels;
+	Xbuf += y * Surface->XImage->pixelsperline + x;
+	for (i = y;i < ylast; i++)
+	{
+		for (j = x;j < xlast; j++)
+		{
+			pixel = palette4bytes[Surface->pixels[i]];
+			*Xbuf++ = pixel;
+		}
+		Xbuf += Surface->XImage->pixelsperline - x;
+	}
+}
+//===========================================
+
+
