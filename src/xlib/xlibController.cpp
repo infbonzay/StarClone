@@ -148,6 +148,7 @@ void Controller::QuitVideoMode(void)
 {
 	if (Surface->display)
 	{
+		ShowCursor();
 		if (Surface->palette)
 		{
 			wfree(Surface->palette);
@@ -425,28 +426,25 @@ void Controller::Transform32(int x, int y, int sizex, int sizey)
 //===========================================
 void Controller::HideCursor(void)
 {
-	return;
+	//return;
 	static char noData[] = { 0,0,0,0,0,0,0,0 };
 	Pixmap bitmapNoData;
 	Cursor invisibleCursor;
-	XColor black {0, 0, 0};
+	XColor black;
 
 	bitmapNoData = XCreateBitmapFromData(Surface->display, Surface->window, noData, 8, 8);
-	invisibleCursor = XCreatePixmapCursor(Surface->display, bitmapNoData, bitmapNoData, 
+	Surface->noCursor = XCreatePixmapCursor(Surface->display, bitmapNoData, bitmapNoData, 
                                      	  &black, &black, 0, 0);
-	XDefineCursor(Surface->display, Surface->window, invisibleCursor);	
-	XFreeCursor(Surface->display, invisibleCursor);
+	XDefineCursor(Surface->display, Surface->window, Surface->noCursor);	
 	XFreePixmap(Surface->display, bitmapNoData);
 }
 //===========================================
 void Controller::ShowCursor(void)
 {
-	return;
-	Cursor cursor;
-	cursor = XCreateFontCursor(Surface->display, XC_left_ptr);
-	XDefineCursor(Surface->display, Surface->window, cursor);
-	XFreeCursor(Surface->display, cursor);
-	XUndefineCursor(Surface->display, Surface->window);
-	sleep(5);
+	if (Surface->noCursor)
+	{
+		XFreeCursor(Surface->display, Surface->noCursor);
+		Surface->noCursor = (Cursor) 0;
+	}
 }
 //===========================================

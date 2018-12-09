@@ -30,10 +30,10 @@
 		int			pixelsBufferSize;
 
 		XImage		*Ximage;
+		Cursor		noCursor;
 		GC			gc;
 		uint8_t		*Xpixels;
 		int			XpixelsBufferSize;
-
 		uint8_t		flags;
 
 		XEvent		event;
