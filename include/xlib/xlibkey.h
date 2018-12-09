@@ -44,8 +44,8 @@
 #define NUMB1KEY  	'1'
 #define NUMB2KEY  	'2'
 
-#define WMLEFTKEY  	0x01
-#define WMRIGHTKEY 	0x03
+#define WMLEFTKEY  	0x1
+#define WMRIGHTKEY 	0x4
 
 #define KEYPRESSEDTABLE(table,scancode) (toupper((scancode) & 0xff)+1)
 #define KEYPRESSED 1

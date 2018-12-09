@@ -10,7 +10,7 @@ int LowMouse::Init(void)
 //==========================
 int LowMouse::GetButtonStatus(void)
 {
-	return(SDL_GetMouseState(NULL, NULL));
+//	return(SDL_GetMouseState(NULL, NULL));
 }
 //==========================
 void LowMouse::GetPos(void)
