@@ -148,7 +148,6 @@ private:
 
 };
 
-void MouseMoveEvent(int x, int y);
 void MouseClickEvent(bool type, int buttons);
 
 class DestCursor
@@ -168,5 +167,10 @@ public:
 	void		ExecuteScript();
 
 };
+
+extern HighMouse	*highMouse;
+extern DestCursor	*destCursor;
+
+
 #endif /*	 _MOUSE_W	*/
 

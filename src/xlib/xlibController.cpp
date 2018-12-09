@@ -4,7 +4,6 @@
 #include "const.h"
 #include "mytime.h"
 #include "version.hxx"
-#include "LowMouse.h"
 #include "rand.h"
 #include "Controller.h"
 
@@ -294,15 +293,21 @@ int  Controller::EventsLoop(void)			//return 1 - on quit
 			break;
 		case Expose:
 			break;
+		case MotionNotify:
+			highMouse->PosX = Surface->event.xmotion.x;
+			highMouse->PosY = Surface->event.xmotion.y;
+			if (highMouse->MoveFunc)
+				(*highMouse->MoveFunc)(Surface->event.xmotion.x,Surface->event.xmotion.y);
+			break;
 		case ButtonPress:
 			buttons = 1 << (Surface->event.xbutton.button - 1);
-			if (lowMouse.ClickEventFunc)
-				(*lowMouse.ClickEventFunc)(true, buttons);
+			if (highMouse->ClickFunc)
+				(*highMouse->ClickFunc)(true, buttons);
 			break;
 		case ButtonRelease:
 			buttons = 1 << (Surface->event.xbutton.button - 1);
-			if (lowMouse.ClickEventFunc)
-				(*lowMouse.ClickEventFunc)(false, buttons);
+			if (highMouse->ClickFunc)
+				(*highMouse->ClickFunc)(false, buttons);
 			RefreshAtEnd = 1;
 			break;
 		case KeyPress:
@@ -335,10 +340,6 @@ int  Controller::EventsLoop(void)			//return 1 - on quit
 			break;
 		case KeyRelease:
 			KeyActive = 0;
-			break;
-		case MotionNotify:
-			if (lowMouse.MoveEventFunc)
-				(*lowMouse.MoveEventFunc)(Surface->event.xmotion.x,Surface->event.xmotion.y);
 			break;
 		default:
 			break;

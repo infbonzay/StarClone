@@ -1,9 +1,10 @@
 #ifndef _CONTROLLER_W
 
+#define _CONTROLLER_W
+
 #include <stdint.h>
 #include "mycycle.h"
-
-#define _CONTROLLER_W
+#include "mouse.h"
 
 #ifdef WITHSDL
 	#include "sdl/keysdl.h"

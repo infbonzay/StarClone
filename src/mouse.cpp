@@ -16,9 +16,10 @@
 #include "putobj.h"
 #include "objinfo.h"
 #include "key.h"
-#include "LowMouse.h"
 #include "mouse.h"
 
+HighMouse	*highMouse;
+DestCursor	*destCursor;
 //==============================
 HighMouse::HighMouse(void)
 {
@@ -42,16 +43,12 @@ HighMouse::HighMouse(void)
 	Construct = { 0, 0, 0, 0 };
 	MouseOnObjClear();
 	ClearCursors();
-	lowMouse.Init();
-	lowMouse.LowInMoveEvent(&MouseMoveEvent);
-	lowMouse.LowInClickEvent(&MouseClickEvent);
-
+	InstallClickEvent(&MouseClickEvent);		
 }
 //==============================
 HighMouse::~HighMouse(void)
 {
-	lowMouse.LowUnClickEvent();
-	lowMouse.LowUnMoveEvent();
+	UninstallClickEvent();		
 }
 //==============================
 int HighMouse::LoadOneCursor(char *filename, int typemouse)
@@ -310,10 +307,6 @@ void HighMouse::FixRestrict(int *x, int *y)
 	}
 	PosX = *x;
 	PosY = *y;
-	if (change)
-	{
-		lowMouse.SetPos(PosX, PosY);
-	}
 }
 //==========================================
 void HighMouse::InstallMoveEvent(MOUSEMOVEFUNC *eventFunc)
@@ -344,13 +337,6 @@ void HighMouse::InstallDblClickEvent(MOUSEDBLCLICKFUNC *eventFunc)
 void HighMouse::UninstallDblClickEvent(void)
 {
 	DblClickFunc = NULL;
-}
-//==========================
-void HighMouse::SetPos(int x, int y)
-{
-	lowMouse.SetPos(x, y);
-	PosX = x;
-	PosY = y;
 }
 //==========================
 void HighMouse::DoRightClickAction(OBJ *destobj, int xm, int ym, int rightclick)
@@ -679,14 +665,12 @@ void HighMouse::RefreshMouseType(int xk, int yk)
 		}
 	}
 }
-
-
-
-
-
-
-
-
+//==========================================
+void HighMouse::SetPos(int x, int y)
+{
+	PosX = x;
+	PosY = y;
+}
 //==========================================
 DestCursor::DestCursor(void)
 {
@@ -741,30 +725,6 @@ void DestCursor::DrawDestinationCursor(void)
 		MouseDestImg->DrawImage();
 }
 //==========================================
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//==========================================
-void MouseMoveEvent(int x, int y)
-{
-	highMouse->PosX = x;
-	highMouse->PosY = y;
-	if (highMouse->MoveFunc)
-		(highMouse->MoveFunc)(x, y);
-}
-//==========================================
 void MouseClickEvent(bool type, int buttons)
 {
 	static long long prevtimer = 0;
@@ -776,9 +736,6 @@ void MouseClickEvent(bool type, int buttons)
 	{
 		highMouse->MouseButtons &= ~buttons;
 	}
-	if (highMouse->ClickFunc)
-		(*highMouse->ClickFunc)(type, buttons);
-
 	if (type && buttons & WMLEFTKEY)
 	{
 		if (tick_timer - prevtimer <= MOUSEDBLCLICKTIME)
@@ -794,3 +751,4 @@ void MouseClickEvent(bool type, int buttons)
 			(*highMouse->DblClickFunc)();
 	}
 }
+

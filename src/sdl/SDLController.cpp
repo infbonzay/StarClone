@@ -7,8 +7,6 @@
 #include "mytime.h"
 #include "version.hxx"
 #include "keysdl.h"
-#include "LowMouse.h"
-
 #include "Controller.h"
 
 Controller mainController;
@@ -202,18 +200,20 @@ int  Controller::EventsLoop(void)			//return 1 - on quit
 		switch (event.type)
 		{
 		case SDL_MOUSEMOTION:
-			if (lowMouse.MoveEventFunc)
-				(*lowMouse.MoveEventFunc)(event.motion.x, event.motion.y);
+			highMouse->PosX = event.motion.x;
+			highMouse->PosY = event.motion.y;
+			if (highMouse->MoveFunc)
+				(*highMouse->MoveFunc)(event.motion.x, event.motion.y);
 			break;
 		case SDL_MOUSEBUTTONDOWN:
 			buttons = 1 << (event.button.button - 1);
-			if (lowMouse.ClickEventFunc)
-				(*lowMouse.ClickEventFunc)(true, buttons);
+			if (highMouse->ClickFunc)
+				(*highMouse->ClickFunc)(true, buttons);
 			break;
 		case SDL_MOUSEBUTTONUP:
 			buttons = 1 << (event.button.button - 1);
-			if (lowMouse.ClickEventFunc)
-				(*lowMouse.ClickEventFunc)(false, buttons);
+			if (highMouse->ClickFunc)
+				(*highMouse->ClickFunc)(false, buttons);
 			RefreshAtEnd = 1;
 			break;
 		case SDL_KEYDOWN:

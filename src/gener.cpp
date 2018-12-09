@@ -73,8 +73,6 @@ FORCE_SLOTS 	force_slots;
 NETW_PLAY		netplay;
 MENUDRAW		showedmenu;
 int 			menustatus, startmission, campaign_id;
-HighMouse 		*highMouse;
-DestCursor		*destCursor;
 ScreenDraw		*screenDraw;
 RegenObjMap		*regenObjMap;
 
