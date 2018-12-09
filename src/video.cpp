@@ -172,7 +172,7 @@ void ShowPreviewBuff(char *cmpbuf, int sizebuf, int esckeyaction)
 			{
 				cmpbuf[i] = 0;
 				searchcmd = 0;
-				//parce cmd
+				//parse cmd
 				for (j = 0;j < sizeof(cmpgn_cmd) / sizeof(char *);j++)
 				{
 					if (!strncmp(&cmpbuf[from], cmpgn_cmd[j], strlen(cmpgn_cmd[j])))
@@ -278,7 +278,7 @@ void ShowPreviewBuff(char *cmpbuf, int sizebuf, int esckeyaction)
 				{
 					DEBUGMESSCR("unknown command [%s]\n", &cmpbuf[from]);
 				}
-				from = i + 2;//now we can parce between commands
+				from = i + 2;//now we can parse between commands
 			}
 			else
 			{

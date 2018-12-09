@@ -213,8 +213,8 @@ int main(int c, char **parm, char **env)
 	}
 	loadlang();
 	fflush(stdout);
-	printf("parce units table ...\n");
-	printf("	  %d units parced\n", createmantable());
+	printf("parse units table ...\n");
+	printf("	  %d units parsed\n", createmantable());
 	err = loadweapons();
 	if (err < 0)
 	{
@@ -1689,7 +1689,7 @@ int IfTimeForTrigger(struct mapinfo *info, int *prevgameticks)
 		//		if (gamestatus == NOGAMESTATUS)
 		if (!TRIG_stopalltriggers)
 		{
-			Triggers_Parce(info, info->TRIGS_NR, info->TRIGS, 1000 / 2);
+			Triggers_Parse(info, info->TRIGS_NR, info->TRIGS, 1000 / 2);
 		}
 		CalcLeaderBoards(&map);
 		return(1);

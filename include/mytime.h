@@ -49,7 +49,7 @@ public:
 	void ClearMyTimerFunc(void);
 	TIMER_TICK GetCurrentTimerTick(void);
 	void ClearGameTimer(void);
-	int	 GetTimeParced(void);
+	int	 GetTimeParsed(void);
 	int	 GetCurrentGameTimeTick(void);
 	int	 GetCurrentGameTime(void);
 	TICKCOUNTER *CreateTickCounter(void);

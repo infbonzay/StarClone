@@ -223,7 +223,7 @@ int	 Triggers_GetPause(void);
 void Triggers_SetPause(int pauseval);
 
 void First_Triggers_Prepare(struct mapinfo *info,int cnttrg,MAP_TRIGS *trigs);
-void Triggers_Parce(struct mapinfo *info,int cnttrg,MAP_TRIGS *trigs,int ticks);
+void Triggers_Parse(struct mapinfo *info,int cnttrg,MAP_TRIGS *trigs,int ticks);
 void Remove_Triggers(struct mapinfo *info);
 
 int	 AllGroups_Prepare(struct mapinfo *info,MAP_TRIGS *temptrg);

@@ -120,7 +120,7 @@ void TIMER::SetTickTimerFrequency(int microsec)
 }
 //===========================================
 //return value in seconds
-int TIMER::GetTimeParced(void)
+int TIMER::GetTimeParsed(void)
 {
 	return((tick_current - begintime) / TICKS_RES);
 }

@@ -49,7 +49,7 @@ void First_Briefing_Prepare(struct mapinfo *info, int e, char *path, PCX *pcxs)
 	brief_counter = mytimer.CreateTickCounter();
 }
 //=================================================
-void Briefing_Parce(struct mapinfo *info, MENUSTR *allmenus, int deltatick)
+void Briefing_Parse(struct mapinfo *info, MENUSTR *allmenus, int deltatick)
 {
 	int pause;
 	TIMER_TICK tick;
@@ -114,7 +114,7 @@ int BCondition_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int actiononplayers,MENU
 //=================================================
 int BAction_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int actiononplayers,int condnr,MENUSTR *allmenus)
 {
-	int err,i,triggcnt,triggset,needbreakparce=0;
+	int err,i,triggcnt,triggset,needbreakparse=0;
 	int sx,sy,maxysymbsize,maxlines,fontnr,playtime;
 	int slotnr,waittime,textid,waveid,maxlinepixels,deltapaused;
 	char *txtstr;
@@ -142,7 +142,7 @@ int BAction_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int actiononplayers,int con
 			triggset = 1;
 			waittime = temptrg->action[i].pauseatime;
 			Briefing_SetPause(-1, waittime);
-			needbreakparce = 1;
+			needbreakparse = 1;
 			break;
 		case BTRG_ACTIONTYPE_PLAYWAV://2
 			waveid = temptrg->action[i].waveID - 1;
@@ -160,21 +160,9 @@ int BAction_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int actiononplayers,int con
 				Briefing_SetPause(-1, brief_slots[slotnr].talkingtime);
 			}
 			triggset = 1;
-			needbreakparce = 1;
+			needbreakparse = 1;
 			break;
 		case BTRG_ACTIONTYPE_DISPLAYBRIEFTEXT://3
-/*					textid=temptrg->action[i].stringID-1;
-					txtstr=getmapSTR(info,textid);
-					waittime=temptrg->action[i].pauseatime;
-					Briefing_SetPause(-1,waittime);
-					setmenuitem_VISIBLED(allmenus,brief_delta+BRIEFTEXT,FALSE);
-					setmenuitem_VISIBLED(allmenus,brief_delta+18,TRUE);
-					changetextitem(allmenus,brief_delta+18,txtstr);
-					Play_sfxdata_id(NULL,SFXDATA_TRANSMISSION,1,0);
-					needbreakparce=1;
-					triggset=1;
-					break;
-*/
 			textid = temptrg->action[i].stringID - 1;
 			txtstr = getmapSTR(info, textid);
 			waittime = temptrg->action[i].pauseatime;
@@ -186,7 +174,7 @@ int BAction_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int actiononplayers,int con
 			changetextitem(allmenus, brief_delta + BRIEFTEXT, txtstr);
 			Play_sfxdata_id(NULL, SFXDATA_TRANSMISSION, 1, 0);
 			triggset = 1;
-			needbreakparce = 1;
+			needbreakparse = 1;
 			fontnr = allmenus->menu[brief_delta + BRIEFTEXT].fontnr;
 			sx = allmenus->menu[brief_delta + BRIEFTEXT].hotxsize;
 			sy = allmenus->menu[brief_delta + BRIEFTEXT].hotysize;
@@ -230,7 +218,7 @@ int BAction_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int actiononplayers,int con
 			brief_slots[slotnr].talkingtime = temptrg->action[i].pauseatime;
 			Briefing_SetPause(slotnr, brief_slots[slotnr].talkingtime);
 			triggset = 1;
-			needbreakparce = 1;
+			needbreakparse = 1;
 			break;
 		case BTRG_ACTIONTYPE_TRANSMISSION://8
 			deltapaused = temptrg->action[i].rescount;
@@ -263,7 +251,7 @@ int BAction_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int actiononplayers,int con
 			}
 			strcat(FULLFILENAME, getmapSTR(info, waveid));
 			soundid = loadandplaywav(info->mpqid, NULL, FULLFILENAME, 1, 0);
-			if (soundid >= 0)
+			//if (soundid >= 0)
 			{
 				playtime = temptrg->action[i].pauseatime;
 				(*comparefunc)(&playtime, deltapaused);
@@ -272,7 +260,7 @@ int BAction_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int actiononplayers,int con
 			}
 			//					printf("playtime = %d talkingtime = %d\n",playtime,brief_slots[slotnr].talkingtime);
 			triggset = 1;
-			needbreakparce = 1;
+			needbreakparse = 1;
 			break;
 		case BTRG_ACTIONTYPE_UNUSED://9
 			triggset = 1;
@@ -287,7 +275,7 @@ int BAction_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int actiononplayers,int con
 			temptrg->action[i].TriggerEntryFlags |= TRIGGERENTRYFLAG_EXECUTED;
 			triggcnt += triggset;
 		}
-		if (needbreakparce)
+		if (needbreakparse)
 			return(0);
 	}
 	return(triggcnt==TRIG_MAX_ACTIONS);

@@ -45,7 +45,7 @@ void ScreenDraw::TopMessage(void)
 		o = (OBJ *)SelectedUnits.GetElem(0, NULL);
 	}
 	frames++;
-	cursec = mytimer.GetTimeParced();
+	cursec = mytimer.GetTimeParsed();
 	if (cursec != prevsec)
 	{
 		prevsec = cursec;

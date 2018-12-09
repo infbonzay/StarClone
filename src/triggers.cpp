@@ -472,7 +472,7 @@ void First_Triggers_Prepare(mapinfo *info, int cnttrg, MAP_TRIGS *trigs)
 	Init_Triggers_Variables(cnttrg);
 }
 //=================================================
-void Triggers_Parce(mapinfo *info, int cnttrg, MAP_TRIGS *trigs, int deltatick)
+void Triggers_Parse(mapinfo *info, int cnttrg, MAP_TRIGS *trigs, int deltatick)
 {
 	int i, j, mask;
 	MAP_TRIGS	*temptrg;
@@ -509,7 +509,7 @@ void Triggers_Parce(mapinfo *info, int cnttrg, MAP_TRIGS *trigs, int deltatick)
 				if (temptrg->groupinfo.playersmask & mask)
 				{
 					if (Condition_Prepare(info, temptrg, i, j, mask, deltatick))
-						temptrg->groupinfo.playersmask &= ~mask;//prevent enter again if all triggers parced
+						temptrg->groupinfo.playersmask &= ~mask;//prevent enter again if all triggers parsed
 					if (TRIG_quit)
 					{
 						return;

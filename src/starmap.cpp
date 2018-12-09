@@ -1164,7 +1164,7 @@ int get_forces(struct mapinfo *info, int gametype)
 		if (!found)
 			force_array[forces++] = info->pl_force.force_nr[i];
 	}
-	for (j = 0;j < MAX_PLFORCES;j++)				//parce all forces slots
+	for (j = 0;j < MAX_PLFORCES;j++)				//parse all forces slots
 	{
 		nrpl = 0;
 		for (i = 0;i < PLAYEDPLAYERS;i++)

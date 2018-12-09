@@ -88,7 +88,7 @@ MENUSTR *LoadDialogBin(const char *dialogbinfilename,int dialog_opt,int defaultf
 MENUSTR *LoadDialogBin(const char *dialogbinfilename, int dialog_opt, int addforreserv, int defaultfontnr)
 {
 	int i, buttoncolor, textcolor, radiocolor, checkboxcolor, horizbarcolor, listcolor, decorselecteditem;
-	int lastelem = 0, elemnr = 0, parcedbuttons = 0, firstradioelem = -1, firsttextitem = -1, firstlistitem = -1;
+	int lastelem = 0, elemnr = 0, parsedbuttons = 0, firstradioelem = -1, firsttextitem = -1, firstlistitem = -1;
 	int maxelem, type, flags, textxoffset, textyoffset, maxsymbx, maxsymby, groupbuttons, buttontype;
 	int xmin, ymin, xsize, ysize, xwin, ywin, xwinsize, ywinsize, strxlen;
 	int fontnr;
@@ -200,13 +200,13 @@ MENUSTR *LoadDialogBin(const char *dialogbinfilename, int dialog_opt, int addfor
 		textxoffset = (xsize - strxlen) / 2;
 		if (groupbuttons)
 		{
-			if (parcedbuttons == 0)
+			if (parsedbuttons == 0)
 				buttontype = BUTTONTYPELEFT;
 			else
 				if (groupbuttons == 2)
 					buttontype = BUTTONTYPERIGHT;
 				else
-					if (parcedbuttons != groupbuttons - 1)
+					if (parsedbuttons != groupbuttons - 1)
 						buttontype = BUTTONTYPEMIDDLE;
 					else
 						buttontype = BUTTONTYPERIGHT;
@@ -247,7 +247,7 @@ MENUSTR *LoadDialogBin(const char *dialogbinfilename, int dialog_opt, int addfor
 			//in other menus we have predefined pictures with drawed buttons
 			if (dialog_opt&DIALOGBIN_GAMEDIALOGS)
 				selectdecorobj(menu, elemnr, GDECORBUTTON1);
-			parcedbuttons++;
+			parsedbuttons++;
 			break;
 		case DIALOGBIN_BUTTON:
 			addbuttonitem(menu, elemnr, xmin, ymin, xsize, ysize, textyoffset,
@@ -258,7 +258,7 @@ MENUSTR *LoadDialogBin(const char *dialogbinfilename, int dialog_opt, int addfor
 			//in other menus we have predefined pictures with drawed buttons
 			if (dialog_opt&DIALOGBIN_GAMEDIALOGS)
 				selectdecorobj(menu, elemnr, GDECORBUTTON1);
-			parcedbuttons++;
+			parsedbuttons++;
 			break;
 		case DIALOGBIN_LABELLEFT:
 			addtextitem(menu, elemnr, ISLABELLEFT, xmin, ymin, xsize + 1, ysize, 0, 0, text, fontnr, maxsymby, textcolor);

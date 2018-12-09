@@ -1045,7 +1045,7 @@ int menukeys(MENUSTR *allmenus, int *pressed, int *needredraw)
 	*pressed = NOSELECTMENUBAR;
 	if (mainController.KeyActive)
 	{
-		if (mainController.KeyActive == TABKEY) //need to parce all elements to need next active and decorated and responce to mouse&key events
+		if (mainController.KeyActive == TABKEY) //need to parse all elements to need next active and decorated and responce to mouse&key events
 		{
 			for (i = allmenus->defaultbutton + 1;i < allmenus->elements;i++)
 				if (!menuitem_ISDISABLED(allmenus, i) && menuitem_ISVISIBLED(allmenus, i))
@@ -1087,7 +1087,7 @@ int menukeys(MENUSTR *allmenus, int *pressed, int *needredraw)
 						prevkey = 0;
 				}
 				break;
-			case TABKEY: //need to parce all elements to need next active and decorated and responce to mouse&key events
+			case TABKEY: //need to parse all elements to need next active and decorated and responce to mouse&key events
 				for (i = allmenus->defaultbutton + 1;i < allmenus->elements;i++)
 					if (!menuitem_ISDISABLED(allmenus, i) && menuitem_ISVISIBLED(allmenus, i))
 						if (allmenus->menu[i].dialogbin_flags&DIALOGBIN_FLAGS_KEYMOUSERESPONDEVENTS)
@@ -1408,7 +1408,7 @@ void setbuttonflags(MENUSTR *allmenus, int nr, int flags)
 		DEBUGMESSCR("leak detected!\n");
 }
 //==========================================
-void parce_special_text(char *str, int len, int colors4, char buttoncolors[])
+void parse_special_text(char *str, int len, int colors4, char buttoncolors[])
 {
 	int xormask = 0, j;
 	for (j = 0;j < len;j++)
@@ -1463,7 +1463,7 @@ void addbuttonitem(MENUSTR *allmenus, int nr, int hotx, int hoty,
 	{
 		menuitem->item.button->menustr.text[i] = (char *)wmalloc(len + 1);
 		strcpy(menuitem->item.button->menustr.text[i], text);
-		parce_special_text(menuitem->item.button->menustr.text[i], len, colors4, BUTTONCOLORS[i]);
+		parse_special_text(menuitem->item.button->menustr.text[i], len, colors4, BUTTONCOLORS[i]);
 	}
 	if (menuitem->savedscrunderitem)
 	{
@@ -2058,7 +2058,7 @@ void addcheckboxitem(MENUSTR *allmenus, int nr, int hotx, int hoty, int hotsizex
 		{
 			menuitem->item.checkbox->textstr.text[i] = (char *)wmalloc(len + 1);
 			strcpy(menuitem->item.checkbox->textstr.text[i], textstr);
-			parce_special_text(menuitem->item.checkbox->textstr.text[i], len, colors4, BUTTONCOLORS[i]);
+			parse_special_text(menuitem->item.checkbox->textstr.text[i], len, colors4, BUTTONCOLORS[i]);
 		}
 
 	}
@@ -2175,7 +2175,7 @@ int addradiobuttonitem(MENUSTR *allmenus, int nr, int hotx, int hoty, int hotsiz
 		{
 			menuitem->item.radiobutton->textstr.text[i] = (char *)wmalloc(len + 1);
 			strcpy(menuitem->item.radiobutton->textstr.text[i], textstr);
-			parce_special_text(menuitem->item.radiobutton->textstr.text[i], len, colors4, BUTTONCOLORS[i]);
+			parse_special_text(menuitem->item.radiobutton->textstr.text[i], len, colors4, BUTTONCOLORS[i]);
 		}
 	}
 	if (menuitem->savedscrunderitem)
@@ -2629,9 +2629,9 @@ void addbuttontosmk(MENUSTR *allmenus, int nr, int xpos, int ypos, int smksizex,
 		menuitem->item.smkvideo->smkbutton->menustr.text[i] = (char *)wmalloc(len + 1);
 		strcpy(menuitem->item.smkvideo->smkbutton->menustr.text[i], text);
 		if (i == ITEMSHOW_DISABLED)
-			parce_special_text(menuitem->item.smkvideo->smkbutton->menustr.text[i], len, colors4, BUTTONCOLORS[i]);
+			parse_special_text(menuitem->item.smkvideo->smkbutton->menustr.text[i], len, colors4, BUTTONCOLORS[i]);
 		else
-			parce_special_text(menuitem->item.smkvideo->smkbutton->menustr.text[i], len2, colors4, BUTTONCOLORS[i]);
+			parse_special_text(menuitem->item.smkvideo->smkbutton->menustr.text[i], len2, colors4, BUTTONCOLORS[i]);
 	}
 	if (dialogbin_flags & DIALOGBIN_FLAGS_SMKBUTTON_HORIZLEFT)
 	{

@@ -1067,7 +1067,7 @@ int BriefingTriggersCheck(MENUSTR *allmenus, void *data)
 	{
 		menutimerupdate = 0;
 		info = (struct mapinfo *)data;
-		Briefing_Parce(info, allmenus, 1000 / (60 / TIMETOMAINMENUUPDATE));
+		Briefing_Parse(info, allmenus, 1000 / (60 / TIMETOMAINMENUUPDATE));
 	}
 	return(0);
 }
@@ -2867,7 +2867,7 @@ int getmapinfo(MENUSTR *allmenus, char *filename, int haveslots)
 	}
 	else
 	{
-		//need parce for error
+		//need parse for error
 		test_nrofpl = 0;
 		changetextitem(allmenus, 8, GLUALLSTR(GLUALL_TBL_ERRMAP));
 		setmenuitem_DISABLED(allmenus, 15, TRUE);

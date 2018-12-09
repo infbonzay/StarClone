@@ -43,7 +43,7 @@
 #define BTRG_ACTIONTYPE_UNUSED					9
 
 void First_Briefing_Prepare(struct mapinfo *info,int brief_menusdelta,char *path,PCX *framepcxs);
-void Briefing_Parce(struct mapinfo *info,struct MENUSTR *allmenus,int deltatick);
+void Briefing_Parse(struct mapinfo *info,struct MENUSTR *allmenus,int deltatick);
 void Remove_Briefing(struct mapinfo *info);
 
 int	 BCondition_Prepare(struct mapinfo *info,MAP_TRIGS *temptrg,int actiononplayers,struct MENUSTR *allmenus);
