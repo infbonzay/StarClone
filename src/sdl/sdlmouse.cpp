@@ -13,22 +13,22 @@ int LowMouse::GetButtonStatus(void)
 //	return(SDL_GetMouseState(NULL, NULL));
 }
 //==========================
-void LowMouse::GetPos(void)
+void LowMouse::GetPos(int *DeltaX,int *DeltaY)
 {
-//	SDL_GetRelativeMouseState(&DeltaX,&DeltaY);
+	SDL_GetRelativeMouseState(DeltaX,DeltaY);
 }
 //==========================
 void LowMouse::FlushPos(void)
 {
-//	int x,y;
-//	SDL_GetRelativeMouseState(&x,&y);
+	int x,y;
+	GetPos(&x,&y);
 }
 //==========================
 void LowMouse::SetPos(int x,int y)
 {
-//	SDL_WarpMouse(x,y);
-//	SDL_PumpEvents();
-//	FlushPos();
+	SDL_WarpMouse(x,y);
+	SDL_PumpEvents();
+	FlushPos();
 }
 //==========================
 void LowMouse::LowInMoveEvent(MOUSEMOVEEVENTCALLBACK *eventFunc)

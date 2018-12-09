@@ -12,7 +12,7 @@ public:
 
 	int	 Init(void);
 	int	 GetButtonStatus(void);
-	void GetPos(void);
+	void GetPos(int *x,int *y);
 	void FlushPos(void);
 	void SetPos(int x,int y);
 

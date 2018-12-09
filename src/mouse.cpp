@@ -759,6 +759,8 @@ void DestCursor::DrawDestinationCursor(void)
 //==========================================
 void MouseMoveEvent(int x, int y)
 {
+	highMouse->PosX = x;
+	highMouse->PosY = y;
 	if (highMouse->MoveFunc)
 		(highMouse->MoveFunc)(x, y);
 }

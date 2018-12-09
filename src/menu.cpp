@@ -792,7 +792,7 @@ int drawmenu(MENUSTR *allmenus, int flags)
 			}
 		} while (selectedmenu == NOSELECTMENUBAR);
 	}//flags
-	//lowMouse.GetPos();
+	//highMouse->FlushPos();
 	loadunderitems(allmenus, ITEM_ONLYFREE);
 	unregmenucallbacks();
 	mymousemoveevent(highMouse->PosX, highMouse->PosY);
@@ -869,7 +869,7 @@ int showlistmenu(MENUSTR *allmenus)
 			setmouseonitem(0);
 		}
 	} while (selectedmenu == NOSELECTMENUBAR);
-	//lowMouse.GetPos();
+	//highMouse->FlushPos();
 	loadunderitems(allmenus, ITEM_ONLYFREE);
 	unregmenucallbacks();
 	ret = selectedmenu;
