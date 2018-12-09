@@ -26,11 +26,18 @@ int Controller::Init(void)
 
 	mytimer.SetTickTimerFrequency(CYCLESPERSECOND);
 	KeysBuffer = new mycycle<uint16_t>(16, MYCYCLE_INFINITE);
+	KeysStatus = (uint8_t *) wmalloc(256);
+	memset(KeysStatus,0,256);
 	return(0);
 }
 //===========================================
 void Controller::DeInit(void)
 {
+	if (KeysStatus)
+	{
+		wfree(KeysStatus);
+		KeysStatus = 0;
+	}
 	delete KeysBuffer;
 	KeysBuffer = NULL;
 
@@ -99,7 +106,7 @@ int Controller::QueryVideoMode(int x, int y, int bpp, int fullscreen)
 													FocusChangeMask
 													);
 	XMapWindow ( Surface->display, Surface->window );
-
+	HideCursor();
 	XFlush(Surface->display);
 
 	Surface->pixelsBufferSize = x * y * Surface->DesiredBpp / 8;
@@ -119,11 +126,8 @@ int Controller::QueryVideoMode(int x, int y, int bpp, int fullscreen)
 		printf("Launching in emulated mode %dx%dx%d\n", x, y, Surface->SavedBpp);
 	}
 	Surface->Ximage = XCreateImage( Surface->display, xVisual, Surface->SavedBpp,
-									ZPixmap, 0, Surface->Xpixels,
+									ZPixmap, 0, (char *)Surface->Xpixels,
 									x, y, 32, 0);
-
-	for (int i =0 ;i<Surface->XpixelsBufferSize;i++)
-		Surface->Xpixels[i] = myrand(0,255);
 
 	return(1 + ((Surface->flags & CFLAG_EXACTBPP) != CFLAG_EXACTBPP));
 }
@@ -210,36 +214,18 @@ void Controller::UpdateScreen(void)
 //===========================================
 void Controller::ApplyPalette(unsigned char *pal4,int from,int count)
 {
-	return;
-	int to = from + count + 1;
+	int to = (from + count) * 4;
 	if (Surface->DesiredBpp != 8)
 		return;
-	memcpy(Surface->palette, pal4 + from * 4, count * 4);
-	switch(Surface->SavedBpp)
+	for (int i = from ; i < to; i+=4)
 	{
-	case 8:
-		//TODO need to update palette
-		break;
-	case 15:
-		break;
-	case 16:
-		break;
-	case 24:
-		for (int i = 0; i < Surface->pixelsBufferSize; i++)
-		{
-			if (i >= from && i <= to)
-			{
-				Surface->Xpixels[i * 24 + 0] = Surface->palette[i * 4 + 0];
-				Surface->Xpixels[i * 24 + 1] = Surface->palette[i * 4 + 1];
-				Surface->Xpixels[i * 24 + 2] = Surface->palette[i * 4 + 2];
-			}
-		}
-		break;
-	case 32:
-		break;
-	default:
-		break;
+		Surface->palette[i+2] = pal4[i+0];
+		Surface->palette[i+1] = pal4[i+1];
+		Surface->palette[i+0] = pal4[i+2];
+		//Surface->palette[i+3] = pal4[i+3];
 	}
+	UpdateScreen();
+	return;
 }
 //==========================
 void Controller::ApplyPalette(unsigned char *pal4)
@@ -371,6 +357,7 @@ bool Controller::SetVideoMode(int x, int y)
 	}
 	if (findMode)
 	{
+		XF86VidModeLockModeSwitch( Surface->display, Surface->window, 0 );
 		ok = XF86VidModeSwitchToMode(Surface->display, Surface->screenNr, findMode);
 		if (ok)
 		{
@@ -382,7 +369,7 @@ bool Controller::SetVideoMode(int x, int y)
 	return(ok);
 }
 //===========================================
-int  Controller::TransformPixels(int x, int y, int sizex, int sizey)
+void Controller::TransformPixels(int x, int y, int sizex, int sizey)
 {
 	switch (Surface->SavedBpp)
 	{
@@ -394,27 +381,58 @@ int  Controller::TransformPixels(int x, int y, int sizex, int sizey)
 	default:
 		DEBUGMESSCR("Transformation from %d bpp to %d bpp not implemented\n", Surface->DesiredBpp, Surface->SavedBpp);
 		return;
-	}	
+	}
 }
 //===========================================
-int  Controller::Transform32(int x, int y, int sizex, int sizey)
+void Controller::Transform32(int x, int y, int sizex, int sizey)
 {
-	int i, j, pixel;
+	int i, j, Xpixel;
 	int xlast = x + sizex;
 	int ylast = y + sizey;
+	int deltaincr = Surface->Ximage->width - sizex;
+	uint8_t pixel;
 	uint32_t *palette4bytes = (uint32_t *)Surface->palette;
 	uint32_t *Xbuf = (uint32_t *)Surface->Xpixels;
-	Xbuf += y * Surface->XImage->pixelsperline + x;
+	uint8_t *buf = Surface->pixels;
+	Xbuf += y * Surface->Ximage->width + x;
+	buf +=  y * Surface->Ximage->width + x;
 	for (i = y;i < ylast; i++)
 	{
 		for (j = x;j < xlast; j++)
 		{
-			pixel = palette4bytes[Surface->pixels[i]];
-			*Xbuf++ = pixel;
+			*Xbuf = palette4bytes[*buf];
+			Xbuf++;
+			buf++;
 		}
-		Xbuf += Surface->XImage->pixelsperline - x;
+		Xbuf += deltaincr;
+		buf += deltaincr;
 	}
 }
 //===========================================
+void Controller::HideCursor(void)
+{
+	return;
+	static char noData[] = { 0,0,0,0,0,0,0,0 };
+	Pixmap bitmapNoData;
+	Cursor invisibleCursor;
+	XColor black {0, 0, 0};
 
-
+	bitmapNoData = XCreateBitmapFromData(Surface->display, Surface->window, noData, 8, 8);
+	invisibleCursor = XCreatePixmapCursor(Surface->display, bitmapNoData, bitmapNoData, 
+                                     	  &black, &black, 0, 0);
+	XDefineCursor(Surface->display, Surface->window, invisibleCursor);	
+	XFreeCursor(Surface->display, invisibleCursor);
+	XFreePixmap(Surface->display, bitmapNoData);
+}
+//===========================================
+void Controller::ShowCursor(void)
+{
+	return;
+	Cursor cursor;
+	cursor = XCreateFontCursor(Surface->display, XC_left_ptr);
+	XDefineCursor(Surface->display, Surface->window, cursor);
+	XFreeCursor(Surface->display, cursor);
+	XUndefineCursor(Surface->display, Surface->window);
+	sleep(5);
+}
+//===========================================

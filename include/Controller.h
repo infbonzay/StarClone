@@ -99,8 +99,10 @@ public:
 private:
 	template <typename T>
 	bool  SetVideoMode(int x, int y);
-
-
+	void TransformPixels(int x, int y, int sizex, int sizey);
+	void Transform32(int x, int y, int sizex, int sizey);
+	void HideCursor(void);
+	void ShowCursor(void);
 };
 
 extern Controller mainController;

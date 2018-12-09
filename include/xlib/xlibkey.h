@@ -6,6 +6,8 @@
 #include <X11/extensions/xf86vmode.h>
 #include <X11/XKBlib.h>
 #include <X11/Xutil.h>
+#include <X11/cursorfont.h>
+
 
 #define ENTERKEY  	XK_Return
 #define ENTERKEY2 	XK_KP_Enter
