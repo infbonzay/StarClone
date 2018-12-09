@@ -103,6 +103,7 @@ private:
 	void Transform32(int x, int y, int sizex, int sizey);
 	void HideCursor(void);
 	void ShowCursor(void);
+
 };
 
 extern Controller mainController;

@@ -79,22 +79,36 @@ int Controller::QueryVideoMode(int x, int y, int bpp, int fullscreen)
 	{
 		Surface->flags |= CFLAG_EXACTBPP;
 	}
+/*
+	int items,a;
+	XVisualInfo *vi;
+	XVisualInfo vtemplate;
+	if ((vi = XGetVisualInfo(Surface->display,VisualNoMask,&vtemplate,&items)))
+	{
+		for (int i=0;i<items;i++)
+		{
+			a = items + 1;
+		}
+	}
+*/
 	Surface->window = XCreateSimpleWindow ( Surface->display,
 											RootWindow ( Surface->display, Surface->screenNr ),
 											0, 0, x, y, borderSize,
 											WhitePixel ( Surface->display, Surface->screenNr ),
 											Surface->backgroundpixel);
-	winatrmask = CWOverrideRedirect;
+	winatrmask = 0;
 	if (fullscreen)
 	{
 		//create unmanagement video mode
+		winatrmask |= CWOverrideRedirect;
 		setwinatr.override_redirect = true;
+	}
+	winatrmask |= CWBackingStore;
+	setwinatr.backing_store = NotUseful;
+	if (winatrmask)
 		XChangeWindowAttributes(Surface->display, Surface->window, winatrmask, &setwinatr);
-	}
-	else
-	{
-		//call WM for parameters
-	}
+	//TODO call WM for parameters
+	
 	Surface->gc = XCreateGC(Surface->display, Surface->window, 0, NULL);
 	XSelectInput(Surface->display,Surface->window,  ExposureMask |
 													ButtonPressMask	|
@@ -128,7 +142,6 @@ int Controller::QueryVideoMode(int x, int y, int bpp, int fullscreen)
 	Surface->Ximage = XCreateImage( Surface->display, xVisual, Surface->SavedBpp,
 									ZPixmap, 0, (char *)Surface->Xpixels,
 									x, y, 32, 0);
-
 	return(1 + ((Surface->flags & CFLAG_EXACTBPP) != CFLAG_EXACTBPP));
 }
 //===========================================
