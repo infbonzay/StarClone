@@ -1149,19 +1149,7 @@ int menukeys(MENUSTR *allmenus, int *pressed, int *needredraw)
 			prevkey = 0;
 			switch (tempkey)
 			{
-
 			case ESCAPEKEY:
-				/*					for (i=0;i<allmenus->elements;i++)
-										if (allmenus->menu[i].dialogbin_flags&DIALOGBIN_FLAGS_RESPONDTOESCKEY)
-										{
-												if (allmenus->menu[i].dialogbin_flags&DIALOGBIN_FLAGS_ITEMDISABLED)
-												break;
-												else
-												if (!allmenus->menu[i].dialogbin_flags&DIALOGBIN_FLAGS_ITEMVISIBLED)
-														break;
-												return CANCELFROMMENU;
-										}
-				*/
 				return CANCELFROMMENU;
 				break;
 			case ENTERKEY:
@@ -1196,7 +1184,7 @@ int menukeys(MENUSTR *allmenus, int *pressed, int *needredraw)
 				{
 					changelist = changelistbox_selectednr(allmenus, allmenus->defaultlistitem, +1);
 					if (changelist)
-						*		pressed = allmenus->defaultlistitem;
+						*pressed = allmenus->defaultlistitem;
 				}
 				break;
 			case PAGEUPKEY:

@@ -10,6 +10,7 @@
 #include "wmem.h"
 #include "gr.h"
 #include "gener.h"
+#include "version.hxx"
 #include "Controller.h"
 
 #include <grplib/grp.h>
@@ -149,6 +150,7 @@ void lines(int x1, int x2, int y1, int n, int modes)
 //=====================================
 int setmode(int x, int y, int bpp, int fullscreen)
 {
+	char cap[200];
 	int a;
 	if (bpp != 8)
 	{
@@ -164,8 +166,11 @@ int setmode(int x, int y, int bpp, int fullscreen)
 
 	a = mainController.QueryVideoMode(x, y, bpp, fullscreen);
 
-	if (a)			//video mode not set if return =0
+	if (a)
 	{
+		int ver = GetGRPLibVer();
+		sprintf(cap, GAMENAME " " GAMEVERSION " with GRPlib-%d.%d.%d createtime:" GAMECOMPILE, (ver >> 16) & 0xff, ((ver >> 8) & 0xff), ver & 0xff);
+		mainController.SetWindowName(cap);
 		highMouse->PosX = 0;
 		highMouse->PosY = 0;
 	}

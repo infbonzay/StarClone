@@ -24,6 +24,7 @@
 		Display 	*display;
 		int			screenNr;
 		Window		window;
+		Visual		*XVisual;
 		bool		FullScreen;
 		uint8_t		*pixels;
 		uint8_t		*palette;
@@ -96,14 +97,18 @@ public:
 	void ApplyPalette256x3(unsigned char *pal3);
 	void KeyPressRefresh(void);
 	void QuitVideoMode(void);
-	int  EventsLoop(void);
-private:
-	template <typename T>
-	bool  SetVideoMode(int x, int y);
-	void TransformPixels(int x, int y, int sizex, int sizey);
-	void Transform32(int x, int y, int sizex, int sizey);
 	void HideCursor(void);
 	void ShowCursor(void);
+	int  EventsLoop(void);
+	void SetWindowName(const char *winName);
+private:
+	template <typename T> 
+			bool SetVideoMode(int x, int y);
+	void QuitVideoMode(bool Disconnect);
+	void TransformPixels(int x, int y, int sizex, int sizey);
+	void Transform32(int x, int y, int sizex, int sizey);
+	void SaveDesktopResolution(int x,int y);
+	void DesktopResolution(int *x,int *y);
 
 };
 

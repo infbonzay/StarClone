@@ -43,9 +43,24 @@ void Controller::DeInit(void)
 	KeysBuffer = NULL;
 }
 //===========================================
+int Controller::HideCursor(void)
+{
+	SDL_ShowCursor(SDL_DISABLE);
+}
+//===========================================
+int Controller::ShowCursor(void)
+{
+	SDL_ShowCursor(SDL_Enable;
+}
+//===========================================
+int Controller::SetWindowName(const char *winName)
+{
+	int ver = GetGRPLibVer();
+	SDL_WM_SetCaption(winName, winName);
+}
+//===========================================
 int Controller::QueryVideoMode(int x, int y, int bpp, int fullscreen)
 {
-	char cap[200];
 	int flags, realbpp, emul;
 	if (fullscreen)
 		flags = SDL_HWSURFACE | SDL_FULLSCREEN | SDL_HWPALETTE;
@@ -66,11 +81,11 @@ int Controller::QueryVideoMode(int x, int y, int bpp, int fullscreen)
 	if (Surface == NULL)
 		return(0);
 	SDL_WarpMouse(0, 0);
-	int ver = GetGRPLibVer();
-	sprintf(cap, GAMENAME " " GAMEVERSION " with GRPlib-%d.%d.%d createtime:" GAMECOMPILE, (ver >> 16) & 0xff, ((ver >> 8) & 0xff), ver & 0xff);
-	SDL_WM_SetCaption(cap, cap);
+//	int ver = GetGRPLibVer();
+//	sprintf(cap, GAMENAME " " GAMEVERSION " with GRPlib-%d.%d.%d createtime:" GAMECOMPILE, (ver >> 16) & 0xff, ((ver >> 8) & 0xff), ver & 0xff);
+//	SDL_WM_SetCaption(cap, cap);
 	SDL_SetEventFilter(&MyEventFunc);
-	SDL_ShowCursor(SDL_DISABLE);
+	HideCursor();
 	if (SDL_MUSTLOCK(Surface))
 		SDL_LockSurface(Surface);
 	SetVideoBuffer(Surface->pixels);
@@ -81,7 +96,7 @@ int Controller::QueryVideoMode(int x, int y, int bpp, int fullscreen)
 //===========================================
 int Controller::ModifyVideoMode(int x, int y, int bpp, int fullscreen, unsigned char *palette)
 {
-	int flags, realbpp, emul;
+	int flags, realbpp, emul = 0;
 	char *tempvid = (char *)wmalloc(x * y);
 	memcpy(tempvid, gameconf.grmode.videobuff, x * y);
 	if (fullscreen)
@@ -248,7 +263,7 @@ int  Controller::EventsLoop(void)			//return 1 - on quit
 				if (event.active.gain)
 					gameconf.grmode.flags |= DISPLAYFLAGS_WINDOWACTIVE;
 				else
-					gameconf.grmode.flags &= DISPLAYFLAGS_WINDOWACTIVE;
+					gameconf.grmode.flags &= ~DISPLAYFLAGS_WINDOWACTIVE;
 			}
 			break;
 		case SDL_QUIT:

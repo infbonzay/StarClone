@@ -5671,7 +5671,7 @@ int videoopt(MENUDRAW *menudraw, MENUPARAMS *menuparams)
 	static GAMECONF tempconf;
 	if (!menudraw->menutodraw)
 	{
-		memcpy(&tempconf, &gameconf, sizeof(tempconf));
+		memcpy(&tempconf, &gameconf, sizeof(GAMECONF));
 		menudraw->menutodraw = LoadDialogBin("rez\\video.bin", DIALOGBIN_GAMEDIALOGS | DIALOGBIN_DONOTSAVEUNDERMENU, IDFONT16);
 		if (!menudraw->menutodraw)
 			return(-1);
@@ -5709,11 +5709,12 @@ int videoopt(MENUDRAW *menudraw, MENUPARAMS *menuparams)
 			switch (result)
 			{
 			case 0: //something wrong
+				break;
 			case 1:
-				gameconf.grmode.flags |= DISPLAYFLAGS_EMULATIONMODE;
+				gameconf.grmode.flags &= ~DISPLAYFLAGS_EMULATIONMODE;
 				break;
 			case 2:
-				gameconf.grmode.flags &= ~DISPLAYFLAGS_EMULATIONMODE;
+				gameconf.grmode.flags |= DISPLAYFLAGS_EMULATIONMODE;
 				break;
 
 			}

@@ -1217,7 +1217,7 @@ int gogame(struct mapinfo *info)
 			highMouse->DestMouseOBJ = NULL;
 			highMouse->MouseType = NORMALMOUSE;
 			retmenu = showedmenu.ShowMenu();
-			mainController.KeyActive = 0;
+			//mainController.KeyActive = 0;
 			menustatus = ChangeMenuStatus(menustatus);
 			if (retmenu)
 			{
