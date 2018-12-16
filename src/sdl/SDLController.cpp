@@ -43,17 +43,17 @@ void Controller::DeInit(void)
 	KeysBuffer = NULL;
 }
 //===========================================
-int Controller::HideCursor(void)
+void Controller::HideCursor(void)
 {
 	SDL_ShowCursor(SDL_DISABLE);
 }
 //===========================================
-int Controller::ShowCursor(void)
+void Controller::ShowCursor(void)
 {
-	SDL_ShowCursor(SDL_Enable;
+	SDL_ShowCursor(SDL_ENABLE);
 }
 //===========================================
-int Controller::SetWindowName(const char *winName)
+void Controller::SetWindowName(const char *winName)
 {
 	int ver = GetGRPLibVer();
 	SDL_WM_SetCaption(winName, winName);
