@@ -44,13 +44,16 @@
 #define NUMB1KEY  	'1'
 #define NUMB2KEY  	'2'
 
+
 #define WMLEFTKEY  	0x1
 #define WMRIGHTKEY 	0x4
 
-#define SHIFTMASK	ShiftMask
-#define LOCKMASK	LockMask
-#define CTRLMASK	ControlMask
-#define ALTMASK		Mod1Mask
+#define	SHIFTKEYMASK	ShiftMask
+#define LOCKKEYMASK	LockMask
+#define CTRLKEYMASK	ControlMask
+#define ALTKEYMASK	Mod1Mask
+
+#define KEYPRESSEDTABLE(table,scancode) (toupper((scancode)&0xff)+1)
 
 #endif
 

@@ -969,7 +969,6 @@ int gogame(struct mapinfo *info)
 			redesenscreen();
 		if (!PAUSEGAME && !PAUSEINTRIG)
 		{
-			mainController.KeyPressRefresh();					//refresh array of keys
 			highMouse->RefreshMouseType(map.MAPXGLOBAL, map.MAPYGLOBAL);
 			mouseonkartaarea();
 		}

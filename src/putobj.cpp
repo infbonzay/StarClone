@@ -35,6 +35,7 @@
 #include "mytime.h"
 #include "images.h"
 #include "sigorder.h"
+#include "Controller.h"
 #include "putobj.h"
 
 
@@ -1207,8 +1208,8 @@ void drawallunitsinbar(int XWINPOS, int YWINPOS)
 		mbuttonpress = (highMouse->GetButtonStatus() & WMLEFTKEY) && (!highMouse->MouseOnSelectionMode);
 		//shiftpress = KEYPRESS(SHIFTLKEY) | KEYPRESS(SHIFTRKEY);
 		//ctrlpress = KEYPRESS(CTRLLKEY) | KEYPRESS(CTRLRKEY);
-		shiftpress = mainController->KeyFlags & SHIFTMASK;
-		ctrlpress = mainController->KeyFlags & CTRLMASK;
+		shiftpress = mainController.KeyFlags & SHIFTKEYMASK;
+		ctrlpress = mainController.KeyFlags & CTRLKEYMASK;
 		SelectedUnits.EnumListInit();
 		while ((a1 = (OBJ *)SelectedUnits.GetNextListElem(&i)))
 		{

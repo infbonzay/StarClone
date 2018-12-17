@@ -230,7 +230,7 @@ int  Controller::EventsLoop(void)			//return 1 - on quit
 			//printf("SHIFT=%x CAPS=%x result=%x\n",event.key.keysym.mod & KMOD_SHIFT,event.key.keysym.mod & KMOD_CAPS,UpperKeysActive);
 			KeyFlags = event.key.keysym.mod;
 			keySym = event.key.keysym.sym;
-			if (KeyFlags & (SHIFTMASK ^ LOCKMASK))
+			if (KeyFlags & (SHIFTKEYMASK ^ LOCKKEYMASK))
 			{
 				if (keySym > 0 && keySym < 128)
 				{

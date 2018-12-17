@@ -369,7 +369,7 @@ int  Controller::EventsLoop(void)			//return 1 - on quit
 			//DEBUGMESSCR("keypress state=%04x %d\n",Surface->event.xkey.state,Surface->event.xkey.keycode);
 			KeyFlags = Surface->event.xkey.state;
 			keySym = XkbKeycodeToKeysym( Surface->display, Surface->event.xkey.keycode, 0, 0);
-            if (KeyFlags & (SHIFTMASK ^ LOCKMASK))
+            if (KeyFlags & (SHIFTKEYMASK ^ LOCKKEYMASK))
 			{
 				if (keySym > 0 && keySym < 128)
 				{

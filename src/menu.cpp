@@ -619,7 +619,6 @@ int drawmenu(MENUSTR *allmenus, int flags)
 		do {
 			mainController.EventsLoop();
 			getmouseonitem(&activeitemchange, &activeitem);
-			mainController.KeyPressRefresh();
 			highMouse->SaveImageUnder();
 			highMouse->DrawMouse();
 			mainController.UpdateScreen();

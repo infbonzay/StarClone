@@ -16,6 +16,7 @@
 #include "putobj.h"
 #include "objinfo.h"
 #include "key.h"
+#include "Controller.h"
 #include "mouse.h"
 
 HighMouse	*highMouse;
@@ -456,7 +457,7 @@ void HighMouse::RefreshMouseType(int xk, int yk)
 					mouseClear = false;
 					if (selectionArea)
 					{
-						if (mainController->KeyFlags & SHIFTMASK)
+						if (mainController.KeyFlags & SHIFTKEYMASK)
 						//if (KEYPRESS(SHIFTLKEY) || KEYPRESS(SHIFTRKEY))
 							selectMAN(PrevX, PrevY, PosX, PosY, 1);
 						else

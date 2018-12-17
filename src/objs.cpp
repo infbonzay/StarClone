@@ -714,10 +714,8 @@ void selectMAN(int x1, int y1, int x2, int y2, int mode)
 	y1 = y1 + map.MAPYGLOBAL;
 	y2 = y2 + map.MAPYGLOBAL;
 	a = NULL;
-				if (KeyFlags & (SHIFTMASK ^ LOCKMASK))
-
 	//int ctrl = KEYPRESS(CTRLLKEY) || KEYPRESS(CTRLRKEY) || highMouse->DoubleClick;
-	int ctrl = (mainController->KeyFlags & CTRLMASK) || highMouse->DoubleClick;
+	int ctrl = (mainController.KeyFlags & CTRLKEYMASK) || highMouse->DoubleClick;
 	if (ctrl || ((x2 - x1 <= MINHAP) && (y2 - y1 <= MINHAP)))
 		a = founduniqueobj(x1, y1);
 	if (a)

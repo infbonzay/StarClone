@@ -6,6 +6,8 @@
 #include "mycycle.h"
 #include "mouse.h"
 
+#define KEYPRESSEDTABLE(table,scancode) (toupper((scancode)&0xff)+1)
+
 #ifdef WITHSDL
 	#include "sdl/keysdl.h"
 
