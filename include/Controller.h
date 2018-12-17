@@ -53,9 +53,6 @@
 	} SCREEN_REGION;
 #endif
 
-#define KEYPRESS(ikey) (mainController.KeysStatus[ikey] == KEYPRESSED)
-
-
 class Controller
 {
 	const uint8_t SHIFTKEYS[128] =
@@ -81,7 +78,7 @@ class Controller
 public:
 	long 				KeyActive,LastKey;
 	int 				RefreshAtEnd;
-	uint8_t				*KeysStatus;
+	uint8_t				KeyFlags;				//shift,ctrl,alt
 	mycycle<uint16_t> 	*KeysBuffer;
 
 	int Init();

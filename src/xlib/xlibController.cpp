@@ -343,7 +343,6 @@ void Controller::KeyPressRefresh(void)
 //===========================================
 int  Controller::EventsLoop(void)			//return 1 - on quit
 {
-	int UpperKeysActive;
 	int keySym;
 	uint8_t buttons;
 	while(XPending(Surface->display))
@@ -379,13 +378,9 @@ int  Controller::EventsLoop(void)			//return 1 - on quit
 			break;
 		case KeyPress:
 			//DEBUGMESSCR("keypress state=%04x %d\n",Surface->event.xkey.state,Surface->event.xkey.keycode);
-			UpperKeysActive = 0;
-			if (Surface->event.xkey.state & ShiftMask)
-				UpperKeysActive ^= 1;
-			if (Surface->event.xkey.state & LockMask)
-				UpperKeysActive ^= 1;
+			KeyFlags = Surface->event.xkey.state;
 			keySym = XkbKeycodeToKeysym( Surface->display, Surface->event.xkey.keycode, 0, 0);
-            if (UpperKeysActive)
+            if (KeyFlags & (SHIFTMASK ^ LOCKMASK))
 			{
 				if (keySym > 0 && keySym < 128)
 				{
@@ -393,17 +388,18 @@ int  Controller::EventsLoop(void)			//return 1 - on quit
 					if (!KeyActive)
 						KeyActive = keySym;
 				}
+				else
+				{
+					KeyActive = 0;
+				}	
 			}
 			else
 			{
 				KeyActive = keySym;
 			}
-			if (KeyActive == ENTERKEY2)
-			{
-				KeyActive = ENTERKEY;
-			}
 			LastKey = KeyActive;
-			KeysBuffer->PushElem(KeyActive);
+			if (KeyActive)
+				KeysBuffer->PushElem(KeyActive);
 			break;
 		case KeyRelease:
 			KeyActive = 0;

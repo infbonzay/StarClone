@@ -207,9 +207,9 @@ void Controller::QuitVideoMode(void)
 int  Controller::EventsLoop(void)			//return 1 - on quit
 {
 	int exitevent = 0;
-	int UpperKeysActive;
 	SDL_Event event;
 	uint8_t buttons;
+	int keySym;
 	while (SDL_PollEvent(&event))
 	{
 		switch (event.type)
@@ -232,27 +232,29 @@ int  Controller::EventsLoop(void)			//return 1 - on quit
 			RefreshAtEnd = 1;
 			break;
 		case SDL_KEYDOWN:
-			UpperKeysActive = 0;
-			if (event.key.keysym.mod & KMOD_SHIFT)
-				UpperKeysActive ^= 1;
-			if (event.key.keysym.mod & KMOD_CAPS)
-				UpperKeysActive ^= 1;
 			//printf("SHIFT=%x CAPS=%x result=%x\n",event.key.keysym.mod & KMOD_SHIFT,event.key.keysym.mod & KMOD_CAPS,UpperKeysActive);
-			if (UpperKeysActive)
+			KeyFlags = event.key.keysym.mod;
+			keySym = event.key.keysym.sym;
+			if (KeyFlags & (SHIFTMASK ^ LOCKMASK))
 			{
-				if (event.key.keysym.sym > 0 && event.key.keysym.sym < 128)
+				if (keySym > 0 && keySym < 128)
 				{
-					KeyActive = SHIFTKEYS[event.key.keysym.sym];
+					KeyActive = SHIFTKEYS[keySym];
 					if (!KeyActive)
-						KeyActive = event.key.keysym.sym;
+						KeyActive = keySym;
 				}
+				else
+				{
+					KeyActive = 0;
+				}				
 			}
 			else
-				KeyActive = event.key.keysym.sym;
-			if (KeyActive == ENTERKEY2)
-				KeyActive = ENTERKEY;
+			{
+				KeyActive = keySym;
+			}
 			LastKey = KeyActive;
-			KeysBuffer->PushElem(KeyActive);
+			if (KeyActive)
+				KeysBuffer->PushElem(KeyActive);
 			break;
 		case SDL_KEYUP:
 			KeyActive = 0;

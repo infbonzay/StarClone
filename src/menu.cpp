@@ -1002,36 +1002,34 @@ int editboxaction(MENUSTR *allmenus)
 			if (curitem->itemtype != ISEDITBOX)
 				return(0);
 			int curlength = curitem->item.editbox->length;
-			if (keypressed == BACKSPACEKEY ||
-				keypressed == ENTERKEY ||
-				(keypressed >= ' ' && keypressed <= '~'))
+			switch (keypressed)
 			{
-				switch (keypressed)
+			case BACKSPACEKEY:
+				if (curlength)
 				{
-				case BACKSPACEKEY:
-					if (curlength)
-					{
-						curlength--;
-						curitem->item.editbox->editstr[curlength] = 0;
-					}
-					break;
-				case ENTERKEY:
-					if (curlength >= 0)
-						return(2);
-					break;
-				default:
-					if (curlength < curitem->item.editbox->maxsymbols)
-					{
-						curitem->item.editbox->editstr[curlength] = keypressed;
-						curitem->item.editbox->editstr[curlength + 1] = 0;
-						curlength++;
-					}
-					break;
+					curlength--;
+					curitem->item.editbox->editstr[curlength] = 0;
 				}
-				curitem->item.editbox->length = curlength;
-				mainController.KeyActive = 0;
-				return(1);
+				break;
+			case ENTERKEY:
+			case ENTERKEY2:
+				if (curlength >= 0)
+					return(2);
+				break;
+			default:
+				if (keypressed < ' ' || keypressed > '~')
+					return(0);
+				if (curlength < curitem->item.editbox->maxsymbols)
+				{
+					curitem->item.editbox->editstr[curlength] = keypressed;
+					curitem->item.editbox->editstr[curlength + 1] = 0;
+					curlength++;
+				}
+				break;
 			}
+			curitem->item.editbox->length = curlength;
+			mainController.KeyActive = 0;
+			return(1);
 		}
 	}
 	return(0);
@@ -1076,6 +1074,7 @@ int menukeys(MENUSTR *allmenus, int *pressed, int *needredraw)
 			switch (mainController.KeyActive)
 			{
 			case ENTERKEY:
+			case ENTERKEY2:
 				if (allmenus->menu[allmenus->defaultbutton].itemtype == ISBUTTON ||
 					allmenus->menu[allmenus->defaultbutton].itemtype == ISLISTBOX)
 				{
@@ -1153,6 +1152,7 @@ int menukeys(MENUSTR *allmenus, int *pressed, int *needredraw)
 				return CANCELFROMMENU;
 				break;
 			case ENTERKEY:
+			case ENTERKEY2:
 				if (allmenus->menu[allmenus->defaultbutton].dialogbin_flags & DIALOGBIN_FLAGS_ITEMDISABLED)
 					break;
 				else

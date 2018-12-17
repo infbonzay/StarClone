@@ -456,7 +456,8 @@ void HighMouse::RefreshMouseType(int xk, int yk)
 					mouseClear = false;
 					if (selectionArea)
 					{
-						if (KEYPRESS(SHIFTLKEY) || KEYPRESS(SHIFTRKEY))
+						if (mainController->KeyFlags & SHIFTMASK)
+						//if (KEYPRESS(SHIFTLKEY) || KEYPRESS(SHIFTRKEY))
 							selectMAN(PrevX, PrevY, PosX, PosY, 1);
 						else
 							selectMAN(PrevX, PrevY, PosX, PosY, 0);

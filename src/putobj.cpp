@@ -1205,8 +1205,10 @@ void drawallunitsinbar(int XWINPOS, int YWINPOS)
 	if (SelectedUnits.Count())
 	{
 		mbuttonpress = (highMouse->GetButtonStatus() & WMLEFTKEY) && (!highMouse->MouseOnSelectionMode);
-		shiftpress = KEYPRESS(SHIFTLKEY) | KEYPRESS(SHIFTRKEY);
-		ctrlpress = KEYPRESS(CTRLLKEY) | KEYPRESS(CTRLRKEY);
+		//shiftpress = KEYPRESS(SHIFTLKEY) | KEYPRESS(SHIFTRKEY);
+		//ctrlpress = KEYPRESS(CTRLLKEY) | KEYPRESS(CTRLRKEY);
+		shiftpress = mainController->KeyFlags & SHIFTMASK;
+		ctrlpress = mainController->KeyFlags & CTRLMASK;
 		SelectedUnits.EnumListInit();
 		while ((a1 = (OBJ *)SelectedUnits.GetNextListElem(&i)))
 		{

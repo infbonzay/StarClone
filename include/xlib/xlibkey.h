@@ -47,8 +47,10 @@
 #define WMLEFTKEY  	0x1
 #define WMRIGHTKEY 	0x4
 
-#define KEYPRESSEDTABLE(table,scancode) (toupper((scancode) & 0xff)+1)
-#define KEYPRESSED 1
+#define SHIFTMASK	ShiftMask
+#define LOCKMASK	LockMask
+#define CTRLMASK	ControlMask
+#define ALTMASK		Mod1Mask
 
 #endif
 
