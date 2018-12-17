@@ -67,9 +67,9 @@ endif
 if HAVESDLMIXERLIB
     LFLAGS+= -lSDL_mixer
     CFLAGS+= -DWITHSDLMIXER
-    AUDIODIR=sdl
+    AUDIOFILE=src/sdl/SDLAudio.cpp
 else
-    AUDIODIR=noaudio
+    AUDIOFILE=src/noaudio/Noaudio.cpp
 endif
 endif
 PROGS = bin/$(PACKAGE)
@@ -325,7 +325,7 @@ obj/vision.o: src/vision.cpp include/*.h  Makefile
 	$(CXX) -c $(CFLAGS) src/vision.cpp -o obj/vision.o
 	
 obj/audiolowlevel.o: src/$(AUDIODIR)/audiolowlevel.cpp include/audiolowlevel.h  Makefile
-	$(CXX) -c $(CFLAGS) $(shell sdl-config --cflags) src/$(AUDIODIR)/audiolowlevel.cpp -o obj/audiolowlevel.o
+	$(CXX) -c $(CFLAGS) $(shell sdl-config --cflags) $(AUDIOFILE) -o obj/audiolowlevel.o
 	
 obj/SDLController.o: src/sdl/SDLController.cpp include/*.h include/sdl/*.h  Makefile
 	$(CXX) -c $(CFLAGS) src/sdl/SDLController.cpp -o obj/SDLController.o

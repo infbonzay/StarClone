@@ -5,7 +5,6 @@
 #include "vars.h"
 #include "const.h"
 #include "mytime.h"
-#include "version.hxx"
 #include "keysdl.h"
 #include "Controller.h"
 
@@ -55,7 +54,6 @@ void Controller::ShowCursor(void)
 //===========================================
 void Controller::SetWindowName(const char *winName)
 {
-	int ver = GetGRPLibVer();
 	SDL_WM_SetCaption(winName, winName);
 }
 //===========================================

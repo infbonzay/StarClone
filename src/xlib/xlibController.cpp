@@ -3,7 +3,6 @@
 #include "vars.h"
 #include "const.h"
 #include "mytime.h"
-#include "version.hxx"
 #include "rand.h"
 #include "Controller.h"
 
@@ -124,7 +123,7 @@ int Controller::QueryVideoMode(int x, int y, int bpp, int fullscreen)
 
 	    XSetWMNormalHints(Surface->display, Surface->window, &hints);
 
-		//HideCursor();
+		HideCursor();
 	}
 	winatrmask = 0;
 	if (fullscreen)
@@ -135,7 +134,6 @@ int Controller::QueryVideoMode(int x, int y, int bpp, int fullscreen)
 			DEBUGMESSCR("Cannot set video mode\n");
 			return(0);
 		}
-		//create unmanagement video mode
 		winatrmask |= CWOverrideRedirect;
 		setwinatr.override_redirect = true;
 		
@@ -151,7 +149,6 @@ int Controller::QueryVideoMode(int x, int y, int bpp, int fullscreen)
 				DEBUGMESSCR("Cannot set video mode\n");
 				return(0);
 			}
-			//create unmanagement video mode
 			winatrmask |= CWOverrideRedirect;
 			setwinatr.override_redirect = false;
 			
@@ -178,73 +175,61 @@ int Controller::QueryVideoMode(int x, int y, int bpp, int fullscreen)
 //===========================================
 void Controller::QuitVideoMode(void)
 {
-	QuitVideoMode(true);
-}
-//===========================================
-void Controller::QuitVideoMode(bool disconnectFromServer)
-{
 	int xres,yres;
 	if (Surface->display)
 	{
-		if (disconnectFromServer)
+		ShowCursor();
+		if (Surface->gc)
 		{
-			if (Surface->gc)
-			{
-				XFreeGC(Surface->display, Surface->gc);
-				Surface->gc = NULL;
-			}
-			XDestroyWindow(Surface->display, Surface->window);
-			XFlush(Surface->display);
-			Surface->window = (Window) 0;
-			ShowCursor();
-			if (Surface->palette)
-			{
-				wfree(Surface->palette);
-				Surface->palette = NULL;
-			}
-
-			Surface->Xpixels = NULL;
-			if (Surface->flags & CFLAG_EXACTBPP)
-			{
-				Surface->pixels = NULL;
-			}
-			if (Surface->Ximage)
-			{
-				XDestroyImage(Surface->Ximage);		//also this function deallocate XImage->data aka Surface->Xpixels
-													// on 8 bpp this equals with Surface->pixels
-				Surface->Ximage = NULL;
-			}
-			if (Surface->pixels)
-			{
-				wfree(Surface->pixels);
-				Surface->pixels = NULL;
-			}
-			if (Surface->FullScreen)
-			{
-				DesktopResolution(&xres,&yres);
-				SetVideoMode<XF86VidModeModeInfo *>(xres,yres);
-			}
-			XCloseDisplay(Surface->display);
-			Surface->display = NULL;
+			XFreeGC(Surface->display, Surface->gc);
+			Surface->gc = NULL;
 		}
+		XDestroyWindow(Surface->display, Surface->window);
+		XFlush(Surface->display);
+		Surface->window = (Window) 0;
+		if (Surface->palette)
+		{
+			wfree(Surface->palette);
+			Surface->palette = NULL;
+		}
+			Surface->Xpixels = NULL;
+		if (Surface->flags & CFLAG_EXACTBPP)
+		{
+			Surface->pixels = NULL;
+		}
+		if (Surface->Ximage)
+		{
+			XDestroyImage(Surface->Ximage);		//also this function deallocate XImage->data aka Surface->Xpixels
+												// on 8 bpp this equals with Surface->pixels
+			Surface->Ximage = NULL;
+		}
+		if (Surface->pixels)
+		{
+			wfree(Surface->pixels);
+			Surface->pixels = NULL;
+		}
+		if (Surface->FullScreen)
+		{
+			DesktopResolution(&xres,&yres);
+			SetVideoMode<XF86VidModeModeInfo *>(xres,yres);
+		}
+		XCloseDisplay(Surface->display);
+		Surface->display = NULL;
 	}
 }
 //===========================================
 int Controller::ModifyVideoMode(int x, int y, int bpp, int fullscreen, unsigned char *palette)
 {
 	int retvalue = 0;
-	//if (fullscreen != Surface->FullScreen)
+	XUnmapWindow ( Surface->display, Surface->window );
+	retvalue = QueryVideoMode(x,y,bpp,fullscreen);
+	if (retvalue)
 	{
-		XUnmapWindow ( Surface->display, Surface->window );
-		retvalue = QueryVideoMode(x,y,bpp,fullscreen);
-		if (retvalue)
-		{
-			if (palette)
-				ApplyPalette(palette);
-			if (palette && (Surface->flags & CFLAG_EXACTBPP))
-				UpdateScreen();
-			gameconf.grmode.flags |= DISPLAYFLAGS_WINDOWACTIVE;
-		}
+		if (palette)
+			ApplyPalette(palette);
+		if (palette && (Surface->flags & CFLAG_EXACTBPP))
+			UpdateScreen();
+		gameconf.grmode.flags |= DISPLAYFLAGS_WINDOWACTIVE;
 	}
 	return retvalue;
 }
@@ -410,7 +395,7 @@ int  Controller::EventsLoop(void)			//return 1 - on quit
 }
 //===========================================
 template <typename T>
-bool Controller::SetVideoMode(int x, int y)
+		bool Controller::SetVideoMode(int x, int y)
 {
 	int modeCount;
 	T *modes;
