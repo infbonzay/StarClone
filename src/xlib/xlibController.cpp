@@ -430,8 +430,13 @@ void Controller::TransformPixels(int x, int y, int sizex, int sizey)
 	{
 	case 8:
 		return;
+	case 15:
+	case 16:
+		Transform<uint16_t>(x, y, sizex, sizey);
+		break;
 	case 24:
-		Transform32(x, y, sizex, sizey);
+	case 32:
+		Transform<uint32_t>(x, y, sizex, sizey);
 		break;
 	default:
 		DEBUGMESSCR("Transformation from %d bpp to %d bpp not implemented\n", Surface->DesiredBpp, Surface->SavedBpp);
@@ -439,23 +444,21 @@ void Controller::TransformPixels(int x, int y, int sizex, int sizey)
 	}
 }
 //===========================================
-void Controller::Transform32(int x, int y, int sizex, int sizey)
+template <typename T>
+	void Controller::Transform<T>(int x, int y, int sizex, int sizey)
 {
-	int i, j, Xpixel;
+	int i, j;
 	int xlast = x + sizex;
 	int ylast = y + sizey;
 	int deltaincr = Surface->Ximage->width - sizex;
-	uint8_t pixel;
-	uint32_t *palette4bytes = (uint32_t *)Surface->palette;
-	uint32_t *Xbuf = (uint32_t *)Surface->Xpixels;
-	uint8_t *buf = Surface->pixels;
-	Xbuf += y * Surface->Ximage->width + x;
-	buf +=  y * Surface->Ximage->width + x;
+	T *paladr = (T *)Surface->palette;
+	T *Xbuf = (T *)Surface->Xpixels + y * Surface->Ximage->width + x;
+	uint8_t *buf = Surface->pixels + y * Surface->Ximage->width + x;
 	for (i = y;i < ylast; i++)
 	{
 		for (j = x;j < xlast; j++)
 		{
-			*Xbuf = palette4bytes[*buf];
+			*Xbuf = paladr[*buf];
 			Xbuf++;
 			buf++;
 		}

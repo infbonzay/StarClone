@@ -104,7 +104,8 @@ private:
 			bool SetVideoMode(int x, int y);
 	void QuitVideoMode(bool Disconnect);
 	void TransformPixels(int x, int y, int sizex, int sizey);
-	void Transform32(int x, int y, int sizex, int sizey);
+	template <typename T>
+		void Controller::Transform<T>(int x, int y, int sizex, int sizey);
 	void SaveDesktopResolution(int x,int y);
 	void DesktopResolution(int *x,int *y);
 
