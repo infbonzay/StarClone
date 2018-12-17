@@ -22,6 +22,7 @@ int Controller::Init(void)
 	Surface->palette = NULL;
 	Surface->flags = 0x00;
 	Surface->Ximage = NULL;
+	Surface->noCursor = (Cursor) 0;
 
 	mytimer.SetTickTimerFrequency(CYCLESPERSECOND);
 	KeysBuffer = new mycycle<uint16_t>(16, MYCYCLE_INFINITE);
@@ -318,6 +319,7 @@ void Controller::ApplyPalette256x3(unsigned char *pal3)
 int  Controller::EventsLoop(void)			//return 1 - on quit
 {
 	int keySym;
+	int keymod;
 	uint8_t buttons;
 	while(XPending(Surface->display))
 	{
@@ -352,9 +354,14 @@ int  Controller::EventsLoop(void)			//return 1 - on quit
 			break;
 		case KeyPress:
 			//DEBUGMESSCR("keypress state=%04x %d\n",Surface->event.xkey.state,Surface->event.xkey.keycode);
-			KeyFlags = Surface->event.xkey.state;
-			keySym = XkbKeycodeToKeysym( Surface->display, Surface->event.xkey.keycode, 0, 0);
-            if (KeyFlags & (SHIFTKEYMASK ^ LOCKKEYMASK))
+			keymod = 0;
+            keySym = XkbKeycodeToKeysym( Surface->display, Surface->event.xkey.keycode, 0, 0);
+			SetKeyMod(keySym,true);
+			if (Surface->event.xkey.state & LockMask)
+				keymod ^= 1;
+			if (KeyFlags & SHIFTKEYMASK)
+				keymod ^= 1;
+			if (keymod)
 			{
 				if (keySym > 0 && keySym < 128)
 				{
@@ -365,7 +372,7 @@ int  Controller::EventsLoop(void)			//return 1 - on quit
 				else
 				{
 					KeyActive = 0;
-				}	
+				}				
 			}
 			else
 			{
@@ -376,7 +383,8 @@ int  Controller::EventsLoop(void)			//return 1 - on quit
 				KeysBuffer->PushElem(KeyActive);
 			break;
 		case KeyRelease:
-			KeyFlags = Surface->event.xkey.state;
+            keySym = XkbKeycodeToKeysym( Surface->display, Surface->event.xkey.keycode, 0, 0);
+			SetKeyMod(keySym,false);
 			KeyActive = 0;
 			break;
 		case ClientMessage:
@@ -392,6 +400,27 @@ int  Controller::EventsLoop(void)			//return 1 - on quit
 		}
 	}
 	return(0);
+}
+//===========================================
+void Controller::SetKeyMod(int keysym,bool status)
+{
+	switch(keysym)
+	{
+	case XK_Shift_L:
+	case XK_Shift_R:
+		if (status)
+			KeyFlags |= SHIFTKEYMASK;
+		else
+			KeyFlags &= ~SHIFTKEYMASK;
+		break;
+	case XK_Control_L:
+	case XK_Control_R:
+		if (status)
+			KeyFlags |= CTRLKEYMASK;
+		else
+			KeyFlags &= ~CTRLKEYMASK;
+		break;
+	}
 }
 //===========================================
 template <typename T>
@@ -445,7 +474,7 @@ void Controller::TransformPixels(int x, int y, int sizex, int sizey)
 }
 //===========================================
 template <typename T>
-	void Controller::Transform<T>(int x, int y, int sizex, int sizey)
+	void Controller::Transform(int x, int y, int sizex, int sizey)
 {
 	int i, j;
 	int xlast = x + sizex;
@@ -475,7 +504,7 @@ void Controller::HideCursor(void)
 	Cursor invisibleCursor;
 	XColor black;
 
-	if (Surface->noCursor)
+	if (!Surface->noCursor)
 	{
 		bitmapNoData = XCreateBitmapFromData(Surface->display, Surface->window, noData, 8, 8);
 		Surface->noCursor = XCreatePixmapCursor(Surface->display, bitmapNoData, bitmapNoData,

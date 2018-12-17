@@ -459,6 +459,8 @@
 *220 at xprot4 ,all refineries has milions of gas
 *221 select menu with key, need to select then release key. 
  222 sound of seage tanks is hearing from closed map
+ 223 bug then fullscreen the saturate is increasing
+ 
     if interceptors kill destobj return to carrier but carrier in atackmode & interceptors dont launch again
     interceptors fly to atack far then carrier range
     carrier stop move if atack to ground and stops to atack somebody

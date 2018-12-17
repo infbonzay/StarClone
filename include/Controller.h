@@ -80,7 +80,7 @@ class Controller
 public:
 	long 				KeyActive,LastKey;
 	int 				RefreshAtEnd;
-	uint8_t				KeyFlags;				//shift,ctrl,alt
+	uint32_t			KeyFlags;				//shift,ctrl,alt
 	mycycle<uint16_t> 	*KeysBuffer;
 
 	int Init();
@@ -105,10 +105,10 @@ private:
 	void QuitVideoMode(bool Disconnect);
 	void TransformPixels(int x, int y, int sizex, int sizey);
 	template <typename T>
-		void Controller::Transform<T>(int x, int y, int sizex, int sizey);
+			void Transform(int x, int y, int sizex, int sizey);
 	void SaveDesktopResolution(int x,int y);
 	void DesktopResolution(int *x,int *y);
-
+	void SetKeyMod(int keysym, bool status);
 };
 
 extern Controller mainController;

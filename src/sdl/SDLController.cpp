@@ -192,7 +192,7 @@ void Controller::ApplyPalette256x3(unsigned char *pal3)
 //===========================================
 void Controller::QuitVideoMode(void)
 {
-	//ModifyVideoMode(gameconf.grmode.x,gameconf.grmode.y,gameconf.grmode.s,0,NULL);
+	ModifyVideoMode(gameconf.grmode.x,gameconf.grmode.y,gameconf.grmode.s,0,NULL);
 	SDL_QuitSubSystem(SDL_INIT_VIDEO);
 	SDL_Quit();
 }
@@ -203,6 +203,7 @@ int  Controller::EventsLoop(void)			//return 1 - on quit
 	SDL_Event event;
 	uint8_t buttons;
 	int keySym;
+	int keymod;
 	while (SDL_PollEvent(&event))
 	{
 		switch (event.type)
@@ -226,9 +227,14 @@ int  Controller::EventsLoop(void)			//return 1 - on quit
 			break;
 		case SDL_KEYDOWN:
 			//printf("SHIFT=%x CAPS=%x result=%x\n",event.key.keysym.mod & KMOD_SHIFT,event.key.keysym.mod & KMOD_CAPS,UpperKeysActive);
-			KeyFlags = event.key.keysym.mod;
+			keymod = 0;
 			keySym = event.key.keysym.sym;
-			if (KeyFlags & (SHIFTKEYMASK ^ LOCKKEYMASK))
+			SetKeyMod(keySym,true);
+			if (event.key.keysym.mod & SDLK_CAPSLOCK)
+				keymod ^= 1;
+			if (KeyFlags & SHIFTKEYMASK)
+				keymod ^= 1;
+			if (keymod)
 			{
 				if (keySym > 0 && keySym < 128)
 				{
@@ -250,7 +256,8 @@ int  Controller::EventsLoop(void)			//return 1 - on quit
 				KeysBuffer->PushElem(KeyActive);
 			break;
 		case SDL_KEYUP:
-			KeyFlags = event.key.keysym.mod;
+			keySym = event.key.keysym.sym;
+			SetKeyMod(keySym,false);
 			KeyActive = 0;
 			break;
 		case SDL_ACTIVEEVENT:
@@ -269,3 +276,27 @@ int  Controller::EventsLoop(void)			//return 1 - on quit
 	}
 	return (exitevent);
 }
+//===========================================
+void Controller::SetKeyMod(int keysym,bool status)
+{
+	switch(keysym)
+	{
+	case SDLK_LSHIFT:
+	case SDLK_RSHIFT:
+		if (status)
+			KeyFlags |= SHIFTKEYMASK;
+		else
+			KeyFlags &= ~SHIFTKEYMASK;
+		break;
+	case SDLK_LCTRL:
+	case SDLK_RCTRL:
+		if (status)
+			KeyFlags |= CTRLKEYMASK;
+		else
+			KeyFlags &= ~CTRLKEYMASK;
+		break;
+	}
+}
+//===========================================
+
+

@@ -115,7 +115,7 @@ if (UNIX)
 	add_definitions(-DUNDERLINUX)
 	add_definitions(-DWITHNETUDP)
 
-	find_package(SDL 1.2.5 REQUIRED)
+	#find_package(SDL 1.2.5 REQUIRED)
 
 	if(SDL_FOUND)
 		add_definitions(-DWITHSDL)
