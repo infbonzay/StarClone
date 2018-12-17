@@ -192,11 +192,6 @@ void Controller::ApplyPalette256x3(unsigned char *pal3)
 	ApplyPalette(pal4);
 }
 //===========================================
-void Controller::KeyPressRefresh(void)
-{
-	KeysStatus = SDL_GetKeyState(NULL);
-}
-//===========================================
 void Controller::QuitVideoMode(void)
 {
 	//ModifyVideoMode(gameconf.grmode.x,gameconf.grmode.y,gameconf.grmode.s,0,NULL);
@@ -257,6 +252,7 @@ int  Controller::EventsLoop(void)			//return 1 - on quit
 				KeysBuffer->PushElem(KeyActive);
 			break;
 		case SDL_KEYUP:
+			KeyFlags = event.key.keysym.mod;
 			KeyActive = 0;
 			break;
 		case SDL_ACTIVEEVENT:

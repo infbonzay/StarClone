@@ -92,7 +92,6 @@ public:
 	void ApplyPalette(unsigned char *pal4,int from,int count);
 	void ApplyPalette(unsigned char *pal4);
 	void ApplyPalette256x3(unsigned char *pal3);
-	void KeyPressRefresh(void);
 	void QuitVideoMode(void);
 	void HideCursor(void);
 	void ShowCursor(void);

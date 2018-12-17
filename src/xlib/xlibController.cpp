@@ -26,18 +26,11 @@ int Controller::Init(void)
 
 	mytimer.SetTickTimerFrequency(CYCLESPERSECOND);
 	KeysBuffer = new mycycle<uint16_t>(16, MYCYCLE_INFINITE);
-	KeysStatus = (uint8_t *) wmalloc(256);
-	memset(KeysStatus,0,256);
 	return(0);
 }
 //===========================================
 void Controller::DeInit(void)
 {
-	if (KeysStatus)
-	{
-		wfree(KeysStatus);
-		KeysStatus = 0;
-	}
 	delete KeysBuffer;
 	KeysBuffer = NULL;
 
@@ -337,10 +330,6 @@ void Controller::ApplyPalette256x3(unsigned char *pal3)
 	ApplyPalette(pal4);
 }
 //===========================================
-void Controller::KeyPressRefresh(void)
-{
-}
-//===========================================
 int  Controller::EventsLoop(void)			//return 1 - on quit
 {
 	int keySym;
@@ -402,6 +391,7 @@ int  Controller::EventsLoop(void)			//return 1 - on quit
 				KeysBuffer->PushElem(KeyActive);
 			break;
 		case KeyRelease:
+			KeyFlags = Surface->event.xkey.state;
 			KeyActive = 0;
 			break;
 		case ClientMessage:
