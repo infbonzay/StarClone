@@ -5,7 +5,6 @@
 #include "vars.h"
 #include "const.h"
 #include "mytime.h"
-#include "keysdl.h"
 #include "Controller.h"
 
 Controller mainController;

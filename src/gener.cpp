@@ -960,8 +960,12 @@ int gogame(struct mapinfo *info)
 		needredesen = 0;
 		clearactionBITS();
 		mainController.EventsLoop();
-
-
+/*		if (!(gameconf.grmode.flags & DISPLAYFLAGS_WINDOWACTIVE))
+		{
+			gameconf.grmode.flags |= DISPLAYFLAGS_WINDOWACTIVE;
+			mainController.KeyActive = F10;
+		}
+*/
 		screenMapInfo->ScrollX = 0;
 		screenMapInfo->ScrollY = 0;
 

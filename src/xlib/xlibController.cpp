@@ -13,16 +13,6 @@ Controller mainController;
 int Controller::Init(void)
 {
 	Surface = new Controller_Surface();
-	Surface->display = NULL;
-	Surface->screenNr = 0;
-	Surface->window = 0;
-	Surface->pixels = NULL;
-	Surface->Xpixels = NULL;
-	Surface->pixelsBufferSize = 0;
-	Surface->palette = NULL;
-	Surface->flags = 0x00;
-	Surface->Ximage = NULL;
-	Surface->noCursor = (Cursor) 0;
 
 	mytimer.SetTickTimerFrequency(CYCLESPERSECOND);
 	KeysBuffer = new mycycle<uint16_t>(16, MYCYCLE_INFINITE);
@@ -82,7 +72,7 @@ int Controller::QueryVideoMode(int x, int y, int bpp, int fullscreen)
 		gameconf.grmode.videobuff = (unsigned char *)Surface->pixels;
 
 		SetVideoBuffer(Surface->pixels);
-		Surface->XpixelsBufferSize = x * y * 4;
+		Surface->XpixelsBufferSize = x * y * Surface->ximagebpp[(Surface->SavedBpp+1)/8];
 		if (Surface->flags & CFLAG_EXACTBPP)
 		{
 			Surface->Xpixels = Surface->pixels;
@@ -94,21 +84,19 @@ int Controller::QueryVideoMode(int x, int y, int bpp, int fullscreen)
 		}
 		Surface->Ximage = XCreateImage( Surface->display, Surface->XVisual, Surface->SavedBpp,
 										ZPixmap, 0, (char *)Surface->Xpixels,
-										x, y, 32, 0);
+										x, y, Surface->ximagebpp[(Surface->SavedBpp+1)/8], 0);
 		Surface->window = XCreateSimpleWindow ( Surface->display,
 												RootWindow ( Surface->display, Surface->screenNr ),
 												0, 0, x, y, 0,
 												Surface->backgroundpixel,
 												Surface->backgroundpixel);
 		Surface->gc = XCreateGC(Surface->display, Surface->window, 0, NULL);
-		XSelectInput(Surface->display,Surface->window,  ExposureMask |
-														ButtonPressMask	|
+		XSelectInput(Surface->display,Surface->window,  ButtonPressMask	|
 														ButtonReleaseMask |
 														KeyPressMask |
 														KeyReleaseMask |
 														PointerMotionMask |
-														VisibilityChangeMask |
-														FocusChangeMask
+														StructureNotifyMask
 														);
 
 		if ( (closedownAtom = XInternAtom(Surface->display, "WM_DELETE_WINDOW", False)) )
@@ -272,15 +260,37 @@ void Controller::UpdateScreen(void)
 //===========================================
 void Controller::ApplyPalette(unsigned char *pal4,int from,int count)
 {
-	int to = (from + count) * 4;
 	if (Surface->DesiredBpp != 8)
 		return;
-	for (int i = from ; i < to; i+=4)
+	uint16_t *palette16 = (uint16_t *) Surface->palette;
+	uint16_t palcol16;
+	uint32_t *palette32 = (uint32_t *) Surface->palette;
+	uint32_t palcol32;
+	switch(Surface->SavedBpp)
 	{
-		Surface->palette[i+2] = pal4[i+0];
-		Surface->palette[i+1] = pal4[i+1];
-		Surface->palette[i+0] = pal4[i+2];
-		//Surface->palette[i+3] = pal4[i+3];
+	case 8:
+		return;
+	case 15:
+		do{
+			palcol16 = (( (*pal4++) >> 3) << 10) | (( (*pal4++) >> 3) << 5) | (( (*pal4++) >> 3) );
+			pal4++;
+			*palette16++ = palcol16;
+		}while(--count);
+		break;
+	case 16:
+		do{
+			palcol16 = (( (*pal4++) >> 3) << 11) | (( (*pal4++) >> 2) << 5) | (( (*pal4++) >> 3) );
+			pal4++;
+			*palette16++ = palcol16;
+		}while(--count);
+		break;
+	case 24:
+		do{
+			palcol32 = ( (*pal4++) << 16) | ( (*pal4++) << 8) | ( (*pal4++) );
+			pal4++;
+			*palette32++ = palcol32;
+		}while(--count);
+		break;
 	}
 	UpdateScreen();
 	return;
@@ -327,13 +337,11 @@ int  Controller::EventsLoop(void)			//return 1 - on quit
 		//DEBUGMESSCR("%02x;\n",Surface->event.type);
 		switch(Surface->event.type)
 		{
-		case FocusIn:
+		case MapNotify:
 			gameconf.grmode.flags |= DISPLAYFLAGS_WINDOWACTIVE;
 			break;
-		case FocusOut:
+		case UnmapNotify:
 			gameconf.grmode.flags &= ~DISPLAYFLAGS_WINDOWACTIVE;
-			break;
-		case Expose:
 			break;
 		case MotionNotify:
 			highMouse->PosX = Surface->event.xmotion.x;
@@ -396,6 +404,7 @@ int  Controller::EventsLoop(void)			//return 1 - on quit
 */
 	 	   break;
 		default:
+			//DEBUGMESSCR("not implemented %02x;\n",Surface->event.type);
 			break;
 		}
 	}
@@ -455,6 +464,8 @@ template <typename T>
 //===========================================
 void Controller::TransformPixels(int x, int y, int sizex, int sizey)
 {
+	if (Surface->DesiredBpp != 8)
+		return;
 	switch (Surface->SavedBpp)
 	{
 	case 8:

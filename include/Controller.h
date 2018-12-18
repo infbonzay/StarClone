@@ -23,6 +23,7 @@
 
 	typedef struct _Controller_Surface
 	{
+		const uint8_t ximagebpp[5] = {0,8,16,32,32}; //for 0,8,16,24,32 color bits
 		Display 	*display;
 		int			screenNr;
 		Window		window;

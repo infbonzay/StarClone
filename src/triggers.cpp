@@ -1710,7 +1710,7 @@ int TRG_RunAIScriptAtLocation(mapinfo *info, int aiscriptnr, int playernr, int p
 			break;
 		default:
 			findbunker = NULL;
-			bunkerlist = new mylist;
+			bunkerlist = new mylist();
 			for (j = 0;j < MaxObjects;j++)
 			{
 				if (GetTriggeredOBJState(objects[j]))
