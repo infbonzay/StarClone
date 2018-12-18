@@ -488,23 +488,19 @@ template <typename T>
 	void Controller::Transform(int x, int y, int sizex, int sizey)
 {
 	int i, j;
-	int xlast = x + sizex;
-	int ylast = y + sizey;
 	int deltaincr = Surface->Ximage->width - sizex;
 	T *paladr = (T *)Surface->palette;
 	T *Xbuf = (T *)Surface->Xpixels + y * Surface->Ximage->width + x;
 	uint8_t *buf = Surface->pixels + y * Surface->Ximage->width + x;
-	for (i = y;i < ylast; i++)
-	{
-		for (j = x;j < xlast; j++)
-		{
-			*Xbuf = paladr[*buf];
-			Xbuf++;
-			buf++;
-		}
+	i = sizey;
+	do{
+		j = sizex;
+		do{
+			*Xbuf++ = paladr[*buf++];
+		}while(--j);
 		Xbuf += deltaincr;
 		buf += deltaincr;
-	}
+	}while(--i);
 }
 //===========================================
 void Controller::HideCursor(void)
