@@ -118,7 +118,7 @@ int Controller::QueryVideoMode(int x, int y, int bpp, int fullscreen)
 	if (fullscreen)
 	{
 		//set screen resolution
-		if (!SetVideoMode<XF86VidModeModeInfo *>(x, y))
+		if (!SetVideoMode(x, y))
 		{
 			DEBUGMESSCR("Cannot set video mode\n");
 			return(0);
@@ -133,7 +133,7 @@ int Controller::QueryVideoMode(int x, int y, int bpp, int fullscreen)
 		if (!first)
 		{
 			DesktopResolution(&xres,&yres);
-			if (!SetVideoMode<XF86VidModeModeInfo *>(xres, yres))
+			if (!SetVideoMode(xres, yres))
 			{
 				DEBUGMESSCR("Cannot set video mode\n");
 				return(0);
@@ -432,12 +432,10 @@ void Controller::SetKeyMod(int keysym,bool status)
 	}
 }
 //===========================================
-template <typename T>
-		bool Controller::SetVideoMode(int x, int y)
+bool Controller::SetVideoMode(int x, int y)
 {
 	int modeCount;
-	T *modes;
-	T findMode = NULL;
+	XF86VidModeModeInfo *modes;
     bool ok = false;
 	if (XF86VidModeGetAllModeLines(Surface->display, Surface->screenNr, &modeCount, &modes))
 	{
@@ -445,18 +443,14 @@ template <typename T>
 		{
             if (x == modes[i]->hdisplay && y == modes[i]->vdisplay)
             {
-				findMode = modes[i];
+				ok = XF86VidModeSwitchToMode(Surface->display, Surface->screenNr, modes[i]);
+				if (ok)
+				{
+					XF86VidModeSetViewPort(Surface->display, Surface->screenNr, 0, 0);
+				}
 				break;
 			}
         }
-	}
-	if (findMode)
-	{
-		ok = XF86VidModeSwitchToMode(Surface->display, Surface->screenNr, findMode);
-		if (ok)
-		{
-			XF86VidModeSetViewPort(Surface->display, Surface->screenNr, 0, 0);
-		}
 	}
 	XFree(modes);
 	return(ok);

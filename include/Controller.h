@@ -101,8 +101,7 @@ public:
 	int  EventsLoop(void);
 	void SetWindowName(const char *winName);
 private:
-	template <typename T> 
-			bool SetVideoMode(int x, int y);
+	bool SetVideoMode(int x, int y);
 	void QuitVideoMode(bool Disconnect);
 	void TransformPixels(int x, int y, int sizex, int sizey);
 	template <typename T>
