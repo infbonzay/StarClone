@@ -5688,7 +5688,8 @@ int videoopt(MENUDRAW *menudraw, MENUPARAMS *menuparams)
 		addhorizbutton_params(menudraw->menutodraw, 12, MAXGAMMA, 8, 3, &gammachange);
 		sethorizbuttonpos(menudraw->menutodraw, 12, tempconf.videoconf.saturate);
 		
-		setcheckboxstate(menudraw->menutodraw, ???, mainController.CanFullScreen());
+		if (!mainController.CanFullScreen())
+			setmenuitem_DISABLED(menudraw->menutodraw, 15, TRUE);
 		
 	}
 	ret = drawmenu_ONETICK(menudraw->menutodraw);

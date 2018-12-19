@@ -55,21 +55,33 @@
 	} SCREEN_REGION;
 #endif
 #ifdef WITHFB
+	#include "fb/fbkey.h"
+
+	#define	CFLAG_EXACTBPP	0x01
+
 	typedef struct
 	{
 		const uint8_t ximagebpp[5] = {0,8,16,24,32}; //for 0,8,16,24,32 color bits
 		uint8_t		*pixels;
+		uint8_t		*palette;
 		int			pixelsBufferSize;
+		int			width;
+		int			heigth;
+		int			DesiredBpp;
+
+		//frame buffer vars
 		int			SavedWidth;
 		int			SavedHeight;
 		int			SavedBpp;
-
-		//frame buffer vars
 		struct fb_var_screeninfo vinfo;
 		struct fb_fix_screeninfo finfo;
+		int			fbfd;
+		void		*fbp;
+
 		uint8_t		*FBpixels;
 		int			FBpixelsBufferSize;
-		
+		uint8_t		flags;
+
 	} Controller_Surface;
 	typedef struct
 	{
@@ -111,8 +123,8 @@ public:
 	void DeInit();
 	int  QueryVideoMode(int x, int y, int bpp, int fullscreen);
 	int  ModifyVideoMode(int x, int y, int bpp, int fullscreen,unsigned char *palette);
-	int  CanFullScreen();
-	
+	bool CanFullScreen(void);
+
 	void UpdateScreenRegions(int nrregions,SCREEN_REGION regions[]);
 	void UpdateScreenRegion(int x,int y,int xsize,int ysize);
 	void UpdateScreen(void);

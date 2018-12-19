@@ -164,7 +164,7 @@ int main(int c, char **parm, char **env)
 			{
 				printf("cannot initialize %dx%dx%d video mode\n",
 					gameconf.grmode.x, gameconf.grmode.y, gameconf.grmode.s);
-				exit(-1);
+				gameend(NULL);
 			}
 			if (i == 2)
 			{
@@ -177,7 +177,7 @@ int main(int c, char **parm, char **env)
 		{
 			LoadDatTblFiles(&alldattbl);
 			if (DownloadMpqMenu(firsttimelaunch) == -1)
-				exit(-1);
+				gameend(NULL);
 			UnloadDatTblFiles(&alldattbl);
 		}
 	} while (firsttimelaunch & 0xff);
@@ -206,10 +206,7 @@ int main(int c, char **parm, char **env)
 		//		  gameend("Problem with loading dat,tbl files");
 	}
 	LoadPatchTbl();
-	if (loadznak())
-	{
-		//		exit(-1);
-	}
+	loadznak();
 	loadlang();
 	fflush(stdout);
 	printf("parse units table ...\n");
@@ -229,7 +226,7 @@ int main(int c, char **parm, char **env)
 	setseed(0);
 
 	if (iscriptinfo.CompileIScripts("data/iscript"))
-		return(-1);
+		gameend(NULL);
 
 	int sleepNr = gameconf.videoconf.titledelay + 1;
 	do {
@@ -1455,7 +1452,8 @@ void showiconramka(void)
 void gameend(const char *mes)
 {
 	logend();
-	printf("%s\n", mes);
+	if (mes)
+		printf("%s\n", mes);
 	if (map.valid_vcode)
 		unload_starmap(&map);
 

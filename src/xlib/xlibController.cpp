@@ -12,8 +12,8 @@ Controller mainController;
 //==========================
 int Controller::Init(void)
 {
-	Display	*display;
-	if ( ( display = XOpenDisplay ( NULL ) ) == NULL )
+	Display	*display = XOpenDisplay ( NULL );
+	if ( display == NULL )
 	{
 		DEBUGMESSCR("Cannot connect to xserver\n");
 		return(-1);
@@ -35,7 +35,7 @@ void Controller::DeInit(void)
 	if (Surface)
 	{
 		QuitVideoMode();
-		
+
 		XCloseDisplay(Surface->display);
 		Surface->display = NULL;
 
@@ -136,7 +136,7 @@ int Controller::QueryVideoMode(int x, int y, int bpp, int fullscreen)
 		}
 		winatrmask |= CWOverrideRedirect;
 		setwinatr.override_redirect = true;
-		
+
 		XMoveResizeWindow(Surface->display, Surface->window, 0, 0, x, y);
 	}
 	else
@@ -151,7 +151,7 @@ int Controller::QueryVideoMode(int x, int y, int bpp, int fullscreen)
 			}
 			winatrmask |= CWOverrideRedirect;
 			setwinatr.override_redirect = false;
-			
+
 		}
 	}
 	winatrmask |= CWBackingStore;
@@ -166,7 +166,7 @@ int Controller::QueryVideoMode(int x, int y, int bpp, int fullscreen)
 
 	XGetWindowAttributes(Surface->display,Surface->window,&winatr);
     if (winatr.map_state == IsViewable )
-    { 
+    {
 		XSetInputFocus(Surface->display, Surface->window, RevertToParent, CurrentTime);
     }
 	gameconf.grmode.flags |= DISPLAYFLAGS_WINDOWACTIVE;
@@ -176,7 +176,7 @@ int Controller::QueryVideoMode(int x, int y, int bpp, int fullscreen)
 void Controller::QuitVideoMode(void)
 {
 	int xres,yres;
-	if (Surface->display)
+	if (Surface && Surface->display)
 	{
 		ShowCursor();
 		if (Surface->gc)
@@ -184,9 +184,12 @@ void Controller::QuitVideoMode(void)
 			XFreeGC(Surface->display, Surface->gc);
 			Surface->gc = NULL;
 		}
-		XDestroyWindow(Surface->display, Surface->window);
-		XFlush(Surface->display);
-		Surface->window = (Window) 0;
+		if (Surface->window)
+		{
+			XDestroyWindow(Surface->display, Surface->window);
+			XFlush(Surface->display);
+			Surface->window = (Window) 0;
+		}
 		if (Surface->palette)
 		{
 			wfree(Surface->palette);
@@ -211,7 +214,7 @@ void Controller::QuitVideoMode(void)
 		if (Surface->FullScreen)
 		{
 			DesktopResolution(&xres,&yres);
-			SetVideoMode<XF86VidModeModeInfo *>(xres,yres);
+			SetVideoMode(xres,yres);
 		}
 	}
 }
@@ -271,9 +274,9 @@ void Controller::ApplyPalette(unsigned char *pal4,int from,int count)
 {
 	if (Surface->DesiredBpp != 8)
 		return;
-	uint16_t *palette16 = (uint16_t *) Surface->palette;
+	uint16_t *palette16 = ( (uint16_t *) Surface->palette) + from;
 	uint16_t palcol16;
-	uint32_t *palette32 = (uint32_t *) Surface->palette;
+	uint32_t *palette32 = ( (uint32_t *) Surface->palette) + from;
 	uint32_t palcol32;
 	switch(Surface->SavedBpp)
 	{
@@ -302,7 +305,6 @@ void Controller::ApplyPalette(unsigned char *pal4,int from,int count)
 		break;
 	}
 	UpdateScreen();
-	return;
 }
 //==========================
 void Controller::ApplyPalette(unsigned char *pal4)
@@ -389,7 +391,7 @@ int  Controller::EventsLoop(void)			//return 1 - on quit
 				else
 				{
 					KeyActive = 0;
-				}				
+				}
 			}
 			else
 			{
@@ -405,7 +407,7 @@ int  Controller::EventsLoop(void)			//return 1 - on quit
 			KeyActive = 0;
 			break;
 		case ClientMessage:
-/*			if (((XClientMessageEvent *) & event)->data.l[0] == closedownAtom) 
+/*			if (((XClientMessageEvent *) & event)->data.l[0] == closedownAtom)
 			{
 		    	//close window
 				return(1);
@@ -444,7 +446,7 @@ void Controller::SetKeyMod(int keysym,bool status)
 bool Controller::SetVideoMode(int x, int y)
 {
 	int modeCount;
-	XF86VidModeModeInfo *modes;
+	XF86VidModeModeInfo **modes;
     bool ok = false;
 	if (XF86VidModeGetAllModeLines(Surface->display, Surface->screenNr, &modeCount, &modes))
 	{
