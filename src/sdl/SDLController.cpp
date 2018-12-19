@@ -297,5 +297,10 @@ void Controller::SetKeyMod(int keysym,bool status)
 	}
 }
 //===========================================
+bool Controller::CanFullScreen(void)
+{
+	return true;
+}
+//===========================================
 
 

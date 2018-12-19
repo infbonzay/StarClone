@@ -21,39 +21,62 @@
 
 	#define	CFLAG_EXACTBPP	0x01
 
-	typedef struct _Controller_Surface
+	typedef struct
 	{
 		const uint8_t ximagebpp[5] = {0,8,16,32,32}; //for 0,8,16,24,32 color bits
-		Display 	*display;
-		int			screenNr;
-		Window		window;
-		Visual		*XVisual;
 		bool		FullScreen;
 		uint8_t		*pixels;
 		uint8_t		*palette;
 		int			pixelsBufferSize;
-
-		XImage		*Ximage;
-		Cursor		noCursor;
-		GC			gc;
-		uint8_t		*Xpixels;
-		int			XpixelsBufferSize;
-		uint8_t		flags;
-
-		XEvent		event;
-
-		long		backgroundpixel;
 		int			DesiredBpp;
 		int			SavedWidth;
 		int			SavedHeight;
 		int			SavedBpp;
+
+		//xlib vars
+		Display 	*display;
+		int			screenNr;
+		Window		window;
+		Visual		*XVisual;
+		XImage		*Ximage;
+		Cursor		noCursor;
+		GC			gc;
+		XEvent		event;
+		uint8_t		*Xpixels;
+		int			XpixelsBufferSize;
+		uint8_t		flags;
+
 	} Controller_Surface;
 
-	typedef struct _SCREEN_REGION
+	typedef struct
 	{
 		int16_t  x, y;
 		uint16_t w, h;
 	} SCREEN_REGION;
+#endif
+#ifdef WITHFB
+	typedef struct
+	{
+		const uint8_t ximagebpp[5] = {0,8,16,24,32}; //for 0,8,16,24,32 color bits
+		uint8_t		*pixels;
+		int			pixelsBufferSize;
+		int			SavedWidth;
+		int			SavedHeight;
+		int			SavedBpp;
+
+		//frame buffer vars
+		struct fb_var_screeninfo vinfo;
+		struct fb_fix_screeninfo finfo;
+		uint8_t		*FBpixels;
+		int			FBpixelsBufferSize;
+		
+	} Controller_Surface;
+	typedef struct
+	{
+		int16_t  x, y;
+		uint16_t w, h;
+	} SCREEN_REGION;
+
 #endif
 
 class Controller
@@ -88,7 +111,8 @@ public:
 	void DeInit();
 	int  QueryVideoMode(int x, int y, int bpp, int fullscreen);
 	int  ModifyVideoMode(int x, int y, int bpp, int fullscreen,unsigned char *palette);
-
+	int  CanFullScreen();
+	
 	void UpdateScreenRegions(int nrregions,SCREEN_REGION regions[]);
 	void UpdateScreenRegion(int x,int y,int xsize,int ysize);
 	void UpdateScreen(void);

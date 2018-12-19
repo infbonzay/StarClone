@@ -12,8 +12,14 @@ Controller mainController;
 //==========================
 int Controller::Init(void)
 {
+	Display	*display;
+	if ( ( display = XOpenDisplay ( NULL ) ) == NULL )
+	{
+		DEBUGMESSCR("Cannot connect to xserver\n");
+		return(-1);
+	}
 	Surface = new Controller_Surface();
-
+	Surface->display = display;
 	mytimer.SetTickTimerFrequency(CYCLESPERSECOND);
 	KeysBuffer = new mycycle<uint16_t>(16, MYCYCLE_INFINITE);
 	return(0);
@@ -21,11 +27,21 @@ int Controller::Init(void)
 //===========================================
 void Controller::DeInit(void)
 {
-	delete KeysBuffer;
-	KeysBuffer = NULL;
+	if (KeysBuffer)
+	{
+		delete KeysBuffer;
+		KeysBuffer = NULL;
+	}
+	if (Surface)
+	{
+		QuitVideoMode();
+		
+		XCloseDisplay(Surface->display);
+		Surface->display = NULL;
 
-	delete Surface;
-	Surface = NULL;
+		delete Surface;
+		Surface = NULL;
+	}
 }
 //===========================================
 void Controller::SetWindowName(const char *winName)
@@ -37,23 +53,18 @@ int Controller::QueryVideoMode(int x, int y, int bpp, int fullscreen)
 {
     XWindowAttributes winatr;
 	XSetWindowAttributes setwinatr;
-	unsigned long winatrmask;
+	unsigned long winatrmask, backgroundpixel;
 	int xres,yres;
 	Atom closedownAtom;
 	XSizeHints hints;
 
 	bool first = false;
 	Surface->FullScreen = fullscreen;
-	if (!Surface->display)
+	if (!Surface->window)
 	{
 		first = true;
-		if ( ( Surface->display = XOpenDisplay ( NULL ) ) == NULL )
-		{
-			DEBUGMESSCR("Cannot connect to xserver\n");
-			return(0);
-		}
 		Surface->screenNr = DefaultScreen ( Surface->display );
-		Surface->backgroundpixel = BlackPixel ( Surface->display, Surface->screenNr );
+		backgroundpixel = BlackPixel ( Surface->display, Surface->screenNr );
 		Screen *defaultscreen = DefaultScreenOfDisplay(Surface->display);
 		Surface->XVisual = DefaultVisual(Surface->display, 0);
 
@@ -69,10 +80,10 @@ int Controller::QueryVideoMode(int x, int y, int bpp, int fullscreen)
 		Surface->palette = (uint8_t *)wmalloc(256 * 4);
 		memset(Surface->palette, 0, 256 * 4);
 
-		gameconf.grmode.videobuff = (unsigned char *)Surface->pixels;
+		gameconf.grmode.videobuff = Surface->pixels;
 
 		SetVideoBuffer(Surface->pixels);
-		Surface->XpixelsBufferSize = x * y * Surface->ximagebpp[(Surface->SavedBpp+1)/8];
+		Surface->XpixelsBufferSize = x * y * Surface->ximagebpp[(Surface->SavedBpp + 1)/8];
 		if (Surface->flags & CFLAG_EXACTBPP)
 		{
 			Surface->Xpixels = Surface->pixels;
@@ -88,8 +99,8 @@ int Controller::QueryVideoMode(int x, int y, int bpp, int fullscreen)
 		Surface->window = XCreateSimpleWindow ( Surface->display,
 												RootWindow ( Surface->display, Surface->screenNr ),
 												0, 0, x, y, 0,
-												Surface->backgroundpixel,
-												Surface->backgroundpixel);
+												backgroundpixel,
+												backgroundpixel);
 		Surface->gc = XCreateGC(Surface->display, Surface->window, 0, NULL);
 		XSelectInput(Surface->display,Surface->window,  ButtonPressMask	|
 														ButtonReleaseMask |
@@ -181,7 +192,7 @@ void Controller::QuitVideoMode(void)
 			wfree(Surface->palette);
 			Surface->palette = NULL;
 		}
-			Surface->Xpixels = NULL;
+		Surface->Xpixels = NULL;
 		if (Surface->flags & CFLAG_EXACTBPP)
 		{
 			Surface->pixels = NULL;
@@ -202,8 +213,6 @@ void Controller::QuitVideoMode(void)
 			DesktopResolution(&xres,&yres);
 			SetVideoMode<XF86VidModeModeInfo *>(xres,yres);
 		}
-		XCloseDisplay(Surface->display);
-		Surface->display = NULL;
 	}
 }
 //===========================================
@@ -537,4 +546,8 @@ void Controller::DesktopResolution(int *x,int *y)
 	*y = Surface->SavedHeight;
 }
 //===========================================
-
+bool Controller::CanFullScreen(void)
+{
+	return true;
+}
+//===========================================

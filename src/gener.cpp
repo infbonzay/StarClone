@@ -156,6 +156,7 @@ int main(int c, char **parm, char **env)
 		{
 			if (mainController.Init())
 			{
+				mainController.DeInit();
 				gameend("can not initialize graph");
 			}
 			i = setmode(gameconf.grmode.x, gameconf.grmode.y, gameconf.grmode.s, gameconf.grmode.flags & DISPLAYFLAGS_FULLSCREENMODE);
