@@ -42,7 +42,6 @@ int Controller::Init(void)
 	Surface->vinfo = vinfo;
 	Surface->finfo = finfo;
 
-	mytimer.SetTickTimerFrequency(CYCLESPERSECOND);
 	KeysBuffer = new mycycle<uint16_t>(16, MYCYCLE_INFINITE);
 	return(0);
 }

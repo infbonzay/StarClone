@@ -30,7 +30,8 @@ int MyEventFunc(const SDL_Event *event)
 //===========================================
 int Controller::Init(void)
 {
-	mytimer.SetTickTimerFrequency(CYCLESPERSECOND);
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) == -1)
+		return (0);
 	KeysBuffer = new mycycle<uint16_t>(16, MYCYCLE_INFINITE);
 	return(0);
 }
@@ -39,6 +40,8 @@ void Controller::DeInit(void)
 {
 	delete KeysBuffer;
 	KeysBuffer = NULL;
+
+	SDL_Quit();
 }
 //===========================================
 void Controller::HideCursor(void)
@@ -64,8 +67,6 @@ int Controller::QueryVideoMode(int x, int y, int bpp, int fullscreen)
 	else
 		flags = SDL_HWSURFACE | SDL_HWPALETTE;
 	emul = 0;
-	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) == -1)
-		return (0);
 	realbpp = SDL_VideoModeOK(x, y, bpp, flags);
 	if (realbpp == 0)
 		return(0);
@@ -193,7 +194,6 @@ void Controller::QuitVideoMode(void)
 {
 	ModifyVideoMode(gameconf.grmode.x,gameconf.grmode.y,gameconf.grmode.s,0,NULL);
 	SDL_QuitSubSystem(SDL_INIT_VIDEO);
-	SDL_Quit();
 }
 //===========================================
 int  Controller::EventsLoop(void)			//return 1 - on quit
@@ -229,9 +229,9 @@ int  Controller::EventsLoop(void)			//return 1 - on quit
 			keymod = 0;
 			keySym = event.key.keysym.sym;
 			SetKeyMod(keySym,true);
-			if (event.key.keysym.mod & SDLK_CAPSLOCK)
+			if (event.key.keysym.mod & KMOD_CAPS)
 				keymod ^= 1;
-			if (KeyFlags & SHIFTKEYMASK)
+			if (event.key.keysym.mod & KMOD_SHIFT)
 				keymod ^= 1;
 			if (keymod)
 			{

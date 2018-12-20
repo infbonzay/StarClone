@@ -159,6 +159,9 @@ int main(int c, char **parm, char **env)
 				mainController.DeInit();
 				gameend("can not initialize graph");
 			}
+
+			mytimer.SetTickTimerFrequency(CYCLESPERSECOND);
+
 			i = setmode(gameconf.grmode.x, gameconf.grmode.y, gameconf.grmode.s, gameconf.grmode.flags & DISPLAYFLAGS_FULLSCREENMODE);
 			if (!i)
 			{

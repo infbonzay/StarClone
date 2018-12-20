@@ -20,7 +20,7 @@ int Controller::Init(void)
 	}
 	Surface = new Controller_Surface();
 	Surface->display = display;
-	mytimer.SetTickTimerFrequency(CYCLESPERSECOND);
+
 	KeysBuffer = new mycycle<uint16_t>(16, MYCYCLE_INFINITE);
 	return(0);
 }
@@ -390,7 +390,7 @@ int  Controller::EventsLoop(void)			//return 1 - on quit
 				}
 				else
 				{
-					KeyActive = 0;
+					KeyActive = keySym;
 				}
 			}
 			else
