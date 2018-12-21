@@ -268,9 +268,6 @@ void checkanddrawmenu(MENUSTR *allmenus, int ItemChanges, int saveunder)
 		loadunderitems(allmenus, ITEM_RESTOREANDFREE);
 		saveunderitems(allmenus);
 	}
-	//	  int showmin=25;
-	//	  int showmax=mymin(allmenus->elements,30);
-	//	  for (i=showmin;i<showmax;i++)
 	for (i = 0;i < allmenus->elements;i++)
 	{
 		inv = 0;
@@ -297,8 +294,6 @@ void updateonemenuitem(MENUSTR *allmenus, int itemnr)
 	MENUPOS *item = &allmenus->menu[itemnr];
 	if (item->savedscrunderitem)
 	{
-		//		loadpartscreen(item->hotdeltax,item->hotdeltay,item->hotxsize,item->hotysize,item->savedscrunderitem);
-		//		item->savedscrunderitem=savepartscreen(item->hotdeltax,item->hotdeltay,item->hotxsize,item->hotysize);
 		loadunderitem(allmenus, itemnr);
 		saveunderitem(allmenus, itemnr);
 	}
@@ -448,8 +443,6 @@ int actionmenuonpressmouse(MENUSTR *allmenus, int downmenu, int *selectedmenu)
 		}
 		break;
 	case ISEXPANDBOX:
-		//				if (item->item.expandbox->array[ITEMSHOW_CLICK]==NULL)
-		//					return(0);
 		xsize = item->item.expandbox->array[ITEMSHOW_CLICK][0];
 		ysize = item->item.expandbox->array[ITEMSHOW_CLICK][1];
 		sprnr = item->item.expandbox->array[ITEMSHOW_CLICK][2];
@@ -545,8 +538,6 @@ void activemenuupdatevalues(MENUSTR *allmenus, int activeitem)
 		fadeinout = 0;
 		for (int i = 0;i < allmenus->elements;i++)
 		{
-			// 			if (allmenus->menu[i].showvalue)
-			// 			printf("%d\n",allmenus->menu[i].showvalue);
 			if (i == activeitem)
 			{
 				allmenus->menu[i].showvalue += allmenus->incrementfactor;
@@ -613,7 +604,7 @@ int drawmenu(MENUSTR *allmenus, int flags)
 	//	  saveunderitems(allmenus);
 	mymousemoveevent(highMouse->PosX, highMouse->PosY);
 	checkanddrawmenu(allmenus, ITEMNOONEACTIVE, updateunder);
-	if (!(flags&&MENUFLAGS_BYPASS))
+	if (!(flags & MENUFLAGS_BYPASS))
 	{
 		highMouse->RefreshMouseType(map.MAPXGLOBAL, map.MAPYGLOBAL);
 		do {
@@ -773,10 +764,6 @@ int drawmenu(MENUSTR *allmenus, int flags)
 					restorepartscreen(0, 0, gameconf.grmode.x, gameconf.grmode.y, prev_entire_screen);
 					checkanddrawmenu(allmenus->prevmenu, ITEMALLDISABLED, updateunder);
 					RunCallBackFuncs(allmenus->prevmenu);
-					//								if (allmenus->prevmenu->CallBackFunc)
-					//							(*allmenus->prevmenu->CallBackFunc)(allmenus->prevmenu,allmenus->prevmenu->somecallbackdata);
-											//no updates showvalue if all disabled( usually previous menu showing)
-					//								activemenuupdatevalues(allmenus->prevmenu,ITEMALLDISABLED);
 				}
 				checkanddrawmenu(allmenus, allmenus->vars.BarChanges.bar, updateunder);
 				needredraw = 0;
@@ -826,8 +813,6 @@ int showlistmenu(MENUSTR *allmenus)
 		mainController.EventsLoop();
 		if (allmenus->prevmenu)
 			RunCallBackFuncs(allmenus->prevmenu);
-		//			if (allmenus->prevmenu->CallBackFunc)
-		//				(*allmenus->prevmenu->CallBackFunc)(allmenus->prevmenu,allmenus->prevmenu->somecallbackdata);
 		highMouse->SaveImageUnder();
 		highMouse->DrawMouse();
 		mainController.UpdateScreen();
@@ -882,7 +867,6 @@ int showlistmenu(MENUSTR *allmenus)
 void setmouseonitem(int activeitemchanges)//,int activeitem)
 {
 	ActiveMenuChanges = activeitemchanges;
-	//	  menuonbar=activeitem;
 }
 //==========================================
 void getmouseonitem(int *activeitemchanges, int *activeitem)
@@ -893,7 +877,6 @@ void getmouseonitem(int *activeitemchanges, int *activeitem)
 //==========================================
 void getmouseonmenubar(int value)
 {
-	//	  ActiveMenuChanges = menuonbar!=value;
 	ActiveMenuChanges = 1;						//check mouse position every tick
 	menuonbar = value;
 }
@@ -984,7 +967,7 @@ void drawmenuitem(MENUSTR *allmenus, int itemnr)
 		drawimageitem(allmenus, itemnr);
 		break;
 	}
-	if (!(allmenus->menu[itemnr].dialogbin_flags&DIALOGBIN_FLAGS_NODLGGRP))
+	if (!(allmenus->menu[itemnr].dialogbin_flags & DIALOGBIN_FLAGS_NODLGGRP))
 		drawdecorate(allmenus, itemnr);
 }
 //==========================================
@@ -1046,7 +1029,7 @@ int menukeys(MENUSTR *allmenus, int *pressed, int *needredraw)
 		{
 			for (i = allmenus->defaultbutton + 1;i < allmenus->elements;i++)
 				if (!menuitem_ISDISABLED(allmenus, i) && menuitem_ISVISIBLED(allmenus, i))
-					if (allmenus->menu[i].dialogbin_flags&DIALOGBIN_FLAGS_KEYMOUSERESPONDEVENTS)
+					if (allmenus->menu[i].dialogbin_flags & DIALOGBIN_FLAGS_KEYMOUSERESPONDEVENTS)
 					{
 						setdefaultbutton(allmenus, i);
 						if (needredraw)
@@ -1056,7 +1039,7 @@ int menukeys(MENUSTR *allmenus, int *pressed, int *needredraw)
 					}
 			for (i = 0;i < allmenus->defaultbutton;i++)
 				if (!menuitem_ISDISABLED(allmenus, i) && menuitem_ISVISIBLED(allmenus, i))
-					if (allmenus->menu[i].dialogbin_flags&DIALOGBIN_FLAGS_KEYMOUSERESPONDEVENTS)
+					if (allmenus->menu[i].dialogbin_flags & DIALOGBIN_FLAGS_KEYMOUSERESPONDEVENTS)
 					{
 						setdefaultbutton(allmenus, i);
 						mainController.KeyActive = 0;
@@ -1088,14 +1071,14 @@ int menukeys(MENUSTR *allmenus, int *pressed, int *needredraw)
 			case TABKEY: //need to parse all elements to need next active and decorated and responce to mouse&key events
 				for (i = allmenus->defaultbutton + 1;i < allmenus->elements;i++)
 					if (!menuitem_ISDISABLED(allmenus, i) && menuitem_ISVISIBLED(allmenus, i))
-						if (allmenus->menu[i].dialogbin_flags&DIALOGBIN_FLAGS_KEYMOUSERESPONDEVENTS)
+						if (allmenus->menu[i].dialogbin_flags & DIALOGBIN_FLAGS_KEYMOUSERESPONDEVENTS)
 						{
 							setdefaultbutton(allmenus, i);
 							return NOSELECTMENUBAR;
 						}
 				for (i = 0;i < allmenus->defaultbutton;i++)
 					if (!menuitem_ISDISABLED(allmenus, i) && menuitem_ISVISIBLED(allmenus, i))
-						if (allmenus->menu[i].dialogbin_flags&DIALOGBIN_FLAGS_KEYMOUSERESPONDEVENTS)
+						if (allmenus->menu[i].dialogbin_flags & DIALOGBIN_FLAGS_KEYMOUSERESPONDEVENTS)
 						{
 							setdefaultbutton(allmenus, i);
 							return NOSELECTMENUBAR;
@@ -1221,13 +1204,13 @@ MENUSTR *createmenuinfo(int xpos, int ypos, int xsize, int ysize, int nrofelems,
 	menu->y = ypos;
 	menu->xsize = xsize;
 	menu->ysize = ysize;
-	if (flags&DIALOGBIN_DONOTSAVEUNDERMENU)
+	if (flags & DIALOGBIN_DONOTSAVEUNDERMENU)
 	{
 		setmenuflags(menu, MENUFLAGS_ONETICKDRAW);
 	}
 	else
 	{
-		if (xsize*ysize)
+		if (xsize * ysize)
 			menu->saveunder = savepartscreen(menu->x, menu->y, menu->xsize, menu->ysize);
 	}
 	setincrementvalue(menu, 48);
