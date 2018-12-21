@@ -327,8 +327,9 @@ int actiondblclick(MENUSTR *allmenus, int downmenu)
 					if (!item->item.listbox->pixelsbetweenlines)
 						return(NOSELECTMENUBAR);
 					itemselected = (highMouse->PosY - item->hotdeltay) / item->item.listbox->pixelsbetweenlines;
-					if (itemselected < item->item.listbox->lines)
-						itemselected += item->item.listbox->from;
+					if (itemselected >= item->item.listbox->lines)
+						break;
+					itemselected += item->item.listbox->from;
 					if (itemselected < item->item.listbox->flist->Count())
 					{
 						item->item.listbox->selectednr = itemselected;
@@ -427,8 +428,9 @@ int actionmenuonpressmouse(MENUSTR *allmenus, int downmenu, int *selectedmenu)
 				if (!item->item.listbox->pixelsbetweenlines)
 					return(0);
 				itemselected = (highMouse->PosY - item->hotdeltay) / item->item.listbox->pixelsbetweenlines;
-				if (itemselected < item->item.listbox->lines)
-					itemselected += item->item.listbox->from;
+				if (itemselected >= item->item.listbox->lines)
+					break;
+				itemselected += item->item.listbox->from;
 				if (itemselected < item->item.listbox->flist->Count())
 				{
 					if (item->item.listbox->selectednr != itemselected)
@@ -2296,7 +2298,6 @@ void addhorizbutton_params(MENUSTR *allmenus, int nr, int maxpos, int nrofholes,
 		newsizepix = (spacebetweenholes*HORIZLINESIZE + HORIZBUTTONSIZE)*(nrofholes - 1) + HORIZBUTTONSIZE + 2 * HORIZLINESIZE;
 		menuitem->item.horizbutton->sizexelem = sizexelem;
 		menuitem->item.horizbutton->sizexbar = newsizepix;
-		//		  menuitem->hotxsize=newsizepix;
 		addhorizbutton_params(allmenus, nr, maxpos, nrofholes, func);
 	}
 	else
@@ -2385,6 +2386,11 @@ void addhorizbutton(MENUSTR *allmenus, int nr, int hotx, int hoty, int hotsizex,
 //==========================================
 void sethorizbuttonpos(MENUSTR *allmenus, int itemnr, int value)
 {
+	sethorizbuttonpos(allmenus, itemnr, value, false);
+}
+//==========================================
+void sethorizbuttonpos(MENUSTR *allmenus, int itemnr, int value,int ignorecallback)
+{
 	int value2;
 	if (allmenus->menu[itemnr].itemtype == ISHORIZBUTTON)
 	{
@@ -2398,7 +2404,7 @@ void sethorizbuttonpos(MENUSTR *allmenus, int itemnr, int value)
 			value2 = value * menuitem->item.horizbutton->sizexbar / (allmenus->menu[itemnr].item.horizbutton->metric - 1) + 1;
 		else
 			value2 = value * menuitem->item.horizbutton->sizexbar / allmenus->menu[itemnr].item.horizbutton->metric;
-		sethorizbuttonposfrommouse(allmenus, itemnr, value2);
+		sethorizbuttonposfrommouse(allmenus, itemnr, value2, ignorecallback);
 		menuitem->item.horizbutton->value = value;
 	}
 	else
@@ -2418,6 +2424,11 @@ int gethorizvalue(MENUSTR *allmenus, int nr)
 }
 //==========================================
 void sethorizbuttonposfrommouse(MENUSTR *allmenus, int itemnr, int value)
+{
+	sethorizbuttonposfrommouse(allmenus, itemnr, value, false);
+}
+//==========================================
+void sethorizbuttonposfrommouse(MENUSTR *allmenus, int itemnr, int value, int ignorecallback)
 {
 	int i;
 	if (allmenus->menu[itemnr].itemtype == ISHORIZBUTTON)
@@ -2459,7 +2470,7 @@ void sethorizbuttonposfrommouse(MENUSTR *allmenus, int itemnr, int value)
 			menuitem->item.horizbutton->barxposition = value;
 			menuitem->item.horizbutton->value = menuitem->item.horizbutton->barxposition*menuitem->item.horizbutton->metric / menuitem->item.horizbutton->maxxvalue;
 		}
-		if (menuitem->item.horizbutton->onselectitem_callback != NULL)
+		if (menuitem->item.horizbutton->onselectitem_callback != NULL && !ignorecallback)
 			menuitem->item.horizbutton->onselectitem_callback(allmenus, itemnr, menuitem->item.horizbutton->value);
 	}
 	else

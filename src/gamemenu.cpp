@@ -5683,11 +5683,11 @@ int videoopt(MENUDRAW *menudraw, MENUPARAMS *menuparams)
 		setcheckboxstate(menudraw->menutodraw, 16, tempconf.videoconf.visiblemap);
 
 		addhorizbutton_params(menudraw->menutodraw, 4, MAXGAMMA, 8, 3, &gammachange);
-		sethorizbuttonpos(menudraw->menutodraw, 4, tempconf.videoconf.gamma);
+		sethorizbuttonpos(menudraw->menutodraw, 4, tempconf.videoconf.gamma, true);
 
 		addhorizbutton_params(menudraw->menutodraw, 12, MAXGAMMA, 8, 3, &gammachange);
-		sethorizbuttonpos(menudraw->menutodraw, 12, tempconf.videoconf.saturate);
-		
+		sethorizbuttonpos(menudraw->menutodraw, 12, tempconf.videoconf.saturate, true);
+
 		if (!mainController.CanFullScreen())
 			setmenuitem_DISABLED(menudraw->menutodraw, 15, TRUE);
 		

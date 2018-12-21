@@ -532,7 +532,9 @@ void addhorizbutton(MENUSTR *allmenus,int nr,int hotx,int hoty,int hotsizex,int 
 					void (*func)(MENUSTR *allmenus,int menuitemnr,int horizpos));
 void drawhorizbutton(MENUSTR *allmenus,int itemnr);
 void sethorizbuttonposfrommouse(MENUSTR *allmenus,int itemnr,int hotxpos);
+void sethorizbuttonposfrommouse(MENUSTR *allmenus,int itemnr,int hotxpos,int ignorecallback);
 void sethorizbuttonpos(MENUSTR *allmenus,int itemnr,int value);
+void sethorizbuttonpos(MENUSTR *allmenus,int itemnr,int value,int ignorecallback);
 int	 gethorizvalue(MENUSTR *allmenus,int itemnr);
 void addsmkvideo(MENUSTR *allmenus,int nr,int hotx,int hoty,int sizex,int sizey,int nrofsmks,SMK_ARRAY *arrayofsmks);
 void addbuttontosmk(MENUSTR *allmenus,int nr,int xpos,int ypos,int buttonareaxsize,int buttonareaysize,
