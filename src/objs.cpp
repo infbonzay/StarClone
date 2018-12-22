@@ -2692,6 +2692,8 @@ int accesstomove(struct OBJ *a, struct OBJstruct *b, int mode, int player)
 		prop = b->modemove[a->typeofprop][j];
 		if (a->playernr == player)
 		{
+			if (prop == mode)
+				return(1);
 			switch (mode)
 			{
 			case MODEUNLOADUNITNR:
@@ -2705,10 +2707,6 @@ int accesstomove(struct OBJ *a, struct OBJstruct *b, int mode, int player)
 			case MODEBURROW2:
 				if (prop == MODEBURROW)
 					return true;
-				break;
-			default:
-				if (prop == mode)
-					return(1);
 				break;
 			}
 		}

@@ -451,7 +451,7 @@
 *212 exit from bunker bug
 *213 around 936 cycle bad fog in imperator flight
 *214 makeopenseekarta - beginobj,endobj need rewrite
-*215 bug if cloaked ghost at high terrain shot to unit at low terrain - not hear shot sound
+!215 bug if cloaked ghost at high terrain shot to unit at low terrain - not hear shot sound conflict with 222
 *216 ghost do not atack in not cloaked mode, ghost cloaked atack if in patrol & atack, in other mode ghost waits
 *217 xterr3 427 tick kart fog error
 *218 beacons disapeared

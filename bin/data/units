@@ -530,7 +530,7 @@ ENDOBJ		= 1
 [NEWOBJECT] = 103 Zerg_Lurker
 SPEEDUPG         = 254 50
 PROPERTIES       = 2	256 257 0   0   0   0   0   0   371
-		        0   257 333 0 267   0   0   0   372
+		        		0   257 333 0 267   0   0   0   372
 ENDOBJ           = 1
 
 [NEWOBJECT] = 104 Infested_Samir_Duran_Ghost
