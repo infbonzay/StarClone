@@ -2200,6 +2200,8 @@ int moveobj(struct OBJ *a, struct OBJ *destobj, int mode, int x, int y, int mode
 						dieobj(a);
 						break;
 					case SC_HYDRALISKOBJ:
+						ChangeSupply(a->playernr, a->SC_Unit, MINUSFACTOR);
+						ChangeSupply(a->playernr, a->SC_FromUnit, MINUSFACTOR);
 						SetOrder(a, 4, SIGOrder_CancelMorthFromHydralisk);
 						SetOBJIScriptNr(a, ISCRIPTNR_SPECIALSTATE2, ISCRIPTNR_EXECUTE);			//egg deconstruct script
 						break;

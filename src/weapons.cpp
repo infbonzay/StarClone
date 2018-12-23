@@ -839,7 +839,7 @@ void WeaponDoDamage(OBJ *atacker, OBJ *destobj, int x256, int y256, SCUNIT SC_Un
 		for (i = 0;i < MaxObjects;i++)
 		{
 			a = objects[i];
-			if (IsActiveUnit(a) && (player_aliance(playernr, a->playernr) == ENEMYOBJ || a == destobj))
+			if (IsActiveUnit(a) && (player_aliance(playernr, a->playernr) != MYOBJ || a == destobj))
 			{
 				distance256 = GetDistanceTo256(a, x256, y256);
 				if (distance256 <= mindist[0])
