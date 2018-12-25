@@ -206,8 +206,12 @@ int accesstomage(struct OBJ *a, struct OBJ *destobj, int mode)
 			castonterrain = 1;
 	}
 	else
+	{
 		if (mageprop[mode].atr & ORDER_ONTERRAIN)
+		{
 			castonterrain = 1;
+		}
+	}
 	if (destobj)
 	{
 		if (GetMageAtr(&destobj->atrobj, ATRSTASIS))
@@ -517,16 +521,8 @@ int ifcanworkatr_onme(OBJ *a, int atr, int typemage)
 //==============================================
 void CastSpell(OBJ *casterobj)
 {
-	/*	int needmana,finalx,finaly;
-		  needmana = getusemanaformodemove(casterobj->castmagenr);
-		if (CheckForMana(casterobj,needmana)!=CHECKRES_OK)
-		{
-			playinfoadvisorsound(casterobj->playernr,GetUnitRace(casterobj->SC_Unit),ADVENERGY,PLAYADVISOR_TEXTANDSOUND);
-			return;
-		}
-		DecrMana(casterobj,needmana);
-	*/
-	if (mageprop[casterobj->castmagenr].createweapon == 255)
+	if (mageprop[casterobj->castmagenr].createweapon == 255 || 
+		mageprop[casterobj->castmagenr].atr & ORDER_DONOTCREATEWEAPON)
 	{
 		CastSpellWithOutWeaponnr(casterobj, casterobj->castmagenr);
 	}
@@ -651,3 +647,4 @@ void calcsomespellinfo(void)
 	}
 }
 //=======================================
+

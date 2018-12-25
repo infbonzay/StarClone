@@ -321,8 +321,11 @@ struct MAGEP
 									//0-bit - rightway
 									//1-bit - ignore mineral,gas,mana,psi requirements
 									//2-bit - can be queued to list of moves
-									//3-bit - can use/show than hallucinated
-									//4-bit - on terrain
+									//3-bit - cannot be interrupted
+									//4-bit - showhallutinated
+									//5-bit - on terrain
+									//6-bit - ignore unit destination
+									
 		unsigned char	type_id;				//type of command
 												//if type_id is upgrade from stattxt.tbl
 		unsigned char	createweapon;			//weapon_id or 255

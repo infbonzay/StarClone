@@ -3,24 +3,12 @@
 #include <string.h>
 #include <stdio.h>
 
-#include "man.h"
-#include "vars.h"
-#include "maps.h"
-#include "lists.h"
-#include "load.h"
-#include "gener.h"
-#include "gr.h"
-#include "starmap.h"
-#include "mpq.h"
-#include "objinfo.h"
-#include "objs.h"
 #include "tempobj.h"
-#include "unitaction.h"
-#include "fog.h"
-#include "images.h"
-#include "iscript.h"
-#include "sigorder.h"
+#include "objinfo.h"
 #include "audio.h"
+#include "sigorder.h"
+#include "iscript.h"
+#include "lists.h"
 #include "doodad.h"
 
 //#define TESTDOODAD

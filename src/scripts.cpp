@@ -1008,7 +1008,7 @@ int readmageproperties(void)
 									}
 					}
 					break;
-				case 9://CREATEWEAPON
+				case 9://WEAPONID
 					mageprop[whatobj].createweapon = intvalue;
 					break;
 				case 10://queuedtomovelist
@@ -1089,6 +1089,9 @@ int readmageproperties(void)
 					statstr = alldattbl.stattxt_tbl->get_TBL_STR(mageprop[whatobj].stattxt_id_enable);
 					if (statstr[1] <= 7)
 						mageprop[whatobj].keyfororder = toupper(statstr[0]);
+					break;
+				case 16://DONOTCREATEWEAPON
+					mageprop[whatobj].atr |= ORDER_DONOTCREATEWEAPON;
 					break;
 				default:
 					sprintf(forexit, "MAGE:error [%s] in [%d] not found", strid, whatobj);

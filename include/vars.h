@@ -159,7 +159,7 @@ extern short 		maxway;
 extern const char		*cmpgn_cmd[12];
 extern const char		*rezu[14];
 extern const char		*rezo[24];
-extern const char		*rezmp[16];
+extern const char		*rezmp[17];
 extern const char		*rezwp[2];
 
 extern char		*rezl[];

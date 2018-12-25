@@ -219,6 +219,7 @@ typedef unsigned char SCUNIT;
 #define ORDER_SHOWHALLUCINATED			0x10
 #define ORDER_ONTERRAIN					0x20
 #define ORDER_IGNOREUNITDESTINATION		0x40
+#define ORDER_DONOTCREATEWEAPON			0x80
 //=======================
 #define ENEMYOBJ		0
 #define NEUTRALOBJ		1

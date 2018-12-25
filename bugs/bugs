@@ -440,14 +440,16 @@
 *203 ghost atack in cloaked mode 
 *204 music after ends multiplayer no play
 *205 archon,dark archon move then morth,  died wth wrong sound
- 206 feedback on no spellcaster or build,
+*206 feedback on no spellcaster or build,
+*206a defencive matrix on build
+*206b hallutination on build
 !207 moveobj -> makemove at triggers.cpp & addmodemove
      I think triggers at network game will not work cause no act at tick as needed.
      SO no need to change moveobj at triggers & addmodemove
 *208 need to make flingy death at expirationtime
 *209 click atack button then selected unit died
  210 problem with spore acid remain on earth and bugged but unit was died.
- 211 bug create lurker and cancel psy error
+*211 bug create lurker and cancel psy error
 *212 exit from bunker bug
 *213 around 936 cycle bad fog in imperator flight
 *214 makeopenseekarta - beginobj,endobj need rewrite

@@ -1,38 +1,20 @@
-
-#include "diap.h"
-#include "maps.h"
-
-#include "defs.h"
-#include "auxil.h"
-#include "objinfo.h"
-#include "objs.h"
-#include "vars.h"
-#include "gener.h"
-#include "audio.h"
-#include "load.h"
-#include "man.h"
-#include "creep.h"
-#include "lists.h"
-#include "mylist.h"
-#include "objs.h"
-#include "mytime.h"
-#include "starmap.h"
-#include "doodad.h"
-#include "overlay.h"
-#include "pylon.h"
-#include "walk.h"
-#include "action.h"
-#include "rand.h"
-#include "portrait.h"
-#include "market.h"
-#include "weapons.h"
-#include "player.h"
-#include "gr.h"
-#include "images.h"
-#include "tempobj.h"
-
 #include <grplib/grp.h>
 #include <grplib/usegrp.h>
+
+#include "diap.h"
+#include "load.h"
+#include "walk.h"
+#include "lists.h"
+#include "action.h"
+#include "maps.h"
+#include "objinfo.h"
+#include "objs.h"
+#include "market.h"
+#include "portrait.h"
+#include "doodad.h"
+#include "pylon.h"
+#include "tempobj.h"
+
 
 int curentlocation;
 int myplayer;

@@ -1,18 +1,17 @@
 #ifndef _AUDIOLOWLEVEL_W
 #define _AUDIOLOWLEVEL_W
 
+#include "mpq.h"
 
-#ifdef WITHSDLMIXER
+#ifdef WITHSDLAUDIO
 	#include <SDL/SDL_mixer.h>
-	
-	#include "mpq.h"
 	
 	typedef Mix_Chunk wCHUNK;
 	typedef SDL_AudioCVT Audio_CVT;
 	typedef SDL_RWops RWOPS;
-#else
-	
-	#include "mpq.h"
+#endif
+
+#ifdef WITHNOAUDIO
 	
 	typedef int Mix_Chunk;
 	typedef int wCHUNK;
@@ -40,9 +39,7 @@
 	};
 	#define MIX_MAX_VOLUME		0
 	#define MIX_DEFAULT_FORMAT	0
-	#ifndef AUDIO_S8
-		#define AUDIO_S8			0
-	#endif
+	#define AUDIO_S8			0
 #endif
 
 wCHUNK *PlayRAWMem(unsigned char *buff,int len);
