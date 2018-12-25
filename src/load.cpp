@@ -1017,7 +1017,8 @@ void LoadPatchTbl(void)
 	alldattbl.units_dat->ElevationLevel[SC_REAVEROBJ] += 1;										//reaver elevation
 	alldattbl.units_dat->ElevationLevel[SC_HERO_WARBRINGEROBJ] += 1;							//warbringer elevation
 	alldattbl.flingy_dat->MoveControl[FLINGYID_GOLIATHTURRET] = FLINGYMOVECONTROL_ISCRIPT;		//goliath turret has flingy move control (why?)
-	alldattbl.flingy_dat->TurnRadius[FLINGYID_HALOROCKETS] *= 2;								//doubel rotation speed to prevent freeze around
+	alldattbl.flingy_dat->TurnRadius[FLINGYID_HALOROCKETS] *= 2;								//double rotation speed to prevent freeze around
+	alldattbl.flingy_dat->TurnRadius[FLINGYID_ACIDSPORES] *= 2;									//double rotation speed to prevent freeze around
 	alldattbl.units_dat->SpecialAbilityFlags[SC_SCANNERSWEEP] |= SPECIAL_INVINCIBLE;			//prevent attack sweep
 	alldattbl.units_dat->SpecialAbilityFlags[SC_BUNKEROBJ] |= SPECIAL_FULLAUTOATTACK;			//units inside bunker can atack
 	alldattbl.units_dat->SpecialAbilityFlags[SC_MAPREVEALEROBJ] |= SPECIAL_INVINCIBLE;			//prevent attack maprevealer
