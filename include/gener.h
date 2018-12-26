@@ -147,7 +147,6 @@ extern Queue			QueueGame;
 extern long				commandqueuetick;
 extern CommandQueue		UnitsCommandQueue;
 extern bool				movieminikarta;
-extern int				mousehotpos;
 extern RegenObjMap		*regenObjMap;
 
 

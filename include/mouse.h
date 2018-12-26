@@ -69,7 +69,8 @@ public:
 	int			PrevY;
 	int			MouseType;
 	int			PrevMouseType;
-
+	int			MouseHotPos;
+	
 	struct
 	{
 		int		PosX;

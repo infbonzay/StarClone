@@ -164,10 +164,10 @@ void desenproperties(int *localprop, char *selectableicons)
 					mouseonconstrunit = i;
 			}
 		if (transportplaceobj&&transportplaceobj->playernr == NUMBGAMER)
-			if (mousehotpos >= MOUSEONTRANSP && mousehotpos < MOUSEONICONSMIN)
-				if (transportplace[mousehotpos - MOUSEONTRANSP] != SC_NOUNITNR)
+			if (highMouse->MouseHotPos >= MOUSEONTRANSP && highMouse->MouseHotPos < MOUSEONICONSMIN)
+				if (transportplace[highMouse->MouseHotPos - MOUSEONTRANSP] != SC_NOUNITNR)
 				{
-					mouseontranspunit = mousehotpos - MOUSEONTRANSP;
+					mouseontranspunit = highMouse->MouseHotPos - MOUSEONTRANSP;
 				}
 		if (!MENUACTIVE)		//prevent activate hotkey if some menu is active
 		{
@@ -194,9 +194,11 @@ void desenproperties(int *localprop, char *selectableicons)
 					}
 		}
 	selectedicon:
-		if (mouseonicon == -1 && mousehotpos >= MOUSEONICONSMIN && mousehotpos <= MOUSEONICONSMAX)
+		if (mouseonicon == -1 && 
+			highMouse->MouseHotPos >= MOUSEONICONSMIN && 
+			highMouse->MouseHotPos <= MOUSEONICONSMAX)
 		{
-			mouseonicon = mousehotpos - MOUSEONICONSMIN;
+			mouseonicon = highMouse->MouseHotPos - MOUSEONICONSMIN;
 			if (localprop[mouseonicon])
 			{
 				i = mouseonicon / 3;

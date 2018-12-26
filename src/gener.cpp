@@ -78,7 +78,6 @@ RegenObjMap		*regenObjMap;
 
 char			select_aria, karta_aria, mode_aria;
 bool			movieminikarta;
-int				mousehotpos;
 //=================================
 /*====================================================
 ======================================================
@@ -730,7 +729,7 @@ int letsplaygame(int race, char *mypath)
 //==========================================
 void mouseonhotpos(int value)
 {
-	mousehotpos = value;
+	highMouse->MouseHotPos = value;
 }
 //==========================================
 void setmainscreenmouseevents(void)
@@ -1024,8 +1023,8 @@ int gogame(struct mapinfo *info)
 		if (scrnew && !retnet)
 		{
 			keyhandler();		//analyze if some key action
-			karta_aria = (mousehotpos == MOUSEONMINIMAP);
-			select_aria = (mousehotpos == MOUSEONMAP);
+			karta_aria = (highMouse->MouseHotPos == MOUSEONMINIMAP);
+			select_aria = (highMouse->MouseHotPos == MOUSEONMAP);
 			if (movieminikarta && karta_aria)
 				highMouse->SetRestrictCoords(MOUSEMODE4);
 			else
@@ -1215,7 +1214,7 @@ int gogame(struct mapinfo *info)
 			karta_aria = 0;
 			select_aria = 0;
 			movieminikarta = false;
-			mousehotpos = MOUSEONNONE;
+			highMouse->MouseHotPos = MOUSEONNONE;
 			highMouse->WaitToPressLeftButton = 0;
 			highMouse->MouseOnSelectionMode = 0;
 			highMouse->DestMouseOBJ = NULL;
@@ -1353,7 +1352,7 @@ void drawGAMEMENUbutton(char *button, DIALOGBIN_INFO *menuinfo, int buttonnr,
 		}
 		else
 		{
-			if (mousehotpos == mousehotnr && !highMouse->MouseOnSelectionMode)
+			if (highMouse->MouseHotPos == mousehotnr && !highMouse->MouseOnSelectionMode)
 			{
 				if (highMouse->GetButtonStatus() & WMLEFTKEY)
 				{
@@ -1372,7 +1371,7 @@ void drawGAMEMENUbutton(char *button, DIALOGBIN_INFO *menuinfo, int buttonnr,
 				*button &= ~GAMEBUTTON_MOUSEPRESS;
 				*button &= ~GAMEBUTTON_MOUSERELEASE;
 			}
-			if ((mousehotpos == mousehotnr && !highMouse->MouseOnSelectionMode) || (*button & GAMEBUTTON_KEYPRESS))
+			if ((highMouse->MouseHotPos == mousehotnr && !highMouse->MouseOnSelectionMode) || (*button & GAMEBUTTON_KEYPRESS))
 			{
 				if ((highMouse->GetButtonStatus() & WMLEFTKEY) || (*button & GAMEBUTTON_KEYPRESS))
 				{

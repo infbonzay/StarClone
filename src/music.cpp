@@ -169,21 +169,16 @@ void LoadNextAudioData(void *info)
 		if (stream->audio.remainbytes == 0)
 		{
 			//reach end of music data
-			if (stream->audio.repeatplay)
-			{
-				if (stream->audio.repeatplay > 0)
-					stream->audio.repeatplay--;
-				//go to the begining of audio data (repeat play)
-				result = rwops->seek(rwops, sizeof(WAVHEADER), SEEK_SET);
-				if (result == -1)
-					return;
-				audiostream->audio.remainbytes = audiostream->audio.alen;
-				//				DEBUGMESSCR("repeat play\n");
-			}
-			else
-			{
+			if (!stream->audio.repeatplay)
 				return;
-			}
+			if (stream->audio.repeatplay > 0)
+				stream->audio.repeatplay--;
+			//go to the begining of audio data (repeat play)
+			result = rwops->seek(rwops, sizeof(WAVHEADER), SEEK_SET);
+			if (result == -1)
+				return;
+			audiostream->audio.remainbytes = audiostream->audio.alen;
+			//DEBUGMESSCR("repeat play\n");
 		}
 		if (stream->audio.remainbytes >= SIZEONEAUDIOBUFFER * 2)
 			nextbuffersize = SIZEONEAUDIOBUFFER;

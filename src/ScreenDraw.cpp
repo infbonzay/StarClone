@@ -85,7 +85,7 @@ void ScreenDraw::TopMessage(void)
 		}
 	*/
 	strcat(s, " hot:");
-	itoa(mousehotpos, ss, 10);
+	itoa(highMouse->MouseHotPos, ss, 10);
 	strcat(s, ss);
 
 	strcat(s, " pl:");

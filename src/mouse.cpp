@@ -30,6 +30,7 @@ HighMouse::HighMouse(void)
 	PrevY = 0;
 	MouseType = 0;
 	PrevMouseType = 0;
+	MouseHotPos = -1;
 	MoveFunc = NULL;
 	ClickFunc = NULL;
 	DblClickFunc = NULL;

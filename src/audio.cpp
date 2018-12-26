@@ -700,6 +700,7 @@ int FileWavePlayLength(HANDLE mpq,const char *filesound)
 void WaitUntilAllAudioStops(int maxwait)
 {
 	int i,plays=0;
+	int infiniteplay = maxwait == 0;
 	if (unitsound)
 	{
 		do{
@@ -712,7 +713,7 @@ void WaitUntilAllAudioStops(int maxwait)
 			}
 			usleep(10000);
 			maxwait -= 10000;
-		}while(plays && maxwait>0);
+		}while(plays && (infiniteplay || maxwait > 0) );
 	}
 }
 

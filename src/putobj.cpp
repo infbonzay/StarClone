@@ -461,7 +461,7 @@ void ShowUpgradesInBar(int XWINPOS, int YWINPOS, OBJ *a, OBJstruct *b)
 			//putgrp(xpos,ypos,grpicons,12,0);
 			sname[0] = '0' + upgradenr;
 			putmessage(xpos + 26, ypos + 24, IDFONT8, sname, GBLUECOLORFONT, tfontgamp, gamedlggrp);
-			if (mousehotpos == mousehot)
+			if (highMouse->MouseHotPos == mousehot)
 			{
 				MESxpos = xpos + 36;
 				MESypos = ypos + 28;
@@ -485,7 +485,7 @@ void ShowUpgradesInBar(int XWINPOS, int YWINPOS, OBJ *a, OBJstruct *b)
 		//		putgrp(xpos,ypos,grpicons,12,0);
 		sname[0] = '0' + upgradenr;
 		putmessage(xpos + 26, ypos + 24, IDFONT8, sname, GBLUECOLORFONT, tfontgamp, gamedlggrp);
-		if (mousehotpos == mousehot)
+		if (highMouse->MouseHotPos == mousehot)
 		{
 			MESxpos = xpos + 36;
 			MESypos = ypos + 28;
@@ -516,7 +516,7 @@ void ShowUpgradesInBar(int XWINPOS, int YWINPOS, OBJ *a, OBJstruct *b)
 		//		putgrp(xpos,ypos,grpicons,12,0);
 		sname[0] = '0' + upgradenr;
 		putmessage(xpos + 26, ypos + 24, IDFONT8, sname, GBLUECOLORFONT, tfontgamp, gamedlggrp);
-		if (mousehotpos == mousehot)
+		if (highMouse->MouseHotPos == mousehot)
 		{
 			MESxpos = xpos + 36;
 			MESypos = ypos + 28;
@@ -540,7 +540,7 @@ void ShowUpgradesInBar(int XWINPOS, int YWINPOS, OBJ *a, OBJstruct *b)
 		//		putgrp(xpos,ypos,grpicons,12,0);
 		sname[0] = '0' + upgradenr;
 		putmessage(xpos + 26, ypos + 24, IDFONT8, sname, GBLUECOLORFONT, tfontgamp, gamedlggrp);
-		if (mousehotpos == mousehot)
+		if (highMouse->MouseHotPos == mousehot)
 		{
 			MESxpos = xpos + 36;
 			MESypos = ypos + 28;
@@ -571,7 +571,7 @@ void ShowUpgradesInBar(int XWINPOS, int YWINPOS, OBJ *a, OBJstruct *b)
 		putgrpspr(xpos, ypos, grpicons, NORMAL, 255, 0, NULL, 12);
 		//		putgrp(xpos,ypos,grpicons,12,0);
 		putmessage(xpos + 26, ypos + 24, IDFONT8, sname, GBLUECOLORFONT, tfontgamp, gamedlggrp);
-		if (mousehotpos == mousehot)
+		if (highMouse->MouseHotPos == mousehot)
 		{
 			MESxpos = xpos + 36;
 			MESypos = ypos + 28;
@@ -1179,7 +1179,7 @@ void putnameonselectedunits(int XWINPOS, int YWINPOS)
 			xpos += oldxsize;
 			ypos = YWINPOS + 14;
 		}
-		if (mousehotpos == i + MOUSEONSTATUNIT)
+		if (highMouse->MouseHotPos == i + MOUSEONSTATUNIT)
 		{
 			tblname = alldattbl.stattxt_tbl->get_TBL_STR(STATTXT_TBL_HELPSELECTUNITS);
 			putboxmessage(FONTCOLOR(tfontgamp, GBLUECOLORFONT, 2),
@@ -1246,7 +1246,7 @@ void drawallunitsinbar(int XWINPOS, int YWINPOS)
 					objtype = 3;
 			}
 			life_pers = (int)(a1->health * 100 / GetUnitMaxHealth(a1->SC_Unit));
-			if (mbuttonpress && mousehotpos - MOUSEONSTATUNIT == i)
+			if (mbuttonpress && highMouse->MouseHotPos - MOUSEONSTATUNIT == i)
 			{
 				addx = 2;
 				addy = 2;
