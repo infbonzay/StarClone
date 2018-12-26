@@ -4451,7 +4451,8 @@ void atackback(OBJ *firstatacker, OBJ *destobj, int directiondamage)
 				TryToScanArea(destobj, firstatacker);
 			}
 			if (!notdetect)
-				err = IfCanCreateWeapon(destobj, firstatacker, NULL, NULL, CREATEWEAPON_IGNOREVISION);
+				err = IfCanCreateWeapon(destobj, firstatacker, NULL, NULL,
+										CREATEWEAPON_IGNOREVISION | CREATEWEAPON_ISINTRANSPORT);
 			if (notdetect || err == CREATEDWEAPONSTATUS_CANTATACKTHISUNIT)
 			{
 				//cannot atackback -> moveaway

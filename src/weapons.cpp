@@ -111,7 +111,7 @@ int IfCanCreateWeapon(OBJ *atacker, OBJ *destobj, int *errmes, unsigned char *we
 	unsigned char groundweapon_id, airweapon_id, usedweapon_id, atackangle, neededside;
 	if (destobj)
 	{
-		if (!IsActiveUnitForAtack(destobj))
+		if (!IsActiveUnitForAtack(destobj,flags & CREATEWEAPON_ISINTRANSPORT))
 		{
 			if (errmes)
 				*errmes = 875;
@@ -1011,7 +1011,7 @@ int WeaponCanApplyOnUnit(OBJ *a, int playernr, unsigned char weapon_id)
 		return(0);
 	if ((targetflags & WTF_ORGANIC) && !IsOrganic(SC_Unit))
 		return(0);
-	if ((targetflags & WTF_OWN) && a->playernr != playernr)
+	if ((targetflags & WTF_OWN) && ( a->playernr != playernr || !IsGroupMenFlag(SC_Unit)) )
 		return(0);
 	if ((targetflags & WTF_STARCLONE_ONSPELLCASTER) && !IsSpellCaster(SC_Unit))
 		return(0);

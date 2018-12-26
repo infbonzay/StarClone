@@ -487,17 +487,34 @@ void DestroyMarked(void)
 	}
 }
 //=================================
+int IsActiveUnitForAtack(OBJ *a,bool bunkerunits)
+{
+	if (a->modemove == MODEDIE)
+		return(0);
+	if (IsPickupUnit(a->SC_Unit))
+		return(0);
+	if (a->prop & VARINVINCIBILITY)
+		return(0);
+	if (a->prop & VARINTRANSPORT)
+	{
+		if (!bunkerunits)
+			return(0);
+	}
+	else
+	{
+		if (a->prop & VARNOTHERE)
+			return(0);
+	}
+	return(1);
+}
+//=================================
 int IsActiveUnitForAtack(OBJ *a)
 {
 	if (a->modemove == MODEDIE)
 		return(0);
 	if (IsPickupUnit(a->SC_Unit))
 		return(0);
-	//	  if (!IsReadyOBJ(a))
-	//		return(0);
-	//	  if (IsGroupNeutralFlag(a->SC_Unit))
-	//		return(0);
-	if ((a->prop & (VARINTRANSPORT | VARNOTHERE | VARINVINCIBILITY)))// || GetMageAtr(&a->atrobj,ATRSTASIS))
+	if ((a->prop & (VARINTRANSPORT | VARNOTHERE | VARINVINCIBILITY)))
 		return(0);
 	return(1);
 }

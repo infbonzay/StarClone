@@ -73,6 +73,7 @@ int	 loadweapons(void);
 
 
 #define CREATEWEAPON_IGNOREVISION								0x01
+#define CREATEWEAPON_ISINTRANSPORT								0x02
 
 extern WEAPONS_UNIT weapons[];
 

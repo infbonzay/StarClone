@@ -43,6 +43,7 @@ int	 GetKvadrant(int storonasveta);
 int	 IsActiveUnit(OBJ *a);
 int	 IsAtackerActiveUnit(OBJ *a);
 int	 IsActiveUnitForAtack(OBJ *a);
+int	 IsActiveUnitForAtack(OBJ *a, bool bunkerunits);
 
 int	 INBAY_GetCreatedUnits(OBJ *a);
 int	 INBAY_GetMaxUnitsToBeCreated(OBJ *a);
