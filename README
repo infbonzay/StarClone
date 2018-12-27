@@ -1,1 +1,15 @@
+to compile use cmake or autoconf tools
+
+1. configure with cmake
+	cmake .
+	make
+	#binary was compiled in StarClone/bin/
+
+or
+
+2.configure with autoconf
+	./configure && make
+	#binary was compiled in StarClone/bin/
+	
+
 if you need grplib and mpqlib please find them in neededlibs directory
