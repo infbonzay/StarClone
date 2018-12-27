@@ -1,15 +1,23 @@
+
+
 to compile use cmake or autoconf tools
 
-1. configure with cmake
+1a. configure with cmake
 	cmake .
 	make
 	#binary was compiled in StarClone/bin/
 
 or
 
-2.configure with autoconf
+1b.configure with autoconf
 	./configure && make
 	#binary was compiled in StarClone/bin/
 	
+2.if you need grplib and mpqlib please find them in neededlibs directory
 
-if you need grplib and mpqlib please find them in neededlibs directory
+3.the StarDat.mpq and BroodDat.mpq may not have on ftp resource so 
+     copy original StarDat.mpq and BrooDat.mpq to StarClone/bin (file names are case sensitive)
+     if you have they ;)
+4.if you want to play original campaign/video/music copy StarCraft install.exe to starinstall.exe and 
+	Broodwar install.exe to broodinstall.exe in StarClone/bin
+
