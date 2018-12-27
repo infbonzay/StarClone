@@ -4230,7 +4230,7 @@ OBJ *FindObjForAtack(OBJ *a,
 					weapon_id = airweapon;
 				if (weapon_id < MAX_WEAPONS_ELEM)
 				{
-					if (IsActiveUnitForAtack(a2))
+					if (IsActiveUnitForAtack(a2, false))
 					{
 						//this is enemy, need to check detect vision radius
 						minrange = alldattbl.weapons_dat->MinimumRange[weapon_id];

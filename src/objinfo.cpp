@@ -508,17 +508,6 @@ int IsActiveUnitForAtack(OBJ *a,bool bunkerunits)
 	return(1);
 }
 //=================================
-int IsActiveUnitForAtack(OBJ *a)
-{
-	if (a->modemove == MODEDIE)
-		return(0);
-	if (IsPickupUnit(a->SC_Unit))
-		return(0);
-	if ((a->prop & (VARINTRANSPORT | VARNOTHERE | VARINVINCIBILITY)))
-		return(0);
-	return(1);
-}
-//=================================
 int IsActiveUnit(OBJ *a)
 {
 	int intransport = 0;

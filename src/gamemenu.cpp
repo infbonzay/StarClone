@@ -4981,14 +4981,11 @@ int DownloadMpqMenu(int mpqcfgresult)
 	int exitstatus = -1, ret, mpqtotal, mpqremain, i, j;
 	MENUSTR *menu2, *menu3;
 	PCX backgnd, fontpcx;
-	char *files[3];
+	const char *files[3] = {"","",""};
 	char txtlabel[100];
 	char newpal[256 * 4];
 	char *fntadr;
 	WGET_DOWNLOAD mpqfile;
-	*files[0] = 0;
-	*files[1] = 0;
-	*files[2] = 0;
 
 	highMouse->SetRestrictCoords(MOUSEMODE1, 0, 0, gameconf.grmode.x - 1, gameconf.grmode.y - 1);
 

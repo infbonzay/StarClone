@@ -456,8 +456,8 @@ void GetOBJXYSideOffsets(OBJ *a, MAIN_IMG *img, int overlaytype, signed char *xl
 	}
 }
 //===========================================
-//						0-100%,1-11%,2-33%,3-100%
-int BounceDamage[5] = { 256,28,89,256 };
+//						     0-100%,1-11%,2-33%,3-100%
+const int BounceDamage[5] = { 256, 28, 89, 256 };
 //===========================================
 void WeaponDoDamage(OBJ *atacker, OBJ *destobj, int x256, int y256, SCUNIT SC_Unit,
 	int playernr, unsigned char weapon_id, int castmagenr, int targetnr, mylist *listdamaged)
