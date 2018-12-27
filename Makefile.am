@@ -36,6 +36,8 @@ else
 endif
 LFLAGS = $(WARN) $(DEBUG) $(OPTIM) $(LDPATH)
 
+CFLAGS+= -Iinclude/video
+
 if HAVELOCALLIBS
     LFLAGS+= -l:libs/librt-2.15.so -l:libs/libz.so.1.2.7  -l:libs/libgrp-0.4.so.18.0.0 -l:libs/libmpq-0.5.so.3.0.0 \
     -l:libs/libSDL-1.2.so.0.11.4 -l:libs/libSDL_mixer-1.2.so.0.12.0 -l:libs/libstdc++.so.6.0.24 -l:libs/libc-2.16.so \
@@ -62,18 +64,24 @@ if HAVEZLIB
 endif
 if HAVESDLLIB
     LFLAGS+= -lSDL
-    CFLAGS+= -Iinclude/sdl -DWITHSDL
+    CFLAGS+= -DWITHSDL
+endif
+if HAVEXLIB
+    LFLAGS+= -lx11
+    CFLAGS+= -DWITHX
 endif
 if HAVESDLMIXERLIB
     LFLAGS+= -lSDL_mixer
-    CFLAGS+= -DWITHSDLMIXER
-    AUDIOFILE=src/sdl/SDLAudio.cpp
-else
-    AUDIOFILE=src/noaudio/Noaudio.cpp
+    CFLAGS+= -DWITHSDLAUDIO
+    AUDIOFILE=src/audio/sdl/audiolib.cpp
+endif
+if HAVENOAUDIO
+    CFLAGS+= -DWITHNOAUDIO
+    AUDIOFILE=src/audio/none/audiolib.cpp
 endif
 endif
 PROGS = bin/$(PACKAGE)
-OBJS = obj/SDLController.o obj/RegenObjMap.o obj/ScreenDraw.o obj/MenuItem.o obj/gamemenu.o obj/commandqueue.o \
+OBJS = obj/Controller.o obj/RegenObjMap.o obj/ScreenDraw.o obj/MenuItem.o obj/gamemenu.o obj/commandqueue.o \
 	obj/flingy.o obj/iscript.o obj/images.o obj/music.o obj/triggers.o obj/briefing.o obj/video.o \
 	obj/network_general.o obj/network_udp.o obj/network_tcp.o obj/network_dc.o obj/network_modem.o obj/network_dedicated.o \
 	obj/netwgame.o obj/netwplay.o obj/mpqwrapper.o obj/sigorder.o \
@@ -87,7 +95,7 @@ OBJS = obj/SDLController.o obj/RegenObjMap.o obj/ScreenDraw.o obj/MenuItem.o obj
 	obj/unitaction.o obj/queue.o obj/portrait.o obj/actiondefault.o \
 	obj/hod.o obj/walk.o obj/pylon.o obj/upgrade.o \
 	obj/objinfo.o obj/rand.o obj/vision.o obj/messages.o \
-	obj/SDLController.o obj/mousesdl.o obj/audiolowlevel.o obj/scrolltile.o \
+	obj/audiolib.o obj/scrolltile.o \
 	obj/player.o obj/debug.o obj/smacker.o obj/smk_bitstream.o obj/smk_hufftree.o
 
 $(PROGS): $(OBJS) 
@@ -324,14 +332,11 @@ obj/rand.o: src/rand.cpp include/*.h  Makefile
 obj/vision.o: src/vision.cpp include/*.h  Makefile
 	$(CXX) -c $(CFLAGS) src/vision.cpp -o obj/vision.o
 	
-obj/audiolowlevel.o: src/$(AUDIODIR)/audiolowlevel.cpp include/audiolowlevel.h  Makefile
-	$(CXX) -c $(CFLAGS) $(shell sdl-config --cflags) $(AUDIOFILE) -o obj/audiolowlevel.o
+obj/audiolib.o: $(AUDIOFILE) include/audiolowlevel.h  Makefile
+	$(CXX) -c $(CFLAGS) $(shell sdl-config --cflags) $(AUDIOFILE) -o obj/audiolib.o
 	
-obj/SDLController.o: src/sdl/SDLController.cpp include/*.h include/sdl/*.h  Makefile
-	$(CXX) -c $(CFLAGS) src/sdl/SDLController.cpp -o obj/SDLController.o
-	
-obj/mousesdl.o: src/sdl/mousesdl.cpp include/*.h include/sdl/*.h  Makefile
-	$(CXX) -c $(CFLAGS) src/sdl/mousesdl.cpp -o obj/mousesdl.o
+obj/Controller.o: src/video/sdl/Controller.cpp include/*.h Makefile
+	$(CXX) -c $(CFLAGS) src/video/sdl/Controller.cpp -o obj/Controller.o
 	
 obj/fog.o: src/fog.cpp include/*.h Makefile
 	$(CXX) -c $(CFLAGS) src/fog.cpp -o obj/fog.o

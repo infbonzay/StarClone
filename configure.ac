@@ -356,6 +356,8 @@ else
     echo "Link with ./libs"
 fi
 
+    AM_CONDITIONAL(HAVEXLIB,test "$havexlib" = "yes" )
+    AM_CONDITIONAL(HAVENOAUDIO,test "$hovenoaudio" = "yes" )
     AM_CONDITIONAL(HAVEDEBUG,test "$debug" = "yes" )
     AM_CONDITIONAL(HAVECPP,test "$HAVECPP" = "yes")
     AM_CONDITIONAL(HAVELOCALLIBS,test "$locallibs" = "yes")
