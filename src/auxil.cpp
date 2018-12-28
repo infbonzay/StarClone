@@ -196,7 +196,7 @@ int rmdirrec(const char *dirname)
 	return 0;
 }
 //=======================================
-long long FILElength(FILE *descriptor)
+/*long long FILElength(FILE *descriptor)
 {
 	long long old,len;
 	old = ftell(descriptor);
@@ -208,6 +208,7 @@ long long FILElength(FILE *descriptor)
 	return(len);
 }
 //=======================================
+*/
 long long FILElength(const char *fn)
 {
 	struct stat st;
