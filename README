@@ -1,19 +1,16 @@
 
 
-to compile use cmake or autoconf tools
+to configure use cmake
+	cmake detects if exist SDL or Xlib
 
-1a. configure with cmake
+1. build and lanch steps (compiled binary puts in StarClone/bin/)
+
 	cmake .
 	make
-	#binary was compiled in StarClone/bin/
+	cd StarClone
+	./StarClone
 
-or
-
-1b.configure with autoconf
-	./configure && make
-	#binary was compiled in StarClone/bin/
-	
-2.if you need grplib and mpqlib please find them in neededlibs directory
+2.if you need to cpompile grplib and mpqlib please find them in neededlibs directory
 
 3.the StarDat.mpq and BroodDat.mpq may not have on ftp resource so 
      copy original StarDat.mpq and BrooDat.mpq to StarClone/bin (file names are case sensitive)
@@ -21,3 +18,4 @@ or
 4.if you want to play original campaign/video/music copy StarCraft install.exe to starinstall.exe and 
 	Broodwar install.exe to broodinstall.exe in StarClone/bin
 
+5. create StarClone/bin/maps and copy some StarCraft maps there

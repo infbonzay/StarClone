@@ -8,4 +8,4 @@
 # Use pkg-config to get hints about paths
 find_package(PkgConfig)
 
-pkg_check_modules(mpq mpq>=0.5.3)
+pkg_check_modules(mpq mpq>=0.5.4)

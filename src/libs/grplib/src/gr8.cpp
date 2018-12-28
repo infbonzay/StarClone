@@ -5,12 +5,6 @@
 #define NONPIXEL 	255
 #define MAXCOLORUNIT	31
 
-struct XY{
-       int x1;
-       int y1;
-       int x2;
-       int y2;
-};
 //==============================================
 void CClrScr(int color)
 {
@@ -247,49 +241,7 @@ void CPutSpr(int x,int y,int sx,int sy,int rx,char *mem)
     }
 }
 //==============================================
-void wgetimage8(int x,int y,char *m)
-{
-    int *adr2 = (int *)m;
-    int sy = adr2[0];
-    int sx = adr2[1];
-    CGetImage8(x,y,sx,sy,m+8);
-}
-//==============================================
-void wputimage8(int x,int y,char *m)
-{
-    int *adr2 = (int *)m;
-    int sy = adr2[0];
-    int sx = adr2[1];
-    CPutImage8(x,y,sx,sy,m+8);
-}
-//==============================================
-void wsetimage8(int color,struct XY *m)
-{
-    CSetImage8(m->x1,m->y1,m->x2-m->x1+1,m->y2-m->y1+1,color);
-}
-//==============================================
-void wsetimage8x(int color,struct XY *m)
-{
-    CSetImage8x(m->x1,m->y1,m->x2-m->x1+1,m->y2-m->y1+1,color);
-}
-//==============================================
-void wputsprite8(int x,int y,char *adr,int color)
-{
-    int *adr2 = (int *)adr;
-    int sy = adr2[0];
-    int sx = adr2[1];
-    CPutSprite8(x,y,sx,sy,color,adr+8);
-}
-//==============================================
-void wputpartsprite8(int x,int y,char *adr)
-{
-    int *adr2 = (int *)adr;
-    int sy = adr2[0];
-    int sx = adr2[1];
-    CPutPartVisibleSpr(x,y,sx,sy,adr+8);
-}
-//==============================================
-void wputstasprite8(int x,int y,char *adr)
+void CPutPackedSprite8(int x,int y,char *adr)
 {
     int count,method = 0,line=0;
     count = 0;

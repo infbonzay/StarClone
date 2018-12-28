@@ -846,16 +846,16 @@ void printobjparam(void)
 			else
 				putgrpspr(xy[0][0] + XUNITCONSTR + sizex + 2, xy[1][0] + YUNITCONSTR + sizey + 2,
 					znakgrp, NORMAL, 255, FORYELLOW, NULL, icon_nr);
-			putspr(xx, yy,
-				buildemptyraw.xsizePcx(),
-				buildemptyraw.ysizePcx(),
-				buildemptyraw.xsizePcx(),
-				buildemptyraw.GetPcxRawBytes());
-			putspr(xx, yy, constrcomplete,
-				buildfullraw.ysizePcx(),
-				buildfullraw.xsizePcx(),
-				buildfullraw.GetPcxRawBytes());
-			//			tempobjstr=alldattbl.stattxt_tbl->get_TBL_STR(stattxt_nr)+2;
+			CPutSpr(xx, yy,
+					buildemptyraw.xsizePcx(),
+					buildemptyraw.ysizePcx(),
+					buildemptyraw.xsizePcx(),
+					buildemptyraw.GetPcxRawBytes());
+			CPutSpr(xx, yy, constrcomplete,
+					buildfullraw.ysizePcx(),
+					buildfullraw.xsizePcx(),
+					buildfullraw.GetPcxRawBytes());
+			//tempobjstr=alldattbl.stattxt_tbl->get_TBL_STR(stattxt_nr)+2;
 			switch (type_id)
 			{
 			case ORDERS_UNIT:
@@ -945,15 +945,15 @@ void printobjparam(void)
 			}
 			xx = XOUT + 40;
 			yy = YOUT + 25;
-			putspr(xx, yy,
-				buildemptyraw.xsizePcx(),
-				buildemptyraw.ysizePcx(),
-				buildemptyraw.xsizePcx(),
-				buildemptyraw.GetPcxRawBytes());
-			putspr(xx, yy, GetConstrComplete(a, buildfullraw.xsizePcx()),
-				buildfullraw.ysizePcx(),
-				buildfullraw.xsizePcx(),
-				buildfullraw.GetPcxRawBytes());
+			CPutSpr(xx, yy,
+					buildemptyraw.xsizePcx(),
+					buildemptyraw.ysizePcx(),
+					buildemptyraw.xsizePcx(),
+					buildemptyraw.GetPcxRawBytes());
+			CPutSpr(xx, yy, GetConstrComplete(a, buildfullraw.xsizePcx()),
+					buildfullraw.ysizePcx(),
+					buildfullraw.xsizePcx(),
+					buildfullraw.GetPcxRawBytes());
 			switch (type_id)
 			{
 			case ORDERS_UNIT:
@@ -1420,12 +1420,12 @@ int	 desenbuildifconstr(void)
 	unsigned short returnedarray[MAXBUILDSPRSIZE*MAXBUILDSPRSIZE];	//array of x,y sizez 1-noposibleconstruct
 							//					 0-posibleconstruct
 	int posibleconstr = 0, posibleconstr2 = 0, constrerror = 0;
-	int x0, y0, x, y, i, j;
+	int x0, y0, x, y, i, j, x1, x2, y1, y2;
 	int xk, yk;
 	int xmap, ymap;
 	xk = map.MAPXGLOBAL;
 	yk = map.MAPYGLOBAL;
-	struct XY a;
+	
 	//struct OBJstruct *b;
 	int posibletry;
 	int buildconstr = highMouse->Construct.SC_BuildUnit;
@@ -1437,10 +1437,10 @@ int	 desenbuildifconstr(void)
 		//b=loadobj(buildconstr);
 		x = POSX(GetUnitWidthAndHeight(buildconstr, UNITDIM_WIDTH));
 		y = POSY(GetUnitWidthAndHeight(buildconstr, UNITDIM_HEIGHT));
-		a.x1 = (highMouse->PosX / SIZESPRLANSHX)*SIZESPRLANSHX - xk % SIZESPRLANSHX;
-		a.y1 = (highMouse->PosY / SIZESPRLANSHY)*SIZESPRLANSHY - yk % SIZESPRLANSHY;
-		highMouse->Construct.PosX = a.x1 + SIZESPRLANSHX * x / 2;
-		highMouse->Construct.PosY = a.y1 + SIZESPRLANSHY * y / 2;
+		x1 = (highMouse->PosX / SIZESPRLANSHX)*SIZESPRLANSHX - xk % SIZESPRLANSHX;
+		y1 = (highMouse->PosY / SIZESPRLANSHY)*SIZESPRLANSHY - yk % SIZESPRLANSHY;
+		highMouse->Construct.PosX = x1 + SIZESPRLANSHX * x / 2;
+		highMouse->Construct.PosY = y1 + SIZESPRLANSHY * y / 2;
 		if (IsAddon(buildconstr))
 		{
 			motherbuild = GetMotherAddon(buildconstr);
@@ -1483,18 +1483,16 @@ int	 desenbuildifconstr(void)
 		}
 		for (i = 0;i < y;i++)
 		{
-			a.y1 = y0 + i * SIZESPRLANSHY;
-			a.y2 = a.y1 + SIZESPRLANSHY - 1;
-			//ykk=(a.y1+yk)/SIZESPRLANSHY;
+			y1 = y0 + i * SIZESPRLANSHY;
+			y2 = y1 + SIZESPRLANSHY - 1;
 			for (j = 0;j < x;j++)
 			{
-				a.x1 = x0 + j * SIZESPRLANSHX;
-				a.x2 = a.x1 + SIZESPRLANSHX - 1;
-				//xkk=(a.x1+xk)/SIZESPRLANSHX;
+				x1 = x0 + j * SIZESPRLANSHX;
+				x2 = x1 + SIZESPRLANSHX - 1;
 				if (returnedarray[i*x + j] == 0xffff)
-					wsetimage8x(ENABLECONSTRUCT, &a);
+					CSetImage8x(x1, y1, x2 - x1 + 1, y2 - y1 + 1, ENABLECONSTRUCT);
 				else
-					wsetimage8x(DISABLECONSTRUCT, &a);
+					CSetImage8x(x1, y1, x2 - x1 + 1, y2 - y1 + 1, DISABLECONSTRUCT);
 			}
 		}
 		if (posibleconstr < 0)
@@ -1514,18 +1512,16 @@ int	 desenbuildifconstr(void)
 				posibleconstr = constrerror;
 			for (i = 0;i < y;i++)
 			{
-				a.y1 = y0 + i * SIZESPRLANSHY;
-				a.y2 = a.y1 + SIZESPRLANSHY - 1;
-				//ykk=(a.y1+yk)/SIZESPRLANSHY;
+				y1 = y0 + i * SIZESPRLANSHY;
+				y2 = y1 + SIZESPRLANSHY - 1;
 				for (j = 0;j < x;j++)
 				{
-					a.x1 = x0 + j * SIZESPRLANSHX;
-					a.x2 = a.x1 + SIZESPRLANSHX - 1;
-					//xkk=(a.x1+xk)/SIZESPRLANSHX;
+					x1 = x0 + j * SIZESPRLANSHX;
+					x2 = x1 + SIZESPRLANSHX - 1;
 					if (returnedarray[i*x + j] == 0xffff)
-						wsetimage8x(ENABLECONSTRUCT, &a);
+						CSetImage8x(x1, y1, x2 - x1 + 1, y2 - y1 + 1, ENABLECONSTRUCT);
 					else
-						wsetimage8x(DISABLECONSTRUCT, &a);
+						CSetImage8x(x1, y1, x2 - x1 + 1, y2 - y1 + 1, DISABLECONSTRUCT);
 				}//forj
 			}//fori
 		}//if masterbuild

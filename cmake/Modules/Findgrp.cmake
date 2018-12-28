@@ -8,4 +8,4 @@
 # Use pkg-config to get hints about paths
 find_package(PkgConfig)
 
-pkg_check_modules(grp grp>=0.4.20)
+pkg_check_modules(grp grp>=0.4.21)

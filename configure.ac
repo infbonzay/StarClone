@@ -173,7 +173,7 @@ if test "$locallibs" = "no" ; then
 	     [grpcurver="0" COMPILEVER="no"]
 	    )
     LIBS=$_libs
-    NEEDVER="0.4.20"
+    NEEDVER="0.4.21"
     echo -n "checking for libgrp [$curver] >= $NEEDVER..."
     if test "$COMPILEVER" = "yes"; then
 	checkver $NEEDVER $grpcurver 256
@@ -210,7 +210,7 @@ if test "$locallibs" = "no" ; then
     fi
     LIBS=$_libs
     if test "$mpqlib" = "yes" || test "$autodetectmpqstorm" = "yes" ; then 
-	NEEDVER="0.5.3"
+	NEEDVER="0.5.4"
 	echo -n "checking for libmpq >= $NEEDVER..."
 	if test "$COMPILEVER" = "yes"; then
 	    checkver $NEEDVER $mpqcurver 256

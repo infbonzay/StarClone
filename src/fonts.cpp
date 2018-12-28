@@ -636,7 +636,8 @@ void putboxmessage(int cborder, int cbox,
 	uu.y1 = y1;
 	uu.x2 = x2;
 	uu.y2 = y2;
-	wsetimage8(cbox, &uu);
+//	wsetimage8(cbox, &uu);
+	CSetImage8(x1, y1, x2-x1+1, y2-y1+1, cbox);
 	wrectangle(cborder, x1, y1, x2, y2);
 	sizex = putmessage(x1 + bordersize, y1 + bordersize / 2, fontnr, message, messagecolor, tfont, dlggrp);
 }

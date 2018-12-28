@@ -188,7 +188,7 @@ void drawMAP(int ignorefirstwaiting)
 	int bh, eh, bw, ew, ii, jj, xk, yk, xkk, ykk;
 	unsigned char minimapcolor;
 	if (!CODEFORSCREEN)
-		wclrscr(0);
+		CClrScr(0);
 	else
 	{
 		if (ignorefirstwaiting)
