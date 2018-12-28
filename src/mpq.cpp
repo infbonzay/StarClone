@@ -69,7 +69,7 @@ HANDLE MpqsFindFile(const char *filename)
 	int nrmpqfiles = allmpq.Count();
 	for (int i = 0;i < nrmpqfiles;i++)				//find file with priority
 	{
-		int err = SFileHasFile(allmpq.GetElemNr(i), filename);
+		int err = SFileHasFile(allmpq.GetElemNr(i), (char *)filename);
 		if (err)
 			return allmpq.GetElemNr(i);
 	}
@@ -214,9 +214,9 @@ void ClearMPQFileID(MPQIDS *fileid1)
 //============================================
 HANDLE FindFileTryAllMpqs(const char *filename)
 {
-	if (SFileHasFile(install2mpq, filename))
+	if (SFileHasFile(install2mpq, (char *)filename))
 		return(install2mpq);
-	if (SFileHasFile(install1mpq, filename))
+	if (SFileHasFile(install1mpq, (char *)filename))
 		return(install1mpq);
 	return(MpqsFindFile(filename));
 }
