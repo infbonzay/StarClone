@@ -155,7 +155,7 @@ int WINAPI SFileEnumLocales(HANDLE hMPQ, const char * szFileName, UINT * plcLoca
 //   hMPQ          - Handle of opened MPQ archive
 //   szFileName    - Name of file to look for
 
-BOOL WINAPI SFileHasFile(HANDLE hMPQ, char * szFileName)
+BOOL WINAPI SFileHasFile(HANDLE hMPQ, const char * szFileName)
 {
     TMPQArchive * ha = (TMPQArchive *)hMPQ;
     int nError = ERROR_SUCCESS;

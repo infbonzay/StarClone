@@ -157,7 +157,7 @@ static int CheckIfAllFilesKnown(TMPQArchive * ha, const char * szListFile, UINT 
                 UINT dwFlags = 0;
                 UINT dwSeed  = 0;
 
-                if(SFileOpenFileEx((HANDLE)ha, (char *)pHash->dwBlockIndex, 0, &hFile))
+                if(SFileOpenFileEx((HANDLE)ha, (char *)(long)pHash->dwBlockIndex, 0, &hFile))
                 {
                     TMPQFile * hf = (TMPQFile *)hFile;
                     dwFlags = hf->pBlock->dwFlags;

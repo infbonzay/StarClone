@@ -163,7 +163,7 @@ extern volatile int MPQglobalentersemaphore;
   
   void  SetLastError(int err);
   int   GetLastError();
-  char *ErrString(int err);
+  const char *ErrString(int err);
 
   // Emulation of functions for file I/O available in Win32
   HANDLE CreateFile(const char * lpFileName, UINT dwDesiredAccess, UINT dwShareMode, void * lpSecurityAttributes, UINT dwCreationDisposition, UINT dwFlagsAndAttributes, HANDLE hTemplateFile);

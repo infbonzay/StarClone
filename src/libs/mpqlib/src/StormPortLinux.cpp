@@ -38,7 +38,7 @@ int GetLastError()
 	return(globalerr);
 }
 
-char *ErrString(int err)
+const char *ErrString(int err)
 {
 	switch (err) {
 	case ERROR_INVALID_FUNCTION:
@@ -74,12 +74,12 @@ HANDLE CreateFile(const char *sFileName, UINT ulMode, UINT ulSharing, void *pSec
 {
     switch (ulCreation) {
     case OPEN_EXISTING:
-        return (HANDLE)open(sFileName, O_RDONLY,S_IREAD|S_IWRITE);
+        return (HANDLE)(long )open(sFileName, O_RDONLY,S_IREAD|S_IWRITE);
     case OPEN_ALWAYS:
     case CREATE_ALWAYS:
-        return (HANDLE)open(sFileName, O_RDWR | O_CREAT,S_IREAD|S_IWRITE);
+        return (HANDLE)(long)open(sFileName, O_RDWR | O_CREAT,S_IREAD|S_IWRITE);
     case CREATE_NEW:
-	return (HANDLE)open(sFileName, O_RDWR | O_CREAT | O_TRUNC,S_IREAD|S_IWRITE);
+	return (HANDLE)(long)open(sFileName, O_RDWR | O_CREAT | O_TRUNC,S_IREAD|S_IWRITE);
     default:
         return INVALID_HANDLE_VALUE;
     }
@@ -179,8 +179,9 @@ void GetTempPath(UINT szTempLength, char * szTemp)
 ********************************************************************/
 void GetTempFileName(const char * lpTempFolderPath, const char * lpFileName, UINT something, char * szLFName)
 {
-    char *fn=tempnam(lpTempFolderPath,lpFileName);
+    char *fn = tempnam(lpTempFolderPath,lpFileName);
     strcpy(szLFName,fn);
+    free(fn);
 }
 #endif
 

@@ -370,7 +370,7 @@ BOOL  WINAPI SFileRenameFile(HANDLE hMPQ, const char * szOldFileName, const char
 BOOL  WINAPI SFileSetFileLocale(HANDLE hFile, UINT lcNewLocale);
 
 // Retrieving info about the file
-BOOL  WINAPI SFileHasFile(HANDLE hMPQ, char * szFileName);
+BOOL  WINAPI SFileHasFile(HANDLE hMPQ, const char * szFileName);
 BOOL  WINAPI SFileGetFileName(HANDLE hFile, char * szFileName);
 UINT  WINAPI SFileGetFileInfo(HANDLE hMpqOrFile, UINT  dwInfoType);
 
