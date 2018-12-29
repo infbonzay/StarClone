@@ -1049,7 +1049,7 @@ int gogame(struct mapinfo *info)
 
 					AllOBJMoving();
 
-					AdditionalUnitsProceed();
+					//AdditionalUnitsProceed();
 
 					invisiblestick();
 					if (MINIMAPREFRESHCYCLE)
@@ -1063,6 +1063,8 @@ int gogame(struct mapinfo *info)
 					allobjdecrmtimemage();
 
 					allobj_dieheal();
+
+					AdditionalUnitsProceed();
 
 					allobjconstr();
 					if (NEEDTOCHANGECREEPBIT)
