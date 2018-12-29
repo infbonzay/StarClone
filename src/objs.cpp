@@ -4650,7 +4650,8 @@ void TryToScanArea(OBJ *a, OBJ *scanobjarea)
 //=================================
 void TellOtherUnitsAboutAtacking(OBJ *a, OBJ *atacker)
 {
-	int i, allstat;
+	unsigned char weaponid;
+	int i, allstat,canatack;
 	OBJ *a2;
 	for (i = 0;i < MaxObjects;i++)
 	{
@@ -4669,6 +4670,8 @@ void TellOtherUnitsAboutAtacking(OBJ *a, OBJ *atacker)
 						{
 							if (a2->SC_Unit != SC_LURKEROBJ)
 							{
+								if (a2->SC_Unit == SC_VULTUREMINEOBJ)
+									continue;
 								moveobj(a2, NULL, MODEUNBURROW, NOSHOWERROR);
 							}
 						}

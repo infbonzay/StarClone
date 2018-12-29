@@ -1,3 +1,3 @@
-#define GAMEVERSION "O.3.3-116"
+#define GAMEVERSION "O.3.3-118"
 #define GAMECOMPILE "20181225131150"
 #define GAMENAME "StarClone"
