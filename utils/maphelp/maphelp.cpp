@@ -127,7 +127,7 @@ void CreateMapOffsets(int table)
     int g,k,i,j,xpos,ypos,mapgrad,err,curelem;
     sprintf(fn,"offset%d.txt",table);
     FILE *f = fopen(fn,"wb");
-    currentoffset = (int)&offs.mapelement[0] - (int)&offs;
+    currentoffset = (int)(long)&offs.mapelement[0] - (int)(long)&offs;
     curelem=0;
     for (g = 0; g<MAXANGLES; g++)
     {

@@ -64,7 +64,7 @@ int main(int argc,char *argv[])
 	return(-2);
     }
     PCX *pcx = new PCX();
-    int result = pcx->openMpqPcx(argv[2]);
+    int result = pcx->openMpqPcx((const char *)argv[2]);
     if (result != OKPCX)
     {
 	printf("error open pcx %s\n",argv[2]);

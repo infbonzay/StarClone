@@ -1,6 +1,6 @@
 PROGS = testmylist
 OBJ  = testmylist.o
-OBJS  = $(OBJ) mylist.o
+OBJS  = $(OBJ) ../../obj/mylist.cpp.o
 SOURCES = testmylist.cpp
 
 INCLUDE = -I../../include
@@ -14,9 +14,7 @@ $(PROGS): $(OBJS)
 
 $(OBJ): $(SOURCES)
 	gcc -c $(CFLAGS) $(SOURCES) -o $(OBJ)
-clean:
-mylist.o: ../../src/mylist.cpp
-	gcc -c $(CFLAGS) ../../src/mylist.cpp -o mylist.o
+
 clean:
 	-rm $(PROGS) $(OBJ)
 	

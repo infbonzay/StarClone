@@ -1,29 +1,44 @@
-BITS=32
-PLATFORM = -m$(BITS)
-CFLAGS = $(PLATFORM) -DWITHMPQLIB -ansi -g3 -O0 -I../../include -I../../include/smacker -fomit-frame-pointer -frename-registers -funroll-loops
-LDFLAGS = $(PLATFORM)  -lSDL -lpthread -lgrp -L./grplib -lstdc++ -lmpq -lz
+CFLAGS = -DWITHMPQLIB -ansi -g3 -O0 -I../../include/libs/mpqlib -I../../include/libs/grplib \
+         -I../../include -I../../include/smacker \
+         -fomit-frame-pointer -frename-registers -funroll-loops
+LDFLAGS = -lSDL -lpthread -lstdc++ -lz -lm -lSDL_mixer
 
-all:  bin/smkview$(BITS) obj/smkview.o ../../obj/smk_bitstream.o ../../obj/smk_hufftree.o \
-    ../../obj/mpqwrapper.o obj/audiolowlevel.o
+OBJS = ../../obj/smacker/smacker.cpp.o \
+       ../../obj/smacker/smk_bitstream.cpp.o \
+       ../../obj/smacker/smk_hufftree.cpp.o \
+       ../../obj/mpqwrapper.cpp.o \
+       ../../obj/audio/sdl/audiolib.cpp.o
 
-bin/smkview$(BITS): obj/smkview.o ../../obj/smacker.o ../../obj/smk_bitstream.o \
-    ../../obj/smk_hufftree.o ../../obj/mpqwrapper.o obj/audiolowlevel.o
-	gcc $(LDFLAGS) obj/smkview.o ../../obj/smacker.o ../../obj/smk_bitstream.o \
-    ../../obj/smk_hufftree.o ../../obj/mpqwrapper.o obj/audiolowlevel.o -o bin/smkview$(BITS)
+GRPLIB =  ../../obj/libs/grplib/src/grp.cpp.o \
+          ../../obj/libs/grplib/src/gr8.cpp.o \
+          ../../obj/libs/grplib/src/palette.cpp.o \
+          ../../obj/libs/grplib/src/cpp/grpcpp.cpp.o
+
+MPQLIB =  ../../obj/libs/mpqlib/src/SCommon.cpp.o \
+          ../../obj/libs/mpqlib/src/SCompression.cpp.o \
+          ../../obj/libs/mpqlib/src/SFileCompactArchive.cpp.o \
+          ../../obj/libs/mpqlib/src/SFileCreateArchiveEx.cpp.o \
+          ../../obj/libs/mpqlib/src/SFileExtractFile.cpp.o \
+          ../../obj/libs/mpqlib/src/SFileFindFile.cpp.o \
+          ../../obj/libs/mpqlib/src/SFileOpenArchive.cpp.o \
+          ../../obj/libs/mpqlib/src/SFileOpenFileEx.cpp.o \
+          ../../obj/libs/mpqlib/src/SFileReadFile.cpp.o \
+          ../../obj/libs/mpqlib/src/SListFile.cpp.o \
+          ../../obj/libs/mpqlib/src/StormPortLinux.cpp.o \
+          ../../obj/libs/mpqlib/pklib/crc32.cpp.o \
+          ../../obj/libs/mpqlib/pklib/explode.cpp.o \
+          ../../obj/libs/mpqlib/pklib/implode.cpp.o \
+          ../../obj/libs/mpqlib/huffman/huffman.cpp.o \
+          ../../obj/libs/mpqlib/wave/wave.cpp.o 
+
+
+all:  bin/smkview obj/smkview.o
+
+bin/smkview: obj/smkview.o
+	gcc $(LDFLAGS) obj/smkview.o $(OBJS) $(GRPLIB) $(MPQLIB) -o bin/smkview
 
 obj/smkview.o: src/smkview.cpp
 	gcc -c $(CFLAGS) src/smkview.cpp -o obj/smkview.o
-../../obj/smacker.o: ../../src/smacker/smacker.cpp
-	gcc -c $(CFLAGS) ../../src/smacker/smacker.cpp -o ../../obj/smacker.o
-../../obj/smk_bitstream.o: ../../src/smacker/smk_bitstream.cpp
-	gcc -c $(CFLAGS) ../../src/smacker/smk_bitstream.cpp -o ../../obj/smk_bitstream.o
-../../obj/smk_hufftree.o: ../../src/smacker/smk_hufftree.cpp
-	gcc -c $(CFLAGS) ../../src/smacker/smk_hufftree.cpp -o ../../obj/smk_hufftree.o
-../../obj/mpqwrapper.o: ../../src/mpqwrapper.cpp
-	gcc -c $(CFLAGS) ../../src/mpqwrapper.cpp -o ../../obj/mpqwrapper.o
-obj/audiolowlevel.o: ../../src/sound.null/audiolowlevel.cpp
-	gcc -c $(CFLAGS) ../../src/sound.null/audiolowlevel.cpp -o obj/audiolowlevel.o
     
 clean:
-	-rm bin/smkview32 bin/smkview64 obj/*.o
-
+	-rm bin/smkview* obj/*.o

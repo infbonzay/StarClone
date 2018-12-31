@@ -5,7 +5,7 @@ SOURCES = maphelp.cpp
 
 INCLUDE = -I../../include
 CFLAGS = -g3 -funsigned-char -O0 $(INCLUDE)
-LDFLAGS = -lstdc++
+LDFLAGS = -lstdc++ -lm
 
 all:  $(PROGS) $(OBJS)
 

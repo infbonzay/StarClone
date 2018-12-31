@@ -13,7 +13,7 @@
 
 #include "network_general.h"
 
-char *gn[8]={
+const char *gn[8]={
 	    "banzay",
 	    "toad",
 	    "destroyer",
