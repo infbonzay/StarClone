@@ -372,153 +372,153 @@ switch(putmethod)														\
 					{													\
 						if (packbyte>SrP)								\
 						{												\
-							packbyte -= SrP;					\
-							bytes += SrP;						\
-							SrP = 0;						\
-							PpL -= packbyte;					\
-							METHOD2;						\
-						}								\
-						else							\
-						{								\
-							SrP -= packbyte;					\
-							bytes+=packbyte;					\
-						}								\
-					}								\
-				}									\
-				else								\
-				{									\
-					packbyte &= 0x7f;						\
-					if (packbyte>SrP)						\
-					{								\
-						packbyte -= SrP;						\
-						SrP = 0;							\
-						PpL -= packbyte;						\
-						vidadr -= packbyte;						\
-					}								\
-					else								\
-					{								\
-						SrP -= packbyte;						\
-					}								\
-				}									\
-			}while(PpL);								\
-			vidadr += GRP_screensizex;						\
-			vidadr += PixelPerLine;							\
-		}										\
-		break;										\
-		case 2:										\
-			while(LinesPerPicture-->0)							\
-			{										\
-				PpL = PixelPerLine;							\
-				AlreadyPut=0;								\
-				bytes = (unsigned char *)elem+(unsigned short int)elem[FromLine++];		\
-				do{									\
-					packbyte = *bytes++;						\
-					if (!(packbyte & 0x80))						\
-					{									\
-						if (packbyte & 0x40)						\
-						{								\
-							packbyte &= 0x3f;						\
-							if (packbyte>PpL)						\
-								packbyte = PpL;						\
+							packbyte -= SrP;							\
+							bytes += SrP;								\
+							SrP = 0;									\
+							PpL -= packbyte;							\
+							METHOD2;									\
+						}												\
+						else											\
+						{												\
+							SrP -= packbyte;							\
+							bytes+=packbyte;							\
+						}												\
+					}													\
+				}														\
+				else													\
+				{														\
+					packbyte &= 0x7f;									\
+					if (packbyte>SrP)									\
+					{													\
+						packbyte -= SrP;								\
+						SrP = 0;										\
+						PpL -= packbyte;								\
+						vidadr -= packbyte;								\
+					}													\
+					else												\
+					{													\
+						SrP -= packbyte;								\
+					}													\
+				}														\
+			}while(PpL);												\
+			vidadr += GRP_screensizex;									\
+			vidadr += PixelPerLine;										\
+		}																\
+		break;															\
+		case 2:															\
+			while(LinesPerPicture-->0)									\
+			{															\
+				PpL = PixelPerLine;										\
+				AlreadyPut=0;											\
+				bytes = (unsigned char *)elem+(unsigned short int)elem[FromLine++];\
+				do{														\
+					packbyte = *bytes++;								\
+					if (!(packbyte & 0x80))								\
+					{													\
+						if (packbyte & 0x40)							\
+						{												\
+							packbyte &= 0x3f;							\
+							if (packbyte>PpL)							\
+								packbyte = PpL;							\
 								PpL -= packbyte;						\
-								METHOD1;							\
+								METHOD1;								\
 								AlreadyPut += packbyte;					\
-						}								\
-						else								\
-						{								\
-							if (packbyte>PpL)						\
-								packbyte = PpL;						\
+						}												\
+						else											\
+						{												\
+							if (packbyte>PpL)							\
+								packbyte = PpL;							\
 								PpL -= packbyte;						\
-								METHOD2;							\
+								METHOD2;								\
 								AlreadyPut += packbyte;					\
-						}								\
-					}									\
-					else								\
-					{									\
-						packbyte &= 0x7f;						\
-						if (packbyte>PpL)						\
-							packbyte = PpL;						\
-							PpL -= packbyte;						\
-							vidadr -= packbyte;						\
+						}												\
+					}													\
+					else												\
+					{													\
+						packbyte &= 0x7f;								\
+						if (packbyte>PpL)								\
+							packbyte = PpL;								\
+							PpL -= packbyte;							\
+							vidadr -= packbyte;							\
 							AlreadyPut += packbyte;						\
-					}									\
-				}while(PpL);								\
-				vidadr += GRP_screensizex;						\
-				vidadr += AlreadyPut;							\
-			}										\
-			break;									\
-		case 3:										\
-			while(LinesPerPicture-->0)							\
-			{										\
-				PpL = PixelPerLine;							\
-				SrP = SkipRightPixels;							\
-				AlreadyPut=0;								\
-				bytes = (unsigned char *)elem+(unsigned short int)elem[FromLine++];		\
-				do{									\
-					packbyte = *bytes++;						\
-					if (!(packbyte & 0x80))						\
-					{									\
-						if (packbyte & 0x40)						\
-						{								\
-							packbyte &= 0x3f;						\
-							if (packbyte>SrP)						\
-							{								\
-								packbyte -= SrP;					\
-								SrP = 0;						\
-								if (packbyte>PpL)					\
-									packbyte = PpL;					\
+					}													\
+				}while(PpL);											\
+				vidadr += GRP_screensizex;								\
+				vidadr += AlreadyPut;									\
+			}															\
+			break;														\
+		case 3:															\
+			while(LinesPerPicture-->0)									\
+			{															\
+				PpL = PixelPerLine;										\
+				SrP = SkipRightPixels;									\
+				AlreadyPut=0;											\
+				bytes = (unsigned char *)elem+(unsigned short int)elem[FromLine++];\
+				do{														\
+					packbyte = *bytes++;								\
+					if (!(packbyte & 0x80))								\
+					{													\
+						if (packbyte & 0x40)							\
+						{												\
+							packbyte &= 0x3f;							\
+							if (packbyte>SrP)							\
+							{											\
+								packbyte -= SrP;						\
+								SrP = 0;								\
+								if (packbyte>PpL)						\
+									packbyte = PpL;						\
 									PpL -= packbyte;					\
-									METHOD1;						\
-									AlreadyPut += packbyte;					\
-							}								\
-							else							\
-							{								\
-								SrP -= packbyte;					\
-								bytes++;						\
-							}								\
-						}								\
-						else								\
-						{								\
-							if (packbyte>SrP)						\
-							{								\
-								packbyte -= SrP;					\
-								bytes += SrP;						\
-								SrP = 0;						\
-								if (packbyte>PpL)					\
-									packbyte = PpL;					\
+									METHOD1;							\
+									AlreadyPut += packbyte;				\
+							}											\
+							else										\
+							{											\
+								SrP -= packbyte;						\
+								bytes++;								\
+							}											\
+						}												\
+						else											\
+						{												\
+							if (packbyte>SrP)							\
+							{											\
+								packbyte -= SrP;						\
+								bytes += SrP;							\
+								SrP = 0;								\
+								if (packbyte>PpL)						\
+									packbyte = PpL;						\
 									PpL -= packbyte;					\
-									METHOD2;						\
-									AlreadyPut += packbyte;					\
-							}								\
-							else							\
-							{								\
-								SrP -= packbyte;					\
-								bytes+=packbyte;					\
-							}								\
-						}								\
-					}									\
-					else								\
-					{									\
-						packbyte &= 0x7f;						\
-						if (packbyte>SrP)						\
-						{								\
-							packbyte -= SrP;						\
-							SrP = 0;							\
-							if (packbyte>PpL)						\
-								packbyte = PpL;						\
+									METHOD2;							\
+									AlreadyPut += packbyte;				\
+							}											\
+							else										\
+							{											\
+								SrP -= packbyte;						\
+								bytes+=packbyte;						\
+							}											\
+						}												\
+					}													\
+					else												\
+					{													\
+						packbyte &= 0x7f;								\
+						if (packbyte>SrP)								\
+						{												\
+							packbyte -= SrP;							\
+							SrP = 0;									\
+							if (packbyte>PpL)							\
+								packbyte = PpL;							\
 								PpL -= packbyte;						\
 								vidadr -= packbyte;						\
 								AlreadyPut += packbyte;					\
-						}								\
-						else								\
-						{								\
-							SrP -= packbyte;						\
-						}								\
-					}									\
-				}while(PpL);								\
-				vidadr += GRP_screensizex;						\
-				vidadr += AlreadyPut;							\
-			}										\
-			break;									\
-}											\
+						}												\
+						else											\
+						{												\
+							SrP -= packbyte;							\
+						}												\
+					}													\
+				}while(PpL);											\
+				vidadr += GRP_screensizex;								\
+				vidadr += AlreadyPut;									\
+			}															\
+			break;														\
+}
 //==========================================================
