@@ -1,0 +1,7 @@
+*
+!.gitignore
+!Makefile
+!receiver.cpp
+!sender.cpp
+!mserver.sh
+
