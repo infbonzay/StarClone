@@ -7,7 +7,7 @@ to configure use cmake
 
 	cmake .
 	make
-	cd StarClone
+	cd bin
 	./StarClone
 
 2.if you need to cpompile grplib and mpqlib please find them in neededlibs directory
