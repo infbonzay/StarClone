@@ -6,14 +6,14 @@
 #define MAXCOLORUNIT	31
 
 //==============================================
-void CClrScr(int color)
+void GRP_ClrScr(int color)
 {
 	memset(GRP_vidmem,color,GRP_wmaxdwordwritel<<2);
 }
 //==============================================
-int CGetImage8(int x,int y,int sx,int sy,char *mem)
+int GRP_GetImage8(int x,int y,int sx,int sy,char *mem)
 {
-	if (x<GRP_wminx || y<GRP_wminy || x+sx>GRP_wmaxx+1 || y+sy>GRP_wmaxy+1)
+	if (x<GRP_wminx || y<GRP_wminy || x+sx>GRP_wmaxx || y+sy>GRP_wmaxy)
 		return -1;
 	char *adrvid=GRP_vidmem+GRP_scanlineoffsets[y]+x;
 	for (int i=0;i<sy;i++)
@@ -25,9 +25,9 @@ int CGetImage8(int x,int y,int sx,int sy,char *mem)
 	return 0;
 }
 //==============================================
-int CPutImage8(int x,int y,int sx,int sy,char *mem)
+int GRP_PutImage8(int x,int y,int sx,int sy,char *mem)
 {
-	if (x<GRP_wminx || y<GRP_wminy || x+sx>GRP_wmaxx+1 || y+sy>GRP_wmaxy+1)
+	if (x<GRP_wminx || y<GRP_wminy || x+sx>GRP_wmaxx || y+sy>GRP_wmaxy)
 		return -1;
 	char *adrvid=GRP_vidmem+GRP_scanlineoffsets[y]+x;
 	for (int i=0;i<sy;i++)
@@ -39,7 +39,7 @@ int CPutImage8(int x,int y,int sx,int sy,char *mem)
 	return 0;
 }
 //==============================================
-int CSetImage8(int x,int y,int sx,int sy,int color)
+int GRP_SetImage8(int x,int y,int sx,int sy,int color)
 {
 	if (x<GRP_wminx)
 	{
@@ -48,7 +48,7 @@ int CSetImage8(int x,int y,int sx,int sy,int color)
 			return 0;
 		x = GRP_wminx;
 	}
-	if (x+sx > GRP_wmaxx+1)
+	if (x+sx > GRP_wmaxx)
 	{
 		sx = GRP_wmaxx-x;
 		if (sx < 0)
@@ -61,9 +61,9 @@ int CSetImage8(int x,int y,int sx,int sy,int color)
 			return 0;
 		y =GRP_wminy;
 	}
-	if (y + sy > GRP_wmaxy+1)
+	if (y + sy > GRP_wmaxy)
 	{
-		sy = GRP_wmaxy-y+1;
+		sy = GRP_wmaxy-y;
 		if (sy < 0)
 			return 0;
 	}
@@ -76,7 +76,7 @@ int CSetImage8(int x,int y,int sx,int sy,int color)
 	return 0;
 }
 //==============================================
-int CSetImage8x(int x,int y,int sx,int sy,int color)
+int GRP_SetImage8x(int x,int y,int sx,int sy,int color)
 {
 	unsigned int ucolor = (color & 0xff) << 8;
 	if (x<GRP_wminx)
@@ -86,9 +86,9 @@ int CSetImage8x(int x,int y,int sx,int sy,int color)
 			return 0;
 		x = GRP_wminx;
 	}
-	if (x+sx>GRP_wmaxx+1)
+	if (x+sx>GRP_wmaxx)
 	{
-		sx = GRP_wmaxx-x+1;
+		sx = GRP_wmaxx-x;
 		if (sx < 0)
 			return 0;
 	}
@@ -99,9 +99,9 @@ int CSetImage8x(int x,int y,int sx,int sy,int color)
 			return 0;
 		y = GRP_wminy;
 	}
-	if (y+sy>GRP_wmaxy+1)
+	if (y+sy>GRP_wmaxy)
 	{
-		sy = GRP_wmaxy-y+1;
+		sy = GRP_wmaxy-y;
 		if (sy < 0)
 			return 0;
 	}
@@ -117,7 +117,7 @@ int CSetImage8x(int x,int y,int sx,int sy,int color)
 	return 0;
 }
 //==============================================
-int CPutSprite8(int x,int y,int sx,int sy,int color,char *adr)
+int GRP_PutSprite8(int x,int y,int sx,int sy,int color,char *adr)
 {
 	if (x<GRP_wminx || y<GRP_wminy || x+sx>GRP_wmaxx+1 || y+sy>GRP_wmaxy+1)
 		return -1;
@@ -145,7 +145,7 @@ int CPutSprite8(int x,int y,int sx,int sy,int color,char *adr)
 	return 0;
 }
 //==============================================
-void CPutPartVisibleSpr(int x,int y,int sx,int sy,char *mem)
+void GRP_PutPartVisibleSpr(int x,int y,int sx,int sy,char *mem)
 {
 	int skipx=0,skipy=0,i,sizex=sx;
 	if (x<GRP_wminx)			//left clipping
@@ -164,15 +164,15 @@ void CPutPartVisibleSpr(int x,int y,int sx,int sy,char *mem)
 			return;
 		y = GRP_wminy;
 	}
-	if (x+sx>GRP_wmaxx+1)
+	if (x+sx>GRP_wmaxx)
 	{
-		sx = GRP_wmaxx - x + 1;
+		sx = GRP_wmaxx - x;
 		if (sx<=0)
 			return;
 	}
-	if (y+sy>GRP_wmaxy+1)
+	if (y+sy>GRP_wmaxy)
 	{
-		sy = GRP_wmaxy - y + 1;
+		sy = GRP_wmaxy - y;
 		if (sy<=0)
 			return;
 	}
@@ -186,7 +186,7 @@ void CPutPartVisibleSpr(int x,int y,int sx,int sy,char *mem)
 	}
 }
 //==============================================
-void CPutPartVisibleSprTrnsp(int x,int y,int sx,int sy,char *mem)
+void GRP_PutPartVisibleSprTrnsp(int x,int y,int sx,int sy,char *mem)
 {
 	int skipx=0,skipy=0,i,j,sizex=sx;
 	if (x<GRP_wminx)			//left clipping
@@ -205,15 +205,15 @@ void CPutPartVisibleSprTrnsp(int x,int y,int sx,int sy,char *mem)
 			return;
 		y = GRP_wminy;
 	}
-	if (x+sx>GRP_wmaxx+1)
+	if (x+sx>GRP_wmaxx)
 	{
-		sx = GRP_wmaxx - x + 1;
+		sx = GRP_wmaxx - x;
 		if (sx<=0)
 			return;
 	}
-	if (y+sy>GRP_wmaxy+1)
+	if (y+sy>GRP_wmaxy)
 	{
-		sy = GRP_wmaxy - y + 1;
+		sy = GRP_wmaxy - y;
 		if (sy<=0)
 			return;
 	}
@@ -230,7 +230,7 @@ void CPutPartVisibleSprTrnsp(int x,int y,int sx,int sy,char *mem)
 	}
 }
 //==============================================
-void CPutSpr(int x,int y,int sx,int sy,int rx,char *mem)
+void GRP_PutSpr(int x,int y,int sx,int sy,int rx,char *mem)
 {
 	char *adrvid = GRP_vidmem + GRP_scanlineoffsets[y] + x;
 	for (int i=0;i<sy;i++)
@@ -241,7 +241,7 @@ void CPutSpr(int x,int y,int sx,int sy,int rx,char *mem)
 	}
 }
 //==============================================
-void CPutPackedSprite8(int x,int y,char *adr)
+void GRP_PutPackedSprite8(int x,int y,char *adr)
 {
 	int count,method = 0,line=0;
 	count = 0;

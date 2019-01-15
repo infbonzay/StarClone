@@ -111,12 +111,12 @@ void desenhealth(int x, int y, int kubik, int count, int max)
 	horizline(KUBIK[GREYHPBAR][0], x, x + max * (SIZEXKUBIK), y + SIZEYKUBIK);
 	for (i = 0;i < count;i++)
 	{
-		CPutImage8(x, y, SIZEXKUBIK, SIZEYKUBIK, KUBIK[kubik]);
+		GRP_PutImage8(x, y, SIZEXKUBIK, SIZEYKUBIK, KUBIK[kubik]);
 		x += SIZEXKUBIK;
 	}
 	for (;i < max;i++)
 	{
-		CPutImage8(x, y, SIZEXKUBIK, SIZEYKUBIK, KUBIK[GREYHPBAR]);
+		GRP_PutImage8(x, y, SIZEXKUBIK, SIZEYKUBIK, KUBIK[GREYHPBAR]);
 		x += SIZEXKUBIK;
 	}
 	vertline(KUBIK[GREYHPBAR][0], x, y, y + SIZEYKUBIK);
@@ -128,12 +128,12 @@ void desenhealth2(int x, int y, int kubik, int count, int max)
 	horizline(PKUBIK[GREYHPBAR][0], x, x + max * (SIZEXKUBIK), y + SIZEYKUBIK - 1);
 	for (i = 0;i < count;i++)
 	{
-		CPutImage8(x, y, SIZEXKUBIK, SIZEYKUBIK - 1, PKUBIK[kubik]);
+		GRP_PutImage8(x, y, SIZEXKUBIK, SIZEYKUBIK - 1, PKUBIK[kubik]);
 		x += SIZEXKUBIK;
 	}
 	for (;i < max;i++)
 	{
-		CPutImage8(x, y, SIZEXKUBIK, SIZEYKUBIK - 1, PKUBIK[GREYHPBAR]);
+		GRP_PutImage8(x, y, SIZEXKUBIK, SIZEYKUBIK - 1, PKUBIK[GREYHPBAR]);
 		x += SIZEXKUBIK;
 	}
 	vertline(PKUBIK[GREYHPBAR][0], x, y, y + SIZEYKUBIK - 1);
@@ -846,12 +846,12 @@ void printobjparam(void)
 			else
 				GRP_PutGrp(xy[0][0] + XUNITCONSTR + sizex + 2, xy[1][0] + YUNITCONSTR + sizey + 2,
 					znakgrp, NORMAL, 255, FORYELLOW, NULL, icon_nr);
-			CPutSpr(xx, yy,
+			GRP_PutSpr(xx, yy,
 					buildemptyraw.xsizePcx(),
 					buildemptyraw.ysizePcx(),
 					buildemptyraw.xsizePcx(),
 					buildemptyraw.GetPcxRawBytes());
-			CPutSpr(xx, yy, constrcomplete,
+			GRP_PutSpr(xx, yy, constrcomplete,
 					buildfullraw.ysizePcx(),
 					buildfullraw.xsizePcx(),
 					buildfullraw.GetPcxRawBytes());
@@ -945,12 +945,12 @@ void printobjparam(void)
 			}
 			xx = XOUT + 40;
 			yy = YOUT + 25;
-			CPutSpr(xx, yy,
+			GRP_PutSpr(xx, yy,
 					buildemptyraw.xsizePcx(),
 					buildemptyraw.ysizePcx(),
 					buildemptyraw.xsizePcx(),
 					buildemptyraw.GetPcxRawBytes());
-			CPutSpr(xx, yy, GetConstrComplete(a, buildfullraw.xsizePcx()),
+			GRP_PutSpr(xx, yy, GetConstrComplete(a, buildfullraw.xsizePcx()),
 					buildfullraw.ysizePcx(),
 					buildfullraw.xsizePcx(),
 					buildfullraw.GetPcxRawBytes());
@@ -1490,9 +1490,9 @@ int	 desenbuildifconstr(void)
 				x1 = x0 + j * SIZESPRLANSHX;
 				x2 = x1 + SIZESPRLANSHX - 1;
 				if (returnedarray[i*x + j] == 0xffff)
-					CSetImage8x(x1, y1, x2 - x1 + 1, y2 - y1 + 1, ENABLECONSTRUCT);
+					GRP_SetImage8x(x1, y1, x2 - x1 + 1, y2 - y1 + 1, ENABLECONSTRUCT);
 				else
-					CSetImage8x(x1, y1, x2 - x1 + 1, y2 - y1 + 1, DISABLECONSTRUCT);
+					GRP_SetImage8x(x1, y1, x2 - x1 + 1, y2 - y1 + 1, DISABLECONSTRUCT);
 			}
 		}
 		if (posibleconstr < 0)
@@ -1519,9 +1519,9 @@ int	 desenbuildifconstr(void)
 					x1 = x0 + j * SIZESPRLANSHX;
 					x2 = x1 + SIZESPRLANSHX - 1;
 					if (returnedarray[i*x + j] == 0xffff)
-						CSetImage8x(x1, y1, x2 - x1 + 1, y2 - y1 + 1, ENABLECONSTRUCT);
+						GRP_SetImage8x(x1, y1, x2 - x1 + 1, y2 - y1 + 1, ENABLECONSTRUCT);
 					else
-						CSetImage8x(x1, y1, x2 - x1 + 1, y2 - y1 + 1, DISABLECONSTRUCT);
+						GRP_SetImage8x(x1, y1, x2 - x1 + 1, y2 - y1 + 1, DISABLECONSTRUCT);
 				}//forj
 			}//fori
 		}//if masterbuild

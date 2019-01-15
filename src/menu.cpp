@@ -170,7 +170,7 @@ void loadundermenu(MENUSTR *menu, char *undermenubuf)
 char *savepartscreen(int x, int y, int sizex, int sizey)
 {
 	char *scr = (char *)wmalloc(sizex*sizey);
-	CGetImage8(x, y, sizex, sizey, scr);
+	GRP_GetImage8(x, y, sizex, sizey, scr);
 	return(scr);
 }
 //==========================================
@@ -178,7 +178,7 @@ void loadpartscreen(int x, int y, int sizex, int sizey, char *savedscreen)
 {
 	if (savedscreen)
 	{
-		CPutImage8(x, y, sizex, sizey, savedscreen);
+		GRP_PutImage8(x, y, sizex, sizey, savedscreen);
 		wfree(savedscreen);
 	}
 }
@@ -187,7 +187,7 @@ void restorepartscreen(int x, int y, int sizex, int sizey, char *savedscreen)
 {
 	if (savedscreen)
 	{
-		CPutImage8(x, y, sizex, sizey, savedscreen);
+		GRP_PutImage8(x, y, sizex, sizey, savedscreen);
 	}
 }
 //==========================================

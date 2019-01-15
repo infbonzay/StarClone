@@ -4,17 +4,17 @@
 #ifdef __cplusplus
     extern "C" {
 #endif
-    void CClrScr(int color);
-    int CGetImage8(int x,int y,int sx,int sy,char *mem);
-    int CPutImage8(int x,int y,int sx,int sy,char *mem);
-    int CSetImage8(int x,int y,int sx,int sy,int color);
-    int CSetImage8x(int x,int y,int sx,int sy,int color);
-    int CPutSprite8(int x,int y,int sx,int sy,int color,char *adr);
-    void CPutPartVisibleSpr(int x,int y,int sx,int sy,char *mem);
-    void CPutPartVisibleSprTrnsp(int x,int y,int sx,int sy,char *mem);
-    void CPutSpr(int x,int y,int sx,int sy,int rx,char *mem);
+    void GRP_ClrScr(int color);
+    int  GRP_GetImage8(int x,int y,int sx,int sy,char *mem);
+    int  GRP_PutImage8(int x,int y,int sx,int sy,char *mem);
+    int  GRP_SetImage8(int x,int y,int sx,int sy,int color);
+    int  GRP_SetImage8x(int x,int y,int sx,int sy,int color);
+    int  GRP_PutSprite8(int x,int y,int sx,int sy,int color,char *adr);
+    void GRP_PutPartVisibleSpr(int x,int y,int sx,int sy,char *mem);
+    void GRP_PutPartVisibleSprTrnsp(int x,int y,int sx,int sy,char *mem);
+    void GRP_PutSpr(int x,int y,int sx,int sy,int rx,char *mem);
 
-    void CPutPackedSprite8(int x,int y,char *adr);
+    void GRP_PutPackedSprite8(int x,int y,char *adr);
 
 
 #ifdef __cplusplus

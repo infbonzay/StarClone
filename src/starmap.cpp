@@ -1413,7 +1413,7 @@ int load_starmap(const char *mapfile, char *fname, struct mapinfo *info, GAMECON
 		exit(-1);
 	}
 
-	CClrScr(0);
+	GRP_ClrScr(0);
 
 	palchange(info->palette, gameconf.videoconf.gamma, gameconf.videoconf.saturate);
 	if (!(gameconf.grmode.flags & DISPLAYFLAGS_EMULATIONMODE))

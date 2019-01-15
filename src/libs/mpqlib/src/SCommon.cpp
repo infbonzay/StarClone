@@ -571,7 +571,7 @@ int AddFileToArchive(TMPQArchive * ha, HANDLE hFile, const char * szArchivedName
     UINT   dwSeed1   = 0;              // Encryption seed
     UINT   nBlocks   = 0;              // Number of file blocks
     UINT   dwBytes   = 0;              // Number of bytes
-    UINT   dwTransferred = 0;          // Number of bytes written into archive file
+    DWORD  dwTransferred = 0;          // Number of bytes written into archive file
     UINT   nBlock = 0;                 // Index of the currently written block
     BOOL    bReplaced = FALSE;          // TRUE if replaced, FALSE if added
     int     nCmpFirst = DEFAULT_CMP;    // Compression for the first data block
@@ -737,7 +737,7 @@ int AddFileToArchive(TMPQArchive * ha, HANDLE hFile, const char * szArchivedName
         SetFilePointer(hFile, 0, NULL, FILE_BEGIN);
         for(nBlock = 0; nBlock < nBlocks-1; nBlock++)
         {
-            UINT dwInLength  = ha->dwBlockSize;
+            DWORD dwInLength  = ha->dwBlockSize;
             UINT dwOutLength = ha->dwBlockSize;
 
             // Load the block from the file
@@ -853,7 +853,7 @@ int SaveMPQTables(TMPQArchive * ha)
 {
     BYTE * pbBuffer = NULL;
     UINT dwBytes;
-    UINT dwWritten;
+    DWORD dwWritten;
     UINT dwBuffSize = max(ha->pHeader->dwHashTableSize, ha->pHeader->dwBlockTableSize);
     int   nError = ERROR_SUCCESS;
 

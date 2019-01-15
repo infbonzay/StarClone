@@ -194,7 +194,7 @@ static int CopyMpqFileBlocks(HANDLE hFile, TMPQArchive * ha, TMPQBlock * pBlock,
     UINT * pdwBlockPos1 = NULL;        // File block positions
     UINT * pdwBlockPos2 = NULL;        // File block positions
     BYTE  * pbBlock = NULL;             // Buffer for the file block
-    UINT dwTransferred;                // Number of bytes transferred
+    DWORD dwTransferred;                // Number of bytes transferred
     UINT dwFilePos = 0;                // Target file position
     UINT dwBytes = 0;                  // Number of bytes
     UINT dwSeed1 = 0;                  // File seed used for decryption
@@ -392,7 +392,7 @@ BOOL WINAPI SFileCompactArchive(HANDLE hMPQ, const char * szListFile, BOOL /* bR
     UINT * pFileSeeds = NULL;
     char szTempFile[MAX_PATH] = "";
     char * szTemp = NULL;
-    UINT dwTransferred;
+    DWORD dwTransferred;
     int nError = ERROR_SUCCESS;
 
     // Test the valid parameters

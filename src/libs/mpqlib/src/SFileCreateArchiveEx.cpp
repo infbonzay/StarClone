@@ -57,7 +57,7 @@ BOOL WINAPI SFileCreateArchiveEx(const char * szMpqName, UINT dwCreationDisposit
     TMPQArchive * ha = NULL;                // MPQ archive handle
     HANDLE hFile    = INVALID_HANDLE_VALUE; // File handle
     UINT dwMpqPos = 0;                     // Position of MPQ header within the file
-    UINT dwTransferred = 0;                    // Number of bytes written into the archive
+    DWORD dwTransferred = 0;                    // Number of bytes written into the archive
     int bFileExists = 0;
     int nIndex = 0;
     int nError = ERROR_SUCCESS;

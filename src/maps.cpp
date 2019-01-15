@@ -103,7 +103,7 @@ void drawMINIMAP(void)
 	int xbeg, ybeg, xend, yend;
 	if (MAPDEF)
 	{
-		CPutPartVisibleSpr(screenMapInfo->MinimapPosX, screenMapInfo->MinimapPosY, 128, 128, Minimap);
+		GRP_PutPartVisibleSpr(screenMapInfo->MinimapPosX, screenMapInfo->MinimapPosY, 128, 128, Minimap);
 		GetMiniMapCoord(map.MAPX, map.MAPY, screenMapInfo->SizeX32, screenMapInfo->SizeY32, &xbeg, &ybeg, &xend, &yend);
 		xend += xbeg;
 		yend += ybeg;
@@ -188,7 +188,7 @@ void drawMAP(int ignorefirstwaiting)
 	int bh, eh, bw, ew, ii, jj, xk, yk, xkk, ykk;
 	unsigned char minimapcolor;
 	if (!CODEFORSCREEN)
-		CClrScr(0);
+		GRP_ClrScr(0);
 	else
 	{
 		if (ignorefirstwaiting)
@@ -239,9 +239,9 @@ void drawMAP(int ignorefirstwaiting)
 			if (SHOWCELLS)
 			{
 				if (mapEFFECT(j, i, DSWARMEFFECT))
-					CSetImage8x(jj*SIZESPRLANSHX - xkk, ii*SIZESPRLANSHY - ykk, 32, 32, 200);
+					GRP_SetImage8x(jj*SIZESPRLANSHX - xkk, ii*SIZESPRLANSHY - ykk, 32, 32, 200);
 				if (mapEFFECT(j, i, DISRUPTEFFECT))
-					CSetImage8x(jj*SIZESPRLANSHX - xkk, ii*SIZESPRLANSHY - ykk, 32, 32, 200);
+					GRP_SetImage8x(jj*SIZESPRLANSHX - xkk, ii*SIZESPRLANSHY - ykk, 32, 32, 200);
 			}
 		}
 	}

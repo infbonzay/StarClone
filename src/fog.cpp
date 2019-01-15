@@ -117,7 +117,7 @@ void putfog(void)
 #endif
 #ifdef REMOVEFOGBUG_FUNC2
 			else
-				CSetImage8(jj*SIZESPRLANSHX - xkk, ii*SIZESPRLANSHX - ykk, 32, 32, 0);
+				GRP_SetImage8(jj*SIZESPRLANSHX - xkk, ii*SIZESPRLANSHX - ykk, 32, 32, 0);
 #endif
 			}
 		}

@@ -49,7 +49,7 @@ static UINT WINAPI ReadMPQBlocks(TMPQFile * hf, UINT dwBlockPos, BYTE * buffer, 
     UINT   dwFilePos = dwBlockPos;     // Reading position from the file
     UINT   toRead;                     // Number of bytes to read
     UINT   blockNum;                   // Block number (needed for decrypt)
-    UINT   bytesRead = 0;              // Total number of bytes read
+    DWORD  bytesRead = 0;              // Total number of bytes read
     UINT   bytesRemain = 0;            // Number of data bytes remaining up to the end of the file
     UINT   nBlocks;                    // Number of blocks to load
     UINT   i;
@@ -354,7 +354,7 @@ static UINT WINAPI ReadMPQFile(TMPQFile * hf, UINT dwFilePos, BYTE * pbBuffer, U
 //-----------------------------------------------------------------------------
 // SFileReadFile
 
-BOOL WINAPI SFileReadFile(HANDLE hFile, VOID * lpBuffer, UINT dwToRead, UINT * pdwRead, LPOVERLAPPED lpOverlapped)
+BOOL WINAPI SFileReadFile(HANDLE hFile, VOID *lpBuffer, DWORD dwToRead, DWORD *pdwRead, LPOVERLAPPED lpOverlapped)
 {
     TMPQFile * hf = (TMPQFile *)hFile;
     UINT dwBytes = 0;                  // Number of bytes (for everything)
@@ -439,7 +439,7 @@ UINT WINAPI SFileGetFilePos(HANDLE hFile, UINT * pdwFilePosHigh)
 //-----------------------------------------------------------------------------
 // SFileGetFileSize
 
-UINT WINAPI SFileGetFileSize(HANDLE hFile, UINT * pdwFileSizeHigh)
+UINT WINAPI SFileGetFileSize(HANDLE hFile, DWORD *pdwFileSizeHigh)
 {
     TMPQFile * hf = (TMPQFile *)hFile;
     

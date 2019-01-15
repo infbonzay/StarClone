@@ -82,7 +82,7 @@ BOOL SFileOpenArchiveEx(const char * szMpqName, UINT dwPriority, UINT /* dwFlags
     HANDLE hFile = INVALID_HANDLE_VALUE;// Opened archive file handle
     UINT dwMaxBlockIndex = 0;          // Maximum value of block entry
     UINT dwBlockTableSize;             // Block table size.
-    UINT dwTransferred;                // Number of bytes read
+    DWORD dwTransferred;                // Number of bytes read
     UINT dwBytes = 0;                  // Number of bytes to read
     int nError = ERROR_SUCCESS;   
 

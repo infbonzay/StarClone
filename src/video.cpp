@@ -384,7 +384,7 @@ void PlayVideoSmk(const char *smkfile)
 	hmpq = FindFileTryAllMpqs(smkfile);
 	if (hmpq)
 	{
-		CClrScr(0);
+		GRP_ClrScr(0);
 		mainController.UpdateScreen();
 
 		DEBUGMESSCR("play video [%s]\n", smkfile);
@@ -512,7 +512,7 @@ void PlayVideoSmk(const char *smkfile)
 			smk_close(smk);
 		}
 		StopMusic(MUSIC_STOP);
-		CClrScr(0);
+		GRP_ClrScr(0);
 		mainController.UpdateScreen();
 	}
 }

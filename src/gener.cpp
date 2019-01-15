@@ -1445,12 +1445,12 @@ bool ShowButtonMenu(char *button, int(*adrmenu)(MENUDRAW *menudraw, MENUPARAMS *
 //==========================
 void showramka(void)
 {
-	CPutPackedSprite8(DELTASCREENX, 0, packedconsole);
+	GRP_PutPackedSprite8(DELTASCREENX, 0, packedconsole);
 }
 //==========================
 void showiconramka(void)
 {
-	CPutPackedSprite8(DELTASCREENX, DELTASCREENY, packedconsoleover);
+	GRP_PutPackedSprite8(DELTASCREENX, DELTASCREENY, packedconsoleover);
 }
 //==========================
 void gameend(const char *mes)

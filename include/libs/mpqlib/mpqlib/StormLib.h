@@ -346,10 +346,10 @@ BOOL  WINAPI SFileOpenFileEx(HANDLE hMPQ, const char * szFileName, UINT  dwSearc
 BOOL  WINAPI SFileCloseFile(HANDLE hFile);
 
 // File I/O
-UINT  WINAPI SFileGetFilePos(HANDLE hFile, UINT  * pdwFilePosHigh = NULL);
-UINT  WINAPI SFileGetFileSize(HANDLE hFile, UINT  * pdwFileSizeHigh = NULL);
+UINT  WINAPI SFileGetFilePos(HANDLE hFile, DWORD  * pdwFilePosHigh = NULL);
+UINT  WINAPI SFileGetFileSize(HANDLE hFile, DWORD  * pdwFileSizeHigh = NULL);
 UINT  WINAPI SFileSetFilePointer(HANDLE hFile, LONG lFilePos, LONG * pdwFilePosHigh, UINT  dwMethod);
-BOOL  WINAPI SFileReadFile(HANDLE hFile, VOID * lpBuffer, UINT  dwToRead, UINT  * pdwRead = NULL, LPOVERLAPPED lpOverlapped = NULL);
+BOOL  WINAPI SFileReadFile(HANDLE hFile, VOID * lpBuffer, UINT dwToRead, UINT *pdwRead = NULL, LPOVERLAPPED lpOverlapped = NULL);
 
 BOOL  WINAPI SFileExtractFile(HANDLE hMpq, const char * szToExtract, const char * szExtracted);
 

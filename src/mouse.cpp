@@ -249,12 +249,12 @@ void HighMouse::SaveImageUnder(void)
 		SavedUnder.SizeX = GRP_wmaxx - SavedUnder.PosX + 1;
 	if (SavedUnder.PosY + SavedUnder.SizeY > GRP_wmaxy)
 		SavedUnder.SizeY = GRP_wmaxy - SavedUnder.PosY + 1;
-	CGetImage8(SavedUnder.PosX, SavedUnder.PosY, SavedUnder.SizeX, SavedUnder.SizeY, SavedUnder.SavedPixels);
+	GRP_GetImage8(SavedUnder.PosX, SavedUnder.PosY, SavedUnder.SizeX, SavedUnder.SizeY, SavedUnder.SavedPixels);
 }
 //==========================
 void HighMouse::LoadImageUnder(void)
 {
-	CPutImage8(SavedUnder.PosX, SavedUnder.PosY, SavedUnder.SizeX, SavedUnder.SizeY, SavedUnder.SavedPixels);
+	GRP_PutImage8(SavedUnder.PosX, SavedUnder.PosY, SavedUnder.SizeX, SavedUnder.SizeY, SavedUnder.SavedPixels);
 }
 //==========================
 bool HighMouse::CheckForBorder(int x1, int y1, int x2, int y2)

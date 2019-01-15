@@ -249,7 +249,7 @@ int SListFileSaveToMpq(TMPQArchive * ha)
     HANDLE hFile = INVALID_HANDLE_VALUE;
     char   szListFile[MAX_PATH];
     char   szBuffer[MAX_PATH+4];
-    UINT dwTransferred;
+    DWORD dwTransferred;
     UINT dwLength = 0;
     UINT dwName1 = 0;
     UINT dwName2 = 0;
