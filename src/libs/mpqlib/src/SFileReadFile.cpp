@@ -415,7 +415,7 @@ BOOL WINAPI SFileReadFile(HANDLE hFile, VOID *lpBuffer, DWORD dwToRead, DWORD *p
 //
 // Returns position of archive file in the archive (relative to begin of file)
 
-UINT WINAPI SFileGetFilePos(HANDLE hFile, UINT * pdwFilePosHigh)
+UINT WINAPI SFileGetFilePos(HANDLE hFile, UINT *pdwFilePosHigh)
 {
     TMPQFile * hf = (TMPQFile *)hFile;
     
@@ -439,7 +439,7 @@ UINT WINAPI SFileGetFilePos(HANDLE hFile, UINT * pdwFilePosHigh)
 //-----------------------------------------------------------------------------
 // SFileGetFileSize
 
-UINT WINAPI SFileGetFileSize(HANDLE hFile, DWORD *pdwFileSizeHigh)
+UINT WINAPI SFileGetFileSize(HANDLE hFile, UINT *pdwFileSizeHigh)
 {
     TMPQFile * hf = (TMPQFile *)hFile;
     

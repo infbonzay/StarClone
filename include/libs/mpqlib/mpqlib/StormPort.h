@@ -173,8 +173,8 @@ extern volatile int MPQglobalentersemaphore;
   UINT  SetFilePointer(HANDLE, LONG lDistanceToMove, LONG * lpDistanceToMoveHigh, UINT dwMoveMethod);
   BOOL   SetEndOfFile(HANDLE hFile);
 
-  BOOL   ReadFile(HANDLE hFile, void * lpBuffer, UINT nNumberOfBytesToRead, UINT * lpNumberOfBytesRead, void * lpOverLapped);
-  BOOL   WriteFile(HANDLE hFile, const void * lpBuffer, UINT nNumberOfBytesToWrite, UINT * lpNumberOfBytesWritten, void * lpOverLapped);
+  BOOL   ReadFile(HANDLE hFile, void * lpBuffer, DWORD nNumberOfBytesToRead, DWORD *lpNumberOfBytesRead, void * lpOverLapped);
+  BOOL   WriteFile(HANDLE hFile, const void * lpBuffer, DWORD nNumberOfBytesToWrite, DWORD *lpNumberOfBytesWritten, void * lpOverLapped);
 
   BOOL   IsBadReadPtr(const void * ptr, int size);
   UINT  GetFileAttributes(const char * szileName);

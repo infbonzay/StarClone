@@ -118,7 +118,7 @@ static int SDLCALL mpqfile_seek(RWOPS *context, int offset, int whence)
 static int SDLCALL mpqfile_read(RWOPS *context, void *ptr, int size, int maxnum)
 {
 		int result;
-		unsigned int nread;
+		unsigned long nread;
 //		printf("read: size=%d\n",size*maxnum);
 		result = SFileReadFile( (HANDLE) context->hidden.stdio.fp, ptr, size * maxnum, &nread, NULL );
 		if ( !result)

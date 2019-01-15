@@ -331,9 +331,9 @@ typedef BOOL  (WINAPI * SFILEOPENARCHIVE)(const char *, UINT , UINT , HANDLE *);
 typedef BOOL  (WINAPI * SFILECLOSEARCHIVE)(HANDLE);
 typedef BOOL  (WINAPI * SFILEOPENFILEEX)(HANDLE, const char *, UINT , HANDLE *);
 typedef BOOL  (WINAPI * SFILECLOSEFILE)(HANDLE);
-typedef UINT  (WINAPI * SFILEGETFILESIZE)(HANDLE, UINT  *);
+typedef UINT  (WINAPI * SFILEGETFILESIZE)(HANDLE, UINT *);
 typedef UINT  (WINAPI * SFILESETFILEPOINTER)(HANDLE, LONG, LONG *, UINT );
-typedef BOOL  (WINAPI * SFILEREADFILE)(HANDLE, VOID *, UINT , UINT  *, LPOVERLAPPED);
+typedef BOOL  (WINAPI * SFILEREADFILE)(HANDLE, VOID *, DWORD , DWORD *, LPOVERLAPPED);
 
 // Archive opening/closing
 UINT  WINAPI SFileSetLocale(UINT lcNewLocale);
@@ -347,9 +347,9 @@ BOOL  WINAPI SFileCloseFile(HANDLE hFile);
 
 // File I/O
 UINT  WINAPI SFileGetFilePos(HANDLE hFile, DWORD  * pdwFilePosHigh = NULL);
-UINT  WINAPI SFileGetFileSize(HANDLE hFile, DWORD  * pdwFileSizeHigh = NULL);
+UINT  WINAPI SFileGetFileSize(HANDLE hFile, UINT *pdwFileSizeHigh = NULL);
 UINT  WINAPI SFileSetFilePointer(HANDLE hFile, LONG lFilePos, LONG * pdwFilePosHigh, UINT  dwMethod);
-BOOL  WINAPI SFileReadFile(HANDLE hFile, VOID * lpBuffer, UINT dwToRead, UINT *pdwRead = NULL, LPOVERLAPPED lpOverlapped = NULL);
+BOOL  WINAPI SFileReadFile(HANDLE hFile, VOID * lpBuffer, DWORD dwToRead, DWORD *pdwRead = NULL, LPOVERLAPPED lpOverlapped = NULL);
 
 BOOL  WINAPI SFileExtractFile(HANDLE hMpq, const char * szToExtract, const char * szExtracted);
 

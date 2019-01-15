@@ -25,7 +25,7 @@ int loadfilefrommpq(HANDLE hmpq, const char *filename, char **mem, int *fsize)
 {
 	int err;
 	HANDLE f;
-	unsigned int filesize, readed;
+	unsigned long filesize, readed;
 
 	if (!hmpq)
 		err = (SFileOpenFileTryAllMpqs(filename, &f) == 0);

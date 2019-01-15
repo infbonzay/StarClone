@@ -4,7 +4,7 @@
 #include "audiolowlevel.h"
 #include "mpq.h"
 //============================================
-int wr_SFileReadFile(HANDLE hFile, void *lpBuffer, unsigned int dwToRead, unsigned int *pdwRead, void *lpOverlapped)
+int wr_SFileReadFile(HANDLE hFile, void *lpBuffer, unsigned long dwToRead, unsigned long *pdwRead, void *lpOverlapped)
 {
 	LockAudio();
 	int ret = SFileReadFile(hFile, lpBuffer, dwToRead, pdwRead, (LPOVERLAPPED) lpOverlapped);
