@@ -30,7 +30,7 @@ struct  SC_FontLetterRaw
     extern "C" {
 #endif
 
-    int  putfntsymbol(int x,int y,struct SC_FontHeader *font,int symbolnr,char *offsettable,int skipuplines,int skipdownlines);
+    int  GRP_PutFntSymbol(int x,int y,struct SC_FontHeader *font,int symbolnr,char *offsettable,int skipuplines,int skipdownlines);
 
 #ifdef __cplusplus
     }

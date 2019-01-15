@@ -291,7 +291,7 @@ int SListFileSaveToMpq(TMPQArchive * ha)
                     memcpy(szBuffer, pNode->szFileName, pNode->dwLength);
                     szBuffer[pNode->dwLength + 0] = 0x0D;
                     szBuffer[pNode->dwLength + 1] = 0x0A;
-                    WriteFile(hFile, szBuffer, pNode->dwLength + 2, &dwTransferred, NULL);
+                    WriteFile(hFile, szBuffer, pNode->dwLength + 2, (LPDWORD)&dwTransferred, NULL);
                 }
             }
 
@@ -308,7 +308,7 @@ int SListFileSaveToMpq(TMPQArchive * ha)
             memcpy(szBuffer, LISTFILE_NAME, dwLength);
             szBuffer[dwLength + 0] = 0x0D;
             szBuffer[dwLength + 1] = 0x0A;
-            WriteFile(hFile, szBuffer, dwLength + 2, &dwTransferred, NULL);
+            WriteFile(hFile, szBuffer, dwLength + 2, (LPDWORD)&dwTransferred, NULL);
         }
         
         // Add the listfile into the archive.

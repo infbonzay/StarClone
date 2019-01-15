@@ -152,7 +152,7 @@ void puttransptilebox(int x, int y, int sizex, int sizey, GRPFILE *grp)
 					boxnr = boxline * 3 + 2;
 				else
 					boxnr = boxline * 3 + 1;
-			putgrpspr(x + j * sizexgrp, y + i * sizeygrp, grp, TRANSPARENT, 255, 0, NULL, boxnr);
+			GRP_PutGrp(x + j * sizexgrp, y + i * sizeygrp, grp, TRANSPARENT, 255, 0, NULL, boxnr);
 		}
 	}
 }
@@ -482,13 +482,13 @@ int actionmenuonpressmouse(MENUSTR *allmenus, int downmenu, int *selectedmenu)
 		for (i = 0;i < ysize;i++)
 			for (j = 0;j < xsize;j++)
 			{
-				putgrp_nopacked(item->hotdeltax + j * xsizegrp, item->hotdeltay + i * ysizegrp*typelistshow,
+				GRP_PutNoPacked(item->hotdeltax + j * xsizegrp, item->hotdeltay + i * ysizegrp*typelistshow,
 					allmenus->dlggrp, item->item.expandbox->array[ITEMSHOW_CLICK][fromspr]);
 				fromspr++;
 			}
 
 		sprnr = item->item.expandbox->arrowbottom[ITEMSHOW_CLICK];
-		putgrp_nopacked(item->hotdeltax + item->hotxsize - 18, item->hotdeltay + 4, allmenus->dlggrp, sprnr);
+		GRP_PutNoPacked(item->hotdeltax + item->hotxsize - 18, item->hotdeltay + 4, allmenus->dlggrp, sprnr);
 
 		selitem = item->item.expandbox->selectednr;
 		color = GETITEMCOLOR(item->colors4, ITEMSHOW_CLICK);
@@ -1465,11 +1465,11 @@ void drawbuttonitem(MENUSTR *allmenus, int itemnr)
 		sprnr2 = BUTTONDECOR[buttontype][showtype][2];
 		sizexgrp = dlggrp->Picture[sprnr0].PixelPerLine;
 		i = 0;
-		putgrp_nopacked(menuitem->hotdeltax + i * sizexgrp, menuitem->hotdeltay, dlggrp, sprnr0);
+		GRP_PutNoPacked(menuitem->hotdeltax + i * sizexgrp, menuitem->hotdeltay, dlggrp, sprnr0);
 		i++;
 		for (;i < buttonsize - 1;i++)
-			putgrp_nopacked(menuitem->hotdeltax + i * sizexgrp, menuitem->hotdeltay, dlggrp, sprnr1);
-		putgrp_nopacked(menuitem->hotdeltax + i * sizexgrp, menuitem->hotdeltay, dlggrp, sprnr2);
+			GRP_PutNoPacked(menuitem->hotdeltax + i * sizexgrp, menuitem->hotdeltay, dlggrp, sprnr1);
+		GRP_PutNoPacked(menuitem->hotdeltax + i * sizexgrp, menuitem->hotdeltay, dlggrp, sprnr2);
 	}
 	if (showtype == ITEMSHOW_FOCUS)
 	{
@@ -1962,13 +1962,13 @@ void drawexpanditem(MENUSTR *allmenus, int itemnr)
 		{
 			for (j = 0;j < x;j++)
 			{
-				putgrp_nopacked(menuitem->hotdeltax + j * xsize, menuitem->hotdeltay + i * ysize,
+				GRP_PutNoPacked(menuitem->hotdeltax + j * xsize, menuitem->hotdeltay + i * ysize,
 					dlggrp, menuitem->item.expandbox->array[showtype][fromspr]);
 				fromspr++;
 			}
 		}
 		sprnr0 = menuitem->item.expandbox->arrowbottom[showtype];
-		putgrp_nopacked(menuitem->hotdeltax + menuitem->hotxsize - 18, menuitem->hotdeltay + 4, dlggrp, sprnr0);
+		GRP_PutNoPacked(menuitem->hotdeltax + menuitem->hotxsize - 18, menuitem->hotdeltay + 4, dlggrp, sprnr0);
 		mes = menuitem->item.expandbox->items[menuitem->item.expandbox->selectednr];
 		//			color=GETITEMCOLOR(colors4,showtype);
 		color = GETITEMCOLOR(colors4, ITEMSHOW_NOFOCUS);
@@ -2081,7 +2081,7 @@ void drawcheckboxitem(MENUSTR *allmenus, int itemnr)
 	MENUPOS *menuitem = &allmenus->menu[itemnr];
 	int showtype = menuitem->typeofshow;
 
-	putgrp_nopacked(menuitem->hotdeltax, menuitem->hotdeltay, dlggrp, CHECKBOXTYPES[menuitem->item.checkbox->state][showtype]);
+	GRP_PutNoPacked(menuitem->hotdeltax, menuitem->hotdeltay, dlggrp, CHECKBOXTYPES[menuitem->item.checkbox->state][showtype]);
 	color = GETITEMCOLOR(menuitem->colors4, showtype);
 	getmessagelen(menuitem->fontnr, menuitem->item.checkbox->textstr.text[showtype], NULL, &leny);
 	putmessageinrectangleL(menuitem->hotdeltax + menuitem->xtextdelta, menuitem->hotdeltay + menuitem->ytextdelta,
@@ -2208,7 +2208,7 @@ void drawradiobuttonitem(MENUSTR *allmenus, int itemnr)
 	{
 		if (!(menuitem->dialogbin_flags&DIALOGBIN_FLAGS_NODLGGRP))
 		{
-			putgrp_nopacked(menuitem->hotdeltax, menuitem->hotdeltay, dlggrp, RADIOBUTTONTYPES[state][menuitem->typeofshow]);
+			GRP_PutNoPacked(menuitem->hotdeltax, menuitem->hotdeltay, dlggrp, RADIOBUTTONTYPES[state][menuitem->typeofshow]);
 			deltax = 22;
 		}
 	}
@@ -2501,10 +2501,10 @@ void drawhorizbutton(MENUSTR *allmenus, int itemnr)
 		{
 			sprnr = HORIZHOLE[showtype];
 		}
-		putgrp_nopacked(menuitem->hotdeltax + deltax + addx, menuitem->hotdeltay, dlggrp, sprnr);
+		GRP_PutNoPacked(menuitem->hotdeltax + deltax + addx, menuitem->hotdeltay, dlggrp, sprnr);
 		addx += dlggrp->Picture[sprnr].PixelPerLine;
 	}
-	putgrp_nopacked(menuitem->hotdeltax + deltax + menuitem->item.horizbutton->barxposition, menuitem->hotdeltay, dlggrp, HORIZBUTTON[showtype]);
+	GRP_PutNoPacked(menuitem->hotdeltax + deltax + menuitem->item.horizbutton->barxposition, menuitem->hotdeltay, dlggrp, HORIZBUTTON[showtype]);
 	//	  printf("%x\n",dlggrp->Picture[sprnr].OffsetForLine);
 }
 //==========================================
@@ -2814,11 +2814,11 @@ void drawsmkbuttonitem(MENUSTR *allmenus, int itemnr, BUTTON *button, int xpos, 
 		sprnr2 = BUTTONDECOR[buttontype][showtype][2];
 		sizexgrp = dlggrp->Picture[sprnr0].PixelPerLine;
 		i = 0;
-		putgrp_nopacked(menuitem->hotdeltax + i * sizexgrp, menuitem->hotdeltay, dlggrp, sprnr0);
+		GRP_PutNoPacked(menuitem->hotdeltax + i * sizexgrp, menuitem->hotdeltay, dlggrp, sprnr0);
 		i++;
 		for (;i < buttonsize - 1;i++)
-			putgrp_nopacked(menuitem->hotdeltax + i * sizexgrp, menuitem->hotdeltay, dlggrp, sprnr1);
-		putgrp_nopacked(menuitem->hotdeltax + i * sizexgrp, menuitem->hotdeltay, dlggrp, sprnr2);
+			GRP_PutNoPacked(menuitem->hotdeltax + i * sizexgrp, menuitem->hotdeltay, dlggrp, sprnr1);
+		GRP_PutNoPacked(menuitem->hotdeltax + i * sizexgrp, menuitem->hotdeltay, dlggrp, sprnr2);
 	}
 	if (showtype == ITEMSHOW_FOCUS)
 	{
@@ -3093,9 +3093,9 @@ void drawimageitem(MENUSTR *allmenus, int itemnr)
 		int imgnr = menuitem->item.image->grpnr;
 		if (menuitem->item.image->flags&IMAGEFLAGS_BOTTOMALIGN)
 			//top-align
-			putgrp_nopacked(menuitem->hotdeltax, menuitem->hotdeltay, grp, imgnr);
+			GRP_PutNoPacked(menuitem->hotdeltax, menuitem->hotdeltay, grp, imgnr);
 		else //botom-aling
-			putgrp_nopacked(menuitem->hotdeltax,
+			GRP_PutNoPacked(menuitem->hotdeltax,
 				menuitem->hotdeltay + menuitem->hotysize - grp->Picture[imgnr].LinesPerPicture,
 				grp, imgnr);
 	}
@@ -3252,7 +3252,7 @@ void showprogress(int x, int y, int sizex, int percent, int colornr, GRPFILE *gr
 		{
 			sprnr = 10 + colornr;
 		}
-		putgrp_nopacked(x + deltax, y, grp, sprnr);
+		GRP_PutNoPacked(x + deltax, y, grp, sprnr);
 		deltax += 16;
 	}
 	deltax = 0;
@@ -3645,17 +3645,17 @@ void drawlistboxitem(MENUSTR *allmenus, int itemnr)
 	if (bar)
 	{
 		bar = menuitem->item.listbox->bar;
-		putgrp_nopacked(bar->xt_1, bar->yt_1, allmenus->dlggrp, LISTBOX_TOPBUTTON[bar->showtypet]);
-		putgrp_nopacked(bar->xt_1, bar->yh_1, allmenus->dlggrp, LISTBOX_TOPBAR);
+		GRP_PutNoPacked(bar->xt_1, bar->yt_1, allmenus->dlggrp, LISTBOX_TOPBUTTON[bar->showtypet]);
+		GRP_PutNoPacked(bar->xt_1, bar->yh_1, allmenus->dlggrp, LISTBOX_TOPBAR);
 		y1 = bar->yh_1 + DLGGRP_SIZEY(LISTBOX_TOPBAR);
 		for (i = 0;i < bar->elemtodraw;i++)
 		{
-			putgrp_nopacked(bar->xt_1, y1, allmenus->dlggrp, LISTBOX_MIDDLEBAR);
+			GRP_PutNoPacked(bar->xt_1, y1, allmenus->dlggrp, LISTBOX_MIDDLEBAR);
 			y1 += DLGGRP_SIZEY(LISTBOX_MIDDLEBAR);
 		}
-		putgrp_nopacked(bar->xt_1, bar->yh_last, allmenus->dlggrp, LISTBOX_BOTTOMBAR);
-		putgrp_nopacked(bar->xt_1, bar->yb_1, allmenus->dlggrp, LISTBOX_BOTTOMBUTTON[bar->showtypeb]);
-		putgrp_nopacked(bar->xt_1, bar->buttonbary1, allmenus->dlggrp, LISTBOX_BUTTONBAR);
+		GRP_PutNoPacked(bar->xt_1, bar->yh_last, allmenus->dlggrp, LISTBOX_BOTTOMBAR);
+		GRP_PutNoPacked(bar->xt_1, bar->yb_1, allmenus->dlggrp, LISTBOX_BOTTOMBUTTON[bar->showtypeb]);
+		GRP_PutNoPacked(bar->xt_1, bar->buttonbary1, allmenus->dlggrp, LISTBOX_BUTTONBAR);
 	}
 }
 //==========================================

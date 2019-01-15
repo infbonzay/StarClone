@@ -300,7 +300,7 @@ void LoadTransPal(char *filename, char *palette, char *menutranspcolors, float f
 	FILE *f = fopen(filename2, "r");
 	if (!f)
 	{
-		CreateSpecialTranspTable(palette, menutranspcolors, factor);
+		GRP_CreateSpecialTranspTable(palette, menutranspcolors, factor);
 		f = fopen(filename2, "w");
 		if (f)
 		{
@@ -477,7 +477,7 @@ int campaignselect(void)
 		backgnd.GetRawPal768(), menutranspcolors, 0.25f);
 	LoadTransPal(makefilename(GLUEPAL_NAME, GLUEPAL_OFFSET, CAMPAIGN_STR[0], CAMPAIGN_STR[1], TRANS50_STR),
 		backgnd.GetRawPal768(), menutranspcolors + 256 * 256, 0.5f);
-	SetTranspTable(menutranspcolors);
+	GRP_SetTranspTable(menutranspcolors);
 
 	MENUSTR *raceselection = LoadDialogBin("rez\\glucmpgn.bin", DIALOGBIN_MAINDIALOGS, IDFONT16X);
 	menuspecialtables(raceselection, fntadr, dlg);
@@ -625,7 +625,7 @@ int campaignselect(void)
 
 	UnloadDialogBin(raceselection);
 	fontpcx.closePcx();
-	SetTranspTable(NULL);
+	GRP_SetTranspTable(NULL);
 	wfree(menutranspcolors);
 	backgnd.closePcx();
 	wfree(dlg);
@@ -659,7 +659,7 @@ int xcampaignselect(void)
 		backgnd.GetRawPal768(), menutranspcolors, 0.25f);
 	LoadTransPal(makefilename(GLUEPAL_NAME, GLUEPAL_OFFSET, CAMPAIGN_STR[0], CAMPAIGN_STR[1], TRANS50_STR),
 		backgnd.GetRawPal768(), menutranspcolors + 256 * 256, 0.5f);
-	SetTranspTable(menutranspcolors);
+	GRP_SetTranspTable(menutranspcolors);
 	MENUSTR *raceselection = LoadDialogBin("rez\\gluexpcmpgn.bin", DIALOGBIN_MAINDIALOGS, IDFONT16X);
 	//!!!!need to correct ZERG smksizes
 	raceselection->menu[4].hotxsize += 11;
@@ -807,7 +807,7 @@ int xcampaignselect(void)
 
 	UnloadDialogBin(raceselection);
 	fontpcx.closePcx();
-	SetTranspTable(NULL);
+	GRP_SetTranspTable(NULL);
 	wfree(menutranspcolors);
 	backgnd.closePcx();
 	wfree(dlg);
@@ -837,7 +837,7 @@ int glu_loadgame(void)
 		backgnd.GetRawPal768(), menutranspcolors, 0.25f);
 	LoadTransPal(makefilename(GLUEPAL_NAME, GLUEPAL_OFFSET, SINGLEGAME_STR[0], SINGLEGAME_STR[1], TRANS50_STR),
 		backgnd.GetRawPal768(), menutranspcolors + 256 * 256, 0.5f);
-	SetTranspTable(menutranspcolors);
+	GRP_SetTranspTable(menutranspcolors);
 
 	fontpcx.openMpqPcx(makefilename(GLUEPAL_NAME, GLUEPAL_OFFSET, SINGLEGAME_STR[0], SINGLEGAME_STR[1], FNT_STR));
 	fntadr = fontpcx.GetPcxRawBytes();//for glowtext
@@ -930,7 +930,7 @@ int glu_loadgame(void)
 
 	UnloadDialogBin(gluload);
 	fontpcx.closePcx();
-	SetTranspTable(NULL);
+	GRP_SetTranspTable(NULL);
 	wfree(menutranspcolors);
 	wfree(dlg);
 	backgnd.closePcx();
@@ -959,7 +959,7 @@ int glu_loadreplay(void)
 		backgnd.GetRawPal768(), menutranspcolors, 0.25f);
 	LoadTransPal(makefilename(GLUEPAL_NAME, GLUEPAL_OFFSET, SINGLEGAME_STR[0], SINGLEGAME_STR[1], TRANS50_STR),
 		backgnd.GetRawPal768(), menutranspcolors + 256 * 256, 0.5f);
-	SetTranspTable(menutranspcolors);
+	GRP_SetTranspTable(menutranspcolors);
 
 	fontpcx.openMpqPcx(makefilename(GLUEPAL_NAME, GLUEPAL_OFFSET, SINGLEGAME_STR[0], SINGLEGAME_STR[1], FNT_STR));
 	fntadr = fontpcx.GetPcxRawBytes();//for glowtext
@@ -1050,7 +1050,7 @@ int glu_loadreplay(void)
 
 	UnloadDialogBin(gluloadrep);
 	fontpcx.closePcx();
-	SetTranspTable(NULL);
+	GRP_SetTranspTable(NULL);
 	wfree(menutranspcolors);
 	wfree(dlg);
 	backgnd.closePcx();
@@ -1166,7 +1166,7 @@ int glu_briefing(int race, int networksingle, struct mapinfo *info, char *prefix
 		backgnd.GetRawPal768(), menutranspcolors, 0.25f);
 	LoadTransPal(makefilename(GLUEPAL_NAME, GLUEPAL_OFFSET, 'R', RACE_CHAR[race], TRANS50_STR),
 		backgnd.GetRawPal768(), menutranspcolors + 256 * 256, 0.5f);
-	SetTranspTable(menutranspcolors);
+	GRP_SetTranspTable(menutranspcolors);
 
 	fontpcx.openMpqPcx(makefilename(GLUEPAL_NAME, GLUEPAL_OFFSET, 'R', RACE_CHAR[race], FNT_STR));
 	fntadr = fontpcx.GetPcxRawBytes();//for glowtext
@@ -1384,7 +1384,7 @@ int glu_briefing(int race, int networksingle, struct mapinfo *info, char *prefix
 	for (i = 0;i < FRAMEPCXS;i++)
 		framepcxs[i].closePcx();
 	fontpcx.closePcx();
-	SetTranspTable(NULL);
+	GRP_SetTranspTable(NULL);
 	wfree(menutranspcolors);
 	backgnd.closePcx();
 	return(exitstatus);
@@ -1563,7 +1563,7 @@ void glu_score(struct mapinfo *info)
 		backgnd.GetRawPal768(), menutranspcolors, 0.25f);
 	LoadTransPal(makefilename(GLUEPAL_NAME, GLUEPAL_OFFSET, RACE_CHAR[race], LOSEWIN_STR[losewin], TRANS50_STR),
 		backgnd.GetRawPal768(), menutranspcolors + 256 * 256, 0.5f);
-	SetTranspTable(menutranspcolors);
+	GRP_SetTranspTable(menutranspcolors);
 
 	fontpcx.openMpqPcx(makefilename(GLUEPAL_NAME, GLUEPAL_OFFSET, RACE_CHAR[race], LOSEWIN_STR[losewin], FNT_STR));
 	fntadr = fontpcx.GetPcxRawBytes();//for glowtext
@@ -1721,7 +1721,7 @@ void glu_score(struct mapinfo *info)
 	gluscore = NULL;
 	optbtn.closePcx();
 	fontpcx.closePcx();
-	SetTranspTable(NULL);
+	GRP_SetTranspTable(NULL);
 	wfree(menutranspcolors);
 	wfree(scoregrp);
 	wfree(dlg);
@@ -1907,7 +1907,7 @@ int glu_conn(void)
 		backgnd.GetRawPal768(), menutranspcolors, 0.25f);
 	LoadTransPal(makefilename(GLUEPAL_NAME, GLUEPAL_OFFSET, SINGLEGAME_STR[0], SINGLEGAME_STR[1], TRANS50_STR),
 		backgnd.GetRawPal768(), menutranspcolors + 256 * 256, 0.5f);
-	SetTranspTable(menutranspcolors);
+	GRP_SetTranspTable(menutranspcolors);
 
 	fontpcx.openMpqPcx(makefilename(GLUEPAL_NAME, GLUEPAL_OFFSET, SINGLEGAME_STR[0], SINGLEGAME_STR[1], FNT_STR));
 	fntadr = fontpcx.GetPcxRawBytes();//for glowtext
@@ -2027,7 +2027,7 @@ int glu_conn(void)
 
 	UnloadDialogBin(gluconn);
 	fontpcx.closePcx();
-	SetTranspTable(NULL);
+	GRP_SetTranspTable(NULL);
 	wfree(menutranspcolors);
 	wfree(dlg);
 	backgnd.closePcx();
@@ -2126,7 +2126,7 @@ int glu_join(FORCE_SLOTS *fslots)
 		backgnd.GetRawPal768(), menutranspcolors, 0.25f);
 	LoadTransPal(makefilename(GLUEPAL_NAME, GLUEPAL_OFFSET, SINGLEGAME_STR[0], SINGLEGAME_STR[1], TRANS50_STR),
 		backgnd.GetRawPal768(), menutranspcolors + 256 * 256, 0.5f);
-	SetTranspTable(menutranspcolors);
+	GRP_SetTranspTable(menutranspcolors);
 
 	fontpcx.openMpqPcx(makefilename(GLUEPAL_NAME, GLUEPAL_OFFSET, SINGLEGAME_STR[0], SINGLEGAME_STR[1], FNT_STR));
 	fntadr = fontpcx.GetPcxRawBytes();//for glowtext
@@ -2315,7 +2315,7 @@ int glu_join(FORCE_SLOTS *fslots)
 
 	UnloadDialogBin(glujoin);
 	fontpcx.closePcx();
-	SetTranspTable(NULL);
+	GRP_SetTranspTable(NULL);
 	wfree(menutranspcolors);
 	wfree(dlg);
 	backgnd.closePcx();
@@ -2348,7 +2348,7 @@ int glu_login(void)
 		backgnd.GetRawPal768(), menutranspcolors, 0.25f);
 	LoadTransPal(makefilename(GLUEPAL_NAME, GLUEPAL_OFFSET, SINGLEGAME_STR[0], SINGLEGAME_STR[1], TRANS50_STR),
 		backgnd.GetRawPal768(), menutranspcolors + 256 * 256, 0.5f);
-	SetTranspTable(menutranspcolors);
+	GRP_SetTranspTable(menutranspcolors);
 
 	fontpcx.openMpqPcx(makefilename(GLUEPAL_NAME, GLUEPAL_OFFSET, SINGLEGAME_STR[0], SINGLEGAME_STR[1], FNT_STR));
 	fntadr = fontpcx.GetPcxRawBytes();//for glowtext
@@ -2549,7 +2549,7 @@ int glu_login(void)
 	UnloadDialogBin(singammenu);
 
 	fontpcx.closePcx();
-	SetTranspTable(NULL);
+	GRP_SetTranspTable(NULL);
 	wfree(menutranspcolors);
 	backgnd.closePcx();
 	wfree(dlg);
@@ -3025,7 +3025,7 @@ int selectmapmenu(void)
 		backgnd.GetRawPal768(), menutranspcolors, 0.25f);
 	LoadTransPal(makefilename(GLUEPAL_NAME, GLUEPAL_OFFSET, SINGLEGAME_STR[0], SINGLEGAME_STR[1], TRANS25_STR),
 		backgnd.GetRawPal768(), menutranspcolors + 256 * 256, 0.5f);
-	SetTranspTable(menutranspcolors);
+	GRP_SetTranspTable(menutranspcolors);
 	fontpcx.openMpqPcx(makefilename(GLUEPAL_NAME, GLUEPAL_OFFSET, SINGLEGAME_STR[0], SINGLEGAME_STR[1], FNT_STR));
 	fntadr = fontpcx.GetPcxRawBytes();//for glowtext
 	fntadr[21] = fntadr[11];
@@ -3278,7 +3278,7 @@ int selectmapmenu(void)
 
 
 	UnloadDialogBin(selmap);
-	SetTranspTable(NULL);
+	GRP_SetTranspTable(NULL);
 	wfree(menutranspcolors);
 	fontpcx.closePcx();
 	wfree(dlg);
@@ -3346,7 +3346,7 @@ int glu_creat(FORCE_SLOTS *fslots)
 		backgnd.GetRawPal768(), menutranspcolors, 0.25f);
 	LoadTransPal(makefilename(GLUEPAL_NAME, GLUEPAL_OFFSET, SINGLEGAME_STR[0], SINGLEGAME_STR[1], TRANS25_STR),
 		backgnd.GetRawPal768(), menutranspcolors + 256 * 256, 0.5f);
-	SetTranspTable(menutranspcolors);
+	GRP_SetTranspTable(menutranspcolors);
 	fontpcx.openMpqPcx(makefilename(GLUEPAL_NAME, GLUEPAL_OFFSET, SINGLEGAME_STR[0], SINGLEGAME_STR[1], FNT_STR));
 	fntadr = fontpcx.GetPcxRawBytes();//for glowtext
 	fntadr[21] = fntadr[11];
@@ -3566,7 +3566,7 @@ int glu_creat(FORCE_SLOTS *fslots)
 	highMouse->UnloadCursors();
 
 	UnloadDialogBin(glucreat);
-	SetTranspTable(NULL);
+	GRP_SetTranspTable(NULL);
 	wfree(menutranspcolors);
 	fontpcx.closePcx();
 	wfree(dlg);
@@ -3861,7 +3861,7 @@ int glu_chat(int masterjoin, int playernr, FORCE_SLOTS *fslots)
 		backgnd.GetRawPal768(), menutranspcolors, 0.25f);
 	LoadTransPal(makefilename(GLUEPAL_NAME, GLUEPAL_OFFSET, SINGLEGAME_STR[0], SINGLEGAME_STR[1], TRANS50_STR),
 		backgnd.GetRawPal768(), menutranspcolors + 256 * 256, 0.5f);
-	SetTranspTable(menutranspcolors);
+	GRP_SetTranspTable(menutranspcolors);
 
 	fontpcx.openMpqPcx(makefilename(GLUEPAL_NAME, GLUEPAL_OFFSET, SINGLEGAME_STR[0], SINGLEGAME_STR[1], FNT_STR));
 	fntadr = fontpcx.GetPcxRawBytes();//for glowtext
@@ -4177,7 +4177,7 @@ int glu_chat(int masterjoin, int playernr, FORCE_SLOTS *fslots)
 
 	UnloadDialogBin(gluchat);
 	fontpcx.closePcx();
-	SetTranspTable(NULL);
+	GRP_SetTranspTable(NULL);
 	wfree(menutranspcolors);
 	wfree(dlg);
 	backgnd.closePcx();

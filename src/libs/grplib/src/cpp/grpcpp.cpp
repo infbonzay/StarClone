@@ -5,6 +5,7 @@
 #include "grplib/gr8.h"
 
 int     GRP_wminx,GRP_wminy,GRP_wmaxx,GRP_wmaxy;
+int		GRP_wsizex,GRP_wsizey;
 int     GRP_screensizex,GRP_screensizey;
 int     GRP_sizexwarppict,GRP_sizeywarppict;
 char    *GRP_vidmem;
@@ -31,65 +32,65 @@ inline void invmemset(unsigned char *adrmem,char mask,int count)
 #include "grpdefns.h"
 //==========================================================
 //=========================================================
-void putgrp(long x,long y,struct GRPFILE *GRP,long nrpicture,long grcolor)
+void GRP_Put(long x,long y,struct GRPFILE *GRP,long nrpicture,long grcolor)
 {
 	_PUTGRPSAMPLE_(_SIMPLEGRPDEF1,_SIMPLEGRPDEF2);
 }
 //=========================================================
-void iputgrp(long x,long y,struct GRPFILE *GRP,long nrpicture,long grcolor)
+void GRP_IPut(long x,long y,struct GRPFILE *GRP,long nrpicture,long grcolor)
 {
 	_PUTINVGRPSAMPLE_(_SIMPLEINVGRPDEF1,_SIMPLEINVGRPDEF2);
 }
 //=========================================================
-void putgrptransp(long x,long y,struct GRPFILE *GRP,long nrpicture,long grcolor)
+void GRP_PutTransp(long x,long y,struct GRPFILE *GRP,long nrpicture,long grcolor)
 {
 	_PUTGRPSAMPLE_(_TRANSPGRPDEF1,_TRANSPGRPDEF2);
 }
 //=========================================================
-void iputgrptransp(long x,long y,struct GRPFILE *GRP,long nrpicture,long grcolor)
+void GRP_IPutTransp(long x,long y,struct GRPFILE *GRP,long nrpicture,long grcolor)
 {
 	_PUTINVGRPSAMPLE_(_TRANSPINVGRPDEF1,_TRANSPINVGRPDEF2);
 }
 //=========================================================
-void putgrpshadow(long x,long y,struct GRPFILE *GRP,long nrpicture,char *table,long grdfactor)
+void GRP_PutShadow(long x,long y,struct GRPFILE *GRP,long nrpicture,char *table,long grdfactor)
 {
 	table+=grdfactor;
 	_PUTGRPSAMPLE_(_SHADOWGRPDEF1,_SHADOWGRPDEF2);
 }
 //=========================================================
-void iputgrpshadow(long x,long y,struct GRPFILE *GRP,long nrpicture,char *table,long grdfactor)
+void GRP_IPutShadow(long x,long y,struct GRPFILE *GRP,long nrpicture,char *table,long grdfactor)
 {
 	table+=grdfactor;
 	_PUTINVGRPSAMPLE_(_SHADOWINVGRPDEF1,_SHADOWINVGRPDEF2);
 }
 //=========================================================
-void putgrpnonvis(long x,long y,struct GRPFILE *GRP,long nrpicture)
+void GRP_PutInv(long x,long y,struct GRPFILE *GRP,long nrpicture)
 {
 	_PUTGRPSAMPLE_(_NONVISGRPDEF1,_NONVISGRPDEF2);
 }
 //=========================================================
-void iputgrpnonvis(long x,long y,struct GRPFILE *GRP,long nrpicture)
+void GRP_IPutInv(long x,long y,struct GRPFILE *GRP,long nrpicture)
 {
 	_PUTINVGRPSAMPLE_(_NONVISINVGRPDEF1,_NONVISINVGRPDEF2);
 }
 //=========================================================
-void putgrpgrd(long x,long y,GRPFILE *GRP,long nrpicture,char *table)
+void GRP_PutGrd(long x,long y,GRPFILE *GRP,long nrpicture,char *table)
 {
 	_PUTGRPSAMPLE_(_GRDGRPDEF1,_GRDGRPDEF2);
 }
 //=========================================================
-void iputgrpgrd(long x,long y,GRPFILE *GRP,long nrpicture,char *table)
+void GRP_IPutGrd(long x,long y,GRPFILE *GRP,long nrpicture,char *table)
 {
 	_PUTINVGRPSAMPLE_(_GRDINVGRPDEF1,_GRDINVGRPDEF2);
 }
 //=========================================================
-void putgrptotable(long x,long y,GRPFILE *GRP,long nrpicture,char *table,long grdfactor,long grcolor)
+void GRP_PutByTable(long x,long y,GRPFILE *GRP,long nrpicture,char *table,long grdfactor,long grcolor)
 {
 	table+=grdfactor;
 	_PUTGRPSAMPLE_(_TOTABLEGRPDEF1,_TOTABLEGRPDEF2);
 }
 //=========================================================
-void iputgrptotable(long x,long y,GRPFILE *GRP,long nrpicture,char *table,long grdfactor,long grcolor)
+void GRP_IPutByTable(long x,long y,GRPFILE *GRP,long nrpicture,char *table,long grdfactor,long grcolor)
 {
 	table+=grdfactor;
 	_PUTINVGRPSAMPLE_(_TOTABLEINVGRPDEF1,_TOTABLEINVGRPDEF2);
@@ -110,7 +111,7 @@ void iputgrptotable(long x,long y,GRPFILE *GRP,long nrpicture,char *table,long g
 #undef _GRPFROMTEXTSKIP_
 #define _GRPFROMTEXTSKIP_ adrtext += packbyte
 
-void putgrpwarpfromtext(long x,long y,GRPFILE *GRP,long nrpicture,char *adrtext)
+void GRP_PutWithTexture(long x,long y,GRPFILE *GRP,long nrpicture,char *adrtext)
 {
 
 	#undef _PUTGRPSAMPLE_
@@ -139,7 +140,7 @@ void putgrpwarpfromtext(long x,long y,GRPFILE *GRP,long nrpicture,char *adrtext)
 
 }
 //=========================================================
-void putspr32x32(long x,long y,char *bytes)
+void GRP_PutRow32x32(long x,long y,char *bytes)
 {
 	int sx=32;
 	int sy=32;
@@ -183,7 +184,7 @@ void putspr32x32(long x,long y,char *bytes)
 }
 //=========================================================
 //need for fastest starcraft fog
-void putfog32x32(long x,long y,char *table,long lt,long rt,long lb,long rb)
+void GRP_PutFog32x32(long x,long y,char *table,long lt,long rt,long lb,long rb)
 {
 	unsigned char *adrvid;
 	int fromy,toy,fromx,deltax,deltay1,deltay2;
@@ -311,7 +312,7 @@ void putfog32x32(long x,long y,char *table,long lt,long rt,long lb,long rb)
 	}
 }
 //====================================
-void putgrp_nopacked(int x,int y,GRPFILE *grp,int pictnr)
+void GRP_PutNoPacked(int x,int y,GRPFILE *grp,int pictnr)
 {
 	int addx,addy,j,sizex,sizey;
 	unsigned char *vidadr,*bytes;

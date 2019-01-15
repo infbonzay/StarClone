@@ -11,35 +11,35 @@ PixelPerLine = grppict->PixelPerLine;									\
 LinesPerPicture = grppict->LinesPerPicture;								\
 FromLine = 0;															\
 y += grppict->SkipUp;													\
-if (y<GRP_wminy)														\
+if (y < GRP_wminy)														\
 {																		\
 	FromLine = GRP_wminy - y;											\
 	LinesPerPicture -= FromLine;										\
 	y = GRP_wminy;														\
 	_GRPFROMTEXT1_;														\
 }																		\
-if (y+LinesPerPicture>GRP_wmaxy)										\
+if (y + LinesPerPicture >= GRP_wmaxy)									\
 {																		\
-	LinesPerPicture = GRP_wmaxy - y + 1;								\
+	LinesPerPicture = GRP_wmaxy - y;									\
 }																		\
 SkipLeftPixels = 0;														\
 x += grppict->SkipLeft;													\
-if (x<GRP_wminx)														\
+if (x < GRP_wminx)														\
 {																		\
 	SkipLeftPixels = GRP_wminx - x;										\
 	PixelPerLine -= SkipLeftPixels; 									\
-	if (PixelPerLine<=0)												\
+	if (PixelPerLine <= 0)												\
 		return;															\
-		x = GRP_wminx;													\
-		putmethod |= 1;													\
-		_GRPFROMTEXT2_;													\
+	x = GRP_wminx;														\
+	putmethod |= 1;														\
+	_GRPFROMTEXT2_;														\
 }																		\
-if (x+PixelPerLine>GRP_wmaxx)											\
+if (x+PixelPerLine >= GRP_wmaxx)										\
 {																		\
-	PixelPerLine = GRP_wmaxx - x + 1;									\
-	if (PixelPerLine<=0)												\
+	PixelPerLine = GRP_wmaxx - x;										\
+	if (PixelPerLine <= 0)												\
 		return;															\
-		putmethod |= 2;													\
+	putmethod |= 2;														\
 }																		\
 vidadr = (unsigned char *)GRP_vidmem + GRP_scanlineoffsets[y] + x;		\
 elem = (unsigned short int *)((unsigned char *)GRP+grppict->OffsetForLine);\
@@ -278,33 +278,33 @@ LinesPerPicture = grppict->LinesPerPicture;								\
 x += GRP->SizeX - 1;													\
 FromLine = 0;															\
 y += grppict->SkipUp;													\
-if (y<GRP_wminy)														\
+if (y < GRP_wminy)														\
 {																		\
 	FromLine = GRP_wminy - y;											\
 	LinesPerPicture -= FromLine;										\
 	y = GRP_wminy;														\
 }																		\
-if (y+LinesPerPicture>GRP_wmaxy)										\
+if (y+LinesPerPicture >= GRP_wmaxy)										\
 {																		\
-	LinesPerPicture = GRP_wmaxy - y + 1;								\
+	LinesPerPicture = GRP_wmaxy - y;									\
 }																		\
 SkipRightPixels = 0;													\
 x -= grppict->SkipLeft;													\
-if (x>GRP_wmaxx)														\
+if (x >= GRP_wmaxx)														\
 {																		\
 	SkipRightPixels = x - GRP_wmaxx;									\
 	PixelPerLine -= SkipRightPixels;									\
-	if (PixelPerLine<=0)												\
+	if (PixelPerLine <= 0)												\
 		return;															\
-		x = GRP_wmaxx;													\
-		putmethod |= 1;													\
+	x = GRP_wmaxx;														\
+	putmethod |= 1;														\
 }																		\
-if (x-PixelPerLine<GRP_wminx)											\
+if (x-PixelPerLine < GRP_wminx)											\
 {																		\
-	PixelPerLine = x - GRP_wminx + 1;									\
+	PixelPerLine = x - GRP_wminx;										\
 	if (PixelPerLine<=0)												\
 		return;															\
-		putmethod |= 2;													\
+	putmethod |= 2;														\
 }																		\
 vidadr = (unsigned char *)GRP_vidmem+GRP_scanlineoffsets[y]+x;			\
 elem = (unsigned short int *)((char *)GRP+grppict->OffsetForLine);		\

@@ -1347,7 +1347,7 @@ void drawGAMEMENUbutton(char *button, DIALOGBIN_INFO *menuinfo, int buttonnr,
 	{
 		if (menuinfo->iteminfo[buttonnr].Flags & DIALOGBIN_FLAGS_ITEMDISABLED)
 		{
-			putgrp_nopacked(menuinfo->iteminfo[buttonnr].xpos + menuinfo->iteminfo[0].xpos,
+			GRP_PutNoPacked(menuinfo->iteminfo[buttonnr].xpos + menuinfo->iteminfo[0].xpos,
 				menuinfo->iteminfo[buttonnr].ypos + menuinfo->iteminfo[0].ypos,
 				gamedlggrp, dlggrp_firstpict + MENUBUTTON_DISABLED);
 			color = GGREYCOLORFONT;
@@ -1377,7 +1377,7 @@ void drawGAMEMENUbutton(char *button, DIALOGBIN_INFO *menuinfo, int buttonnr,
 			{
 				if ((highMouse->GetButtonStatus() & WMLEFTKEY) || (*button & GAMEBUTTON_KEYPRESS))
 				{
-					putgrp_nopacked(menuinfo->iteminfo[buttonnr].xpos + menuinfo->iteminfo[0].xpos,
+					GRP_PutNoPacked(menuinfo->iteminfo[buttonnr].xpos + menuinfo->iteminfo[0].xpos,
 						menuinfo->iteminfo[buttonnr].ypos + menuinfo->iteminfo[0].ypos,
 						gamedlggrp, dlggrp_firstpict + MENUBUTTON_CLICKED);
 
@@ -1386,7 +1386,7 @@ void drawGAMEMENUbutton(char *button, DIALOGBIN_INFO *menuinfo, int buttonnr,
 				}
 				else
 				{
-					putgrp_nopacked(menuinfo->iteminfo[buttonnr].xpos + menuinfo->iteminfo[0].xpos,
+					GRP_PutNoPacked(menuinfo->iteminfo[buttonnr].xpos + menuinfo->iteminfo[0].xpos,
 						menuinfo->iteminfo[buttonnr].ypos + menuinfo->iteminfo[0].ypos,
 						gamedlggrp, dlggrp_firstpict + MENUBUTTON_ENABLED);
 					putboxmessage(FONTCOLOR(tfontgamp, GBLUECOLORFONT, 2),
@@ -1401,7 +1401,7 @@ void drawGAMEMENUbutton(char *button, DIALOGBIN_INFO *menuinfo, int buttonnr,
 			else
 			{
 				color = GYELLOWCOLORFONT;
-				putgrp_nopacked(menuinfo->iteminfo[buttonnr].xpos + menuinfo->iteminfo[0].xpos,
+				GRP_PutNoPacked(menuinfo->iteminfo[buttonnr].xpos + menuinfo->iteminfo[0].xpos,
 					menuinfo->iteminfo[buttonnr].ypos + menuinfo->iteminfo[0].ypos,
 					gamedlggrp, dlggrp_firstpict + MENUBUTTON_ENABLED);
 			}
@@ -1480,7 +1480,7 @@ void gameend(const char *mes)
 
 	//	  unloadtexturegrp();
 	//	  Unload_SC_Images_List();
-	QuitGrpLib();
+	GRP_QuitLib();
 	mainController.QuitVideoMode();
 	mainController.DeInit();
 	UnLoadAllMpqs();

@@ -157,7 +157,7 @@ int showcircle(int x, int y, GRPFILE *grp, int color)
 {
 	x -= grp->SizeX / 2;
 	y -= grp->SizeY / 2;
-	putgrpspr(x, y - 5, grp, NORMAL, 255, color, NULL, 0);
+	GRP_PutGrp(x, y - 5, grp, NORMAL, 255, color, NULL, 0);
 	//putgrp(x,y-5,grp,0,color<<8);
 	return(y + grp->Picture[0].LinesPerPicture + grp->Picture[0].SkipUp);//+5);
 }
@@ -456,8 +456,8 @@ void ShowUpgradesInBar(int XWINPOS, int YWINPOS, OBJ *a, OBJstruct *b)
 		if (icon > 0)
 		{
 			armor = GetArmor(a, b->armorupgnr, &upgradenr, &upgtot);
-			putgrpspr(xpos + 2, ypos + 2, znakgrp, NORMAL, 255, FORBLUE, NULL, icon);
-			putgrpspr(xpos, ypos, grpicons, NORMAL, 255, 0, NULL, 12);
+			GRP_PutGrp(xpos + 2, ypos + 2, znakgrp, NORMAL, 255, FORBLUE, NULL, icon);
+			GRP_PutGrp(xpos, ypos, grpicons, NORMAL, 255, 0, NULL, 12);
 			//putgrp(xpos,ypos,grpicons,12,0);
 			sname[0] = '0' + upgradenr;
 			putmessage(xpos + 26, ypos + 24, IDFONT8, sname, GBLUECOLORFONT, tfontgamp, gamedlggrp);
@@ -480,8 +480,8 @@ void ShowUpgradesInBar(int XWINPOS, int YWINPOS, OBJ *a, OBJstruct *b)
 	{
 		sharmor = GetShieldArmor(a, &upgradenr);
 		icon = alldattbl.upgrades_dat->Icon[UPGRADES_DAT_PLASMASHIELDICON];
-		putgrpspr(xpos + 2, ypos + 2, znakgrp, NORMAL, 255, FORBLUE, NULL, icon);
-		putgrpspr(xpos, ypos, grpicons, NORMAL, 255, 0, NULL, 12);
+		GRP_PutGrp(xpos + 2, ypos + 2, znakgrp, NORMAL, 255, FORBLUE, NULL, icon);
+		GRP_PutGrp(xpos, ypos, grpicons, NORMAL, 255, 0, NULL, 12);
 		//		putgrp(xpos,ypos,grpicons,12,0);
 		sname[0] = '0' + upgradenr;
 		putmessage(xpos + 26, ypos + 24, IDFONT8, sname, GBLUECOLORFONT, tfontgamp, gamedlggrp);
@@ -511,8 +511,8 @@ void ShowUpgradesInBar(int XWINPOS, int YWINPOS, OBJ *a, OBJstruct *b)
 		//		if (nrofhits>2)
 		//			nrofhits=2;//goundatack less or equal then 2
 		atack1 = GetInfoWeapon(a->SC_Unit, a->playernr, nrofhits, weapon_id1, &upgradenr, &upgtot, &tempfinal);
-		putgrpspr(xpos + 2, ypos + 2, znakgrp, NORMAL, 255, FORBLUE, NULL, icon);
-		putgrpspr(xpos, ypos, grpicons, NORMAL, 255, 0, NULL, 12);
+		GRP_PutGrp(xpos + 2, ypos + 2, znakgrp, NORMAL, 255, FORBLUE, NULL, icon);
+		GRP_PutGrp(xpos, ypos, grpicons, NORMAL, 255, 0, NULL, 12);
 		//		putgrp(xpos,ypos,grpicons,12,0);
 		sname[0] = '0' + upgradenr;
 		putmessage(xpos + 26, ypos + 24, IDFONT8, sname, GBLUECOLORFONT, tfontgamp, gamedlggrp);
@@ -535,8 +535,8 @@ void ShowUpgradesInBar(int XWINPOS, int YWINPOS, OBJ *a, OBJstruct *b)
 	{
 		icon = alldattbl.weapons_dat->Icon[weapon_id2];
 		atack2 = GetInfoWeapon(a->SC_Unit, a->playernr, nrofhits, weapon_id2, &upgradenr, &upgtot, &tempfinal);
-		putgrpspr(xpos + 2, ypos + 2, znakgrp, NORMAL, 255, FORBLUE, NULL, icon);
-		putgrpspr(xpos, ypos, grpicons, NORMAL, 255, 0, NULL, 12);
+		GRP_PutGrp(xpos + 2, ypos + 2, znakgrp, NORMAL, 255, FORBLUE, NULL, icon);
+		GRP_PutGrp(xpos, ypos, grpicons, NORMAL, 255, 0, NULL, 12);
 		//		putgrp(xpos,ypos,grpicons,12,0);
 		sname[0] = '0' + upgradenr;
 		putmessage(xpos + 26, ypos + 24, IDFONT8, sname, GBLUECOLORFONT, tfontgamp, gamedlggrp);
@@ -567,8 +567,8 @@ void ShowUpgradesInBar(int XWINPOS, int YWINPOS, OBJ *a, OBJstruct *b)
 		weapon_id1 = alldattbl.units_dat->GroundWeapon[newunit];
 		nrofhits = alldattbl.units_dat->MaxGroundHits[newunit];
 		icon = newunit;
-		putgrpspr(xpos + 2, ypos + 2, znakgrp, NORMAL, 255, FORBLUE, NULL, icon);
-		putgrpspr(xpos, ypos, grpicons, NORMAL, 255, 0, NULL, 12);
+		GRP_PutGrp(xpos + 2, ypos + 2, znakgrp, NORMAL, 255, FORBLUE, NULL, icon);
+		GRP_PutGrp(xpos, ypos, grpicons, NORMAL, 255, 0, NULL, 12);
 		//		putgrp(xpos,ypos,grpicons,12,0);
 		putmessage(xpos + 26, ypos + 24, IDFONT8, sname, GBLUECOLORFONT, tfontgamp, gamedlggrp);
 		if (highMouse->MouseHotPos == mousehot)
@@ -811,7 +811,7 @@ void printobjparam(void)
 		{
 			xx = XOUT + 40;
 			yy = YOUT + 25;
-			putgrpspr(XUNITCONSTR, YUNITCONSTR, grpicons, NORMAL, 255, 0, NULL, 2);
+			GRP_PutGrp(XUNITCONSTR, YUNITCONSTR, grpicons, NORMAL, 255, 0, NULL, 2);
 			//putgrp(XUNITCONSTR,YUNITCONSTR,grpicons,2,0);
 			existinbuildconstr = 1;
 			if (underconstruct)
@@ -841,10 +841,10 @@ void printobjparam(void)
 				sizey = 0;
 			//show cancelled unit in bar in time of construction
 			if (oldmouseonconstrunit != -1 && (!oldmouseonconstrunit))
-				putgrpspr(xy[0][0] + XUNITCONSTR + 1 + 2 + sizex, xy[1][0] + YUNITCONSTR + 1 + 2 + sizey,
+				GRP_PutGrp(xy[0][0] + XUNITCONSTR + 1 + 2 + sizex, xy[1][0] + YUNITCONSTR + 1 + 2 + sizey,
 					znakgrp, NORMAL, 255, FORYELLOW, NULL, icon_nr);
 			else
-				putgrpspr(xy[0][0] + XUNITCONSTR + sizex + 2, xy[1][0] + YUNITCONSTR + sizey + 2,
+				GRP_PutGrp(xy[0][0] + XUNITCONSTR + sizex + 2, xy[1][0] + YUNITCONSTR + sizey + 2,
 					znakgrp, NORMAL, 255, FORYELLOW, NULL, icon_nr);
 			CPutSpr(xx, yy,
 					buildemptyraw.xsizePcx(),
@@ -886,29 +886,29 @@ void printobjparam(void)
 				switch (i)
 				{
 				case 0:
-					putgrpspr(xy[0][i] + XUNITCONSTR, xy[1][i] + YUNITCONSTR, grpicons, NORMAL, 255, playercolor, NULL, 2);
+					GRP_PutGrp(xy[0][i] + XUNITCONSTR, xy[1][i] + YUNITCONSTR, grpicons, NORMAL, 255, playercolor, NULL, 2);
 					//putgrp( xy[0][i]+XUNITCONSTR,xy[1][i]+YUNITCONSTR,grpicons,2,playercolor);
 					if (constrelem > 1)
-						putgrpspr(xy[0][1] + XUNITCONSTR, xy[1][1] + YUNITCONSTR - 3, grpicons, NORMAL, 255, playercolor, NULL, 11);
+						GRP_PutGrp(xy[0][1] + XUNITCONSTR, xy[1][1] + YUNITCONSTR - 3, grpicons, NORMAL, 255, playercolor, NULL, 11);
 					//							putgrp( xy[0][1]+XUNITCONSTR,xy[1][1]+YUNITCONSTR-3,grpicons,11,playercolor);
 					break;
 				case 1:
 				case 2:
 				case 3:
 					if (constrelem > i + 1)
-						putgrpspr(xy[0][i] + XUNITCONSTR, xy[1][i] + YUNITCONSTR, grpicons, NORMAL, 255, playercolor, NULL, 4);
+						GRP_PutGrp(xy[0][i] + XUNITCONSTR, xy[1][i] + YUNITCONSTR, grpicons, NORMAL, 255, playercolor, NULL, 4);
 					//putgrp( xy[0][i]+XUNITCONSTR,xy[1][i]+YUNITCONSTR,grpicons,4,playercolor);
 					else
-						putgrpspr(xy[0][i] + XUNITCONSTR, xy[1][i] + YUNITCONSTR, grpicons, NORMAL, 255, playercolor, NULL, 2);
+						GRP_PutGrp(xy[0][i] + XUNITCONSTR, xy[1][i] + YUNITCONSTR, grpicons, NORMAL, 255, playercolor, NULL, 2);
 					//							putgrp( xy[0][i]+XUNITCONSTR,xy[1][i]+YUNITCONSTR,grpicons,2,playercolor);
 					break;
 				case 4:
-					putgrpspr(xy[0][i] + XUNITCONSTR, xy[1][i] + YUNITCONSTR, grpicons, NORMAL, 255, playercolor, NULL, 2);
+					GRP_PutGrp(xy[0][i] + XUNITCONSTR, xy[1][i] + YUNITCONSTR, grpicons, NORMAL, 255, playercolor, NULL, 2);
 					//						putgrp( xy[0][i]+XUNITCONSTR,xy[1][i]+YUNITCONSTR,grpicons,2,playercolor);
 					break;
 				}
 				if (constrelem <= i)
-					putgrpspr(xy[0][i] + XUNITCONSTR + 8, xy[1][i] + YUNITCONSTR + 10, grpicons, NORMAL, 255, playercolor, NULL, i + 6);
+					GRP_PutGrp(xy[0][i] + XUNITCONSTR + 8, xy[1][i] + YUNITCONSTR + 10, grpicons, NORMAL, 255, playercolor, NULL, i + 6);
 				//						putgrp( xy[0][i]+XUNITCONSTR+8,xy[1][i]+YUNITCONSTR+10,grpicons,i+6,playercolor);
 			}
 			for (i = 0;i < constrelem;i++)
@@ -926,7 +926,7 @@ void printobjparam(void)
 					sizey = 0;
 				if (oldmouseonconstrunit != -1 && oldmouseonconstrunit == i)
 				{
-					putgrpspr(xy[0][i] + XUNITCONSTR + 1 + sizex + 2,
+					GRP_PutGrp(xy[0][i] + XUNITCONSTR + 1 + sizex + 2,
 						xy[1][i] + YUNITCONSTR + 1 + sizey + 2,
 						znakgrp, NORMAL, 255, playercolor, NULL, icon_nr);
 					//			putgrp( xy[0][i]+XUNITCONSTR+1+sizex+2,
@@ -935,7 +935,7 @@ void printobjparam(void)
 				}
 				else
 				{
-					putgrpspr(xy[0][i] + XUNITCONSTR + sizex + 2,
+					GRP_PutGrp(xy[0][i] + XUNITCONSTR + sizex + 2,
 						xy[1][i] + YUNITCONSTR + sizey + 2,
 						znakgrp, NORMAL, 255, playercolor, NULL, icon_nr);
 					//			putgrp( xy[0][i]+XUNITCONSTR+sizex+2,
@@ -1070,15 +1070,15 @@ void drawunitinbar(int x, int y, int weight, int type, int ramka,
 	if (ramka)
 	{
 		iconnr = icontype[weight - 1] + type * 6 + 1;
-		putgrpspr(x, y, _grp1, NORMAL, 255, 0, NULL, iconnr);
+		GRP_PutGrp(x, y, _grp1, NORMAL, 255, 0, NULL, iconnr);
 	}
 	life = LIFE1 + life_pers * (LIFEMAXPOS - 1) / 100;
 	shield = shield_pers * (SHIELDMAXPOS - 1) / 100;
-	SetPlayerColors(life, 1, 0xc0, 2, &shield_pos[shield]);
+	GRP_SetPlayerColors(life, 1, 0xc0, 2, &shield_pos[shield]);
 	if (weight == 4)
-		putgrpspr(x + 3, y + 3, _grp2, NORMAL, 255, life, NULL, iconnr2);
+		GRP_PutGrp(x + 3, y + 3, _grp2, NORMAL, 255, life, NULL, iconnr2);
 	else
-		putgrpspr(x, y, _grp2, NORMAL, 255, life, NULL, iconnr2);
+		GRP_PutGrp(x, y, _grp2, NORMAL, 255, life, NULL, iconnr2);
 }
 //=====================================
 void drawunitsintransport(int XWINPOS, int YWINPOS, struct OBJ *a)

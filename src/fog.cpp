@@ -17,7 +17,7 @@ void putfogspr(int x,int y,char *table,long lt,long rt,long lb,long rb,int fognr
 {
 //	  char buff[20];
 //	  sprintf(buff,"%d",fognr);
-	putfog32x32(x,y,table,lt,rt,lb,rb);
+	GRP_PutFog32x32(x,y,table,lt,rt,lb,rb);
 //	  putmessage(x+16,y+16,IDFONT8,buff,GWHITECOLORFONT,tfontgamp,gamedlggrp);
 }
 //================================================

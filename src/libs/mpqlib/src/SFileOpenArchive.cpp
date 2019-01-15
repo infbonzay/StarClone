@@ -132,7 +132,7 @@ BOOL SFileOpenArchiveEx(const char * szMpqName, UINT dwPriority, UINT /* dwFlags
         {
             ha->pHeader->dwID = 0;
             SetFilePointer(ha->hFile, ha->dwMpqPos, NULL, FILE_BEGIN);
-            ReadFile(ha->hFile, ha->pHeader, sizeof(TMPQHeader), &dwTransferred, NULL);
+            ReadFile(ha->hFile, ha->pHeader, sizeof(TMPQHeader), (LPDWORD)&dwTransferred, NULL);
 
 	    // Convert Header to LittleEndian
 	    CONVERTTMPQHEADERTOLITTLEENDIAN(ha->pHeader);
@@ -204,7 +204,7 @@ BOOL SFileOpenArchiveEx(const char * szMpqName, UINT dwPriority, UINT /* dwFlags
         dwBytes = ha->pHeader->dwHashTableSize * sizeof(TMPQHash);
 
         SetFilePointer(ha->hFile, ha->pHeader->dwHashTablePos, NULL, FILE_BEGIN);
-        ReadFile(ha->hFile, ha->pHashTable, dwBytes, &dwTransferred, NULL);
+        ReadFile(ha->hFile, ha->pHashTable, dwBytes, (LPDWORD)&dwTransferred, NULL);
 
         // We have to convert every DWORD in ha->pHashTable from LittleEndian
         CONVERTBUFFERTOLITTLEENDIAN32BITS((UINT *)ha->pHashTable, dwBytes / sizeof(UINT));
@@ -245,7 +245,7 @@ BOOL SFileOpenArchiveEx(const char * szMpqName, UINT dwPriority, UINT /* dwFlags
         dwBytes = ha->pHeader->dwBlockTableSize * sizeof(TMPQBlock);
         memset(ha->pBlockTable, 0, ha->pHeader->dwHashTableSize * sizeof(TMPQBlock));
         SetFilePointer(ha->hFile, ha->pHeader->dwBlockTablePos, NULL, FILE_BEGIN);
-        ReadFile(ha->hFile, ha->pBlockTable, dwBytes, &dwTransferred, NULL);
+        ReadFile(ha->hFile, ha->pBlockTable, dwBytes, (LPDWORD)&dwTransferred, NULL);
 
         // We have to convert every DWORD in ha->block from LittleEndian
         CONVERTBUFFERTOLITTLEENDIAN32BITS((UINT *)ha->pBlockTable, dwBytes / sizeof(UINT));

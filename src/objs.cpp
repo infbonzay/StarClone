@@ -2757,12 +2757,10 @@ int movefrommouse(struct OBJ *a)
 //==================================
 int makemove(struct OBJ *a, struct OBJ *destobj, int locx, int locy, int mode, int player, int modemoveflags)
 {
-	COMMANDQUEUEELEMENT cqe;
+	COMMANDQUEUEELEMENT *cqe;
 	struct OBJstruct *b;
 	b = loadobj(a->SC_Unit);
-	if (mode >= MODEACTIVATE && mode <= MODEESCAPE5)
-		;
-	else
+	if (mode < MODEACTIVATE || mode > MODEESCAPE5)
 	{
 		if (!accesstomove(a, b, mode, player))
 			return(0);
@@ -2779,18 +2777,18 @@ int makemove(struct OBJ *a, struct OBJ *destobj, int locx, int locy, int mode, i
 
 	if (mode != MODEHOLDPOS)
 		a->prop &= ~VARHOLDPOSBIT;
-	cqe.queueaction.obj = a;
-	cqe.queueaction.destobj = destobj;
-	cqe.queueaction.actiontype = mode;
-	cqe.queueaction.param0 = locx;
-	cqe.queueaction.param1 = locy;
-	cqe.queueaction.param2 = modemoveflags | PLAYERDOMOVE;
+	cqe = (COMMANDQUEUEELEMENT *) malloc(sizeof(COMMANDQUEUEELEMENT));
+	cqe->queueaction.obj = a;
+	cqe->queueaction.destobj = destobj;
+	cqe->queueaction.actiontype = mode;
+	cqe->queueaction.param0 = locx;
+	cqe->queueaction.param1 = locy;
+	cqe->queueaction.param2 = modemoveflags | PLAYERDOMOVE;
 	if (!NETWORKGAME)
-		cqe.executeTick = commandqueuetick + 1;
+		cqe->executeTick = commandqueuetick + 1;
 	else
-		cqe.executeTick = commandqueuetick + 1;//TODO need to change if network latency selected
-	UnitsCommandQueue.AppendToQueue(&cqe);
-	return(1);
+		cqe->executeTick = commandqueuetick + 1;//TODO need to change if network latency selected
+	return(UnitsCommandQueue.AppendToQueue(cqe) == QUEUEOK);
 }
 //==================================
 int selectedobjmove(struct OBJ *destobj, int locx, int locy, int mode, int player, int modemoveflags, int rightclick)

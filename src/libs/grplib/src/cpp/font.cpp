@@ -2,7 +2,7 @@
 #include "grplib/grp.h"
 #include "grplib/font.h"
 
-int putfntsymbol(int x,int y,struct SC_FontHeader *font,int symbolnr,char *offsettable,int skipuplines,int skipdownlines)
+int GRP_PutFntSymbol(int x,int y,struct SC_FontHeader *font,int symbolnr,char *offsettable,int skipuplines,int skipdownlines)
 {
     int i,j=0,linesskip,ypart;
     SC_FontLetterRaw *letter;

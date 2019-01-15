@@ -39,7 +39,7 @@
 //this function need more time on slowest machine
 //best choice to use this function one time and save to file for future load
 //==========================
-void CreateTRColors(char *pal,char *outfortrbuffer)
+void GRP_CreateTRColors(char *pal,char *outfortrbuffer)
 {
     float fr, fg, fb;
     float fr2, fg2, fb2;
@@ -95,7 +95,7 @@ void CreateTRColors(char *pal,char *outfortrbuffer)
     }
 }
 //==========================
-void CreateSpecialTranspTable(char *pal,char *outfortrbuffer,float LIGHTLEVELON1)
+void GRP_CreateSpecialTranspTable(char *pal,char *outfortrbuffer,float LIGHTLEVELON1)
 {
     float LIGHTLEVELUNDER1 = (1 - LIGHTLEVELON1);
     float fr, fg, fb;
@@ -157,7 +157,7 @@ void CreateSpecialTranspTable(char *pal,char *outfortrbuffer,float LIGHTLEVELON1
 //r,g,b - constain percentage (in total need to be 100%) to transform
 //colors in this format ,buffer return is 'maxpalettecolor' bytes
 //==========================
-void CreateByRGB(char *pal,int rgb,float addgrd,char *outbuf)
+void GRP_CreateByRGB(char *pal,int rgb,float addgrd,char *outbuf)
 {
     float r1,g1,b1,r2,g2,b2;
     unsigned int col,findcol,bestfit=0;
@@ -202,7 +202,7 @@ void CreateByRGB(char *pal,int rgb,float addgrd,char *outbuf)
 //create table of colors gray gradation
 //	,buffer return is 'maxpalettecolor' bytes
 //==========================
-void CreateMono(char *pal,char *outbuf)
+void GRP_CreateMono(char *pal,char *outbuf)
 {
     float r1,g1,b1,r2,g2,b2;
     float c1;
@@ -242,7 +242,7 @@ void CreateMono(char *pal,char *outbuf)
     }
 }
 //==========================
-void getglowcolors( int maxgradation, int rgb,int rgbe,unsigned char *buf )
+void GRP_GetGlowColors( int maxgradation, int rgb,int rgbe,unsigned char *buf )
 {
 	int i;
 	float fr, fg, fb;
@@ -289,7 +289,7 @@ void getglowcolors( int maxgradation, int rgb,int rgbe,unsigned char *buf )
 	}
 }
 //==========================
-void CreateByRGBTable(char *pal,
+void GRP_CreateByRGBTable(char *pal,
 		 int rgb,	// start glow color
 		 int rgbe,	// end glow color
 		 int maxgradation,
@@ -303,7 +303,7 @@ void CreateByRGBTable(char *pal,
 
     int maxpalettecolor=256;
     glowcolors = (unsigned char*)malloc( maxgradation*3 );
-    getglowcolors( maxgradation, rgb,rgbe,glowcolors );
+    GRP_GetGlowColors( maxgradation, rgb,rgbe,glowcolors );
     for (col = 0; col < maxpalettecolor; col++)
     {
     	for (grad = 0; grad < maxgradation; grad++)
@@ -346,7 +346,7 @@ void CreateByRGBTable(char *pal,
 //to show picture 2 in palette 1 we need to transform colors in picture 2   to use similar from palette 1
 //so pictpal the 1 palette, newpal - second palette , conversionarray    is   conversionarray[color_from_palette2] equal with color from palette1
 //==========================
-void ConvertColorsToNewPalette(unsigned char *pictpal,unsigned char *newpal,unsigned char *conversionarray,int palettesize)//palettesize 3 or 4 bytes per pixel
+void GRP_ConvertColorsToNewPalette(unsigned char *pictpal,unsigned char *newpal,unsigned char *conversionarray,int palettesize)//palettesize 3 or 4 bytes per pixel
 {
     float r1,g1,b1,absr,absg,absb,colorval,lowest;
     unsigned int col,col2,bestfit;

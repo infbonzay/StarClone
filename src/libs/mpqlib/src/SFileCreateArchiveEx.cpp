@@ -11,6 +11,7 @@
 #define __STORMLIB_SELF__
 #include "StormLib.h"
 #include "SCommon.h"
+#include "CrossPlatform.h"
 
 //-----------------------------------------------------------------------------
 // Defines
@@ -192,7 +193,7 @@ BOOL WINAPI SFileCreateArchiveEx(const char * szMpqName, UINT dwCreationDisposit
     {
         ha->dwFilePos = ha->dwMpqPos + sizeof(TMPQHeader);
         CONVERTTMPQHEADERTOLITTLEENDIAN(ha->pHeader);
-        if(!WriteFile(ha->hFile, ha->pHeader, sizeof(TMPQHeader), &dwTransferred, NULL))
+        if(!WriteFile(ha->hFile, ha->pHeader, sizeof(TMPQHeader), (LPDWORD)&dwTransferred, NULL))
             nError = GetLastError();
         CONVERTTMPQHEADERTOLITTLEENDIAN(ha->pHeader);
     }

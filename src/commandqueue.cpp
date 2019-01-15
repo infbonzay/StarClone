@@ -28,27 +28,11 @@ void CommandQueue::EmptyQueue(void)
 	Flush();
 }
 //==========================================
-int CommandQueue::AppendToQueue(COMMANDQUEUEELEMENT *idQueue)
+int CommandQueue::AppendToQueue(COMMANDQUEUEELEMENT *queue)
 {
 	if (IsFull())
 		return QUEUEFULL;
-	COMMANDQUEUEELEMENT *newelem = (COMMANDQUEUEELEMENT *)wmalloc(sizeof(COMMANDQUEUEELEMENT));
-	//newelem->queueaction = {
-	//	.actiontype = idQueue->queueaction.actiontype,
-	//	.obj = idQueue->queueaction.obj,
-	//	.destobj = idQueue->queueaction.destobj,
-	//	.param0 = idQueue->queueaction.param0,
-	//	.param1 = idQueue->queueaction.param1,
-	//	.param2 = idQueue->queueaction.param2
-	//};
-	newelem->queueaction.actiontype = idQueue->queueaction.actiontype;
-	newelem->queueaction.obj = idQueue->queueaction.obj;
-	newelem->queueaction.destobj = idQueue->queueaction.destobj;
-	newelem->queueaction.param0 = idQueue->queueaction.param0;
-	newelem->queueaction.param1 = idQueue->queueaction.param1;
-	newelem->queueaction.param2 = idQueue->queueaction.param2;
-	newelem->executeTick = idQueue->executeTick;
-	PushElem(newelem);
+	PushElem(queue);
 	return(QUEUEOK);
 }
 //==========================================

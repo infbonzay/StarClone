@@ -27,25 +27,26 @@ struct GRPFILE
     extern "C" {
 #endif
 
-    void putgrp(long x,long y,struct GRPFILE *GRP,long nrpicture,long grcolor);
-    void iputgrp(long x,long y,struct GRPFILE *GRP,long nrpicture,long grcolor);
+    void GRP_Put(long x,long y,struct GRPFILE *GRP,long nrpicture,long grcolor);
+    void GRP_IPut(long x,long y,struct GRPFILE *GRP,long nrpicture,long grcolor);
 
-    void putgrptransp(long x,long y,struct GRPFILE *GRP,long nrpicture,long grcolor);
-    void iputgrptransp(long x,long y,struct GRPFILE *GRP,long nrpicture,long grcolor);
-    void putgrpshadow(long x,long y,struct GRPFILE *GRP,long nrpicture,char *table,long grdfactor);
-    void iputgrpshadow(long x,long y,struct GRPFILE *GRP,long nrpicture,char *table,long grdfactor);
-    void putgrpnonvis(long x,long y,struct GRPFILE *GRP,long nrpicture);
-    void iputgrpnonvis(long x,long y,struct GRPFILE *GRP,long nrpicture);
-    void putgrpgrd(long x,long y,struct GRPFILE *GRP,long nrpicture,char *table);
-    void iputgrpgrd(long x,long y,struct GRPFILE *GRP,long nrpicture,char *table);
-    void putgrptotable(long x,long y,struct GRPFILE *GRP,long nrpicture,char *table,long grdfactor,long grcolor);
-    void iputgrptotable(long x,long y,struct GRPFILE *GRP,long nrpicture,char *table,long grdfactor,long grcolor);
-    void putgrpwarpfromtext(long x,long y,struct GRPFILE *GRP,long nrpicture,char *adrtext);
-    void putspr32x32(long x,long y,char *bytes);
-    void putfog32x32(long x,long y,char *table,long lt,long rt,long lb,long rb);
-    void putgrp_nopacked(int x,int y,struct GRPFILE *grp,int pictnr);
+    void GRP_PutTransp(long x,long y,struct GRPFILE *GRP,long nrpicture,long grcolor);
+    void GRP_IPutTransp(long x,long y,struct GRPFILE *GRP,long nrpicture,long grcolor);
+    void GRP_PutShadow(long x,long y,struct GRPFILE *GRP,long nrpicture,char *table,long grdfactor);
+    void GRP_IPutShadow(long x,long y,struct GRPFILE *GRP,long nrpicture,char *table,long grdfactor);
+    void GRP_PutInv(long x,long y,struct GRPFILE *GRP,long nrpicture);
+    void GRP_IPutInv(long x,long y,struct GRPFILE *GRP,long nrpicture);
+    void GRP_PutGrd(long x,long y,struct GRPFILE *GRP,long nrpicture,char *table);
+    void GRP_IPutGrd(long x,long y,struct GRPFILE *GRP,long nrpicture,char *table);
+    void GRP_PutByTable(long x,long y,struct GRPFILE *GRP,long nrpicture,char *table,long grdfactor,long grcolor);
+    void GRP_IPutByTable(long x,long y,struct GRPFILE *GRP,long nrpicture,char *table,long grdfactor,long grcolor);
+    void GRP_PutWithTexture(long x,long y,struct GRPFILE *GRP,long nrpicture,char *adrtext);
+    void GRP_PutRow32x32(long x,long y,char *bytes);
+    void GRP_PutFog32x32(long x,long y,char *table,long lt,long rt,long lb,long rb);
+    void GRP_PutNoPacked(int x,int y,struct GRPFILE *grp,int pictnr);
 
     extern int     GRP_wminx,GRP_wminy,GRP_wmaxx,GRP_wmaxy;
+    extern int     GRP_wsizex,GRP_wsizey;
     extern int     GRP_screensizex,GRP_screensizey;
     extern int     GRP_sizexwarppict,GRP_sizeywarppict;
     extern char    *GRP_vidmem;
@@ -57,28 +58,22 @@ struct GRPFILE
     extern int     GRP_wmaxdwordwritel;
 
 //===========================================
-void recalcmulyy(void);
-int  wviewport(int x,int y,int sizex,int sizey);
-int  loadgrp(char *filename,struct GRPFILE **grpmem);
-void freegrp(struct GRPFILE *a);
-int  InitGrpLib(int sizex,int sizey);
-int  ResetGrpLib(int sizex,int sizey);
-void *SetVideoBuffer(void *memory);
-void QuitGrpLib(void);
-void unpackgrp(int x,int y,struct GRPFILE *GRP,int nrpict,char *mem);
-void SetTranspTable(char *table);
-int  SetUserPlayerColors(int fromplayer,int nrplayers,char *table);
-int  SetPlayerColors(int fromplayer,int nrplayers,
-		     int firstindex,int nrofindexes,
-		     char *table);
+void GRP_recalcscanlines(void);
+int  GRP_viewport(int x,int y,int sizex,int sizey);
+int  GRP_Load(char *filename,struct GRPFILE **grpmem);
+void GRP_Free(struct GRPFILE *a);
+int  GRP_InitLib(int sizex,int sizey);
+int  GRP_ResetLib(int sizex,int sizey);
+void *GRP_SetVideoBuffer(void *memory);
+void GRP_QuitLib(void);
+void GRP_Unpack(int x,int y,struct GRPFILE *GRP,int nrpict,char *mem);
+void GRP_SetTranspTable(char *table);
+int  GRP_SetUserPlayerColors(int fromplayer,int nrplayers,char *table);
+int  GRP_SetPlayerColors(int fromplayer,int nrplayers,
+						 int firstindex,int nrofindexes,
+						 char *table);
 
-//return 0x00aabbcc
-//aa - Major Version
-//bb - Minor Version
-//cc - Patch Version
-
-#define GRPLIBVER
-int GetGRPLibVer(void);
+#define GRP_VERSION	0x00000414		//0.4.20
 
 #ifdef __cplusplus
     }

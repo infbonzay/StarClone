@@ -485,7 +485,7 @@ void SetVisualMapPositionCenter(int x, int y)
 void putfullcreep(int xglob, int yglob, int x, int y, int creepnrspr)
 {
 	char *adrspr = map.creeptiles + creepnrspr * 32 * 32;
-	putspr32x32(xglob, yglob, adrspr);
+	GRP_PutRow32x32(xglob, yglob, adrspr);
 }
 //==================================
 //save tile for later use
@@ -520,7 +520,7 @@ void putlansh(int xglob, int yglob, int x, int y, int indextile32, char wfog, ch
 	}
 	if (creepnr == -1)
 	{
-		putspr32x32(xglob, yglob, adrspr);
+		GRP_PutRow32x32(xglob, yglob, adrspr);
 		if (!nosave)
 			savemaptileadr(x, y, indextile32);
 		/*		struct XY a;
@@ -541,8 +541,8 @@ void putlansh(int xglob, int yglob, int x, int y, int indextile32, char wfog, ch
 	{
 		if (creepnr < MAXCREEPNR)
 		{
-			putspr32x32(xglob, yglob, adrspr);
-			putgrpspr(xglob, yglob, creepgrp, NORMAL, 255, 0, NULL, creepnr);
+			GRP_PutRow32x32(xglob, yglob, adrspr);
+			GRP_PutGrp(xglob, yglob, creepgrp, NORMAL, 255, 0, NULL, creepnr);
 			//			putgrp(xglob,yglob,creepgrp,creepnr,0);
 		}
 		else

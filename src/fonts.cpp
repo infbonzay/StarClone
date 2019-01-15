@@ -94,9 +94,9 @@ int putglowtext(int x, int y, int fontnr, char *str, int fromcolor, char *table,
 			}
 			else
 				if (color == maincolor && changes != 1)
-					sizex += putfntsymbol(x + sizex, y + sizey, fonts[fontnr], symb, table + color * 8 + glowfactor, 0, 0) + spaceletters[fontnr];
+					sizex += GRP_PutFntSymbol(x + sizex, y + sizey, fonts[fontnr], symb, table + color * 8 + glowfactor, 0, 0) + spaceletters[fontnr];
 				else
-					sizex += putfntsymbol(x + sizex, y + sizey, fonts[fontnr], symb, table + color * 8 + 0, 0, 0) + spaceletters[fontnr];
+					sizex += GRP_PutFntSymbol(x + sizex, y + sizey, fonts[fontnr], symb, table + color * 8 + 0, 0, 0) + spaceletters[fontnr];
 
 	}
 	return(sizex);
@@ -162,7 +162,7 @@ void putrowtext(int x, int y, int sizewinx, int fontnr, int flags, char *str, in
 			sizex += spacesize[fontnr] + spaceletters[fontnr];
 		}
 		else
-			sizex += putfntsymbol(x + sizex, y, fonts[fontnr], symbolnr, table + offset, 0, 0) + spaceletters[fontnr];
+			sizex += GRP_PutFntSymbol(x + sizex, y, fonts[fontnr], symbolnr, table + offset, 0, 0) + spaceletters[fontnr];
 	}
 }
 //================================
@@ -264,7 +264,7 @@ int putmessage(int x, int y, int fontnr, char *str, int fromcolor, char *table, 
 				case DLGGRPSYMB:				//commsymb,dlggrpsymb,grpnr,deltax,deltay
 					if (dlggrp)
 					{
-						putgrp_nopacked(x + sizex + str[i + 2], y + sizey + str[i + 3], dlggrp, str[i + 1]);
+						GRP_PutNoPacked(x + sizex + str[i + 2], y + sizey + str[i + 3], dlggrp, str[i + 1]);
 						sizex += dlggrp->Picture[str[i + 1]].PixelPerLine;
 					}
 					i += COMMANDSYMB_SIZES[DLGGRPSYMB];
@@ -291,7 +291,7 @@ int putmessage(int x, int y, int fontnr, char *str, int fromcolor, char *table, 
 				sizex += spacesize[fontnr] + spaceletters[fontnr];
 			}
 			else
-				sizex += putfntsymbol(x + sizex, y + sizey, fonts[fontnr], symb, table + color * 8, 0, 0) + spaceletters[fontnr];
+				sizex += GRP_PutFntSymbol(x + sizex, y + sizey, fonts[fontnr], symb, table + color * 8, 0, 0) + spaceletters[fontnr];
 		}
 	}
 	return(sizex);
@@ -432,7 +432,7 @@ int putmessage(int x, int y, int fontnr, char *str, int fromcolor, char *table, 
 				case DLGGRPSYMB:				//commsymb,dlggrpsymb,grpnr,deltax,deltay
 					if (dlggrp)
 					{
-						putgrp_nopacked(x + sizex + str[i + 2], y + sizey + str[i + 3], dlggrp, str[i + 1]);
+						GRP_PutNoPacked(x + sizex + str[i + 2], y + sizey + str[i + 3], dlggrp, str[i + 1]);
 						sizex += dlggrp->Picture[str[i + 1]].PixelPerLine;
 					}
 					i += COMMANDSYMB_SIZES[DLGGRPSYMB];
@@ -458,7 +458,7 @@ int putmessage(int x, int y, int fontnr, char *str, int fromcolor, char *table, 
 				sizex += spacesize[fontnr] + spaceletters[fontnr];
 			}
 			else
-				sizex += putfntsymbol(x + sizex, y + sizey, fonts[fontnr], symb, table + color * 8, skipup, skipdown) + spaceletters[fontnr];
+				sizex += GRP_PutFntSymbol(x + sizex, y + sizey, fonts[fontnr], symb, table + color * 8, skipup, skipdown) + spaceletters[fontnr];
 	}
 	return(sizex);
 }

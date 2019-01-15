@@ -158,7 +158,7 @@ int setmode(int x, int y, int bpp, int fullscreen)
 		return (-1);
 	}
 
-	InitGrpLib(x, y);
+	GRP_InitLib(x, y);
 
 	DELTASCREENX = (gameconf.grmode.x - 640) / 2;
 	DELTASCREENY = gameconf.grmode.y - 480;
@@ -168,8 +168,7 @@ int setmode(int x, int y, int bpp, int fullscreen)
 
 	if (a)
 	{
-		int ver = GetGRPLibVer();
-		sprintf(cap, GAMENAME " " GAMEVERSION " with GRPlib-%d.%d.%d createtime:" GAMECOMPILE, (ver >> 16) & 0xff, ((ver >> 8) & 0xff), ver & 0xff);
+		sprintf(cap, GAMENAME " " GAMEVERSION "compiledtime:" GAMECOMPILE);
 		mainController.SetWindowName(cap);
 		highMouse->PosX = 0;
 		highMouse->PosY = 0;

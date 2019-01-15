@@ -60,7 +60,7 @@ int HighMouse::LoadOneCursor(char *filename, int typemouse)
 	cursors[typemouse].mousegrp = NULL;
 	if (mpqloadfile(filename, (char **)&cursors[typemouse].mousegrp))
 	{
-		if (loadgrp(filename, &cursors[typemouse].mousegrp))
+		if (GRP_Load(filename, &cursors[typemouse].mousegrp))
 			return -1;
 	}
 	cursors[typemouse].maxpositions = cursors[typemouse].mousegrp->CountPictures;
@@ -98,7 +98,7 @@ void HighMouse::UnloadCursors(void)
 		cursors[i].maxpositions = 0;
 		if (cursors[i].mousegrp)
 		{
-			freegrp(cursors[i].mousegrp);
+			GRP_Free(cursors[i].mousegrp);
 			cursors[i].mousegrp = NULL;
 		}
 	}
@@ -190,7 +190,7 @@ void HighMouse::DrawMouse(void)
 	{
 		int deltax = -highMouse->cursors[MouseType].mousegrp->SizeX / 2;
 		int deltay = -highMouse->cursors[MouseType].mousegrp->SizeY / 2;
-		putgrpspr(PosX + deltax, PosY + deltay, highMouse->cursors[MouseType].mousegrp, NORMAL,
+		GRP_PutGrp(PosX + deltax, PosY + deltay, highMouse->cursors[MouseType].mousegrp, NORMAL,
 			0, 0, NULL, highMouse->cursors[MouseType].curentposition);
 	}
 }

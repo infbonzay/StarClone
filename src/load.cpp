@@ -340,7 +340,7 @@ int loadpcxtables(void)
 	pcx.readBytesFromPcx(thpbarp);
 	pcx.closePcx();
 
-	SetUserPlayerColors(0, 16, tunitp);
+	GRP_SetUserPlayerColors(0, 16, tunitp);
 
 	err = pcx.openMpqPcx(icons);
 	if ((err != OKPCX) || (pcx.sizePcx() != 96))
@@ -351,10 +351,10 @@ int loadpcxtables(void)
 	pcx.readBytesFromPcx(tablforunit, 96);
 	pcx.closePcx();
 
-	SetPlayerColors(FORYELLOW, 1, 0, 16, &tablforunit[0]);
-	SetPlayerColors(FORGRAY, 1, 0, 16, &tablforunit[16]);
-	SetPlayerColors(FORWHITE, 1, 0, 16, &tablforunit[32]);
-	SetPlayerColors(FORBLUE, 1, 0, 16, &tablforunit[64]);
+	GRP_SetPlayerColors(FORYELLOW, 1, 0, 16, &tablforunit[0]);
+	GRP_SetPlayerColors(FORGRAY, 1, 0, 16, &tablforunit[16]);
+	GRP_SetPlayerColors(FORWHITE, 1, 0, 16, &tablforunit[32]);
+	GRP_SetPlayerColors(FORBLUE, 1, 0, 16, &tablforunit[64]);
 
 	err = pcx.openMpqPcx(tselect);
 	if ((err != OKPCX) || (pcx.sizePcx() > 256))
@@ -363,9 +363,9 @@ int loadpcxtables(void)
 		return -1;
 	}
 	pcx.readBytesFromPcx(tablforunit);
-	SetPlayerColors(GREENCIRCLE, 1, 1, 8, &tablforunit[0]);
-	SetPlayerColors(YELLOWCIRCLE, 1, 1, 8, &tablforunit[8]);
-	SetPlayerColors(REDCIRCLE, 1, 1, 8, &tablforunit[16]);
+	GRP_SetPlayerColors(GREENCIRCLE, 1, 1, 8, &tablforunit[0]);
+	GRP_SetPlayerColors(YELLOWCIRCLE, 1, 1, 8, &tablforunit[8]);
+	GRP_SetPlayerColors(REDCIRCLE, 1, 1, 8, &tablforunit[16]);
 	pcx.closePcx();
 
 	err = pcx.openMpqPcx(tminimap);
@@ -389,9 +389,9 @@ int loadpcxtables(void)
 		for (j = 0;j < 4;j++)
 		{
 			tempcol = &twirep[zerglife[i][j]];
-			SetPlayerColors(LIFE1 + i, 1, 0xd8 + j, 1, tempcol);
+			GRP_SetPlayerColors(LIFE1 + i, 1, 0xd8 + j, 1, tempcol);
 			tempcol = &twirep[ptlife[i][j]];
-			SetPlayerColors(LIFE1 + i, 1, 0xd0 + j, 1, tempcol);
+			GRP_SetPlayerColors(LIFE1 + i, 1, 0xd0 + j, 1, tempcol);
 		}
 	}
 	if (!alreadyset)
@@ -411,8 +411,8 @@ int loadpcxtables(void)
 	//set color for minerals
 
 
-	SetPlayerColors(LIFEMINERAL, 1, 0xd8, 4, mineral_pos);
-	SetPlayerColors(LIFEGAS, 1, 0xd8, 4, gas_pos);
+	GRP_SetPlayerColors(LIFEMINERAL, 1, 0xd8, 4, mineral_pos);
+	GRP_SetPlayerColors(LIFEGAS, 1, 0xd8, 4, gas_pos);
 
 	pcx.closePcx();
 
@@ -618,8 +618,8 @@ int loadpal(int tileset,char *palette4)
 
 	pal4to3(palette3, palette4);
 	tomono = (char *)wmalloc(256);
-	CreateMono(palette3, tomono);
-	SetPlayerColors(TOMONO, 1, 0, 256, tomono);
+	GRP_CreateMono(palette3, tomono);
+	GRP_SetPlayerColors(TOMONO, 1, 0, 256, tomono);
 
 	strcpy(temppath, palettedir[tileset]);
 	strcat(temppath, greentr);
@@ -627,7 +627,7 @@ int loadpal(int tileset,char *palette4)
 	if (k != OKPCX)
 		return 6;
 	pcx->readBytesFromPcx(tablforunit);
-	SetPlayerColors(TOGREEN, 1, 0, 256, tablforunit);
+	GRP_SetPlayerColors(TOGREEN, 1, 0, 256, tablforunit);
 	pcx->closePcx();
 
 	strcpy(temppath, palettedir[tileset]);
@@ -636,7 +636,7 @@ int loadpal(int tileset,char *palette4)
 	if (k != OKPCX)
 		return 7;
 	pcx->readBytesFromPcx(tablforunit);
-	SetPlayerColors(TOBLUE, 1, 0, 256, tablforunit);
+	GRP_SetPlayerColors(TOBLUE, 1, 0, 256, tablforunit);
 	pcx->closePcx();
 
 	strcpy(temppath, palettedir[tileset]);
@@ -645,7 +645,7 @@ int loadpal(int tileset,char *palette4)
 	if (k != OKPCX)
 		return 8;
 	pcx->readBytesFromPcx(tablforunit);
-	SetPlayerColors(TORED, 1, 0, 256, tablforunit);
+	GRP_SetPlayerColors(TORED, 1, 0, 256, tablforunit);
 	pcx->closePcx();
 
 
@@ -661,7 +661,7 @@ int loadpal(int tileset,char *palette4)
 	pcx->closePcx();
 	wfree(pcx);
 
-	SetTranspTable(transpadr);
+	GRP_SetTranspTable(transpadr);
 	initadrtables();
 	return 0;
 }
@@ -772,7 +772,7 @@ int loadcreep(int tileset)
 		{
 			map.creeptilecnt = 1;
 			map.creeptiles = (char *)wmalloc(32 * 32);
-			unpackgrp(0, 0, creepgrp, 36, map.creeptiles);//unpack last full grp sprite
+			GRP_Unpack(0, 0, creepgrp, 36, map.creeptiles);//unpack last full grp sprite
 		}
 	}
 	return ret;
@@ -1115,9 +1115,8 @@ void loadtexturegrp(void)
 		grptexture = (char *)wmalloc(oneWarpPictureSize * ctextures);
 		for (i = 0;i < ctextures;i++)
 		{
-			unpackgrp(0, 0, grpmem2, i, grptexture + oneWarpPictureSize * i);
+			GRP_Unpack(0, 0, grpmem2, i, grptexture + oneWarpPictureSize * i);
 		}
-		//				SC_Images_List.FreeAndDelList(listnr,&FreeImagesListData);//no needed packed texture.grp from now
 	}
 }
 //===========================================

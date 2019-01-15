@@ -42,11 +42,11 @@ BOOL WINAPI SFileExtractFile(HANDLE hMpq, const char * szToExtract, const char *
 
         while(dwTransferred > 0)
         {
-            SFileReadFile(hMpqFile, szBuffer, sizeof(szBuffer), &dwTransferred, NULL);
+            SFileReadFile(hMpqFile, szBuffer, sizeof(szBuffer), (UINT *) &dwTransferred, NULL);
             if(dwTransferred == 0)
                 break;
 
-            WriteFile(hLocalFile, szBuffer, dwTransferred, &dwTransferred, NULL);
+            WriteFile(hLocalFile, szBuffer, dwTransferred, (LPDWORD)&dwTransferred, NULL);
             if(dwTransferred == 0)
                 break;
         }

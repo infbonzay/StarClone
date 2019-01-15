@@ -31,21 +31,23 @@ void GRP_recalcscanlines(void)
 }
 //=======================================
 //cliping function
-int wviewport(int x,int y,int sizex,int sizey)
+int GRP_viewport(int x,int y,int sizex,int sizey)
 {
-	if (x>=0 && y>=0 && x<GRP_screensizex && y<GRP_screensizey)
+	if (x >= 0 && y >= 0 && x < GRP_screensizex && y < GRP_screensizey)
 	{
 		GRP_wminx = x;			//set clipzone variables
 		GRP_wminy = y;
-		GRP_wmaxx = x + sizex-1;
-		GRP_wmaxy = y + sizey-1;
+		GRP_wmaxx = x + sizex;
+		GRP_wmaxy = y + sizey;
+		GRP_wsizex = sizex;
+		GRP_wsizey = sizey;
 		return 0;
 	}
 	else
 		return 1;
 }
 //===========================================
-void QuitGrpLib(void)
+void GRP_QuitLib(void)
 {
 	if (GRP_scanlineoffsets)
 	{
@@ -60,7 +62,7 @@ void QuitGrpLib(void)
 	MaxIndexLines = 0;
 }
 //==========================
-void *SetVideoBuffer(void *memory)
+void *GRP_SetVideoBuffer(void *memory)
 {
 	void *oldvidmem = GRP_vidmem;		//set screen-bufer to 'memory'
 	GRP_vidmem = (char *)memory;		//
@@ -68,15 +70,15 @@ void *SetVideoBuffer(void *memory)
 }
 //==========================
 //initialization grp-library with xsize,ysize of screen
-int InitGrpLib(int sizex,int sizey)
+int GRP_InitLib(int sizex,int sizey)
 {
 	int err,i;
 	GRP_screensizex = sizex;
 	GRP_screensizey = sizey;
 	GRP_wmaxdwordwritel = sizex * sizey / 4;
 	GRP_recalcscanlines();
-	wviewport(0,0,sizex,sizey);
-	err = SetPlayerColors(0,1,0,0,NULL);		//just allocate table at least
+	GRP_viewport(0,0,sizex,sizey);
+	err = GRP_SetPlayerColors(0,1,0,0,NULL);		//just allocate table at least
 	//for one line of color indexes
 	//(player color)
 	if (err < 0)
@@ -86,43 +88,43 @@ int InitGrpLib(int sizex,int sizey)
 }
 //==============================
 //Re-initialization grp-library with new xsize,ysize of screen
-int ResetGrpLib(int sizex,int sizey)
+int GRP_ResetLib(int sizex,int sizey)
 {
-	return InitGrpLib( sizex, sizey );
+	return GRP_InitLib( sizex, sizey );
 }
 //==============================
-long long FILElength(FILE *descriptor)
+static long long FILElength(FILE *descriptor)
 {
-	long long old,l;
+	long long old, filePos;
 	old = ftell(descriptor);
 	fseek(descriptor,0,SEEK_END);
-	l = ftell(descriptor);
+	filePos = ftell(descriptor);
 	fseek(descriptor,old,SEEK_SET);
-	return(l);
+	return(filePos);
 }
 //==============================
-int loadgrp(char *filename,GRPFILE **grpmem)  //load grp in memory for blitting
+int GRP_Load(char *filename,GRPFILE **grpmem)  //load grp in memory for blitting
 {
-	unsigned long long l;
+	unsigned long long fileLength;
 	FILE *f;
 	f = fopen(filename,"rb");
 	if (!f)				//if file couldn't open
 		return(-1);
-	l = FILElength(f);
-	if (l<=0)
+	fileLength = FILElength(f);
+	if (fileLength <= 0)
 	{
 		fclose(f);				//if file length if very big
 		return(-2);
 	}
-	*grpmem = (GRPFILE *)malloc(l);		//try to alloc memory fo grp
+	*grpmem = (GRPFILE *)malloc(fileLength);		//try to alloc memory fo grp
 	if (*grpmem == NULL)
 	{
 		fclose(f);
 		return (-3);			//no memory
 	}
-	if (fread((char *) (*grpmem),1,l,f)!=l)//error load grp
+	if (fread((char *) (*grpmem), fileLength, 1, f) != 1)//error load grp
 	{
-		freegrp(*grpmem);                  //free memory allocated with grp
+		GRP_Free(*grpmem);                  //free memory allocated with grp
 		*grpmem = NULL;
 		fclose(f);
 		return(-4);
@@ -131,7 +133,7 @@ int loadgrp(char *filename,GRPFILE **grpmem)  //load grp in memory for blitting
 	return(0);				//successfull exit
 }
 //=======================================
-void freegrp(GRPFILE *a)                //free memory allocated with grp
+void GRP_Free(GRPFILE *a)                //free memory allocated with grp
 {
 	if (a)
 		free(a);
@@ -141,27 +143,27 @@ void freegrp(GRPFILE *a)                //free memory allocated with grp
 //(size of buffer need to be (GRP->SizeX+x)*(GRP->SizeY*y)
 // x & y need to be 0 & 0 for x&y offsets in mem
 
-void unpackgrp(int x,int y,GRPFILE *GRP,int nrpict,char *mem)
+void GRP_Unpack(int x,int y,GRPFILE *GRP,int nrpict,char *mem)
 {
 	int oldGRP_screensizex = GRP_screensizex;			//change internal variables
-	void *oldvidmem = SetVideoBuffer(mem);
-	GRP_screensizex = GRP->SizeX+x;
+	void *oldvidmem = GRP_SetVideoBuffer(mem);
+	GRP_screensizex = GRP->SizeX + x;
 	GRP_recalcscanlines();
-	putgrp(x,y,GRP,nrpict,0);			//place grp in this memory
-	SetVideoBuffer(oldvidmem);			//return previous bufer
+	GRP_Put(x,y,GRP,nrpict,0);			//place grp in this memory
+	GRP_SetVideoBuffer(oldvidmem);			//return previous bufer
 	GRP_screensizex = oldGRP_screensizex;			//and internal var's
 	GRP_recalcscanlines();
 }
 //=========================================================
-void SetTranspTable(char *table)
+void GRP_SetTranspTable(char *table)
 {
 	GRP_transpcolors = table;			//set a new transp table
 }
 //=========================================================
 //table have dimension nrplayers*nrofindexes bytes
-int SetPlayerColors(int fromplayer,int nrplayers,
-					int firstindex,int nrofindexes,
-					char *table)
+int GRP_SetPlayerColors(int fromplayer,int nrplayers,
+						int firstindex,int nrofindexes,
+						char *table)
 {
 	char *tabl2;
 	int nrofparsed=0,i,j;
@@ -177,11 +179,11 @@ int SetPlayerColors(int fromplayer,int nrplayers,
 			free(GRP_tableforunitcolor);
 		}
 		GRP_tableforunitcolor = tabl2;
-		for (i=MaxIndexLines;i<MaxIndexLines+ADDMALLOCLINES;i++)
+		for (i = MaxIndexLines;i<MaxIndexLines + ADDMALLOCLINES;i++)
 			for (j=0;j<256;j++)
 				GRP_tableforunitcolor[i*256+j] = j;   //fill in every line with all palette indexes
 				//for future change ,if need
-				MaxIndexLines += ADDMALLOCLINES;
+		MaxIndexLines += ADDMALLOCLINES;
 	}
 	if (table)
 	{
@@ -195,28 +197,8 @@ int SetPlayerColors(int fromplayer,int nrplayers,
 	return(nrofparsed);
 }
 //=========================================================
-int SetUserPlayerColors(int fromplayer,int nrplayers,char *table)
+int GRP_SetUserPlayerColors(int fromplayer,int nrplayers,char *table)
 {
-	return(SetPlayerColors(fromplayer,nrplayers,8,8,table));
-}
-//=========================================================
-int GetGRPLibVer(void)
-{
-	char vv[200];
-	int vers=0;
-	char *ver=vv;
-	char *pospoint;
-
-	strncpy(vv,VERSION,199);
-	pospoint = strstr(ver,".");
-	*pospoint = 0;
-	vers+=(atoi(ver)<<16);
-	ver = pospoint+1;
-	pospoint = strstr(ver,".");
-	*pospoint = 0;
-	vers+=(atoi(ver)<<8);
-	ver = pospoint+1;
-	vers+=atoi(ver);
-	return(vers);
+	return(GRP_SetPlayerColors(fromplayer,nrplayers,8,8,table));
 }
 //=========================================================

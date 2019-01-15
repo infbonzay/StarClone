@@ -396,9 +396,9 @@ void MAIN_IMG::DrawOnScreenImage(void)
 	//totalimgs++;
 	//drawedimgs++;
 	if (flags & SC_IMAGE_FLAG_MIRRORIMAGE)
-		iputgrpspr(xpos - grp->SizeX / 2, ypos - grp->SizeY / 2, grp, TOTABLE, 0, 0, adrtabls[remaptable] + imageusercolor * 8, framenr);
+		GRP_IPutGrp(xpos - grp->SizeX / 2, ypos - grp->SizeY / 2, grp, TOTABLE, 0, 0, adrtabls[remaptable] + imageusercolor * 8, framenr);
 	else
-		putgrpspr(xpos - grp->SizeX / 2, ypos - grp->SizeY / 2, grp, TOTABLE, 0, 0, adrtabls[remaptable] + imageusercolor * 8, framenr);
+		GRP_PutGrp(xpos - grp->SizeX / 2, ypos - grp->SizeY / 2, grp, TOTABLE, 0, 0, adrtabls[remaptable] + imageusercolor * 8, framenr);
 }
 //============================================
 void OVERLAY_IMG::DrawImage(void)
@@ -933,16 +933,16 @@ void loadandputimage(int POSINMAP)
 			switch (format)
 			{
 			case WARPTEXTURE:
-				putgrpwarpfromtext(x - xk, y - yk, grppict, nrpicture, grptexture + oneWarpPictureSize * maxcolor);
+				GRP_PutWithTexture(x - xk, y - yk, grppict, nrpicture, grptexture + oneWarpPictureSize * maxcolor);
 				break;
 			case WARPFROMWHITE:
-				putgrpspr(x - xk, y - yk, grppict, TOTABLE, maxcolor, grcolor, adrtabls[colortable], nrpicture);
+				GRP_PutGrp(x - xk, y - yk, grppict, TOTABLE, maxcolor, grcolor, adrtabls[colortable], nrpicture);
 				break;
 			default:
 				if (!inverseflag)
-					putgrpspr(x - xk, y - yk, grppict, format, maxcolor, grcolor, adrtabls[colortable], nrpicture);
+					GRP_PutGrp(x - xk, y - yk, grppict, format, maxcolor, grcolor, adrtabls[colortable], nrpicture);
 				else
-					iputgrpspr(x - xk, y - yk, grppict, format, maxcolor, grcolor, adrtabls[colortable], nrpicture);
+					GRP_IPutGrp(x - xk, y - yk, grppict, format, maxcolor, grcolor, adrtabls[colortable], nrpicture);
 				break;
 			}
 		}
@@ -965,19 +965,19 @@ void saveandputimage(int x, int y, int xdelta, int ydelta, GRPFILE *grppict, int
 	{
 	case WARPTEXTURE:
 		maxcolor = buildwhite;
-		putgrpwarpfromtext(x - xk, y - yk, grppict, nrpicture, grptexture + oneWarpPictureSize * maxcolor);
+		GRP_PutWithTexture(x - xk, y - yk, grppict, nrpicture, grptexture + oneWarpPictureSize * maxcolor);
 		break;
 	case WARPFROMWHITE:
 		maxcolor = buildwhite / WARPBUILDWHITEMULFACTOR + 48;
-		putgrpspr(x - xk, y - yk, grppict, TOTABLE, maxcolor, grcolor, adrtabls[colortable], nrpicture);
+		GRP_PutGrp(x - xk, y - yk, grppict, TOTABLE, maxcolor, grcolor, adrtabls[colortable], nrpicture);
 		break;
 	case DRAWBURROWED:
 		format = NORMAL;
 	default:
 		if (flags & SC_IMAGE_FLAG_MIRRORIMAGE)
-			iputgrpspr(x - xk, y - yk, grppict, format, maxcolor, grcolor, adrtabls[colortable], nrpicture);
+			GRP_IPutGrp(x - xk, y - yk, grppict, format, maxcolor, grcolor, adrtabls[colortable], nrpicture);
 		else
-			putgrpspr(x - xk, y - yk, grppict, format, maxcolor, grcolor, adrtabls[colortable], nrpicture);
+			GRP_PutGrp(x - xk, y - yk, grppict, format, maxcolor, grcolor, adrtabls[colortable], nrpicture);
 		break;
 	}
 	if (flags & SC_IMAGE_FLAG_SAVEINFOGTABLE)
@@ -1442,7 +1442,7 @@ void DrawRawMainImageOBJ(int x, int y, SCUNIT SC_Unit, int plcolor, int grpfunc,
 	sprites_id = alldattbl.flingy_dat->sprites_id[flingy_id];
 	images_id = alldattbl.sprites_dat->images_id[sprites_id];
 	GetLoadedImage(alldattbl.images_dat->images_tbl[images_id], (void **)&grp);
-	putgrpspr(x - grp->SizeX / 2, y - grp->SizeY / 2, grp, grpfunc, maxcolors, plcolor, NULL, EVERYUNITRAWIMAGENR);
+	GRP_PutGrp(x - grp->SizeX / 2, y - grp->SizeY / 2, grp, grpfunc, maxcolors, plcolor, NULL, EVERYUNITRAWIMAGENR);
 }
 //========================================
 int CheckForSpecificChildsImageID(MAIN_IMG *img, short image_idfrom, short image_idto)

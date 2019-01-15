@@ -14,10 +14,10 @@
     extern "C" {
 #endif
 //=======================================
-void putgrpspr(int x,int y,struct GRPFILE *adr,int format,
-               int maxcolor,int grcolor,char *tablgrd,int nrpicture);
-void iputgrpspr(int x,int y,struct GRPFILE *adr,int format,
-               int maxcolor,int grcolor,char *tablgrd,int nrpicture);
+void GRP_PutGrp(int x,int y,struct GRPFILE *adr,int format,
+                int maxcolor,int grcolor,char *tablgrd,int nrpicture);
+void GRP_IPutGrp(int x,int y,struct GRPFILE *adr,int format,
+                int maxcolor,int grcolor,char *tablgrd,int nrpicture);
 //=======================================
 #ifdef __cplusplus
     }

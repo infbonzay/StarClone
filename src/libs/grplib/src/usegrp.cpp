@@ -11,118 +11,116 @@
 #include "grplib/gr8.h"
 
 //=======================================
-//void [i]putgrpspr(int x,int y,GRPFILE *adr,int format,
+//void [i]GRP_PutGrp(int x,int y,GRPFILE *adr,int format,
 //               int maxcolor,int grcolor,char *tablgrd,int nrpicture)
 //
 //=======================================
-void putgrpspr(int x,int y,GRPFILE *adr,int format,
+void GRP_PutGrp(int x,int y,GRPFILE *adr,int format,
                int maxcolor,int grcolor,char *tablgrd,int nrpicture)
 {
-     if (nrpicture>=adr->CountPictures)		//if non-existed picture 
+     if (nrpicture >= adr->CountPictures)		//if non-existed picture 
         return;					//do not put nothing
     //put sprite depend on format
     switch(format)
     {
 	case NORMAL:
-    	    putgrp(x,y,adr,nrpicture,grcolor<<8);
-            break;
-        case TRANSPARENT:
-    	    if (!maxcolor)
-            {
-                   if (!tablgrd)
-                        putgrp(x,y,adr,nrpicture,grcolor<<8);
-                   else
-                        putgrpgrd(x,y,adr,nrpicture,tablgrd);
-            }
+		GRP_Put(x,y,adr,nrpicture,grcolor << 8);
+        break;
+    case TRANSPARENT:
+    	if (!maxcolor)
+        {
+            if (!tablgrd)
+                GRP_Put(x,y,adr,nrpicture,grcolor << 8);
             else
-            {
-                    GRP_gr_maxcolordesen=maxcolor;
-                    putgrptransp(x,y,adr,nrpicture,grcolor<<8);
-            }
-            break;
-        case DISTORTION:
-    	    if (!maxcolor)
-            {
-                    if (!tablgrd)
-                        putgrp(x,y,adr,nrpicture,grcolor<<8);
-            	    else
-                	putgrpgrd(x,y,adr,nrpicture,tablgrd);
-            }
-            else
-            {
-            	    GRP_gr_maxcolordesen=maxcolor;
-            	    putgrpnonvis(x,y,adr,nrpicture);
-            }
-            break;
+                GRP_PutGrd(x,y,adr,nrpicture,tablgrd);
+        }
+        else
+        {
+            GRP_gr_maxcolordesen = maxcolor;
+            GRP_PutTransp(x,y,adr,nrpicture,grcolor<<8);
+        }
+        break;
+    case DISTORTION:
+		if (!maxcolor)
+        {
+            if (!tablgrd)
+                GRP_Put(x,y,adr,nrpicture,grcolor << 8);
+			else
+             	GRP_PutGrd(x,y,adr,nrpicture,tablgrd);
+        }
+        else
+        {
+			GRP_gr_maxcolordesen = maxcolor;
+            GRP_PutInv(x,y,adr,nrpicture);
+        }
+        break;
 	case SHADOW:
-    	    putgrpshadow(x,y,adr,nrpicture,tablgrd,maxcolor<<8);
-            break;
-        case TOTABLE:
-	    putgrptotable(x,y,adr,nrpicture,tablgrd,maxcolor<<8,grcolor<<8);
-            break;
-        case GLOW:
-            if (tablgrd)
-	        putgrpgrd(x,y,adr,nrpicture,tablgrd);
+    	GRP_PutShadow(x,y,adr,nrpicture,tablgrd,maxcolor <<8 );
+        break;
+    case TOTABLE:
+	    GRP_PutByTable(x,y,adr,nrpicture,tablgrd,maxcolor << 8,grcolor << 8);
+        break;
+    case GLOW:
+        if (tablgrd)
+			GRP_PutGrd(x,y,adr,nrpicture,tablgrd);
 	    else
-        	putgrp(x,y,adr,nrpicture,grcolor<<8);
-            break;
+        	GRP_Put(x,y,adr,nrpicture,grcolor << 8);
+        break;
     }
 }
 //=======================================
 //inversion function mirror y-axis
-//put inversion sprite same as 'putgrpspr' but sprite as mirror
-void iputgrpspr(int x,int y,GRPFILE *adr,int format,
+//put inversion sprite same as 'GRP_PutGrp' but sprite as mirror
+void GRP_IPutGrp(int x,int y,GRPFILE *adr,int format,
                int maxcolor,int grcolor,char *tablgrd,int nrpicture)
 {
-     if (nrpicture>=adr->CountPictures)
+    if (nrpicture >= adr->CountPictures)
         return;
-//     if (adr->SizeX>255)			//not show unpacked grp
-//        return;
     switch(format)
     {
-           case NORMAL:
-                iputgrp(x,y,adr,nrpicture,grcolor<<8);
-                break;
-           case TRANSPARENT:
-                if (!maxcolor)
-                {
-                   if (!tablgrd)
-                      iputgrp(x,y,adr,nrpicture,grcolor<<8);
-                   else
-                      iputgrpgrd(x,y,adr,nrpicture,tablgrd);
-                }
-                else
-                {
-                   GRP_gr_maxcolordesen=maxcolor;
-                   iputgrptransp(x,y,adr,nrpicture,grcolor<<8);
-                }
-                break;
-           case DISTORTION:
-                if (!maxcolor)
-                {
-            	    if (!tablgrd)
-                       iputgrp(x,y,adr,nrpicture,grcolor<<8);
-                    else
-                       iputgrpgrd(x,y,adr,nrpicture,tablgrd);
-                }
-                else
-                {
-                    GRP_gr_maxcolordesen=maxcolor;
-                    iputgrpnonvis(x,y,adr,nrpicture);
-                }
-                break;
-           case SHADOW:
-                iputgrpshadow(x,y,adr,nrpicture,tablgrd,maxcolor<<8);
-                break;
-           case TOTABLE:
-		iputgrptotable(x,y,adr,nrpicture,tablgrd,maxcolor<<8,grcolor<<8);
-                break;
-           case GLOW:
-                if (tablgrd)
-		    iputgrpgrd(x,y,adr,nrpicture,tablgrd);
+    case NORMAL:
+        GRP_IPut(x,y,adr,nrpicture,grcolor << 8);
+        break;
+    case TRANSPARENT:
+        if (!maxcolor)
+        {
+			if (!tablgrd)
+                GRP_IPut(x,y,adr,nrpicture,grcolor << 8);
+			else
+				GRP_IPutGrd(x,y,adr,nrpicture,tablgrd);
+        }
+        else
+        {
+            GRP_gr_maxcolordesen=maxcolor;
+            GRP_IPutTransp(x,y,adr,nrpicture,grcolor << 8);
+        }
+        break;
+    case DISTORTION:
+        if (!maxcolor)
+        {
+       	    if (!tablgrd)
+                GRP_IPut(x,y,adr,nrpicture,grcolor << 8);
+            else
+                GRP_IPutGrd(x,y,adr,nrpicture,tablgrd);
+        }
+        else
+        {
+            GRP_gr_maxcolordesen = maxcolor;
+            GRP_IPutInv(x,y,adr,nrpicture);
+        }
+        break;
+    case SHADOW:
+        GRP_IPutShadow(x,y,adr,nrpicture,tablgrd,maxcolor << 8);
+        break;
+    case TOTABLE:
+		GRP_IPutByTable(x,y,adr,nrpicture,tablgrd,maxcolor << 8,grcolor << 8);
+        break;
+    case GLOW:
+        if (tablgrd)
+			GRP_IPutGrd(x,y,adr,nrpicture,tablgrd);
 		else
-                    iputgrp(x,y,adr,nrpicture,grcolor<<8);
-                break;
+            GRP_IPut(x,y,adr,nrpicture,grcolor << 8);
+        break;
     }
 }
 //=======================================
