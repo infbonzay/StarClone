@@ -97,7 +97,7 @@ int Controller::QueryVideoMode(int x, int y, int bpp, int fullscreen)
 
 		gameconf.grmode.videobuff = Surface->pixels;
 
-		SetVideoBuffer(Surface->pixels);
+		GRP_SetVideoBuffer(Surface->pixels);
 
 
 	}

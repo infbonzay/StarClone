@@ -46,7 +46,7 @@ BOOL WINAPI SFileExtractFile(HANDLE hMpq, const char * szToExtract, const char *
             if(dwTransferred == 0)
                 break;
 
-            WriteFile(hLocalFile, szBuffer, dwTransferred, (LPDWORD)&dwTransferred, NULL);
+            WriteFile(hLocalFile, szBuffer, dwTransferred, &dwTransferred, NULL);
             if(dwTransferred == 0)
                 break;
         }

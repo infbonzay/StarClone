@@ -86,7 +86,7 @@ int Controller::QueryVideoMode(int x, int y, int bpp, int fullscreen)
 	HideCursor();
 	if (SDL_MUSTLOCK(Surface))
 		SDL_LockSurface(Surface);
-	SetVideoBuffer(Surface->pixels);
+	GRP_SetVideoBuffer(Surface->pixels);
 	gameconf.grmode.videobuff = (unsigned char *)Surface->pixels;
 	gameconf.grmode.flags |= DISPLAYFLAGS_WINDOWACTIVE;
 	return (1 + emul);
@@ -115,7 +115,7 @@ int Controller::ModifyVideoMode(int x, int y, int bpp, int fullscreen, unsigned 
 		return(0);
 	if (SDL_MUSTLOCK(Surface))
 		SDL_LockSurface(Surface);
-	SetVideoBuffer(Surface->pixels);
+	GRP_SetVideoBuffer(Surface->pixels);
 	gameconf.grmode.videobuff = (unsigned char *)Surface->pixels;
 	memcpy(gameconf.grmode.videobuff, tempvid, x*y);
 	if (palette)

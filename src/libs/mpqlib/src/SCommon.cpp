@@ -720,7 +720,7 @@ int AddFileToArchive(TMPQArchive * ha, HANDLE hFile, const char * szArchivedName
         
         // Write the block positions
         CONVERTBUFFERTOLITTLEENDIAN32BITS((UINT *)pdwBlockPos, nBlocks);
-        WriteFile(ha->hFile, pdwBlockPos, dwBytes, (LPDWORD)&dwTransferred, NULL);
+        WriteFile(ha->hFile, pdwBlockPos, dwBytes, &dwTransferred, NULL);
         CONVERTBUFFERTOLITTLEENDIAN32BITS((UINT *)pdwBlockPos, nBlocks);
         ha->dwFilePos += dwTransferred;
         if(dwTransferred == dwBytes)
@@ -741,7 +741,7 @@ int AddFileToArchive(TMPQArchive * ha, HANDLE hFile, const char * szArchivedName
             UINT dwOutLength = ha->dwBlockSize;
 
             // Load the block from the file
-            ReadFile(hFile, pbFileData, ha->dwBlockSize, (LPDWORD)&dwInLength, NULL);
+            ReadFile(hFile, pbFileData, ha->dwBlockSize, &dwInLength, NULL);
             if(dwInLength == 0)
                 break;
 
@@ -783,7 +783,7 @@ int AddFileToArchive(TMPQArchive * ha, HANDLE hFile, const char * szArchivedName
             }
             
             // Write the block
-            WriteFile(ha->hFile, pbToWrite, dwOutLength, (LPDWORD)&dwTransferred, NULL);
+            WriteFile(ha->hFile, pbToWrite, dwOutLength, &dwTransferred, NULL);
             if(dwTransferred != dwOutLength)
             {
                 nError = ERROR_DISK_FULL;
@@ -804,7 +804,7 @@ int AddFileToArchive(TMPQArchive * ha, HANDLE hFile, const char * szArchivedName
         
         SetFilePointer(ha->hFile, pBlock->dwFilePos, NULL, FILE_BEGIN);
         CONVERTBUFFERTOLITTLEENDIAN32BITS((UINT *)pdwBlockPos, nBlocks);
-        WriteFile(ha->hFile, pdwBlockPos, dwBytes, (LPDWORD)&dwTransferred, NULL);
+        WriteFile(ha->hFile, pdwBlockPos, dwBytes, &dwTransferred, NULL);
         if(dwTransferred != dwBytes)
             nError = ERROR_CAN_NOT_COMPLETE;
     }
@@ -883,7 +883,7 @@ int SaveMPQTables(TMPQArchive * ha)
 
         // Convert to littleendian for file save
         CONVERTTMPQHEADERTOLITTLEENDIAN(&hdr);
-        WriteFile(ha->hFile, &hdr, sizeof(TMPQHeader), (LPDWORD)&dwWritten, NULL);
+        WriteFile(ha->hFile, &hdr, sizeof(TMPQHeader), &dwWritten, NULL);
         if(dwWritten != sizeof(TMPQHeader))
             nError = ERROR_DISK_FULL;
     }
@@ -898,7 +898,7 @@ int SaveMPQTables(TMPQArchive * ha)
 
         // Convert to littleendian for file save
         CONVERTBUFFERTOLITTLEENDIAN32BITS((UINT *)pbBuffer, dwBytes / sizeof(UINT));
-        WriteFile(ha->hFile, pbBuffer, dwBytes, (LPDWORD)&dwWritten, NULL);
+        WriteFile(ha->hFile, pbBuffer, dwBytes, &dwWritten, NULL);
         if(dwWritten != dwBytes)
             nError = ERROR_DISK_FULL;
     }
@@ -925,7 +925,7 @@ int SaveMPQTables(TMPQArchive * ha)
         
         // Convert to littleendian for file save
         CONVERTBUFFERTOLITTLEENDIAN32BITS((UINT *)pbBuffer, dwBytes / sizeof(UINT));
-        WriteFile(ha->hFile, pbBuffer, dwBytes, (LPDWORD)&dwWritten, NULL);
+        WriteFile(ha->hFile, pbBuffer, dwBytes, &dwWritten, NULL);
         if(dwWritten != dwBytes)
             nError = ERROR_DISK_FULL;
     }

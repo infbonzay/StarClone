@@ -2819,7 +2819,7 @@ int getmapinfo(MENUSTR *allmenus, char *filename, int haveslots)
 			if (!convpal_loaded[testmap->terrain])//check if already make conversion for this terrain type
 			{
 				convpal_loaded[testmap->terrain] = 1;
-				ConvertColorsToNewPalette((unsigned char *)testmap->palette,
+				GRP_ConvertColorsToNewPalette((unsigned char *)testmap->palette,
 					allmenus->palette, convpalformenumap[testmap->terrain], 4);
 			}
 			for (i = 0;i < MINIMAPW*MINIMAPW;i++)

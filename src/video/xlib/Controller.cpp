@@ -82,7 +82,7 @@ int Controller::QueryVideoMode(int x, int y, int bpp, int fullscreen)
 
 		gameconf.grmode.videobuff = Surface->pixels;
 
-		SetVideoBuffer(Surface->pixels);
+		GRP_SetVideoBuffer(Surface->pixels);
 		Surface->XpixelsBufferSize = x * y * Surface->ximagebpp[(Surface->SavedBpp + 1)/8];
 		if (Surface->flags & CFLAG_EXACTBPP)
 		{
