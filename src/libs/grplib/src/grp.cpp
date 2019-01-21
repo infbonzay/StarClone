@@ -37,8 +37,8 @@ int GRP_viewport(int x,int y,int sizex,int sizey)
 	{
 		GRP_wminx = x;			//set clipzone variables
 		GRP_wminy = y;
-		GRP_wmaxx = x + sizex;
-		GRP_wmaxy = y + sizey;
+		GRP_wmaxx = x + sizex - 1;
+		GRP_wmaxy = y + sizey - 1;
 		GRP_wsizex = sizex;
 		GRP_wsizey = sizey;
 		return 0;

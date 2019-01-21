@@ -18,9 +18,9 @@ if (y < GRP_wminy)														\
 	y = GRP_wminy;														\
 	_GRPFROMTEXT1_;														\
 }																		\
-if (y + LinesPerPicture >= GRP_wmaxy)									\
+if (y+LinesPerPicture>GRP_wmaxy)										\
 {																		\
-	LinesPerPicture = GRP_wmaxy - y;									\
+	LinesPerPicture = GRP_wmaxy - y + 1;								\
 }																		\
 SkipLeftPixels = 0;														\
 x += grppict->SkipLeft;													\
@@ -34,9 +34,9 @@ if (x < GRP_wminx)														\
 	putmethod |= 1;														\
 	_GRPFROMTEXT2_;														\
 }																		\
-if (x+PixelPerLine >= GRP_wmaxx)										\
+if (x+PixelPerLine > GRP_wmaxx)											\
 {																		\
-	PixelPerLine = GRP_wmaxx - x;										\
+	PixelPerLine = GRP_wmaxx - x + 1;									\
 	if (PixelPerLine <= 0)												\
 		return;															\
 	putmethod |= 2;														\
@@ -284,13 +284,13 @@ if (y < GRP_wminy)														\
 	LinesPerPicture -= FromLine;										\
 	y = GRP_wminy;														\
 }																		\
-if (y+LinesPerPicture >= GRP_wmaxy)										\
+if (y+LinesPerPicture > GRP_wmaxy)										\
 {																		\
-	LinesPerPicture = GRP_wmaxy - y;									\
+	LinesPerPicture = GRP_wmaxy - y + 1;								\
 }																		\
 SkipRightPixels = 0;													\
 x -= grppict->SkipLeft;													\
-if (x >= GRP_wmaxx)														\
+if (x > GRP_wmaxx)														\
 {																		\
 	SkipRightPixels = x - GRP_wmaxx;									\
 	PixelPerLine -= SkipRightPixels;									\
@@ -301,7 +301,7 @@ if (x >= GRP_wmaxx)														\
 }																		\
 if (x-PixelPerLine < GRP_wminx)											\
 {																		\
-	PixelPerLine = x - GRP_wminx;										\
+	PixelPerLine = x - GRP_wminx + 1;									\
 	if (PixelPerLine<=0)												\
 		return;															\
 	putmethod |= 2;														\

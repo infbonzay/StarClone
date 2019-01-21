@@ -13,7 +13,7 @@ void GRP_ClrScr(int color)
 //==============================================
 int GRP_GetImage8(int x,int y,int sx,int sy,char *mem)
 {
-	if (x<GRP_wminx || y<GRP_wminy || x+sx>GRP_wmaxx || y+sy>GRP_wmaxy)
+	if (x<GRP_wminx || y<GRP_wminy || x+sx>GRP_wmaxx+1 || y+sy>GRP_wmaxy+1)
 		return -1;
 	char *adrvid=GRP_vidmem+GRP_scanlineoffsets[y]+x;
 	for (int i=0;i<sy;i++)
@@ -27,7 +27,7 @@ int GRP_GetImage8(int x,int y,int sx,int sy,char *mem)
 //==============================================
 int GRP_PutImage8(int x,int y,int sx,int sy,char *mem)
 {
-	if (x<GRP_wminx || y<GRP_wminy || x+sx>GRP_wmaxx || y+sy>GRP_wmaxy)
+	if (x<GRP_wminx || y<GRP_wminy || x+sx>GRP_wmaxx+1 || y+sy>GRP_wmaxy+1)
 		return -1;
 	char *adrvid=GRP_vidmem+GRP_scanlineoffsets[y]+x;
 	for (int i=0;i<sy;i++)
@@ -48,7 +48,7 @@ int GRP_SetImage8(int x,int y,int sx,int sy,int color)
 			return 0;
 		x = GRP_wminx;
 	}
-	if (x+sx > GRP_wmaxx)
+	if (x+sx > GRP_wmaxx+1)
 	{
 		sx = GRP_wmaxx-x;
 		if (sx < 0)
@@ -61,9 +61,9 @@ int GRP_SetImage8(int x,int y,int sx,int sy,int color)
 			return 0;
 		y =GRP_wminy;
 	}
-	if (y + sy > GRP_wmaxy)
+	if (y + sy > GRP_wmaxy+1)
 	{
-		sy = GRP_wmaxy-y;
+		sy = GRP_wmaxy-y+1;
 		if (sy < 0)
 			return 0;
 	}
@@ -86,9 +86,9 @@ int GRP_SetImage8x(int x,int y,int sx,int sy,int color)
 			return 0;
 		x = GRP_wminx;
 	}
-	if (x+sx>GRP_wmaxx)
+	if (x+sx>GRP_wmaxx+1)
 	{
-		sx = GRP_wmaxx-x;
+		sx = GRP_wmaxx-x+1;
 		if (sx < 0)
 			return 0;
 	}
@@ -99,9 +99,9 @@ int GRP_SetImage8x(int x,int y,int sx,int sy,int color)
 			return 0;
 		y = GRP_wminy;
 	}
-	if (y+sy>GRP_wmaxy)
+	if (y+sy>GRP_wmaxy+1)
 	{
-		sy = GRP_wmaxy-y;
+		sy = GRP_wmaxy-y+1;
 		if (sy < 0)
 			return 0;
 	}
@@ -164,15 +164,15 @@ void GRP_PutPartVisibleSpr(int x,int y,int sx,int sy,char *mem)
 			return;
 		y = GRP_wminy;
 	}
-	if (x+sx>GRP_wmaxx)
+	if (x+sx>GRP_wmaxx+1)
 	{
-		sx = GRP_wmaxx - x;
+		sx = GRP_wmaxx - x + 1;
 		if (sx<=0)
 			return;
 	}
-	if (y+sy>GRP_wmaxy)
+	if (y+sy>GRP_wmaxy+1)
 	{
-		sy = GRP_wmaxy - y;
+		sy = GRP_wmaxy - y + 1;
 		if (sy<=0)
 			return;
 	}
@@ -205,15 +205,15 @@ void GRP_PutPartVisibleSprTrnsp(int x,int y,int sx,int sy,char *mem)
 			return;
 		y = GRP_wminy;
 	}
-	if (x+sx>GRP_wmaxx)
+	if (x+sx>GRP_wmaxx+1)
 	{
-		sx = GRP_wmaxx - x;
+		sx = GRP_wmaxx - x + 1;
 		if (sx<=0)
 			return;
 	}
-	if (y+sy>GRP_wmaxy)
+	if (y+sy>GRP_wmaxy+1)
 	{
-		sy = GRP_wmaxy - y;
+		sy = GRP_wmaxy - y + 1;
 		if (sy<=0)
 			return;
 	}
