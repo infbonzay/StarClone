@@ -45,7 +45,7 @@ union smk_read_t
 static signed char smk_read_file(void *buf, const size_t size, HANDLE fp)
 {
 	/* don't bother checking buf or fp, fread does it for us */
-	UINT bytesRead;
+	DWORD bytesRead;
 	wr_SFileReadFile(fp, buf, size, &bytesRead, NULL);
 	//	size_t bytesRead = fread(buf,1,size,fp);
 	if (bytesRead != size)

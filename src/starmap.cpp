@@ -108,7 +108,7 @@ void sub_unit_stat(struct mapinfo *info, int stattype, int playernr, SCUNIT SC_U
 int load_tileset_palette(HANDLE mpq, char *filename, char *pal)
 {
 	HANDLE f;
-	UINT readed;
+	DWORD readed;
 
 	int err = wr_SFileOpenFileEx(mpq, filename, SFILE_OPEN_FROM_MPQ, &f);
 	if (!err)
@@ -123,7 +123,7 @@ int load_tiles8(HANDLE mpq, char *filename, char *tiles)
 {
 	HANDLE f;
 	int tc = 0;
-	UINT readed;
+	DWORD readed;
 	char *p = tiles;
 
 	int err = wr_SFileOpenFileEx(mpq, filename, SFILE_OPEN_FROM_MPQ, &f);
@@ -189,7 +189,7 @@ unsigned short *loadvx4(HANDLE mpq, char *filename, int *size)
 {
 	HANDLE f;
 	unsigned short *megatiles;
-	UINT sz, readed;
+	DWORD sz, readed;
 	int err = wr_SFileOpenFileEx(mpq, filename, SFILE_OPEN_FROM_MPQ, &f);
 	if (!err)
 		return NULL;
@@ -205,7 +205,7 @@ unsigned short *loadvf4(HANDLE mpq, char *filename, int *size)
 {
 	HANDLE f;
 	unsigned short *walktiles;
-	UINT sz, readed;
+	DWORD sz, readed;
 	int err = wr_SFileOpenFileEx(mpq, filename, SFILE_OPEN_FROM_MPQ, &f);
 	if (!err)
 		return NULL;
@@ -223,7 +223,7 @@ int load_header(HANDLE mpq, char *filename, unsigned short *groups, terrain_cv5 
 	int gc = 0;
 	unsigned short *p;
 	terrain_cv5 *c;
-	UINT readed;
+	DWORD readed;
 
 	int err = wr_SFileOpenFileEx(mpq, filename, SFILE_OPEN_FROM_MPQ, &f);
 	if (!err)
@@ -538,7 +538,7 @@ int read_starmap(HANDLE mpq, const char *filename, struct mapinfo *info, int fla
 {
 	int i, j, err, testplay, trgfilesize;
 	HANDLE f;
-	UINT readed;
+	DWORD readed;
 	struct starmap_section section;
 	struct unit_on_map *unit;
 	doodad_THG2_starmap tempdoodad;

@@ -42,7 +42,7 @@ BOOL  WINAPI SFILE(GetArchiveName)(HANDLE hMPQ, LPCSTR lpBuffer, DWORD dwBufferL
 BOOL  WINAPI SFILE(OpenFile)(LPCSTR lpFileName, HANDLE *hFile);
 BOOL  WINAPI SFILE(OpenFileEx)(HANDLE hMPQ, LPCSTR lpFileName, UINT dwSearchScope, HANDLE *hFile);
 BOOL  WINAPI SFILE(CloseFile)(HANDLE hFile);
-UINT WINAPI SFILE(GetFileSize)(HANDLE hFile, LPDWORD lpFileSizeHigh);
+UINT WINAPI SFILE(GetFileSize)(HANDLE hFile, UINT *lpFileSizeHigh);
 BOOL  WINAPI SFILE(GetFileArchive)(HANDLE hFile, HANDLE *hMPQ);
 BOOL  WINAPI SFILE(GetFileName)(HANDLE hFile, LPCSTR lpBuffer, UINT dwBufferLength);
 UINT WINAPI SFILE(SetFilePointer)(HANDLE hFile, int lDistanceToMove, PLONG lplDistanceToMoveHigh, UINT dwMoveMethod);

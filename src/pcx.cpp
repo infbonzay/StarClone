@@ -33,7 +33,7 @@ void PCX::encgetMPQ(int *pbyt, int *pcnt, void *f)
 /* where to place count */
 /* image file handle */
 {
-	unsigned int readed;
+	unsigned long readed;
 	int i = 0;
 	*pcnt = 1;		  /* assume a "run" length of one */
 	wr_SFileReadFile(f, &i, 1, &readed, NULL);
@@ -50,7 +50,7 @@ int PCX::openMpqPcx(const char *filepcx, HANDLE hmpq)
 	char *adrpict2;
 	int chr, cnt;
 	long int l, i;
-	unsigned int readed;
+	unsigned long readed;
 	HANDLE openedfile;
 
 	//	  char *filepcx2=filename2unix(filepcx);

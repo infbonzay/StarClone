@@ -38,7 +38,7 @@ BOOL WINAPI SFileExtractFile(HANDLE hMpq, const char * szToExtract, const char *
     if(nError == ERROR_SUCCESS)
     {
         char  szBuffer[0x1000];
-        UINT dwTransferred = 1;
+        DWORD dwTransferred = 1;
 
         while(dwTransferred > 0)
         {
@@ -46,7 +46,7 @@ BOOL WINAPI SFileExtractFile(HANDLE hMpq, const char * szToExtract, const char *
             if(dwTransferred == 0)
                 break;
 
-            WriteFile(hLocalFile, szBuffer, dwTransferred, (DWORD *)&dwTransferred, NULL);
+            WriteFile(hLocalFile, szBuffer, dwTransferred, &dwTransferred, NULL);
             if(dwTransferred == 0)
                 break;
         }

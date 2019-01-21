@@ -111,7 +111,7 @@ BOOL SetEndOfFile(HANDLE hFile)
     return (ftruncate((DWORD)hFile, lseek((DWORD)hFile, 0, SEEK_CUR)) == 0);
 }
 
-BOOL ReadFile(HANDLE hFile, void *pBuffer, UINT ulLen, UINT *ulRead, void *pOverLapped)
+BOOL ReadFile(HANDLE hFile, void *pBuffer, DWORD ulLen, DWORD *ulRead, void *pOverLapped)
 {
     ssize_t count;
     if ((count = read((DWORD)hFile, pBuffer, ulLen)) == -1) {
@@ -122,7 +122,7 @@ BOOL ReadFile(HANDLE hFile, void *pBuffer, UINT ulLen, UINT *ulRead, void *pOver
     return true;
 }
 
-BOOL WriteFile(HANDLE hFile, const void *pBuffer, UINT ulLen, UINT *ulWritten, void *pOverLapped)
+BOOL WriteFile(HANDLE hFile, const void *pBuffer, DWORD ulLen, DWORD *ulWritten, void *pOverLapped)
 {
     ssize_t count;
     if ((count = write((DWORD)hFile, pBuffer, ulLen)) == -1) {

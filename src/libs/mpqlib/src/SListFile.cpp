@@ -50,7 +50,7 @@ static int ReloadCache(TListFileCache * pCache)
             return 0;
 
         pCache->dwFilePos += pCache->dwBuffSize;
-        SFileReadFile(pCache->hFile, pCache->Buffer, pCache->dwBuffSize, &pCache->dwBuffSize, NULL);
+        SFileReadFile(pCache->hFile, pCache->Buffer, pCache->dwBuffSize, (DWORD *)&pCache->dwBuffSize, NULL);
         if(pCache->dwBuffSize == 0)
             return 0;
 
@@ -383,7 +383,7 @@ int WINAPI SFileAddListFile(HANDLE hMpq, const char * szListFile)
         pCache->dwFilePos  = 0;
 
         // Fill the cache
-        SFileReadFile(hListFile, pCache->Buffer, pCache->dwBuffSize, &pCache->dwBuffSize, NULL);
+        SFileReadFile(hListFile, pCache->Buffer, pCache->dwBuffSize, (DWORD *) &pCache->dwBuffSize, NULL);
 
         // Initialize the pointers
         pCache->pBegin =
@@ -465,7 +465,7 @@ HANDLE SListFileFindFirstFile(HANDLE hMpq, const char * szListFile, const char *
         }
 
         // Fill the cache
-        SFileReadFile(hListFile, pCache->Buffer, pCache->dwBuffSize, &pCache->dwBuffSize, NULL);
+        SFileReadFile(hListFile, pCache->Buffer, pCache->dwBuffSize, (DWORD *) &pCache->dwBuffSize, NULL);
 
         // Initialize the pointers
         pCache->pBegin =

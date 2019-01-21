@@ -40,7 +40,7 @@ void ShowPreviewFile(const char *filename, int esckeyaction)
 	HANDLE f;
 	char *cmpbuf = NULL;
 	int err, filesize;
-	UINT readed;
+	DWORD readed;
 	err = SFileOpenFileTryAllMpqs(filename, &f);
 	if (err)
 	{
