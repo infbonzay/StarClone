@@ -25,7 +25,7 @@ void unloadfogtables(void);
 void putfog(void);
 void calculatefog(int bitplayers);
 void copywhitefogtoblackfog(int bitplayers);
-void ApplyFogMask(mapinfo *info,int playernr);
+void ApplyFogMask(StarMapInfo *info,int playernr);
 //=================================================
 
 

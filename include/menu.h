@@ -460,7 +460,7 @@ int	 editboxaction(MENUSTR *allmenus);
 void puttransptilebox(int x,int y,int sizex,int sizey,GRPFILE *tilegrp);
 
 void setitemrelation(MENUSTR *allmenus,int itemnr,int relation_type,int *address,int addressvalue);
-int	 getmapinfo(char *filename);
+int	 getStarMapInfo(char *filename);
 void menuspecialtables(MENUSTR *menu,char *fonttable,GRPFILE *dlggrp);
 MENUSTR *createmenuinfo(int x,int y,int sizex,int sizey,int nrofelems,int flags);
 void AddPrevMenuShowing(MENUSTR *allmenus,MENUSTR *prevmenu);

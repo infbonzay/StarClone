@@ -96,7 +96,7 @@
 
 void FreeQueues(void);
 void transfto(int table);
-int	 gogame(mapinfo *info);
+int	 gogame(StarMapInfo *info);
 void showramka(void);
 void showiconramka(void);
 void chdirgame(char *s);
@@ -114,7 +114,7 @@ bool ShowButtonMenu(char *button,int (*adrmenu)(MENUDRAW *menudraw,MENUPARAMS *m
 void ChangeTerrain(void);
 
 int	 ChangeMenuStatus(int mstatus);
-int	 IfTimeForTrigger(mapinfo *info,int *prevgameticks);
+int	 IfTimeForTrigger(StarMapInfo *info,int *prevgameticks);
 void ShowFirstRunVideo(int ignorefirstrunbit);
 void GoPlayNextMusic(void);
 void ShowGameStatusMenu(int *prevticks);

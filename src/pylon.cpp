@@ -29,7 +29,7 @@ unsigned char PylonTable[PYLONAREAY][PYLONAREAX] =
 	{0,0,0,0,0,1,1,1,1,1,1,0,0,0,0,0}
 };
 //=================================
-void FreePylonArea(mapinfo *mymap)
+void FreePylonArea(StarMapInfo *mymap)
 {
 	int i;
 	for (i = 0;i < MAXPLAYERS;i++)
@@ -42,7 +42,7 @@ void FreePylonArea(mapinfo *mymap)
 	}
 }
 //=================================
-unsigned char *CreatePylonAreaArray(mapinfo *mymap, int playernr)
+unsigned char *CreatePylonAreaArray(StarMapInfo *mymap, int playernr)
 {
 	unsigned char *parea;
 	parea = (unsigned char*)wmalloc(mymap->map_width*mymap->map_height);
@@ -51,7 +51,7 @@ unsigned char *CreatePylonAreaArray(mapinfo *mymap, int playernr)
 	return(parea);
 }
 //=================================
-void AddPylonArea(mapinfo *mymap, OBJ *a, int playernr)
+void AddPylonArea(StarMapInfo *mymap, OBJ *a, int playernr)
 {
 	int xp, yp, i, j, offset, x, y;
 	unsigned char *parea = mymap->pylonarea[playernr];
@@ -80,7 +80,7 @@ void AddPylonArea(mapinfo *mymap, OBJ *a, int playernr)
 	AddBuildsInPower(parea, playernr);
 }
 //=================================
-void DelPylonArea(mapinfo *mymap, OBJ *a, int playernr)
+void DelPylonArea(StarMapInfo *mymap, OBJ *a, int playernr)
 {
 	int xp, yp, i, j, offset, x, y;
 	unsigned char *parea = mymap->pylonarea[playernr];
@@ -174,7 +174,7 @@ void DelBuildsFromPower(unsigned char *pylonarea, int playernr)
 	}
 }
 //=================================
-void CheckBuildForPower(mapinfo *mymap, OBJ *a, int playernr)
+void CheckBuildForPower(StarMapInfo *mymap, OBJ *a, int playernr)
 {
 	int i, j, nrofpower, xp, yp, xs, ys;
 	unsigned char *parea = mymap->pylonarea[playernr];
@@ -203,7 +203,7 @@ void CheckBuildForPower(mapinfo *mymap, OBJ *a, int playernr)
 		}
 }
 //=================================
-void CheckProtossBuildsForPower(mapinfo *mymap)
+void CheckProtossBuildsForPower(StarMapInfo *mymap)
 {
 	int i;
 	unsigned char *parea;

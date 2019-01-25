@@ -297,7 +297,7 @@ int	 campaignselect(void);
 int	 xcampaignselect(void);
 int	 glu_loadgame(void);
 int	 glu_loadreplay(void);
-int	 glu_briefing(int race,int networksingle,mapinfo *map,char *prefix_campaignpath, int skipmissionbutton);
+int	 glu_briefing(int race,int networksingle,StarMapInfo *map,char *prefix_campaignpath, int skipmissionbutton);
 int	 mainmenu(void);
 int	 glu_login(void);
 int	 selectmapmenu(void);
@@ -340,7 +340,7 @@ MENUSTR *showtitle(void);
 void cleartitle(MENUSTR *menu);
 void MenuDisappear(MENUSTR *allmenus,MENUAPPEAR *items,MENUSTR *staticmenu);
 MENUAPPEAR *MenuAppear(MENUSTR *allmenus,int elemnr,MENUFIRSTDATA *menudata,MENUSTR *staticmenu);
-void glu_score(mapinfo *info);
+void glu_score(StarMapInfo *info);
 void updatescoremenu(void);
 int	 glu_conn(void);
 int	 glu_join(FORCE_SLOTS *slots);
@@ -363,7 +363,7 @@ int	 xputokmenu(MENUDRAW *menudraw,MENUPARAMS *menuparams);
 int	 xputokcancelmenu(MENUDRAW *menudraw,MENUPARAMS *menuparams);
 void testmenu(void);
 void createtemptables(void);
-void copytempowners(mapinfo *testmap);
+void copytempowners(StarMapInfo *testmap);
 void preparegameconf_ums(void);
 
 

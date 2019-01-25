@@ -45,7 +45,7 @@ char			TRIG_inittriggers;
 char			*TRIG_commentstr;
 
 //=================================================
-void Remove_Triggers(mapinfo *info)
+void Remove_Triggers(StarMapInfo *info)
 {
 	if (info)
 	{
@@ -66,7 +66,7 @@ void Remove_Triggers(mapinfo *info)
 	TRIG_Portrait = SC_NOUNITNR;
 }
 //=================================================
-int AllGroups_Prepare(mapinfo *info, MAP_TRIGS *temptrg)
+int AllGroups_Prepare(StarMapInfo *info, MAP_TRIGS *temptrg)
 {
 	int i;
 	int actiononplayers = 0;
@@ -81,7 +81,7 @@ int AllGroups_Prepare(mapinfo *info, MAP_TRIGS *temptrg)
 	return(actiononplayers);
 }
 //=================================================
-int OneGroup_Prepare(mapinfo *info, int i, int actionfromplayers)
+int OneGroup_Prepare(StarMapInfo *info, int i, int actionfromplayers)
 {
 	int j, actiononplayers = 0;
 	switch (i)
@@ -457,7 +457,7 @@ void Init_Triggers_Variables(int cnttrg)
 	memset(ALLTRIG_pause, 0, cnttrg * sizeof(int));
 }
 //=================================================
-void First_Triggers_Prepare(mapinfo *info, int cnttrg, MAP_TRIGS *trigs)
+void First_Triggers_Prepare(StarMapInfo *info, int cnttrg, MAP_TRIGS *trigs)
 {
 	int i;
 	MAP_TRIGS	*temptrg;
@@ -472,7 +472,7 @@ void First_Triggers_Prepare(mapinfo *info, int cnttrg, MAP_TRIGS *trigs)
 	Init_Triggers_Variables(cnttrg);
 }
 //=================================================
-void Triggers_Parse(mapinfo *info, int cnttrg, MAP_TRIGS *trigs, int deltatick)
+void Triggers_Parse(StarMapInfo *info, int cnttrg, MAP_TRIGS *trigs, int deltatick)
 {
 	int i, j, mask;
 	MAP_TRIGS	*temptrg;
@@ -528,7 +528,7 @@ void Triggers_Parse(mapinfo *info, int cnttrg, MAP_TRIGS *trigs, int deltatick)
 	TRIG_active = 0;
 }
 //=================================================
-int Condition_Prepare(mapinfo *info, MAP_TRIGS *temptrg, int trig_nr, int playernr, int playernrmask, int deltatick)
+int Condition_Prepare(StarMapInfo *info, MAP_TRIGS *temptrg, int trig_nr, int playernr, int playernrmask, int deltatick)
 {
 	int i, j, mask, allcond, applycond, nrofunits, nrofunits2, totalcond, conddone, nrofresources, locnr;
 	int switchnr, tick, ownactiononplayers, opponents, remainopponents;
@@ -721,7 +721,7 @@ int Condition_Prepare(mapinfo *info, MAP_TRIGS *temptrg, int trig_nr, int player
 	return(allcond);
 }
 //=================================================
-int Action_Prepare(mapinfo *info, MAP_TRIGS *temptrg, int trig_nr, int playernr, int playernrmask)
+int Action_Prepare(StarMapInfo *info, MAP_TRIGS *temptrg, int trig_nr, int playernr, int playernrmask)
 {
 	int err, i, j, jj, mask, mask2, triggcnt, triggset, locnr, unitnr, sx, sy;
 	int waveid, soundid, deltapaused, waittime, switchnr, nrofunits;
@@ -1595,12 +1595,12 @@ int Action_Prepare(mapinfo *info, MAP_TRIGS *temptrg, int trig_nr, int playernr,
 	return(triggcnt == TRIG_MAX_ACTIONS);
 }
 //=================================================
-int TRG_RunAIScript(mapinfo *info, int aiscriptnr, int playernr, int playernrmask)
+int TRG_RunAIScript(StarMapInfo *info, int aiscriptnr, int playernr, int playernrmask)
 {
 	return(TRG_RunAIScriptAtLocation(info, aiscriptnr, playernr, playernrmask, -1));
 }
 //=================================================
-int TRG_RunAIScriptAtLocation(mapinfo *info, int aiscriptnr, int playernr, int playernrmask, int locnr)
+int TRG_RunAIScriptAtLocation(StarMapInfo *info, int aiscriptnr, int playernr, int playernrmask, int locnr)
 {
 	char statpl[MAXPLAYERS];
 	int pl, i, j, haverescued, magenr, xpos, ypos, nrofunits, nrofunits2, dist, mindistance;

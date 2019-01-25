@@ -8,18 +8,18 @@
 #define ADDUPGRADE 1
 #define DELUPGRADE -1
 
-void AddUpgradeTree(mapinfo *loadedmap,int nplayer,int upgrade_id);
-void SetTempUpgradeTree(mapinfo *loadedmap,int nplayer,int upgrade_id,int incrvar);
-int	 GetTempUpgradeTree(mapinfo *loadedmap,int nplayer,int upgrade_id);
-int	 GetUpgradeTree(mapinfo *loadedmap,int nplayer,int upgrade_id);
-int	 GetMaxUpgradeTree(mapinfo *loadedmap,int nplayer,int upgrade_id);
+void AddUpgradeTree(StarMapInfo *loadedmap,int nplayer,int upgrade_id);
+void SetTempUpgradeTree(StarMapInfo *loadedmap,int nplayer,int upgrade_id,int incrvar);
+int	 GetTempUpgradeTree(StarMapInfo *loadedmap,int nplayer,int upgrade_id);
+int	 GetUpgradeTree(StarMapInfo *loadedmap,int nplayer,int upgrade_id);
+int	 GetMaxUpgradeTree(StarMapInfo *loadedmap,int nplayer,int upgrade_id);
 
-void AddTechTree(mapinfo *loadedmap,int nplayer,int tech_id);
-void SetTempTechTree(mapinfo *loadedmap,int nplayer,int tech_id,int incrvar);
-int	 GetTempTechTree(mapinfo *loadedmap,int nplayer,int tech_id);
-int	 GetTechTree(mapinfo *loadedmap,int nplayer,int tech_id);
-int	 GetMaxTechTree(mapinfo *loadedmap,int nplayer,int tech_id);
-int	 GetUnitRestrictions(mapinfo *loadedmap,int nplayer,SCUNIT SC_Unit);
+void AddTechTree(StarMapInfo *loadedmap,int nplayer,int tech_id);
+void SetTempTechTree(StarMapInfo *loadedmap,int nplayer,int tech_id,int incrvar);
+int	 GetTempTechTree(StarMapInfo *loadedmap,int nplayer,int tech_id);
+int	 GetTechTree(StarMapInfo *loadedmap,int nplayer,int tech_id);
+int	 GetMaxTechTree(StarMapInfo *loadedmap,int nplayer,int tech_id);
+int	 GetUnitRestrictions(StarMapInfo *loadedmap,int nplayer,SCUNIT SC_Unit);
 
 
 

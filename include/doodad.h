@@ -23,7 +23,7 @@
 
 
 void UnloadDoodadList(mylist *mapdoodads);
-void CreateDoodadsFromLists(mylist *mapdoodads,mapinfo *loadedmap);
+void CreateDoodadsFromLists(mylist *mapdoodads,StarMapInfo *loadedmap);
 int	 GetDoodadState(struct OBJ *a);
 void SetDoodadState(struct OBJ *a,int state);
 void DoodadChangeState(OBJ *a,int state);

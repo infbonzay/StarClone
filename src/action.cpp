@@ -546,7 +546,7 @@ int CreateNuke(OBJ *a,int x,int y)
 	return(-1);
 }
 //=================================
-void addremoveuniteffectfrommap(OBJ *a,int plusminus,mapinfo *testmap)
+void addremoveuniteffectfrommap(OBJ *a,int plusminus,StarMapInfo *testmap)
 {
 	int i,j,x,y,sx1,sy1,sx2,sy2,mageobjnr;
 	x = GetOBJx(a);

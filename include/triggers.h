@@ -223,18 +223,18 @@ int CheckForUnit(int (*ConditionFunction)(int *, int),
 int	 Triggers_GetPause(void);
 void Triggers_SetPause(int pauseval);
 
-void First_Triggers_Prepare(mapinfo *info,int cnttrg,MAP_TRIGS *trigs);
-void Triggers_Parse(mapinfo *info,int cnttrg,MAP_TRIGS *trigs,int ticks);
-void Remove_Triggers(mapinfo *info);
+void First_Triggers_Prepare(StarMapInfo *info,int cnttrg,MAP_TRIGS *trigs);
+void Triggers_Parse(StarMapInfo *info,int cnttrg,MAP_TRIGS *trigs,int ticks);
+void Remove_Triggers(StarMapInfo *info);
 
-int	 AllGroups_Prepare(mapinfo *info,MAP_TRIGS *temptrg);
-int	 OneGroup_Prepare(mapinfo *info,int grouplist,int actionfromplayers);
+int	 AllGroups_Prepare(StarMapInfo *info,MAP_TRIGS *temptrg);
+int	 OneGroup_Prepare(StarMapInfo *info,int grouplist,int actionfromplayers);
 
-int	 Condition_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int trig_nr,int playernr,int playernrmask,int deltatick);
-int	 Action_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int trig_nr,int playernr,int playernrmask);
+int	 Condition_Prepare(StarMapInfo *info,MAP_TRIGS *temptrg,int trig_nr,int playernr,int playernrmask,int deltatick);
+int	 Action_Prepare(StarMapInfo *info,MAP_TRIGS *temptrg,int trig_nr,int playernr,int playernrmask);
 
-int	 TRG_RunAIScript(mapinfo *info,int aiscriptnr,int playernr,int playernrmask);
-int	 TRG_RunAIScriptAtLocation(mapinfo *info,int aiscriptnr,int playernr,int playernrmask,int locnr);
+int	 TRG_RunAIScript(StarMapInfo *info,int aiscriptnr,int playernr,int playernrmask);
+int	 TRG_RunAIScriptAtLocation(StarMapInfo *info,int aiscriptnr,int playernr,int playernrmask,int locnr);
 
 void AI_SetSearchForAtacks(int playernr);
 

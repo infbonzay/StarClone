@@ -90,7 +90,7 @@ int main(int c, char **parm, char **env)
 	int i, err, firsttimelaunch = 0, videook = 0;
 	int status, status2, gamequitstatus, mission_id, selected_id, missionfrommenu, runonemission;
 	char temppath[MAXFILENAMESYMBOLS];
-	mapinfo *testmap;
+	StarMapInfo *testmap;
 #ifdef TESTMALLOC
 	char *testmem = (char *)wmalloc(16);
 	wfree(testmem);
@@ -323,8 +323,8 @@ int main(int c, char **parm, char **env)
 							}
 							clearplayersconfig();
 							clearplayernames();
-							testmap = (mapinfo *)wmalloc(sizeof(mapinfo));
-							memset(testmap, 0, sizeof(mapinfo));
+							testmap = (StarMapInfo *)wmalloc(sizeof(StarMapInfo));
+							memset(testmap, 0, sizeof(StarMapInfo));
 
 							err = starmap_info(SELECTMAP, NULL, testmap);
 							if (err)
@@ -409,8 +409,8 @@ int main(int c, char **parm, char **env)
 								do {
 									if (GAMETYPE == MAP_GAMETYPE_USEMAPSETTINGS)
 										preparegameconf_ums();
-									testmap = (mapinfo *)wmalloc(sizeof(mapinfo));
-									memset(testmap, 0, sizeof(mapinfo));
+									testmap = (StarMapInfo *)wmalloc(sizeof(StarMapInfo));
+									memset(testmap, 0, sizeof(StarMapInfo));
 
 									err = starmap_info(NULL, SELECTMAP, testmap);
 									if (!err)
@@ -892,7 +892,7 @@ void clearactionBITS(void)
 }
 //==========================
 #define MOUSEDESTELEVATION	255
-int gogame(mapinfo *info)
+int gogame(StarMapInfo *info)
 {
 	int resettimerforplayers, prevgameticks = -1;
 	int activatedwaittimer;
@@ -1671,7 +1671,7 @@ void ShowGameStatusMenu(int *prevgameticks)
 
 }
 //===================================================
-int IfTimeForTrigger(mapinfo *info, int *prevgameticks)
+int IfTimeForTrigger(StarMapInfo *info, int *prevgameticks)
 {
 	int gameticks;
 	gameticks = mytimer.GetCurrentGameTimeTick();

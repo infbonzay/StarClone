@@ -2,7 +2,7 @@
 
 #define _SC_STARMAP_H
 
-struct mapinfo;
+struct StarMapInfo;
 
 #include "defs.h"
 #include "defsmodes.h"
@@ -389,7 +389,7 @@ struct locations
 };
 #pragma pack(pop)
 //=====================================================
-struct mapinfo
+struct StarMapInfo
 {
 	unsigned int secondsplayed;
 	char		played_as_nr;
@@ -509,41 +509,41 @@ struct mapinfo
 #define UNITSTAT_PRODUCING		1
 #define UNITSTAT_HAVE			2
 
-void add_unit_stat(mapinfo *info,int stattype,int playernr,SCUNIT SC_Unit);
-void sub_unit_stat(mapinfo *info,int stattype,int playernr,SCUNIT SC_Unit);
+void add_unit_stat(StarMapInfo *info,int stattype,int playernr,SCUNIT SC_Unit);
+void sub_unit_stat(StarMapInfo *info,int stattype,int playernr,SCUNIT SC_Unit);
 
 /* reads map from unpacked chk */
-int	 read_starmap(const char *fname, mapinfo * ,int flags);
+int	 read_starmap(const char *fname, StarMapInfo * ,int flags);
 /* unpacks and reads map */
-int	 load_starmap( const char *mapfile,char *fname, mapinfo * ,GAMECONF *conf);
-void print_mapinfo( mapinfo *info );
-void unload_starmap(mapinfo *info );
-void unload_starmapallocated(mapinfo *info );
-int	 starmap_info( char *path,const char *fname, mapinfo *info);
+int	 load_starmap( const char *mapfile,char *fname, StarMapInfo * ,GAMECONF *conf);
+void print_StarMapInfo( StarMapInfo *info );
+void unload_starmap(StarMapInfo *info );
+void unload_starmapallocated(StarMapInfo *info );
+int	 starmap_info( char *path,const char *fname, StarMapInfo *info);
 char createcolors8x8(char *bytes32x32,int pos);
 int *createminimapcolorsfrom(char *tiles,int tilecnt);
-void CreateDefaultAliance(mapinfo *info);
-void CreateAliance(mapinfo *mapinfo,int player1,int player2,int flag);
-void CreateVision(mapinfo *mapinfo,int player1,int player2,int flag);
-void CreateDefaultVision(mapinfo *mapinfo);
-void starmap_forceslots( mapinfo *info,FORCE_SLOTS *fslots,int gametype);
+void CreateDefaultAliance(StarMapInfo *info);
+void CreateAliance(StarMapInfo *StarMapInfo,int player1,int player2,int flag);
+void CreateVision(StarMapInfo *StarMapInfo,int player1,int player2,int flag);
+void CreateDefaultVision(StarMapInfo *StarMapInfo);
+void starmap_forceslots( StarMapInfo *info,FORCE_SLOTS *fslots,int gametype);
 int	 GetForceFirstEmptySlot(FORCE_SLOTS *fslots);
-int	 GetPlayersInForceNr(mapinfo *info,int forcenr);
+int	 GetPlayersInForceNr(StarMapInfo *info,int forcenr);
 int	 GetPlayedPlayers(void);
-void observers_prepare(mapinfo *info);
-void randomizelocations(mapinfo *loadedmap);
-void randomizerace(mapinfo *loadedmap,GAMECONF *conf);
+void observers_prepare(StarMapInfo *info);
+void randomizelocations(StarMapInfo *loadedmap);
+void randomizerace(StarMapInfo *loadedmap,GAMECONF *conf);
 void randomizecolor(void);
 
-int	 GetPlayableGameNumber(mapinfo *info);
+int	 GetPlayableGameNumber(StarMapInfo *info);
 void free_missionobjectives(void);
 void fill_missionobjectives(const char *missiontxt);
-LEADERBOARD *AddLeaderBoard(int leaderboardnr,int leaderboardtype,mapinfo *info,\
+LEADERBOARD *AddLeaderBoard(int leaderboardnr,int leaderboardtype,StarMapInfo *info,\
 							int actiononplayer,int unittype,int nrofunits,int stringID);
-void CalcLeaderBoards(mapinfo *info);
-void ShowLeaderBoards(mapinfo *info,int x,int y);
-void ShowCountDownTimer(mapinfo *info,int x,int y);
-char *getmapSTR(mapinfo *testmap,int nrofstr);
+void CalcLeaderBoards(StarMapInfo *info);
+void ShowLeaderBoards(StarMapInfo *info,int x,int y);
+void ShowCountDownTimer(StarMapInfo *info,int x,int y);
+char *getmapSTR(StarMapInfo *testmap,int nrofstr);
 
 
 extern mylist map_units,map_doodads;

@@ -26,13 +26,13 @@
 #include "walk.h"
 #include "maps.h"
 
-mapinfo map;
+StarMapInfo map;
 float factorx, factory;
 int sizemaprectx, sizemaprecty;
 ScreenMapInfo *screenMapInfo;
 RevealMap *revealMap;
 //==============================
-void CreateMiniMapPixels(mapinfo *map)
+void CreateMiniMapPixels(StarMapInfo *map)
 {
 	MAXXMAP = map->map_width;
 	MAXYMAP = map->map_height;
@@ -76,7 +76,7 @@ void minimap_showobj(OBJ *a)
 	}
 }
 //==============================================
-void getminimapcoord(mapinfo *info, int x, int y, int *xm, int *ym)
+void getminimapcoord(StarMapInfo *info, int x, int y, int *xm, int *ym)
 {
 	*xm = (int)((x*factorx / SIZESPRLANSHX) + screenMapInfo->MinimapStartX) + screenMapInfo->MinimapPosX;
 	*ym = (int)((y*factory / SIZESPRLANSHY) + screenMapInfo->MinimapStartY) + screenMapInfo->MinimapPosY;
@@ -902,7 +902,7 @@ int CorrectRaceType(int ret, int playernr)
 	}
 }
 //==================================
-int getplayerrace(mapinfo *map, int playernr)
+int getplayerrace(StarMapInfo *map, int playernr)
 {
 	int ret, i;
 	ret = CorrectRaceType(map->pl_race[playernr], playernr);

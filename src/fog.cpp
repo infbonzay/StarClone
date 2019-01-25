@@ -279,7 +279,7 @@ void calculatefog(int bitplayers)
 	}
 }
 //================================================
-void ApplyFogMask(mapinfo *info, int playernr)
+void ApplyFogMask(StarMapInfo *info, int playernr)
 {
 	int i, totaltiles;
 	unsigned char mask;

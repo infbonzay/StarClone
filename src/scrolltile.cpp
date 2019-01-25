@@ -2,7 +2,7 @@
 #include "scrolltile.h"
 
 //=================================
-void scrollpal(mapinfo *map)
+void scrollpal(StarMapInfo *map)
 {
 	switch (map->terrain)
 	{

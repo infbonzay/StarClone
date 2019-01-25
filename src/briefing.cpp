@@ -27,7 +27,7 @@ BRIEF_SLOTS		brief_slots[MAX_BRIEF_SLOTS];
 #define			BRIEFTEXT		15
 #define			BRIEFMISSION	16
 //=================================================
-void First_Briefing_Prepare(mapinfo *info, int e, char *path, PCX *pcxs)
+void First_Briefing_Prepare(StarMapInfo *info, int e, char *path, PCX *pcxs)
 {
 	int i;
 	MAP_TRIGS	*temptrg;
@@ -49,7 +49,7 @@ void First_Briefing_Prepare(mapinfo *info, int e, char *path, PCX *pcxs)
 	brief_counter = mytimer.CreateTickCounter();
 }
 //=================================================
-void Briefing_Parse(mapinfo *info, MENUSTR *allmenus, int deltatick)
+void Briefing_Parse(StarMapInfo *info, MENUSTR *allmenus, int deltatick)
 {
 	int pause;
 	TIMER_TICK tick;
@@ -79,7 +79,7 @@ void Briefing_Parse(mapinfo *info, MENUSTR *allmenus, int deltatick)
 		drawportraitinslot(allmenus, i);
 }
 //=================================================
-int BCondition_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int actiononplayers,MENUSTR *allmenus)
+int BCondition_Prepare(StarMapInfo *info,MAP_TRIGS *temptrg,int actiononplayers,MENUSTR *allmenus)
 {
 	int i,applycond,allcond;
 	if (!Briefing_GetPause())
@@ -112,7 +112,7 @@ int BCondition_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int actiononplayers,MENU
 	return(0);//no conditions
 }
 //=================================================
-int BAction_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int actiononplayers,int condnr,MENUSTR *allmenus)
+int BAction_Prepare(StarMapInfo *info,MAP_TRIGS *temptrg,int actiononplayers,int condnr,MENUSTR *allmenus)
 {
 	int err,i,triggcnt,triggset,needbreakparse=0;
 	int sx,sy,maxysymbsize,maxlines,fontnr,playtime;
@@ -281,7 +281,7 @@ int BAction_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int actiononplayers,int con
 	return(triggcnt==TRIG_MAX_ACTIONS);
 }
 //=================================================
-void Remove_Briefing(mapinfo *info)
+void Remove_Briefing(StarMapInfo *info)
 {
 
 	if (info && info->BRIEFS)
@@ -352,7 +352,7 @@ void StopTransmission(MENUSTR *allmenus,int slotnr)
 	}
 }
 //=================================================
-void Reload_Briefing(mapinfo *info,MENUSTR *allmenus)
+void Reload_Briefing(StarMapInfo *info,MENUSTR *allmenus)
 {
 	int i,j;
 	MAP_TRIGS	*temptrg;

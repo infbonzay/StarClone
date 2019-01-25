@@ -44,7 +44,7 @@ int CanBuildForResource(int xb,int yb,int xsize,int ysize,
 void SetMarkOn32(int xb,int yb,int xsize,int ysize,unsigned char *usedmap,unsigned char value);
 void AddMarkOn32(int xb,int yb,int xsize,int ysize,unsigned char *usedmap);
 void DelMarkOn32(int xb,int yb,int xsize,int ysize,unsigned char *usedmap);
-void SetObjWalk8(mapinfo *loadedmap,OBJ *a,int flag);
+void SetObjWalk8(StarMapInfo *loadedmap,OBJ *a,int flag);
 void SetMapWalk8(int x,int y,int sx,int sy,int flag);
 int	 GetMapWalk8(int x,int y,int sx,int sy);
 

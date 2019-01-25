@@ -68,7 +68,7 @@ struct AROUNDBUILD
 void SetAroundTable(void);
 int CreateNuke(OBJ *a,int x,int y);
 
-void addremoveuniteffectfrommap(OBJ *a,int plusminus,mapinfo *testmap);
+void addremoveuniteffectfrommap(OBJ *a,int plusminus,StarMapInfo *testmap);
 int	 RepairUnit(int nplayer,OBJ *scv,OBJ *a);
 void UnitBeginATACK(OBJ *a,OBJ *destobj);
 void UnitEndATACK(OBJ *a);

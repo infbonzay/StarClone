@@ -1062,11 +1062,11 @@ int BRIEFING_TRANSLUCENCY = 138;
 //==========================================
 int BriefingTriggersCheck(MENUSTR *allmenus, void *data)
 {
-	mapinfo *info;
+	StarMapInfo *info;
 	if (menutimerupdate)
 	{
 		menutimerupdate = 0;
-		info = (mapinfo *)data;
+		info = (StarMapInfo *)data;
 		Briefing_Parse(info, allmenus, 1000 / (60 / TIMETOMAINMENUUPDATE));
 	}
 	return(0);
@@ -1141,7 +1141,7 @@ int CheckOtherPlayers(MENUSTR *allmenus, void *data)
 }
 //==========================================
 #define FRAMEPCXS	8
-int glu_briefing(int race, int networksingle, mapinfo *info, char *prefix_campaignpath, int skipmissionbutton)
+int glu_briefing(int race, int networksingle, StarMapInfo *info, char *prefix_campaignpath, int skipmissionbutton)
 {
 	int retstatus, exitstatus, i, repeat, e, err;
 	int totalpcx;
@@ -1446,7 +1446,7 @@ void updatescoremenu(void)
 	}
 }
 //==========================================
-void cleartempscore(mapinfo *info)
+void cleartempscore(StarMapInfo *info)
 {
 	int i, pl;
 	for (pl = 0;pl < force_slots.realplayers;pl++)
@@ -1461,7 +1461,7 @@ void cleartempscore(mapinfo *info)
 	gluscore->mainmenuflags &= ~DIALOGBIN_FLAGS_NONEEDRECALCINFO;
 }
 //==========================================
-void initscoreinfo(mapinfo *info, int fromoptid)
+void initscoreinfo(StarMapInfo *info, int fromoptid)
 {
 	int i, j, pl;
 	char txt[90];
@@ -1487,7 +1487,7 @@ void initscoreinfo(mapinfo *info, int fromoptid)
 	}
 }
 //==========================================
-void setmaxscore(mapinfo *info)
+void setmaxscore(StarMapInfo *info)
 {
 	int i, j, k, val, pl;
 	for (pl = 0;pl < force_slots.realplayers;pl++)
@@ -1525,7 +1525,7 @@ void setmaxscore(mapinfo *info)
 //==========================================
 int SCORE_TRANSLUCENCY[3][2] = { {147,9},{9,95},{9,9} };
 int races_clan[3] = { NETWORK_TBL_ZERGCLANNAMES,NETWORK_TBL_TERRANCLANNAMES,NETWORK_TBL_PROTOSSCLANNAMES };
-void glu_score(mapinfo *info)
+void glu_score(StarMapInfo *info)
 {
 	int retstatus, repeat, i, pl, selectedlist;
 	PCX backgnd, fontpcx, optbtn;
@@ -2618,7 +2618,7 @@ char test_iowner[MAXPLAYERS];
 char test_owner[MAXPLAYERS];
 char test_race[MAXPLAYERS];
 //==========================================
-void copytempowners(mapinfo *testmap)
+void copytempowners(StarMapInfo *testmap)
 {
 	int i;
 	starmap_forceslots(testmap, &force_slots, MAP_GAMETYPE_USEMAPSETTINGS);
@@ -2777,14 +2777,14 @@ void initselectmaplists(MENUSTR *allmenus)
 static unsigned char convpalformenumap[MAXTERRAINTYPES][256];
 static unsigned char convpal_loaded[MAXTERRAINTYPES];
 //==========================================
-int getmapinfo(MENUSTR *allmenus, char *filename, int haveslots)
+int getStarMapInfo(MENUSTR *allmenus, char *filename, int haveslots)
 {
 	char *message;
 	char temptext[60];
 	char temptext2[60];
 	int i;
-	mapinfo *testmap = (mapinfo *)wmalloc(sizeof(mapinfo));
-	memset(testmap, 0, sizeof(mapinfo));
+	StarMapInfo *testmap = (StarMapInfo *)wmalloc(sizeof(StarMapInfo));
+	memset(testmap, 0, sizeof(StarMapInfo));
 	int err = starmap_info(NULL, filename, testmap);
 	if (!err)
 	{
@@ -2908,7 +2908,7 @@ void showinfofromlistitem(MENUSTR *allmenus, int menuitemnr, int listnr)
 				getcwd(mapfile, sizeof(mapfile) - 1);
 				strncat(mapfile, "/", sizeof(mapfile) - 1);
 				strncat(mapfile, &mes[2], sizeof(mapfile) - 1);
-				err = getmapinfo(allmenus, mapfile, haveslots);
+				err = getStarMapInfo(allmenus, mapfile, haveslots);
 			}
 		}
 	}
@@ -3112,7 +3112,7 @@ int selectmapmenu(void)
 	deltextitem(selmap, 9, 1);
 	deltextitem(selmap, 14, 1);
 	addtextitem(selmap, 8, ISLABELCENTER, 405, 57, 205, 42, 0, 0, NULL, IDFONT16, 20, MTEXTCOLOR1);//mapname
-	addtextitem(selmap, 9, ISLABELCENTER, 405, 226, 205, 86, 0, 0, NULL, IDFONT10, 10, MTEXTCOLOR1);//mapinfo
+	addtextitem(selmap, 9, ISLABELCENTER, 405, 226, 205, 86, 0, 0, NULL, IDFONT10, 10, MTEXTCOLOR1);//StarMapInfo
 	addtextitem(selmap, 14, ISLABELCENTER, 405, 310, 209, 20, 0, 0, NULL, IDFONT16, 20, MTEXTCOLOR1);//mapsize,etc
 	delmenuitem(selmap, 10);
 	addimagearray(selmap, 10, 446, 98, MINIMAPW, MINIMAPW);
@@ -3403,7 +3403,7 @@ int glu_creat(FORCE_SLOTS *fslots)
 	deltextitem(glucreat, 9, 1);
 	deltextitem(glucreat, 14, 1);
 	addtextitem(glucreat, 8, ISLABELCENTER, 405, 57, 205, 42, 0, 0, NULL, IDFONT16, 20, MTEXTCOLOR1);//mapname
-	addtextitem(glucreat, 9, ISLABELCENTER, 405, 226, 205, 86, 0, 0, NULL, IDFONT10, 10, MTEXTCOLOR1);//mapinfo
+	addtextitem(glucreat, 9, ISLABELCENTER, 405, 226, 205, 86, 0, 0, NULL, IDFONT10, 10, MTEXTCOLOR1);//StarMapInfo
 	addtextitem(glucreat, 14, ISLABELCENTER, 405, 310, 209, 20, 0, 0, NULL, IDFONT16, 20, MTEXTCOLOR1);//mapsize,etc
 	delmenuitem(glucreat, 10);
 	addimagearray(glucreat, 10, 446, 98, 128, 128);
@@ -3475,8 +3475,8 @@ int glu_creat(FORCE_SLOTS *fslots)
 						CHECKSUMMMAP = mkchecksumm(SELECTMAP);
 						FILESIZEMAP = FILElength(SELECTMAP);
 
-						mapinfo *testmap = (mapinfo *)wmalloc(sizeof(mapinfo));
-						memset(testmap, 0, sizeof(mapinfo));
+						StarMapInfo *testmap = (StarMapInfo *)wmalloc(sizeof(StarMapInfo));
+						memset(testmap, 0, sizeof(StarMapInfo));
 
 						errmap = starmap_info(NULL, SELECTMAP, testmap);
 						if (!errmap)

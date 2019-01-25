@@ -61,7 +61,7 @@ char terraintypes[MAXTERRAINTYPES][10] =
 		"Twilight"
 };
 //=====================================================
-void add_unit_stat(mapinfo *info, int stattype, int playernr, SCUNIT SC_Unit)
+void add_unit_stat(StarMapInfo *info, int stattype, int playernr, SCUNIT SC_Unit)
 {
 	if (TRIG_ChangeStat)
 	{
@@ -81,7 +81,7 @@ void add_unit_stat(mapinfo *info, int stattype, int playernr, SCUNIT SC_Unit)
 	}
 }
 //=====================================================
-void sub_unit_stat(mapinfo *info, int stattype, int playernr, SCUNIT SC_Unit)
+void sub_unit_stat(StarMapInfo *info, int stattype, int playernr, SCUNIT SC_Unit)
 {
 	if (TRIG_ChangeStat)
 	{
@@ -363,7 +363,7 @@ void prepare_minimap(unsigned short *map, int w, int h, char *minimap,
 }
 
 //=================================================
-int load_terrain_tiles(mapinfo *info,
+int load_terrain_tiles(StarMapInfo *info,
 	int terrain, char **tiles, int *tilecount,
 	char *outpal, unsigned short *map, walkflags32 **walkflags,
 	int w, int h, char *minimap,
@@ -534,7 +534,7 @@ int load_terrain_tiles(mapinfo *info,
 #define MAXBLOCK (1024*1024)
 //=================================================
 mylist map_units, map_doodads;
-int read_starmap(HANDLE mpq, const char *filename, mapinfo *info, int flags)
+int read_starmap(HANDLE mpq, const char *filename, StarMapInfo *info, int flags)
 {
 	int i, j, err, testplay, trgfilesize;
 	HANDLE f;
@@ -561,7 +561,7 @@ int read_starmap(HANDLE mpq, const char *filename, mapinfo *info, int flags)
 
 
 	memset(name, 0, 5);
-	memset(info, 0, sizeof(mapinfo));
+	memset(info, 0, sizeof(StarMapInfo));
 	memset(info->pl_startlocplayernr, -1, MAXPLAYERS);
 
 	testplay = flags & STARMAP_LOADFORINFO;
@@ -1131,7 +1131,7 @@ char player_races[MAXPLAYERS][20] = {
 };
 
 //=================================================
-int get_forces(mapinfo *info, int gametype)
+int get_forces(StarMapInfo *info, int gametype)
 {
 	int i, j, forces, realforces, found, nrpl;
 	char force_array[PLAYEDPLAYERS];
@@ -1179,7 +1179,7 @@ int get_forces(mapinfo *info, int gametype)
 	return(realforces);
 }
 //=================================================
-void print_mapinfo(mapinfo *info)
+void print_StarMapInfo(StarMapInfo *info)
 {
 	int i;
 
@@ -1218,7 +1218,7 @@ void print_mapinfo(mapinfo *info)
 //=================================================
 char tempfn[1024];
 //=================================================
-int load_starmap(const char *mapfile, char *fname, mapinfo *info, GAMECONF *conf)
+int load_starmap(const char *mapfile, char *fname, StarMapInfo *info, GAMECONF *conf)
 {
 	HANDLE mpq;
 	int result, i, j, ii, jj, tile32, err;
@@ -1330,7 +1330,7 @@ int load_starmap(const char *mapfile, char *fname, mapinfo *info, GAMECONF *conf
 			return(3);
 		}
 	}
-	//	  print_mapinfo(info);
+	//	  print_StarMapInfo(info);
 	err = loadpal(info->terrain, info->palette);
 	if (err)
 	{
@@ -1435,7 +1435,7 @@ int load_starmap(const char *mapfile, char *fname, mapinfo *info, GAMECONF *conf
 	return(0);
 }
 //=================================================
-void unload_starmapallocated(mapinfo *info)
+void unload_starmapallocated(StarMapInfo *info)
 {
 	Remove_Briefing(info);
 	Remove_Triggers(info);
@@ -1493,7 +1493,7 @@ void unload_starmapallocated(mapinfo *info)
 	RemoveUnitsFromLists(&map_units);
 }
 //=================================================
-void unload_starmap(mapinfo *info)
+void unload_starmap(StarMapInfo *info)
 {
 	int i, j, k;
 
@@ -1648,14 +1648,14 @@ void unload_starmap(mapinfo *info)
 	regenObjMap = NULL;
 }
 //=================================================
-void CreateAliance(mapinfo *info, int player1, int player2, int flag)
+void CreateAliance(StarMapInfo *info, int player1, int player2, int flag)
 {
 	//	  DEBUGMESSCR("set alince status pl1=%d pl2=%d flag=%d\n",player1,player2,flag);
 	info->pl_allied[player1][player2] = flag;
 	//		info->pl_allied[player2][player1]=flag;
 }
 //=================================================
-void CreateDefaultAliance(mapinfo *info)
+void CreateDefaultAliance(StarMapInfo *info)
 {
 	int i, j;
 	for (i = 0;i < MAXPLAYERS;i++)
@@ -1669,7 +1669,7 @@ void CreateDefaultAliance(mapinfo *info)
 					info->pl_allied[i][j] = ENEMYOBJ;
 }
 //=================================================
-int CreateBitsVision(mapinfo *info, int player)
+int CreateBitsVision(StarMapInfo *info, int player)
 {
 	int i, allbits = 0;
 	for (i = 0;i < PLAYEDPLAYERS;i++)
@@ -1683,14 +1683,14 @@ int CreateBitsVision(mapinfo *info, int player)
 //=================================================
 //player see player2
 //=================================================
-void CreateVision(mapinfo *info, int player, int seeplayer2, int flag)
+void CreateVision(StarMapInfo *info, int player, int seeplayer2, int flag)
 {
 	//	  unsigned char bits=0;
 	info->pl_vision[player][seeplayer2] = flag;
 	info->pl_visionbits[player] = CreateBitsVision(info, player);
 }
 //=================================================
-void CreateDefaultVision(mapinfo *info)
+void CreateDefaultVision(StarMapInfo *info)
 {
 	int i, ii, j, k, nrpl, forces;
 	signed char sharedvision[MAXPLAYERS];
@@ -1833,7 +1833,7 @@ int *createminimapcolorsfrom(char *tiles, int tilecnt)
 	return(minimapcolors);
 }
 //=================================================
-int starmap_info(char *pathname, const char *fname, mapinfo *info)
+int starmap_info(char *pathname, const char *fname, StarMapInfo *info)
 {
 	HANDLE mpq;
 	int result;
@@ -1859,7 +1859,7 @@ int starmap_info(char *pathname, const char *fname, mapinfo *info)
 	return(0);
 }
 //=================================================
-void randomizerace(mapinfo *info, GAMECONF *conf)
+void randomizerace(StarMapInfo *info, GAMECONF *conf)
 {
 	if (GAMETYPE == MAP_GAMETYPE_USEMAPSETTINGS)
 		for (int i = 0;i < MAXPLAYERS;i++)
@@ -1902,7 +1902,7 @@ void randomizecolor(void)
 	}
 }
 //=====================================
-void randomizelocations(mapinfo *tempmap)
+void randomizelocations(StarMapInfo *tempmap)
 {
 	int i, j, force, loc, locpl, startlocs, locnr = 0, forceplrs;
 	signed char locs[MAXPLAYERS];
@@ -1958,7 +1958,7 @@ void randomizelocations(mapinfo *tempmap)
 	}
 }
 //=====================================
-void starmap_forceslots(mapinfo *info, FORCE_SLOTS *fslots, int gametype)
+void starmap_forceslots(StarMapInfo *info, FORCE_SLOTS *fslots, int gametype)
 {
 	int i, j, nrpl, slot = 0;
 	fslots->Clear();
@@ -2009,7 +2009,7 @@ int GetForceFirstEmptySlot(FORCE_SLOTS *fslots)
 	return(0);
 }
 //=================================================
-int GetPlayersInForceNr(mapinfo *info, int forcenr)
+int GetPlayersInForceNr(StarMapInfo *info, int forcenr)
 {
 	int i, nrpl = 0;
 	for (i = 0;i < PLAYEDPLAYERS;i++)
@@ -2022,7 +2022,7 @@ int GetPlayersInForceNr(mapinfo *info, int forcenr)
 	return(nrpl);
 }
 //=================================================
-void observers_prepare(mapinfo *info)			//make vision for objserver players
+void observers_prepare(StarMapInfo *info)			//make vision for objserver players
 {
 	int i, j;
 	for (i = 0;i < PLAYEDPLAYERS;i++)
@@ -2037,7 +2037,7 @@ void observers_prepare(mapinfo *info)			//make vision for objserver players
 
 }
 //=================================================
-int GetPlayableGameNumber(mapinfo *info)
+int GetPlayableGameNumber(StarMapInfo *info)
 {
 	int i = -1;
 	for (i = 0;i < PLAYEDPLAYERS;i++)
@@ -2064,7 +2064,7 @@ void fill_missionobjectives(const char *missiontxt)
 	strcpy(missionobj, missiontxt);
 }
 //=================================================
-LEADERBOARD *AddLeaderBoard(int boardnr, int leaderboardtype, mapinfo *info, int actiononplayers, int unittype, int nrofunits, int stringID)
+LEADERBOARD *AddLeaderBoard(int boardnr, int leaderboardtype, StarMapInfo *info, int actiononplayers, int unittype, int nrofunits, int stringID)
 {
 	int i;
 	char *strtxt;
@@ -2094,7 +2094,7 @@ LEADERBOARD *AddLeaderBoard(int boardnr, int leaderboardtype, mapinfo *info, int
 	return(info->leaderboards[boardnr]);
 }
 //=================================================
-void CalcLeaderBoards(mapinfo *info)
+void CalcLeaderBoards(StarMapInfo *info)
 {
 	int i, j, mask, nrunits, ore, gas;
 	for (i = 0;i < MAXLEADERBOARDS;i++)
@@ -2177,7 +2177,7 @@ void CalcLeaderBoards(mapinfo *info)
 	}
 }
 //=================================================
-void ShowLeaderBoards(mapinfo *info, int x, int y)
+void ShowLeaderBoards(StarMapInfo *info, int x, int y)
 {
 	int i, rowsize, fontnr;
 	fontnr = IDFONT12;
@@ -2192,7 +2192,7 @@ void ShowLeaderBoards(mapinfo *info, int x, int y)
 	}
 }
 //=================================================
-void ShowCountDownTimer(mapinfo *info, int x, int y)
+void ShowCountDownTimer(StarMapInfo *info, int x, int y)
 {
 	char timer[10];
 	if (info->flags & STARMAP_FLAG_HAVECOUNTDOWN)
@@ -2203,7 +2203,7 @@ void ShowCountDownTimer(mapinfo *info, int x, int y)
 }
 
 //=================================================
-char *getmapSTR(mapinfo *testmap, int nrofstr)
+char *getmapSTR(StarMapInfo *testmap, int nrofstr)
 {
 	char *str, *buf;
 	int offset;

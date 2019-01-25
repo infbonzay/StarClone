@@ -13,6 +13,6 @@ void scrolldesert(unsigned int *pal);
 void scrollarctic(unsigned int *pal);
 void scrolltwilight(unsigned int *pal);
 
-void scrollpal(mapinfo *map);
+void scrollpal(StarMapInfo *map);
 
 #endif

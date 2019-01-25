@@ -19,7 +19,7 @@ void UnloadDoodadList(mylist *mapdoodads)
 }
 //=================================================
 #define DOODAD_ELEVATION_LEVEL	4
-void CreateDoodadsFromMAP(doodad_on_map *doodad, mapinfo *loadedmap)
+void CreateDoodadsFromMAP(doodad_on_map *doodad, StarMapInfo *loadedmap)
 {
 	MAIN_IMG *newimg;
 	unsigned short image_id, flags;
@@ -34,7 +34,7 @@ void CreateDoodadsFromMAP(doodad_on_map *doodad, mapinfo *loadedmap)
 	iscriptinfo.ExecuteScript(newimg);
 }
 //=====================================
-void CreateDoodadsFromLists(mylist *mapdoodads, mapinfo *loadedmap)
+void CreateDoodadsFromLists(mylist *mapdoodads, StarMapInfo *loadedmap)
 {
 	OBJ *a;
 	doodad_on_map *doodad;
