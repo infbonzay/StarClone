@@ -1,5 +1,6 @@
-#if !defined(_FLINGY_W)
-#define _FLINGY_W
+#ifndef _SC_FLINGY_H
+
+#define _SC_FLINGY_H
 
 #include "man.h"
 #include "List.h"

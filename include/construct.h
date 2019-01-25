@@ -1,5 +1,6 @@
-#if !defined(_CONSTRUCT_W)
-#define _CONSTRUCT_W
+#ifndef _SC_CONSTRUCT_H
+
+#define _SC_CONSTRUCT_H
 
 #include "defs.h"
 #include "man.h"

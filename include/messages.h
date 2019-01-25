@@ -1,5 +1,6 @@
-#if !defined(_MESSAGES_W)
-#define _MESSAGES_W
+#ifndef _SC_MESSAGES_H
+
+#define _SC_MESSAGES_H
 
 #include "mylist.h"
 

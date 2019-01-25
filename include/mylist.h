@@ -1,5 +1,6 @@
-#if !defined(_MYLIST_W)
-#define _MYLIST_W
+#ifndef _SC_MYLIST_H
+
+#define _SC_MYLIST_H
 
 #include "debug.h"
 

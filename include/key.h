@@ -1,6 +1,6 @@
+#ifndef _SC_KEY_H
 
-#if !defined(_KEY_W)
-#define _KEY_W
+#define _SC_KEY_H
 
 //================================
 void keyscroll(void);

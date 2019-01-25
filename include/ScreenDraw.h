@@ -1,8 +1,8 @@
-#ifndef _W_SCREENDRAW
+#ifndef _SC_SCREENDRAW_H
+
+#define _SC_SCREENDRAW_H
 
 #include "Controller.h"
-
-#define _W_SCREENDRAW
 
 class ScreenDraw
 {

@@ -1,6 +1,6 @@
+#ifndef _SC_LISTS_H
 
-#if !defined(_LISTS_W)
-#define _LISTS_W
+#define _SC_LISTS_H
 
 #include "tbl.h"
 #include "vars.h"

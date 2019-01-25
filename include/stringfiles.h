@@ -1,5 +1,6 @@
-#if !defined(_STRINGFILES_W)
-#define _STRINGFILES_W
+#ifndef _SC_STRINGFILES_H
+
+#define _SC_STRINGFILES_H
 
 #define GAMECURSOR_OFFSET		6
 

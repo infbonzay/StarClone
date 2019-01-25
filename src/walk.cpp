@@ -429,7 +429,7 @@ int GetMapWalk8(int x, int y, int sx, int sy)//coords and size divided by 8
 	return(ret);
 }
 //=============================================
-void SetObjWalk8(struct mapinfo *map, OBJ *a, int flag)
+void SetObjWalk8(mapinfo *map, OBJ *a, int flag)
 {
 	int xbeg, ybeg, sx, sy;
 	if (a->SC_Unit == SC_EXTRACTOROBJ || a->SC_Unit == SC_REFINERYOBJ || a->SC_Unit == SC_ASSIMILATOROBJ)

@@ -1,6 +1,6 @@
+#ifndef _SC_AUDIO_H
 
-#if !defined(_AUDIO_W)
-#define _AUDIO_W
+#define _SC_AUDIO_H
 
 #include "defs.h"
 #include "mpq.h"

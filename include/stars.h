@@ -1,5 +1,6 @@
-#ifndef _STARS_W
-#define _STARS_W
+#ifndef _SC_STARS_H
+
+#define _SC_STARS_H
 
 struct starBmap
 {

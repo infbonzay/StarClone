@@ -1,5 +1,6 @@
-#ifndef _RULES_W
-#define _RULES_W
+#ifndef _SC_RULES_H
+
+#define _SC_RULES_H
 
 /* status display rules */
 #include "man.h"

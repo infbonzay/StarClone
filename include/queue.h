@@ -1,6 +1,6 @@
+#ifndef _SC_QUEUE_H
 
-#if !defined(_QUEUE_W)
-#define _QUEUE_W
+#define _SC_QUEUE_H
 
 
 #define QUEUEFULL				-1

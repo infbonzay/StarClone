@@ -1,6 +1,6 @@
-#ifndef _CONTROLLER_W
+#ifndef _SC_CONTROLLER_H
 
-#define _CONTROLLER_W
+#define _SC_CONTROLLER_H
 
 #include <stdint.h>
 #include "mycycle.h"

@@ -1,5 +1,6 @@
-#if !defined(_TBL_W)
-#define _TBL_W
+#ifndef _SC_TBL_H
+
+#define _SC_TBL_H
 
 #include "CrossPlatform.h"
 #pragma pack(push,1)

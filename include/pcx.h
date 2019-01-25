@@ -1,5 +1,6 @@
-#if !defined(_PCX_W)
-#define _PCX_W
+#ifndef _SC_PCX_H
+
+#define _SC_PCX_H
 
 #include "mpq.h"
 

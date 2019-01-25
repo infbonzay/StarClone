@@ -1,6 +1,6 @@
+#ifndef _SC_MAPS_H
 
-#if !defined(_MAPS_W)
-#define _MAPS_W
+#define _SC_MAPS_H
 
 #include "vars.h"
 #include "man.h"
@@ -10,10 +10,10 @@
 #define CHECKFORMAPBORDERS(xkart,ykart) ( (ykart) < 0 || (xkart) < 0 || (ykart) >= MAXYMAP || (xkart) >= MAXXMAP )
 
 
-void CreateMiniMapPixels(struct mapinfo *map);
+void CreateMiniMapPixels(mapinfo *map);
 void minimap_showobj(struct OBJ *a);
 void ObjOnMiniMap(int x,int y,int sizex,int sizey,char color,char *minimapadr);
-void getminimapcoord(struct mapinfo *info,int x,int y,int *xm,int *ym);
+void getminimapcoord(mapinfo *info,int x,int y,int *xm,int *ym);
 void drawMINIMAP(void);
 void drawMAP(int ignorefirstwaiting);
 void AutoMoveMap(void);
@@ -29,7 +29,7 @@ void makeoneobjseeopen(struct OBJ *b,struct OBJstruct *c);
 void calcfullinvandsee(void);
 void calcfullinvandseeobj(struct OBJ *v1);
 void _putcells(void);
-int	 getplayerrace(struct mapinfo *map,int playernr);
+int	 getplayerrace(mapinfo *map,int playernr);
 int	 GetPlayerLocation(int PlayerNr);
 void arbitermakewarpfield(OBJ *a,OBJstruct *b);
 void saveoldtileandcreep(void);
@@ -52,7 +52,7 @@ void opentempmap(int playernr,int xkart,int ykart,int sizex,int sizey);
 int	 GetMapFog(int x,int y);
 void ClearFinalOBJ(OBJ *a0);
 
-extern struct mapinfo 	map;
+extern mapinfo map;
 
 inline int GetVisionBitsPlayer(int playernr) { return (map.pl_visionbits[playernr]); };
 inline int player_aliance(int whopl,int pl) { return (map.pl_allied[whopl][pl]); }; //0-enemy,1-neutral,2-alience,3-my

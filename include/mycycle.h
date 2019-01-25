@@ -1,6 +1,6 @@
-#ifndef _MYCYCLEH_W
-#define _MYCYCLEH_W
+#ifndef _SC_MYCYCLE_H
 
+#define _SC_MYCYCLE_H
 
 #include "wmem.h"
 

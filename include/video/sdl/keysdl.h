@@ -1,5 +1,6 @@
-#if !defined(_SDLKEY_W)
-#define _SDLKEY_W 1
+#ifndef _SC_SDLKEY_H
+
+#define _SC_SDLKEY_H
 
 #include <SDL/SDL.h>
 

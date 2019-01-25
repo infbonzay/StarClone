@@ -1,7 +1,6 @@
-/* This file contains defaults that can be changed during the game. */
+#ifndef _SC_FLEXDEFAULTS_H
 
-#ifndef _FLEXDEFAULTS_H
-#define _FLEXDEFAULTS_H
+#define _SC_FLEXDEFAULTS_H
 
 /* unit circle colors depend on alliance type 
    (see defs.h) */

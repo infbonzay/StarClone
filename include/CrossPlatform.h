@@ -1,6 +1,7 @@
-#ifndef _CROSSPLATFORM_W
+#ifndef _SC_CROSSPLATFORM
 
-#define _CROSSPLATFORM_W
+#define _SC_CROSSPLATFORM
+
 #if defined (_MSC_VER)
 
 #include <direct.h>

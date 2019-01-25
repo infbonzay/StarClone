@@ -1,5 +1,6 @@
-#if !defined(_SIGORDER_W)
-#define _SIGORDER_W
+#ifndef _SC_SIGORDER_H
+
+#define _SC_SIGORDER_H
 
 #include "man.h"
 

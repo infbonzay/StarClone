@@ -1,5 +1,6 @@
-#if !defined(_NETWPLAY_W)
-#define _NETWPLAY_W
+#ifndef _SC_NETWPLAY_H
+
+#define _SC_NETWPLAY_H
 
 #include "defs.h"
 #include "network_general.h"

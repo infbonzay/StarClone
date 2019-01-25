@@ -1,5 +1,6 @@
-#if !defined(_UPGRADE_W)
-#define _UPGRADE_W
+#ifndef _SC_UPGRADE_H
+
+#define _SC_UPGRADE_H
 
 #include "defs.h"
 #include "starmap.h"

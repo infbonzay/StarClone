@@ -1,5 +1,6 @@
-#if !defined(_DEFS_W)
-#define _DEFS_W
+#ifndef _SC_DEFS_H
+
+#define _SC_DEFS_H
 
 //#define DEBUGOUTPUT
 

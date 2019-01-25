@@ -27,7 +27,7 @@ BRIEF_SLOTS		brief_slots[MAX_BRIEF_SLOTS];
 #define			BRIEFTEXT		15
 #define			BRIEFMISSION	16
 //=================================================
-void First_Briefing_Prepare(struct mapinfo *info, int e, char *path, PCX *pcxs)
+void First_Briefing_Prepare(mapinfo *info, int e, char *path, PCX *pcxs)
 {
 	int i;
 	MAP_TRIGS	*temptrg;
@@ -49,7 +49,7 @@ void First_Briefing_Prepare(struct mapinfo *info, int e, char *path, PCX *pcxs)
 	brief_counter = mytimer.CreateTickCounter();
 }
 //=================================================
-void Briefing_Parse(struct mapinfo *info, MENUSTR *allmenus, int deltatick)
+void Briefing_Parse(mapinfo *info, MENUSTR *allmenus, int deltatick)
 {
 	int pause;
 	TIMER_TICK tick;
@@ -352,7 +352,7 @@ void StopTransmission(MENUSTR *allmenus,int slotnr)
 	}
 }
 //=================================================
-void Reload_Briefing(struct mapinfo *info,MENUSTR *allmenus)
+void Reload_Briefing(mapinfo *info,MENUSTR *allmenus)
 {
 	int i,j;
 	MAP_TRIGS	*temptrg;

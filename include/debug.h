@@ -1,5 +1,6 @@
-#if !defined(_DEBUG_W)
-#define _DEBUG_W
+#ifndef _SC_DEBUG_H
+
+#define _SC_DEBUG_H
 //===========================================
 #define DEBUGOUTPUT
 #define DEBUGFILE		"/output.log"

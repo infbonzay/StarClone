@@ -1,5 +1,6 @@
-#ifndef _AUDIOLOWLEVEL_W
-#define _AUDIOLOWLEVEL_W
+#ifndef _SC_AUDIOLOWLEVEL_H
+
+#define _SC_AUDIOLOWLEVEL_H
 
 #include "mpq.h"
 

@@ -1,5 +1,6 @@
-#if !defined(_CREEP_W)
-#define _CREEP_W
+#ifndef _SC_CREEP_H
+
+#define _SC_CREEP_H
 
 #include <limits.h>
 #include "man.h"

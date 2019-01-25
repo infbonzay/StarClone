@@ -1,5 +1,6 @@
-#if !defined(_DIAP_W)
-#define _DIAP_W
+#ifndef _SC_DIAP_H
+
+#define _SC_DIAP_H
 
 #include "defs.h"
 #include "man.h"

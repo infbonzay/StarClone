@@ -1,5 +1,6 @@
-#if !defined(_MPQWRAPPER_W)
-#define _MPQWRAPPER_W
+#ifndef _SC_MPQWRAPPER_H
+
+#define _SC_MPQWRAPPER_H
 
 #include "mpq.h"
 

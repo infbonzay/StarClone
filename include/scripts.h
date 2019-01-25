@@ -1,5 +1,6 @@
-#if !defined(_SCRIPTS_W)
-#define _SCRIPTS_W
+#ifndef _SC_SCRIPTS_H
+
+#define _SC_SCRIPTS_H
 
 //=================================
 

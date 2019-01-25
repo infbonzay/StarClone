@@ -1,6 +1,6 @@
-#if !defined(_OBJLISTS_W)
-#define _OBJLISTS_W
+#ifndef _SC_OBJLISTS_H
 
+#define _SC_OBJLISTS_H
 
 #define MAXCRITFUNC				10
 #define MAXELEMOFFSET			1000

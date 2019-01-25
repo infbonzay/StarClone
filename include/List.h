@@ -1,5 +1,6 @@
-#if !defined(_LIST_W)
-#define _LIST_W
+#ifndef _SC_LIST_H
+
+#define _SC_LIST_H
 
 #include <string.h>
 #include <stdlib.h>

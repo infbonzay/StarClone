@@ -1,5 +1,6 @@
-#if !defined(_MARKET_W)
-#define _MARKET_W
+#ifndef _SC_MARKET_H
+
+#define _SC_MARKET_H
 
 #include "man.h"
 #include "defs.h"

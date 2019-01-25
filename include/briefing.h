@@ -1,5 +1,6 @@
-#ifndef _BRIEFING_W
-#define _BRIEFING_W
+#ifndef _SC_BRIEFING_H
+
+#define _SC_BRIEFING_H
 
 #include "portrait.h"
 #include "gamemenu.h"
@@ -42,17 +43,17 @@
 #define BTRG_ACTIONTYPE_TRANSMISSION			8
 #define BTRG_ACTIONTYPE_UNUSED					9
 
-void First_Briefing_Prepare(struct mapinfo *info,int brief_menusdelta,char *path,PCX *framepcxs);
-void Briefing_Parse(struct mapinfo *info,struct MENUSTR *allmenus,int deltatick);
-void Remove_Briefing(struct mapinfo *info);
+void First_Briefing_Prepare(mapinfo *info,int brief_menusdelta,char *path,PCX *framepcxs);
+void Briefing_Parse(mapinfo *info,struct MENUSTR *allmenus,int deltatick);
+void Remove_Briefing(mapinfo *info);
 
-int	 BCondition_Prepare(struct mapinfo *info,MAP_TRIGS *temptrg,int actiononplayers,struct MENUSTR *allmenus);
-int	 BAction_Prepare(struct mapinfo *info,MAP_TRIGS *temptrg,int actiononplayers,int condnr,struct MENUSTR *allmenus);
+int	 BCondition_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int actiononplayers,struct MENUSTR *allmenus);
+int	 BAction_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int actiononplayers,int condnr,struct MENUSTR *allmenus);
 int	 Briefing_GetPause(void);
 void Briefing_SetPause(int slotnr,int pauseval);
 void Briefing_ScrollText(struct MENUSTR *allmenus);
 void StopTransmission(struct MENUSTR *allmenus,int slotnr);
-void Reload_Briefing(struct mapinfo *info,struct MENUSTR *allmenus);
+void Reload_Briefing(mapinfo *info,struct MENUSTR *allmenus);
 void drawportraitinslot(struct MENUSTR *allmenus,int slotnr);
 void Brief_SetPortrait(int slotnr,int typeofport);
 void Brief_ShowPortrait(int slotnr,int typeofportrait);

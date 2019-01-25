@@ -1,6 +1,6 @@
+#ifndef _SC_UNITACTION_H
 
-#if !defined(_UNITACTION_W)
-#define _UNITACTION_W
+#define _SC_UNITACTION_H
 
 #include "man.h"
 #include "defs.h"

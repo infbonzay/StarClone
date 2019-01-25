@@ -1,5 +1,5 @@
-#ifndef _FOG_W
-#define _FOG_W
+#ifndef _SC_FOG_H
+#define _SC_FOG_H
 
 #include "starmap.h"
 //#define WITHOUTHALFFOG //unit forgot what he see before(only current view)
@@ -25,7 +25,7 @@ void unloadfogtables(void);
 void putfog(void);
 void calculatefog(int bitplayers);
 void copywhitefogtoblackfog(int bitplayers);
-void ApplyFogMask(struct mapinfo *info,int playernr);
+void ApplyFogMask(mapinfo *info,int playernr);
 //=================================================
 
 

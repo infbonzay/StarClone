@@ -1,5 +1,6 @@
-#if !defined(_WALK_W)
-#define _WALK_W
+#ifndef _SC_WALK_H
+
+#define _SC_WALK_H
 
 #include "defs.h"
 #include "starmap.h"
@@ -43,7 +44,7 @@ int CanBuildForResource(int xb,int yb,int xsize,int ysize,
 void SetMarkOn32(int xb,int yb,int xsize,int ysize,unsigned char *usedmap,unsigned char value);
 void AddMarkOn32(int xb,int yb,int xsize,int ysize,unsigned char *usedmap);
 void DelMarkOn32(int xb,int yb,int xsize,int ysize,unsigned char *usedmap);
-void SetObjWalk8(struct mapinfo *loadedmap,OBJ *a,int flag);
+void SetObjWalk8(mapinfo *loadedmap,OBJ *a,int flag);
 void SetMapWalk8(int x,int y,int sx,int sy,int flag);
 int	 GetMapWalk8(int x,int y,int sx,int sy);
 

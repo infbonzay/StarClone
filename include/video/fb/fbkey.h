@@ -1,5 +1,6 @@
-#ifndef _FBKEY_W
-#define _FBKEY_W
+#ifndef _SC_FBKEY_H
+
+#define _SC_FBKEY_H
 
 #include <linux/fb.h>
 #include <sys/mman.h>

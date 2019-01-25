@@ -1,5 +1,6 @@
-#if !defined(_MENU_W)
-#define _MENU_W
+#ifndef _SC_MENU_H
+
+#define _SC_MENU_H
 
 #include <grplib/grp.h>
 

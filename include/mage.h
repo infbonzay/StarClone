@@ -1,6 +1,6 @@
+#ifndef _SC_MAGE_H
 
-#if !defined(_MAGE_W)
-#define _MAGE_W
+#define _SC_MAGE_H
 
 #include "man.h"
 

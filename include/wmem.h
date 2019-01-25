@@ -1,5 +1,6 @@
-#if !defined(_WMEM_W)
-#define _WMEM_W
+#ifndef _SC_WMEM_H
+
+#define _SC_WMEM_H
 
 #include <stdlib.h>
 

@@ -1,5 +1,6 @@
-#ifndef _IMAGES_W
-#define _IMAGES_W
+#ifndef _SC_IMAGES_H
+
+#define _SC_IMAGES_H
 
 #include <grplib/grp.h>
 

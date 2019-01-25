@@ -1,6 +1,6 @@
+#ifndef _SC_ACTIONDEFAULT_H
 
-#if !defined(_ACTIONDEFAULT_W)
-#define _ACTIONDEFAULT_W
+#define _SC_ACTIONDEFAULT_H
 
 #include "defs.h"
 #include "man.h"

@@ -1,5 +1,6 @@
-#if !defined(_VARS_W)
-#define _VARS_W
+#ifndef _SC_VARS_H
+
+#define _SC_VARS_H
 
 #include <grplib/usegrp.h>
 #include <grplib/font.h>

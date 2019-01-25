@@ -1,5 +1,6 @@
-#if !defined(_LOADLO_W)
-#define _LOADLO_W
+#ifndef _SC_LOADLO_H
+
+#define _SC_LOADLO_H
 
 //===============================================
 struct LOFILE

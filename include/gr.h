@@ -1,5 +1,6 @@
-#if !defined(_GR_W)
-#define _GR_W
+#ifndef _SC_GR_H
+
+#define _SC_GR_H
 
 #include <grplib/grp.h>
 #include "const.h"

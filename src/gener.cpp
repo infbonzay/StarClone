@@ -892,7 +892,7 @@ void clearactionBITS(void)
 }
 //==========================
 #define MOUSEDESTELEVATION	255
-int gogame(struct mapinfo *info)
+int gogame(mapinfo *info)
 {
 	int resettimerforplayers, prevgameticks = -1;
 	int activatedwaittimer;
@@ -1671,7 +1671,7 @@ void ShowGameStatusMenu(int *prevgameticks)
 
 }
 //===================================================
-int IfTimeForTrigger(struct mapinfo *info, int *prevgameticks)
+int IfTimeForTrigger(mapinfo *info, int *prevgameticks)
 {
 	int gameticks;
 	gameticks = mytimer.GetCurrentGameTimeTick();

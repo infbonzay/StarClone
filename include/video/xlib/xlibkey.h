@@ -1,5 +1,6 @@
-#ifndef _XLIBKEY_W
-#define _XLIBKEY_W
+#ifndef _SC_XLIBKEY_H
+
+#define _SC_XLIBKEY_H
 
 #include <X11/Xlib.h>
 #include <X11/keysym.h>

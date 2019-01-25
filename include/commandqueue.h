@@ -1,6 +1,6 @@
+#ifndef _SC_COMMANDQUEUE_H
 
-#if !defined(_QUEUECYCLE_W)
-#define _QUEUECYCLE_W
+#define _SC_COMMANDQUEUE_H
 
 
 #include "mycycle.h"

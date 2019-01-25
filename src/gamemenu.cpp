@@ -1062,11 +1062,11 @@ int BRIEFING_TRANSLUCENCY = 138;
 //==========================================
 int BriefingTriggersCheck(MENUSTR *allmenus, void *data)
 {
-	struct mapinfo *info;
+	mapinfo *info;
 	if (menutimerupdate)
 	{
 		menutimerupdate = 0;
-		info = (struct mapinfo *)data;
+		info = (mapinfo *)data;
 		Briefing_Parse(info, allmenus, 1000 / (60 / TIMETOMAINMENUUPDATE));
 	}
 	return(0);
@@ -1141,7 +1141,7 @@ int CheckOtherPlayers(MENUSTR *allmenus, void *data)
 }
 //==========================================
 #define FRAMEPCXS	8
-int glu_briefing(int race, int networksingle, struct mapinfo *info, char *prefix_campaignpath, int skipmissionbutton)
+int glu_briefing(int race, int networksingle, mapinfo *info, char *prefix_campaignpath, int skipmissionbutton)
 {
 	int retstatus, exitstatus, i, repeat, e, err;
 	int totalpcx;
@@ -1446,7 +1446,7 @@ void updatescoremenu(void)
 	}
 }
 //==========================================
-void cleartempscore(struct mapinfo *info)
+void cleartempscore(mapinfo *info)
 {
 	int i, pl;
 	for (pl = 0;pl < force_slots.realplayers;pl++)
@@ -1461,7 +1461,7 @@ void cleartempscore(struct mapinfo *info)
 	gluscore->mainmenuflags &= ~DIALOGBIN_FLAGS_NONEEDRECALCINFO;
 }
 //==========================================
-void initscoreinfo(struct mapinfo *info, int fromoptid)
+void initscoreinfo(mapinfo *info, int fromoptid)
 {
 	int i, j, pl;
 	char txt[90];
@@ -1487,7 +1487,7 @@ void initscoreinfo(struct mapinfo *info, int fromoptid)
 	}
 }
 //==========================================
-void setmaxscore(struct mapinfo *info)
+void setmaxscore(mapinfo *info)
 {
 	int i, j, k, val, pl;
 	for (pl = 0;pl < force_slots.realplayers;pl++)
@@ -1525,7 +1525,7 @@ void setmaxscore(struct mapinfo *info)
 //==========================================
 int SCORE_TRANSLUCENCY[3][2] = { {147,9},{9,95},{9,9} };
 int races_clan[3] = { NETWORK_TBL_ZERGCLANNAMES,NETWORK_TBL_TERRANCLANNAMES,NETWORK_TBL_PROTOSSCLANNAMES };
-void glu_score(struct mapinfo *info)
+void glu_score(mapinfo *info)
 {
 	int retstatus, repeat, i, pl, selectedlist;
 	PCX backgnd, fontpcx, optbtn;
@@ -2618,7 +2618,7 @@ char test_iowner[MAXPLAYERS];
 char test_owner[MAXPLAYERS];
 char test_race[MAXPLAYERS];
 //==========================================
-void copytempowners(struct mapinfo *testmap)
+void copytempowners(mapinfo *testmap)
 {
 	int i;
 	starmap_forceslots(testmap, &force_slots, MAP_GAMETYPE_USEMAPSETTINGS);
@@ -2667,7 +2667,7 @@ void preparegameconf_ums(void)
 	}
 }
 //==========================================
-void initselectmaplists(MENUSTR *allmenus)//,struct mapinfo *info)
+void initselectmaplists(MENUSTR *allmenus)
 {
 	int i, j, find = 0;
 	int gmtype;

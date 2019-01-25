@@ -1,5 +1,6 @@
-#if !defined(_CONST_W)
-#define _CONST_W
+#ifndef _SC_CONST_H
+
+#define _SC_CONST_H
 
 //====================
 #define DISPLAYFLAGS_FULLSCREENMODE		0x01

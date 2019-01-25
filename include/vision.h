@@ -1,5 +1,6 @@
-#if !defined(_VISION_W)
-#define _VISION_W
+#ifndef _SC_VISION_H
+
+#define _SC_VISION_H
 
 #define ALLVIS					15
 #define MAXVISX					30

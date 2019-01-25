@@ -1,5 +1,6 @@
-#if !defined(_NETWORK_W)
-#define _NETWORK_W
+#ifndef _SC_NETWORK_H
+
+#define _SC_NETWORK_H
 
 #include "CrossPlatform.h"
 

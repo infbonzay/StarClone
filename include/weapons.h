@@ -1,5 +1,6 @@
-#if !defined(_WEAPONS_W)
-#define _WEAPONS_W
+#ifndef _SC_WEAPONS_H
+
+#define _SC_WEAPONS_H
 
 #include <grplib/grp.h>
 #include "man.h"

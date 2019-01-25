@@ -1,5 +1,6 @@
-#ifndef _PLAYER_W
-#define _PLAYER_W
+#ifndef _SC_PLAYER_H
+
+#define _SC_PLAYER_H
 
 #include <stdint.h>
 #include <stdio.h>

@@ -1,5 +1,6 @@
-#if !defined(_NETWGAME_W)
-#define _NETWGAME_W
+#ifndef _SC_NETWGAME_H
+
+#define _SC_NETWGAME_H
 
 #include "mylist.h"
 #include "menu.h"

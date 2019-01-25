@@ -1,5 +1,6 @@
-#if !defined(_MOUSENEW_W)
-#define _MOUSENEW_W
+#ifndef _SC_MOUSE_H
+
+#define _SC_MOUSE_H
 
 #include <stdint.h>
 #include <grplib/grp.h>

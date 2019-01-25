@@ -1,5 +1,6 @@
-#if !defined(_MYTIME_W)
-#define _MYTIME_W
+#ifndef _SC_MYTIME_H
+
+#define _SC_MYTIME_H
 
 //=================================
 #define SLOWESTSPEED_TICKS		6

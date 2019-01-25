@@ -1,5 +1,6 @@
-#ifndef _TRIGGERS_W
-#define _TRIGGERS_W
+#ifndef _SC_TRIGGERS_H
+
+#define _SC_TRIGGERS_H
 
 #include "mytime.h"
 #include "const.h"
@@ -222,18 +223,18 @@ int CheckForUnit(int (*ConditionFunction)(int *, int),
 int	 Triggers_GetPause(void);
 void Triggers_SetPause(int pauseval);
 
-void First_Triggers_Prepare(struct mapinfo *info,int cnttrg,MAP_TRIGS *trigs);
-void Triggers_Parse(struct mapinfo *info,int cnttrg,MAP_TRIGS *trigs,int ticks);
-void Remove_Triggers(struct mapinfo *info);
+void First_Triggers_Prepare(mapinfo *info,int cnttrg,MAP_TRIGS *trigs);
+void Triggers_Parse(mapinfo *info,int cnttrg,MAP_TRIGS *trigs,int ticks);
+void Remove_Triggers(mapinfo *info);
 
-int	 AllGroups_Prepare(struct mapinfo *info,MAP_TRIGS *temptrg);
-int	 OneGroup_Prepare(struct mapinfo *info,int grouplist,int actionfromplayers);
+int	 AllGroups_Prepare(mapinfo *info,MAP_TRIGS *temptrg);
+int	 OneGroup_Prepare(mapinfo *info,int grouplist,int actionfromplayers);
 
-int	 Condition_Prepare(struct mapinfo *info,MAP_TRIGS *temptrg,int trig_nr,int playernr,int playernrmask,int deltatick);
-int	 Action_Prepare(struct mapinfo *info,MAP_TRIGS *temptrg,int trig_nr,int playernr,int playernrmask);
+int	 Condition_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int trig_nr,int playernr,int playernrmask,int deltatick);
+int	 Action_Prepare(mapinfo *info,MAP_TRIGS *temptrg,int trig_nr,int playernr,int playernrmask);
 
-int	 TRG_RunAIScript(struct mapinfo *info,int aiscriptnr,int playernr,int playernrmask);
-int	 TRG_RunAIScriptAtLocation(struct mapinfo *info,int aiscriptnr,int playernr,int playernrmask,int locnr);
+int	 TRG_RunAIScript(mapinfo *info,int aiscriptnr,int playernr,int playernrmask);
+int	 TRG_RunAIScriptAtLocation(mapinfo *info,int aiscriptnr,int playernr,int playernrmask,int locnr);
 
 void AI_SetSearchForAtacks(int playernr);
 

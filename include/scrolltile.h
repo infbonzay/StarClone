@@ -1,5 +1,6 @@
-#ifndef _SCROLLTILE_W
-#define _SCROLLTILE_W
+#ifndef _SC_SCROLLTILE_H
+
+#define _SC_SCROLLTILE_H
 
 #include "starmap.h"
 

@@ -1,5 +1,6 @@
-#if !defined(_MUSIC_W)
-#define _MUSIC_W
+#ifndef _SC_MUSIC_H
+
+#define _SC_MUSIC_H
 
 #include "audiolowlevel.h"
 #include "myfifo.h"

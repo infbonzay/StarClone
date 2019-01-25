@@ -1,7 +1,6 @@
+#ifndef _SC_PORTRAIT_H
 
-#if !defined(_PORTRAIT_W)
-
-#define _PORTRAIT_W
+#define _SC_PORTRAIT_H
 
 #include "defs.h"
 #include "man.h"

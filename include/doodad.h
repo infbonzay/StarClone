@@ -1,5 +1,6 @@
-#if !defined(_DOODAD_W)
-#define _DOODAD_W
+#ifndef _SC_DOODAD_H
+
+#define _SC_DOODAD_H
 
 #include "starmap.h"
 #include "mylist.h"
@@ -22,7 +23,7 @@
 
 
 void UnloadDoodadList(mylist *mapdoodads);
-void CreateDoodadsFromLists(mylist *mapdoodads,struct mapinfo *loadedmap);
+void CreateDoodadsFromLists(mylist *mapdoodads,mapinfo *loadedmap);
 int	 GetDoodadState(struct OBJ *a);
 void SetDoodadState(struct OBJ *a,int state);
 void DoodadChangeState(OBJ *a,int state);

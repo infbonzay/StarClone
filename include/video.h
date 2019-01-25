@@ -1,5 +1,6 @@
-#if !defined(_VIDEO_W)
-#define _VIDEO_W
+#ifndef _SC_VIDEO_H
+
+#define _SC_VIDEO_H
 
 #define TEXT_SCREENLOWERLEFT	1
 #define TEXT_SCREENLEFT			2

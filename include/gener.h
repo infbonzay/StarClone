@@ -1,8 +1,8 @@
+#ifndef _SC_GENER_H
+
+#define _SC_GENER_H
+
 #include "RegenObjMap.h"
-
-#if !defined(_GENER_W)
-#define _GENER_W
-
 #include "Controller.h"
 #include "commandqueue.h"
 #include "gamemenu.h"
@@ -96,7 +96,7 @@
 
 void FreeQueues(void);
 void transfto(int table);
-int	 gogame(struct mapinfo *info);
+int	 gogame(mapinfo *info);
 void showramka(void);
 void showiconramka(void);
 void chdirgame(char *s);
@@ -114,7 +114,7 @@ bool ShowButtonMenu(char *button,int (*adrmenu)(MENUDRAW *menudraw,MENUPARAMS *m
 void ChangeTerrain(void);
 
 int	 ChangeMenuStatus(int mstatus);
-int	 IfTimeForTrigger(struct mapinfo *info,int *prevgameticks);
+int	 IfTimeForTrigger(mapinfo *info,int *prevgameticks);
 void ShowFirstRunVideo(int ignorefirstrunbit);
 void GoPlayNextMusic(void);
 void ShowGameStatusMenu(int *prevticks);

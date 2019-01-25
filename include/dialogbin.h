@@ -1,5 +1,6 @@
-#ifndef _DIALOGBIN_W
-#define _DIALOGBIN_W
+#ifndef _SC_DIALOGBIN_H
+
+#define _SC_DIALOGBIN_H
 
 #include "menu.h"
 

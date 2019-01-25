@@ -1,5 +1,6 @@
-#ifndef _ISCRIPT_W
-#define _ISCRIPT_W
+#ifndef _SC_ISCRIPT_H
+
+#define _SC_ISCRIPT_H
 
 #include <stdio.h>
 #include "mylist.h"

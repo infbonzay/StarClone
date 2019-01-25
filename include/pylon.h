@@ -1,6 +1,6 @@
+#ifndef _SC_PYLON_H
 
-#if !defined(_PYLON_W)
-#define _PYLON_W
+#define _SC_PYLON_H
 
 #include "man.h"
 #include "starmap.h"

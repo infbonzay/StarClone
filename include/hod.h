@@ -1,6 +1,6 @@
-/* This file contains definitions for Heads-On Display */
-#ifndef _HOD_W
-#define _HOD_W
+#ifndef _SC_HOD_H
+
+#define _SC_HOD_H
  
 #include "defs.h"
 

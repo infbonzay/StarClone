@@ -25,12 +25,12 @@ char havezergparied;
 //#define ONEUNITEACHRACE
 //#define NONBUILD
 //=====================================
-int IfPlayerHaveStartLocation(struct mapinfo *info, int playernr)
+int IfPlayerHaveStartLocation(mapinfo *info, int playernr)
 {
 	return(info->pl_location[playernr]);
 }
 //=====================================
-int GetPlayerByLocation(struct mapinfo *tempmap, int location)
+int GetPlayerByLocation(mapinfo *tempmap, int location)
 {
 	for (int i = 0;i < PLAYEDPLAYERS;i++)
 		if (tempmap->pl_location[i] == location)
@@ -46,17 +46,17 @@ unsigned char GetFirstUnitBuild(int race, int build_or_unit)
 		return (First_Unit_Build[race][build_or_unit]);
 }
 //=====================================
-int GetRaceFromMap(struct mapinfo *loadedmap, int location)
+int GetRaceFromMap(mapinfo *loadedmap, int location)
 {
 	return(loadedmap->pl_race[location]);
 }
 //=====================================
-int GetPlayerColorFromMap(struct mapinfo *loadedmap, int location)
+int GetPlayerColorFromMap(mapinfo *loadedmap, int location)
 {
 	return(location);
 }
 //=====================================
-int GetTotalStartLocations(struct mapinfo *testmap)
+int GetTotalStartLocations(mapinfo *testmap)
 {
 	return(testmap->pl_startlocs);
 }
@@ -113,7 +113,7 @@ OBJ *CreateGeyserOnMap(int x, int y, SCUNIT SC_Unit, int playernr, int count, in
 	return(a);
 }
 //=====================================
-OBJ *CreateUnitsFromMAP(int xpos, int ypos, int unit_type, int playernr, struct mapinfo *loadedmap)
+OBJ *CreateUnitsFromMAP(int xpos, int ypos, int unit_type, int playernr, mapinfo *loadedmap)
 {
 	unit_on_map tempunit;
 	memset(&tempunit, 0, sizeof(unit_on_map));
@@ -124,7 +124,7 @@ OBJ *CreateUnitsFromMAP(int xpos, int ypos, int unit_type, int playernr, struct 
 	return(CreateUnitsFromMAP(&tempunit, loadedmap));
 }
 //=====================================
-OBJ *CreateUnitsFromMAP(struct unit_on_map *unit, struct mapinfo *loadedmap)
+OBJ *CreateUnitsFromMAP(struct unit_on_map *unit, mapinfo *loadedmap)
 {
 	struct OBJ *a = NULL, *aa, *a2;
 	int i, playernr, xobj, yobj, race, owner;
@@ -228,7 +228,7 @@ OBJ *CreateUnitsFromMAP(struct unit_on_map *unit, struct mapinfo *loadedmap)
 	return(a);
 }
 //=====================================
-void AddToMinimapNeutralObjs(mylist *units, struct mapinfo *loadedmap, int playortest)
+void AddToMinimapNeutralObjs(mylist *units, mapinfo *loadedmap, int playortest)
 {
 	int sx, sy;
 	struct unit_on_map *unit;
@@ -256,7 +256,7 @@ void AddToMinimapNeutralObjs(mylist *units, struct mapinfo *loadedmap, int playo
 	}
 }
 //=====================================
-void CreateUnitsFromLists(mylist *units, struct mapinfo *loadedmap)
+void CreateUnitsFromLists(mylist *units, mapinfo *loadedmap)
 {
 	int i;
 	struct unit_on_map *unit;
@@ -292,7 +292,7 @@ void RemoveUnitsFromLists(mylist *units)
 	units->DeallocList();
 }
 //=====================================
-void testprotoss(int deltax, int deltay, int player, struct mapinfo *loadedmap)
+void testprotoss(int deltax, int deltay, int player, mapinfo *loadedmap)
 {
 	OBJ *xx;
 	//	  PLAYER[player].minerals=5000<<8;
@@ -353,7 +353,7 @@ void testprotoss(int deltax, int deltay, int player, struct mapinfo *loadedmap)
 
 }
 //=====================================
-void testzerg(int deltax, int deltay, int player, struct mapinfo *loadedmap)
+void testzerg(int deltax, int deltay, int player, mapinfo *loadedmap)
 {
 	OBJ *xx;
 	gameconf.pl_race[player] = ZERGRACE;
@@ -405,7 +405,7 @@ void testzerg(int deltax, int deltay, int player, struct mapinfo *loadedmap)
 	xx = CreateUnitsFromMAP((46 + deltax)*SIZESPRLANSHX, (42 + deltay)*SIZESPRLANSHY + 16, SC_INFCOMMCENTEROBJ, player, loadedmap);
 }
 //=====================================
-void testterran(int deltax, int deltay, int player, struct mapinfo *loadedmap)
+void testterran(int deltax, int deltay, int player, mapinfo *loadedmap)
 {
 	OBJ *xx;
 	gameconf.pl_race[player] = TERRANRACE;
@@ -487,7 +487,7 @@ void testterran(int deltax, int deltay, int player, struct mapinfo *loadedmap)
 
 }
 //=====================================
-void testmisc(int deltax, int deltay, int player, struct mapinfo *loadedmap)
+void testmisc(int deltax, int deltay, int player, mapinfo *loadedmap)
 {
 	OBJ *xx;
 	xx = CreateMineralsOnMap((29 + deltax)*SIZESPRLANSHX + 16, (25 + deltay)*SIZESPRLANSHY + 16, SC_MINERALSOBJ, GREYNEUTRALCOLORPLAYER, 1000, 1500, loadedmap);
@@ -509,7 +509,7 @@ void testmisc(int deltax, int deltay, int player, struct mapinfo *loadedmap)
 	xx = CreateGeyserOnMap((41 + deltax)*SIZESPRLANSHX, (31 + deltay)*SIZESPRLANSHY, SC_GEYSEROBJ, GREYNEUTRALCOLORPLAYER, MAXGEYSERGASNR, MAXGEYSERGASNR, loadedmap);
 }
 //=====================================
-void testunits(int deltax, int deltay, int player, struct mapinfo *loadedmap)
+void testunits(int deltax, int deltay, int player, mapinfo *loadedmap)
 {
 	OBJ *xx;
 	gameconf.pl_race[player] = TERRANRACE;
@@ -662,7 +662,7 @@ const char *CLANNAMES[3][8] = { { "Zerg Brood Swarm",
 };
 int nextstring[3];
 //=====================================
-void ConnectingPairBuilds(struct mapinfo *loadedmap)
+void ConnectingPairBuilds(mapinfo *loadedmap)
 {
 	int i, j;
 	OBJ *a;
@@ -690,7 +690,7 @@ void ConnectingPairBuilds(struct mapinfo *loadedmap)
 	}
 }
 //=====================================
-void createallobj(struct mapinfo *loadedmap)
+void createallobj(mapinfo *loadedmap)
 {
 	int i, j;
 	char compname[50];

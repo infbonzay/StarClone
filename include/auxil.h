@@ -1,5 +1,6 @@
-#if !defined(_AUXIL_W)
-#define _AUXIL_W
+#ifndef _SC_AUXIL_H
+
+#define _SC_AUXIL_H
 
 #include <stdio.h>
 #include "const.h"

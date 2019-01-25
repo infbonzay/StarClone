@@ -1,6 +1,6 @@
+#ifndef _SC_PUTOBJ_H
 
-#if !defined(_PUTOBJ_W)
-#define _PUTOBJ_W
+#define _SC_PUTOBJ_H
 
 #include <grplib/grp.h>
 #include "man.h"

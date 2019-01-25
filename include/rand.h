@@ -1,5 +1,6 @@
-#if !defined(_RAND_W)
-#define _RAND_W
+#ifndef _SC_RAND_H
+
+#define _SC_RAND_H
 
 int	 myrand(void);
 int	 myrand(int value);

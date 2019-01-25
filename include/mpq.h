@@ -1,5 +1,6 @@
-#if !defined(_MPQ_W)
-#define _MPQ_W
+#ifndef _SC_MPQ_H
+
+#define _SC_MPQ_H
 
 #ifdef WITHMPQLIB
 	#include <mpqlib/StormLib.h>

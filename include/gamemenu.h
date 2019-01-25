@@ -1,10 +1,14 @@
-#if !defined(_GAMEMENU_W)
-#define _GAMEMENU_W
+#ifndef _SC_GAMEMENU_H
+
+#define _SC_GAMEMENU_H
+
+class FORCE_SLOTS;
 
 #include "defs.h"
 #include "menu.h"
 #include "mylist.h"
 #include "MenuItem.h"
+#include "starmap.h"
 #include "pcx.h"
 
 typedef ListSimple<MenuItemPcx*> MENUAPPEAR;
@@ -293,7 +297,7 @@ int	 campaignselect(void);
 int	 xcampaignselect(void);
 int	 glu_loadgame(void);
 int	 glu_loadreplay(void);
-int	 glu_briefing(int race,int networksingle,struct mapinfo *map,char *prefix_campaignpath, int skipmissionbutton);
+int	 glu_briefing(int race,int networksingle,mapinfo *map,char *prefix_campaignpath, int skipmissionbutton);
 int	 mainmenu(void);
 int	 glu_login(void);
 int	 selectmapmenu(void);
@@ -336,7 +340,7 @@ MENUSTR *showtitle(void);
 void cleartitle(MENUSTR *menu);
 void MenuDisappear(MENUSTR *allmenus,MENUAPPEAR *items,MENUSTR *staticmenu);
 MENUAPPEAR *MenuAppear(MENUSTR *allmenus,int elemnr,MENUFIRSTDATA *menudata,MENUSTR *staticmenu);
-void glu_score(struct mapinfo *info);
+void glu_score(mapinfo *info);
 void updatescoremenu(void);
 int	 glu_conn(void);
 int	 glu_join(FORCE_SLOTS *slots);
@@ -359,7 +363,7 @@ int	 xputokmenu(MENUDRAW *menudraw,MENUPARAMS *menuparams);
 int	 xputokcancelmenu(MENUDRAW *menudraw,MENUPARAMS *menuparams);
 void testmenu(void);
 void createtemptables(void);
-void copytempowners(struct mapinfo *testmap);
+void copytempowners(mapinfo *testmap);
 void preparegameconf_ums(void);
 
 

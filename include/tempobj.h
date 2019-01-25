@@ -1,5 +1,6 @@
-#if !defined(_TEMPOBJ_W)
-#define _TEMPOBJ_W
+#ifndef _SC_TEMPOBJ_H
+
+#define _SC_TEMPOBJ_H
 
 #include "defs.h"
 #include "mylist.h"
@@ -16,16 +17,16 @@ unsigned char GetFirstUnitBuild(int race,int build_or_unit);
 
 OBJ *CreateMineralsOnMap(int x,int y,SCUNIT SC_Unit,int player,int count,int maxcount,mapinfo *loadedmap);
 OBJ *CreateGeyserOnMap(int x,int y,SCUNIT SC_Unit,int player,int count,int maxcount,mapinfo *loadedmap);
-OBJ *CreateUnitsFromMAP(int xpos,int ypos,int unit_type,int playernr,struct mapinfo *loadedmap);
-OBJ *CreateUnitsFromMAP(struct unit_on_map *unit,struct mapinfo *loadedmap);
+OBJ *CreateUnitsFromMAP(int xpos,int ypos,int unit_type,int playernr,mapinfo *loadedmap);
+OBJ *CreateUnitsFromMAP(struct unit_on_map *unit,mapinfo *loadedmap);
 void RemoveUnitsFromLists(mylist *units);
 
 
-int IfPlayerHaveStartLocation(struct mapinfo *info,int playernr);
-int GetTotalStartLocations(struct mapinfo *testmap);
-void createallobj(struct mapinfo *loadedmap);
-int GetRaceFromMap(struct mapinfo *loadedmap,int location);
-void AddToMinimapNeutralObjs(mylist *units,struct mapinfo *loadedmap,int playortest);
+int IfPlayerHaveStartLocation(mapinfo *info,int playernr);
+int GetTotalStartLocations(mapinfo *testmap);
+void createallobj(mapinfo *loadedmap);
+int GetRaceFromMap(mapinfo *loadedmap,int location);
+void AddToMinimapNeutralObjs(mylist *units,mapinfo *loadedmap,int playortest);
 
 
 

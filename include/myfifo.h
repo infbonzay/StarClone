@@ -1,5 +1,6 @@
-#if !defined(_MYFIFO_W)
-#define _MYFIFO_W
+#ifndef _SC_MYFIFO_H
+
+#define _SC_MYFIFO_H
 
 #include "wmem.h"
 

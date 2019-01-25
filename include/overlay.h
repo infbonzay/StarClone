@@ -1,6 +1,6 @@
+#ifndef _SC_OVERLAY_H
 
-#if !defined(_OVERLAY_W)
-#define _OVERLAY_W
+#define _SC_OVERLAY_H
 
 #include "images.h"
 #include "man.h"

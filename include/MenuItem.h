@@ -1,5 +1,6 @@
-#if !defined(W_MENUITEM)
-#define W_MENUITEM
+#ifndef _SC_MENUITEM_H
+
+#define _SC_MENUITEM_H
 
 #include <stdint.h>
 #include "pcx.h"

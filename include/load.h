@@ -1,6 +1,6 @@
+#ifndef _SC_LOAD_H
 
-#if !defined(_LOAD_W)
-#define _LOAD_W
+#define _SC_LOAD_H
 
 #include <stdio.h>
 #include "man.h"

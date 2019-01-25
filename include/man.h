@@ -1,5 +1,6 @@
-#if !defined(_MAN_W)
-#define _MAN_W
+#ifndef _SC_MAN_H
+
+#define _SC_MAN_H
 
 
 #include <grplib/grp.h>

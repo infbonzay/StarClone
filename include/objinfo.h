@@ -1,5 +1,6 @@
-#if !defined(_OBJINFO_W)
-#define _OBJINFO_W
+#ifndef _SC_OBJINFO_H
+
+#define _SC_OBJINFO_H
 
 #include "vars.h"
 #include "defs.h"

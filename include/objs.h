@@ -1,5 +1,6 @@
-#if !defined(_OBJS_W)
-#define _OBJS_W
+#ifndef _SC_OBJS_H
+
+#define _SC_OBJS_H
 
 #include "images.h"
 #include "defs.h"

@@ -1,5 +1,6 @@
-#if !defined(_REGENOBJMAP_W)
-#define _REGENOBJMAP_W
+#ifndef _SC_REGENOBJMAP_H
+
+#define _SC_REGENOBJMAP_H
 
 #include "man.h"
 #define FULLMAPREGENERATIONCYCLES		60

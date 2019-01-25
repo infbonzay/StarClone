@@ -1,6 +1,6 @@
+#ifndef _SC_FONTS_H
 
-#if !defined(_FONTS_W)
-#define _FONTS_W
+#define _SC_FONTS_H
 
 #include <grplib/grp.h>
 #include <grplib/font.h>
