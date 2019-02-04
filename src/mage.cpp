@@ -91,7 +91,10 @@ void mageattributedothings(OBJ *a)
 								{
 									if (GetDistanceTo256(a2, x256, y256) <= mageprop[typemage].diapazone)
 									{
-										LowLevelDamage(NULL, a2, WEAPONID_IRRADIATE, DAMAGE_IGNOREARMOR, irradiatedamagepertick, 0, 0);
+										if (accesstomage(a->playernr, a2, typemage))
+										{
+											LowLevelDamage(NULL, a2, WEAPONID_IRRADIATE, DAMAGE_IGNOREARMOR, irradiatedamagepertick, 0, 0);
+										}
 									}
 								}
 							}
@@ -189,7 +192,7 @@ int accessatronunit(int aplayernr, struct OBJ *destobj, unsigned char weapon_id)
 	return(WeaponCanApplyOnUnit(destobj, aplayernr, weapon_id));
 }
 //=======================================
-int accesstomage(struct OBJ *a, struct OBJ *destobj, int mode)
+int accesstomage(int aplayernr, struct OBJ *destobj, int mode)
 {
 	int castonterrain = 0;
 	if (mageprop[mode].atr & ORDER_RIGHTWAY)
@@ -213,7 +216,7 @@ int accesstomage(struct OBJ *a, struct OBJ *destobj, int mode)
 	{
 		if (GetMageAtr(&destobj->atrobj, ATRSTASIS))
 			return 0;
-		return (accessatronunit(a->playernr, destobj, weapon_id));
+		return (accessatronunit(aplayernr, destobj, weapon_id));
 	}
 	else
 	{
@@ -490,10 +493,9 @@ int ifcanworkatr_onothers(OBJ *a, int atr, int typemage)
 	switch (atr)
 	{
 	case ATRIRRADIATE:
-		return (accesstomage(NULL,a,magenrfrommageatr[typemage]));
-//		if (IsOBJBurrowed(a))
-//			return(0);
-//		break;
+		if (IsOBJBurrowed(a))
+			return(0);
+		break;
 	}
 	return(1);
 }

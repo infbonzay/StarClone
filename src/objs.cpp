@@ -2760,7 +2760,7 @@ int makemove(struct OBJ *a, struct OBJ *destobj, int locx, int locy, int mode, i
 	{
 		if (!accesstomove(a, b, mode, player))
 			return(0);
-		if (!accesstomage(a, destobj, mode))
+		if (!accesstomage(a->playernr, destobj, mode))
 		{
 			if (player == NUMBGAMER)
 			{
