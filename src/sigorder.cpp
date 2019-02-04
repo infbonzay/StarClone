@@ -590,10 +590,6 @@ int	 SIGOrder_NukeLanding(OBJ *a)
 	//ghost leave wait state
 	ghostobj = a->doubleunit;
 	GhostNUKECancel(ghostobj, GHOSTRELEASENUKE);
-	if (a->prop & VARDECRMAGE)	//decreasing mage (now is cloaked)
-		ChangeTypeOfProp(ghostobj, PROPNORMAL2);
-	else
-		ChangeTypeOfProp(ghostobj, PROPNORMAL1);//or normal2
 	//nuke move down
 	moveobj(a, NULL, MODEMOVE, GetOBJx(a), GetOBJy(a) + NUKE_MAXAIR_YPOS + INITIAL_NUKE_YPOS, NOSHOWERROR);
 	//after, do special state(create weapon, that do damage)
