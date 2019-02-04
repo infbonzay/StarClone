@@ -1605,10 +1605,6 @@ int moveobj(struct OBJ *a, struct OBJ *destobj, int mode, int x, int y, int mode
 			break;
 		case MODECANCELNUKE:
 			GhostNUKECancel(a, GHOSTCANCELNUKE);
-			if (a->prop & VARDECRMAGE)	//if decreasing mage (ghost is cloaked)
-				ChangeTypeOfProp(a, b, PROPNORMAL2);
-			else
-				ChangeTypeOfProp(a, b, PROPNORMAL1);
 			break;
 		case MODEGHOSTSEATNUKEPOS:
 			if (GhostNUKEAction(a) == 0)

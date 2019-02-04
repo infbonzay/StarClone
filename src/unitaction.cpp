@@ -18,32 +18,37 @@
 #include "objinfo.h"
 //=================================
 //=================================
-int GhostNUKEAction(OBJ *a)
+int GhostNUKEAction(OBJ *o)
 {
 	int ret;
-	if (a->finalOBJ)
-		ret = CreateNuke(a, GetOBJx(a->finalOBJ), GetOBJy(a->finalOBJ));
+	if (o->finalOBJ)
+		ret = CreateNuke(o, GetOBJx(o->finalOBJ), GetOBJy(o->finalOBJ));
 	else
-		ret = CreateNuke(a, a->finalx >> 8, a->finaly >> 8);
-	a->finalOBJ = NULL;
+		ret = CreateNuke(o, o->finalx >> 8, o->finaly >> 8);
+	o->finalOBJ = NULL;
 	return(ret);
 }
 //=================================
-void GhostNUKECancel(OBJ *a, int mode)//GHOSTCANCELNUKE-if cancel,GHOSTRELEASENUKE-if bomb APEAR AND NEED to release ghost
+void GhostNUKECancel(OBJ *o, int mode)//GHOSTCANCELNUKE-if cancel,GHOSTRELEASENUKE-if bomb APEAR AND NEED to release ghost
 {
-	if (a->doubleunit)
+	if (o->doubleunit)
 	{
 		//destroy nuke target dot, if any
-		a->doubleunit->data.nukehitdot.hitdot->SetIScriptNr(ISCRIPTNR_DEATH);
+		o->doubleunit->data.nukehitdot.hitdot->SetIScriptNr(ISCRIPTNR_DEATH);
 		if (mode == GHOSTCANCELNUKE)
 		{
-			a->doubleunit->doubleunit = NULL;
-			//			dieobj_silently(a->doubleunit);		//destroy nuke
-			dieobj(a->doubleunit);				//die nuke
-			a->doubleunit = NULL;
+			o->doubleunit->doubleunit = NULL;
+			//			dieobj_silently(o->doubleunit);		//destroy nuke
+			dieobj(o->doubleunit);				//die nuke
+			o->doubleunit = NULL;
 		}
-		moveobj(a, NULL, MODESTOP, NOSHOWERROR);
+		moveobj(o, NULL, MODESTOP, NOSHOWERROR);
 	}
+	if (o->prop & VARDECRMAGE)	//decreasing mage (now is cloaked)
+		ChangeTypeOfProp(o, PROPNORMAL2);
+	else
+		ChangeTypeOfProp(o, PROPNORMAL1);//or normal2
+
 }
 //=================================
 int CheckIfCanBuild(OBJ *a, SCUNIT SC_Unit, int x, int y, int *constrerror)
