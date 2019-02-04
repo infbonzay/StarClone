@@ -82,19 +82,16 @@ void mageattributedothings(OBJ *a)
 					}
 					else
 					{
-						if (!IsOBJBurrowed(a))
+						for (j = 0;j < MaxObjects;j++)
 						{
-							for (j = 0;j < MaxObjects;j++)
+							a2 = objects[j];
+							if (a2 != a)
 							{
-								a2 = objects[j];
-								if (a2 != a)
+								if (IsOrganic(a2->SC_Unit) && !IsOBJBurrowed(a2))
 								{
-									if (IsOrganic(a2->SC_Unit) && !IsOBJBurrowed(a2))
+									if (GetDistanceTo256(a2, x256, y256) <= mageprop[typemage].diapazone)
 									{
-										if (GetDistanceTo256(a2, x256, y256) <= mageprop[typemage].diapazone)
-										{
-											LowLevelDamage(NULL, a2, WEAPONID_IRRADIATE, DAMAGE_IGNOREARMOR, irradiatedamagepertick, 0, 0);
-										}
+										LowLevelDamage(NULL, a2, WEAPONID_IRRADIATE, DAMAGE_IGNOREARMOR, irradiatedamagepertick, 0, 0);
 									}
 								}
 							}
@@ -183,13 +180,13 @@ void ApplyCastedMage(OBJ *a, OBJ *casterobj, int typemage)
 	}
 }
 //=======================================
-int accessatronunit(struct OBJ *myobj, struct OBJ *destobj, unsigned char weapon_id)
+int accessatronunit(int aplayernr, struct OBJ *destobj, unsigned char weapon_id)
 {
 	if (weapon_id == 255)
 		return(1);
 	if (!destobj)
 		return 0;//deny
-	return(WeaponCanApplyOnUnit(destobj, myobj->playernr, weapon_id));
+	return(WeaponCanApplyOnUnit(destobj, aplayernr, weapon_id));
 }
 //=======================================
 int accesstomage(struct OBJ *a, struct OBJ *destobj, int mode)
@@ -216,7 +213,7 @@ int accesstomage(struct OBJ *a, struct OBJ *destobj, int mode)
 	{
 		if (GetMageAtr(&destobj->atrobj, ATRSTASIS))
 			return 0;
-		return (accessatronunit(a, destobj, weapon_id));
+		return (accessatronunit(a->playernr, destobj, weapon_id));
 	}
 	else
 	{
@@ -493,9 +490,10 @@ int ifcanworkatr_onothers(OBJ *a, int atr, int typemage)
 	switch (atr)
 	{
 	case ATRIRRADIATE:
-		if (IsOBJBurrowed(a))
-			return(0);
-		break;
+		return (accesstomage(NULL,a,magenrfrommageatr[typemage]));
+//		if (IsOBJBurrowed(a))
+//			return(0);
+//		break;
 	}
 	return(1);
 }

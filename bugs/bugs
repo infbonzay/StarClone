@@ -467,6 +467,7 @@
 *226 consume larvas and eggs
 *227 mine send to atack by near trigered atacked unit
 *228 repair build do not died if atacked and near to die
+ 229 irradiate on build and apply on build if near radiated unit
     if interceptors kill destobj return to carrier but carrier in atackmode & interceptors dont launch again
     interceptors fly to atack far then carrier range
     carrier stop move if atack to ground and stops to atack somebody

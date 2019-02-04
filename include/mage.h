@@ -13,7 +13,7 @@
 void mageeffect(int typemage,struct OBJ *a,struct OBJ *whoobjputmage);
 void restoreatribute(struct OBJ *a);
 void ApplyCastedMage(OBJ *a,OBJ *destobj,int typemage);
-int	 accessatronunit(struct OBJ *myobj,struct OBJ *destobj,unsigned char weapon_id);
+int	 accessatronunit(int aplayernr,struct OBJ *destobj,unsigned char weapon_id);
 int	 accesstomage(struct OBJ *a,struct OBJ *destobj,int mode);
 void addmage(struct OBJ *a,int nmage,int val1);
 void magemakedamage(void);
