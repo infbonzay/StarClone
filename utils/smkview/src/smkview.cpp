@@ -65,7 +65,7 @@ int LoadingAllPalettes(void)
     {
 	printf("file pal/transptable.dat not found\nCreating...");
 	fflush(stdout);
-	CreateTRColors(palette,transp);
+	GRP_CreateTRColors(palette,transp);
 	printf("\ndone. now saveing to file pal/transptable.dat\n");
 	f = fopen("pal/transptable.dat","wb");
 	fwrite(transp,256,256,f);
@@ -73,7 +73,7 @@ int LoadingAllPalettes(void)
     else
 	fread(transp,256,256,f);
     fclose(f);
-    SetTranspTable(transp);
+    GRP_SetTranspTable(transp);
     f = fopen("pal/usercolor.dat","rb");
     if (!f)
 	printf("file pal/usercolor.dat not found\n");
@@ -81,7 +81,7 @@ int LoadingAllPalettes(void)
     {
 	fread(dependencycolor,1,256,f);
 	fclose(f);
-	SetUserPlayerColors(0,16,dependencycolor);
+	GRP_SetUserPlayerColors(0,16,dependencycolor);
     }
     _toblack_ = (char *)malloc(MAXGRD*256);
     f = fopen("pal/toblack.grd","rb");
@@ -89,7 +89,7 @@ int LoadingAllPalettes(void)
     {
 	printf("file pal/toblack.grd not found\nCreating...");
 	fflush(stdout);
-	CreateByRGBTable(palette,MAKERGB(0,0,0),MAKERGB(0,0,0), MAXGRD,_toblack_);
+	GRP_CreateByRGBTable(palette,MAKERGB(0,0,0),MAKERGB(0,0,0), MAXGRD,_toblack_);
 	printf("\ndone. now saveing to file pal/toblack.grd\n");
 	f = fopen("pal/toblack.grd","wb");
 	fwrite(_toblack_,MAXGRD,256,f);
@@ -105,7 +105,7 @@ int LoadingAllPalettes(void)
     {
 	printf("file pal/towhite.grd not found\nCreating...");
 	fflush(stdout);
-	CreateByRGBTable(palette,MAKERGB(240,240,240),MAKERGB(240,240,240),
+	GRP_CreateByRGBTable(palette,MAKERGB(240,240,240),MAKERGB(240,240,240),
 		MAXGRD,_towhite_);
 	printf("\ndone. now saveing to file pal/towhite.grd\n");
 	f = fopen("pal/towhite.grd","wb");
@@ -121,7 +121,7 @@ int LoadingAllPalettes(void)
     {
 	printf("file pal/tored.grd not found\nCreating...");
 	fflush(stdout);
-	CreateByRGBTable(palette,MAKERGB(120,0,0),MAKERGB(244,228,144),
+	GRP_CreateByRGBTable(palette,MAKERGB(120,0,0),MAKERGB(244,228,144),
 		MAXGRD,_tored_);
 	printf("\ndone. now saveing to file pal/tored.grd\n");
 	f = fopen("pal/tored.grd","wb");
@@ -137,7 +137,7 @@ int LoadingAllPalettes(void)
     {
 	printf("file pal/togreen.grd not found\nCreating...");
 	fflush(stdout);
-	CreateByRGBTable(palette,MAKERGB(0,140,0),MAKERGB(252,252,56),
+	GRP_CreateByRGBTable(palette,MAKERGB(0,140,0),MAKERGB(252,252,56),
 		MAXGRD,_togreen_);
 	printf("\ndone. now saveing to file pal/togreen.grd\n");
 	f = fopen("pal/togreen.grd","wb");
@@ -153,7 +153,7 @@ int LoadingAllPalettes(void)
     {
 	printf("file pal/toblue.grd not found\nCreating...");
 	fflush(stdout);
-	CreateByRGBTable(palette,MAKERGB(0,60,150),MAKERGB(204,248,248),
+	GRP_CreateByRGBTable(palette,MAKERGB(0,60,150),MAKERGB(204,248,248),
 		MAXGRD,_toblue_);
 	printf("\ndone. now saveing to file pal/toblue.grd\n");
 	f = fopen("pal/toblue.grd","wb");
@@ -170,14 +170,14 @@ int LoadingAllPalettes(void)
     {
 	printf("file pal/tomono.grd not found\nCreating...");
 	fflush(stdout);
-	CreateMono(palette,_tomono_);
+	GRP_CreateMono(palette,_tomono_);
 	printf("\ndone. now saveing to file pal/tomono.grd\n");
 	f = fopen("pal/tomono.grd","wb");
 	fwrite(_tomono_,1,256,f);
     }
     else
 	fread(_tomono_,1,256,f);
-    SetPlayerColors(MONOPLAYERCOLOR,1,0,256,_tomono_);
+    GRP_SetPlayerColors(MONOPLAYERCOLOR,1,0,256,_tomono_);
 
     fclose(f);
     return 0;
@@ -283,7 +283,7 @@ int main(int count,char *argv[])
 	printf("error to set graph mode\n");
 	return -4;
     }
-    if (InitGrpLib(XW,YW))
+    if (GRP_InitLib(XW,YW))
     {
 	printf("error initialize grplib\n");
 	return -1;
@@ -297,7 +297,7 @@ int main(int count,char *argv[])
     {
 	printf("error to load palettes files\n");
     }
-    SetVideoBuffer(sdlsurface->pixels);
+    GRP_SetVideoBuffer(sdlsurface->pixels);
 /*    activatepallette(palette);*/
     activatepallette((char *)smk_get_palette(mysmk));
 
@@ -363,7 +363,7 @@ int main(int count,char *argv[])
     	    if (SDL_MUSTLOCK(sdlsurface))
         	SDL_LockSurface(sdlsurface);
 
-	    SetVideoBuffer(sdlsurface->pixels);
+	    GRP_SetVideoBuffer(sdlsurface->pixels);
 
 	    memmove((char*)sdlsurface->pixels,background,XW*YW);
 	    smk_show(mysmk);
