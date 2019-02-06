@@ -14,17 +14,18 @@
 
 struct LEADERBOARD
 {
-		unsigned char	leaderboardtype;
-		unsigned char	unittype;
+		char			*txtstr;
 		unsigned int	nrofunits;
 		short int		actiononplayers;
 		short int		stringID; 
-		char			*txtstr;
+		unsigned char	leaderboardtype;
+		unsigned char	unittype;
 		char			calcready;
+		char			fontID;
 };
 
 LEADERBOARD *AddLeaderBoard(int leaderboardnr, int leaderboardtype,
-	StarMapInfo *info, int actiononplayer, int unittype, int nrofunits, int stringID, int strsize);
+	StarMapInfo *info, int actiononplayer, int unittype, int nrofunits, int fontID, int stringID, int strsize);
 void CalcLeaderBoards(StarMapInfo *info);
 void ShowLeaderBoards(StarMapInfo *info,int x,int y);
 void ShowCountDownTimer(StarMapInfo *info,int x,int y);

@@ -698,7 +698,7 @@ int letsplaygame(int race, char *mypath)
 	{
 		calcsomespellinfo();
 
-		AddLeaderBoard(MAINLEADERBOARDGAMEINFO, TRG_ACTIONTYPE_OWNLEADERBOARD, &map, 0, 0, 0, 0, 255);
+		AddLeaderBoard(MAINLEADERBOARDGAMEINFO, TRG_ACTIONTYPE_OWNLEADERBOARD, &map, 0, 0, 0, IDFONT14, 0, 255);
 
 		DEBUGMESSCR("loaded %s\n", SELECTMAP);
 		if (map.flags & STARMAP_FLAG_EXPANSION)
@@ -1267,7 +1267,8 @@ int gogame(StarMapInfo *info)
 #endif
 		highMouse->SaveImageUnder();
 		highMouse->DrawMouse();
-		//screenDraw->TopMessage();
+		map.leaderboards[MAINLEADERBOARDGAMEINFO]->calcready = 1;
+		screenDraw->TopMessage(map.leaderboards[MAINLEADERBOARDGAMEINFO]->txtstr);
 		screenDraw->UpdateScreen();
 		highMouse->LoadImageUnder();
 		showedmenu.EndDrawMenu();

@@ -123,7 +123,7 @@ void ScreenDraw::TopMessage(char *s)
 			strcat(s,ss);
 		}
 	*/
-	putmessage(0, 0, IDFONT16, s, GGREENCOLORFONT, tfontgamp, gamedlggrp);
+	//putmessage(0, 0, IDFONT16, s, GGREENCOLORFONT, tfontgamp, gamedlggrp);
 }
 //===================================================
 void ScreenDraw::UpdateScreen(void)

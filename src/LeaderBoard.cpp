@@ -7,7 +7,7 @@
 
 //=================================================
 LEADERBOARD *AddLeaderBoard(int boardnr, int leaderboardtype,
-	StarMapInfo *info, int actiononplayers, int unittype, int nrofunits, int stringID, int maxtxtsize)
+	StarMapInfo *info, int actiononplayers, int unittype, int nrofunits, int fontID, int stringID, int maxtxtsize)
 {
 	int i;
 	//commandsymb+emptycubesymb+cubecolor+space+number(max 10 symbols)+zero termstring
@@ -25,6 +25,7 @@ LEADERBOARD *AddLeaderBoard(int boardnr, int leaderboardtype,
 	info->leaderboards[boardnr]->unittype = unittype;
 	info->leaderboards[boardnr]->nrofunits = nrofunits;
 	info->leaderboards[boardnr]->stringID = stringID;
+	info->leaderboards[boardnr]->fontID = fontID;
 	if (!TRIG_leaderboardcomputerplayers)
 	{
 		//exclude computerplayers from calculations;
@@ -117,8 +118,8 @@ void CalcLeaderBoards(StarMapInfo *info)
 				info->leaderboards[i]->calcready = 1;
 				break;
 			case TRG_ACTIONTYPE_OWNLEADERBOARD://250
-				screenDraw->TopMessage(info->leaderboards[i]->txtstr);
-				info->leaderboards[i]->calcready = 1;
+				//screenDraw->TopMessage(info->leaderboards[i]->txtstr);
+				//info->leaderboards[i]->calcready = 1;
 				break;
 			default:
 				break;
@@ -130,10 +131,10 @@ void CalcLeaderBoards(StarMapInfo *info)
 void ShowLeaderBoards(StarMapInfo *info, int x, int y)
 {
 	int i, rowsize, fontnr;
-	fontnr = IDFONT12;
-	getmaxsymbolsize(fontnr, NULL, &rowsize);
 	for (i = 0;i < MAXLEADERBOARDS;i++)
 	{
+		fontnr = info->leaderboards[i]->fontID;
+		getmaxsymbolsize(fontnr, NULL, &rowsize);
 		if (info->leaderboards[i] && info->leaderboards[i]->calcready)
 		{
 			putmessage(x, y, fontnr, info->leaderboards[i]->txtstr, GGREENCOLORFONT, tfontgamp, gamedlggrp);
