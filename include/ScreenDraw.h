@@ -12,12 +12,15 @@ public:
 		void			AddRegion(int regionNr,int x,int y,int sx,int sy);
 		void			AddRegion(int regionNr,SCREEN_REGION *Region);
 		void			CloneRegion(int toRegion,int fromRegion);
-		void			TopMessage(void);
+		void			TopMessage(char *topMessageArray);
 		void			UpdateScreen(void);
 
 		inline void		SetRegions(int regions){ UsedRegions = regions; };
 		inline void		ClearRegions(void){ SetRegions(0); };
 
 };
+
+extern ScreenDraw		*screenDraw;
+
 
 #endif

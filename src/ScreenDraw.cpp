@@ -9,6 +9,7 @@
 
 #include "ScreenDraw.h"
 
+ScreenDraw		*screenDraw;
 //==========================================================
 void ScreenDraw::AddRegion(int regionNr, int x, int y, int sx, int sy)
 {
@@ -31,12 +32,11 @@ void ScreenDraw::CloneRegion(int toRegionNr, int fromRegionNr)
 	AddRegion(toRegionNr, &Regions[fromRegionNr]);
 }
 //==========================================================
-void ScreenDraw::TopMessage(void)
+void ScreenDraw::TopMessage(char *s)
 {
 	static int frames, fps, prevsec, clc;
 	static long prevgamecycle;
 	int cursec;
-	char s[300];
 	char ss[50];
 	s[0] = 0;
 	OBJ *o = NULL;

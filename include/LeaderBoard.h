@@ -24,7 +24,7 @@ struct LEADERBOARD
 };
 
 LEADERBOARD *AddLeaderBoard(int leaderboardnr, int leaderboardtype,
-	StarMapInfo *info, int actiononplayer, int unittype, int nrofunits, int stringID);
+	StarMapInfo *info, int actiononplayer, int unittype, int nrofunits, int stringID, int strsize);
 void CalcLeaderBoards(StarMapInfo *info);
 void ShowLeaderBoards(StarMapInfo *info,int x,int y);
 void ShowCountDownTimer(StarMapInfo *info,int x,int y);

@@ -73,7 +73,6 @@ FORCE_SLOTS 	force_slots;
 NETW_PLAY		netplay;
 MENUDRAW		showedmenu;
 int 			menustatus, startmission, campaign_id;
-ScreenDraw		*screenDraw;
 RegenObjMap		*regenObjMap;
 
 char			select_aria, karta_aria, mode_aria;
@@ -699,6 +698,8 @@ int letsplaygame(int race, char *mypath)
 	{
 		calcsomespellinfo();
 
+		AddLeaderBoard(MAINLEADERBOARDGAMEINFO, TRG_ACTIONTYPE_OWNLEADERBOARD, &map, 0, 0, 0, 0, 255);
+
 		DEBUGMESSCR("loaded %s\n", SELECTMAP);
 		if (map.flags & STARMAP_FLAG_EXPANSION)
 			DEBUGMESSCR("(EXPANSION MAP)\n", SELECTMAP);
@@ -1264,15 +1265,11 @@ int gogame(StarMapInfo *info)
 		if (SHOWCELLS)
 			_putcells();		//put borders
 #endif
-	//	saveunderpatr();
 		highMouse->SaveImageUnder();
-		//	desenpatr();
 		highMouse->DrawMouse();
-		screenDraw->TopMessage();
+		//screenDraw->TopMessage();
 		screenDraw->UpdateScreen();
-		//wscreenonmem(scrregions,scrparts);
 		highMouse->LoadImageUnder();
-		//	loadunderpatr();
 		showedmenu.EndDrawMenu();
 		if (retmenu)
 		{

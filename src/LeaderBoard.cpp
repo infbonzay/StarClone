@@ -2,19 +2,24 @@
 #include "starmap.h"
 #include "wmem.h"
 #include "fonts.h"
+#include "ScreenDraw.h"
 #include "LeaderBoard.h"
 
 //=================================================
 LEADERBOARD *AddLeaderBoard(int boardnr, int leaderboardtype,
-	StarMapInfo *info, int actiononplayers, int unittype, int nrofunits, int stringID)
+	StarMapInfo *info, int actiononplayers, int unittype, int nrofunits, int stringID, int maxtxtsize)
 {
 	int i;
 	//commandsymb+emptycubesymb+cubecolor+space+number(max 10 symbols)+zero termstring
 	char *strtxt = getmapSTR(info, stringID);
+	int strIdLen = strlen(strtxt);
+	if (maxtxtsize > strIdLen)
+		strIdLen = maxtxtsize;
+		
 	if (!info->leaderboards[boardnr])
 	{
 		info->leaderboards[boardnr] = (LEADERBOARD *)wmalloc(sizeof(LEADERBOARD));
-		info->leaderboards[boardnr]->txtstr = (char *)wmalloc(strlen(strtxt) + 4 + 10 + 1);
+		info->leaderboards[boardnr]->txtstr = (char *)wmalloc(strIdLen + 4 + 10 + 1);
 	}
 	info->leaderboards[boardnr]->leaderboardtype = leaderboardtype;
 	info->leaderboards[boardnr]->unittype = unittype;
@@ -112,7 +117,8 @@ void CalcLeaderBoards(StarMapInfo *info)
 				info->leaderboards[i]->calcready = 1;
 				break;
 			case TRG_ACTIONTYPE_OWNLEADERBOARD://250
-				info->leaderboards[i]->calcready = 0;
+				screenDraw->TopMessage(info->leaderboards[i]->txtstr);
+				info->leaderboards[i]->calcready = 1;
 				break;
 			default:
 				break;
