@@ -50,6 +50,7 @@ extern const char		*DEFEAT_VICTORY[];
 
 extern char				GAMECURSOR_NAME[];
 extern const char		*ARROW_STR;
+extern const char 		*CLANNAMES[3][8];
 
 #define STARCLONEEXT			".scu"
 

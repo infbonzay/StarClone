@@ -93,3 +93,28 @@ const char		*DEFEAT_VICTORY[2] = { "defeat","vict" };
 char		GAMECURSOR_NAME[30] = "cursor";
 const char		*ARROW_STR = "\\arrow.grp";
 
+const char *CLANNAMES[3][8] = { { "Zerg Brood Swarm",
+							"Clatuzg Zerg Swarm",
+							"Ghumatz Other Swarm",
+							"Elite Overmind Broods",
+							"Zerg Slayer Animals",
+							"Sarah's Defenders",
+							"Serebrate's Controls",
+							"Overlord's Minions" } ,
+						  { "Veteran Troopers",
+							"Blackwater Elite",
+							"Wayland Cyborg Corporation",
+							"Sarah's Elite Cloakers",
+							"Federation Elite Forces",
+							"Renegate Fighters",
+							"Ungovernmental Coalition",
+							"Earth's Troopships"},
+						  { "Executor's Special Forces",
+							"Aiur Fanatic Defenders",
+							"Universe Life Destroyers",
+							"Unknown Dark Forces",
+							"Truth Seekers",
+							"Lost Templars",
+							"Adun's Followers",
+							"Tasadar's Revengers "}
+};

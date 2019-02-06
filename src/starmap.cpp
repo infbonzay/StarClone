@@ -1378,7 +1378,9 @@ int load_starmap(const char *mapfile, char *fname, StarMapInfo *info, GAMECONF *
 	mytimer.SetMyTimerFunc(&gametimer, NULL);
 	BlockSoundToPlay();
 	TRIG_ChangeStat = 0;
-	createallobj(info);
+	
+	ApplyObjectsToMap(info);
+	
 	TRIG_ChangeStat = 1;
 	UnBlockSoundToPlay();
 
@@ -1420,7 +1422,7 @@ int load_starmap(const char *mapfile, char *fname, StarMapInfo *info, GAMECONF *
 		mainController.UpdateScreen();
 	if (loadstaticsmk())
 	{
-		//		  gameend("Problem with loading basic smk files");
+		//gameend("Problem with loading basic smk files");
 	}
 	for (i = 0;i < PLAYEDPLAYERS;i++)
 		info->clearfog[i] = 1;
@@ -1650,9 +1652,9 @@ void unload_starmap(StarMapInfo *info)
 //=================================================
 void CreateAliance(StarMapInfo *info, int player1, int player2, int flag)
 {
-	//	  DEBUGMESSCR("set alince status pl1=%d pl2=%d flag=%d\n",player1,player2,flag);
+	//DEBUGMESSCR("set alince status pl1=%d pl2=%d flag=%d\n",player1,player2,flag);
 	info->pl_allied[player1][player2] = flag;
-	//		info->pl_allied[player2][player1]=flag;
+	//info->pl_allied[player2][player1]=flag;
 }
 //=================================================
 void CreateDefaultAliance(StarMapInfo *info)

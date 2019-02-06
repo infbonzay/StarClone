@@ -24,15 +24,12 @@ void RemoveUnitsFromLists(mylist *units);
 
 int IfPlayerHaveStartLocation(StarMapInfo *info,int playernr);
 int GetTotalStartLocations(StarMapInfo *testmap);
-void createallobj(StarMapInfo *loadedmap);
 int GetRaceFromMap(StarMapInfo *loadedmap,int location);
 void AddToMinimapNeutralObjs(mylist *units,StarMapInfo *loadedmap,int playortest);
+void ApplyObjectsToMap(StarMapInfo *loadedmap);
 
 
-
-//void creeptest(int value);
 extern signed char startlocations[MAXPLAYERS];
-extern OBJ *testobj;
 
 #define MAXMINERALSINSTACK		1500
 #define MAXGASINSTACK			5000

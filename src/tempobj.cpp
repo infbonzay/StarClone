@@ -1,5 +1,3 @@
-#include <grplib/grp.h>
-#include <grplib/usegrp.h>
 
 #include "diap.h"
 #include "load.h"
@@ -13,17 +11,12 @@
 #include "portrait.h"
 #include "doodad.h"
 #include "pylon.h"
+#include "stringfiles.h"
 #include "tempobj.h"
 
-
 int curentlocation;
-int myplayer;
 char haveterranparied;
 char havezergparied;
-//=====================================
-//#define TEST
-//#define ONEUNITEACHRACE
-//#define NONBUILD
 //=====================================
 int IfPlayerHaveStartLocation(StarMapInfo *info, int playernr)
 {
@@ -126,7 +119,7 @@ OBJ *CreateUnitsFromMAP(int xpos, int ypos, int unit_type, int playernr, StarMap
 //=====================================
 OBJ *CreateUnitsFromMAP(struct unit_on_map *unit, StarMapInfo *loadedmap)
 {
-	struct OBJ *a = NULL, *aa, *a2;
+	struct OBJ *a = NULL;
 	int i, playernr, xobj, yobj, race, owner;
 	SCUNIT SC_Unit;
 	if (unit->paried)
@@ -185,19 +178,15 @@ OBJ *CreateUnitsFromMAP(struct unit_on_map *unit, StarMapInfo *loadedmap)
 						if (SC_Unit == SC_HATCHERYOBJ)
 						{
 							//create additional overlord
-							aa = createobjfulllife(unit->xpos, unit->ypos, SC_OVERLORDOBJ, playernr);
+							createobjfulllife(unit->xpos, unit->ypos, SC_OVERLORDOBJ, playernr);
 							//set hatchery to be made by drone
-//									a->SC_FromUnit=SC_DRONEOBJ;
+							//a->SC_FromUnit=SC_DRONEOBJ;
 						}
 						SC_Unit = GetFirstUnitBuild(race, FIRSTUNIT);
 						for (i = 0;i < MAXBEGINPROBE;i++)
 						{
 							getcoordofnewunit(a, SC_Unit, &xobj, &yobj);
-							a2 = createobjfulllife(xobj, yobj, SC_Unit, playernr);
-							/*									if (!i)
-																	a3 = GetNearCenter(a2);
-																a2->baseobj = a3;
-							*/
+							createobjfulllife(xobj, yobj, SC_Unit, playernr);
 						}
 					}
 				}
@@ -217,10 +206,8 @@ OBJ *CreateUnitsFromMAP(struct unit_on_map *unit, StarMapInfo *loadedmap)
 		}
 		else
 		{
-#ifndef TEST
 			if (!IsGroupNeutralFlag(unit->unit_type))				//in melee do not create neutral units/builds
 				return(NULL);
-#endif
 			a = createobjfulllife(unit->xpos, unit->ypos, unit->unit_type, unit->player);
 		}
 		break;
@@ -239,7 +226,6 @@ void AddToMinimapNeutralObjs(mylist *units, StarMapInfo *loadedmap, int playorte
 		sy = GetUnitBoxHeight(unit->unit_type);
 		if (unit->unit_type == SC_STARTLOC && playortest == STARMAP_LOADFORINFO)
 		{
-			//			if (GAMETYPE != MAP_GAMETYPE_USEMAPSETTINGS)
 			ObjOnMiniMap(unit->xpos / 32 - sx / 64, unit->ypos / 32 - sy / 64, sx, sy, MINIMAP_COLORFORSTARTLOC, loadedmap->minimap);
 		}
 		else
@@ -266,7 +252,6 @@ void CreateUnitsFromLists(mylist *units, StarMapInfo *loadedmap)
 		if (unit->unit_type != SC_STARTLOC)
 		{
 			CreateUnitsFromMAP(unit, loadedmap);
-			//				wfree(unit);
 		}
 	}
 	//parse all base builds, because we need to know all resources before place creep
@@ -276,7 +261,6 @@ void CreateUnitsFromLists(mylist *units, StarMapInfo *loadedmap)
 		if (unit->unit_type == SC_STARTLOC)
 		{
 			CreateUnitsFromMAP(unit, loadedmap);
-			//				wfree(unit);
 		}
 	}
 	units->EnumListInit();
@@ -291,376 +275,6 @@ void RemoveUnitsFromLists(mylist *units)
 {
 	units->DeallocList();
 }
-//=====================================
-void testprotoss(int deltax, int deltay, int player, StarMapInfo *loadedmap)
-{
-	OBJ *xx;
-	//	  PLAYER[player].minerals=5000<<8;
-	//	  PLAYER[player].gas=5000<<8;
-	gameconf.pl_race[player] = PROTOSSRACE;
-	loadedmap->pl_location[player] = player;
-	gameconf.pl_owner[player] = OWNER_HUMAN;
-
-	xx = CreateUnitsFromMAP((25 + deltax)*SIZESPRLANSHX + 16, (25 + deltay)*SIZESPRLANSHY + 16, SC_PROBEOBJ, player, loadedmap);
-#ifdef ONEUNITEACHRACE
-	return;
-#endif
-	xx = CreateUnitsFromMAP((26 + deltax)*SIZESPRLANSHX + 16, (25 + deltay)*SIZESPRLANSHY + 16, SC_ZEALOTOBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((28 + deltax)*SIZESPRLANSHX + 16, (25 + deltay)*SIZESPRLANSHY + 16, SC_DRAGOONOBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((30 + deltax)*SIZESPRLANSHX + 16, (25 + deltay)*SIZESPRLANSHY + 16, SC_HIGHTEMPLAROBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((30 + deltax)*SIZESPRLANSHX, (23 + deltay)*SIZESPRLANSHY + 16, SC_HIGHTEMPLAROBJ, player, loadedmap);
-	if (xx)
-		SetUnitMana(xx, 200);
-	xx = CreateUnitsFromMAP((31 + deltax)*SIZESPRLANSHX + 16, (25 + deltay)*SIZESPRLANSHY + 16, SC_DARKTEMPLAROBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((31 + deltax)*SIZESPRLANSHX + 16, (23 + deltay)*SIZESPRLANSHY + 16, SC_DARKTEMPLAROBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((33 + deltax)*SIZESPRLANSHX + 16, (25 + deltay)*SIZESPRLANSHY + 16, SC_ARCHONOBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((35 + deltax)*SIZESPRLANSHX + 16, (25 + deltay)*SIZESPRLANSHY + 16, SC_DARKARCHONOBJ, player, loadedmap);
-	if (xx)
-		SetUnitMana(xx, 200);
-	xx = CreateUnitsFromMAP((25 + deltax)*SIZESPRLANSHX + 16, (28 + deltay)*SIZESPRLANSHY + 16, SC_SHUTTLEOBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((27 + deltax)*SIZESPRLANSHX + 16, (28 + deltay)*SIZESPRLANSHY + 16, SC_REAVEROBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((27 + deltax)*SIZESPRLANSHX + 16, (26 + deltay)*SIZESPRLANSHY + 16, SC_SCARABOBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((29 + deltax)*SIZESPRLANSHX + 16, (28 + deltay)*SIZESPRLANSHY + 16, SC_OBSERVEROBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((25 + deltax)*SIZESPRLANSHX + 16, (30 + deltay)*SIZESPRLANSHY + 16, SC_SCOUTOBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((27 + deltax)*SIZESPRLANSHX + 16, (30 + deltay)*SIZESPRLANSHY + 16, SC_CARRIEROBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((29 + deltax)*SIZESPRLANSHX + 16, (30 + deltay)*SIZESPRLANSHY + 16, SC_ARBITEROBJ, player, loadedmap);
-	if (xx)
-		SetUnitMana(xx, 200);
-	xx = CreateUnitsFromMAP((31 + deltax)*SIZESPRLANSHX + 16, (30 + deltay)*SIZESPRLANSHY + 16, SC_CORSAIROBJ, player, loadedmap);
-	if (xx)
-		SetUnitMana(xx, 200);
-#ifdef NONBUILD
-	return;
-#endif
-	xx = CreateUnitsFromMAP((31 + deltax)*SIZESPRLANSHX, (30 + deltay)*SIZESPRLANSHY, SC_NEXUSOBJ, player, loadedmap);
-	//	  xx=CreateUnitsFromMAP((31+deltax)*SIZESPRLANSHX,(30+deltay)*SIZESPRLANSHY,SC_STARTLOC,player,loadedmap);
-	xx = CreateUnitsFromMAP((31 + deltax)*SIZESPRLANSHX, (33 + deltay)*SIZESPRLANSHY, SC_PYLONOBJ, player, loadedmap);
-	xx = CreateGeyserOnMap((31 + deltax)*SIZESPRLANSHX, (36 + deltay)*SIZESPRLANSHY, SC_GEYSEROBJ, GREYNEUTRALCOLORPLAYER, MAXGEYSERGASNR, MAXGEYSERGASNR, loadedmap);
-	xx = CreateUnitsFromMAP((31 + deltax)*SIZESPRLANSHX, (36 + deltay)*SIZESPRLANSHY, SC_ASSIMILATOROBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((31 + deltax)*SIZESPRLANSHX, (39 + deltay)*SIZESPRLANSHY, SC_GATEWAYOBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((31 + deltax)*SIZESPRLANSHX, (42 + deltay)*SIZESPRLANSHY, SC_FORGEOBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((35 + deltax)*SIZESPRLANSHX, (30 + deltay)*SIZESPRLANSHY, SC_PHOTONCANONOBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((35 + deltax)*SIZESPRLANSHX, (33 + deltay)*SIZESPRLANSHY, SC_CYBERNETICCOREOBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((35 + deltax)*SIZESPRLANSHX, (36 + deltay)*SIZESPRLANSHY, SC_BATTERYOBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((35 + deltax)*SIZESPRLANSHX, (39 + deltay)*SIZESPRLANSHY, SC_ROBOTICSFACILITYOBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((35 + deltax)*SIZESPRLANSHX, (42 + deltay)*SIZESPRLANSHY, SC_STARGATEOBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((41 + deltax)*SIZESPRLANSHX, (30 + deltay)*SIZESPRLANSHY, SC_CITADELOFADUNOBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((41 + deltax)*SIZESPRLANSHX, (33 + deltay)*SIZESPRLANSHY, SC_ROBOTICSSUPPORTBAYOBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((41 + deltax)*SIZESPRLANSHX, (36 + deltay)*SIZESPRLANSHY, SC_FLEETBEACONOBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((41 + deltax)*SIZESPRLANSHX, (39 + deltay)*SIZESPRLANSHY, SC_TEMPLARARCHIVESOBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((41 + deltax)*SIZESPRLANSHX, (42 + deltay)*SIZESPRLANSHY, SC_OBSERVATORYOBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((41 + deltax)*SIZESPRLANSHX, (46 + deltay)*SIZESPRLANSHY, SC_ARBITERTRIBUNALOBJ, player, loadedmap);
-
-}
-//=====================================
-void testzerg(int deltax, int deltay, int player, StarMapInfo *loadedmap)
-{
-	OBJ *xx;
-	gameconf.pl_race[player] = ZERGRACE;
-	loadedmap->pl_location[player] = player;
-	gameconf.pl_owner[player] = OWNER_HUMAN;
-
-	xx = CreateUnitsFromMAP((27 + deltax)*SIZESPRLANSHX + 16, (29 + deltay)*SIZESPRLANSHY + 16, SC_DRONEOBJ, player, loadedmap);
-#ifdef ONEUNITEACHRACE
-	return;
-#endif
-	xx = CreateUnitsFromMAP((27 + deltax)*SIZESPRLANSHX + 16, (25 + deltay)*SIZESPRLANSHY + 16, SC_ZERGLINGOBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((29 + deltax)*SIZESPRLANSHX + 16, (25 + deltay)*SIZESPRLANSHY + 16, SC_OVERLORDOBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((31 + deltax)*SIZESPRLANSHX + 16, (25 + deltay)*SIZESPRLANSHY + 16, SC_HYDRALISKOBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((25 + deltax)*SIZESPRLANSHX + 16, (27 + deltay)*SIZESPRLANSHY + 16, SC_LURKEROBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((27 + deltax)*SIZESPRLANSHX + 16, (27 + deltay)*SIZESPRLANSHY + 16, SC_SCOURGEOBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((29 + deltax)*SIZESPRLANSHX + 16, (27 + deltay)*SIZESPRLANSHY + 16, SC_MUTALISKOBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((31 + deltax)*SIZESPRLANSHX + 16, (27 + deltay)*SIZESPRLANSHY + 16, SC_GUARDIANOBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((25 + deltax)*SIZESPRLANSHX + 16, (29 + deltay)*SIZESPRLANSHY + 16, SC_DEVOUREROBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((27 + deltax)*SIZESPRLANSHX + 16, (29 + deltay)*SIZESPRLANSHY + 16, SC_QUEENOBJ, player, loadedmap);
-	if (xx)
-		SetUnitMana(xx, 200);
-	xx = CreateUnitsFromMAP((29 + deltax)*SIZESPRLANSHX + 16, (29 + deltay)*SIZESPRLANSHY + 16, SC_ULTRALISKOBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((31 + deltax)*SIZESPRLANSHX + 16, (29 + deltay)*SIZESPRLANSHY + 16, SC_DEFILEROBJ, player, loadedmap);
-	if (xx)
-		SetUnitMana(xx, 200);
-	xx = CreateUnitsFromMAP((33 + deltax)*SIZESPRLANSHX + 16, (31 + deltay)*SIZESPRLANSHY + 16, SC_BROODLINGOBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((35 + deltax)*SIZESPRLANSHX, (31 + deltay)*SIZESPRLANSHY, SC_BUGGUYOBJ, player, loadedmap);
-#ifdef NONBUILD
-	return;
-#endif
-	xx = CreateUnitsFromMAP((31 + deltax)*SIZESPRLANSHX, (30 + deltay)*SIZESPRLANSHY + 16, SC_HATCHERYOBJ, player, loadedmap);
-	//	  xx=CreateUnitsFromMAP((31+deltax)*SIZESPRLANSHX,(30+deltay)*SIZESPRLANSHY+16,SC_STARTLOC,player,loadedmap);
-	xx = CreateUnitsFromMAP((31 + deltax)*SIZESPRLANSHX, (33 + deltay)*SIZESPRLANSHY, SC_CREEPCOLONYOBJ, player, loadedmap);
-	xx = CreateGeyserOnMap((31 + deltax)*SIZESPRLANSHX, (36 + deltay)*SIZESPRLANSHY, SC_GEYSEROBJ, GREYNEUTRALCOLORPLAYER, MAXGEYSERGASNR, MAXGEYSERGASNR, loadedmap);
-	xx = CreateUnitsFromMAP((31 + deltax)*SIZESPRLANSHX, (36 + deltay)*SIZESPRLANSHY, SC_EXTRACTOROBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((31 + deltax)*SIZESPRLANSHX + 16, (39 + deltay)*SIZESPRLANSHY, SC_SPAWNINGPOOLOBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((31 + deltax)*SIZESPRLANSHX + 16, (42 + deltay)*SIZESPRLANSHY, SC_EVOLUTIONCHAMBEROBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((35 + deltax)*SIZESPRLANSHX + 16, (30 + deltay)*SIZESPRLANSHY, SC_HYDRALISKDENOBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((35 + deltax)*SIZESPRLANSHX + 16, (33 + deltay)*SIZESPRLANSHY, SC_QUEENNESTOBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((35 + deltax)*SIZESPRLANSHX, (36 + deltay)*SIZESPRLANSHY, SC_SPIREOBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((35 + deltax)*SIZESPRLANSHX, (39 + deltay)*SIZESPRLANSHY, SC_NYDUSCANALOBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((35 + deltax)*SIZESPRLANSHX + 16, (42 + deltay)*SIZESPRLANSHY, SC_ULTRALISKCAVERNOBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((41 + deltax)*SIZESPRLANSHX, (30 + deltay)*SIZESPRLANSHY, SC_DEFILERMOUNDOBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((41 + deltax)*SIZESPRLANSHX, (33 + deltay)*SIZESPRLANSHY + 16, SC_HIVEOBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((41 + deltax)*SIZESPRLANSHX, (36 + deltay)*SIZESPRLANSHY + 16, SC_LAIROBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((41 + deltax)*SIZESPRLANSHX, (39 + deltay)*SIZESPRLANSHY, SC_GREATERSPIREOBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((41 + deltax)*SIZESPRLANSHX, (42 + deltay)*SIZESPRLANSHY, SC_SPORECOLONYOBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((41 + deltax)*SIZESPRLANSHX, (46 + deltay)*SIZESPRLANSHY, SC_SUNKENCOLONYOBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((46 + deltax)*SIZESPRLANSHX, (42 + deltay)*SIZESPRLANSHY + 16, SC_INFCOMMCENTEROBJ, player, loadedmap);
-}
-//=====================================
-void testterran(int deltax, int deltay, int player, StarMapInfo *loadedmap)
-{
-	OBJ *xx;
-	gameconf.pl_race[player] = TERRANRACE;
-	loadedmap->pl_location[player] = player;
-	gameconf.pl_owner[player] = OWNER_HUMAN;
-
-	xx = CreateUnitsFromMAP((25 + deltax)*SIZESPRLANSHX + 16, (25 + deltay)*SIZESPRLANSHY + 16, SC_SCVOBJ, player, loadedmap);
-#ifdef ONEUNITEACHRACE
-	return;
-#endif
-	xx = CreateUnitsFromMAP((27 + deltax)*SIZESPRLANSHX + 16, (25 + deltay)*SIZESPRLANSHY + 16, SC_MARINEOBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((29 + deltax)*SIZESPRLANSHX + 16, (25 + deltay)*SIZESPRLANSHY + 16, SC_FIREBATOBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((31 + deltax)*SIZESPRLANSHX + 16, (25 + deltay)*SIZESPRLANSHY + 16, SC_GHOSTOBJ, player, loadedmap);
-	if (xx)
-		SetUnitMana(xx, 200);
-	xx = CreateUnitsFromMAP((33 + deltax)*SIZESPRLANSHX + 16, (25 + deltay)*SIZESPRLANSHY + 16, SC_MEDICOBJ, player, loadedmap);
-	if (xx)
-		SetUnitMana(xx, 200);
-	xx = CreateUnitsFromMAP((35 + deltax)*SIZESPRLANSHX + 16, (25 + deltay)*SIZESPRLANSHY + 16, SC_VULTUREMINEOBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((25 + deltax)*SIZESPRLANSHX + 16, (27 + deltay)*SIZESPRLANSHY + 16, SC_VULTUREOBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((27 + deltax)*SIZESPRLANSHX + 16, (27 + deltay)*SIZESPRLANSHY + 16, SC_TANKNORMALOBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((29 + deltax)*SIZESPRLANSHX + 16, (27 + deltay)*SIZESPRLANSHY + 16, SC_TANKSIEGEOBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((31 + deltax)*SIZESPRLANSHX + 16, (27 + deltay)*SIZESPRLANSHY + 16, SC_GOLIATHOBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((33 + deltax)*SIZESPRLANSHX + 16, (27 + deltay)*SIZESPRLANSHY + 16, SC_WRAITHOBJ, player, loadedmap);
-	if (xx)
-		SetUnitMana(xx, 200);
-	xx = CreateUnitsFromMAP((25 + deltax)*SIZESPRLANSHX + 16, (29 + deltay)*SIZESPRLANSHY + 16, SC_DROPSHIPOBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((27 + deltax)*SIZESPRLANSHX + 16, (29 + deltay)*SIZESPRLANSHY + 16, SC_SCIENCEVESSELOBJ, player, loadedmap);
-	if (xx)
-		SetUnitMana(xx, 200);
-	xx = CreateUnitsFromMAP((29 + deltax)*SIZESPRLANSHX + 16, (29 + deltay)*SIZESPRLANSHY + 16, SC_BATTLECRUISEROBJ, player, loadedmap);
-	if (xx)
-		SetUnitMana(xx, 200);
-	xx = CreateUnitsFromMAP((31 + deltax)*SIZESPRLANSHX + 16, (29 + deltay)*SIZESPRLANSHY + 16, SC_VALKYRIEOBJ, player, loadedmap);
-#ifdef NONBUILD
-	return;
-#endif
-	xx = CreateUnitsFromMAP((31 + deltax)*SIZESPRLANSHX, (33 + deltay)*SIZESPRLANSHY, SC_SUPPLYDEPOTOBJ, player, loadedmap);
-	xx = CreateGeyserOnMap((31 + deltax)*SIZESPRLANSHX, (36 + deltay)*SIZESPRLANSHY, SC_GEYSEROBJ, GREYNEUTRALCOLORPLAYER, MAXGEYSERGASNR, MAXGEYSERGASNR, loadedmap);
-	xx = CreateUnitsFromMAP((31 + deltax)*SIZESPRLANSHX, (36 + deltay)*SIZESPRLANSHY, SC_REFINERYOBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((31 + deltax)*SIZESPRLANSHX, (39 + deltay)*SIZESPRLANSHY + 16, SC_BARRACKSOBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((31 + deltax)*SIZESPRLANSHX, (42 + deltay)*SIZESPRLANSHY + 16, SC_ENGINEERINGBAYOBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((35 + deltax)*SIZESPRLANSHX, (30 + deltay)*SIZESPRLANSHY, SC_MISSILETURRETOBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((35 + deltax)*SIZESPRLANSHX, (33 + deltay)*SIZESPRLANSHY, SC_ACCADEMYOBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((35 + deltax)*SIZESPRLANSHX, (36 + deltay)*SIZESPRLANSHY, SC_BUNKEROBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((35 + deltax)*SIZESPRLANSHX, (39 + deltay)*SIZESPRLANSHY + 16, SC_FACTORYOBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((35 + deltax)*SIZESPRLANSHX, (42 + deltay)*SIZESPRLANSHY + 16, SC_STARPORTOBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((41 + deltax)*SIZESPRLANSHX, (30 + deltay)*SIZESPRLANSHY, SC_ARMORYOBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((41 + deltax)*SIZESPRLANSHX, (33 + deltay)*SIZESPRLANSHY + 16, SC_SCIENCEFACILITYOBJ, player, loadedmap);
-
-	//	  xx=CreateUnitsFromMAP((21+deltax)*SIZESPRLANSHX,(30+deltay)*SIZESPRLANSHY+16,SC_STARTLOC,player,loadedmap);
-	xx = CreateUnitsFromMAP((21 + deltax)*SIZESPRLANSHX, (30 + deltay)*SIZESPRLANSHY + 16, SC_COMMCENTEROBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((24 + deltax)*SIZESPRLANSHX, (31 + deltay)*SIZESPRLANSHY, SC_COMSATSTATIONOBJ, player, loadedmap);
-	if (xx)
-		SetUnitMana(xx, 200);
-	xx = CreateUnitsFromMAP((24 + deltax)*SIZESPRLANSHX, (33 + deltay)*SIZESPRLANSHY, SC_COMSATSTATIONOBJ, player, loadedmap);
-	if (xx)
-		SetUnitMana(xx, 200);
-
-	xx = CreateUnitsFromMAP((21 + deltax)*SIZESPRLANSHX, (36 + deltay)*SIZESPRLANSHY + 16, SC_COMMCENTEROBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((24 + deltax)*SIZESPRLANSHX, (37 + deltay)*SIZESPRLANSHY, SC_NUCLEARSILOOBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((24 + deltax)*SIZESPRLANSHX, (39 + deltay)*SIZESPRLANSHY, SC_NUCLEARSILOOBJ, player, loadedmap);
-
-	xx = CreateUnitsFromMAP((21 + deltax)*SIZESPRLANSHX, (42 + deltay)*SIZESPRLANSHY + 16, SC_FACTORYOBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((24 + deltax)*SIZESPRLANSHX, (43 + deltay)*SIZESPRLANSHY, SC_MACHINESHOPOBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((24 + deltax)*SIZESPRLANSHX, (45 + deltay)*SIZESPRLANSHY, SC_MACHINESHOPOBJ, player, loadedmap);
-
-	xx = CreateUnitsFromMAP((11 + deltax)*SIZESPRLANSHX, (42 + deltay)*SIZESPRLANSHY + 16, SC_STARPORTOBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((14 + deltax)*SIZESPRLANSHX, (43 + deltay)*SIZESPRLANSHY, SC_CONTROLTOWEROBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((14 + deltax)*SIZESPRLANSHX, (45 + deltay)*SIZESPRLANSHY, SC_CONTROLTOWEROBJ, player, loadedmap);
-
-	xx = CreateUnitsFromMAP((11 + deltax)*SIZESPRLANSHX, (48 + deltay)*SIZESPRLANSHY + 16, SC_SCIENCEFACILITYOBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((14 + deltax)*SIZESPRLANSHX, (49 + deltay)*SIZESPRLANSHY, SC_COVERTOPSOBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((14 + deltax)*SIZESPRLANSHX, (51 + deltay)*SIZESPRLANSHY, SC_COVERTOPSOBJ, player, loadedmap);
-
-	xx = CreateUnitsFromMAP((21 + deltax)*SIZESPRLANSHX, (48 + deltay)*SIZESPRLANSHY + 16, SC_SCIENCEFACILITYOBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((24 + deltax)*SIZESPRLANSHX, (49 + deltay)*SIZESPRLANSHY, SC_PHYSICSLABOBJ, player, loadedmap);
-	xx = CreateUnitsFromMAP((24 + deltax)*SIZESPRLANSHX, (51 + deltay)*SIZESPRLANSHY, SC_PHYSICSLABOBJ, player, loadedmap);
-
-}
-//=====================================
-void testmisc(int deltax, int deltay, int player, StarMapInfo *loadedmap)
-{
-	OBJ *xx;
-	xx = CreateMineralsOnMap((29 + deltax)*SIZESPRLANSHX + 16, (25 + deltay)*SIZESPRLANSHY + 16, SC_MINERALSOBJ, GREYNEUTRALCOLORPLAYER, 1000, 1500, loadedmap);
-
-#ifdef ONEUNITEACHRACE
-	return;
-#endif
-	xx = CreateUnitsFromMAP((25 + deltax)*SIZESPRLANSHX + 16, (25 + deltay)*SIZESPRLANSHY + 16, SC_MISC_POWERGENERATOR, player, loadedmap);
-	xx = CreateUnitsFromMAP((35 + deltax)*SIZESPRLANSHX + 16, (27 + deltay)*SIZESPRLANSHY + 16, SC_WARPGATE, player, loadedmap);
-#ifdef NONBUILD
-	return;
-#endif
-	xx = CreateUnitsFromMAP((31 + deltax)*SIZESPRLANSHX + 16, (25 + deltay)*SIZESPRLANSHY + 16, SC_NEUTRAL_CRITTER1, player, loadedmap);
-	xx = CreateUnitsFromMAP((33 + deltax)*SIZESPRLANSHX + 16, (25 + deltay)*SIZESPRLANSHY + 16, SC_NEUTRAL_CRITTER2, player, loadedmap);
-	xx = CreateUnitsFromMAP((25 + deltax)*SIZESPRLANSHX + 16, (27 + deltay)*SIZESPRLANSHY + 16, SC_NEUTRAL_CRITTER3, player, loadedmap);
-	xx = CreateUnitsFromMAP((27 + deltax)*SIZESPRLANSHX + 16, (27 + deltay)*SIZESPRLANSHY + 16, SC_NEUTRAL_CRITTER4, player, loadedmap);
-	xx = CreateUnitsFromMAP((29 + deltax)*SIZESPRLANSHX + 16, (27 + deltay)*SIZESPRLANSHY + 16, SC_NEUTRAL_CRITTER5, player, loadedmap);
-	xx = CreateUnitsFromMAP((31 + deltax)*SIZESPRLANSHX + 16, (27 + deltay)*SIZESPRLANSHY + 16, SC_NEUTRAL_CRITTER6, player, loadedmap);
-	xx = CreateGeyserOnMap((41 + deltax)*SIZESPRLANSHX, (31 + deltay)*SIZESPRLANSHY, SC_GEYSEROBJ, GREYNEUTRALCOLORPLAYER, MAXGEYSERGASNR, MAXGEYSERGASNR, loadedmap);
-}
-//=====================================
-void testunits(int deltax, int deltay, int player, StarMapInfo *loadedmap)
-{
-	OBJ *xx;
-	gameconf.pl_race[player] = TERRANRACE;
-	loadedmap->pl_location[player] = player;
-	gameconf.pl_owner[player] = OWNER_HUMAN;
-
-	//	  xx = CreateUnitsFromMAP(200,200,SC_ZERGLINGOBJ,0,loadedmap);
-	//	  xx = CreateUnitsFromMAP(250,250,SC_ZERGLINGOBJ,0,loadedmap);
-	//	  ApplyCastedMage(xx,NULL,MODEDEFENSIVEMATRIX);
-
-	//	  createobjman(200,256,SC_PYLONOBJ,0,0,1,1,1);
-	/*	  xx = CreateUnitsFromMAP(256+64,256,SC_PYLONOBJ,0,loadedmap);
-		CreateUnitsFromMAP(256+64+64+64,256+16,SC_GATEWAYOBJ,0,loadedmap);
-		CreateUnitsFromMAP(256+64+64+64+64,256+16+64,SC_COMMCENTEROBJ,0,loadedmap);
-		CreateUnitsFromMAP(256+64+64+64+64+96,256+16+64+16,SC_COMSATSTATIONOBJ,0,loadedmap);
-
-		CreateGeyserOnMap(512,64,SC_GEYSEROBJ,GREYNEUTRALCOLORPLAYER,MAXGEYSERGASNR,MAXGEYSERGASNR,loadedmap);
-		createobjman(512,64,SC_ASSIMILATOROBJ,1,0,1,1,1);
-
-		CreateMineralsOnMap(128,128,SC_MINERAL1OBJ,GREYNEUTRALCOLORPLAYER,1000,1000,loadedmap);
-		CreateMineralsOnMap(128,128+64,SC_MINERAL1OBJ,GREYNEUTRALCOLORPLAYER,700,1000,loadedmap);
-		CreateMineralsOnMap(128,128+64+64,SC_MINERAL1OBJ,GREYNEUTRALCOLORPLAYER,400,1000,loadedmap);
-		CreateMineralsOnMap(128,128+64+64+64,SC_MINERAL1OBJ,GREYNEUTRALCOLORPLAYER,200,1000,loadedmap);
-	*/
-	//	  xx = CreateUnitsFromMAP(250,250,SC_OVERLORDOBJ,0,loadedmap);
-	//	  CreateGeyserOnMap(512,164,SC_GEYSEROBJ,GREYNEUTRALCOLORPLAYER,MAXGEYSERGASNR,MAXGEYSERGASNR,loadedmap);
-
-	//	  xx = CreateUnitsFromMAP(250,250,SC_SHUTTLEOBJ,0,loadedmap);
-	//	  addmage(xx,ATRCORROSIVEACID,CORROSIVEACIDMAXATRVAL);
-	//	  addmage(xx,ATRCORROSIVEACID,55<<8);
-	//	  ApplyCastedMage(xx,NULL,MODEDEFENSIVEMATRIX);
-
-	//	  CreateUnitsFromMAP(32*11,256+16,SC_HATCHERYOBJ,0,loadedmap);
-
-	createobjman(32 * 11, 256 + 16, SC_HATCHERYOBJ, 0, 0, 1, 1, 1);
-	//	  createobjman(32*5,256,SC_CREEPCOLONYOBJ,0,0,1,1,1);
-
-	/*	  createobjman(200,128,SC_NEXUSOBJ,0,0,1,1,1);
-		createobjman(200,256,SC_PYLONOBJ,0,0,1,1,1);
-		createobjman(320,320,SC_GATEWAYOBJ,0,0,1,1,1);
-		createobjman(100,128,SC_HATCHERYOBJ,0,0,1,1,1);
-		createobjman(100,256,SC_COMMCENTEROBJ,0,0,1,1,1);
-	*/
-
-	/*	  CreateGeyserOnMap(512,164,SC_GEYSEROBJ,GREYNEUTRALCOLORPLAYER,MAXGEYSERGASNR,MAXGEYSERGASNR,loadedmap);
-		createobjman(512,164,SC_EXTRACTOROBJ,0,0,1,1,1);
-		CreateGeyserOnMap(512,264,SC_GEYSEROBJ,GREYNEUTRALCOLORPLAYER,MAXGEYSERGASNR,MAXGEYSERGASNR,loadedmap);
-		createobjman(512,264,SC_REFINERYOBJ,0,0,1,1,1);
-		CreateGeyserOnMap(512,64,SC_GEYSEROBJ,GREYNEUTRALCOLORPLAYER,MAXGEYSERGASNR,MAXGEYSERGASNR,loadedmap);
-		createobjman(512,64,SC_ASSIMILATOROBJ,0,0,1,1,1);
-
-		CreateMineralsOnMap(128,128,SC_MINERAL1OBJ,GREYNEUTRALCOLORPLAYER,1000,1000,loadedmap);
-		CreateMineralsOnMap(128,128+64,SC_MINERAL1OBJ,GREYNEUTRALCOLORPLAYER,700,1000,loadedmap);
-		CreateMineralsOnMap(128,128+64+64,SC_MINERAL1OBJ,GREYNEUTRALCOLORPLAYER,400,1000,loadedmap);
-		CreateMineralsOnMap(128,128+64+64+64,SC_MINERAL1OBJ,GREYNEUTRALCOLORPLAYER,200,1000,loadedmap);
-	*/
-	//	  xx=CreateUnitsFromMAP(256,256,SC_TANKNORMALOBJ,0,loadedmap);
-	//	  createobjman(100,256,SC_COMMCENTEROBJ,0,0,1,1,1);
-	//	  createobjman(256+96,128+16,SC_SUPPLYDEPOTOBJ,1,0,1,1,1);
-	//	  CreateUnitsFromMAP(256+96,256+32,SC_COMSATSTATIONOBJ,0,loadedmap);
-	//	  CreateUnitsFromMAP(256,256,SC_COMMCENTEROBJ,0,loadedmap);
-	//	  CreateUnitsFromMAP(256+96,256+16,SC_NUCLEARSILOOBJ,0,loadedmap);
-	//	  createobjman(256+96,256+16,SC_NUCLEARSILOOBJ,1,0,1,1,1);
-	//	  createobjman(256+128+32,256,SC_PYLONOBJ,0,0,1,1,1);
-	//	  CreateGeyserOnMap(712,64,SC_GEYSEROBJ,GREYNEUTRALCOLORPLAYER,MAXGEYSERGASNR,MAXGEYSERGASNR,loadedmap);
-	//	  CreateUnitsFromMAP(600,150,SC_MARINEOBJ,0,loadedmap);
-
-	//	  CreateUnitsFromMAP(128+16,128,SC_SPAWNINGPOOLOBJ,0,loadedmap);
-	//	  xx=createobjman(512,512+16,SC_HATCHERYOBJ,0,0,1,1,1);
-	//	  CreateUnitsFromMAP(256+256+64,256+16,SC_GATEWAYOBJ,0,loadedmap);
-
-	//	  xx = CreateUnitsFromMAP(50,50,SC_OVERLORDOBJ,0,loadedmap);
-	//	  xx = CreateUnitsFromMAP(60,50,SC_OVERLORDOBJ,0,loadedmap);
-	//	  xx = CreateUnitsFromMAP(70,50,SC_OVERLORDOBJ,0,loadedmap);
-	//	  xx = CreateUnitsFromMAP(80,50,SC_OVERLORDOBJ,0,loadedmap);
-
-	//	  xx = CreateUnitsFromMAP(100+32*1,156,SC_LARVAEOBJ,0,loadedmap);
-	//	  DoOrder(NUMBGAMER,xx,0,0,SC_ZERGLINGOBJ,NOSHOWERROR);
-	//	  xx = CreateUnitsFromMAP(100+32*2,156,SC_LARVAEOBJ,0,loadedmap);
-	//	  DoOrder(NUMBGAMER,xx,0,0,SC_OVERLORDOBJ,NOSHOWERROR);
-
-	//	  xx = CreateUnitsFromMAP(100+32*3,156,SC_LARVAEOBJ,0,loadedmap);
-	//	  DoOrder(NUMBGAMER,xx,0,0,SC_HYDRALISKOBJ,NOSHOWERROR);
-	//	  xx = CreateUnitsFromMAP(100+32*4,156,SC_LARVAEOBJ,0,loadedmap);
-	//	  DoOrder(NUMBGAMER,xx,0,0,SC_SCOURGEOBJ,NOSHOWERROR);
-	//	  xx = CreateUnitsFromMAP(100+32*5,156,SC_LARVAEOBJ,0,loadedmap);
-	//	  DoOrder(NUMBGAMER,xx,0,0,SC_MUTALISKOBJ,NOSHOWERROR);
-
-	//	  xx = CreateUnitsFromMAP(100+32*6,156,SC_LARVAEOBJ,0,loadedmap);
-	//	  DoOrder(NUMBGAMER,xx,0,0,SC_QUEENOBJ,NOSHOWERROR);
-	//	  xx = CreateUnitsFromMAP(100+32*7,156,SC_LARVAEOBJ,0,loadedmap);
-	//	  DoOrder(NUMBGAMER,xx,0,0,SC_DEFILEROBJ,NOSHOWERROR);
-	//	  xx = CreateUnitsFromMAP(100+32*8,156,SC_LARVAEOBJ,0,loadedmap);
-	//	  DoOrder(NUMBGAMER,xx,0,0,SC_ULTRALISKOBJ,NOSHOWERROR);
-	//	  xx = CreateUnitsFromMAP(100+32*9,156,SC_HYDRALISKOBJ,0,loadedmap);
-	//	  DoOrder(NUMBGAMER,xx,0,0,SC_LURKEROBJ,NOSHOWERROR);
-	//	  xx = CreateUnitsFromMAP(100+32*10,156,SC_MUTALISKOBJ,0,loadedmap);
-	//	  DoOrder(NUMBGAMER,xx,0,0,SC_GUARDIANOBJ,NOSHOWERROR);
-	//	  xx = CreateUnitsFromMAP(100+32*11,156,SC_MUTALISKOBJ,0,loadedmap);
-	//	  DoOrder(NUMBGAMER,xx,0,0,SC_DEVOUREROBJ,NOSHOWERROR);
-	//	  createobjman(32*15,320+16,SC_NEXUSOBJ,0,0,1,1,1);
-	//	  createobjman(32*10,64,SC_PYLONOBJ,0,0,1,1,1);
-
-	//	  xx = createobjman(32*11,32*5+16,SC_COMMCENTEROBJ,0,0,1,1,1);
-	//	  xx = CreateUnitsFromMAP(50,50,SC_OVERLORDOBJ,0,loadedmap);
-	//	  xx = CreateUnitsFromMAP(100+32*3,156,SC_LARVAEOBJ,0,loadedmap);
-	//	  createobjman(32*10,64,SC_PYLONOBJ,0,0,1,1,1);
-	//	  createobjman(32*5,256,SC_COMMCENTEROBJ,0,0,1,1,1);
-	//	  xx = CreateUnitsFromMAP(32*5,32*2+16,SC_COMMCENTEROBJ,0,loadedmap);
-	//	  moveobj(xx,NULL,SC_COMSATSTATIONOBJ,32*5+96,32*2+16+16,NOSHOWERROR);
-	/*	  xx = CreateUnitsFromMAP(32*5,32*5+16,SC_COMMCENTEROBJ,0,loadedmap);
-		moveobj(xx,NULL,SC_NUCLEARSILOOBJ,32*5+96,32*5+16+16,NOSHOWERROR);
-		xx = CreateUnitsFromMAP(32*5,32*8+16,SC_FACTORYOBJ,0,loadedmap);
-		moveobj(xx,NULL,SC_MACHINESHOPOBJ,32*5+96,32*8+16+16,NOSHOWERROR);
-
-		xx = CreateUnitsFromMAP(32*11,32*2+16,SC_STARPORTOBJ,0,loadedmap);
-		moveobj(xx,NULL,SC_CONTROLTOWEROBJ,32*11+96,32*2+16+16,NOSHOWERROR);
-		xx = CreateUnitsFromMAP(32*11,32*5+16,SC_SCIENCEFACILITYOBJ,0,loadedmap);
-		moveobj(xx,NULL,SC_COVERTOPSOBJ,32*11+96,32*5+16+16,NOSHOWERROR);
-		xx = CreateUnitsFromMAP(32*11,32*8+16,SC_SCIENCEFACILITYOBJ,0,loadedmap);
-		moveobj(xx,NULL,SC_PHYSICSLABOBJ,32*11+96,32*8+16+16,NOSHOWERROR);
-	*/
-}
-//=====================================
-//=====================================
-const char *CLANNAMES[3][8] = { { "Zerg Brood Swarm",
-							"Clatuzg Zerg Swarm",
-							"Ghumatz Other Swarm",
-							"Elite Overmind Broods",
-							"Zerg Slayer Animals",
-							"Sarah's Defenders",
-							"Serebrate's Controls",
-							"Overlord's Minions" } ,
-						  { "Veteran Troopers",
-							"Blackwater Elite",
-							"Wayland Cyborg Corporation",
-							"Sarah's Elite Cloakers",
-							"Federation Elite Forces",
-							"Renegate Fighters",
-							"Ungovernmental Coalition",
-							"Earth's Troopships"},
-						  { "Executor's Special Forces",
-							"Aiur Fanatic Defenders",
-							"Universe Life Destroyers",
-							"Unknown Dark Forces",
-							"Truth Seekers",
-							"Lost Templars",
-							"Adun's Followers",
-							"Tasadar's Revengers "}
-};
-int nextstring[3];
 //=====================================
 void ConnectingPairBuilds(StarMapInfo *loadedmap)
 {
@@ -690,7 +304,7 @@ void ConnectingPairBuilds(StarMapInfo *loadedmap)
 	}
 }
 //=====================================
-void createallobj(StarMapInfo *loadedmap)
+void ApplyObjectsToMap(StarMapInfo *loadedmap)
 {
 	int i, j;
 	char compname[50];
@@ -711,23 +325,12 @@ void createallobj(StarMapInfo *loadedmap)
 			}
 	}
 	CreateDoodadsFromLists(&map_doodads, loadedmap);
-#ifndef TEST
+
 	CreateUnitsFromLists(&map_units, loadedmap);
 	ConnectingPairBuilds(loadedmap);
-#endif
+
 	ShowAdvisorPortrait();
 	CheckProtossBuildsForPower(loadedmap);
-#ifdef TEST
-	SetVisualMapPosition(0, 0);
-	GAMETYPE = MAP_GAMETYPE_MELEE;
-	int plnr = 0;
-	//	  testunits(10,5,plnr++,loadedmap);
-	//	  testterran(10,5,plnr++,loadedmap);
-	//	  testzerg(-20,-20,plnr++,loadedmap);
-	//	  testprotoss(10,-20,plnr++,loadedmap);
-	//	  testmisc(20,20,GREYNEUTRALCOLORPLAYER,loadedmap);
-
-#endif
 
 }
 //=====================================
