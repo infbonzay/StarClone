@@ -628,7 +628,7 @@ int campaignselect(void)
 	GRP_SetTranspTable(NULL);
 	wfree(menutranspcolors);
 	backgnd.closePcx();
-	wfree(dlg);
+	unloadfilefrommpq(dlg);
 	backgnd.closePcx();
 	return(exitstatus);
 }
@@ -810,7 +810,7 @@ int xcampaignselect(void)
 	GRP_SetTranspTable(NULL);
 	wfree(menutranspcolors);
 	backgnd.closePcx();
-	wfree(dlg);
+	unloadfilefrommpq(dlg);
 	backgnd.closePcx();
 	return(exitstatus);
 }
@@ -932,7 +932,7 @@ int glu_loadgame(void)
 	fontpcx.closePcx();
 	GRP_SetTranspTable(NULL);
 	wfree(menutranspcolors);
-	wfree(dlg);
+	unloadfilefrommpq(dlg);
 	backgnd.closePcx();
 	return(exitstatus);
 }
@@ -1052,7 +1052,7 @@ int glu_loadreplay(void)
 	fontpcx.closePcx();
 	GRP_SetTranspTable(NULL);
 	wfree(menutranspcolors);
-	wfree(dlg);
+	unloadfilefrommpq(dlg);
 	backgnd.closePcx();
 	return(exitstatus);
 }
@@ -1529,7 +1529,8 @@ void glu_score(StarMapInfo *info)
 {
 	int retstatus, repeat, i, pl, selectedlist;
 	PCX backgnd, fontpcx, optbtn;
-	GRPFILE *dlg, *scoregrp;
+	//GRPFILE *dlg;
+	GRPFILE *scoregrp;
 	char *menutranspcolors, *fntadr, *forcename;
 	int race, losewin, myrace;
 	char pal[256 * 4];
@@ -1546,7 +1547,7 @@ void glu_score(StarMapInfo *info)
 	sprintf(FULLFILENAME, "music\\%c%s.wav", RACE_CHAR[race], DEFEAT_VICTORY[losewin]);
 	PlayMusic(FULLFILENAME, -1);
 
-	mpqloadfile(makefilename(GLUEPAL_NAME, GLUEPAL_OFFSET, RACE_CHAR[race], LOSEWIN_STR[losewin], DLGGRP_STR), (char **)&dlg);
+	//mpqloadfile(makefilename(GLUEPAL_NAME, GLUEPAL_OFFSET, RACE_CHAR[race], LOSEWIN_STR[losewin], DLGGRP_STR), (char **)&dlg);
 	mpqloadfile(makefilename(GLUESCORE_NAME, GLUESCORE_OFFSET, RACE_CHAR[race], LOSEWIN_STR[losewin], SCOREGRP_STR), (char **)&scoregrp);
 	optbtn.openMpqPcx(makefilename(GLUESCORE_NAME, GLUESCORE_OFFSET, RACE_CHAR[race], LOSEWIN_STR[losewin], SCOREOPTBTN_STR));
 
@@ -1723,8 +1724,8 @@ void glu_score(StarMapInfo *info)
 	fontpcx.closePcx();
 	GRP_SetTranspTable(NULL);
 	wfree(menutranspcolors);
-	wfree(scoregrp);
-	wfree(dlg);
+	unloadfilefrommpq(scoregrp);
+	//unloadfilefrommpq(dlg);
 	backgnd.closePcx();
 	return;
 }
@@ -2029,7 +2030,7 @@ int glu_conn(void)
 	fontpcx.closePcx();
 	GRP_SetTranspTable(NULL);
 	wfree(menutranspcolors);
-	wfree(dlg);
+	unloadfilefrommpq(dlg);
 	backgnd.closePcx();
 	return(exitstatus);
 }
@@ -2317,7 +2318,7 @@ int glu_join(FORCE_SLOTS *fslots)
 	fontpcx.closePcx();
 	GRP_SetTranspTable(NULL);
 	wfree(menutranspcolors);
-	wfree(dlg);
+	unloadfilefrommpq(dlg);
 	backgnd.closePcx();
 	return(exitstatus);
 }
@@ -2552,7 +2553,7 @@ int glu_login(void)
 	GRP_SetTranspTable(NULL);
 	wfree(menutranspcolors);
 	backgnd.closePcx();
-	wfree(dlg);
+	unloadfilefrommpq(dlg);
 	return(exitstatus);
 }
 //==========================================
@@ -3281,7 +3282,7 @@ int selectmapmenu(void)
 	GRP_SetTranspTable(NULL);
 	wfree(menutranspcolors);
 	fontpcx.closePcx();
-	wfree(dlg);
+	unloadfilefrommpq(dlg);
 	backgnd.closePcx();
 	unloaddlgicons();
 	chdir(GAMEPATH);
@@ -3569,7 +3570,7 @@ int glu_creat(FORCE_SLOTS *fslots)
 	GRP_SetTranspTable(NULL);
 	wfree(menutranspcolors);
 	fontpcx.closePcx();
-	wfree(dlg);
+	unloadfilefrommpq(dlg);
 	backgnd.closePcx();
 	unloaddlgicons();
 	chdir(GAMEPATH);
@@ -4179,7 +4180,7 @@ int glu_chat(int masterjoin, int playernr, FORCE_SLOTS *fslots)
 	fontpcx.closePcx();
 	GRP_SetTranspTable(NULL);
 	wfree(menutranspcolors);
-	wfree(dlg);
+	unloadfilefrommpq(dlg);
 	backgnd.closePcx();
 	return(exitstatus);
 }
