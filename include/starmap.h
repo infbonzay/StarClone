@@ -3,6 +3,7 @@
 #define _SC_STARMAP_H
 
 struct StarMapInfo;
+struct LEADERBOARD;
 
 #include "defs.h"
 #include "defsmodes.h"
@@ -14,6 +15,7 @@ struct StarMapInfo;
 #include "triggers.h"
 #include "tbl.h"
 #include "gamemenu.h"
+#include "LeaderBoard.h"
 
 #define MAXTERRAINTYPES					8
 

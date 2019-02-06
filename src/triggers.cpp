@@ -988,7 +988,7 @@ int Action_Prepare(StarMapInfo *info, MAP_TRIGS *temptrg, int trig_nr, int playe
 		case TRG_ACTIONTYPE_LEADERBOARDPOINTS://21
 			unitnr = temptrg->action[i].unitorrestype;
 			nrofunits = temptrg->action[i].rescount;
-			leaderboard = AddLeaderBoard(0, temptrg->action[i].actiontype, info, playernrmask, unitnr, nrofunits, temptrg->action[i].stringID - 1);
+			leaderboard = AddLeaderBoard(MAINLEADERBOARD, temptrg->action[i].actiontype, info, playernrmask, unitnr, nrofunits, temptrg->action[i].stringID - 1);
 			triggset = 1;
 			break;
 		case TRG_ACTIONTYPE_KILLUNIT://22
@@ -1168,13 +1168,13 @@ int Action_Prepare(StarMapInfo *info, MAP_TRIGS *temptrg, int trig_nr, int playe
 		case TRG_ACTIONTYPE_LEADERBOARDGOALKILLS://36
 			unitnr = temptrg->action[i].unitorrestype;
 			nrofunits = temptrg->action[i].rescount;
-			leaderboard = AddLeaderBoard(1, temptrg->action[i].actiontype, info, playernrmask, unitnr, nrofunits, temptrg->action[i].stringID - 1);
+			leaderboard = AddLeaderBoard(MAINLEADERBOARDGOAL, temptrg->action[i].actiontype, info, playernrmask, unitnr, nrofunits, temptrg->action[i].stringID - 1);
 			triggset = 1;
 			break;
 		case TRG_ACTIONTYPE_LEADERBOARDGOALPOINTS://37
 			unitnr = temptrg->action[i].unitorrestype;
 			nrofunits = temptrg->action[i].rescount;
-			leaderboard = AddLeaderBoard(1, temptrg->action[i].actiontype, info, playernrmask, unitnr, nrofunits, temptrg->action[i].stringID - 1);
+			leaderboard = AddLeaderBoard(MAINLEADERBOARDGOAL, temptrg->action[i].actiontype, info, playernrmask, unitnr, nrofunits, temptrg->action[i].stringID - 1);
 			triggset = 1;
 			break;
 		case TRG_ACTIONTYPE_MOVELOCATION://38

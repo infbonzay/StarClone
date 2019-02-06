@@ -2,9 +2,15 @@
 
 #define _SC_LEADERBOARD_H
 
-#define MAXLEADERBOARDS					2
 
-struct StarMapInfo;
+#define MAINLEADERBOARDGAMEINFO				0
+#define MAINLEADERBOARD						1
+#define MAINLEADERBOARDGOAL					2
+
+#define MAXLEADERBOARDS						3
+#define TRG_ACTIONTYPE_OWNLEADERBOARD		250
+
+#include "starmap.h"
 
 struct LEADERBOARD
 {
@@ -17,10 +23,12 @@ struct LEADERBOARD
 		char			calcready;
 };
 
-LEADERBOARD *AddLeaderBoard(int leaderboardnr, int leaderboardtype, StarMapInfo *info, int actiononplayer, int unittype, int nrofunits, int stringID);
+LEADERBOARD *AddLeaderBoard(int leaderboardnr, int leaderboardtype,
+	StarMapInfo *info, int actiononplayer, int unittype, int nrofunits, int stringID);
 void CalcLeaderBoards(StarMapInfo *info);
 void ShowLeaderBoards(StarMapInfo *info,int x,int y);
 void ShowCountDownTimer(StarMapInfo *info,int x,int y);
+void LeaderBoardFree(StarMapInfo *info);
 
 #endif
 

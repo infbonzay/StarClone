@@ -1521,14 +1521,8 @@ void unload_starmap(StarMapInfo *info)
 
 	unload_starmapallocated(info);
 
-	for (i = 0;i < MAXLEADERBOARDS;i++)
-		if (info->leaderboards[i])
-		{
-			if (info->leaderboards[i]->txtstr)
-				wfree(info->leaderboards[i]->txtstr);
-			wfree(info->leaderboards[i]);
-			info->leaderboards[i] = NULL;
-		}
+	LeaderBoardFree(info);
+
 	if (info->terrain == TERRAIN_SPACEPLATFORM)
 	{
 		unloadStars();

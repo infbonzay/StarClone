@@ -5,16 +5,16 @@
 #include "LeaderBoard.h"
 
 //=================================================
-LEADERBOARD *AddLeaderBoard(int boardnr, int leaderboardtype, StarMapInfo *info, int actiononplayers, int unittype, int nrofunits, int stringID)
+LEADERBOARD *AddLeaderBoard(int boardnr, int leaderboardtype,
+	StarMapInfo *info, int actiononplayers, int unittype, int nrofunits, int stringID)
 {
 	int i;
-	char *strtxt;
-	strtxt = getmapSTR(info, stringID);
 	//commandsymb+emptycubesymb+cubecolor+space+number(max 10 symbols)+zero termstring
+	char *strtxt = getmapSTR(info, stringID);
 	if (!info->leaderboards[boardnr])
 	{
 		info->leaderboards[boardnr] = (LEADERBOARD *)wmalloc(sizeof(LEADERBOARD));
-		info->leaderboards[boardnr]->txtstr = (char *)wmalloc(strlen(strtxt) + 5 + 10);
+		info->leaderboards[boardnr]->txtstr = (char *)wmalloc(strlen(strtxt) + 4 + 10 + 1);
 	}
 	info->leaderboards[boardnr]->leaderboardtype = leaderboardtype;
 	info->leaderboards[boardnr]->unittype = unittype;
@@ -111,6 +111,9 @@ void CalcLeaderBoards(StarMapInfo *info)
 					PLAYER[NUMBGAMER].colorRACE + 1, nrunits, getmapSTR(info, info->leaderboards[i]->stringID));
 				info->leaderboards[i]->calcready = 1;
 				break;
+			case TRG_ACTIONTYPE_OWNLEADERBOARD://250
+				info->leaderboards[i]->calcready = 0;
+				break;
 			default:
 				break;
 			}
@@ -143,3 +146,17 @@ void ShowCountDownTimer(StarMapInfo *info, int x, int y)
 	}
 }
 //=================================================
+void LeaderBoardFree(StarMapInfo *info)
+{
+	int i;
+	for (i = 0;i < MAXLEADERBOARDS;i++)
+	{
+		if (info->leaderboards[i])
+		{
+			if (info->leaderboards[i]->txtstr)
+				wfree(info->leaderboards[i]->txtstr);
+			wfree(info->leaderboards[i]);
+			info->leaderboards[i] = NULL;
+		}
+	}
+}
