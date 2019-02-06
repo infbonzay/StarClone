@@ -46,7 +46,9 @@ int loadweapons(void)
 	static char strid[200], strvalue[200];
 	FILE *f = fopen(fileweaponsconf, "r");
 	if (!f)
+	{
 		return(-1);
+	}
 	while (!feof(f))
 	{
 		strcpy(strid, "");
@@ -57,6 +59,7 @@ int loadweapons(void)
 		fscanf(f, "%s \n", strvalue);//read '='
 		fscanf(f, "%s \n", strvalue);//read flags
 		for (j = 0;j < sizeof(rezwp) / sizeof(char *);j++)
+		{
 			if (!strcmp(strid, rezwp[j]))
 			{
 				switch (j)
@@ -66,7 +69,7 @@ int loadweapons(void)
 					trailrefresh = 255;
 					rangeupgnr = 255;
 					rangeupgaddfactor = 0;
-					//						printf("%s = %s\n",strid,strvalue);
+					//printf("%s = %s\n",strid,strvalue);
 					goto readnext;
 					break;
 				case 1://RANGEUPGNR upgrade_id increase_range_by_this_value
@@ -81,8 +84,9 @@ int loadweapons(void)
 					}
 					goto readnext;
 					break;
-				}//switch
-			}//if,for
+				}
+			}
+		}
 		if (j >= sizeof(rezwp) / sizeof(char *))
 		{
 			if (strid[0] == '#')
@@ -100,7 +104,7 @@ int loadweapons(void)
 //===========================================
 #define WEAPON_UNIT_ANY			0
 #define WEAPON_UNIT_CARRIER		1
-int unitweapon_retstatus[3] = { CREATEDWEAPONSTATUS_ATACKSUCCESS,CREATEDWEAPONSTATUS_LAUNCHINTERCEPTORS };
+int unitweapon_retstatus[2] = { CREATEDWEAPONSTATUS_ATACKSUCCESS,CREATEDWEAPONSTATUS_LAUNCHINTERCEPTORS };
 //===========================================
 int IfCanCreateWeapon(OBJ *atacker, OBJ *destobj, int *errmes, unsigned char *weapon_id, int flags)
 {
@@ -154,14 +158,13 @@ int IfCanCreateWeapon(OBJ *atacker, OBJ *destobj, int *errmes, unsigned char *we
 			else
 				rangebad = 1;
 			weaponunitid = WEAPON_UNIT_CARRIER;
-			//				usedweapon_id = airweapon_id;
+			//usedweapon_id = airweapon_id;
 			usedweapon_id = WEAPONID_CARRIERRANGE;
 			atackangle = 0;
 			atacker->prop &= ~VARNEEDTOLAUNCHINTERCEPTORS;
 			break;
 		case SC_INTERCEPTOROBJ:
-			if (atacker->myparent)			//ignore distance between interceptorparent(carrier) and atack destination
-											//because carier was die
+			if (atacker->myparent)			//ignore distance between interceptorparent(carrier) and atack destination because carier was die
 			{
 				if (GetDistanceBetweenUnits256(atacker, atacker->myparent) > (8 + 6) * 32 * 256)
 					return(CREATEDWEAPONSTATUS_INTERCEPTORFARAWAY);
@@ -176,7 +179,7 @@ int IfCanCreateWeapon(OBJ *atacker, OBJ *destobj, int *errmes, unsigned char *we
 				else
 				{
 					if (errmes)
-						//							*errmes=alldattbl.weapons_dat->TargetErrorMessage[groundweapon_id];
+						//*errmes=alldattbl.weapons_dat->TargetErrorMessage[groundweapon_id];
 						*errmes = 875;
 					return(CREATEDWEAPONSTATUS_CANTATACKTHISUNIT);
 				}
@@ -202,7 +205,7 @@ int IfCanCreateWeapon(OBJ *atacker, OBJ *destobj, int *errmes, unsigned char *we
 				//check visibility
 				if (destobj &&
 					(OBJ_VAR_CHK(destobj, obj_notdetect, atacker->playernr) ||
-					(!OBJ_VAR_CHK(destobj, obj_see, atacker->playernr))))
+					(!OBJ_VAR_CHK(destobj, obj_see, atacker->playernr))) )
 				{
 					if (errmes)
 						*errmes = 875;//invalid target
@@ -233,10 +236,12 @@ int IfCanCreateWeapon(OBJ *atacker, OBJ *destobj, int *errmes, unsigned char *we
 		{
 		case 0://range ok
 			if (!IsOnSkyOBJ(atacker))
+			{
 				if (mapEFFECT(atacker->xkart, atacker->ykart, DISRUPTEFFECT))//unit under disruption
 				{
 					return(CREATEDWEAPONSTATUS_UNDERDISRUPTION);//return 'under disruption'
 				}
+			}
 			if (UnitIgnoreInvisibles(SC_Unit) || !OBJ_VAR_CHK(destobj, obj_notdetect, atacker->playernr))
 			{
 				if (atackangle)
@@ -278,19 +283,9 @@ int IfCanCreateWeapon(OBJ *atacker, OBJ *destobj, int *errmes, unsigned char *we
 //===========================================
 int IsSplashDamage(unsigned char weapon_id)
 {
-	/*	  switch(alldattbl.weapons_dat->WeaponEffect[weapon_id])
-		{
-			case WE_SPLASHALL:
-			case WE_SPLASHENEMY:
-			case WE_SPLASHENEMYAIR:
-				return(1);
-				break;
-		}
-		return 0;
-	*/
-	return(alldattbl.weapons_dat->InnerSplash[weapon_id] +
-		alldattbl.weapons_dat->MediumSplash[weapon_id] +
-		alldattbl.weapons_dat->OuterSplash[weapon_id]);
+	return( alldattbl.weapons_dat->InnerSplash[weapon_id] +
+			alldattbl.weapons_dat->MediumSplash[weapon_id] +
+			alldattbl.weapons_dat->OuterSplash[weapon_id] );
 }
 //=======================================
 void WeaponPlaySFX(OBJ *a, int sfxdata_id, int distance, int x, int y)
@@ -394,20 +389,23 @@ int CreateWeaponID(OBJ *a, OBJ *destobj, int xdest256, int ydest256, unsigned ch
 				xdest256 = GetOBJx256(destobj);
 				ydest256 = GetOBJy256(destobj);
 			}
-			xdest256_2 = xdest256 + myrand(-48 * 256, 47 * 256);			//3x3 area
+			xdest256 = xdest256 + myrand(-48 * 256, 47 * 256);			//3x3 area
+			ydest256 = ydest256 + myrand(-48 * 256, 47 * 256);
+
+			xdest256_2 = xdest256 + myrand(-48 * 256, 47 * 256);		//3x3 area
 			ydest256_2 = ydest256 + myrand(-48 * 256, 47 * 256);
 
-			xdest256 += myrand(-48 * 256, 47 * 256);				//3x3 area
-			ydest256 += myrand(-48 * 256, 47 * 256);
+			//xdest256 += myrand(-48 * 256, 47 * 256);					//3x3 area
+			//ydest256 += myrand(-48 * 256, 47 * 256);
 
 			flingy = Create2FlingyID(a, destobj, GetOBJx256(a), GetOBJy256(a), xdest256, ydest256, xdest256_2, ydest256_2, weapon_id, flingy_id, elevationdelta);
 			break;
-		case WB_GOTO_MAX_RANGE:								//9
+		case WB_GOTO_MAX_RANGE:						//9
 			maxdist = alldattbl.weapons_dat->MaximumRange[weapon_id];// + alldattbl.flingy_dat->Acceleration[flingy_id]/256;
 			CalcMaxRangeCoordsXY(xdest256 - GetOBJx256(a), ydest256 - GetOBJy256(a), &maxrangex, &maxrangey, maxdist);
 
-			xdest256 = GetOBJx256(a) + maxrangex;// + 32*256;
-			ydest256 = GetOBJy256(a) + maxrangey;// + 32*256;
+			xdest256 = GetOBJx256(a) + maxrangex;
+			ydest256 = GetOBJy256(a) + maxrangey;
 
 			flingy = CreateFlingyID(a, NULL, GetOBJx256(a), GetOBJy256(a), xdest256, ydest256, weapon_id, flingy_id, elevationdelta);
 			flingy->destobj = destobj;
@@ -648,7 +646,7 @@ void WeaponDoDamage(OBJ *atacker, OBJ *destobj, int x256, int y256, SCUNIT SC_Un
 			a = objects[i];
 			if (IsActiveUnit(a))
 			{
-				//					distance256 = GetDistanceTo256(a,x256,y256);
+				//distance256 = GetDistanceTo256(a,x256,y256);
 				distance256 = GetDistances(GetOBJx256(a), GetOBJy256(a), x256, y256);
 				if (distance256 <= mindist[0])
 					realdamage = damage;
@@ -917,6 +915,7 @@ void WeaponDoDamage(OBJ *atacker, OBJ *destobj, int x256, int y256, SCUNIT SC_Un
 		{
 			a = objects[i];
 			if (IsOnSkyOBJ(a) && ((player_aliance(playernr, a->playernr) == ENEMYOBJ) || a == destobj))
+			{
 				if (WeaponCanApplyOnUnit(a, playernr, weapon_id))
 				{
 					if (IsHallucination(a))
@@ -939,6 +938,7 @@ void WeaponDoDamage(OBJ *atacker, OBJ *destobj, int x256, int y256, SCUNIT SC_Un
 							ChangeSporeImage(a, prevsporecnt, GetCorrosiveAcidValue(a));
 					}
 				}
+			}
 		}
 		break;
 	default:
