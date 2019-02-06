@@ -200,17 +200,6 @@ struct MAP_TRIGS
 };
 #pragma pack(pop)
 
-struct LEADERBOARD
-{
-		unsigned char	leaderboardtype;
-		unsigned char	unittype;
-		unsigned int	nrofunits;
-		short int		actiononplayers;
-		short int		stringID; 
-		char			*txtstr;
-		char			calcready;
-};
-
 void Triggers_ReduceMusicVolume(void);
 void Triggers_RestoreMusicVolume(void);
 void Triggers_SetMusicVolume(int volume);

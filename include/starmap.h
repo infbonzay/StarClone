@@ -16,7 +16,6 @@ struct StarMapInfo;
 #include "gamemenu.h"
 
 #define MAXTERRAINTYPES					8
-#define MAXLEADERBOARDS					2
 
 #define STARMAP_LOADFORPLAY				0x00
 #define STARMAP_LOADFORINFO				0x01
@@ -407,7 +406,7 @@ struct StarMapInfo
 	struct		triggerunit *triggerunitsprop;
 	struct		locations *gamelocations;
 	short int	maxlocations;
-	struct LEADERBOARD *leaderboards[MAXLEADERBOARDS];
+	LEADERBOARD *leaderboards[MAXLEADERBOARDS];
 	int			CountDownTimer;
 	char		Switch[256];
 	
@@ -538,13 +537,7 @@ void randomizecolor(void);
 int	 GetPlayableGameNumber(StarMapInfo *info);
 void free_missionobjectives(void);
 void fill_missionobjectives(const char *missiontxt);
-LEADERBOARD *AddLeaderBoard(int leaderboardnr,int leaderboardtype,StarMapInfo *info,\
-							int actiononplayer,int unittype,int nrofunits,int stringID);
-void CalcLeaderBoards(StarMapInfo *info);
-void ShowLeaderBoards(StarMapInfo *info,int x,int y);
-void ShowCountDownTimer(StarMapInfo *info,int x,int y);
 char *getmapSTR(StarMapInfo *testmap,int nrofstr);
-
 
 extern mylist map_units,map_doodads;
 extern int creepfulltilenrs[8][2];
