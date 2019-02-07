@@ -240,7 +240,7 @@ int ISCRIPT::CompilePass1(FILE *f)
 	isheader = 0;
 	compilebufoffs = 0;
 	//lets put compiled code to offset from 0x0001, offset 0x0000 is reserved for BUGS
-//	  compilebuf[compilebufoffs++] = ISCRIPTCMD_UNKNOWN;						//unknown command
+	//	  compilebuf[compilebufoffs++] = ISCRIPTCMD_UNKNOWN;						//unknown command
 	while (1)
 	{
 		strid[0] = 0;
@@ -250,7 +250,7 @@ int ISCRIPT::CompilePass1(FILE *f)
 		k++;
 		if (!strid[0])
 		{
-			goto endcompilepass1;
+			break;
 		}
 		if (strid[0] == '#')
 		{
@@ -287,14 +287,14 @@ int ISCRIPT::CompilePass1(FILE *f)
 				{
 					printf("[%s] iscript command invalid\n", strid);
 					retstatus = -1;
-					goto endcompilepass1;
+					break;
 				}
 				//save script cmd
 				SaveCmdToBuff(compilebuf, compilebufoffs, 1, cmd);
 				if (++compilebufoffs >= MAXCOMPILEBUFSIZE)
 				{
 					retstatus = -1;
-					goto endcompilepass1;
+					break;
 				}
 				cmdsize = iscriptcmdsizeparam[cmd][0];
 				if (cmdsize == 0x80)
@@ -307,7 +307,7 @@ int ISCRIPT::CompilePass1(FILE *f)
 					{
 						DEBUGMESSCR("compiled script large than %s bytes\n", MAXCOMPILEBUFSIZE);
 						retstatus = -1;
-						goto endcompilepass1;
+						break;
 					}
 				}
 				else
@@ -339,19 +339,19 @@ int ISCRIPT::CompilePass1(FILE *f)
 						//this label need to save to pass 2
 						needtoaddoffs.AddList((void *)compilebufoffs);
 						nameoflabels.AllocAndAddList(strid, stridlen + 1);
-						//						printf("ref [0x%04x]\n",compilebufoffs);
+						//printf("ref [0x%04x]\n",compilebufoffs);
 					}
 					compilebufoffs += (subcmdsize & 0x7f);
 					if (compilebufoffs >= MAXCOMPILEBUFSIZE)
 					{
 						retstatus = -1;
-						goto endcompilepass1;
+						wfree(compilebuf);
+						return(retstatus);
 					}
 				}
 			}
 		}
 	}
-endcompilepass1:
 	if (!retstatus)
 	{
 		//move compiled scripts to newly exacted size allocated memory
@@ -383,7 +383,7 @@ int ISCRIPT::CompilePass2(FILE *f)
 		stridlen = strlen(strid);
 		if (!strid[0])
 		{
-			goto endcompilepass2;
+			break;
 		}
 		if (strid[0] == '#')
 		{
@@ -410,7 +410,7 @@ int ISCRIPT::CompilePass2(FILE *f)
 			{
 				printf("ERROR:[%s] iscriptnr invalid\n", strid);
 				retstatus = -1;
-				goto endcompilepass2x;
+				return(retstatus);
 			}
 			else if (cmd == ISCRIPTNR_ISID)
 			{
@@ -446,12 +446,11 @@ int ISCRIPT::CompilePass2(FILE *f)
 				{
 					printf("ERROR:[%s] label not found\n", strid);
 					retstatus = -2;
-					goto endcompilepass2x;
+					return(retstatus);
 				}
 			}
 		}
 	}
-endcompilepass2:
 	//set labels on commands
 	maxlabels = nameoflabels.Count();
 	for (i = 0;i < maxlabels;i++)
@@ -474,10 +473,9 @@ endcompilepass2:
 		{
 			printf("ERROR:[%s] label not found\n", strid);
 			retstatus = -2;
-			goto endcompilepass2x;
+			return(retstatus);
 		}
 	}
-endcompilepass2x:
 	return(retstatus);
 }
 //============================================
@@ -585,12 +583,12 @@ int ISCRIPT::ExecuteScript(MAIN_IMG *img)
 	if (img->waitticks <= 1)
 	{
 		img->waitticks = 0;
-		do {
+		do{
 			iscriptcmd = compilediscripts[img->offsetcmdinbuf++];
-			//			ShowCommand(img,NULL,iscriptcmd,compilediscripts+img->offsetcmdinbuf);
+			//ShowCommand(img,NULL,iscriptcmd,compilediscripts+img->offsetcmdinbuf);
 			iscriptcmdsize = iscriptcmdsizeparam[iscriptcmd][0];
 			status = (*IScriptCmd[iscriptcmd])(img, compilediscripts + img->offsetcmdinbuf, iscriptcmdsize);
-		} while (!status);
+		}while (!status);
 	}
 	else
 	{
@@ -608,12 +606,12 @@ int ISCRIPT::ExecuteScript(OVERLAY_IMG *img)
 	if (img->waitticks <= 1)
 	{
 		img->waitticks = 0;
-		do {
+		do{
 			iscriptcmd = compilediscripts[img->offsetcmdinbuf++];
-			//			ShowCommand(NULL,img,iscriptcmd,compilediscripts+img->offsetcmdinbuf);
+			//ShowCommand(NULL,img,iscriptcmd,compilediscripts+img->offsetcmdinbuf);
 			iscriptcmdsize = iscriptcmdsizeparam[iscriptcmd][0];
 			status = (*IScriptCmd[iscriptcmd])(img, compilediscripts + img->offsetcmdinbuf, iscriptcmdsize);
-		} while (!status);
+		}while (!status);
 	}
 	else
 	{

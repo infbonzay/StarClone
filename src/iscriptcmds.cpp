@@ -548,7 +548,8 @@ int IScriptCmd_attackwith(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
 						if (a->SC_Unit == SC_REAVEROBJ || a->SC_Unit == SC_HERO_WARBRINGEROBJ)
 						{
 							LaunchScarab(a,a->finalOBJ);
-							goto atackwith_end;
+							img->offsetcmdinbuf += cmdsize;
+							return(0);
 						}
 						else
 						{
@@ -560,14 +561,7 @@ int IScriptCmd_attackwith(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
 					weapon_id = alldattbl.units_dat->AirWeapon[a->SC_Unit];
 					if (weapon_id >= MAX_WEAPONS_ELEM)
 					{
-//						if (a->SC_Unit ==  || a->SC_Unit == )
-//						{
-//
-//						}
-//						else
-//						{
-							DEBUGMESSCR("SC_Unit=%d iscriptcmd: attackwith %d with no air weapon\n",a->SC_Unit,buf[0]);
-//						}
+						DEBUGMESSCR("SC_Unit=%d iscriptcmd: attackwith %d with no air weapon\n",a->SC_Unit,buf[0]);
 					}
 					break;
 				default:
@@ -584,7 +578,6 @@ int IScriptCmd_attackwith(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
 					unsigned char side = CalcDirection(GetOBJx256(tr),GetOBJy256(tr),GetOBJx256(a->finalOBJ),GetOBJy256(a->finalOBJ));
 					tr->mainimage->AllUnitDirection256(side);
 
-//					GetLoadedImage( alldattbl.images_dat->Attack_Overlay[tr->mainimage->imageid],(void **)&lo);
 					GetLoadedImage( GetIDFromOverlayLayer(tr->mainimage->imageid,IMAGE_OVERLAY_ATACK),(void **)&lo);
 					adrxyoffs = GetLoXY(lo,0,BUNKERFIRELO[tr->mainimage->side/16]);
 
@@ -606,7 +599,6 @@ int IScriptCmd_attackwith(OVERLAY_IMG *img,unsigned char *buf,int cmdsize)
 			}
 		}
 	}
-atackwith_end:
 	img->offsetcmdinbuf += cmdsize;
 	return(0);
 }

@@ -1313,7 +1313,7 @@ int Action_Prepare(StarMapInfo *info, MAP_TRIGS *temptrg, int trig_nr, int playe
 			}
 			else
 				nrofunits = 1;
-		creationwithoutproperties:
+creationwithoutproperties:
 			unitnr = temptrg->action[i].unitorrestype;
 			b = loadobj(unitnr);
 			locnr = temptrg->action[i].locationnr - 1;
@@ -1327,11 +1327,10 @@ int Action_Prepare(StarMapInfo *info, MAP_TRIGS *temptrg, int trig_nr, int playe
 					{
 						MAPREGENERATIONBIT = 1;
 						MAPUNITSREGENERATIONBIT = 1;
-						//								CenterXYArea(&info->gamelocations[locnr].coords,&xobj,&yobj);
+						//CenterXYArea(&info->gamelocations[locnr].coords,&xobj,&yobj);
 						getcoordofnewunit(unitnr, &xobj, &yobj, &info->gamelocations[locnr].coords);
 						newobj = createobjfulllife(xobj, yobj, unitnr, j);
 						makeoneobjseeopen(newobj, loadobj(newobj->SC_Unit));
-						//								maketypeofmove(newobj,loadobj(newobj->SC_Unit));
 					}
 					nrofunits = deltax;
 					ownedactiononplayers &= ~mask;
@@ -1348,9 +1347,9 @@ int Action_Prepare(StarMapInfo *info, MAP_TRIGS *temptrg, int trig_nr, int playe
 			nrofunits = MaxObjects;
 			ownedactiononplayers = OneGroup_Prepare(info, temptrg->action[i].actiononplayers, playernrmask);
 			locnr = temptrg->action[i].locationnr - 1;
-			//					txtstr=getmapSTR(info,info->gamelocations[locnr].stringID-1);
+			//txtstr=getmapSTR(info,info->gamelocations[locnr].stringID-1);
 			searchloc = temptrg->action[i].rescount - 1;
-			//					txtstr=getmapSTR(info,info->gamelocations[searchloc].stringID-1);
+			//txtstr=getmapSTR(info,info->gamelocations[searchloc].stringID-1);
 			CenterXYArea(&info->gamelocations[locnr].coords, &xobj, &yobj);
 			CenterXYArea(&info->gamelocations[searchloc].coords, &xobj2, &yobj2);
 			switch (temptrg->action[i].subaction)
@@ -1367,7 +1366,7 @@ int Action_Prepare(StarMapInfo *info, MAP_TRIGS *temptrg, int trig_nr, int playe
 			}
 			newobj = NULL;
 			nrofunits = CheckForUnit(NULL, ownedactiononplayers, unitnr, nrofunits, &newobj, &info->gamelocations[locnr].coords);
-			//					nrofunits = CheckForUnit(NULL,ownedactiononplayers,unitnr,nrofunits,&newobj,&info->gamelocations[locnr].coords,MODESTOP);
+			//nrofunits = CheckForUnit(NULL,ownedactiononplayers,unitnr,nrofunits,&newobj,&info->gamelocations[locnr].coords,MODESTOP);
 			if (nrofunits)
 			{
 				for (j = 0;j < MaxObjects;j++)
@@ -1411,7 +1410,7 @@ int Action_Prepare(StarMapInfo *info, MAP_TRIGS *temptrg, int trig_nr, int playe
 			break;
 		case TRG_ACTIONTYPE_COMMENT://47
 			TRIG_commentstr = getmapSTR(info, temptrg->action[i].stringID - 1);
-			//					DEBUGMESSCR("COMMENT[%s]\n",TRIG_commentstr);
+			//DEBUGMESSCR("COMMENT[%s]\n",TRIG_commentstr);
 			triggset = 1;
 			break;
 		case TRG_ACTIONTYPE_GIVEUNITSTOPLAYER://48

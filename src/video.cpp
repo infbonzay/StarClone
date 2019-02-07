@@ -168,6 +168,7 @@ void ShowPreviewBuff(char *cmpbuf, int sizebuf, int esckeyaction)
 			from = i + 1;
 		}
 		else
+		{
 			if (cmpbuf[i] == '>')
 			{
 				cmpbuf[i] = 0;
@@ -287,6 +288,7 @@ void ShowPreviewBuff(char *cmpbuf, int sizebuf, int esckeyaction)
 					//other symbols
 				}
 			}
+		}
 		i++;
 	}
 exitshowtitles:

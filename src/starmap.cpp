@@ -580,7 +580,7 @@ int read_starmap(HANDLE mpq, const char *filename, StarMapInfo *info, int flags)
 				}
 				else
 				{
-				checkmpq2:
+checkmpq2:
 					err = wr_SFileOpenFileEx(install2mpq, filename, SFILE_OPEN_FROM_MPQ, &f);
 					if (!err)
 						return -1;

@@ -70,7 +70,6 @@ int loadweapons(void)
 					rangeupgnr = 255;
 					rangeupgaddfactor = 0;
 					//printf("%s = %s\n",strid,strvalue);
-					goto readnext;
 					break;
 				case 1://RANGEUPGNR upgrade_id increase_range_by_this_value
 					rangeupgnr = atoi(strvalue);
@@ -82,7 +81,6 @@ int loadweapons(void)
 						weapons[whatobj].rangeupgnr = rangeupgnr;
 						weapons[whatobj].rangeupgaddfactor = rangeupgaddfactor;
 					}
-					goto readnext;
 					break;
 				}
 			}
@@ -95,8 +93,6 @@ int loadweapons(void)
 			fclose(f);
 			return(-2);
 		}
-	readnext:
-		;
 	}
 	fclose(f);
 	return(0);

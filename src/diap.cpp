@@ -189,7 +189,7 @@ void desenproperties(int *localprop, char *selectableicons)
 							}
 					}
 		}
-	selectedicon:
+selectedicon:
 		if (mouseonicon == -1 && 
 			highMouse->MouseHotPos >= MOUSEONICONSMIN && 
 			highMouse->MouseHotPos <= MOUSEONICONSMAX)

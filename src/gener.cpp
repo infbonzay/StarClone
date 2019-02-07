@@ -309,7 +309,7 @@ int main(int c, char **parm, char **env)
 								goto gonextmission;
 							}
 							missionfrommenu = 0;
-						repeatmissionagain:
+repeatmissionagain:
 							ShowPreviewMission(campaign_id, selected_id, 0);//show info before the mission
 							if (status == ENDCAMPAIGN)
 							{
@@ -355,7 +355,7 @@ int main(int c, char **parm, char **env)
 								//gamestatus = WINGAME; //for test
 								if (gamestatus != WINGAME || gamequitstatus == RESTARTGAME)
 									goto repeatmissionagain;
-							gonextmission:
+gonextmission:
 								ShowPreviewMission(campaign_id, selected_id, 1);//show info after mission(if exist)
 								//get the next mission
 								selected_id = curplayer[0].missions[campaign_id].next_missions[selected_id];

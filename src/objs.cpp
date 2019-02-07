@@ -2150,33 +2150,29 @@ int moveobj(struct OBJ *a, struct OBJ *destobj, int mode, int x, int y, int mode
 		case MODEESCAPE3:
 		case MODEESCAPE4:
 		case MODEESCAPE5:
-		escapeconstrslots:
+escapeconstrslots:
 			slotnr = mode - MODEESCAPE1;
-			//			  if (!(a->prop & VARNOTWORK))
+			SlotReturnResources(a, a->playernr, slotnr);
+			ret = DelConstruct(a, slotnr, &type_id, &obj_id);
+			if (ret)
 			{
-				SlotReturnResources(a, a->playernr, slotnr);
-				ret = DelConstruct(a, slotnr, &type_id, &obj_id);
-				if (ret)
+				switch (type_id)
 				{
-					switch (type_id)
+				case ORDERS_UNIT:
+					ChangeSupply(a->playernr, obj_id, MINUSFACTOR);
+					if (IsAddon(obj_id))
 					{
-					case ORDERS_UNIT:
-						ChangeSupply(a->playernr, obj_id, MINUSFACTOR);
-						if (IsAddon(obj_id))
-						{
-							a->addonobj->addonobj = NULL;
-							dieobj(a->addonobj);
-							a->addonobj = NULL;
-						}
-						break;
-					case ORDERS_UPGRADE:
-						break;
-					case ORDERS_TECHNOLOGY:
-						break;
-					default:
-						break;
-
+						a->addonobj->addonobj = NULL;
+						dieobj(a->addonobj);
+						a->addonobj = NULL;
 					}
+					break;
+				case ORDERS_UPGRADE:
+					break;
+				case ORDERS_TECHNOLOGY:
+					break;
+				default:
+					break;
 				}
 			}
 			break;
@@ -2415,7 +2411,6 @@ int moveobj(struct OBJ *a, struct OBJ *destobj, int mode, int x, int y, int mode
 				case SC_SCARABOBJ:
 				case SC_VULTUREMINEOBJ:
 				case SC_BUGGUYOBJ:
-				bugguyexplode:
 					SetOrder(a, 1, &SIGOrder_UnitDies);
 					a->castmagenr = MODEMINEEXPLODE;
 					SpecialAtackAction(a, ISCRIPTNR_SPECIALSTATE1);
@@ -2427,9 +2422,17 @@ int moveobj(struct OBJ *a, struct OBJ *destobj, int mode, int x, int y, int mode
 			}
 			else
 			{
-				if (a->SC_Unit == SC_BUGGUYOBJ)
-					goto bugguyexplode;
-				ApplyNextModeMove(a);
+				switch (a->SC_Unit)
+				{
+				case SC_BUGGUYOBJ:
+					SetOrder(a, 1, &SIGOrder_UnitDies);
+					a->castmagenr = MODEMINEEXPLODE;
+					SpecialAtackAction(a, ISCRIPTNR_SPECIALSTATE1);
+					break;
+				default:
+					ApplyNextModeMove(a);
+					break;
+				}
 			}
 			break;
 		case MODEATACK:
@@ -4933,7 +4936,7 @@ int PathFinding_MovePortionType1(OBJ *a, MAIN_IMG *img, int deltamove)
 	}
 	else
 	{
-	movelikeatoterrain1:
+movelikeatoterrain1:
 		//if move to a terrain
 		deltax = a->finalx - img->xpos;
 		deltay = a->finaly - img->ypos;
@@ -5031,7 +5034,7 @@ int PathFinding_MovePortionType2(OBJ *a, MAIN_IMG *img, unsigned char flingy_id,
 	}
 	else
 	{
-	movelikeatoterrain2:
+movelikeatoterrain2:
 		//if move to a terrain
 		deltax = a->finalx - img->xpos;
 		deltay = a->finaly - img->ypos;
