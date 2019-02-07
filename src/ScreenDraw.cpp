@@ -54,7 +54,7 @@ void ScreenDraw::TopMessage(char *s)
 		fps = frames;
 		frames = 0;
 	}
-	strcat(s, "FPS/CYCLES:");
+	strcat(s, "FPS/CPS:");
 	itoa(fps, ss, 10);
 	strcat(s, ss);
 	strcat(s, "/");
@@ -64,31 +64,15 @@ void ScreenDraw::TopMessage(char *s)
 	strcat(s, " GCYCLE:");
 	itoa(gamecycle, ss, 10);
 	strcat(s, ss);
-	strcat(s, " maxobjs:");
+	strcat(s, " TotalObjs:");
 	itoa(MaxObjects, ss, 10);
 	strcat(s, ss);
-	/*	  if (fordeselect[0])
-		{
-		sprintf(ss," %d,%d %d,%d",GetOBJx(fordeselect[0]),GetOBJy(fordeselect[0]),fordeselect[0]->finalx>>8,fordeselect[0]->finaly>>8);
-		strcat(s,ss);
-		}
-	*/
-	/*	  if (fordeselect[0])
-		{
-		sprintf(ss," 0x%x",(int)fordeselect[0]);
-		strcat(s,ss);
-		}
-		if (fordeselect[0])
-		{
-		sprintf(ss," %d",fordeselect[0]->mainimage->side);
-		strcat(s,ss);
-		}
-	*/
-	strcat(s, " hot:");
+
+	strcat(s, " MHot:");
 	itoa(highMouse->MouseHotPos, ss, 10);
 	strcat(s, ss);
 
-	strcat(s, " pl:");
+	strcat(s, " PlNr:");
 	itoa(NUMBGAMER, ss, 10);
 	strcat(s, ss);
 	strcat(s, "/");
@@ -103,9 +87,6 @@ void ScreenDraw::TopMessage(char *s)
 		strcat(s, " move:");
 		itoa(o->modemove, ss, 10);
 		strcat(s, ss);
-		//	strcat(s,"/");
-		//	itoa(o->atackcooldowntime,ss,10);
-		//	strcat(s,ss);
 	}
 	/*	  if (o)
 		{

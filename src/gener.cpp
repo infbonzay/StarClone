@@ -77,7 +77,7 @@ RegenObjMap		*regenObjMap;
 
 char			select_aria, karta_aria, mode_aria;
 bool			movieminikarta;
-//=================================
+char			screenGameInfo[256];
 /*====================================================
 ======================================================
 					 Begin of program
@@ -698,7 +698,7 @@ int letsplaygame(int race, char *mypath)
 	{
 		calcsomespellinfo();
 
-		AddLeaderBoard(MAINLEADERBOARDGAMEINFO, TRG_ACTIONTYPE_OWNLEADERBOARD, &map, 0, 0, 0, IDFONT14, 0, 255);
+		AddLeaderBoard(MAINLEADERBOARDGAMEINFO, TRG_ACTIONTYPE_OWNLEADERBOARD, &map, 0, 0, 0, IDFONT14, 0, sizeof(screenGameInfo));
 
 		DEBUGMESSCR("loaded %s\n", SELECTMAP);
 		if (map.flags & STARMAP_FLAG_EXPANSION)
@@ -1267,8 +1267,7 @@ int gogame(StarMapInfo *info)
 #endif
 		highMouse->SaveImageUnder();
 		highMouse->DrawMouse();
-		map.leaderboards[MAINLEADERBOARDGAMEINFO]->calcready = 1;
-		screenDraw->TopMessage(map.leaderboards[MAINLEADERBOARDGAMEINFO]->txtstr);
+		screenDraw->TopMessage(screenGameInfo);
 		screenDraw->UpdateScreen();
 		highMouse->LoadImageUnder();
 		showedmenu.EndDrawMenu();

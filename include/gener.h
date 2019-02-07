@@ -148,7 +148,7 @@ extern long				commandqueuetick;
 extern CommandQueue		UnitsCommandQueue;
 extern bool				movieminikarta;
 extern RegenObjMap		*regenObjMap;
-
+extern char				screenGameInfo[256];
 
 
 #endif /*_GENER_W*/

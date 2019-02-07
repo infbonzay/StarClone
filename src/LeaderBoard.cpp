@@ -1,5 +1,6 @@
 
 #include "starmap.h"
+#include "gener.h"
 #include "wmem.h"
 #include "fonts.h"
 #include "ScreenDraw.h"
@@ -63,25 +64,35 @@ void CalcLeaderBoards(StarMapInfo *info)
 				{
 				case TRG_RESTYPE_MINERALS:
 					for (j = 0, mask = 1;j < MAXPLAYERS;j++, mask <<= 1)
-						if (info->leaderboards[i]->actiononplayers&mask)
+					{
+						if (info->leaderboards[i]->actiononplayers & mask)
+						{
 							ore += PLAYER[j].minerals >> 8;
+						}
+					}
 					sprintf(info->leaderboards[i]->txtstr, COMMANDSYMBCHAR MINERALSYMBCHAR " %d %s",
-						ore, getmapSTR(info, info->leaderboards[i]->stringID));
+							ore, getmapSTR(info, info->leaderboards[i]->stringID));
 					break;
 				case TRG_RESTYPE_GAS:
 					for (j = 0, mask = 1;j < MAXPLAYERS;j++, mask <<= 1)
-						if (info->leaderboards[i]->actiononplayers&mask)
-							gas += PLAYER[NUMBGAMER].gas >> 8;
+					{
+						if (info->leaderboards[i]->actiononplayers & mask)
+						{
+							gas += PLAYER[j].gas >> 8;
+						}
+					}
 					sprintf(info->leaderboards[i]->txtstr, COMMANDSYMBCHAR GASSYMBCHAR " %d %s",
 						gas, getmapSTR(info, info->leaderboards[i]->stringID));
 					break;
 				case TRG_RESTYPE_MINERALSANDGAS:
 					for (j = 0, mask = 1;j < MAXPLAYERS;j++, mask <<= 1)
-						if (info->leaderboards[i]->actiononplayers&mask)
+					{
+						if (info->leaderboards[i]->actiononplayers & mask)
 						{
-							ore = PLAYER[NUMBGAMER].minerals >> 8;
-							gas = PLAYER[NUMBGAMER].gas >> 8;
+							ore = PLAYER[j].minerals >> 8;
+							gas = PLAYER[j].gas >> 8;
 						}
+					}
 					sprintf(info->leaderboards[i]->txtstr, COMMANDSYMBCHAR MINERALSYMBCHAR " %d " COMMANDSYMBCHAR GASSYMBCHAR " %d %s",
 						ore, gas, getmapSTR(info, info->leaderboards[i]->stringID));
 					break;
@@ -91,8 +102,12 @@ void CalcLeaderBoards(StarMapInfo *info)
 			case TRG_ACTIONTYPE_LEADERBOARDPOINTS://21
 				nrunits = 0;
 				for (j = 0, mask = 1;j < MAXPLAYERS;j++, mask <<= 1)
+				{
 					if (info->leaderboards[i]->actiononplayers&mask)
+					{
 						nrunits += info->units_stat.score[j][TRG_SCORETYPE_CUSTOM];
+					}
+				}
 				sprintf(info->leaderboards[i]->txtstr, COMMANDSYMBCHAR EMPTYCUBE14X14CHAR "%c %d %s",
 					PLAYER[NUMBGAMER].colorRACE + 1, nrunits, getmapSTR(info, info->leaderboards[i]->stringID));
 				info->leaderboards[i]->calcready = 1;
@@ -100,8 +115,12 @@ void CalcLeaderBoards(StarMapInfo *info)
 			case TRG_ACTIONTYPE_LEADERBOARDGOALKILLS://36
 				nrunits = 0;
 				for (j = 0, mask = 1;j < MAXPLAYERS;j++, mask <<= 1)
+				{
 					if (!(info->leaderboards[i]->actiononplayers&mask))
+					{
 						nrunits += info->units_stat.stattype[UNITSTAT_DEATH][j][info->leaderboards[i]->unittype];
+					}
+				}
 				nrunits = info->leaderboards[i]->nrofunits - nrunits;
 				sprintf(info->leaderboards[i]->txtstr, COMMANDSYMBCHAR EMPTYCUBE14X14CHAR "%c %d %s",
 					PLAYER[NUMBGAMER].colorRACE + 1, nrunits, getmapSTR(info, info->leaderboards[i]->stringID));
@@ -110,16 +129,20 @@ void CalcLeaderBoards(StarMapInfo *info)
 			case TRG_ACTIONTYPE_LEADERBOARDGOALPOINTS://37
 				nrunits = 0;
 				for (j = 0, mask = 1;j < MAXPLAYERS;j++, mask <<= 1)
+				{
 					if (info->leaderboards[i]->actiononplayers&mask)
+					{
 						nrunits += info->units_stat.score[j][TRG_SCORETYPE_CUSTOM];
+					}
+				}
 				nrunits = info->leaderboards[i]->nrofunits - nrunits;
 				sprintf(info->leaderboards[i]->txtstr, COMMANDSYMBCHAR EMPTYCUBE14X14CHAR "%c %d %s",
 					PLAYER[NUMBGAMER].colorRACE + 1, nrunits, getmapSTR(info, info->leaderboards[i]->stringID));
 				info->leaderboards[i]->calcready = 1;
 				break;
 			case TRG_ACTIONTYPE_OWNLEADERBOARD://250
-				//screenDraw->TopMessage(info->leaderboards[i]->txtstr);
-				//info->leaderboards[i]->calcready = 1;
+				strncpy(info->leaderboards[i]->txtstr, screenGameInfo, sizeof(screenGameInfo));
+				info->leaderboards[i]->calcready = 1;
 				break;
 			default:
 				break;
@@ -161,7 +184,9 @@ void LeaderBoardFree(StarMapInfo *info)
 		if (info->leaderboards[i])
 		{
 			if (info->leaderboards[i]->txtstr)
+			{
 				wfree(info->leaderboards[i]->txtstr);
+			}
 			wfree(info->leaderboards[i]);
 			info->leaderboards[i] = NULL;
 		}
