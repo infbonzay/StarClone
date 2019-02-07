@@ -95,7 +95,7 @@ extern volatile int MPQglobalentersemaphore;
   typedef unsigned long  DWORD;
   typedef unsigned int   UINT;
 #ifndef __OBJC__
-  #define BOOL           bool
+  #define BOOL			 BYTE
 #endif
   typedef void         * HANDLE;
   typedef void         * LPOVERLAPPED; // Unsupported on Linux
