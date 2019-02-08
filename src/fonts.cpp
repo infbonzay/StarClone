@@ -893,7 +893,7 @@ void putsmkbuttonmes(int x, int y, int rowsize, char *mes, int fontnr, int color
 void PutSMKButtonMes(int x, int y, int sizexrect, int rowsize, int flags, char *mes, int fontnr,
 	int color, char *fonttable, int glowfactor)
 {
-	int i, from, sizexmes = 0,delatax;
+	int i, from, sizexmes = 0, deltax;
 	int sizemes = strlen(mes);
 	if (sizemes >= MAXOUTBUF - 2)
 	{
@@ -928,9 +928,9 @@ void PutSMKButtonMes(int x, int y, int sizexrect, int rowsize, int flags, char *
 	}
 }
 //================================
-void putsmkbuttonmesL(int x, int y, int sizexrect, int rowsize, char *mes, int fontnr, int color, char *fonttable, int glowfactor)
+void putsmkbuttonmesL(int x, int y, int rowsize, char *mes, int fontnr, int color, char *fonttable, int glowfactor)
 {
-	PutSMKButtonMes(x, y, sizexrect, rowsize, 0, mes, fontnr, color, fonttable, glowfactor);
+	PutSMKButtonMes(x, y, 0, rowsize, 0, mes, fontnr, color, fonttable, glowfactor);
 }
 //================================
 void putsmkbuttonmesM(int x, int y, int sizexrect, int rowsize, char *mes, int fontnr, int color, char *fonttable, int glowfactor)
@@ -938,7 +938,7 @@ void putsmkbuttonmesM(int x, int y, int sizexrect, int rowsize, char *mes, int f
 	PutSMKButtonMes(x, y, sizexrect, rowsize, 1, mes, fontnr, color, fonttable, glowfactor);
 }
 //================================
-void putsmkbuttonmesM(int x, int y, int sizexrect, int rowsize, char *mes, int fontnr, int color, char *fonttable, int glowfactor)
+void putsmkbuttonmesR(int x, int y, int sizexrect, int rowsize, char *mes, int fontnr, int color, char *fonttable, int glowfactor)
 {
 	PutSMKButtonMes(x, y, sizexrect, rowsize, 2, mes, fontnr, color, fonttable, glowfactor);
 }
