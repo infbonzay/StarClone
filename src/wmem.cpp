@@ -6,12 +6,12 @@
 //=============================
 #ifdef USEWMALLOC
 
-#ifdef TESTMALLOC
-#define MALLOCBYTE1 0x3c
-#define MALLOCBYTE2 0x5a
-#define MALLOCBYTE3 0x69
-#define MALLOCBYTE4 0xc3
-#endif
+	#ifdef TESTMALLOC
+		#define MALLOCBYTE1 0x3c
+		#define MALLOCBYTE2 0x5a
+		#define MALLOCBYTE3 0x69
+		#define MALLOCBYTE4 0xc3
+	#endif
 
 void *wmalloc(int memsize)
 {
@@ -154,6 +154,3 @@ int checkallwmalloc(char *mes)
 }
 
 #endif
-
-
-
