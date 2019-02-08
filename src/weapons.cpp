@@ -70,6 +70,7 @@ int loadweapons(void)
 					rangeupgnr = 255;
 					rangeupgaddfactor = 0;
 					//printf("%s = %s\n",strid,strvalue);
+					goto nextweaponcmd;
 					break;
 				case 1://RANGEUPGNR upgrade_id increase_range_by_this_value
 					rangeupgnr = atoi(strvalue);
@@ -81,6 +82,7 @@ int loadweapons(void)
 						weapons[whatobj].rangeupgnr = rangeupgnr;
 						weapons[whatobj].rangeupgaddfactor = rangeupgaddfactor;
 					}
+					goto nextweaponcmd;
 					break;
 				}
 			}
@@ -93,6 +95,8 @@ int loadweapons(void)
 			fclose(f);
 			return(-2);
 		}
+nextweaponcmd:
+	;
 	}
 	fclose(f);
 	return(0);
@@ -379,17 +383,18 @@ int CreateWeaponID(OBJ *a, OBJ *destobj, int xdest256, int ydest256, unsigned ch
 				flingy->nroftargets = 4;
 			}
 			break;
+#define MAXRADIUS	(2*32)
 		case WB_ATACK_3X3_AREA:						//8
 			if (destobj)
 			{
 				xdest256 = GetOBJx256(destobj);
 				ydest256 = GetOBJy256(destobj);
 			}
-			xdest256 = xdest256 + myrand(-48 * 256, 47 * 256);			//3x3 area
-			ydest256 = ydest256 + myrand(-48 * 256, 47 * 256);
+			xdest256 = xdest256 + myrand((-MAXRADIUS/2) * 256, (MAXRADIUS/2-1) * 256);			//3x3 area
+			ydest256 = ydest256 + myrand((-MAXRADIUS/2) * 256, (MAXRADIUS/2-1) * 256);
 
-			xdest256_2 = xdest256 + myrand(-48 * 256, 47 * 256);		//3x3 area
-			ydest256_2 = ydest256 + myrand(-48 * 256, 47 * 256);
+			xdest256_2 = xdest256 + myrand((-MAXRADIUS/2) * 256, (MAXRADIUS/2-1) * 256);;		//3x3 area
+			ydest256_2 = ydest256 + myrand((-MAXRADIUS/2) * 256, (MAXRADIUS/2-1) * 256);;
 
 			//xdest256 += myrand(-48 * 256, 47 * 256);					//3x3 area
 			//ydest256 += myrand(-48 * 256, 47 * 256);

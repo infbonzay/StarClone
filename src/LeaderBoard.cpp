@@ -156,10 +156,10 @@ void ShowLeaderBoards(StarMapInfo *info, int x, int y)
 	int i, rowsize, fontnr;
 	for (i = 0;i < MAXLEADERBOARDS;i++)
 	{
-		fontnr = info->leaderboards[i]->fontID;
-		getmaxsymbolsize(fontnr, NULL, &rowsize);
 		if (info->leaderboards[i] && info->leaderboards[i]->calcready)
 		{
+			fontnr = info->leaderboards[i]->fontID;
+			getmaxsymbolsize(fontnr, NULL, &rowsize);
 			putmessage(x, y, fontnr, info->leaderboards[i]->txtstr, GGREENCOLORFONT, tfontgamp, gamedlggrp);
 			y += rowsize + 5;
 		}
