@@ -170,7 +170,7 @@ if (UNIX)
 	else()
 		message("--   grplib not found, use internal grplib")
 		set(INCLUDE_GRP /have)
-endif()
+	endif()
 	
 	find_package(StormLib)
 	if(StormLib_FOUND)
