@@ -2776,7 +2776,7 @@ int makemove(struct OBJ *a, struct OBJ *destobj, int locx, int locy, int mode, i
 
 	if (mode != MODEHOLDPOS)
 		a->prop &= ~VARHOLDPOSBIT;
-	cqe = (COMMANDQUEUEELEMENT *) malloc(sizeof(COMMANDQUEUEELEMENT));
+	cqe = (COMMANDQUEUEELEMENT *) wmalloc(sizeof(COMMANDQUEUEELEMENT));
 	cqe->queueaction.obj = a;
 	cqe->queueaction.destobj = destobj;
 	cqe->queueaction.actiontype = mode;
