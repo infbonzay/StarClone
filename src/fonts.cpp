@@ -175,6 +175,8 @@ int putmessage(int x, int y, int fontnr, char *str, int fromcolor, char *table, 
 	int i, j, sizex = 0, sizey = 0, color, colorcube, maincolor, cubex, cubey;
 	j = strlen(str);
 	color = (fromcolor - 2) & 0x7;
+	//	  if (color==STATICCOLOR1)
+	//		onlyonecolor=1;
 	maincolor = color;
 	colorcube = 0;
 	for (i = 0;i < j;i++)
@@ -185,6 +187,7 @@ int putmessage(int x, int y, int fontnr, char *str, int fromcolor, char *table, 
 			switch (symb)
 			{
 			case DEFAULTCOLORFONT:
+				//					if (!onlyonecolor)
 				color = maincolor;
 				continue;
 			case '\n':
@@ -197,12 +200,14 @@ int putmessage(int x, int y, int fontnr, char *str, int fromcolor, char *table, 
 				continue;
 			case STATICCOLOR1:
 				color = symb - 2;
+				//					onlyonecolor=1;
 				continue;
 			case 2:
 			case 3:
 			case 4:
 			case 6:
 			case 7:
+				//					if (!onlyonecolor)
 				color = symb - 2;
 				continue;
 			case COMMANDSYMB:
@@ -292,6 +297,44 @@ int putmessage(int x, int y, int fontnr, char *str, int fromcolor, char *table, 
 	return(sizex);
 }
 //================================
+int getlinesintext(int fontnr, char *mes, int meslen, int sizexrect)
+{
+	int i, from, sizexmes, showstr;
+	showstr = 0;
+	from = 0;
+	sizexmes = 0;
+	for (i = 0;i <= meslen;i++)
+	{
+		if (mes[i] == COMMANDSYMB)
+		{
+			i += COMMANDSYMB_SIZES[mes[i + 1]];
+			continue;
+		}
+		else
+			if (mes[i] == '\n' || mes[i] == 0)
+			{
+				showstr++;
+				from = i + 1;
+			}
+		if (mes[i] == ' ' || mes[i] == 0 || mes[i] == '\n')
+		{
+			getmessagesizex(fontnr, mes + from, i - from, &sizexmes, NULL);
+			if (sizexmes > sizexrect)
+			{
+				i--;
+				for (;i >= 0;i--)
+					if (mes[i] == ' ')
+					{
+						showstr++;
+						from = i + 1;
+						break;
+					}
+			}
+		}
+	}
+	return(showstr);
+}
+//================================
 int putmessage(int x, int y, int fontnr, char *str, int fromcolor, char *table, GRPFILE *dlggrp, int skipup, int skipdown)
 {
 	PCX *pcx;
@@ -300,6 +343,8 @@ int putmessage(int x, int y, int fontnr, char *str, int fromcolor, char *table, 
 	int i, j, sizex = 0, sizey = 0, color, colorcube, maincolor, cubex, cubey;
 	j = strlen(str);
 	color = (fromcolor - 2) & 0x7;
+	//	  if (color==STATICCOLOR1)
+	//		onlyonecolor=1;
 	maincolor = color;
 	colorcube = 0;
 	for (i = 0;i < j;i++)
@@ -310,6 +355,7 @@ int putmessage(int x, int y, int fontnr, char *str, int fromcolor, char *table, 
 			switch (symb)
 			{
 			case DEFAULTCOLORFONT:
+				//					if (!onlyonecolor)
 				color = maincolor;
 				continue;
 			case '\n':
@@ -322,12 +368,14 @@ int putmessage(int x, int y, int fontnr, char *str, int fromcolor, char *table, 
 				continue;
 			case STATICCOLOR1:
 				color = symb - 2;
+				//					onlyonecolor=1;
 				continue;
 			case 2:
 			case 3:
 			case 4:
 			case 6:
 			case 7:
+				//					if (!onlyonecolor)
 				color = symb - 2;
 				continue;
 			case COMMANDSYMB:
@@ -600,6 +648,7 @@ char outbuf[MAXOUTBUF];
 void putmessageinrectangleL(int x, int y, int sizexrect, int sizeyrect, int rowsize, char *mes,
 	int fontnr, int color, char *fonttable, GRPFILE *dlggrp, int flags, int skiplinepixels)
 {
+	//	  int i,j,k,from,sizepartmes,sizexmes,showstr=0,posx=0,yoffset=0,align=0,skipfirst=skiplinepixels;
 	int i, j, k, from, sizexmes, showstr = 0, posx = 0;
 	int yoffset = skiplinepixels, align = 0, lastline = 0;
 	j = strlen(mes);
@@ -608,6 +657,7 @@ void putmessageinrectangleL(int x, int y, int sizexrect, int sizeyrect, int rows
 		printf("buffer message in to low \n");
 		return;
 	}
+	//	  outbuf=(char *) wmalloc(j+2);
 	from = 0;
 	sizexmes = 0;
 	for (i = 0;i <= j;i++)
@@ -700,6 +750,7 @@ void putmessageinrectangleL(int x, int y, int sizexrect, int sizeyrect, int rows
 				skiplinepixels = 0;
 		}
 	}
+	//	  wfree(outbuf);
 }
 //================================
 void putmessageinrectangleR(int x, int y, int sizexrect, int sizeyrect, int rowsize, char *mes,
@@ -712,6 +763,7 @@ void putmessageinrectangleR(int x, int y, int sizexrect, int sizeyrect, int rows
 		printf("buffer message in to low \n");
 		return;
 	}
+	//	  outbuf=(char *) wmalloc(j+2);
 	from = 0;
 	sizexmes = 0;
 	for (i = 0;i <= j;i++)
@@ -768,6 +820,7 @@ void putmessageinrectangleR(int x, int y, int sizexrect, int sizeyrect, int rows
 				break;
 		}
 	}
+	//	  wfree(outbuf);
 }
 //================================
 void putmessageinrectangleM(int x, int y, int sizexrect, int sizeyrect, int rowsize, char *mes,
@@ -780,6 +833,7 @@ void putmessageinrectangleM(int x, int y, int sizexrect, int sizeyrect, int rows
 		printf("buffer message in to low \n");
 		return;
 	}
+	//	  outbuf=(char *) wmalloc(j+2);
 	from = 0;
 	sizexmes = 0;
 	for (i = 0;i <= j;i++)
@@ -836,6 +890,7 @@ void putmessageinrectangleM(int x, int y, int sizexrect, int sizeyrect, int rows
 				break;
 		}
 	}
+	//	  wfree(outbuf);
 }
 //================================
 int GetFontNrFromYSize(int ysize)
@@ -864,6 +919,7 @@ void putsmkbuttonmes(int x, int y, int rowsize, char *mes, int fontnr, int color
 		printf("buffer message in to low \n");
 		return;
 	}
+	//	  char *outbuf=(char *)wmalloc(j+1);
 	memcpy(outbuf, mes, j + 1);
 	from = 0;
 	for (i = 0;i <= j;i++)
@@ -888,59 +944,85 @@ void putsmkbuttonmes(int x, int y, int rowsize, char *mes, int fontnr, int color
 			y += rowsize;
 		}
 	}
-}
-//================================
-void PutSMKButtonMes(int x, int y, int sizexrect, int rowsize, int flags, char *mes, int fontnr,
-	int color, char *fonttable, int glowfactor)
-{
-	int i, from, sizexmes = 0, deltax;
-	int sizemes = strlen(mes);
-	if (sizemes >= MAXOUTBUF - 2)
-	{
-		printf("buffer message in to low \n");
-		return;
-	}
-	memcpy(outbuf, mes, sizemes + 1);
-	from = 0;
-	switch(flags)
-	{
-		case 0:
-			deltax = 0;
-			break;
-		case 1:
-			deltax = (sizexrect + sizemes) / 2;
-			break;
-		case 2:
-			getmessagesizex(fontnr, outbuf + from, i - from, &sizexmes, NULL);
-			deltax = sizexrect;
-			break;
-	}
-	for (i = 0;i <= sizemes;i++)
-	{
-		if (outbuf[i] == '\n' || outbuf[i] == 0)
-		{
-			outbuf[i] = 0;
-			putglowtext(x + deltax - sizexmes, y, fontnr, outbuf + from, color, fonttable, glowfactor);
-			sizexmes += getlettersizexy(fontnr, *(outbuf + from), NULL, NULL);
-			from++;
-			y += rowsize;
-		}
-	}
+	//	  wfree(outbuf);
 }
 //================================
 void putsmkbuttonmesL(int x, int y, int rowsize, char *mes, int fontnr, int color, char *fonttable, int glowfactor)
 {
-	PutSMKButtonMes(x, y, 0, rowsize, 0, mes, fontnr, color, fonttable, glowfactor);
+	int i, j, from, sizexmes;
+	j = strlen(mes);
+	if (j >= MAXOUTBUF - 2)
+	{
+		printf("buffer message in to low \n");
+		return;
+	}
+	//	  char *outbuf=(char *)wmalloc(j+1);
+	memcpy(outbuf, mes, j + 1);
+	from = 0;
+	for (i = 0;i <= j;i++)
+	{
+		if (outbuf[i] == '\n' || outbuf[i] == 0)
+		{
+			outbuf[i] = 0;
+			getmessagesizex(fontnr, outbuf + from, i - from, &sizexmes, NULL);
+			putglowtext(x, y, fontnr, outbuf + from, color, fonttable, glowfactor);
+			from = i + 1;
+			y += rowsize;
+		}
+	}
+	//	  wfree(outbuf);
 }
 //================================
 void putsmkbuttonmesM(int x, int y, int sizexrect, int rowsize, char *mes, int fontnr, int color, char *fonttable, int glowfactor)
 {
-	PutSMKButtonMes(x, y, sizexrect, rowsize, 1, mes, fontnr, color, fonttable, glowfactor);
+	int i, j, from, sizexmes;
+	j = strlen(mes);
+	if (j >= MAXOUTBUF - 2)
+	{
+		printf("buffer message in to low \n");
+		return;
+	}
+	//	  char *outbuf=(char *)wmalloc(j+1);
+	memcpy(outbuf, mes, j + 1);
+	from = 0;
+	for (i = 0;i <= j;i++)
+	{
+		if (outbuf[i] == '\n' || outbuf[i] == 0)
+		{
+			outbuf[i] = 0;
+			getmessagesizex(fontnr, outbuf + from, i - from, &sizexmes, NULL);
+			putglowtext(x + (sizexrect - sizexmes) / 2, y, fontnr, outbuf + from, color, fonttable, glowfactor);
+			from = i + 1;
+			y += rowsize;
+		}
+	}
+	//	  wfree(outbuf);
 }
 //================================
 void putsmkbuttonmesR(int x, int y, int sizexrect, int rowsize, char *mes, int fontnr, int color, char *fonttable, int glowfactor)
 {
-	PutSMKButtonMes(x, y, sizexrect, rowsize, 2, mes, fontnr, color, fonttable, glowfactor);
+	int i, j, from, sizexmes;
+	j = strlen(mes);
+	if (j >= MAXOUTBUF - 2)
+	{
+		printf("buffer message in to low \n");
+		return;
+	}
+	//	  char *outbuf=(char *)wmalloc(j+1);
+	memcpy(outbuf, mes, j + 1);
+	from = 0;
+	for (i = 0;i <= j;i++)
+	{
+		if (outbuf[i] == '\n' || outbuf[i] == 0)
+		{
+			outbuf[i] = 0;
+			getmessagesizex(fontnr, outbuf + from, i - from, &sizexmes, NULL);
+			putglowtext(x + sizexrect - sizexmes, y, fontnr, outbuf + from, color, fonttable, glowfactor);
+			from = i + 1;
+			y += rowsize;
+		}
+	}
+	//	  wfree(outbuf);
 }
 //================================
 //calc nr of visibled symbols
@@ -976,44 +1058,6 @@ int visiblerighttext(int fontnr, int sizex, char *text)
 		j++;
 	}
 	return(j);
-}
-//================================
-int getlinesintext(int fontnr, char *mes, int meslen, int sizexrect)
-{
-	int i, from, sizexmes, showstr;
-	showstr = 0;
-	from = 0;
-	sizexmes = 0;
-	for (i = 0;i <= meslen;i++)
-	{
-		if (mes[i] == COMMANDSYMB)
-		{
-			i += COMMANDSYMB_SIZES[mes[i + 1]];
-			continue;
-		}
-		else
-			if (mes[i] == '\n' || mes[i] == 0)
-			{
-				showstr++;
-				from = i + 1;
-			}
-		if (mes[i] == ' ' || mes[i] == 0 || mes[i] == '\n')
-		{
-			getmessagesizex(fontnr, mes + from, i - from, &sizexmes, NULL);
-			if (sizexmes > sizexrect)
-			{
-				i--;
-				for (;i >= 0;i--)
-					if (mes[i] == ' ')
-					{
-						showstr++;
-						from = i + 1;
-						break;
-					}
-			}
-		}
-	}
-	return(showstr);
 }
 //================================
 
