@@ -184,7 +184,7 @@ int BAction_Prepare(StarMapInfo *info,MAP_TRIGS *temptrg,int actiononplayers,int
 			maxlinepixels -= sy;
 			if (maxlinepixels < 0)
 				maxlinepixels = 0;
-			brief_slots[slotnr].skippixels = 0;
+			brief_slots[slotnr].skippixels = 20;
 			brief_slots[slotnr].maxskippixels = -maxlinepixels;
 			brief_slots[slotnr].command = PORTRAIT_NONE_MESSAGESCROLL;
 			break;
@@ -332,10 +332,10 @@ void Briefing_ScrollText(MENUSTR *allmenus)
 			if (brief_slots[i].skippixels < brief_slots[i].maxskippixels)
 				brief_slots[i].skippixels = brief_slots[i].maxskippixels;
 			if (brief_slots[i].skippixels > 0)
-				skip=0;
+				skip = 0;
 			else
-				skip=brief_slots[i].skippixels/BRIEFSCROLLTEXTSPEED;
-			changetextskiplinepixels(allmenus,brief_delta+BRIEFTEXT,skip);
+				skip = brief_slots[i].skippixels / BRIEFSCROLLTEXTSPEED;
+			changetextskiplinepixels(allmenus,brief_delta + BRIEFTEXT,skip);
 		}
 	}
 }
