@@ -166,175 +166,6 @@ void putrowtext(int x, int y, int sizewinx, int fontnr, int flags, char *str, in
 	}
 }
 //================================
-int putmessage(int x, int y, int fontnr, char *str, int fromcolor, char *table, GRPFILE *dlggrp)
-{
-	PCX *pcx;
-	char symb;
-	unsigned char *adrrowbytes;
-
-	int i, j, sizex = 0, sizey = 0, color, colorcube, maincolor, cubex, cubey;
-	j = strlen(str);
-	color = (fromcolor - 2) & 0x7;
-	//	  if (color==STATICCOLOR1)
-	//		onlyonecolor=1;
-	maincolor = color;
-	colorcube = 0;
-	for (i = 0;i < j;i++)
-	{
-		symb = str[i];
-		if (symb < ' ')
-		{
-			switch (symb)
-			{
-			case DEFAULTCOLORFONT:
-				//					if (!onlyonecolor)
-				color = maincolor;
-				continue;
-			case '\n':
-				sizey += fonts[fontnr]->MaxHeight;
-				sizex = 0;
-				continue;
-			case 0:
-			case 1:
-				color = 0;
-				continue;
-			case STATICCOLOR1:
-				color = symb - 2;
-				//					onlyonecolor=1;
-				continue;
-			case 2:
-			case 3:
-			case 4:
-			case 6:
-			case 7:
-				//					if (!onlyonecolor)
-				color = symb - 2;
-				continue;
-			case COMMANDSYMB:
-				i++;
-				symb = str[i];
-				switch (symb)
-				{
-				case PSISYMBZ:
-					adrrowbytes = iresp[ZERGRACE][2];
-					break;
-				case PSISYMBT:
-					adrrowbytes = iresp[TERRANRACE][2];
-					break;
-				case PSISYMBP:
-					adrrowbytes = iresp[PROTOSSRACE][2];
-					break;
-				case MINERALSYMB:
-					adrrowbytes = iresp[gameconf.pl_race[NUMBGAMER]][0];
-					break;
-				case GASSYMB:
-					adrrowbytes = iresp[gameconf.pl_race[NUMBGAMER]][1];
-					break;
-				case MANASYMB:
-					adrrowbytes = imanap;
-					break;
-				case EMPTYCUBE14X14:
-					adrrowbytes = iemptycubep;
-					i++;
-					colorcube = str[i];
-					break;
-				case CUBESYMB:
-					cubex = str[i + 1];
-					cubey = str[i + 2];
-					i += 3;
-					putcube(x + sizex, y + sizey, cubex, cubey, str[i]);
-					sizex += cubex;
-					continue;
-				case ICONFOROPENDIR:
-				case ICONFORCLOSENOSELDIR:
-				case ICONFORCLOSESELDIR:
-				case ICONFORSELFILE:
-				case ICONFORNOSELFILE:
-					pcx = &dlgfilediriconspcx[symb - ICONFOROPENDIR];
-					if (pcx->IfPcxIsReady())
-					{
-						pcx->PutPcx(x + sizex, y + sizey, PCX_EMPTYCOLOR1);
-						sizex += pcx->xsizePcx() + 2;
-					}
-					continue;
-				case CHANGEFONTSYMB:
-					i++;
-					fontnr = str[i];
-					continue;
-				case DLGGRPSYMB:				//commsymb,dlggrpsymb,grpnr,deltax,deltay
-					if (dlggrp)
-					{
-						GRP_PutNoPacked(x + sizex + str[i + 2], y + sizey + str[i + 3], dlggrp, str[i + 1]);
-						sizex += dlggrp->Picture[str[i + 1]].PixelPerLine;
-					}
-					i += COMMANDSYMB_SIZES[DLGGRPSYMB];
-					continue;
-				}
-				break;
-			default:
-				continue;
-			}
-			if (!colorcube)
-				putrow(x + sizex, y + sizey, 14, 14, adrrowbytes);
-			else
-			{
-				colorcube--;
-				putrowwithtable(x + sizex, y + sizey, 14, 14, adrrowbytes, GRP_tableforunitcolor + (colorcube << 8));
-				colorcube = 0;
-			}
-			sizex += 14;
-		}
-		else
-		{
-			if (symb == ' ')
-			{
-				sizex += spacesize[fontnr] + spaceletters[fontnr];
-			}
-			else
-				sizex += GRP_PutFntSymbol(x + sizex, y + sizey, fonts[fontnr], symb, table + color * 8, 0, 0) + spaceletters[fontnr];
-		}
-	}
-	return(sizex);
-}
-//================================
-int getlinesintext(int fontnr, char *mes, int meslen, int sizexrect)
-{
-	int i, from, sizexmes, showstr;
-	showstr = 0;
-	from = 0;
-	sizexmes = 0;
-	for (i = 0;i <= meslen;i++)
-	{
-		if (mes[i] == COMMANDSYMB)
-		{
-			i += COMMANDSYMB_SIZES[mes[i + 1]];
-			continue;
-		}
-		else
-			if (mes[i] == '\n' || mes[i] == 0)
-			{
-				showstr++;
-				from = i + 1;
-			}
-		if (mes[i] == ' ' || mes[i] == 0 || mes[i] == '\n')
-		{
-			getmessagesizex(fontnr, mes + from, i - from, &sizexmes, NULL);
-			if (sizexmes > sizexrect)
-			{
-				i--;
-				for (;i >= 0;i--)
-					if (mes[i] == ' ')
-					{
-						showstr++;
-						from = i + 1;
-						break;
-					}
-			}
-		}
-	}
-	return(showstr);
-}
-//================================
 int putmessage(int x, int y, int fontnr, char *str, int fromcolor, char *table, GRPFILE *dlggrp, int skipup, int skipdown)
 {
 	PCX *pcx;
@@ -343,8 +174,6 @@ int putmessage(int x, int y, int fontnr, char *str, int fromcolor, char *table, 
 	int i, j, sizex = 0, sizey = 0, color, colorcube, maincolor, cubex, cubey;
 	j = strlen(str);
 	color = (fromcolor - 2) & 0x7;
-	//	  if (color==STATICCOLOR1)
-	//		onlyonecolor=1;
 	maincolor = color;
 	colorcube = 0;
 	for (i = 0;i < j;i++)
@@ -355,7 +184,6 @@ int putmessage(int x, int y, int fontnr, char *str, int fromcolor, char *table, 
 			switch (symb)
 			{
 			case DEFAULTCOLORFONT:
-				//					if (!onlyonecolor)
 				color = maincolor;
 				continue;
 			case '\n':
@@ -368,14 +196,12 @@ int putmessage(int x, int y, int fontnr, char *str, int fromcolor, char *table, 
 				continue;
 			case STATICCOLOR1:
 				color = symb - 2;
-				//					onlyonecolor=1;
 				continue;
 			case 2:
 			case 3:
 			case 4:
 			case 6:
 			case 7:
-				//					if (!onlyonecolor)
 				color = symb - 2;
 				continue;
 			case COMMANDSYMB:
@@ -461,6 +287,49 @@ int putmessage(int x, int y, int fontnr, char *str, int fromcolor, char *table, 
 				sizex += GRP_PutFntSymbol(x + sizex, y + sizey, fonts[fontnr], symb, table + color * 8, skipup, skipdown) + spaceletters[fontnr];
 	}
 	return(sizex);
+}
+//================================
+int putmessage(int x, int y, int fontnr, char *str, int fromcolor, char *table, GRPFILE *dlggrp)
+{
+	return putmessage(x, y, fontnr, str, fromcolor, table, dlggrp, 0, 0);
+}
+//================================
+int getlinesintext(int fontnr, char *mes, int meslen, int sizexrect)
+{
+	int i, from, sizexmes, showstr;
+	showstr = 0;
+	from = 0;
+	sizexmes = 0;
+	for (i = 0;i <= meslen;i++)
+	{
+		if (mes[i] == COMMANDSYMB)
+		{
+			i += COMMANDSYMB_SIZES[mes[i + 1]];
+			continue;
+		}
+		else
+			if (mes[i] == '\n' || mes[i] == 0)
+			{
+				showstr++;
+				from = i + 1;
+			}
+		if (mes[i] == ' ' || mes[i] == 0 || mes[i] == '\n')
+		{
+			getmessagesizex(fontnr, mes + from, i - from, &sizexmes, NULL);
+			if (sizexmes > sizexrect)
+			{
+				i--;
+				for (;i >= 0;i--)
+					if (mes[i] == ' ')
+					{
+						showstr++;
+						from = i + 1;
+						break;
+					}
+			}
+		}
+	}
+	return(showstr);
 }
 //================================
 int getlettersizexy(int fontnr, int symbolnr, int *sizex, int *sizey)
