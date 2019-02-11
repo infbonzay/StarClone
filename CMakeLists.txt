@@ -69,7 +69,7 @@ set(SOURCES
 	src/music.cpp
 	src/mylist.cpp
 	src/mytime.cpp
-	src/objinfo.cpp
+	src/ObjChecks.cpp
 	src/objlists.cpp
 	src/overlay.cpp
 	src/pcx.cpp

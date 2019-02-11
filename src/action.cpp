@@ -620,7 +620,51 @@ int RepairUnit(int playernr,OBJ *scv,OBJ *a)
 	return(0);
 }
 //=================================
-
+int constrbuild(int nb)
+{
+	if (mageprop[nb].type_id == ORDERS_UNIT)//if unit constr
+	{
+		highMouse->Construct.SC_BuildUnit = mageprop[nb].obj_id;
+	}
+	else
+		if (nb == MODELANDING)
+			highMouse->Construct.SC_BuildUnit=curentoperationobj->SC_Unit;
+		else
+			highMouse->Construct.SC_BuildUnit=SC_NOUNITNR;
+	return(highMouse->Construct.SC_BuildUnit);
+}
+//=============================================
+int probeconstruct(int nb)
+{
+	OBJ *o;
+	//for probe
+	if (nb == MODEWARPBUILD				||
+		nb == MODEMUTATEBUILD			||
+		nb == MODECONSTRUCTBUILD)
+	{
+		SelectedUnits.EnumListInit();
+		while( (o = (OBJ *)SelectedUnits.GetNextListElem(NULL)) )
+		{
+			groupmove = 1;
+			ChangeTypeOfProp(o,PROPBUILDSIMPLE);
+			return(1);
+		}
+	}
+	if (nb == MODEADVWARPBUILD			||
+		nb == MODEADVMUTATEBUILD		||
+		nb == MODEADVCONSTRUCTBUILD)
+	{
+		SelectedUnits.EnumListInit();
+		while( (o = (OBJ *)SelectedUnits.GetNextListElem(NULL)) )
+		{
+			groupmove = 2;
+			ChangeTypeOfProp(o,PROPBUILDADVANCED);
+			return(1);
+		}
+	}
+	return(0);
+}
+//=============================================
 
 
 

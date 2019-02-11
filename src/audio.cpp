@@ -617,7 +617,28 @@ void playadvisorsound(int playernr,int race,int typeofsong,int song)
 		}
 	}
 }
-//====================================================
+//=============================================
+void playadvisorerr(int playernr, int race, int retreserror)
+{
+	switch (retreserror)
+	{
+	case CHECKRES_MIN:
+		playinfoadvisorsound(playernr, race, ADVMINERAL, PLAYADVISOR_TEXTANDSOUND);
+		break;
+	case CHECKRES_GAS:
+		playinfoadvisorsound(playernr, race, ADVGAS, PLAYADVISOR_TEXTANDSOUND);
+		break;
+	case CHECKRES_SUPPLY:
+		playinfoadvisorsound(playernr, race, ADVUNITS, PLAYADVISOR_TEXTANDSOUND);
+		break;
+	case CHECKRES_MANA:
+		playinfoadvisorsound(playernr, race, ADVENERGY, PLAYADVISOR_TEXTANDSOUND);
+		break;
+	case CHECKRES_OK:
+		break;
+	}
+}
+//=============================================//====================================================
 //if we need to kill object need emptying internal sound unit information
 void FreeChannelWithObj(struct OBJ *a)
 {

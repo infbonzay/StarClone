@@ -75,8 +75,7 @@ void UnitEndATACK(OBJ *a);
 int	 AttachAddonToBuild(OBJ *a1);
 int	 AttachNearestAddon(OBJ *a1);
 void AttachAddonDeltaCoords(SCUNIT base_SC_Unit,SCUNIT addon_SC_Unit,int *deltax,int *deltay);
+int constrbuild(int nb);
+int probeconstruct(int nb);
 
-
-#endif /*_ACTION_W */
-
-
+#endif

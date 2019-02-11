@@ -85,6 +85,7 @@ void RestoreSoundToPlay(int sndblktype);
 void ChangeAllVolume(void);
 void playadvisorsound(int nplayer,int race,int typeofsong,int song);
 void playinfoadvisorsound(int nplayer,int race,int typeofsong,int textsound);
+void playadvisorerr(int playernr, int race, int retreserror);
 void FreeChannelWithObj(struct OBJ *a);
 int	 canplaysound(struct OBJ *a,int soundmode,int statuspl);
 int	 DistanceForAudio(int x,int y);

@@ -709,3 +709,53 @@ bool IfCanTransport(SCUNIT SC_Unit, int playernr)
 	}
 	return false;
 }
+//=======================================
+int CheckCoordinates(int newx256,int newy256,SCUNIT SC_Unit)
+{
+	if (newx256/256 + GetUnitWidthAndHeight(SC_Unit,UNITDIM_WIDTH)/2 < 0)
+		return(0);
+	if (newy256/256 + GetUnitWidthAndHeight(SC_Unit,UNITDIM_HEIGHT)/2 < 0)
+		return(0);
+	if (newx256/256 - GetUnitWidthAndHeight(SC_Unit,UNITDIM_WIDTH)/2 > MAXXMAP*32)
+		return(0);
+	if (newy256/256 - GetUnitWidthAndHeight(SC_Unit,UNITDIM_HEIGHT)/2 > MAXYMAP*32)
+		return(0);
+	return(1);
+}
+//================================
+//fill properties of unit depend were he stand on map and what atributes he have
+//==================================
+//	 return x and y new position of build unit
+//						  xxxxx
+//						y aaaaa		x,y is form one coordinates of (a)
+//						y a***a		if buid with (*) size 3,2
+//						y a***a
+//						y aaaaa
+//
+int getborderbuild(int mx,int my,int *x,int *y)
+{
+	int a = myrand(2);
+	int b = myrand(2);
+	if (a)
+		*x = mx - 1;
+	else
+		*x = 0;
+	if (b)
+		*y = my - 1;
+	else
+		*y = 0;
+	int kvadrant;
+	if (a)
+		if (b)
+			kvadrant = 1;
+		else
+			kvadrant = 3;
+		else
+			if (b)
+				kvadrant = 0;
+			else
+				kvadrant = 2;
+	return(kvadrant);
+}
+//=====================================
+

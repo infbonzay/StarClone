@@ -42,51 +42,6 @@
 //=============================================
 int curentproperties;
 //=============================================
-int constrbuild(int nb)
-{
-	if (mageprop[nb].type_id == ORDERS_UNIT)//if unit constr
-	{
-		highMouse->Construct.SC_BuildUnit = mageprop[nb].obj_id;
-	}
-	else
-		if (nb == MODELANDING)
-			highMouse->Construct.SC_BuildUnit=curentoperationobj->SC_Unit;
-		else
-			highMouse->Construct.SC_BuildUnit=SC_NOUNITNR;
-	return(highMouse->Construct.SC_BuildUnit);
-}
-//=============================================
-int probeconstruct(int nb)
-{
-	OBJ *o;
-	//for probe
-	if (nb == MODEWARPBUILD				||
-		nb == MODEMUTATEBUILD			||
-		nb == MODECONSTRUCTBUILD)
-	{
-		SelectedUnits.EnumListInit();
-		while( (o = (OBJ *)SelectedUnits.GetNextListElem(NULL)) )
-		{
-			groupmove = 1;
-			ChangeTypeOfProp(o,PROPBUILDSIMPLE);
-			return(1);
-		}
-	}
-	if (nb == MODEADVWARPBUILD			||
-		nb == MODEADVMUTATEBUILD		||
-		nb == MODEADVCONSTRUCTBUILD)
-	{
-		SelectedUnits.EnumListInit();
-		while( (o = (OBJ *)SelectedUnits.GetNextListElem(NULL)) )
-		{
-			groupmove = 2;
-			ChangeTypeOfProp(o,PROPBUILDADVANCED);
-			return(1);
-		}
-	}
-	return(0);
-}
-//=============================================
 #define MINBUTTONDOWN  2
 #define MINBUTTONSLEEP 2
 #define BUTTONMESSAGEFONT IDFONT8
@@ -98,7 +53,6 @@ int probeconstruct(int nb)
 #define NEED_PSI		3
 #define NEED_MAX		4
 
-int mbuttonpress;
 void desenproperties(int *localprop, char *selectableicons)
 {
 	static int oldmouseonicon = -1, plusfactor, keyupselectedicon = -1;
@@ -479,28 +433,7 @@ selectedicon:
 	}//if !patrate
 }
 //=============================================
-void playadvisorerr(int playernr, int race, int retreserror)
-{
-	switch (retreserror)
-	{
-	case CHECKRES_MIN:
-		playinfoadvisorsound(playernr, race, ADVMINERAL, PLAYADVISOR_TEXTANDSOUND);
-		break;
-	case CHECKRES_GAS:
-		playinfoadvisorsound(playernr, race, ADVGAS, PLAYADVISOR_TEXTANDSOUND);
-		break;
-	case CHECKRES_SUPPLY:
-		playinfoadvisorsound(playernr, race, ADVUNITS, PLAYADVISOR_TEXTANDSOUND);
-		break;
-	case CHECKRES_MANA:
-		playinfoadvisorsound(playernr, race, ADVENERGY, PLAYADVISOR_TEXTANDSOUND);
-		break;
-	case CHECKRES_OK:
-		break;
-	}
-}
-//=============================================
-int CreateUnitProperties(struct OBJ *a, struct OBJstruct *b, int *prop, int playernr)
+static int CreateUnitProperties(struct OBJ *a, struct OBJstruct *b, int *prop, int playernr)
 {
 	int i, unitnr, underc, upgradenr, maxupgradenr, constraddon;
 	for (i = 0;i < MAXUNITPROPERTIES;i++)
@@ -825,54 +758,4 @@ int ExistProp(struct OBJstruct *b,int verifymode)
 	return 0;
 }
 //================================================================
-//================================
-//fill properties of unit depend were he stand on map and what atributes he have
-//==================================
-//	 return x and y new position of build unit
-//						  xxxxx
-//						y aaaaa		x,y is form one coordinates of (a)
-//						y a***a		if buid with (*) size 3,2
-//						y a***a
-//						y aaaaa
-//
-int getborderbuild(int mx,int my,int *x,int *y)
-{
-	int a = myrand(2);
-	int b = myrand(2);
-	if (a)
-		*x = mx - 1;
-	else
-		*x = 0;
-	if (b)
-		*y = my - 1;
-	else
-		*y = 0;
-	int kvadrant;
-	if (a)
-		if (b)
-			kvadrant = 1;
-		else
-			kvadrant = 3;
-		else
-			if (b)
-				kvadrant = 0;
-			else
-				kvadrant = 2;
-	return(kvadrant);
-}
-//=====================================
-int CheckCoordinates(int newx256,int newy256,SCUNIT SC_Unit)
-{
-	if (newx256/256 + GetUnitWidthAndHeight(SC_Unit,UNITDIM_WIDTH)/2 < 0)
-		return(0);
-	if (newy256/256 + GetUnitWidthAndHeight(SC_Unit,UNITDIM_HEIGHT)/2 < 0)
-		return(0);
-	if (newx256/256 - GetUnitWidthAndHeight(SC_Unit,UNITDIM_WIDTH)/2 > MAXXMAP*32)
-		return(0);
-	if (newy256/256 - GetUnitWidthAndHeight(SC_Unit,UNITDIM_HEIGHT)/2 > MAXYMAP*32)
-		return(0);
-	return(1);
-}
-//=====================================
-
 

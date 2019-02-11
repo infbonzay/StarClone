@@ -64,18 +64,20 @@ int	 UnitWeaponMask(SCUNIT SC_Unit);
 unsigned char GetNewWeaponType(OBJ *atacker,OBJ *destobj,int newatackerunitusedweapon);
 
 
-OBJ *SearchNewBounceOBJ(int x,int y,int nplayer,OBJ *obj1,OBJ *obj2,int maxdist);
-int getchilds(struct OBJ *a);
-int getfirstchildemptyslot(struct OBJ *a);
-int addchild(struct OBJ *a,struct OBJ *child);
-int delchild(struct OBJ *a,struct OBJ *child);
-int objcmp(struct OBJ *a[],struct OBJ *b,int c);
-int GetRangeObjSize(SCUNIT SC_Unit,int *x,int *y);
+OBJ  *SearchNewBounceOBJ(int x,int y,int nplayer,OBJ *obj1,OBJ *obj2,int maxdist);
+int  getchilds(struct OBJ *a);
+int  getfirstchildemptyslot(struct OBJ *a);
+int  addchild(struct OBJ *a,struct OBJ *child);
+int  delchild(struct OBJ *a,struct OBJ *child);
+int  objcmp(struct OBJ *a[],struct OBJ *b,int c);
+int  GetRangeObjSize(SCUNIT SC_Unit,int *x,int *y);
 void swapOBJ(struct OBJ **a,struct OBJ **b);
 int	 GetDeltaDirection(OBJ *a);
 void AlignMAPXYCoordLU(int *l,int *u);
 void AlignMAPXYCoordRD(int *r,int *d);
 int	 IfCanClickOBJ(SCUNIT SC_Unit);
+int  CheckCoordinates(int newx256,int newy256,SCUNIT SC_Unit);
+int  getborderbuild(int mx,int my,int *x,int *y);
 
 inline int GetUnitUnknownFlags(SCUNIT SC_Unit) { return(alldattbl.units_dat->Unknown1[SC_Unit]); };
 inline int GetUnitSublabel(SCUNIT SC_Unit) { return(alldattbl.units_dat->Sublabel[SC_Unit]); };
