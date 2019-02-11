@@ -7,12 +7,12 @@
 
 struct SC_FontHeader
 {
-    int			Name;		//Always is "FONT"
+    int				Name;		//Always is "FONT"
     unsigned char	LowIndex;	//nr of first letter in file
     unsigned char	HighIndex;	//nr of the last letter in file
     unsigned char	MaxWidth;	//Maximum width of letters
     unsigned char	MaxHeight;	//Maximum height of letters
-    int			Offset[];	//offset of each letter SC_FontLetterRaw from begin of file
+    int				Offset[];	//offset of each letter SC_FontLetterRaw from begin of file
 };
 
 struct  SC_FontLetterRaw

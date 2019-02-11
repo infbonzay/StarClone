@@ -19,7 +19,7 @@
 #include "lists.h"
 #include "loadlo.h"
 #include "putobj.h"
-#include "objinfo.h"
+#include "ObjChecks.h"
 #include "vision.h"
 #include "doodad.h"
 #include "portrait.h"

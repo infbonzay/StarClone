@@ -5,7 +5,7 @@
 
 #include "mage.h"
 #include "weapons.h"
-#include "objinfo.h"
+#include "ObjChecks.h"
 #include "objs.h"
 #include "auxil.h"
 #include "lists.h"

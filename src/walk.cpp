@@ -9,7 +9,7 @@
 #include "load.h"
 #include "action.h"
 #include "images.h"
-#include "objinfo.h"
+#include "ObjChecks.h"
 #include "walk.h"
 //=====================================
 //=====================================

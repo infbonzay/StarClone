@@ -27,14 +27,14 @@
 #include "unitaction.h"
 #include "pylon.h"
 #include "upgrade.h"
-#include "objinfo.h"
+#include "ObjChecks.h"
 #include "rand.h"
 #include "construct.h"
-#include "market.h"
 #include "weapons.h"
 #include "overlay.h"
-#include "diap.h"
+#include "market.h"
 #include "Controller.h"
+#include "diap.h"
 
 //=============================================
 #define POSX(x) ((x+SIZESPRLANSHX-1)/SIZESPRLANSHX)

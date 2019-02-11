@@ -11,7 +11,7 @@
 #include "scripts.h"
 #include "lists.h"
 #include "objs.h"
-#include "objinfo.h"
+#include "ObjChecks.h"
 #include "load.h"
 #include "putobj.h"
 #include "mage.h"

@@ -18,7 +18,7 @@
 #include "mpq.h"
 #include "mylist.h"
 #include "lists.h"
-#include "objinfo.h"
+#include "ObjChecks.h"
 #include "market.h"
 #include "flingy.h"
 #include "load.h"

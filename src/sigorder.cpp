@@ -22,7 +22,7 @@
 #include "overlay.h"
 #include "market.h"
 #include "walk.h"
-#include "objinfo.h"
+#include "ObjChecks.h"
 #include "sigorder.h"
 
 //==================================

@@ -5,7 +5,7 @@
 #include "lists.h"
 #include "action.h"
 #include "maps.h"
-#include "objinfo.h"
+#include "ObjChecks.h"
 #include "objs.h"
 #include "market.h"
 #include "portrait.h"

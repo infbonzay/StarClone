@@ -4,7 +4,7 @@
 #include "auxil.h"
 #include "man.h"
 #include "maps.h"
-#include "objinfo.h"
+#include "ObjChecks.h"
 #include "objs.h"
 #include "load.h"
 #include "wmem.h"

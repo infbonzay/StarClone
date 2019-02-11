@@ -14,7 +14,7 @@
 #include "iscript.h"
 #include "walk.h"
 #include "putobj.h"
-#include "objinfo.h"
+#include "ObjChecks.h"
 #include "key.h"
 #include "Controller.h"
 #include "mouse.h"

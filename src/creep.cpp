@@ -12,7 +12,7 @@
 #include "rand.h"
 #include "lists.h"
 #include "objs.h"
-#include "objinfo.h"
+#include "ObjChecks.h"
 #include "creep.h"
 
 //===========================================

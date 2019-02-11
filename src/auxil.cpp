@@ -11,7 +11,7 @@
 #include "wmem.h"
 #include "network_general.h"
 #include "stringfiles.h"
-#include "objinfo.h"
+#include "ObjChecks.h"
 #include "man.h"
 #include "images.h"
 #include "auxil.h"

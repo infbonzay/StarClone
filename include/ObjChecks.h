@@ -78,6 +78,7 @@ void AlignMAPXYCoordRD(int *r,int *d);
 int	 IfCanClickOBJ(SCUNIT SC_Unit);
 int  CheckCoordinates(int newx256,int newy256,SCUNIT SC_Unit);
 int  getborderbuild(int mx,int my,int *x,int *y);
+bool IfCanTransport(SCUNIT SC_Unit, int playernr);
 
 inline int GetUnitUnknownFlags(SCUNIT SC_Unit) { return(alldattbl.units_dat->Unknown1[SC_Unit]); };
 inline int GetUnitSublabel(SCUNIT SC_Unit) { return(alldattbl.units_dat->Sublabel[SC_Unit]); };

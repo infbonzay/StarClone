@@ -18,7 +18,7 @@
 #include "rand.h"
 #include "action.h"
 #include "gr.h"
-#include "objinfo.h"
+#include "ObjChecks.h"
 #include "pylon.h"
 #include "debug.h"
 #include "market.h"

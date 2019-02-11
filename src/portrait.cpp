@@ -7,7 +7,7 @@
 #include "man.h"
 #include "gr.h"
 #include "mpq.h"
-#include "objinfo.h"
+#include "ObjChecks.h"
 #include "load.h"
 #include "rand.h"
 #include "tempobj.h"

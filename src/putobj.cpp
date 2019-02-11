@@ -24,7 +24,7 @@
 #include "hod.h"
 #include "walk.h"
 #include "upgrade.h"
-#include "objinfo.h"
+#include "ObjChecks.h"
 #include "action.h"
 #include "construct.h"
 #include "scripts.h"

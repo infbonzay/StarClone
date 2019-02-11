@@ -14,7 +14,7 @@
 #include "rand.h"
 #include "unitaction.h"
 #include "market.h"
-#include "objinfo.h"
+#include "ObjChecks.h"
 #include "gr.h"
 #include "iscript.h"
 #include "sigorder.h"

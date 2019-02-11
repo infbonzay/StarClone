@@ -11,7 +11,7 @@
 #include "wmem.h"
 #include "rand.h"
 #include "mylist.h"
-#include "objinfo.h"
+#include "ObjChecks.h"
 #include "load.h"
 #include "maps.h"
 #include "objs.h"

@@ -6,7 +6,7 @@
 #include "vars.h"
 #include "load.h"
 #include "putobj.h"
-#include "objinfo.h"
+#include "ObjChecks.h"
 #include "gr.h"
 #include "lists.h"
 #include "market.h"

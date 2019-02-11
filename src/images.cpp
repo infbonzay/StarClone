@@ -15,7 +15,7 @@
 #include "maps.h"
 #include "overlay.h"
 #include "iscript.h"
-#include "objinfo.h"
+#include "ObjChecks.h"
 #include "objs.h"
 #include "market.h"
 #include "rand.h"

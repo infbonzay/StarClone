@@ -17,7 +17,7 @@
 #include "starmap.h"
 #include "creep.h"
 #include "action.h"
-#include "objinfo.h"
+#include "ObjChecks.h"
 #include "vision.h"
 #include "fog.h"
 #include "gener.h"

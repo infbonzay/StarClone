@@ -13,7 +13,7 @@
 #include "load.h"
 #include "vars.h"
 #include "rand.h"
-#include "objinfo.h"
+#include "ObjChecks.h"
 #include "maps.h"
 #include "gener.h"
 #include "mage.h"
@@ -23,8 +23,9 @@
 #include "mylist.h"
 
 #include "images.h"
-#include "audio.h"
+#include "market.h"
 #include "music.h"
+#include "audio.h"
 
 #define ADVISORSONGS ((struct OBJ *)NULL)
 #define MAXSELECTPLAY	5

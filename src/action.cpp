@@ -13,7 +13,7 @@
 #include "rand.h"
 #include "unitaction.h"
 #include "actiondefault.h"
-#include "objinfo.h"
+#include "ObjChecks.h"
 #include "market.h"
 #include "weapons.h"
 #include "iscript.h"

@@ -15,7 +15,7 @@
 #include "gr.h"
 #include "lists.h"
 #include "audio.h"
-#include "objinfo.h"
+#include "ObjChecks.h"
 #include "action.h"
 #include "market.h"
 #include "maps.h"

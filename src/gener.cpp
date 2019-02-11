@@ -25,7 +25,7 @@
 #include "key.h"
 #include "gr.h"
 #include "objs.h"
-#include "objinfo.h"
+#include "ObjChecks.h"
 #include "putobj.h"
 #include "diap.h"
 #include "load.h"

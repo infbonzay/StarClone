@@ -15,8 +15,7 @@
 #include "market.h"
 #include "images.h"
 #include "iscript.h"
-#include "objinfo.h"
-//=================================
+#include "ObjChecks.h"
 //=================================
 int GhostNUKEAction(OBJ *o)
 {

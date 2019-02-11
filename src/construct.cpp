@@ -18,7 +18,7 @@
 #include "putobj.h"
 #include "lists.h"
 #include "load.h"
-#include "objinfo.h"
+#include "ObjChecks.h"
 #include "iscript.h"
 #include "images.h"
 #include "sigorder.h"

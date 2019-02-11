@@ -4,7 +4,7 @@
 #include <stdio.h>
 
 #include "tempobj.h"
-#include "objinfo.h"
+#include "ObjChecks.h"
 #include "audio.h"
 #include "sigorder.h"
 #include "iscript.h"

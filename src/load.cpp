@@ -19,7 +19,7 @@
 #include "fonts.h"
 #include "maps.h"
 #include "portrait.h"
-#include "objinfo.h"
+#include "ObjChecks.h"
 #include "overlay.h"
 #include "lists.h"
 #include "weapons.h"

@@ -23,7 +23,7 @@
 #include "lists.h"
 #include "actiondefault.h"
 #include "images.h"
-#include "objinfo.h"
+#include "ObjChecks.h"
 
 #define MINCARRIERCAPACITY		4
 #define MINREAVERCAPACITY		5

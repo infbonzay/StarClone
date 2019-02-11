@@ -15,10 +15,10 @@ struct GRPPICTURE
 };
 struct GRPFILE
 {
-       unsigned short int CountPictures;
-       unsigned short int SizeX;
-       unsigned short int SizeY;
-       struct GRPPICTURE Picture[];
+       unsigned short int	CountPictures;
+       unsigned short int	SizeX;
+       unsigned short int	SizeY;
+       struct GRPPICTURE	Picture[];
 };
 
 #pragma pack(pop)
@@ -73,7 +73,7 @@ int  GRP_SetPlayerColors(int fromplayer,int nrplayers,
 						 int firstindex,int nrofindexes,
 						 char *table);
 
-#define GRP_VERSION	0x00000414		//0.4.20
+#define GRP_VERSION	0x00000415		//0.4.21
 
 #ifdef __cplusplus
     }
