@@ -8,8 +8,44 @@
 
 #define KEYPRESSEDTABLE(table,scancode) (toupper((scancode)&0xff)+1)
 
+#ifdef UNDERWINDOWS
+	#include "win/winkey.h"
+
+	typedef struct
+	{
+		const uint8_t ximagebpp[5] = {0,8,16,32,32}; //for 0,8,16,24,32 color bits
+		bool		FullScreen;
+		uint8_t		*pixels;
+		uint8_t		*palette;
+		int			pixelsBufferSize;
+		int			DesiredBpp;
+		int			SavedWidth;
+		int			SavedHeight;
+		int			SavedBpp;
+
+		//win32 vars
+		Display 	*display;
+		int			screenNr;
+		Window		window;
+		Visual		*XVisual;
+		XImage		*Ximage;
+		Cursor		noCursor;
+		GC			gc;
+		XEvent		event;
+		uint8_t		*Wpixels;
+		int			WpixelsBufferSize;
+		uint8_t		flags;
+
+	} Controller_Surface;
+	typedef struct
+	{
+		int16_t  x, y;
+		uint16_t w, h;
+	} SCREEN_REGION;
+
+#endif
 #ifdef WITHSDL
-	#include "sdl/keysdl.h"
+	#include "sdl/sdlkey.h"
 
 	typedef SDL_Surface Controller_Surface;
 	typedef SDL_Rect SCREEN_REGION;
