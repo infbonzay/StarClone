@@ -439,7 +439,7 @@ UINT WINAPI SFileGetFilePos(HANDLE hFile, UINT *pdwFilePosHigh)
 //-----------------------------------------------------------------------------
 // SFileGetFileSize
 
-UINT WINAPI SFileGetFileSize(HANDLE hFile, UINT *pdwFileSizeHigh)
+UINT WINAPI SFileGetFileSize(HANDLE hFile, DWORD *pdwFileSizeHigh)
 {
     TMPQFile * hf = (TMPQFile *)hFile;
     

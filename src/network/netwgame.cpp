@@ -111,7 +111,7 @@ int UpdateAllGamesTime(void)
 //=============================================
 int AddListCreatedGame(NETWORK_JOIN_PACKET *mypacket, struct sockaddr_in *Addr)
 {
-	int i, max, maxnr;
+	int i, max=0, maxnr;
 	NETGAME *crgame;
 	newgames.EnumListInit();
 	while ((crgame = (NETGAME *)newgames.GetNextListElem()))
@@ -135,9 +135,10 @@ int AddListCreatedGame(NETWORK_JOIN_PACKET *mypacket, struct sockaddr_in *Addr)
 				break;
 			}
 		}
+		max++;
 	}
 	//not found in listed (new created game, add to list)
-	if (max == MAXCREATEDGAMES)
+	if (max >= MAXCREATEDGAMES)
 	{
 		//sorry we don't have any places for newed games
 		return(0);

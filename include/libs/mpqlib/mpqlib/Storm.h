@@ -57,7 +57,7 @@ BOOL  WINAPI SCOMP(Decompress)(char * pbOutBuffer, int * pdwOutLength, char * pb
 
 
 #if defined(_MSC_VER) && !defined(BUILDING_STORM_CPP)
-#pragma comment(lib, "Storm.lib")    // Force linking Storm.lib and thus Storm.dll
+//#pragma comment(lib, "Storm.lib")    // Force linking Storm.lib and thus Storm.dll
 #endif
 
 #ifdef __cplusplus

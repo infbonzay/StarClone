@@ -24,17 +24,12 @@
 		int			SavedBpp;
 
 		//win32 vars
-		Display 	*display;
-		int			screenNr;
-		Window		window;
-		Visual		*XVisual;
-		XImage		*Ximage;
-		Cursor		noCursor;
-		GC			gc;
-		XEvent		event;
-		uint8_t		*Wpixels;
-		int			WpixelsBufferSize;
-		uint8_t		flags;
+		HWND		window;
+		HINSTANCE	hInstance;
+		MSG			msg;
+		int			iCmdShow;
+		int			width;
+		int			height;
 
 	} Controller_Surface;
 	typedef struct

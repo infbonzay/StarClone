@@ -1,0 +1,42 @@
+2>Generating Code...
+2>audio.obj : error LNK2019: unresolved external symbol "int * __cdecl PlayMpqWav(struct RWOPS *,int)" (?PlayMpqWav@@YAPAHPAURWOPS@@H@Z) referenced in function "int __cdecl loadandplaywav(void *,struct OBJ *,char const *,int,int)" (?loadandplaywav@@YAHPAXPAUOBJ@@PBDHH@Z)
+2>audio.obj : error LNK2019: unresolved external symbol "struct RWOPS * __cdecl My_RWFromMpqFile(void *,char const *,unsigned int)" (?My_RWFromMpqFile@@YAPAURWOPS@@PAXPBDI@Z) referenced in function "int __cdecl loadandplaywav(void *,struct OBJ *,char const *,int,int)" (?loadandplaywav@@YAHPAXPAUOBJ@@PBDHH@Z)
+2>music.obj : error LNK2001: unresolved external symbol "struct RWOPS * __cdecl My_RWFromMpqFile(void *,char const *,unsigned int)" (?My_RWFromMpqFile@@YAPAURWOPS@@PAXPBDI@Z)
+2>audio.obj : error LNK2019: unresolved external symbol "int __cdecl wOpenAudio(void)" (?wOpenAudio@@YAHXZ) referenced in function "int __cdecl initsoundengine(int)" (?initsoundengine@@YAHH@Z)
+2>audio.obj : error LNK2019: unresolved external symbol "void __cdecl wCloseAudio(void)" (?wCloseAudio@@YAXXZ) referenced in function "void __cdecl deinitsoundengine(void)" (?deinitsoundengine@@YAXXZ)
+2>audio.obj : error LNK2019: unresolved external symbol "int __cdecl wSetChannels(int)" (?wSetChannels@@YAHH@Z) referenced in function "int __cdecl initsoundengine(int)" (?initsoundengine@@YAHH@Z)
+2>audio.obj : error LNK2019: unresolved external symbol "int __cdecl wChannelVolume(int,int)" (?wChannelVolume@@YAHHH@Z) referenced in function "int __cdecl SetChannelVolume(int,int)" (?SetChannelVolume@@YAHHH@Z)
+2>audio.obj : error LNK2019: unresolved external symbol "void __cdecl wOnChannelFinish(void (__cdecl*)(int))" (?wOnChannelFinish@@YAXP6AXH@Z@Z) referenced in function "int __cdecl initsoundengine(int)" (?initsoundengine@@YAHH@Z)
+2>audio.obj : error LNK2019: unresolved external symbol "void __cdecl wFreeChunk(int *)" (?wFreeChunk@@YAXPAH@Z) referenced in function "int __cdecl loadandplaywav(void *,struct OBJ *,char const *,int,int)" (?loadandplaywav@@YAHPAXPAUOBJ@@PBDHH@Z)
+2>music.obj : error LNK2001: unresolved external symbol "void __cdecl wFreeChunk(int *)" (?wFreeChunk@@YAXPAH@Z)
+2>audio.obj : error LNK2019: unresolved external symbol "int __cdecl wPlayChannel(int,int *,int)" (?wPlayChannel@@YAHHPAHH@Z) referenced in function "int __cdecl loadandplaywav(void *,struct OBJ *,char const *,int,int)" (?loadandplaywav@@YAHPAXPAUOBJ@@PBDHH@Z)
+2>music.obj : error LNK2001: unresolved external symbol "int __cdecl wPlayChannel(int,int *,int)" (?wPlayChannel@@YAHHPAHH@Z)
+2>audio.obj : error LNK2019: unresolved external symbol "int __cdecl wStopChannel(int)" (?wStopChannel@@YAHH@Z) referenced in function "void __cdecl StopPlayChannel(int)" (?StopPlayChannel@@YAXH@Z)
+2>music.obj : error LNK2001: unresolved external symbol "int __cdecl wStopChannel(int)" (?wStopChannel@@YAHH@Z)
+2>gamemenu.obj : error LNK2019: unresolved external symbol _htons@4 referenced in function "int __cdecl Master_JoinPackets(struct MENUSTR *,void *)" (?Master_JoinPackets@@YAHPAUMENUSTR@@PAX@Z)
+2>netwgame.obj : error LNK2001: unresolved external symbol _htons@4
+2>network_general.obj : error LNK2001: unresolved external symbol _htons@4
+2>mpq.obj : error LNK2019: unresolved external symbol _SFileGetFileSize@8 referenced in function "int __cdecl loadfilefrommpq(void *,char const *,char * *,int *)" (?loadfilefrommpq@@YAHPAXPBDPAPADPAH@Z)
+2>starmap.obj : error LNK2001: unresolved external symbol _SFileGetFileSize@8
+2>video.obj : error LNK2001: unresolved external symbol _SFileGetFileSize@8
+2>SListFile.obj : error LNK2001: unresolved external symbol _SFileGetFileSize@8
+2>mpqwrapper.obj : error LNK2019: unresolved external symbol "void __cdecl LockAudio(void)" (?LockAudio@@YAXXZ) referenced in function "int __cdecl wr_SFileReadFile(void *,void *,unsigned long,unsigned long *,void *)" (?wr_SFileReadFile@@YAHPAX0KPAK0@Z)
+2>mpqwrapper.obj : error LNK2019: unresolved external symbol "void __cdecl UnlockAudio(void)" (?UnlockAudio@@YAXXZ) referenced in function "int __cdecl wr_SFileReadFile(void *,void *,unsigned long,unsigned long *,void *)" (?wr_SFileReadFile@@YAHPAX0KPAK0@Z)
+2>music.obj : error LNK2019: unresolved external symbol "int * __cdecl PlayRAWMem(unsigned char *,int)" (?PlayRAWMem@@YAPAHPAEH@Z) referenced in function "private: int __thiscall wMUSIC::playPCMdata(int)" (?playPCMdata@wMUSIC@@AAEHH@Z)
+2>music.obj : error LNK2019: unresolved external symbol "int __cdecl PrepareForConvertAudio(struct Audio_CVT *,unsigned int,unsigned char,unsigned int)" (?PrepareForConvertAudio@@YAHPAUAudio_CVT@@IEI@Z) referenced in function "int __cdecl PlayMusic(char const *,int,void (__cdecl*)(void))" (?PlayMusic@@YAHPBDHP6AXXZ@Z)
+2>video.obj : error LNK2001: unresolved external symbol "int __cdecl PrepareForConvertAudio(struct Audio_CVT *,unsigned int,unsigned char,unsigned int)" (?PrepareForConvertAudio@@YAHPAUAudio_CVT@@IEI@Z)
+2>music.obj : error LNK2019: unresolved external symbol "int __cdecl ConvertAudio(struct Audio_CVT *)" (?ConvertAudio@@YAHPAUAudio_CVT@@@Z) referenced in function "void __cdecl LoadNextAudioData(void *)" (?LoadNextAudioData@@YAXPAX@Z)
+2>video.obj : error LNK2001: unresolved external symbol "int __cdecl ConvertAudio(struct Audio_CVT *)" (?ConvertAudio@@YAHPAUAudio_CVT@@@Z)
+2>mytime.obj : error LNK2019: unresolved external symbol "private: __int64 __thiscall TIMER::gettimeticks(void)" (?gettimeticks@TIMER@@AAE_JXZ) referenced in function "public: void __thiscall TIMER::SetTickTimerFrequency(int)" (?SetTickTimerFrequency@TIMER@@QAEXH@Z)
+2>netwgame.obj : error LNK2019: unresolved external symbol _inet_addr@4 referenced in function "int __cdecl Guest_CheckJoinPacket(struct MENUSTR *,struct NETWORK_INFO *,struct NETWORK_INFO *)" (?Guest_CheckJoinPacket@@YAHPAUMENUSTR@@PAUNETWORK_INFO@@1@Z)
+2>netwgame.obj : error LNK2019: unresolved external symbol _inet_ntoa@4 referenced in function "int __cdecl Guest_CheckJoinPacket(struct MENUSTR *,struct NETWORK_INFO *,struct NETWORK_INFO *)" (?Guest_CheckJoinPacket@@YAHPAUMENUSTR@@PAUNETWORK_INFO@@1@Z)
+2>network_general.obj : error LNK2001: unresolved external symbol _inet_ntoa@4
+2>SCompression.obj : error LNK2019: unresolved external symbol _deflate referenced in function "void __cdecl WriteOutputData(char *,unsigned int *,void *)" (?WriteOutputData@@YAXPADPAIPAX@Z)
+2>SCompression.obj : error LNK2019: unresolved external symbol _deflateEnd referenced in function "void __cdecl WriteOutputData(char *,unsigned int *,void *)" (?WriteOutputData@@YAXPADPAIPAX@Z)
+2>SCompression.obj : error LNK2019: unresolved external symbol _inflate referenced in function "void __cdecl WriteOutputData(char *,unsigned int *,void *)" (?WriteOutputData@@YAXPADPAIPAX@Z)
+2>SCompression.obj : error LNK2019: unresolved external symbol _inflateEnd referenced in function "void __cdecl WriteOutputData(char *,unsigned int *,void *)" (?WriteOutputData@@YAXPADPAIPAX@Z)
+2>SCompression.obj : error LNK2019: unresolved external symbol _deflateInit_ referenced in function "void __cdecl WriteOutputData(char *,unsigned int *,void *)" (?WriteOutputData@@YAXPADPAIPAX@Z)
+2>SCompression.obj : error LNK2019: unresolved external symbol _inflateInit_ referenced in function "void __cdecl WriteOutputData(char *,unsigned int *,void *)" (?WriteOutputData@@YAXPADPAIPAX@Z)
+2>SFileReadFile.obj : error LNK2001: unresolved external symbol "int volatile MPQglobalentersemaphore" (?MPQglobalentersemaphore@@3HC)
+2>C:\Users\vbotnari\devel\StarClone\build\bin\Debug\StarClone.exe : fatal error LNK1120: 27 unresolved externals
+2>Done building project "StarClone.vcxproj" -- FAILED.
