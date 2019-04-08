@@ -39,11 +39,11 @@ private:
 	TIMER_TICK	tick_delta;
 	TIMER_TICK	tick_current;
 	int			gametick_current;
-	TIMER_TICK	gettimeticks(void);
 	void (*MyTimerFunc)(void *,int);
 	void *MyTimerParam;
-public:
 
+public:
+	TIMER_TICK	GetTimeTicks(void);
 	void SetTickTimerFrequency(int microsec);
 	void CallTimer(int mode);
 	void SetMyTimerFunc(void (*TFunc)(void *,int),void *TFuncParam);

@@ -21,8 +21,6 @@
 #ifndef __STORMPORT_H__
 #define __STORMPORT_H__
 
-extern volatile int MPQglobalentersemaphore;
-
 // Defines for Windows
 #if !defined(__PLATFORM__) && defined(WIN32)
 

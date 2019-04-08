@@ -118,7 +118,6 @@ int main(int c, char **parm, char **env)
 				exit(-1);
 			}
 		}
-		//	  printf("%lld\n",gettimeticks2());
 
 		//	  getcwd(GAMEPATH,sizeof(GAMEPATH)-1);
 		//	  strcpy(GAMEMAPPATH,GAMEPATH);
@@ -134,7 +133,6 @@ int main(int c, char **parm, char **env)
 		{
 			printf("WARNING: the MAP %s do not exist\n", GAMEMAPPATH);
 		}
-		//	  printf("%lld\n",gettimeticks2());
 		int readedsymb = readlink(GAMEMAPPATH, temppath, sizeof(temppath) - 1);
 		if (readedsymb != -1)
 		{
@@ -146,7 +144,6 @@ int main(int c, char **parm, char **env)
 			printf("cannot chdir %s, path not found.\n", GAMEPATH);
 			exit(-1);
 		}
-		//	  printf("%lld\n",gettimeticks2());
 		loadallfonts();
 		highMouse = new HighMouse();
 		printf("set graph mode...\n");

@@ -27,6 +27,8 @@ SC_FontHeader *loadfont(const char *filename)
 {
 	char *mem = NULL;
 	mpqloadfile(filename, &mem);
+	if (mem == NULL)
+		return NULL;
 	if (mem[0] == 'F' && mem[1] == 'O' && mem[2] == 'N' && mem[3] == 'T')
 	{
 		return (SC_FontHeader *)mem;

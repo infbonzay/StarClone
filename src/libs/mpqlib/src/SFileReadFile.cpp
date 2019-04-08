@@ -21,6 +21,7 @@
 
 //-----------------------------------------------------------------------------
 // Local structures
+volatile int MPQGlobalEnterSemaphore;
 
 struct TID2Ext
 {
@@ -42,8 +43,8 @@ static UINT WINAPI ReadMPQBlocks(TMPQFile * hf, UINT dwBlockPos, BYTE * buffer, 
 {
     do{
 	//block read if already here
-    }while(MPQglobalentersemaphore);
-    MPQglobalentersemaphore = 1;
+    }while(MPQGlobalEnterSemaphore);
+    MPQGlobalEnterSemaphore = 1;
     TMPQArchive * ha = hf->ha;          // Archive handle
     BYTE  * tempBuffer = NULL;          // Buffer for reading compressed data from the file
     UINT   dwFilePos = dwBlockPos;     // Reading position from the file
@@ -57,7 +58,7 @@ static UINT WINAPI ReadMPQBlocks(TMPQFile * hf, UINT dwBlockPos, BYTE * buffer, 
     // Test parameters. Block position and block size must be block-aligned, block size nonzero
     if((dwBlockPos & (ha->dwBlockSize - 1)) || blockBytes == 0)
     {
-	MPQglobalentersemaphore = 0;
+	MPQGlobalEnterSemaphore = 0;
         return 0;
     }
     // Check the end of file
@@ -96,9 +97,9 @@ static UINT WINAPI ReadMPQBlocks(TMPQFile * hf, UINT dwBlockPos, BYTE * buffer, 
             // If we don't know the file seed, sorry but we cannot extract the file.
             if(hf->dwSeed1 == 0)
             {
-		MPQglobalentersemaphore = 0;
-                return 0;
-	    }
+				MPQGlobalEnterSemaphore = 0;
+				return 0;
+			}
             // Decrypt block positions
             DecryptMPQBlock(hf->pdwBlockPos, bytesRead, hf->dwSeed1 - 1);
 
@@ -116,7 +117,7 @@ static UINT WINAPI ReadMPQBlocks(TMPQFile * hf, UINT dwBlockPos, BYTE * buffer, 
                 // Check if the block positions are correctly decrypted
                 if(hf->pdwBlockPos[0] != bytesRead)
                 {
-		    MPQglobalentersemaphore = 0;
+					MPQGlobalEnterSemaphore = 0;
                     return 0;
                 }
             }
@@ -144,7 +145,7 @@ static UINT WINAPI ReadMPQBlocks(TMPQFile * hf, UINT dwBlockPos, BYTE * buffer, 
         if((tempBuffer = ALLOCMEM(BYTE, toRead)) == NULL)
         {
             SetLastError(ERROR_NOT_ENOUGH_MEMORY);
-	    MPQglobalentersemaphore = 0;
+			MPQGlobalEnterSemaphore = 0;
             return 0;
         }
     }
@@ -192,7 +193,7 @@ static UINT WINAPI ReadMPQBlocks(TMPQFile * hf, UINT dwBlockPos, BYTE * buffer, 
 
             if(hf->dwSeed1 == 0)
             {
-		MPQglobalentersemaphore = 0;
+				MPQGlobalEnterSemaphore = 0;
                 return 0;
             }
 
@@ -233,7 +234,7 @@ static UINT WINAPI ReadMPQBlocks(TMPQFile * hf, UINT dwBlockPos, BYTE * buffer, 
     if(hf->pBlock->dwFlags & MPQ_FILE_COMPRESSED)
         FREEMEM(tempBuffer);
 
-    MPQglobalentersemaphore = 0;
+    MPQGlobalEnterSemaphore = 0;
     return bytesRead;
 }
 

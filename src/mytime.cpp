@@ -45,11 +45,83 @@ unsigned char timewaitticks[10] =
 //====================================================================
 #ifdef UNDERLINUX
 #include <time.h>
-TIMER_TICK TIMER::gettimeticks(void)
+TIMER_TICK TIMER::GetTimeTicks(void)
 {
 	struct timespec ticks;
 	clock_gettime(CLOCK_MONOTONIC, &ticks);
 	return((TIMER_TICK)(ticks.tv_sec) * TICKS_RES + ticks.tv_nsec);
+}
+#endif
+
+#ifdef UNDERWINDOWS
+static LARGE_INTEGER getFILETIMEoffset(void)
+{
+	SYSTEMTIME s;
+	FILETIME f;
+	LARGE_INTEGER t;
+
+	s.wYear = 1970;
+	s.wMonth = 1;
+	s.wDay = 1;
+	s.wHour = 0;
+	s.wMinute = 0;
+	s.wSecond = 0;
+	s.wMilliseconds = 0;
+	SystemTimeToFileTime(&s, &f);
+	t.QuadPart = f.dwHighDateTime;
+	t.QuadPart <<= 32;
+	t.QuadPart |= f.dwLowDateTime;
+	return (t);
+}
+
+static int clock_gettime(int X, struct timeval *tv)
+{
+	LARGE_INTEGER       	t;
+	FILETIME            	f;
+	double                  microseconds;
+	static LARGE_INTEGER    offset;
+	static double           frequencyToMicroseconds;
+	static int              initialized = 0;
+	static BOOL             usePerformanceCounter = 0;
+	if (!initialized)
+	{
+		LARGE_INTEGER performanceFrequency;
+		initialized = 1;
+		usePerformanceCounter = QueryPerformanceFrequency(&performanceFrequency);
+		if (usePerformanceCounter) 
+		{
+			QueryPerformanceCounter(&offset);
+			frequencyToMicroseconds = (double)performanceFrequency.QuadPart / 1000000.;
+		}
+		else
+		{
+			offset = getFILETIMEoffset();
+			frequencyToMicroseconds = 10.;
+		}
+	}
+	if (usePerformanceCounter)
+	{
+		QueryPerformanceCounter(&t);
+	}
+	else 
+	{
+		GetSystemTimeAsFileTime(&f);
+		t.QuadPart = f.dwHighDateTime;
+		t.QuadPart <<= 32;
+		t.QuadPart |= f.dwLowDateTime;
+	}
+	t.QuadPart -= offset.QuadPart;
+	microseconds = (double)t.QuadPart / frequencyToMicroseconds;
+	t.QuadPart = microseconds;
+	tv->tv_sec = t.QuadPart / 1000000;
+	tv->tv_usec = t.QuadPart % 1000000;
+	return (0);
+}
+TIMER_TICK TIMER::GetTimeTicks(void)
+{
+	struct timeval ticks;
+	clock_gettime(0, &ticks);
+	return((TIMER_TICK)(ticks.tv_sec) * TICKS_RES + ticks.tv_usec * 1000);
 }
 #endif
 /*#ifdef UNDERDOS
@@ -86,10 +158,10 @@ TIMER_TICK TIMER::gettimeticks(void)
 //===========================================
 void TIMER::MyNanoSleep(long nanoseconds)
 {
-	long prev = gettimeticks();
+	long prev = GetTimeTicks();
 	do {
 
-	} while (gettimeticks() - prev < nanoseconds);
+	} while (GetTimeTicks() - prev < nanoseconds);
 }
 //===========================================
 void TIMER::ClearGameTimer(void)
@@ -114,7 +186,7 @@ TIMER_TICK TIMER::GetCurrentTimerTick(void)
 //===========================================
 void TIMER::SetTickTimerFrequency(int microsec)
 {
-	tick_prev = gettimeticks();
+	tick_prev = GetTimeTicks();
 	tick_current = tick_prev;
 	tick_delta = TICKS_RES / microsec;
 }
@@ -127,7 +199,7 @@ int TIMER::GetTimeParsed(void)
 //===========================================
 void TIMER::CallTimer(int mode)
 {
-	tick_current = gettimeticks();
+	tick_current = GetTimeTicks();
 	if (tick_prev + tick_delta <= tick_current)
 	{
 		if (mode == MYTIMER_ASINCHRONMODE)

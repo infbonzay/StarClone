@@ -26,7 +26,6 @@
 #include "StormPort.h"
 
 int globalerr;
-volatile int MPQglobalentersemaphore;
 
 void SetLastError(int err)
 {

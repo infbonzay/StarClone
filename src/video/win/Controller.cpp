@@ -107,7 +107,11 @@ int Controller::QueryVideoMode(int x, int y, int bpp, int fullscreen)
 		wndclass.lpszMenuName = NULL;
 		wndclass.lpszClassName = "StarCloneWClass";
 		wndclass.hIconSm = 0;
-	
+		
+		if (!RegisterClassEx(&wndclass))
+		{
+			return 0;
+		}
 		if ((Surface->window = CreateWindowEx (0,
                     "StarCloneWClass",               
                     "StarClone",                
