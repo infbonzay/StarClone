@@ -9,7 +9,10 @@
 #define KEYPRESSEDTABLE(table,scancode) (toupper((scancode)&0xff)+1)
 
 #ifdef UNDERWINDOWS
-	#include "win/winkey.h"
+
+#include "win/winkey.h"
+#define	CFLAG_EXACTBPP	0x01
+#define	CFLAG_QUIT		0x02
 
 	typedef struct
 	{

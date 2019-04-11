@@ -46,18 +46,51 @@ LRESULT CALLBACK WndProcFunc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 	switch (iMsg)
 	{
 	case WM_ACTIVATE:
+		if ((LOWORD(wParam) != WA_INACTIVE) && ((HWND)lParam == NULL))
+		{
+			gameconf.grmode.flags |= DISPLAYFLAGS_WINDOWACTIVE;
+		}
+		else
+		{
+			gameconf.grmode.flags &= ~DISPLAYFLAGS_WINDOWACTIVE;
+		}
 		return 0;
 	case WM_KEYDOWN:
+		mainController.KeyActive = wParam;
+		mainController.LastKey = wParam;
+		if (mainController.KeyActive)
+			mainController.KeysBuffer->PushElem(mainController.KeyActive);
+		return 0;
+	case WM_KEYUP:
+		mainController.KeyActive = 0;
 		return 0;
 	case WM_LBUTTONDOWN:
+		if (highMouse->ClickFunc)
+			(*highMouse->ClickFunc)(true, 1 << WMLEFTKEY);
 		break;
 	case WM_LBUTTONUP:
+		if (highMouse->ClickFunc)
+			(*highMouse->ClickFunc)(false, 1 << WMLEFTKEY);
+		break;
+	case WM_RBUTTONDOWN:
+		if (highMouse->ClickFunc)
+			(*highMouse->ClickFunc)(true, 1 << WMRIGHTKEY);
+		break;
+	case WM_RBUTTONUP:
+		if (highMouse->ClickFunc)
+			(*highMouse->ClickFunc)(false, 1 << WMRIGHTKEY);
 		break;
 	case WM_MOUSEMOVE:
+		highMouse->PosX = LOWORD(lParam);
+		highMouse->PosY = HIWORD(lParam);
+		if (highMouse->MoveFunc)
+			(*highMouse->MoveFunc)(highMouse->PosX, highMouse->PosY);
 		break;
 	case WM_CLOSE:
+		mainController.KeyFlags |= CFLAG_QUIT;
 		break;
 	case WM_DESTROY:
+		mainController.KeyFlags |= CFLAG_QUIT;
 		PostQuitMessage(0);
 		return 0;
 	}
@@ -281,6 +314,8 @@ int  Controller::EventsLoop(void)
 		TranslateMessage(&Surface->msg);
 		DispatchMessage(&Surface->msg);
 	}
+	if (KeyFlags & CFLAG_QUIT)
+		return 1;
 	return(0);
 }
 //===========================================

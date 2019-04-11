@@ -2,7 +2,6 @@
 #define _DOSKEY_W 1
 
 #define CAPSKEY   58
-#define F10KEY    68
 #define LEFTKEY   75
 #define RIGHTKEY  77
 #define UPKEY     72
@@ -15,7 +14,7 @@
 #define SHIFTRKEY 0x36
 #define ALTKEY    0x38
 #define F12       88
-#define F10       58
+#define F10       68
 #define NUMB1KEY  2
 #define NUMB2KEY  3
 #define BACKSPACEKEY 14

@@ -13,7 +13,7 @@
 #include <io.h>
 //#include <ws2tcpip.h>
 
-#define usleep Sleep
+#define usleep(a) Sleep((a)/1000)
 #define mkdir(a,b) _mkdir(a)
 #define chdir _chdir
 #define rmdir _rmdir
