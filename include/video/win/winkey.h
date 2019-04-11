@@ -20,7 +20,7 @@
 #define PAGEUPKEY	VK_PRIOR
 #define PAGEDOWNKEY VK_NEXT
 
-#define ALTKEY	  255
+#define ALTKEY	  VK_MENU
 #define F1		  VK_F1
 #define F2		  VK_F2
 #define F3		  VK_F3
@@ -44,21 +44,6 @@
 #define LOCKKEYMASK		0x02
 #define CTRLKEYMASK		0x04
 #define ALTKEYMASK		0x08
-
-//#define VK_SHIFT          0x10
-//#define VK_CONTROL        0x11
-//#define VK_MENU           0x12
-
-
-/*
- * WM_KEYUP/DOWN/CHAR HIWORD(lParam) flags
- */
-//#define KF_EXTENDED       0x0100
-//#define KF_DLGMODE        0x0800
-//#define KF_MENUMODE       0x1000
-//#define KF_ALTDOWN        0x2000
-//#define KF_REPEAT         0x4000
-//#define KF_UP             0x8000
 
 #endif
 

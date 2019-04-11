@@ -42,7 +42,6 @@ void Controller::SetWindowName(const char *winName)
 //===========================================
 LRESULT CALLBACK WndProcFunc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 {
-	int vmode;
 	switch (iMsg)
 	{
 	case WM_ACTIVATE:
@@ -58,11 +57,13 @@ LRESULT CALLBACK WndProcFunc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 	case WM_KEYDOWN:
 		mainController.KeyActive = wParam;
 		mainController.LastKey = wParam;
+		SetKeyMod( wParam, true);
 		if (mainController.KeyActive)
 			mainController.KeysBuffer->PushElem(mainController.KeyActive);
 		return 0;
 	case WM_KEYUP:
 		mainController.KeyActive = 0;
+		SetKeyMod( wParam, false);
 		return 0;
 	case WM_LBUTTONDOWN:
 		if (highMouse->ClickFunc)
@@ -321,6 +322,23 @@ int  Controller::EventsLoop(void)
 //===========================================
 void Controller::SetKeyMod(int keysym,bool status)
 {
+	switch(keysym)
+	{
+	case SHIFTLKEY:
+	case SHIFTRKEY:
+		if (status)
+			KeyFlags |= SHIFTKEYMASK;
+		else
+			KeyFlags &= ~SHIFTKEYMASK;
+		break;
+	case CTRLLKEY:
+	case CTRLRKEY:
+		if (status)
+			KeyFlags |= CTRLKEYMASK;
+		else
+			KeyFlags &= ~CTRLKEYMASK;
+		break;
+	}
 }
 //===========================================
 bool Controller::SetVideoMode(int x, int y)
@@ -380,6 +398,6 @@ void Controller::DesktopResolution(int *x,int *y)
 //===========================================
 bool Controller::CanFullScreen(void)
 {
-	return true;
+	return false;
 }
 //===========================================
