@@ -89,7 +89,7 @@ BOOL CloseHandle(HANDLE hFile)
     return (close((DWORD)hFile) == 0);
 }
 
-UINT GetFileSize(HANDLE hFile, UINT *ulOffSetHigh)
+UINT GetFileSize(HANDLE hFile, DWORD *ulOffSetHigh)
 {
     if ((hFile == NULL) || (hFile == INVALID_HANDLE_VALUE))
         return 0xffffffff;

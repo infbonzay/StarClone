@@ -167,7 +167,7 @@
   HANDLE CreateFile(const char * lpFileName, UINT dwDesiredAccess, UINT dwShareMode, void * lpSecurityAttributes, UINT dwCreationDisposition, UINT dwFlagsAndAttributes, HANDLE hTemplateFile);
   BOOL   CloseHandle(HANDLE hObject);
 
-  UINT  GetFileSize(HANDLE hFile, UINT * lpFileSizeHigh);
+  UINT  GetFileSize(HANDLE hFile, DWORD *lpFileSizeHigh);
   UINT  SetFilePointer(HANDLE, LONG lDistanceToMove, LONG * lpDistanceToMoveHigh, UINT dwMoveMethod);
   BOOL   SetEndOfFile(HANDLE hFile);
 
