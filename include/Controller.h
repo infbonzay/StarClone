@@ -170,6 +170,7 @@ public:
 	void ShowCursor(void);
 	int  EventsLoop(void);
 	void SetWindowName(const char *winName);
+	void SetKeyMod(int keysym, bool status);
 private:
 	bool SetVideoMode(int x, int y);
 	void QuitVideoMode(bool Disconnect);
@@ -178,7 +179,6 @@ private:
 			void Transform(int x, int y, int sizex, int sizey);
 	void SaveDesktopResolution(int x,int y);
 	void DesktopResolution(int *x,int *y);
-	void SetKeyMod(int keysym, bool status);
 };
 
 extern Controller mainController;

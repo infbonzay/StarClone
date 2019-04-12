@@ -430,4 +430,99 @@ void ShutdownOpenGL(void)
 //==============================================================
 
 
+#include<Windows.h>
+#include "stdafx.h"
+#include "Global.h"
+
+LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
+void initBackBuffer(HWND hwnd);
+
+
+HDC hBackDC = NULL;
+HBITMAP hBackBitmap = NULL;
+BITMAPINFO bmi = { 0 };
+
+void draw(HWND hwnd) {
+	SetBitmapBits(hBackBitmap, HEIGHT * WIDTH, (const void*)(screenBuffer));
+	BitBlt(GetDC(hwnd), 0, 0, WIDTH, HEIGHT, hBackDC, 0, 0, SRCCOPY);
+}
+
+int WINAPI wWinMain(HINSTANCE hInstace, HINSTANCE hPrevInstace, LPWSTR lpCmdLine, int nCmdShow) {
+	memset(screenBuffer, 0, sizeof(screenBuffer));
+	MSG msg = { 0 };
+	WNDCLASS wnd = { 0 };
+
+	wnd.lpfnWndProc = WndProc;
+	wnd.hInstance = hInstace;
+	wnd.lpszClassName = L"Window";
+
+	if (!RegisterClass(&wnd)) {
+		return 0;
+	}
+
+	HWND hwnd = CreateWindowEx(WS_EX_CLIENTEDGE, wnd.lpszClassName, L"Window",
+		WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, WIDTH, HEIGHT, NULL, NULL, hInstace, NULL);
+
+	if (!hwnd) {
+		return 0;
+	}
+
+	ShowWindow(hwnd, nCmdShow);
+	UpdateWindow(hwnd);
+
+	drawPixel(10, 0, 0x00FF0000);
+	drawPixel(10, 100, 0x0000FF00);
+	drawPixel(10, 10, 0x000000FF);
+	
+	while (true) {
+		if(PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
+			if (msg.message == WM_QUIT) {
+				break;
+			}
+
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
+		}
+		
+
+		draw(hwnd);
+	}
+
+	return msg.wParam;
+}
+
+LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam){
+
+	switch (msg){
+		case WM_CREATE:
+			initBackBuffer(hwnd);
+			break;
+		case WM_DESTROY:
+			DeleteDC(hBackDC);
+			DeleteObject(hBackBitmap);
+			PostQuitMessage(0);
+			break;
+	}
+	return DefWindowProc(hwnd, msg, wParam, lParam);
+}
+
+void initBackBuffer(HWND hwnd) {
+	HDC hWinDC = GetDC(hwnd);
+
+	BITMAPINFO bmi = { 0 };
+	bmi.bmiHeader.biSize = sizeof(BITMAPCOREHEADER);
+	bmi.bmiHeader.biWidth = WIDTH;
+	bmi.bmiHeader.biHeight = -HEIGHT;
+	bmi.bmiHeader.biPlanes = 1;
+	bmi.bmiHeader.biBitCount = 32;
+	bmi.bmiHeader.biCompression = BI_RGB;
+
+	hBackDC = CreateCompatibleDC(hWinDC);
+	hBackBitmap = CreateCompatibleBitmap(hWinDC, WIDTH, HEIGHT); 
+	SetBitmapBits(hBackBitmap, HEIGHT * WIDTH, (const void*)(screenBuffer));
+	
+	SelectObject(hBackDC, hBackBitmap);
+	ReleaseDC(hwnd, hWinDC);
+}
+
 

@@ -205,7 +205,7 @@ void TIMER::CallTimer(int mode)
 		if (mode == MYTIMER_ASINCHRONMODE)
 		{
 			tick_prev += tick_delta;
-			tick_timer += (tick_current - tick_prev) / tick_delta;
+			tick_timer += (int) (tick_current - tick_prev) / tick_delta;
 		}
 		else
 		{

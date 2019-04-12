@@ -57,13 +57,13 @@ LRESULT CALLBACK WndProcFunc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 	case WM_KEYDOWN:
 		mainController.KeyActive = wParam;
 		mainController.LastKey = wParam;
-		SetKeyMod( wParam, true);
+		mainController.SetKeyMod( wParam, true);
 		if (mainController.KeyActive)
 			mainController.KeysBuffer->PushElem(mainController.KeyActive);
 		return 0;
 	case WM_KEYUP:
 		mainController.KeyActive = 0;
-		SetKeyMod( wParam, false);
+		mainController.SetKeyMod( wParam, false);
 		return 0;
 	case WM_LBUTTONDOWN:
 		if (highMouse->ClickFunc)
@@ -89,6 +89,7 @@ LRESULT CALLBACK WndProcFunc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 		break;
 	case WM_CLOSE:
 		mainController.KeyFlags |= CFLAG_QUIT;
+		return (0);
 		break;
 	case WM_DESTROY:
 		mainController.KeyFlags |= CFLAG_QUIT;
@@ -137,7 +138,7 @@ int Controller::QueryVideoMode(int x, int y, int bpp, int fullscreen)
 		wndclass.hInstance = Surface->hInstance;
 		wndclass.hIcon = 0;
 		wndclass.hCursor = 0;
-		wndclass.hbrBackground = (HBRUSH) BLACKCOLOR;
+		wndclass.hbrBackground = CreateSolidBrush(RGB(0, 0, 0));
 		wndclass.lpszMenuName = NULL;
 		wndclass.lpszClassName = "StarCloneWClass";
 		wndclass.hIconSm = 0;
