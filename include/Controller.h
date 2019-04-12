@@ -30,11 +30,14 @@
 		HWND		window;
 		HINSTANCE	hInstance;
 		MSG			msg;
+		HDC			hdc;
+		HDC			backDC;
+		HBITMAP		backBitmap;
 		int			iCmdShow;
 		int			width;
 		int			height;
-
 	} Controller_Surface;
+
 	typedef struct
 	{
 		int16_t  x, y;

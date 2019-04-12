@@ -158,7 +158,7 @@ TIMER_TICK TIMER::GetTimeTicks(void)
 //===========================================
 void TIMER::MyNanoSleep(long nanoseconds)
 {
-	long prev = GetTimeTicks();
+	TIMER_TICK prev = GetTimeTicks();
 	do {
 
 	} while (GetTimeTicks() - prev < nanoseconds);
@@ -194,7 +194,7 @@ void TIMER::SetTickTimerFrequency(int microsec)
 //return value in seconds
 int TIMER::GetTimeParsed(void)
 {
-	return((tick_current - begintime) / TICKS_RES);
+	return (int) ((tick_current - begintime) / TICKS_RES);
 }
 //===========================================
 void TIMER::CallTimer(int mode)

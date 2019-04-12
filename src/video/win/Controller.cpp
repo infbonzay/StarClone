@@ -162,13 +162,27 @@ int Controller::QueryVideoMode(int x, int y, int bpp, int fullscreen)
                     == NULL)
 		{
 			return 0;
-		}				
-		ShowWindow(Surface->window, Surface->iCmdShow);
-		UpdateWindow(Surface->window);
+		}
+
+		Surface->hdc = GetDC(Surface->window);
+
+		BITMAPINFO bmi = { 0 };
+		bmi.bmiHeader.biSize = sizeof(BITMAPCOREHEADER);
+		bmi.bmiHeader.biWidth = Surface->width;
+		bmi.bmiHeader.biHeight = -Surface->height;
+		bmi.bmiHeader.biPlanes = 1;
+		bmi.bmiHeader.biBitCount = Surface->SavedBpp;
+		bmi.bmiHeader.biCompression = BI_RGB;
+
+		Surface->backDC = CreateCompatibleDC(Surface->hdc);
+		Surface->backBitmap = CreateCompatibleBitmap(Surface->hdc, Surface->width, Surface->height); 
+		SelectObject(Surface->backDC, Surface->backBitmap);
+		ReleaseDC(Surface->window, Surface->hdc);
 
 		SetForegroundWindow(Surface->window);
+		ShowWindow(Surface->window, Surface->iCmdShow);
+		UpdateWindow(Surface->window);
 		SetFocus(Surface->window);
-			
 		ShowCursor();
 
 		gameconf.grmode.flags |= DISPLAYFLAGS_WINDOWACTIVE;
@@ -198,6 +212,8 @@ void Controller::QuitVideoMode(void)
 			DesktopResolution(&xres,&yres);
 			//SetVideoMode(xres,yres);
 		}
+		DeleteDC(Surface->backDC);
+		DeleteObject(Surface->backBitmap);		
 	}
 }
 //===========================================
@@ -214,14 +230,12 @@ void Controller::UpdateScreenRegions(int nrregions,SCREEN_REGION regions[])
 	{
 		for (i = 0; i < nrregions; i++)
 		{
-/*			TransformPixels(regions[i].x, regions[i].y, regions[i].w, regions[i].h);
-			XPutImage(Surface->display, Surface->window, Surface->gc, Surface->Ximage,
-                      regions[i].x, regions[i].y, regions[i].x, regions[i].y,
-                      regions[i].w, regions[i].h);
-*/
+			SetBitmapBits(Surface->backBitmap, Surface->width * Surface->height, Surface->pixels );
+			BitBlt(Surface->hdc, regions[i].x, regions[i].y,
+								 regions[i].w, regions[i].h,
+								 Surface->backDC, 0, 0, SRCCOPY);
 		}
 		nodraw = 0;
-//		XFlush(Surface->display);
 	}
 	if (nodraw || gameconf.speedconf.cputhrottling)
 		usleep(4000);
@@ -269,6 +283,7 @@ void Controller::ApplyPalette(unsigned char *pal4,int from,int count)
 		}while(--count);
 		break;
 	case 24:
+	case 32:
 		do{
 			palcol32 = ( (*pal4++) << 16) | ( (*pal4++) << 8) | ( (*pal4++) );
 			pal4++;
