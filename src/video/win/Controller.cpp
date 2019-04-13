@@ -162,7 +162,8 @@ int Controller::QueryVideoMode(int x, int y, int bpp, int fullscreen)
 		if ((Surface->window = CreateWindowEx (0,
                     "StarCloneWClass",               
                     "StarClone",                
-                    WS_CAPTION | WS_SYSMENU | WS_CLIPCHILDREN | WS_CLIPSIBLINGS,
+                    //WS_CAPTION | WS_SYSMENU | WS_CLIPCHILDREN | WS_CLIPSIBLINGS,
+					0,
                     0,           
                     0,           
                     x,           
@@ -181,7 +182,7 @@ int Controller::QueryVideoMode(int x, int y, int bpp, int fullscreen)
 		BITMAPINFO bmi = { 0 };
 		bmi.bmiHeader.biSize = sizeof(BITMAPCOREHEADER);
 		bmi.bmiHeader.biWidth = Surface->width;
-		bmi.bmiHeader.biHeight = -Surface->height;
+		bmi.bmiHeader.biHeight = Surface->height;
 		bmi.bmiHeader.biPlanes = 1;
 		bmi.bmiHeader.biBitCount = Surface->SavedBpp;
 		bmi.bmiHeader.biCompression = BI_RGB;
@@ -199,7 +200,7 @@ int Controller::QueryVideoMode(int x, int y, int bpp, int fullscreen)
 
 		gameconf.grmode.flags |= DISPLAYFLAGS_WINDOWACTIVE;
 	}
-	return(1);
+	return(1 + ((Surface->flags & CFLAG_EXACTBPP) != CFLAG_EXACTBPP));
 }
 //===========================================
 void Controller::QuitVideoMode(void)
@@ -294,23 +295,23 @@ void Controller::ApplyPalette(unsigned char *pal4,int from,int count)
 		return;
 	case 15:
 		do{
-			palcol16 = (( (*pal4++) >> 3) << 10) | (( (*pal4++) >> 3) << 5) | (( (*pal4++) >> 3) );
-			pal4++;
+			palcol16 = (( (*pal4) >> 3) << 10) | (( (*(pal4 + 1)) >> 3) << 5) | (( (*(pal4 + 2)) >> 3) );
+			pal4 += 4;
 			*palette16++ = palcol16;
 		}while(--count);
 		break;
 	case 16:
 		do{
-			palcol16 = (( (*pal4++) >> 3) << 11) | (( (*pal4++) >> 2) << 5) | (( (*pal4++) >> 3) );
-			pal4++;
+			palcol16 = (( (*pal4) >> 3) << 11) | (( (*(pal4 + 1)) >> 2) << 5) | (( (*(pal4 + 2)) >> 3) );
+			pal4 += 4;
 			*palette16++ = palcol16;
 		}while(--count);
 		break;
 	case 24:
 	case 32:
 		do{
-			palcol32 = ( (*pal4++) << 16) | ( (*pal4++) << 8) | ( (*pal4++) );
-			pal4++;
+			palcol32 = ( (*pal4) << 16 ) | ( (*(pal4 + 1)) << 8) | ( (*(pal4 + 2)) );
+			pal4 += 4;
 			*palette32++ = palcol32;
 		}while(--count);
 		break;

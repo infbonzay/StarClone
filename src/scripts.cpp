@@ -668,6 +668,7 @@ int loadcfg(const char *filename, int *mpqresult)
 
 							strncpy(mpqprio[ii].mpqfilename, strvalue, MAX_PATH - 1);
 							mpqprio[ii].prio = atoi(rem);
+							mpqprio[ii].presence = 0;
 						}
 						//priority sort
 						for (ii = 0;ii < intvalue;ii++)
