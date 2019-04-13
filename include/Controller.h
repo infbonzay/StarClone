@@ -133,6 +133,11 @@
 
 class Controller
 {
+
+	int 				FullScreen;
+	Controller_Surface	*Surface;
+
+public:
 	const uint8_t SHIFTKEYS[128] =
 	{
 		'\x00','\x00','\x00','\x00','\x00','\x00','\x00','\x00','\x00','\x00',
@@ -150,10 +155,6 @@ class Controller
 		'X'	  ,'Y'	 ,'Z'	,'\x00','\x00','\x00','\x00','\x00'
 	};
 
-	int 				FullScreen;
-	Controller_Surface	*Surface;
-
-public:
 	long 				KeyActive,LastKey;
 	int 				RefreshAtEnd;
 	uint32_t			KeyFlags;				//shift,ctrl,alt

@@ -42,6 +42,8 @@ void Controller::SetWindowName(const char *winName)
 //===========================================
 LRESULT CALLBACK WndProcFunc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 {
+	int keymod = 0;
+	int keyActive;
 	switch (iMsg)
 	{
 	case WM_ACTIVATE:
@@ -55,9 +57,17 @@ LRESULT CALLBACK WndProcFunc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 		}
 		return 0;
 	case WM_KEYDOWN:
-		mainController.KeyActive = wParam;
-		mainController.LastKey = wParam;
-		mainController.SetKeyMod( wParam, true);
+		keyActive = wParam;
+		mainController.SetKeyMod(keyActive, true);
+
+		if (mainController.KeyFlags & LOCKKEYMASK)
+			keymod ^= 1;
+		if (mainController.KeyFlags & SHIFTKEYMASK)
+			keymod ^= 1;
+		if (keyActive >= 'A' && keyActive <= 'Z')
+			keyActive += 0x20;
+		mainController.KeyActive = keyActive;
+		mainController.LastKey = mainController.KeyActive;
 		if (mainController.KeyActive)
 			mainController.KeysBuffer->PushElem(mainController.KeyActive);
 		return 0;
@@ -159,19 +169,21 @@ int Controller::QueryVideoMode(int x, int y, int bpp, int fullscreen)
 		{
 			return 0;
 		}
+		RECT wr = { 0, 0, x, y };
+		AdjustWindowRect(&wr, WS_OVERLAPPEDWINDOW, FALSE);
+
 		if ((Surface->window = CreateWindowEx (0,
-                    "StarCloneWClass",               
-                    "StarClone",                
-                    //WS_CAPTION | WS_SYSMENU | WS_CLIPCHILDREN | WS_CLIPSIBLINGS,
-					0,
-                    0,           
-                    0,           
-                    x,           
-                    y,           
-                    NULL,                    
-                    NULL,                    
+                    "StarCloneWClass",
+                    "StarClone",
+                    WS_CAPTION | WS_SYSMENU | WS_CLIPCHILDREN | WS_CLIPSIBLINGS,
+                    0,
+                    0,
+					wr.right - wr.left,
+					wr.bottom - wr.top,
+                    NULL,
+                    NULL,
 					Surface->hInstance,
-                    NULL))                   
+                    NULL))
                     == NULL)
 		{
 			return 0;
@@ -363,21 +375,25 @@ int  Controller::EventsLoop(void)
 //===========================================
 void Controller::SetKeyMod(int keysym,bool status)
 {
-	switch(keysym)
+	switch (keysym)
 	{
 	case SHIFTLKEY:
-	case SHIFTRKEY:
+	//case SHIFTRKEY:
 		if (status)
 			KeyFlags |= SHIFTKEYMASK;
 		else
 			KeyFlags &= ~SHIFTKEYMASK;
 		break;
 	case CTRLLKEY:
-	case CTRLRKEY:
+	//case CTRLRKEY:
 		if (status)
 			KeyFlags |= CTRLKEYMASK;
 		else
 			KeyFlags &= ~CTRLKEYMASK;
+		break;
+	case CAPSKEY:
+		if (!status)
+			KeyFlags ^= LOCKKEYMASK;
 		break;
 	}
 }
