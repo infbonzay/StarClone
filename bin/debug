@@ -1,5 +1,7 @@
 #!/bin/bash
 
+#/usr/bin/cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_INSTALL_PREFIX=/home/vasya/projects/StarClone/bin -DCMAKE_BUILD_TYPE=Debug /home/vasya/projects/StarClone
+
 DEBUGGER="ddd"
 #DEBUGGER="$HOME/gdbgui/gdbgui/backend.py"
 

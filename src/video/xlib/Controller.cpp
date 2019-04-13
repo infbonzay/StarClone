@@ -57,6 +57,7 @@ int Controller::QueryVideoMode(int x, int y, int bpp, int fullscreen)
 	int xres,yres;
 	Atom closedownAtom;
 	XSizeHints hints;
+	int realBitsPerPixel;
 
 	bool first = false;
 	Surface->FullScreen = fullscreen;
@@ -83,7 +84,8 @@ int Controller::QueryVideoMode(int x, int y, int bpp, int fullscreen)
 		gameconf.grmode.videobuff = Surface->pixels;
 
 		GRP_SetVideoBuffer(Surface->pixels);
-		Surface->XpixelsBufferSize = x * y * Surface->ximagebpp[(Surface->SavedBpp + 1)/8];
+		realBitsPerPixel = Surface->ximagebpp[(Surface->SavedBpp + 1) / 8];
+		Surface->XpixelsBufferSize = x * y * realBitsPerPixel / 8;
 		if (Surface->flags & CFLAG_EXACTBPP)
 		{
 			Surface->Xpixels = Surface->pixels;
@@ -95,7 +97,7 @@ int Controller::QueryVideoMode(int x, int y, int bpp, int fullscreen)
 		}
 		Surface->Ximage = XCreateImage( Surface->display, Surface->XVisual, Surface->SavedBpp,
 										ZPixmap, 0, (char *)Surface->Xpixels,
-										x, y, Surface->ximagebpp[(Surface->SavedBpp+1)/8], 0);
+										x, y, realBitsPerPixel, 0);
 		Surface->window = XCreateSimpleWindow ( Surface->display,
 												RootWindow ( Surface->display, Surface->screenNr ),
 												0, 0, x, y, 0,
