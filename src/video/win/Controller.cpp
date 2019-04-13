@@ -67,19 +67,19 @@ LRESULT CALLBACK WndProcFunc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 		return 0;
 	case WM_LBUTTONDOWN:
 		if (highMouse->ClickFunc)
-			(*highMouse->ClickFunc)(true, 1 << WMLEFTKEY);
+			(*highMouse->ClickFunc)(true, WMLEFTKEY);
 		break;
 	case WM_LBUTTONUP:
 		if (highMouse->ClickFunc)
-			(*highMouse->ClickFunc)(false, 1 << WMLEFTKEY);
+			(*highMouse->ClickFunc)(false, WMLEFTKEY);
 		break;
 	case WM_RBUTTONDOWN:
 		if (highMouse->ClickFunc)
-			(*highMouse->ClickFunc)(true, 1 << WMRIGHTKEY);
+			(*highMouse->ClickFunc)(true, WMRIGHTKEY);
 		break;
 	case WM_RBUTTONUP:
 		if (highMouse->ClickFunc)
-			(*highMouse->ClickFunc)(false, 1 << WMRIGHTKEY);
+			(*highMouse->ClickFunc)(false, WMRIGHTKEY);
 		break;
 	case WM_MOUSEMOVE:
 		highMouse->PosX = LOWORD(lParam);
@@ -127,6 +127,18 @@ int Controller::QueryVideoMode(int x, int y, int bpp, int fullscreen)
 
 		gameconf.grmode.videobuff = Surface->pixels;
 		GRP_SetVideoBuffer(Surface->pixels);
+		if (Surface->flags & CFLAG_EXACTBPP)
+		{
+			Surface->Xpixels = Surface->pixels;
+			Surface->XpixelsBufferSize = Surface->pixelsBufferSize;
+		}
+		else
+		{
+			Surface->XpixelsBufferSize = x * y * Surface->ximagebpp[(Surface->SavedBpp + 1) / 8] / 8;
+			Surface->Xpixels = (uint8_t *) wmalloc(Surface->XpixelsBufferSize);
+			printf("Launching in emulated mode %dx%dx%d\n", x, y, Surface->SavedBpp);
+		}
+		
 
 		WNDCLASSEX  wndclass;
 
@@ -183,7 +195,7 @@ int Controller::QueryVideoMode(int x, int y, int bpp, int fullscreen)
 		ShowWindow(Surface->window, Surface->iCmdShow);
 		UpdateWindow(Surface->window);
 		SetFocus(Surface->window);
-		ShowCursor();
+		HideCursor();
 
 		gameconf.grmode.flags |= DISPLAYFLAGS_WINDOWACTIVE;
 	}
@@ -202,18 +214,29 @@ void Controller::QuitVideoMode(void)
 			wfree(Surface->palette);
 			Surface->palette = NULL;
 		}
+		if (Surface->flags & CFLAG_EXACTBPP)
+		{
+			Surface->Xpixels = NULL;
+		}
 		if (Surface->pixels)
 		{
 			wfree(Surface->pixels);
 			Surface->pixels = NULL;
+		}
+		if (Surface->Xpixels)
+		{
+			wfree(Surface->Xpixels);
+			Surface->Xpixels = NULL;
 		}
 		if (Surface->FullScreen)
 		{
 			DesktopResolution(&xres,&yres);
 			//SetVideoMode(xres,yres);
 		}
+		DeleteDC(Surface->hdc);
 		DeleteDC(Surface->backDC);
-		DeleteObject(Surface->backBitmap);		
+		DeleteObject(Surface->backBitmap);
+		ShowCursor();
 	}
 }
 //===========================================
@@ -230,8 +253,9 @@ void Controller::UpdateScreenRegions(int nrregions,SCREEN_REGION regions[])
 	{
 		for (i = 0; i < nrregions; i++)
 		{
-			SetBitmapBits(Surface->backBitmap, Surface->width * Surface->height, Surface->pixels );
-			BitBlt(Surface->hdc, regions[i].x, regions[i].y,
+			TransformPixels(regions[i].x, regions[i].y, regions[i].w, regions[i].h);
+			SetBitmapBits(Surface->backBitmap, Surface->XpixelsBufferSize, Surface->Xpixels );
+			BitBlt(GetDC(Surface->window), regions[i].x, regions[i].y,
 								 regions[i].w, regions[i].h,
 								 Surface->backDC, 0, 0, SRCCOPY);
 		}
@@ -387,7 +411,20 @@ void Controller::TransformPixels(int x, int y, int sizex, int sizey)
 template <typename T>
 	void Controller::Transform(int x, int y, int sizex, int sizey)
 {
-
+	int i, j;
+	int deltaincr = Surface->width - sizex;
+	T *paladr = (T *)Surface->palette;
+	T *Xbuf = (T *)Surface->Xpixels + y * Surface->width + x;
+	uint8_t *buf = Surface->pixels + y * Surface->width + x;
+	i = sizey;
+	do{
+		j = sizex;
+		do{
+			*Xbuf++ = paladr[*buf++];
+		}while(--j);
+		Xbuf += deltaincr;
+		buf += deltaincr;
+	}while(--i);
 }
 //===========================================
 void Controller::HideCursor(void)

@@ -16,6 +16,10 @@
 #define usleep(a) Sleep((a)/1000)
 #define mkdir(a,b) _mkdir(a)
 #define chdir _chdir
+#define close _close
+#define itoa _itoa
+#define stricmp _stricmp
+#define strupr _strupr
 #define rmdir _rmdir
 #define access _access
 #define getcwd _getcwd

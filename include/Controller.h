@@ -36,6 +36,9 @@
 		int			iCmdShow;
 		int			width;
 		int			height;
+		uint8_t		*Xpixels;
+		int			XpixelsBufferSize;
+		uint8_t		flags;
 	} Controller_Surface;
 
 	typedef struct
