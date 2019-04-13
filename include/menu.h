@@ -404,6 +404,7 @@ struct MENUSTR
 	int					ysize;
 	int					elements;
 	int					defaultbutton;			//action on ENTER
+	int					DefaultTextBox;			//-1 if none,
 	int					defaultlistitem;		//-1 if none,
 	short				selectmenusnd;
 	short				mouseoversnd;
@@ -475,6 +476,7 @@ void setmouseonitem(int activeitemchanges);
 
 void changemenunr(MENUSTR *allmenus,int newnrofitems);
 void setdefaultbutton(MENUSTR *allmenus,int nrofitem);
+void SetDefaultTextBox(MENUSTR *allmenus, int nrofitem);
 void restoreflag(MENUSTR *allmenus,int itemnr,int restoreflag);
 void setactiveedititem(MENUSTR *allmenus,int item);
 void setitemrelation(MENUSTR *allmenus,int itemnr,int *address,int addressvalue);

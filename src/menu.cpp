@@ -976,15 +976,18 @@ void drawmenuitem(MENUSTR *allmenus, int itemnr)
 int editboxaction(MENUSTR *allmenus)
 {
 	unsigned short keypressed;
+	int activeitem;
 	if (!mainController.KeysBuffer->IsEmpty())
 	{
 		//if keypressed and we have editbox add to edit string
 		keypressed = mainController.KeysBuffer->PopElem();
-		if (allmenus->defaultbutton >= 0)
+		if (allmenus->DefaultTextBox >= 0)
 		{
-			MENUPOS *curitem = &allmenus->menu[allmenus->defaultbutton];
+			MENUPOS *curitem = &allmenus->menu[allmenus->DefaultTextBox];
 			if (curitem->itemtype != ISEDITBOX)
+			{
 				return(0);
+			}
 			int curlength = curitem->item.editbox->length;
 			switch (keypressed)
 			{
@@ -997,8 +1000,19 @@ int editboxaction(MENUSTR *allmenus)
 				break;
 			case ENTERKEY:
 			case ENTERKEY2:
+				activeitem = allmenus->defaultbutton;
+				if (activeitem >= 0)
+				{
+					if (menuitem_ISDISABLED(allmenus, activeitem) ||
+						!menuitem_ISVISIBLED(allmenus, activeitem))
+					{
+						break;
+					}
+				}
 				if (curlength >= 0)
+				{
 					return(2);
+				}
 				break;
 			default:
 				if (keypressed < ' ' || keypressed > '~')
@@ -1111,6 +1125,8 @@ int menukeys(MENUSTR *allmenus, int *pressed, int *needredraw)
 					}
 				break;
 			default:
+				if (allmenus->DefaultTextBox >= 0)
+					break;
 				for (i = 0;i < allmenus->elements;i++)
 					if (allmenus->menu[i].hotkey == mainController.KeyActive)
 					{
@@ -1176,6 +1192,8 @@ int menukeys(MENUSTR *allmenus, int *pressed, int *needredraw)
 			case PAGEDOWNKEY:
 				break;
 			default:
+				if (allmenus->DefaultTextBox >= 0)
+					break;
 				for (i = 0;i < allmenus->elements;i++)
 					if (menuitem_ISENABLED(allmenus, i) && menuitem_ISVISIBLED(allmenus, i))
 						if (allmenus->menu[i].hotkey == tempkey)
@@ -1340,6 +1358,11 @@ void changemenunr(MENUSTR *allmenus, int newnrofitems)
 void setdefaultbutton(MENUSTR *allmenus, int nrofitem)
 {
 	allmenus->defaultbutton = nrofitem;
+}
+//==========================================
+void SetDefaultTextBox(MENUSTR *allmenus, int nrofitem)
+{
+	allmenus->DefaultTextBox = nrofitem;
 }
 //==========================================
 void setitemrelation(MENUSTR *allmenus, int itemnr, int relation_type, int *address, int addressvalue)

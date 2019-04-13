@@ -352,6 +352,7 @@ MENUSTR *LoadDialogBin(const char *dialogbinfilename, int dialog_opt, int addfor
 		elemnr++;
 	} while (!lastelem);
 	menu->defaultlistitem = firstlistitem;
+	menu->DefaultTextBox = firsttextitem;
 	wfree(dialogdata);
 	return(menu);
 }

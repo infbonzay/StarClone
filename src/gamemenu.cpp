@@ -2451,7 +2451,8 @@ int glu_login(void)
 			break;
 		case 5://newplayer
 			do {
-				setdefaultbutton(nplayer, 3);
+				setdefaultbutton(nplayer, 1);	//OK Button
+				SetDefaultTextBox(nplayer, 3);	//edit box item
 				changeeditboxtext(nplayer, 3, "");
 				retstatus2 = drawmenu(nplayer, MENUFLAGS_EMPTY);
 				err = 0;
