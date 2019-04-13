@@ -265,14 +265,14 @@ unsigned char CalcDirection(int x1,int y1,int x2,int y2)
 void calcinert(void)
 {
 	int i;
-	float j,cs,sn;
+	double j,cs,sn;
 	for (i=0;i<256;i++)
 	{
-	  j = i*360*PI/180/256;
-	  cs = cos(j) * 65536;
-	  sn = sin(j) * 65536;
-	  inertion256[i][0] = (int) sn;
-	  inertion256[i][1] = (int) -cs;
+		j = i*360*PI/180/256;
+		cs = cos(j) * 65536;
+		sn = sin(j) * 65536;
+		inertion256[i][0] = (int) sn;
+		inertion256[i][1] = (int) -cs;
 	}
 }
 //=================================
@@ -289,7 +289,7 @@ void calcsintables(void)
 int savebuff(const char *fn,void *address,int bufsize)
 {
 	FILE *f;
-	f=fopen(fn,"wb");
+	f = fopen(fn,"wb");
 	if (!f)
 		return(-1);
 	fwrite(address,bufsize,1,f);
@@ -303,15 +303,15 @@ unsigned int mkchecksumm(char *filename)
 	unsigned int chksum;
 	long long fsize;
 	FILE *f;
-	f=fopen(filename,"r");
+	f = fopen(filename,"r");
 	if (!f)
 		return(0x00000000);
-	fsize=FILElength(f);
-	if (fsize>MAXMAPFILESIZE)
+	fsize = FILElength(f);
+	if (fsize > MAXMAPFILESIZE)
 		return(0x00000000);
-	buff=(unsigned char *)wmalloc(fsize);
+	buff = (unsigned char *)wmalloc(fsize);
 	fread(buff,fsize,1,f);
-	chksum=CreateCRC(buff,fsize,BUFF_NOCRYPTIZE);
+	chksum = CreateCRC(buff,fsize,BUFF_NOCRYPTIZE);
 	wfree(buff);
 	fclose(f);
 	return(chksum);
@@ -321,7 +321,7 @@ void Gimp_SavePal(char *fn,char *palettename,char *pal,int pixelsize)	//pixelsiz
 {
 //		creating palette file for GIMP
 	int i;
-	FILE *f=fopen(fn,"w");
+	FILE *f = fopen(fn,"w");
 	if (f)
 	{
 		fprintf(f,"GIMP Palette\nName: %s\n#\n",palettename);
@@ -356,10 +356,10 @@ int check_ifhavewget(void)
 {
 	int len,ret;
 	remove(".temp");
-	ret=system("wget --version > .temp");
-	len=FILElength(".temp");
+	ret = system("wget --version > .temp");
+	len = (int) FILElength(".temp");
 	remove(".temp");
-	if (len>1)
+	if (len > 1)
 		return (1);
 	else
 		return(0);

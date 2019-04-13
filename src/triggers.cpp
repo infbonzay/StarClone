@@ -1739,7 +1739,7 @@ int TRG_RunAIScriptAtLocation(StarMapInfo *info, int aiscriptnr, int playernr, i
 							mindistance = 256 * SIZESPRLANSHX * 2;
 							while ((bunkerobj = (struct OBJ *)bunkerlist->GetNextListElem()))
 							{
-								dist = hypot(GetOBJx(objects[j]) - GetOBJx(bunkerobj), GetOBJy(objects[j]) - GetOBJy(bunkerobj));
+								dist = (int) hypot(GetOBJx(objects[j]) - GetOBJx(bunkerobj), GetOBJy(objects[j]) - GetOBJy(bunkerobj));
 								if (dist < mindistance)
 								{
 									mindistance = dist;

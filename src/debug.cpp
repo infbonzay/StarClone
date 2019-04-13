@@ -35,7 +35,7 @@ void dfprintf(const char *prefixfile,const int prefixlinenr,const char *prefixfu
 	va_list args;
 	va_start(args, format);
 
-	FILE *f=fopen(DEBUGOUTFILE,"a");
+	FILE *f = fopen(DEBUGOUTFILE,"a");
 	if (f)
 	{
 		fprintf(f,DEBUGPREFIXSTRING "File %s:Line %d:%s:",prefixfile,prefixlinenr,prefixfunc);

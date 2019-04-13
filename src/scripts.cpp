@@ -360,7 +360,7 @@ int readrecordmans(FILE *f, int objnr)
 				case  3://I SPEEDUPG
 					adr->speedupgnr = intvalue;
 					fscanf(f, "%s \n", strvalue);
-					adr->speeduppercentage = (atof(strvalue) * 25600 / 100);
+					adr->speeduppercentage = (int)(atof(strvalue) * 25600 / 100);
 					break;
 				case  4://I ULTRALISKSECONDARMOR
 					adr->armorupgnr = intvalue;

@@ -164,9 +164,9 @@ int IfConstructAddon(OBJ *a)
 {
 	if (!a->construct)
 		return(0);
-	if (a->construct->nrofelem>0)
+	if (a->construct->nrofelem > 0)
 	{
-		if (a->construct->type[0]==ORDERS_UNIT&&IsAddon(a->construct->objs[0]))
+		if (a->construct->type[0] == ORDERS_UNIT && IsAddon(a->construct->objs[0]))
 			return(1);
 	}
 	return(0);

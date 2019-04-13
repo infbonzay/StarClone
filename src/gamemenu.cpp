@@ -3474,7 +3474,7 @@ int glu_creat(FORCE_SLOTS *fslots)
 						strcpy(GAMETITLESTR, GAMETITLE);
 						BASENAMEMAP = strstr(SELECTMAP, "maps") + 4;
 						CHECKSUMMMAP = mkchecksumm(SELECTMAP);
-						FILESIZEMAP = FILElength(SELECTMAP);
+						FILESIZEMAP = (int) FILElength(SELECTMAP);
 
 						StarMapInfo *testmap = (StarMapInfo *)wmalloc(sizeof(StarMapInfo));
 						memset(testmap, 0, sizeof(StarMapInfo));
@@ -4943,7 +4943,7 @@ int WaitingDownload(MENUSTR *allmenus, void *data)
 		}
 		if (fsize < mpqfile->fsize)
 		{
-			showx = fsize * allmenus->menu[3].hotxsize / mpqfile->fsize;
+			showx = (int) (fsize * allmenus->menu[3].hotxsize / mpqfile->fsize);
 			if (showx < 0)
 				showx = 0;
 			if (showx > allmenus->menu[3].hotxsize)

@@ -524,9 +524,9 @@ int Master_CheckJoinPacket(MENUSTR *allmenus, NETWORK_INFO *sendsock, NETWORK_IN
 int Guest_CheckJoinPacket(MENUSTR *allmenus, NETWORK_INFO *sendsock, NETWORK_INFO *recvsock)
 {
 	int maxpl, pl, slots, i, j, SLOTOWNER, SLOTRACE;
-	int gameslot, raceslot, buffsize, frombytes, chksumm1, chksumm2;
+	int gameslot, raceslot, buffsize, chksumm1, chksumm2;
 	int forces;
-	unsigned int PLTYPE, PLIP, PLPCID;
+	unsigned int PLTYPE, PLIP, PLPCID, frombytes;
 	int oldx;
 	char txt[200];
 	NETWORK_JOIN_PACKET *mypacket = (NETWORK_JOIN_PACKET *)recvsock->recvbuffer;

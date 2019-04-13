@@ -2081,7 +2081,7 @@ int moveobj(struct OBJ *a, struct OBJ *destobj, int mode, int x, int y, int mode
 			SetOBJIScriptNr(a, ISCRIPTNR_DEATH, ISCRIPTNR_SETONLY);
 			break;
 		case MODELANDING:
-			deltaz = hypot(GetOBJx(a) - x, GetOBJy(a) - y + AIRUNITS_START_YPOS);
+			deltaz = (int)hypot(GetOBJx(a) - x, GetOBJy(a) - y + AIRUNITS_START_YPOS);
 			if (deltaz <= 1)
 			{
 				if (!CheckIfCanLand(a, x, y, &constrerror))
@@ -5081,7 +5081,7 @@ int CalcDestVars(OBJ *a, OBJ *destobj, int initx, int inity, int destx, int dest
 		if (destobj)
 			deltaz = GetDistanceTo256(destobj, initx, inity) / 2;
 		else
-			deltaz = hypot(destx - initx, desty - inity) / 2;
+			deltaz = (int) hypot(destx - initx, desty - inity) / 2;
 		if (deltaz <= haltdistance)
 		{
 			//			haltdistance = CalcTotalDistance(topspeed-a->currentspeed,0,alldattbl.flingy_dat->Acceleration[flingy_id]);

@@ -68,7 +68,8 @@ void ShowPreviewFile(const char *filename, int esckeyaction)
 void ShowPreviewBuff(char *cmpbuf, int sizebuf, int esckeyaction)
 {
 	int searchcmd, i, j, k, from, haveatext, fadespeed, displaytime, fontnr;
-	int textxpos, textypos, textxsize, textysize, rowsize, textlines, err, deltatick, unpressmouse;
+	int textxpos, textypos, textxsize, textysize, rowsize, textlines, err, unpressmouse;
+	TIMER_TICK deltatick;
 	int changesbackgnd, texttype;
 	PCX backgnd, fontpcx;
 	char pal[256 * 4], prevchar;
@@ -303,7 +304,7 @@ exitshowtitles:
 //==========================================
 void FadeScreen(int fadespeed, char *pal, int typeoffade) //0-fadetoimage 1-fadetoblackscreen
 {
-	int deltatick;
+	TIMER_TICK deltatick;
 	float gamma, prevgamma;
 	TIMER_TICK tick;
 
@@ -493,7 +494,7 @@ void PlayVideoSmk(const char *smkfile)
 				mainController.EventsLoop();
 				mytimer.CallTimer(MYTIMER_SINCHRONMODE);
 				curtick = mytimer.GetCurrentTimerTick();
-				newframe = (curtick - prevtick) * 1000000 / TICKS_RES / timeshowoneframe;
+				newframe = (int)((curtick - prevtick) * 1000000 / TICKS_RES / timeshowoneframe);
 				if (newframe != frame)
 				{
 					frame = newframe;
