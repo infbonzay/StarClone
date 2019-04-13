@@ -1522,7 +1522,7 @@ void delbuttonitem(MENUSTR *allmenus, int nr, int end)
 			wfree(allmenus->menu[nr].item.button->menustr.text[j]);
 			allmenus->menu[nr].item.button->menustr.text[j] = NULL;
 		}
-	if (end&&allmenus->menu[nr].item.button)
+	if (end && allmenus->menu[nr].item.button)
 	{
 		wfree(allmenus->menu[nr].item.button);
 		allmenus->menu[nr].item.button = NULL;
@@ -1618,7 +1618,7 @@ void draweditboxitem(MENUSTR *allmenus, int itemnr)
 	strcpy(tempstr, menuitem->item.editbox->editstr);
 	vis = visiblerighttext(menuitem->fontnr, menuitem->hotxsize, tempstr);
 	len = strlen(tempstr);
-	if (allmenus->defaultbutton == itemnr && getcursorblinktype())
+	if (allmenus->DefaultTextBox == itemnr && getcursorblinktype())
 		strcat(tempstr, "|");
 	putmessage(menuitem->xtextpos, menuitem->ytextpos,
 		menuitem->fontnr, tempstr + len - vis, GETITEMCOLOR(menuitem->colors4, menuitem->typeofshow),
