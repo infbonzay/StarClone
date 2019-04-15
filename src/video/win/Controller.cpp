@@ -270,7 +270,7 @@ void Controller::UpdateScreenRegions(int nrregions,SCREEN_REGION regions[])
 			SetBitmapBits(Surface->backBitmap, Surface->XpixelsBufferSize, Surface->Xpixels );
 			BitBlt(GetDC(Surface->window), regions[i].x, regions[i].y,
 								 regions[i].w, regions[i].h,
-								 Surface->backDC, 0, 0, SRCCOPY);
+								 Surface->backDC, regions[i].x, regions[i].y, SRCCOPY);
 		}
 		nodraw = 0;
 	}
