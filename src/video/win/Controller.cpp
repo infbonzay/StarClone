@@ -205,18 +205,14 @@ int Controller::QueryVideoMode(int x, int y, int bpp, int fullscreen)
 	if (fullscreen)
 	{
 		dwExStyle = WS_EX_TOPMOST;
-		dwStyle = WS_POPUP | WS_VISIBLE;
+		dwStyle = WS_POPUP | WS_VISIBLE | WS_CLIPCHILDREN | WS_CLIPSIBLINGS;
 	}
 	else 
 	{
-		dwExStyle = WS_EX_TOPMOST;
-		dwStyle = WS_CAPTION | WS_SYSMENU;
+		dwExStyle = 0;
+		dwStyle = WS_CAPTION | WS_SYSMENU | WS_CLIPCHILDREN | WS_CLIPSIBLINGS;
 		if (!first)
 		{
-			//Surface->DevMode = FindVideoMode(Surface->SavedWidth, Surface->SavedHeight, Surface->SavedBpp);
-			//ChangeDisplaySettings(Surface->DevMode, 0);
-			//wfree(Surface->DevMode);
-			//Surface->DevMode = NULL;
 			ChangeDisplaySettings(0, 0);
 		}
 	}
@@ -228,11 +224,15 @@ int Controller::QueryVideoMode(int x, int y, int bpp, int fullscreen)
 		Surface->height = y;
 
 		Surface->pixelsBufferSize = x * y * bpp / 8;
-		Surface->pixels = (uint8_t *)wmalloc(Surface->pixelsBufferSize);
-
-		Surface->palette = (uint8_t *)wmalloc(256 * 4);
-		memset(Surface->palette, 0, 256 * 4);
-
+		if (!Surface->pixels)
+		{
+			Surface->pixels = (uint8_t *)wmalloc(Surface->pixelsBufferSize);
+		}
+		if (!Surface->palette)
+		{
+			Surface->palette = (uint8_t *)wmalloc(256 * 4);
+			memset(Surface->palette, 0, 256 * 4);
+		}
 		gameconf.grmode.videobuff = Surface->pixels;
 		GRP_SetVideoBuffer(Surface->pixels);
 
@@ -244,7 +244,10 @@ int Controller::QueryVideoMode(int x, int y, int bpp, int fullscreen)
 		else
 		{
 			Surface->XpixelsBufferSize = x * y * Surface->ximagebpp[(Surface->SavedBpp + 1) / 8] / 8;
-			Surface->Xpixels = (uint8_t *)wmalloc(Surface->XpixelsBufferSize);
+			if (!Surface->Xpixels)
+			{
+				Surface->Xpixels = (uint8_t *)wmalloc(Surface->XpixelsBufferSize);
+			}
 			printf("Launching in emulated mode %dx%dx%d\n", x, y, Surface->SavedBpp);
 		}
 	
@@ -254,7 +257,7 @@ int Controller::QueryVideoMode(int x, int y, int bpp, int fullscreen)
 		if ((Surface->window = CreateWindowEx(dwExStyle,
 			WClass,
 			"StarClone",
-			dwStyle | WS_CLIPCHILDREN | WS_CLIPSIBLINGS,
+			dwStyle,
 			0,
 			0,
 			wr.right - wr.left,
@@ -284,7 +287,6 @@ int Controller::QueryVideoMode(int x, int y, int bpp, int fullscreen)
 		ReleaseDC(Surface->window, Surface->hdc);
 	}
 
-	SetWindowLongPtr(Surface->window, 0, dwStyle);
 	SetForegroundWindow(Surface->window);
 	ShowWindow(Surface->window, SW_SHOW);
 	UpdateWindow(Surface->window);
@@ -296,13 +298,13 @@ int Controller::QueryVideoMode(int x, int y, int bpp, int fullscreen)
 	return(1 + ((Surface->flags & CFLAG_EXACTBPP) != CFLAG_EXACTBPP));
 }
 //===========================================
-void Controller::QuitVideoMode(void)
+void Controller::QuitVideoMode(bool donotfree)
 {
 	if (Surface && Surface->window)
 	{
 		DestroyWindow(Surface->window);
 		Surface->window = NULL;
-		if (Surface->palette)
+		if (Surface->palette && !donotfree)
 		{
 			wfree(Surface->palette);
 			Surface->palette = NULL;
@@ -311,24 +313,21 @@ void Controller::QuitVideoMode(void)
 		{
 			Surface->Xpixels = NULL;
 		}
-		if (Surface->pixels)
+		if (Surface->pixels && !donotfree)
 		{
 			wfree(Surface->pixels);
 			Surface->pixels = NULL;
 		}
-		if (Surface->Xpixels)
+		if (Surface->Xpixels && !donotfree)
 		{
 			wfree(Surface->Xpixels);
 			Surface->Xpixels = NULL;
 		}
 		if (Surface->FullScreen)
 		{
-			Surface->DevMode = FindVideoMode(Surface->SavedWidth, Surface->SavedHeight, Surface->SavedBpp);
-			ChangeDisplaySettings( Surface->DevMode, 0);
-			wfree(Surface->DevMode);
-			Surface->DevMode=NULL;
+			ChangeDisplaySettings(0, 0);
 		}
-		
+
 		DeleteDC(Surface->hdc);
 		DeleteDC(Surface->backDC);
 		DeleteObject(Surface->backBitmap);
@@ -336,10 +335,16 @@ void Controller::QuitVideoMode(void)
 	}
 }
 //===========================================
+void Controller::QuitVideoMode(void)
+{
+	QuitVideoMode(false);
+}
+//===========================================
 int Controller::ModifyVideoMode(int x, int y, int bpp, int fullscreen, unsigned char *palette)
 {
 	int retvalue = 0;
-	ShowWindow(Surface->window, SW_HIDE);
+	
+	QuitVideoMode(true);
 	retvalue = QueryVideoMode(x, y, bpp, fullscreen);
 	if (retvalue)
 	{
@@ -490,11 +495,6 @@ void Controller::SetKeyMod(int keysym,bool status)
 			KeyFlags ^= LOCKKEYMASK;
 		break;
 	}
-}
-//===========================================
-bool Controller::SetVideoMode(int x, int y)
-{
-	return false;
 }
 //===========================================
 void Controller::TransformPixels(int x, int y, int sizex, int sizey)
