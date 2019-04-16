@@ -9,38 +9,10 @@
 
 
 Controller mainController;
+static const char WClass[] = "StarCloneWClass";
 
 //==========================
-int Controller::Init(void)
-{
-	Surface = new Controller_Surface();
-	Surface->hInstance = 0;
-	Surface->iCmdShow = SW_SHOW;
-
-	KeysBuffer = new mycycle<uint16_t>(16, MYCYCLE_INFINITE);
-	return(0);
-}
-//===========================================
-void Controller::DeInit(void)
-{
-	if (KeysBuffer)
-	{
-		delete KeysBuffer;
-		KeysBuffer = NULL;
-	}
-	if (Surface)
-	{
-		delete Surface;
-		Surface = NULL;
-	}
-}
-//===========================================
-void Controller::SetWindowName(const char *winName)
-{
-    SetWindowTextA(Surface->window, winName);
-}
-//===========================================
-LRESULT CALLBACK WndProcFunc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
+static LRESULT CALLBACK WndProcFunc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 {
 	int keymod = 0;
 	int keyActive;
@@ -73,7 +45,7 @@ LRESULT CALLBACK WndProcFunc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 		return 0;
 	case WM_KEYUP:
 		mainController.KeyActive = 0;
-		mainController.SetKeyMod( wParam, false);
+		mainController.SetKeyMod(wParam, false);
 		return 0;
 	case WM_LBUTTONDOWN:
 		if (highMouse->ClickFunc)
@@ -109,34 +81,146 @@ LRESULT CALLBACK WndProcFunc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 	return DefWindowProc(hwnd, iMsg, wParam, lParam);
 }
 //========================================
+static DEVMODE *FindVideoMode(int x, int y, int bpp)
+{
+	DEVMODE *retdm = NULL;
+	DEVMODE dm, dmNoBpp;
+	int mode = 0;
+	bool findNoBpp = false;
+	while (EnumDisplaySettings(NULL, mode++, &dm))
+	{
+		if (dm.dmPelsWidth == x && dm.dmPelsHeight == y)
+		{
+			if (bpp > 0)
+			{
+				if (dm.dmBitsPerPel == bpp)
+				{
+					retdm = (DEVMODE *)wmalloc(sizeof(DEVMODE));
+					memcpy(retdm, &dm, sizeof(DEVMODE));
+					return retdm;
+				}
+			}
+			else if (!findNoBpp)
+			{
+				findNoBpp = true;
+				memcpy(&dmNoBpp, &dm, sizeof(DEVMODE));
+			}
+		}
+	}
+	if (findNoBpp)
+	{
+		retdm = (DEVMODE *) wmalloc(sizeof(DEVMODE));
+		memcpy(retdm, &dmNoBpp, sizeof(DEVMODE));
+	}
+	return retdm;
+}
+//===========================================
+//===========================================
+//===========================================
+int Controller::Init(void)
+{
+	Surface = new Controller_Surface();
+	Surface->hInstance = 0;
+	Surface->iCmdShow = SW_SHOW;
+
+	WNDCLASSEX  wndclass;
+
+	wndclass.cbSize = sizeof(wndclass);
+	wndclass.style = 0;
+	wndclass.lpfnWndProc = (WNDPROC) WndProcFunc;
+	wndclass.cbClsExtra = 0;
+	wndclass.cbWndExtra = 0;
+	wndclass.hInstance = Surface->hInstance;
+	wndclass.hIcon = 0;
+	wndclass.hCursor = 0;
+	wndclass.hbrBackground = CreateSolidBrush(RGB(0, 0, 0));
+	wndclass.lpszMenuName = NULL;
+	wndclass.lpszClassName = WClass;
+	wndclass.hIconSm = 0;
+		
+	if (!RegisterClassEx(&wndclass))
+	{
+		return -1;
+	}
+
+	KeysBuffer = new mycycle<uint16_t>(16, MYCYCLE_INFINITE);
+	return(0);
+}
+//===========================================
+void Controller::DeInit(void)
+{
+	UnregisterClass(WClass, Surface->hInstance);
+	if (KeysBuffer)
+	{
+		delete KeysBuffer;
+		KeysBuffer = NULL;
+	}
+	if (Surface)
+	{
+		delete Surface;
+		Surface = NULL;
+	}
+}
+//===========================================
+void Controller::SetWindowName(const char *winName)
+{
+    SetWindowTextA(Surface->window, winName);
+}
+//===========================================
 int Controller::QueryVideoMode(int x, int y, int bpp, int fullscreen)
 {
-	HDC	hdc;
-	bool first = false;
+	HDC		hdc;
+	DWORD	dwStyle, dwExStyle;
+
 	Surface->FullScreen = fullscreen;
+	bool first = false;
 	if (!Surface->window)
 	{
 		first = true;
-		hdc = GetDC( NULL );
+
+		//save current screen resolution
+		hdc = GetDC(NULL);
 		Surface->SavedBpp = GetDeviceCaps(hdc, BITSPIXEL);
 		ReleaseDC(NULL, hdc);
-		Surface->SavedWidth = GetSystemMetrics(SM_CXSCREEN);
-		Surface->SavedHeight = GetSystemMetrics(SM_CYSCREEN);
-		//save current screen resolution
-		SaveDesktopResolution(Surface->SavedWidth, Surface->SavedHeight);
-		Surface->DesiredBpp = bpp;
+		SaveDesktopResolution(GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CYSCREEN));
 
+		if (!Surface->DevMode)
+		{
+			Surface->DevMode = FindVideoMode(x, y, bpp);
+			if (Surface->DevMode)
+				Surface->flags |= CFLAG_EXACTBPP;
+			Surface->DevMode = FindVideoMode(x, y, 0);
+		}
+		if (fullscreen)
+		{
+			dwExStyle = WS_EX_TOPMOST;
+			dwStyle = WS_POPUP | WS_VISIBLE;
+			if (Surface->DevMode)
+			{
+				ChangeDisplaySettings(Surface->DevMode, CDS_FULLSCREEN);
+			}
+			else
+			{
+				return 0;
+			}
+		}
+		else
+		{
+			dwStyle = WS_CAPTION | WS_SYSMENU;
+		}
+		Surface->DesiredBpp = bpp;
 		Surface->width = x;
 		Surface->height = y;
 
 		Surface->pixelsBufferSize = x * y * bpp / 8;
-		Surface->pixels = (uint8_t *) wmalloc(Surface->pixelsBufferSize);
+		Surface->pixels = (uint8_t *)wmalloc(Surface->pixelsBufferSize);
 
 		Surface->palette = (uint8_t *)wmalloc(256 * 4);
 		memset(Surface->palette, 0, 256 * 4);
 
 		gameconf.grmode.videobuff = Surface->pixels;
 		GRP_SetVideoBuffer(Surface->pixels);
+
 		if (Surface->flags & CFLAG_EXACTBPP)
 		{
 			Surface->Xpixels = Surface->pixels;
@@ -145,46 +229,26 @@ int Controller::QueryVideoMode(int x, int y, int bpp, int fullscreen)
 		else
 		{
 			Surface->XpixelsBufferSize = x * y * Surface->ximagebpp[(Surface->SavedBpp + 1) / 8] / 8;
-			Surface->Xpixels = (uint8_t *) wmalloc(Surface->XpixelsBufferSize);
+			Surface->Xpixels = (uint8_t *)wmalloc(Surface->XpixelsBufferSize);
 			printf("Launching in emulated mode %dx%dx%d\n", x, y, Surface->SavedBpp);
 		}
-		
-
-		WNDCLASSEX  wndclass;
-
-		wndclass.cbSize = sizeof(wndclass);
-		wndclass.style = 0;
-		wndclass.lpfnWndProc = (WNDPROC) WndProcFunc;
-		wndclass.cbClsExtra = 0;
-		wndclass.cbWndExtra = 0;
-		wndclass.hInstance = Surface->hInstance;
-		wndclass.hIcon = 0;
-		wndclass.hCursor = 0;
-		wndclass.hbrBackground = CreateSolidBrush(RGB(0, 0, 0));
-		wndclass.lpszMenuName = NULL;
-		wndclass.lpszClassName = "StarCloneWClass";
-		wndclass.hIconSm = 0;
-		
-		if (!RegisterClassEx(&wndclass))
-		{
-			return 0;
-		}
+	
 		RECT wr = { 0, 0, x, y };
 		AdjustWindowRect(&wr, WS_OVERLAPPEDWINDOW, FALSE);
 
-		if ((Surface->window = CreateWindowEx (0,
-                    "StarCloneWClass",
-                    "StarClone",
-                    WS_CAPTION | WS_SYSMENU | WS_CLIPCHILDREN | WS_CLIPSIBLINGS,
-                    0,
-                    0,
-					wr.right - wr.left,
-					wr.bottom - wr.top,
-                    NULL,
-                    NULL,
-					Surface->hInstance,
-                    NULL))
-                    == NULL)
+		if ((Surface->window = CreateWindowEx(dwExStyle,
+			WClass,
+			"StarClone",
+			dwStyle | WS_CLIPCHILDREN | WS_CLIPSIBLINGS,
+			0,
+			0,
+			wr.right - wr.left,
+			wr.bottom - wr.top,
+			NULL,
+			NULL,
+			Surface->hInstance,
+			NULL))
+			== NULL)
 		{
 			return 0;
 		}
@@ -200,24 +264,32 @@ int Controller::QueryVideoMode(int x, int y, int bpp, int fullscreen)
 		bmi.bmiHeader.biCompression = BI_RGB;
 
 		Surface->backDC = CreateCompatibleDC(Surface->hdc);
-		Surface->backBitmap = CreateCompatibleBitmap(Surface->hdc, Surface->width, Surface->height); 
+		Surface->backBitmap = CreateCompatibleBitmap(Surface->hdc, Surface->width, Surface->height);
 		SelectObject(Surface->backDC, Surface->backBitmap);
 		ReleaseDC(Surface->window, Surface->hdc);
-
-		SetForegroundWindow(Surface->window);
-		ShowWindow(Surface->window, Surface->iCmdShow);
-		UpdateWindow(Surface->window);
-		SetFocus(Surface->window);
-		HideCursor();
-
-		gameconf.grmode.flags |= DISPLAYFLAGS_WINDOWACTIVE;
 	}
+	if (fullscreen) 
+	{
+		dwStyle = WS_POPUP | WS_VISIBLE;
+	}
+	else 
+	{
+		dwStyle = WS_CAPTION | WS_SYSMENU;
+	}
+	SetWindowLongPtr(Surface->window, 0, dwStyle);
+	SetForegroundWindow(Surface->window);
+	ShowWindow(Surface->window, Surface->iCmdShow);
+	UpdateWindow(Surface->window);
+	SetFocus(Surface->window);
+	HideCursor();
+
+	gameconf.grmode.flags |= DISPLAYFLAGS_WINDOWACTIVE;
+
 	return(1 + ((Surface->flags & CFLAG_EXACTBPP) != CFLAG_EXACTBPP));
 }
 //===========================================
 void Controller::QuitVideoMode(void)
 {
-	int xres,yres;
 	if (Surface && Surface->window)
 	{
 		DestroyWindow(Surface->window);
@@ -241,11 +313,19 @@ void Controller::QuitVideoMode(void)
 			wfree(Surface->Xpixels);
 			Surface->Xpixels = NULL;
 		}
+		if (Surface->DevMode)
+		{
+			wfree(Surface->DevMode);
+			Surface->DevMode=NULL;
+		}
 		if (Surface->FullScreen)
 		{
-			DesktopResolution(&xres,&yres);
-			//SetVideoMode(xres,yres);
+			Surface->DevMode = FindVideoMode(Surface->SavedWidth, Surface->SavedHeight, Surface->SavedBpp);
+			ChangeDisplaySettings( Surface->DevMode, 0);
+			wfree(Surface->DevMode);
+			Surface->DevMode=NULL;
 		}
+		
 		DeleteDC(Surface->hdc);
 		DeleteDC(Surface->backDC);
 		DeleteObject(Surface->backBitmap);
@@ -255,7 +335,18 @@ void Controller::QuitVideoMode(void)
 //===========================================
 int Controller::ModifyVideoMode(int x, int y, int bpp, int fullscreen, unsigned char *palette)
 {
-	return 0;
+	int retvalue = 0;
+	ShowWindow(Surface->window, SW_HIDE);
+	retvalue = QueryVideoMode(x, y, bpp, fullscreen);
+	if (retvalue)
+	{
+		if (palette)
+			ApplyPalette(palette);
+		if (palette && (Surface->flags & CFLAG_EXACTBPP))
+			UpdateScreen();
+		gameconf.grmode.flags |= DISPLAYFLAGS_WINDOWACTIVE;
+	}
+	return retvalue;
 }
 //===========================================
 void Controller::UpdateScreenRegions(int nrregions,SCREEN_REGION regions[])
@@ -468,6 +559,7 @@ void Controller::DesktopResolution(int *x,int *y)
 //===========================================
 bool Controller::CanFullScreen(void)
 {
-	return false;
+	return true;
 }
-//===========================================
+
+

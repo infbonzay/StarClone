@@ -622,7 +622,7 @@ int drawmenu(MENUSTR *allmenus, int flags)
 			if (editboxchanges == 2)
 			{
 				needredraw = 1;
-				selectedmenu = allmenus->defaultbutton;
+				selectedmenu = allmenus->DefaultTextBox;
 			}
 			if (selectedmenu >= 0)
 			{
@@ -746,14 +746,14 @@ int drawmenu(MENUSTR *allmenus, int flags)
 					}
 				}
 			}
-			if (allmenus->defaultbutton >= 0)
+			if (allmenus->DefaultTextBox >= 0)
 			{
-				if (allmenus->menu[allmenus->defaultbutton].itemtype == ISEDITBOX)
+				if (allmenus->menu[allmenus->DefaultTextBox].itemtype == ISEDITBOX)
 				{
 					if (cursorblink != getcursorblinktype())
 					{
 						cursorblink = getcursorblinktype();
-						updateonemenuitem(allmenus, allmenus->defaultbutton);
+						updateonemenuitem(allmenus, allmenus->DefaultTextBox);
 					}
 				}
 			}
@@ -4083,7 +4083,7 @@ int drawmenu_ONETICK(MENUSTR *allmenus)
 		allmenus->vars.selectedmenu = menukeys(allmenus, &redrawbar, NULL);//&needredraw);
 		if (editboxaction(allmenus) == 2)
 		{
-			allmenus->vars.selectedmenu = allmenus->defaultbutton;
+			allmenus->vars.selectedmenu = allmenus->DefaultTextBox;
 		}
 		if (allmenus->vars.selectedmenu >= 0)
 		{

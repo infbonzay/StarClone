@@ -8,11 +8,12 @@
 
 #define KEYPRESSEDTABLE(table,scancode) (toupper((scancode)&0xff)+1)
 
+#define	CFLAG_EXACTBPP	0x01
+#define	CFLAG_QUIT		0x02
+
 #ifdef UNDERWINDOWS
 
 #include "win/winkey.h"
-#define	CFLAG_EXACTBPP	0x01
-#define	CFLAG_QUIT		0x02
 
 	typedef struct
 	{
@@ -39,6 +40,7 @@
 		uint8_t		*Xpixels;
 		int			XpixelsBufferSize;
 		uint8_t		flags;
+		DEVMODE     *DevMode;
 	} Controller_Surface;
 
 	typedef struct
@@ -58,8 +60,6 @@
 #ifdef WITHX
 
 	#include "xlib/xlibkey.h"
-
-	#define	CFLAG_EXACTBPP	0x01
 
 	typedef struct
 	{
@@ -96,8 +96,6 @@
 #endif
 #ifdef WITHFB
 	#include "fb/fbkey.h"
-
-	#define	CFLAG_EXACTBPP	0x01
 
 	typedef struct
 	{
