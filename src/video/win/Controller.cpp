@@ -174,40 +174,55 @@ int Controller::QueryVideoMode(int x, int y, int bpp, int fullscreen)
 
 	Surface->FullScreen = fullscreen;
 	bool first = false;
+	//save current screen resolution
 	if (!Surface->window)
 	{
-		first = true;
-
-		//save current screen resolution
 		hdc = GetDC(NULL);
 		Surface->SavedBpp = GetDeviceCaps(hdc, BITSPIXEL);
 		ReleaseDC(NULL, hdc);
 		SaveDesktopResolution(GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CYSCREEN));
-
-		if (!Surface->DevMode)
+	}
+	if (!Surface->DevMode)
+	{
+		Surface->DevMode = FindVideoMode(x, y, bpp);
+		if (Surface->DevMode)
 		{
-			Surface->DevMode = FindVideoMode(x, y, bpp);
-			if (Surface->DevMode)
-				Surface->flags |= CFLAG_EXACTBPP;
-			Surface->DevMode = FindVideoMode(x, y, 0);
-		}
-		if (fullscreen)
-		{
-			dwExStyle = WS_EX_TOPMOST;
-			dwStyle = WS_POPUP | WS_VISIBLE;
-			if (Surface->DevMode)
-			{
-				ChangeDisplaySettings(Surface->DevMode, CDS_FULLSCREEN);
-			}
-			else
-			{
-				return 0;
-			}
+			Surface->flags |= CFLAG_EXACTBPP;
 		}
 		else
 		{
-			dwStyle = WS_CAPTION | WS_SYSMENU;
+			Surface->DevMode = FindVideoMode(x, y, 0);
 		}
+		if (!Surface->DevMode)
+			return 0;
+		if (fullscreen)
+		{
+			ChangeDisplaySettings(Surface->DevMode, CDS_FULLSCREEN);
+		}
+		wfree(Surface->DevMode);
+		Surface->DevMode = NULL;
+	}
+	if (fullscreen)
+	{
+		dwExStyle = WS_EX_TOPMOST;
+		dwStyle = WS_POPUP | WS_VISIBLE;
+	}
+	else 
+	{
+		dwExStyle = WS_EX_TOPMOST;
+		dwStyle = WS_CAPTION | WS_SYSMENU;
+		if (!first)
+		{
+			//Surface->DevMode = FindVideoMode(Surface->SavedWidth, Surface->SavedHeight, Surface->SavedBpp);
+			//ChangeDisplaySettings(Surface->DevMode, 0);
+			//wfree(Surface->DevMode);
+			//Surface->DevMode = NULL;
+			ChangeDisplaySettings(0, 0);
+		}
+	}
+	if (!Surface->window)
+	{
+		first = true;
 		Surface->DesiredBpp = bpp;
 		Surface->width = x;
 		Surface->height = y;
@@ -268,17 +283,10 @@ int Controller::QueryVideoMode(int x, int y, int bpp, int fullscreen)
 		SelectObject(Surface->backDC, Surface->backBitmap);
 		ReleaseDC(Surface->window, Surface->hdc);
 	}
-	if (fullscreen) 
-	{
-		dwStyle = WS_POPUP | WS_VISIBLE;
-	}
-	else 
-	{
-		dwStyle = WS_CAPTION | WS_SYSMENU;
-	}
+
 	SetWindowLongPtr(Surface->window, 0, dwStyle);
 	SetForegroundWindow(Surface->window);
-	ShowWindow(Surface->window, Surface->iCmdShow);
+	ShowWindow(Surface->window, SW_SHOW);
 	UpdateWindow(Surface->window);
 	SetFocus(Surface->window);
 	HideCursor();
@@ -312,11 +320,6 @@ void Controller::QuitVideoMode(void)
 		{
 			wfree(Surface->Xpixels);
 			Surface->Xpixels = NULL;
-		}
-		if (Surface->DevMode)
-		{
-			wfree(Surface->DevMode);
-			Surface->DevMode=NULL;
 		}
 		if (Surface->FullScreen)
 		{
