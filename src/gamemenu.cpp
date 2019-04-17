@@ -1657,14 +1657,14 @@ void glu_score(StarMapInfo *info)
 			else
 				forcename = &EMPTYSTR;
 
-			sprintf(txt, "%s\n%c%c%c%c%c		 %c%c%c%c %s", NETWSTR(races_clan[myrace] + races[myrace]),
+			sprintf(txt, "%s\n%c%c%c%c%c     %c%c%c%c %s", NETWSTR(races_clan[myrace] + races[myrace]),
 				COMMANDSYMB, DLGGRPSYMB, myrace + 3, 10, 10,
 				COMMANDSYMB, CHANGEFONTSYMB, IDFONT10,
 				MWHITECOLORFONT, forcename);
 		}
 		else
 		{
-			sprintf(txt, "%s\n%c%c%c%c%c		 %c%c%c%c %s", NETWSTR(races_clan[myrace] + races[myrace]),
+			sprintf(txt, "%s\n%c%c%c%c%c     %c%c%c%c %s", NETWSTR(races_clan[myrace] + races[myrace]),
 				COMMANDSYMB, DLGGRPSYMB, myrace + 3, 10, 10,
 				COMMANDSYMB, CHANGEFONTSYMB, IDFONT10,
 				MWHITECOLORFONT, getplayername(i));

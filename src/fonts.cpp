@@ -442,7 +442,7 @@ int getmessagesizex(int fontnr, char *str, int sizestr, int *lenx, int *leny)
 							i += 2;
 							continue;
 						}
-						else if (str[i] == DLGGRPSYMB)
+						else if (str[i + 1] == DLGGRPSYMB)
 						{
 							i += 3;
 							sizex = 0;
@@ -454,7 +454,9 @@ int getmessagesizex(int fontnr, char *str, int sizestr, int *lenx, int *leny)
 						}
 					}
 					else
+					{
 						getlettersizexy(fontnr, str[i], &sizex, &sizey);
+					}
 					if (i < j - 1)//at last symbol we do not add spacesize
 						sizex += spaceletters[fontnr];
 					getmaxsymbolsize(fontnr, NULL, &sizey);
