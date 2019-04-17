@@ -38,7 +38,7 @@ char *filename2dos(const char *fn)
 	ret=(char *)wmalloc(j+1);
 	memcpy(ret,fn,j);
 	ret[j]=0;
-#ifndef UNDERWINDOWS
+#ifdef UNDERWINDOWS
 	for (i=0;i<j;i++)
 		if (ret[i]=='/')
 			ret[i]='\\';
@@ -65,13 +65,23 @@ char *filename2unix(const char *fn)
 char *filename2temp(const char *fn)
 {
 	char *ret;
-	int j,j2;
+	int j, j2;
 	j = strlen(fn);
 	j2 = strlen(TEMPDIR);
-	ret=(char *)wmalloc(j+1+j2);
-	memcpy(ret,TEMPDIR,j2);
-	memcpy(ret+j2,fn,j);
-	ret[j+j2]=0;
+	ret = (char *)wmalloc(j + 1 + j2);
+	memcpy(ret, TEMPDIR, j2);
+	memcpy(ret+j2, fn ,j);
+	ret[j + j2] = 0;
+#ifdef UNDERWINDOWS
+	int i = j2;
+	while (ret[i++]) 
+	{
+		if (ret[i] == '/' || ret[i] == '\\')
+		{
+			ret[i] = '_';
+		}
+	}
+#endif
 	return(ret);
 }
 //==================================

@@ -191,7 +191,7 @@ int Controller::QueryVideoMode(int x, int y, int bpp, int fullscreen)
 		}
 		else
 		{
-			Surface->DevMode = FindVideoMode(x, y, 0);
+			Surface->DevMode = FindVideoMode(x, y, 32);
 		}
 		if (!Surface->DevMode)
 			return 0;

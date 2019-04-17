@@ -295,13 +295,13 @@ void LoadTransPal(char *filename, char *palette, char *menutranspcolors, float f
 //==========================================
 void LoadTransPal(char *filename, char *palette, char *menutranspcolors, float factor, int creationflag)
 {
-	//	  char *filename2=filename2unix(filename);
 	char *filename2 = filename2temp(filename);
-	FILE *f = fopen(filename2, "r");
+	char *filename3 = filename2dos(filename2);
+	FILE *f = fopen(filename3, "r");
 	if (!f)
 	{
 		GRP_CreateSpecialTranspTable(palette, menutranspcolors, factor);
-		f = fopen(filename2, "w");
+		f = fopen(filename3, "w");
 		if (f)
 		{
 			fwrite(menutranspcolors, 256, 256, f);
@@ -309,7 +309,7 @@ void LoadTransPal(char *filename, char *palette, char *menutranspcolors, float f
 		}
 		else
 		{
-			printf("can't create %s file\n", filename2);
+			printf("can't create %s file\n", filename3);
 			//cant create the file :((
 		}
 	}
@@ -319,6 +319,7 @@ void LoadTransPal(char *filename, char *palette, char *menutranspcolors, float f
 			fread(menutranspcolors, 256, 256, f);
 		fclose(f);
 	}
+	wfree(filename3);
 	wfree(filename2);
 }
 //==========================================
