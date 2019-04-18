@@ -377,7 +377,7 @@ void PlayVideoSmk(const char *smkfile)
 	unsigned char nextimage, endsmk, palflag, scalemode, trackmask, audiochannels[7], bitdepth[7], firstframe;
 	unsigned char palbuf[3 * 256];
 	unsigned char *smkpal;
-	int err, frame, newframe, unpressmouse;
+	int err, frame, newframe, unpressmouse, skipframes;
 	HANDLE hmpq;
 	smk_t *smk;
 	unsigned char *vidbuff, *audiobuff;
@@ -441,7 +441,7 @@ void PlayVideoSmk(const char *smkfile)
 						if (audiostream->audio.convertaudio)
 						{
 							audiostream->audio.CVT.buf = (uint8_t *)wmalloc(audiosize * audiostream->audio.CVT.len_mult);
-							//							memset(audiostream->audio.CVT.buf,0,audiosize * audiostream->audio.CVT.len_mult);
+							//memset(audiostream->audio.CVT.buf,0,audiosize * audiostream->audio.CVT.len_mult);
 							audiostream->audio.CVT.len = audiosize;
 							memcpy(audiostream->audio.CVT.buf, audiobuff, audiosize);
 							err = ConvertAudio(&audiostream->audio.CVT);
@@ -472,15 +472,15 @@ void PlayVideoSmk(const char *smkfile)
 							palflag = 1;
 						}
 						/*
-												for (i=0;i<3*256;i++)
-												{
-													if (smkpal[i] != palbuf[i])
-													{
-														memcpy(palbuf,smkpal,3*256);
-														palflag=1;
-														break;
-													}
-												}
+						for (i=0;i<3*256;i++)
+						{
+							if (smkpal[i] != palbuf[i])
+							{
+								memcpy(palbuf,smkpal,3*256);
+								palflag=1;
+								break;
+							}
+						}
 						*/
 					}
 				}
@@ -495,13 +495,17 @@ void PlayVideoSmk(const char *smkfile)
 				mytimer.CallTimer(MYTIMER_SINCHRONMODE);
 				curtick = mytimer.GetCurrentTimerTick();
 				newframe = (int)((curtick - prevtick) * 1000000 / TICKS_RES / timeshowoneframe);
-				if (newframe != frame)
+				skipframes = newframe - frame;
+				if (skipframes > 0)
 				{
+					//if to slow to play, try to skip some frames
+					do {
+						err = smk_next(smk, SMK_FULL_DECODE);
+						if (err == SMK_DONE || err == SMK_LAST)//prevent play from beginning if have ring frame
+							endsmk = 1;
+					} while (--skipframes);
 					frame = newframe;
 					nextimage = 1;
-					err = smk_next(smk, SMK_FULL_DECODE);
-					if (err == SMK_DONE || err == SMK_LAST)//prevent play from beginning if have ring frame
-						endsmk = 1;
 				}
 				if (palflag)
 				{
