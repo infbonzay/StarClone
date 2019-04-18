@@ -21,6 +21,7 @@ LEADERBOARD *AddLeaderBoard(int boardnr, int leaderboardtype,
 	{
 		info->leaderboards[boardnr] = (LEADERBOARD *)wmalloc(sizeof(LEADERBOARD));
 		info->leaderboards[boardnr]->txtstr = (char *)wmalloc(strIdLen + 4 + 10 + 1);
+		info->leaderboards[boardnr]->txtstr[0] = 0;
 	}
 	info->leaderboards[boardnr]->leaderboardtype = leaderboardtype;
 	info->leaderboards[boardnr]->unittype = unittype;
