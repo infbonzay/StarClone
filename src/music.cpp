@@ -90,49 +90,36 @@ int wMUSIC::playPCMdata(int firstrun)
 {
 	wCHUNK		*endmusicsample;
 	AUDIOPACKET *apacket;
-	apacket = musicbuffers->GetCurElem();
-	if (apacket)
+	int retry = 5;
+	do
 	{
-		/*		if (fade)
-				{
-					if (fade)
-						return(-1);
-					//make fade operation
-		//			if (fade is zero)
-					signed short *samples=(signed short *)apacket->packetdata;
-					signed short sample;
-					float fsample,delta;
-					int fadelen = apacket->len/2;
-					for (int i=0;i<fadelen;i++)
-					{
-						fsample = (samples[i]);
-						delta = (float)i/fadelen;
-						fsample *=delta;
-						samples[i] -= fsample;
-					}
-					fade = 0;
-				}
-		*/
-		endmusicsample = musicsample;
-		musicsample = PlayRAWMem(apacket->packetdata, apacket->len);
-		chunkplay = wPlayChannel(chunkplay, musicsample, 0);
-		if (endmusicsample)
+		apacket = musicbuffers->GetCurElem();
+		if (apacket)
 		{
-			//free previous music sample
-			wFreeChunk(endmusicsample);
-		}
+			endmusicsample = musicsample;
+			musicsample = PlayRAWMem(apacket->packetdata, apacket->len);
+			chunkplay = wPlayChannel(chunkplay, musicsample, 0);
+			if (endmusicsample)
+			{
+				//free previous music sample
+				wFreeChunk(endmusicsample);
+			}
 
-		if (chunkplay == -1)//can't play no free channels
-		{
-			//if error play
-			return -2;
+			if (chunkplay == -1)//can't play no free channels
+			{
+				//if error play
+				return -2;
+			}
+			if (firstrun)
+			{
+				ChangeMusicVolume(gameconf.audioconf.musicvolume);
+			}
+			return(0);
 		}
-		if (firstrun)
-		{
-			ChangeMusicVolume(gameconf.audioconf.musicvolume);
-		}
-		return(0);
-	}
+		usleep(200000);
+		DEBUGMESSCR("audio buffer has no data (load is too slow), try to wait\n");
+	}while(--retry);
+	//no audio data in buffer?
 	return(-3);
 }
 //=======================================

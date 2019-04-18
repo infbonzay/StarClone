@@ -438,6 +438,11 @@ void PlayVideoSmk(const char *smkfile)
 					audiosize = smk_get_audio_size(smk, SMKAUDIOCHANNEL);
 					if (audiobuff)
 					{
+						if (!audiostream)
+						{
+							//audiostream closed because, load/play audio is too slow
+							break;
+						}
 						if (audiostream->audio.convertaudio)
 						{
 							audiostream->audio.CVT.buf = (uint8_t *)wmalloc(audiosize * audiostream->audio.CVT.len_mult);
@@ -449,7 +454,9 @@ void PlayVideoSmk(const char *smkfile)
 							wfree(audiostream->audio.CVT.buf);
 						}
 						else
+						{
 							err = audiostream->queuePCMdata(audiobuff, audiosize);
+						}
 						if (err == -1)
 						{
 							DEBUGMESSCR("some data cannot be added to queue. to small\n");
