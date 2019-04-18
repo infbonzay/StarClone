@@ -97,7 +97,7 @@ int loadandsetplayerinfo(char *player_filename)
 //	IdPlayerFile pl_id = { .i_id = 0x00000000 };
 	IdPlayerFile pl_id;
 	pl_id.i_id = 0x00000000;
-	FILE *f = fopen(player_filename, "r");
+	FILE *f = fopen(player_filename, "rb");
 	if (f)
 	{
 		strcpy(lastplayerfile, player_filename);
@@ -126,7 +126,7 @@ void saveplayerinfo(void)
 	pl_id.c_id[1] = IDPLAYERFILE_1;
 	pl_id.c_id[2] = IDPLAYERFILE_2;
 	pl_id.c_id[3] = IDPLAYERFILE_3;
-	FILE *f = fopen(lastplayerfile, "w");
+	FILE *f = fopen(lastplayerfile, "wb");
 	if (f)
 	{
 		fwrite(&pl_id, sizeof(IdPlayerFile), 1, f);

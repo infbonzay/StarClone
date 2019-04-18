@@ -487,7 +487,7 @@ ISCRIPT::ISCRIPT(void)
 int ISCRIPT::CompileIScripts(const char *filename)
 {
 	int retcode = 0;
-	FILE *f = fopen(filename, "r");
+	FILE *f = fopen(filename, "rb");
 	if (!f)
 	{
 		printf("file %s not found\n", filename);

@@ -351,7 +351,7 @@ void drawMAP(int ignorefirstwaiting)
 		}
 	}
 
-	/*	  FILE *f=fopen("screenmapused.txt","w");
+	/*	  FILE *f=fopen("screenmapused.txt","wb");
 		if (f)
 		{
 			for (i=0;i<screenMapInfo->SizeY32+1;i++)

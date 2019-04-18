@@ -313,7 +313,7 @@ unsigned int mkchecksumm(char *filename)
 	unsigned int chksum;
 	long long fsize;
 	FILE *f;
-	f = fopen(filename,"r");
+	f = fopen(filename,"rb");
 	if (!f)
 		return(0x00000000);
 	fsize = FILElength(f);
@@ -331,7 +331,7 @@ void Gimp_SavePal(char *fn,char *palettename,char *pal,int pixelsize)	//pixelsiz
 {
 //		creating palette file for GIMP
 	int i;
-	FILE *f = fopen(fn,"w");
+	FILE *f = fopen(fn,"wb");
 	if (f)
 	{
 		fprintf(f,"GIMP Palette\nName: %s\n#\n",palettename);

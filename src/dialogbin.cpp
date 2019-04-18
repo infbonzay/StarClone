@@ -700,7 +700,7 @@ void DialogBin_Save(MENUSTR *menu, char *label, const char *filename, int *sorte
 		}
 		tempdialog = (DIALOGBIN *)(long((char *)dialogdata + tempdialog->NextEntryOffset));
 	} while (--elemnr);
-	FILE *f = fopen(filename, "w");
+	FILE *f = fopen(filename, "wb");
 	if (!f)
 		printf("Error open %s for write\n", filename);
 	else

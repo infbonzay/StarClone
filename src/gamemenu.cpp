@@ -297,11 +297,11 @@ void LoadTransPal(char *filename, char *palette, char *menutranspcolors, float f
 {
 	char *filename2 = filename2temp(filename);
 	char *filename3 = filename2dos(filename2);
-	FILE *f = fopen(filename3, "r");
+	FILE *f = fopen(filename3, "rb");
 	if (!f)
 	{
 		GRP_CreateSpecialTranspTable(palette, menutranspcolors, factor);
-		f = fopen(filename3, "w");
+		f = fopen(filename3, "wb");
 		if (f)
 		{
 			fwrite(menutranspcolors, 256, 256, f);
@@ -2463,7 +2463,7 @@ int glu_login(void)
 					strcpy(tempname, USERS_DIRECTORY);
 					strcat(tempname, geteditboxtext(nplayer, 3));
 					strcat(tempname, STARCLONEEXT);
-					f = fopen(tempname, "r");
+					f = fopen(tempname, "rb");
 					if (f)
 					{
 						err = 1;
@@ -2471,7 +2471,7 @@ int glu_login(void)
 					}
 					else
 					{
-						f = fopen(tempname, "w");
+						f = fopen(tempname, "wb");
 						if (f)
 						{
 							CreateDefaultInfoForPlayer(f);
@@ -4918,10 +4918,10 @@ int WaitingDownload(MENUSTR *allmenus, void *data)
 			switch (mpqfile->filenr)
 			{
 			case 1:
-				f = fopen(WGET_FILESIZE2, "r");
+				f = fopen(WGET_FILESIZE2, "rb");
 				break;
 			case 2:
-				f = fopen(WGET_FILESIZE1, "r");
+				f = fopen(WGET_FILESIZE1, "rb");
 				break;
 			}
 			if (!f)//file is not appeared yet
@@ -5800,7 +5800,7 @@ int loadgamefromfile_error1(MENUSTR *allmenus, int menuitem)
 void loadgamefromfile(void)
 {
 	MENUPARAMS *mp;
-	FILE *f = fopen(fileforsaveload, "r");
+	FILE *f = fopen(fileforsaveload, "rb");
 	if (f)
 	{
 		//some code of loading game.......
@@ -5936,7 +5936,7 @@ void savegametofile_err2(void)
 int savegametofile_do(void)
 {
 	FILE *f;
-	f = fopen(fileforsaveload, "w");
+	f = fopen(fileforsaveload, "wb");
 	if (f)
 	{
 		fwrite(fileforsaveload, 1, strlen(fileforsaveload), f);
@@ -5950,7 +5950,7 @@ int savegametofile_do(void)
 int savegametofile(void)
 {
 	MENUPARAMS *mp;
-	FILE *f = fopen(fileforsaveload, "r");
+	FILE *f = fopen(fileforsaveload, "rb");
 	if (f)
 	{
 		fclose(f);

@@ -212,7 +212,7 @@ int createmantable(void)
 	{
 		if (!filemans[j][0])
 			break;
-		f = fopen(filemans[j], "r");
+		f = fopen(filemans[j], "rb");
 		if (!f)
 		{
 			printf("can't open %s file\n", filemans[j]);
@@ -447,7 +447,7 @@ void saveconf(void)
 {
 	char cfgname[512];
 	sprintf(cfgname, "%s/" SC_CONFIGFILE, GAMEPATH);
-	FILE *f = fopen(cfgname, "w");
+	FILE *f = fopen(cfgname, "wb");
 	fprintf(f, "%s = %s\n", rezo[0], LANGVALUES[gameconf.lang]);
 	fprintf(f, "%s = %s\n", rezo[1], GAMEPATH);
 	fprintf(f, "%s = %s%s\n", rezo[2], GAMEPATH, "/maps");
@@ -525,7 +525,7 @@ int loadcfg(const char *filename, int *mpqresult)
 	static char strid[200], strvalue[200], rem[200];
 	HANDLE installmpq, hmpq;
 	FILE *f;
-	f = fopen(filename, "r");
+	f = fopen(filename, "rb");
 	if (!f)
 	{
 		loaddefcfg();
@@ -808,7 +808,7 @@ int readmageproperties(void)
 	FILE *f;
 	int i, j, intvalue, whatobj, totalmage = 0;
 	static char strid[200], strvalue[200], strval2[200];
-	f = fopen(filemageprop, "r");
+	f = fopen(filemageprop, "rb");
 
 	while (!feof(f))
 	{

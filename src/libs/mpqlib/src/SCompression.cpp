@@ -499,7 +499,7 @@ static TDecompressTable dcmp_table[] =
 /*void fwritebuff(char *file,char *buff,int sizeb)
 {
     FILE *f;
-    f=fopen(file,"w");
+    f=fopen(file,"wb");
     if (f)
     {
 	fwrite(buff,1,sizeb,f);

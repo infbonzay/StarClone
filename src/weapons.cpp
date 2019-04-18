@@ -44,7 +44,7 @@ int loadweapons(void)
 	unsigned char trailrefresh, rangeupgnr, rangeupgaddfactor;
 	int nrofweapons, maxnrforread[100];
 	static char strid[200], strvalue[200];
-	FILE *f = fopen(fileweaponsconf, "r");
+	FILE *f = fopen(fileweaponsconf, "rb");
 	if (!f)
 	{
 		return(-1);

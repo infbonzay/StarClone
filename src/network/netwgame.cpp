@@ -1102,7 +1102,7 @@ void RequestFileParts(MENUSTR *allmenus, NETWORK_INFO *sendsock, NETWORK_INFO *r
 //==========================================
 void BuffPrepareForSend(char *fn, long pos, int size, char *buff)
 {
-	FILE *f = fopen(fn, "r");
+	FILE *f = fopen(fn, "rb");
 	if (f)
 	{
 		fseek(f, pos, SEEK_SET);
