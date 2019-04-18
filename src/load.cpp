@@ -276,7 +276,7 @@ struct OBJstruct *loadobj(int numberobj)
 		int	 k;
 		FILE *f;
 		char sss[100];
-		f = fopen(filemans[pos_in_file_man[numberobj].filenr], "r");
+		f = fopen(filemans[pos_in_file_man[numberobj].filenr], "rb");
 		if (!f)
 		{
 			sprintf(sss, "file %s not opened!!!", filemans[0]);
@@ -856,34 +856,34 @@ int LoadDatTblFiles(DATTBLSTRUCT *dattbl)
 		;//return(-9);
 	if (mpqloadfile(SC_MAPDATA_DAT, (char **)&dattbl->mapdata_dat))
 		;//return(-10);
-	dattbl->images_tbl = new TBL;
+	dattbl->images_tbl = new TBL();
 	dattbl->images_tbl->loadTBL(SC_IMAGES_TBL);
 
-	dattbl->portdata_tbl = new TBL;
+	dattbl->portdata_tbl = new TBL();
 	dattbl->portdata_tbl->loadTBL(SC_PORTDATA_TBL);
 
-	dattbl->sfxdata_tbl = new TBL;
+	dattbl->sfxdata_tbl = new TBL();
 	dattbl->sfxdata_tbl->loadTBL(SC_SFXDATA_TBL);
 
-	dattbl->stattxt_tbl = new TBL;
+	dattbl->stattxt_tbl = new TBL();
 	dattbl->stattxt_tbl->loadTBL(SC_STATTXT_TBL);
 
-	dattbl->gluall_tbl = new TBL;
+	dattbl->gluall_tbl = new TBL();
 	dattbl->gluall_tbl->loadTBL(SC_GLUALL_TBL);
 
-	dattbl->network_tbl = new TBL;
+	dattbl->network_tbl = new TBL();
 	dattbl->network_tbl->loadTBL(SC_NETWORK_TBL);
 
-	dattbl->mapdata_tbl = new TBL;
+	dattbl->mapdata_tbl = new TBL();
 	dattbl->mapdata_tbl->loadTBL(SC_MAPDATA_TBL);
 
-	dattbl->myinfo_tbl = new TBL;
+	dattbl->myinfo_tbl = new TBL();
 	dattbl->myinfo_tbl->loadTBL(SC_MYINFO_TBL);
 
-	dattbl->campaign_tbl = new TBL;
+	dattbl->campaign_tbl = new TBL();
 	dattbl->campaign_tbl->loadTBL(SC_CAMPAIGN_TBL);
 
-	dattbl->mycheats_tbl = new TBL;
+	dattbl->mycheats_tbl = new TBL();
 	dattbl->mycheats_tbl->loadTBL(SC_MYCHEATS_TBL);
 
 
@@ -949,61 +949,51 @@ void UnloadDatTblFiles(DATTBLSTRUCT *dattbl)
 	}
 	if (dattbl->images_tbl)
 	{
-		//dattbl->images_tbl->~TBL();
 		delete dattbl->images_tbl;
 		dattbl->images_tbl = NULL;
 	}
 	if (dattbl->portdata_tbl)
 	{
-		//dattbl->portdata_tbl->~TBL();
 		delete dattbl->portdata_tbl;
 		dattbl->portdata_tbl = NULL;
 	}
 	if (dattbl->sfxdata_tbl)
 	{
-		//dattbl->sfxdata_tbl->~TBL();
 		delete dattbl->sfxdata_tbl;
 		dattbl->sfxdata_tbl = NULL;
 	}
 	if (dattbl->stattxt_tbl)
 	{
-		//dattbl->stattxt_tbl->~TBL();
 		delete dattbl->stattxt_tbl;
 		dattbl->stattxt_tbl = NULL;
 	}
 	if (dattbl->gluall_tbl)
 	{
-		//dattbl->gluall_tbl->~TBL();
 		delete dattbl->gluall_tbl;
 		dattbl->gluall_tbl = NULL;
 	}
 	if (dattbl->network_tbl)
 	{
-		//dattbl->network_tbl->~TBL();
 		delete dattbl->network_tbl;
 		dattbl->network_tbl = NULL;
 	}
 	if (dattbl->mapdata_tbl)
 	{
-		//dattbl->mapdata_tbl->~TBL();
 		delete dattbl->mapdata_tbl;
 		dattbl->network_tbl = NULL;
 	}
 	if (dattbl->myinfo_tbl)
 	{
-		//dattbl->myinfo_tbl->~TBL();
 		delete dattbl->myinfo_tbl;
 		dattbl->myinfo_tbl = NULL;
 	}
 	if (dattbl->mycheats_tbl)
 	{
-		//dattbl->mycheats_tbl->~TBL();
 		delete dattbl->mycheats_tbl;
 		dattbl->mycheats_tbl = NULL;
 	}
 	if (dattbl->campaign_tbl)
 	{
-		//dattbl->campaign_tbl->~TBL();
 		delete dattbl->campaign_tbl;
 		dattbl->campaign_tbl = NULL;
 	}
@@ -1028,7 +1018,6 @@ void *imagesreftogrpdata[MAX_IMAGES_ELEM];
 //===========================================
 void Unload_SC_Images_List(void)
 {
-	//	  SC_Images_List.DeallocList(&FreeImagesListData);
 	for (int i = 0;i < MAX_IMAGES_ELEM;i++)
 	{
 		if (imagesreftogrpdata[i])
