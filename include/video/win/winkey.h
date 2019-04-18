@@ -37,8 +37,9 @@
 #define BACKSPACEKEY VK_BACK
 #define ESCAPEKEY VK_ESCAPE
 
-#define WMLEFTKEY  (1)
-#define WMRIGHTKEY (3)
+#define WMLEFTKEY  0x01
+#define WMMIDDLE   0x02
+#define WMRIGHTKEY 0x04
 
 #define	SHIFTKEYMASK	0x01
 #define LOCKKEYMASK		0x02

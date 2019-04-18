@@ -132,10 +132,10 @@
 class Controller
 {
 
+public:
 	int 				FullScreen;
 	Controller_Surface	*Surface;
 
-public:
 	const uint8_t SHIFTKEYS[128] =
 	{
 		'\x00','\x00','\x00','\x00','\x00','\x00','\x00','\x00','\x00','\x00',

@@ -739,7 +739,7 @@ void MouseClickEvent(bool type, int buttons)
 	{
 		highMouse->MouseButtons &= ~buttons;
 	}
-	if (type && buttons & WMLEFTKEY)
+	if (type && (buttons & WMLEFTKEY))
 	{
 		if (tick_timer - prevtimer <= MOUSEDBLCLICKTIME)
 		{

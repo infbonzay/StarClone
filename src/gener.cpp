@@ -792,6 +792,7 @@ void mouseonkartaarea(void)
 {
 	if (karta_aria)
 	{
+		int a = highMouse->GetButtonStatus();
 		if (highMouse->GetButtonStatus() & WMLEFTKEY)
 		{
 			if (highMouse->WaitToPressLeftButton && highMouse->WaitToReleaseLeftButton)

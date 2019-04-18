@@ -5,6 +5,7 @@
 #include "const.h"
 #include "mytime.h"
 #include "rand.h"
+#include "gener.h"
 #include "Controller.h"
 
 
@@ -18,20 +19,26 @@ static LRESULT CALLBACK WndProcFunc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM 
 	int keyActive;
 	switch (iMsg)
 	{
-	case WM_ACTIVATE:
-		if ((LOWORD(wParam) != WA_INACTIVE) && ((HWND)lParam == NULL))
+	case WM_SYSCOMMAND:
+		switch (wParam)
 		{
-			gameconf.grmode.flags |= DISPLAYFLAGS_WINDOWACTIVE;
-		}
-		else
-		{
+		case SC_MINIMIZE:
 			gameconf.grmode.flags &= ~DISPLAYFLAGS_WINDOWACTIVE;
+			break;
+		case SC_RESTORE:
+			gameconf.grmode.flags |= DISPLAYFLAGS_WINDOWACTIVE;
+			break;
+		case SC_KEYMENU:
+			//emulation f10 key because windows sucks
+			f10_menu &= ~GAMEBUTTON_KEYPRESS;
+			f10_menu |= GAMEBUTTON_KEYRELEASE | GAMEBUTTON_SHOW;
+			return 0;
+			//break;
 		}
-		return 0;
+		break;
 	case WM_KEYDOWN:
 		keyActive = wParam;
 		mainController.SetKeyMod(keyActive, true);
-
 		if (mainController.KeyFlags & LOCKKEYMASK)
 			keymod ^= 1;
 		if (mainController.KeyFlags & SHIFTKEYMASK)
@@ -210,7 +217,7 @@ int Controller::QueryVideoMode(int x, int y, int bpp, int fullscreen)
 	else 
 	{
 		dwExStyle = 0;
-		dwStyle = WS_CAPTION | WS_SYSMENU | WS_CLIPCHILDREN | WS_CLIPSIBLINGS;
+		dwStyle = WS_CAPTION | WS_SYSMENU | WS_CLIPCHILDREN | WS_CLIPSIBLINGS | WS_MINIMIZEBOX;
 		if (!first)
 		{
 			ChangeDisplaySettings(0, 0);

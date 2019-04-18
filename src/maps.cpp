@@ -377,26 +377,26 @@ void AutoMoveMap(void)
 		map.totaldeltax -= map.deltax;
 		map.totaldeltay -= map.deltay;
 		//		if (!mapmovedone)
-		if (map.deltax < 0)
+		if (map.deltax <= 0)
 		{
 			if (map.totaldeltax >= 0)
 				mapmovedone = 1;
 		}
 		else
-			if (map.deltax > 0)
+			if (map.deltax >= 0)
 			{
 				if (map.totaldeltax <= 0)
 					mapmovedone = 1;
 			}
 		if (!mapmovedone)
 		{
-			if (map.deltay < 0)
+			if (map.deltay <= 0)
 			{
 				if (map.totaldeltay >= 0)
 					mapmovedone = 1;
 			}
 			else
-				if (map.deltay > 0)
+				if (map.deltay >= 0)
 				{
 					if (map.totaldeltay <= 0)
 						mapmovedone = 1;
