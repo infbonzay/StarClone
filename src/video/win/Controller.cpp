@@ -394,37 +394,46 @@ void Controller::UpdateScreen(void)
 //===========================================
 void Controller::ApplyPalette(unsigned char *pal4,int from,int count)
 {
+	uint32_t palcol32;
+	uint16_t palcol16;
+	uint8_t palcol8;
+	uint16_t *palette16;
+	uint32_t *palette32;
+	uint8_t *palette8;
+
 	if (Surface->DesiredBpp != 8)
 		return;
-	uint16_t *palette16 = ( (uint16_t *) Surface->palette) + from;
-	uint16_t palcol16;
-	uint32_t *palette32 = ( (uint32_t *) Surface->palette) + from;
-	uint32_t palcol32;
-	switch(Surface->SavedBpp)
+	palette32 = ((uint32_t *)Surface->palette) + from;
+	switch (Surface->SavedBpp)
 	{
 	case 8:
 		return;
 	case 15:
-		do{
-			palcol16 = (( (*pal4) >> 3) << 10) | (( (*(pal4 + 1)) >> 3) << 5) | (( (*(pal4 + 2)) >> 3) );
+		palette16 = (uint16_t *)palette32;
+		do {
+			palcol16 = (((*pal4) >> 3) << 10) | (((*(pal4 + 1)) >> 3) << 5) | (((*(pal4 + 2)) >> 3));
 			pal4 += 4;
 			*palette16++ = palcol16;
-		}while(--count);
+		} while (--count);
 		break;
 	case 16:
-		do{
-			palcol16 = (( (*pal4) >> 3) << 11) | (( (*(pal4 + 1)) >> 2) << 5) | (( (*(pal4 + 2)) >> 3) );
+		palette16 = (uint16_t *)palette32;
+		do {
+			palcol16 = (((*pal4) >> 3) << 11) | (((*(pal4 + 1)) >> 2) << 5) | (((*(pal4 + 2)) >> 3));
 			pal4 += 4;
 			*palette16++ = palcol16;
-		}while(--count);
+		} while (--count);
 		break;
 	case 24:
 	case 32:
-		do{
-			palcol32 = ( (*pal4) << 16 ) | ( (*(pal4 + 1)) << 8) | ( (*(pal4 + 2)) );
+		palette8 = (uint8_t *)palette32;
+		do {
+			*palette8++ = pal4[2];
+			*palette8++ = pal4[1];
+			*palette8++ = pal4[0];
+			*palette8++ = 0;
 			pal4 += 4;
-			*palette32++ = palcol32;
-		}while(--count);
+		} while (--count);
 		break;
 	}
 	UpdateScreen();
