@@ -12,7 +12,7 @@
 #define __STORMLIB_SELF__
 #include "StormLib.h"
 #include "SCommon.h"
-
+#include <pthread.h>
 //-----------------------------------------------------------------------------
 // Defines
 
@@ -21,7 +21,7 @@
 
 //-----------------------------------------------------------------------------
 // Local structures
-volatile int MPQGlobalEnterSemaphore;
+pthread_mutex_t Lock_ReadMpqBlocks = PTHREAD_MUTEX_INITIALIZER;
 
 struct TID2Ext
 {
@@ -39,14 +39,10 @@ struct TID2Ext
 //
 //  Returns number of bytes read.
 
-static UINT WINAPI ReadMPQBlocks(TMPQFile * hf, UINT dwBlockPos, BYTE * buffer, UINT blockBytes)
+static UINT WINAPI ReadMPQBlocks(TMPQFile *hf, UINT dwBlockPos, BYTE * buffer, UINT blockBytes)
 {
-    do{
-	//block read if already here
-    }while(MPQGlobalEnterSemaphore);
-    MPQGlobalEnterSemaphore = 1;
-    TMPQArchive * ha = hf->ha;          // Archive handle
-    BYTE  * tempBuffer = NULL;          // Buffer for reading compressed data from the file
+    TMPQArchive *ha = hf->ha;          // Archive handle
+    BYTE  *tempBuffer = NULL;          // Buffer for reading compressed data from the file
     UINT   dwFilePos = dwBlockPos;     // Reading position from the file
     UINT   toRead;                     // Number of bytes to read
     UINT   blockNum;                   // Block number (needed for decrypt)
@@ -58,9 +54,9 @@ static UINT WINAPI ReadMPQBlocks(TMPQFile * hf, UINT dwBlockPos, BYTE * buffer, 
     // Test parameters. Block position and block size must be block-aligned, block size nonzero
     if((dwBlockPos & (ha->dwBlockSize - 1)) || blockBytes == 0)
     {
-	MPQGlobalEnterSemaphore = 0;
-        return 0;
+		return 0;
     }
+	
     // Check the end of file
     if((dwBlockPos + blockBytes) > hf->pBlock->dwFSize)
         blockBytes = hf->pBlock->dwFSize - dwBlockPos;
@@ -97,7 +93,6 @@ static UINT WINAPI ReadMPQBlocks(TMPQFile * hf, UINT dwBlockPos, BYTE * buffer, 
             // If we don't know the file seed, sorry but we cannot extract the file.
             if(hf->dwSeed1 == 0)
             {
-				MPQGlobalEnterSemaphore = 0;
 				return 0;
 			}
             // Decrypt block positions
@@ -117,8 +112,7 @@ static UINT WINAPI ReadMPQBlocks(TMPQFile * hf, UINT dwBlockPos, BYTE * buffer, 
                 // Check if the block positions are correctly decrypted
                 if(hf->pdwBlockPos[0] != bytesRead)
                 {
-					MPQGlobalEnterSemaphore = 0;
-                    return 0;
+					return 0;
                 }
             }
         }
@@ -145,8 +139,7 @@ static UINT WINAPI ReadMPQBlocks(TMPQFile * hf, UINT dwBlockPos, BYTE * buffer, 
         if((tempBuffer = ALLOCMEM(BYTE, toRead)) == NULL)
         {
             SetLastError(ERROR_NOT_ENOUGH_MEMORY);
-			MPQGlobalEnterSemaphore = 0;
-            return 0;
+			return 0;
         }
     }
 
@@ -193,8 +186,7 @@ static UINT WINAPI ReadMPQBlocks(TMPQFile * hf, UINT dwBlockPos, BYTE * buffer, 
 
             if(hf->dwSeed1 == 0)
             {
-				MPQGlobalEnterSemaphore = 0;
-                return 0;
+				return 0;
             }
 
             DecryptMPQBlock((UINT *)inputBuffer, blockSize, hf->dwSeed1 + index);
@@ -234,7 +226,6 @@ static UINT WINAPI ReadMPQBlocks(TMPQFile * hf, UINT dwBlockPos, BYTE * buffer, 
     if(hf->pBlock->dwFlags & MPQ_FILE_COMPRESSED)
         FREEMEM(tempBuffer);
 
-    MPQGlobalEnterSemaphore = 0;
     return bytesRead;
 }
 
@@ -243,6 +234,8 @@ static UINT WINAPI ReadMPQBlocks(TMPQFile * hf, UINT dwBlockPos, BYTE * buffer, 
 
 static UINT WINAPI ReadMPQFile(TMPQFile * hf, UINT dwFilePos, BYTE * pbBuffer, UINT dwToRead)
 {
+	pthread_mutex_lock(&Lock_ReadMpqBlocks);
+
     TMPQArchive * ha    = hf->ha; 
     TMPQBlock * pBlock = hf->pBlock; // Pointer to file block
     UINT dwBytesRead = 0;           // Number of bytes read from the file
@@ -251,8 +244,9 @@ static UINT WINAPI ReadMPQFile(TMPQFile * hf, UINT dwFilePos, BYTE * pbBuffer, U
 
     // File position is greater or equal to file size ?
     if(dwFilePos >= pBlock->dwFSize)
-        return dwBytesRead;
-
+	{
+		goto ReadMPQFile_End;
+	}
     // If too few bytes in the file remaining, cut them
     if((pBlock->dwFSize - dwFilePos) < dwToRead)
         dwToRead = (pBlock->dwFSize - dwFilePos);
@@ -274,8 +268,10 @@ static UINT WINAPI ReadMPQFile(TMPQFile * hf, UINT dwFilePos, BYTE * pbBuffer, U
             // Load one MPQ block into archive buffer
             dwLoaded = ReadMPQBlocks(hf, dwBlockPos, ha->pbBlockBuffer, ha->dwBlockSize);
             if(dwLoaded == 0)
-                return (UINT)-1;
-
+			{
+				dwBytesRead = (UINT) -1;
+				goto ReadMPQFile_End;
+			}
             // Save lastly accessed file and block position for later use
             ha->pLastFile  = hf;
             ha->dwBlockPos = dwBlockPos;
@@ -297,7 +293,9 @@ static UINT WINAPI ReadMPQFile(TMPQFile * hf, UINT dwFilePos, BYTE * pbBuffer, U
 
         // If all, return.
         if(dwToRead == 0)
-            return dwBytesRead;
+		{
+			goto ReadMPQFile_End;
+		}
     }
 
     // Load the whole ("middle") blocks only if there are more or equal one block
@@ -307,7 +305,10 @@ static UINT WINAPI ReadMPQFile(TMPQFile * hf, UINT dwFilePos, BYTE * pbBuffer, U
 
         dwLoaded = ReadMPQBlocks(hf, dwBlockPos, pbBuffer, dwBlockBytes);
         if(dwLoaded == 0)
-            return (UINT)-1;
+		{
+			dwBytesRead = (UINT) -1;
+			goto ReadMPQFile_End;
+		}
 
         // Update pointers
         dwToRead    -= dwLoaded;
@@ -317,7 +318,7 @@ static UINT WINAPI ReadMPQFile(TMPQFile * hf, UINT dwFilePos, BYTE * pbBuffer, U
 
         // If all, return.
         if(dwToRead == 0)
-            return dwBytesRead;
+			goto ReadMPQFile_End;
     }
 
     // Load the terminating block
@@ -331,7 +332,10 @@ static UINT WINAPI ReadMPQFile(TMPQFile * hf, UINT dwFilePos, BYTE * pbBuffer, U
             // Load one MPQ block into archive buffer
             dwToCopy = ReadMPQBlocks(hf, dwBlockPos, ha->pbBlockBuffer, ha->dwBlockSize);
             if(dwToCopy == 0)
-                return (UINT)-1;
+			{
+				dwBytesRead = (UINT) -1;
+				goto ReadMPQFile_End;
+			}
 
             // Save lastly accessed file and block position for later use
             ha->pLastFile  = hf;
@@ -349,6 +353,8 @@ static UINT WINAPI ReadMPQFile(TMPQFile * hf, UINT dwFilePos, BYTE * pbBuffer, U
     }
     
     // Return what we've read
+ReadMPQFile_End:
+	pthread_mutex_unlock(&Lock_ReadMpqBlocks);
     return dwBytesRead;
 }
 
