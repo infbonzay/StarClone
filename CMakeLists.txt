@@ -246,6 +246,7 @@ if(INCLUDE_MPQ)
 	list(APPEND SOURCES src/libs/mpqlib/src/SFileReadFile.cpp)
 	list(APPEND SOURCES src/libs/mpqlib/src/SListFile.cpp)
 	list(APPEND SOURCES src/libs/mpqlib/src/StormPortLinux.cpp)
+	list(APPEND SOURCES src/libs/mpqlib/src/pthreadPort.cpp)
 endif()
 
 add_executable(StarClone ${SOURCES} )

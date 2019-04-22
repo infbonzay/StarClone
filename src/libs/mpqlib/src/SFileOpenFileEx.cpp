@@ -40,7 +40,7 @@ static BOOL OpenLocalFile(const char * szFileName, HANDLE * phFile)
     return FALSE;
 }
 
-static void FreeMPQFile(TMPQFile *& hf)
+static void FreeMPQFile(TMPQFile *hf)
 {
     if(hf != NULL)
     {

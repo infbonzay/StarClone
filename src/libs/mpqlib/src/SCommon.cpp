@@ -14,6 +14,7 @@
 #include <stdarg.h>
 #include "StormLib.h"
 #include "SCommon.h"
+#include "pthreadPort.h"
 
 char StormLibCopyright[] = "StormLib v 4.50 Copyright Ladislav Zezula 1998-2003";
 
@@ -30,6 +31,7 @@ UINT          lcLocale   = LANG_NEUTRAL;// File locale
 #define STORM_BUFFER_SIZE   0x500
 static UINT StormBuffer[STORM_BUFFER_SIZE];
 static BOOL  bStormBufferCreated = FALSE;
+pthread_mutex_t Lock_ReadMpqBlocks;
 
 int PrepareStormBuffer()
 {
@@ -59,6 +61,8 @@ int PrepareStormBuffer()
             }
         }
     }
+	pthread_mutex_init(&Lock_ReadMpqBlocks, NULL);
+
     return ERROR_SUCCESS;
 }
 

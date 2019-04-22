@@ -12,7 +12,7 @@
 #define __STORMLIB_SELF__
 #include "StormLib.h"
 #include "SCommon.h"
-#include <pthread.h>
+#include "pthreadPort.h"
 //-----------------------------------------------------------------------------
 // Defines
 
@@ -21,7 +21,6 @@
 
 //-----------------------------------------------------------------------------
 // Local structures
-pthread_mutex_t Lock_ReadMpqBlocks = PTHREAD_MUTEX_INITIALIZER;
 
 struct TID2Ext
 {
