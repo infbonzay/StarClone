@@ -13,6 +13,10 @@
 
 #ifdef UNDERWINDOWS
 
+#include <windows.h>
+#include <windowsx.h>
+#include <d3d9.h>
+
 #include "win/winkey.h"
 
 	typedef struct
@@ -41,6 +45,10 @@
 		int			XpixelsBufferSize;
 		uint8_t		flags;
 		DEVMODE     *DevMode;
+		
+		//directx vars
+		LPDIRECT3D9 d3d;
+		LPDIRECT3DDEVICE9 d3ddev;
 	} Controller_Surface;
 
 	typedef struct
