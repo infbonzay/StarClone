@@ -1124,7 +1124,7 @@ int gogame(StarMapInfo *info)
 
 				putfog();			//show fogofwar
 				showgoods();
-				ShowLeaderBoards(&map, 5, 15);
+				ShowLeaderBoards(&map, 5, 0);
 				ShowCountDownTimer(&map, 290, 15);
 				pc = desenbuildifconstr();
 				if (pc != 0)
