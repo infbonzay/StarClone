@@ -158,9 +158,9 @@ MENUSTR *LoadDialogBin(const char *dialogbinfilename, int dialog_opt, int addfor
 		//		if (dialog_opt!=DIALOGBIN_TEST)
 		if (fontnr == -1)
 			fontnr = defaultfontnr;
-		if (flags&(DIALOGBIN_FLAGS_HOTKEYFIRSTCHARACTER | DIALOGBIN_FLAGS_VIRTHOTKEY))
+		if (flags & (DIALOGBIN_FLAGS_HOTKEYFIRSTCHARACTER | DIALOGBIN_FLAGS_VIRTHOTKEY))
 		{
-			hotkey = text[0];
+			hotkey = tolower(text[0]);
 			text++;
 		}
 		else
@@ -406,7 +406,7 @@ DIALOGBIN_INFO *DialogBin_GetItemCoords(const char *dialogbinfilename)
 			alldialogcoords->iteminfo[elemnr].fontnr = GetFontNrFromYSize(tempdialog->Height);
 		if (tempdialog->Flags&(DIALOGBIN_FLAGS_HOTKEYFIRSTCHARACTER | DIALOGBIN_FLAGS_VIRTHOTKEY))
 		{
-			alldialogcoords->iteminfo[elemnr].hotkey = text[0];
+			alldialogcoords->iteminfo[elemnr].hotkey = tolower(text[0]);
 			text++;
 		}
 		else
