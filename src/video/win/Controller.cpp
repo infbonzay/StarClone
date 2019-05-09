@@ -1,5 +1,6 @@
 #include <windows.h>
-#include <grplib/grp.h>
+#include <windowsx.h>
+#include <d3d9.h>
 
 #include "vars.h"
 #include "const.h"
@@ -8,11 +9,46 @@
 #include "gener.h"
 #include "Controller.h"
 
+// include the Direct3D Library file
+#pragma comment (lib, "d3d9.lib")
+
 
 Controller mainController;
 static const char WClass[] = "StarCloneWClass";
 
-//==========================
+//===========================================
+static bool InitD3D(HWND hWnd, LPDIRECT3D9 *d3d, LPDIRECT3DDEVICE9 *d3ddev, int x, int y, int fullscreen)
+{
+    *d3d = Direct3DCreate9(D3D_SDK_VERSION);    // create the Direct3D interface
+
+    D3DPRESENT_PARAMETERS d3dpp;    	  				// create a struct to hold various device information
+
+    ZeroMemory(&d3dpp, sizeof(d3dpp));    				// clear out the struct for use
+	d3dpp.Windowed = fullscreen;						// program windowed, not fullscreen
+    d3dpp.SwapEffect = D3DSWAPEFFECT_DISCARD;    		// discard old frames
+    d3dpp.hDeviceWindow = hWnd;    						// set the window to be used by Direct3D
+	d3dpp.BackBufferFormat = D3DFMT_X8R8G8B8;			// set the back buffer format to 32-bit
+	d3dpp.BackBufferWidth = x;							// set the width of the buffer
+	d3dpp.BackBufferHeight = y;							// set the height of the buffer
+    
+														// create a device class using this information and information from the d3dpp stuct
+    HRESULT result = (*d3d)->CreateDevice(D3DADAPTER_DEFAULT,
+										  D3DDEVTYPE_HAL,
+										  hWnd,
+									      D3DCREATE_SOFTWARE_VERTEXPROCESSING,
+									      &d3dpp,
+									      d3ddev);
+	return result == D3D_OK;
+}
+//===========================================
+static void CleanD3D(LPDIRECT3D9 d3d, LPDIRECT3DDEVICE9 d3ddev)
+{
+    if (d3ddev)
+		d3ddev->Release();						// close and release the 3D device
+    if (d3d)
+		d3d->Release();    						// close and release Direct3D
+}
+//===========================================
 static LRESULT CALLBACK WndProcFunc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 {
 	int keymod = 0;
@@ -151,7 +187,7 @@ int Controller::Init(void)
 	}
 
 	KeysBuffer = new mycycle<uint16_t>(16, MYCYCLE_INFINITE);
-	return(0);
+	return (0);
 }
 //===========================================
 void Controller::DeInit(void)
@@ -278,6 +314,9 @@ int Controller::QueryVideoMode(int x, int y, int bpp, int fullscreen)
 			return 0;
 		}
 
+		if (InitD3D(Surface->window,&Surface->d3d,&Surface->d3ddev,Surface->FullScreen))
+			return (0);
+
 		Surface->hdc = GetDC(Surface->window);
 
 		BITMAPINFO bmi = { 0 };
@@ -309,8 +348,6 @@ void Controller::QuitVideoMode(bool donotfree)
 {
 	if (Surface && Surface->window)
 	{
-		DestroyWindow(Surface->window);
-		Surface->window = NULL;
 		if (Surface->palette && !donotfree)
 		{
 			wfree(Surface->palette);
@@ -335,9 +372,16 @@ void Controller::QuitVideoMode(bool donotfree)
 			ChangeDisplaySettings(0, 0);
 		}
 
+
 		DeleteDC(Surface->hdc);
 		DeleteDC(Surface->backDC);
 		DeleteObject(Surface->backBitmap);
+
+		CleanD3D(Surface->d3d,Surface->d3ddev);
+
+		DestroyWindow(Surface->window);
+		Surface->window = NULL;
+
 		ShowCursor();
 	}
 }
