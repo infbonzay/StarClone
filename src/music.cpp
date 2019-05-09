@@ -116,6 +116,8 @@ int wMUSIC::playPCMdata(int firstrun)
 			}
 			return(0);
 		}
+		if (this->audio.remainbytes == 0)
+			return -3;
 		usleep(200000);
 		DEBUGMESSCR("audio buffer has no data (load is too slow), try to wait\n");
 	}while(--retry);
