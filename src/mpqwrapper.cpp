@@ -6,40 +6,40 @@
 //============================================
 int wr_SFileReadFile(HANDLE hFile, void *lpBuffer, unsigned long dwToRead, unsigned long *pdwRead, void *lpOverlapped)
 {
-	LockAudio();
+//	LockAudio();
 	int ret = SFileReadFile(hFile, lpBuffer, dwToRead, pdwRead, (LPOVERLAPPED) lpOverlapped);
-	UnlockAudio();
+//	UnlockAudio();
 	return(ret);
 }
 //============================================
 int wr_SFileCloseFile(HANDLE hFile)
 {
-	LockAudio();
+//	LockAudio();
 	int ret = SFileCloseFile(hFile);
-	UnlockAudio();
+//	UnlockAudio();
 	return(ret);
 }
 //============================================
 int wr_SFileOpenArchive(const char * szMpqName, unsigned int dwPriority, unsigned int dwFlags, HANDLE *phMPQ)
 {
-	LockAudio();
+//	LockAudio();
 	int ret = SFileOpenArchive(szMpqName, dwPriority, dwFlags, phMPQ);
-	UnlockAudio();
+//	UnlockAudio();
 	return(ret);
 }
 //============================================
 int wr_SFileOpenFileEx(HANDLE hMPQ, const char * szFileName, unsigned int dwSearchScope, HANDLE *phFile)
 {
-	LockAudio();
+//	LockAudio();
 	int ret = SFileOpenFileEx(hMPQ, szFileName, dwSearchScope, phFile);
-	UnlockAudio();
+//	UnlockAudio();
 	return(ret);
 }
 //============================================
 int wr_SFileCloseArchive(HANDLE hMPQ)
 {
-	LockAudio();
+//	LockAudio();
 	int ret = SFileCloseArchive(hMPQ);
-	UnlockAudio();
+//	UnlockAudio();
 	return(ret);
 }
