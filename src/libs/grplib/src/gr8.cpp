@@ -1,8 +1,15 @@
+/*
+    grp-lib v. 0.4.21
+    Created by Vasya Botnary
+    Copyright 2016
+
+	gr8 draw functions
+*/
 #include <string.h>
 #include "grplib/gr8.h"
 #include "grplib/grp.h"
 
-#define NONPIXEL 	255
+#define NONPIXEL 		255
 #define MAXCOLORUNIT	31
 
 //==============================================

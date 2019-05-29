@@ -1,3 +1,11 @@
+/*
+    grp-lib v. 0.4.21
+    Created by Vasya Botnary
+    Copyright 2016
+
+	simple drow symbol
+	
+*/
 
 #include "grplib/grp.h"
 #include "grplib/font.h"

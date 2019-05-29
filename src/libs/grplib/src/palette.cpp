@@ -1,10 +1,9 @@
 /*
-    grp-lib v. 0.4.17
+    grp-lib v. 0.4.21
     Created by Vasya Botnary & Alex Botezatu
     Copyright 2016
 
     palette transform functions (8-bit color only)
-    need to be compiled with 'unsigned char' parameter
 
 */
 
@@ -18,6 +17,10 @@
 #define REDC		0
 #define GREENC		1
 #define BLUEC		2
+
+#define REDCOLORPERCENTAGE		30
+#define GREENCOLORPERCENTAGE	59
+#define BLUECOLORPERCENTAGE		11
 
 #define NRELEM(palette,elem,nr)	(unsigned char)palette[(elem)*3+nr]
 
@@ -79,9 +82,9 @@ void GRP_CreateTRColors(char *pal,char *outfortrbuffer)
 	    lowest = 655350.0;
 	    for  (findcol = 0; findcol < maxpalettecolor; findcol++)
 	    {
-    		absr = ((float)REDELEM(pal,findcol) - ir) * 30;//r-percentage RED in any color
-    		absg = ((float)GREENELEM(pal,findcol) - ig) * 59;//g-percentage GREEN in any color
-    		absb = ((float)BLUEELEM(pal,findcol) - ib) * 11;//b-percentage BLUE in any color
+    		absr = ((float)REDELEM(pal,findcol) - ir) * REDCOLORPERCENTAGE;				//r-percentage RED in any color
+    		absg = ((float)GREENELEM(pal,findcol) - ig) * GREENCOLORPERCENTAGE;			//g-percentage GREEN in any color
+    		absb = ((float)BLUEELEM(pal,findcol) - ib) * BLUECOLORPERCENTAGE;			//b-percentage BLUE in any color
 
     		coldif = sqrt(absr*absr + absg*absg + absb*absb);
     		if  (coldif < lowest)//found best equality
@@ -136,9 +139,9 @@ void GRP_CreateSpecialTranspTable(char *pal,char *outfortrbuffer,float LIGHTLEVE
 	    lowest = 655350.0;
 	    for  (findcol = 0; findcol < maxpalettecolor; findcol++)
 	    {
-    		absr = ((float)REDELEM(pal,findcol) - ir) * 30;//r-percentage RED in any color
-    		absg = ((float)GREENELEM(pal,findcol) - ig) * 59;//g-percentage GREEN in any color
-    		absb = ((float)BLUEELEM(pal,findcol) - ib) * 11;//b-percentage BLUE in any color
+    		absr = ((float)REDELEM(pal,findcol) - ir) * REDCOLORPERCENTAGE;				//r-percentage RED in any color
+    		absg = ((float)GREENELEM(pal,findcol) - ig) * GREENCOLORPERCENTAGE;			//g-percentage GREEN in any color
+    		absb = ((float)BLUEELEM(pal,findcol) - ib) * BLUECOLORPERCENTAGE;			//b-percentage BLUE in any color
 
     		coldif = sqrt(absr*absr + absg*absg + absb*absb);
     		if  (coldif < lowest)//found best equality
@@ -212,9 +215,9 @@ void GRP_CreateMono(char *pal,char *outbuf)
     int maxpalettecolor = 256;
     for (col = 0; col < maxpalettecolor; col++)
     {
-	r1 = (float)REDELEM(pal,col) * 30;
-	g1 = (float)GREENELEM(pal,col) * 59;
-	b1 = (float)BLUEELEM(pal,col) * 11;
+	r1 = (float)REDELEM(pal,col) * REDCOLORPERCENTAGE;
+	g1 = (float)GREENELEM(pal,col) * GREENCOLORPERCENTAGE;
+	b1 = (float)BLUEELEM(pal,col) * BLUECOLORPERCENTAGE;
 	c1 = (r1+g1+b1)/100;
 	r1 = (int)c1;	//r,g,b equal in gray gradation
 	g1 = (int)c1;	//
@@ -227,9 +230,9 @@ void GRP_CreateMono(char *pal,char *outbuf)
     	    g2 = (float)GREENELEM(pal,findcol);
     	    b2 = (float)BLUEELEM(pal,findcol);
 
-    	    absr = (r2-r1)*30;
-    	    absg = (g2-g1)*59;
-    	    absb = (b2-b1)*11;
+    	    absr = (r2-r1) * REDCOLORPERCENTAGE;
+    	    absg = (g2-g1) * GREENCOLORPERCENTAGE;
+    	    absb = (b2-b1) * BLUECOLORPERCENTAGE;
 
     	    coldif = sqrt(absr*absr + absg*absg + absb*absb);
     	    if  (coldif < lowest)
@@ -353,17 +356,17 @@ void GRP_ConvertColorsToNewPalette(unsigned char *pictpal,unsigned char *newpal,
 
     for (col = 0; col < 256; col++)
     {
-    	r1 = (float)pictpal[col*palettesize+0];
-    	g1 = (float)pictpal[col*palettesize+1];
-    	b1 = (float)pictpal[col*palettesize+2];
+    	r1 = (float)pictpal[col * palettesize + 0];
+    	g1 = (float)pictpal[col * palettesize + 1];
+    	b1 = (float)pictpal[col * palettesize + 2];
 		lowest = 655350.0;
 		bestfit = 0;
     	for (col2 = 0; col2 < 256; col2++)
     	{
-    	    absr = ((float)newpal[col2*palettesize+0]-r1)*30;
-			absg = ((float)newpal[col2*palettesize+1]-g1)*59;
-    	    absb = ((float)newpal[col2*palettesize+2]-b1)*11;
-    	    colorval = sqrt(absr*absr+absg*absg+absb*absb);
+    	    absr = ((float)newpal[col2 * palettesize+0] - r1) * REDCOLORPERCENTAGE;
+			absg = ((float)newpal[col2 * palettesize+1] - g1) * GREENCOLORPERCENTAGE;
+    	    absb = ((float)newpal[col2 * palettesize+2] - b1) * BLUECOLORPERCENTAGE;
+    	    colorval = sqrt(absr*absr + absg*absg + absb*absb);
     	    if  (colorval < lowest)
 			{
 				lowest = colorval;

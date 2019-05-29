@@ -1,3 +1,10 @@
+/*
+    grp-lib v. 0.4.21
+    Created by Vasya Botnary
+    Copyright 2016
+
+	grp fuctions
+*/
 
 #include <string.h>
 #include <stdio.h>
