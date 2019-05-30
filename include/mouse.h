@@ -17,7 +17,7 @@
 #define MOUSEMODE4						3
 #define MAXMOUSEMODE					4
 
-#define SMOUTHMOUSE						1.0001
+#define SMOUTHMOUSE						(float) 1.0001
 #define MOUSEDBLCLICKTIME				8
 
 #define MAXMOUSESIZEX					64

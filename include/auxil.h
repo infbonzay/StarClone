@@ -48,8 +48,8 @@ int CalcTotalDistance(int fromspeed,int tospeed,int acceleration);
 
 int	 strscmps(char *strvalue,char *soundtypes[],int counttypes);
 int	 rmdirrec(const char *dirname);
-long long FILElength(FILE *descriptor);
-long long FILElength(const char *fn);
+long FILElength(FILE *descriptor);
+long FILElength(const char *fn);
 int	 CalcGradus(int x1,int y1,int x2,int y2);
 unsigned char CalcDirection(int x1,int y1,int x2,int y2);
 //=================================

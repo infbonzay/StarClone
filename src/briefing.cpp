@@ -73,7 +73,7 @@ void Briefing_Parse(StarMapInfo *info, MENUSTR *allmenus, int deltatick)
 		}
 	}
 	else
-		Briefing_SetPause(brief_pauseslot, tick);
+		Briefing_SetPause(brief_pauseslot, (int) tick);
 	Briefing_ScrollText(allmenus);
 	for (i = 0;i < MAX_BRIEF_SLOTS;i++)
 		drawportraitinslot(allmenus, i);

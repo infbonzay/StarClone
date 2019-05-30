@@ -355,7 +355,7 @@ int ISCRIPT::CompilePass1(FILE *f)
 	if (!retstatus)
 	{
 		//move compiled scripts to newly exacted size allocated memory
-		compilediscriptssize = compilebufoffs;
+		compilediscriptssize = (unsigned short)compilebufoffs;
 		compilediscripts = (unsigned char *)wmalloc(compilediscriptssize);
 		memcpy(compilediscripts, compilebuf, compilediscriptssize);
 	}
@@ -438,7 +438,7 @@ int ISCRIPT::CompilePass2(FILE *f)
 					{
 						//ok we found label, get the label offset
 						labeloffs = (long)labeloffsets.GetElemNr(labelelemnr);
-						iscriptinfo.iscriptsid[iscriptid].cmdbufoffs[cmd] = labeloffs;
+						iscriptinfo.iscriptsid[iscriptid].cmdbufoffs[cmd] = (unsigned short) labeloffs;
 						findlabel = 1;
 					}
 				}
@@ -465,7 +465,7 @@ int ISCRIPT::CompilePass2(FILE *f)
 			{
 				//ok we found label, get the label offset
 				labeloffs = (long)labeloffsets.GetElemNr(labelelemnr);
-				*((unsigned short *)(&compilediscripts[cmdlabeloffs])) = labeloffs;
+				*((unsigned short *)(&compilediscripts[cmdlabeloffs])) = (unsigned short) labeloffs;
 				findlabel = 1;
 			}
 		}

@@ -93,9 +93,9 @@ int GRP_ResetLib(int sizex,int sizey)
 	return GRP_InitLib( sizex, sizey );
 }
 //==============================
-static long long FILElength(FILE *descriptor)
+static long FILElength(FILE *descriptor)
 {
-	long long old, filePos;
+	long old, filePos;
 	old = ftell(descriptor);
 	fseek(descriptor,0,SEEK_END);
 	filePos = ftell(descriptor);
@@ -105,7 +105,7 @@ static long long FILElength(FILE *descriptor)
 //==============================
 int GRP_Load(char *filename,GRPFILE **grpmem)  //load grp in memory for blitting
 {
-	unsigned long long fileLength;
+	unsigned long fileLength;
 	FILE *f;
 	f = fopen(filename,"rb");
 	if (!f)				//if file couldn't open

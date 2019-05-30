@@ -305,7 +305,7 @@ exitshowtitles:
 void FadeScreen(int fadespeed, char *pal, int typeoffade) //0-fadetoimage 1-fadetoblackscreen
 {
 	TIMER_TICK deltatick;
-	float gamma, prevgamma;
+	TIMER_TICK gamma, prevgamma;
 	TIMER_TICK tick;
 
 	tick = mytimer.GetCurrentTimerTick();
@@ -319,7 +319,7 @@ void FadeScreen(int fadespeed, char *pal, int typeoffade) //0-fadetoimage 1-fade
 			if (prevgamma != gamma)
 			{
 				prevgamma = gamma;
-				palchange(pal, (int)gamma, gameconf.videoconf.saturate);
+				palchange(pal, (int) gamma, gameconf.videoconf.saturate);
 				if (!(gameconf.grmode.flags & DISPLAYFLAGS_EMULATIONMODE))
 					mainController.UpdateScreen();
 			}

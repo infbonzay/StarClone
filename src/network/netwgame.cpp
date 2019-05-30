@@ -54,7 +54,7 @@ int GetHEXFromArray(char *allarray, const char *str, int fromid)
 	find = strstr(allarray, str);
 	if (find)
 	{
-		return(strtoll(find + len + 1, NULL, 16));
+		return((int) strtoll(find + len + 1, NULL, 16));
 	}
 	return(-1);
 }
@@ -251,8 +251,8 @@ int CheckForGameName(char *gametitle)
 {
 	int i, max, maxnr;
 	NETGAME *crgame;
-	if (max == MAXCREATEDGAMES)
-		return(3);
+//	if (max == MAXCREATEDGAMES)
+//		return(3);
 	newgames.EnumListInit();
 	while ((crgame = (NETGAME *)newgames.GetNextListElem()))
 	{

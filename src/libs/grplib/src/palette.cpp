@@ -11,8 +11,8 @@
 #include <stdlib.h>
 #include "grplib/palette.h"
 
-#define LIGHTLEVELON    0.5                  /* Percent of color 1 */
-#define LIGHTLEVELUNDER (1-LIGHTLEVELON)     /* Percent of color 2 */
+#define LIGHTLEVELON    (float)0.5                  /* Percent of color 1 */
+#define LIGHTLEVELUNDER (float)(1-LIGHTLEVELON)     /* Percent of color 2 */
 
 #define REDC		0
 #define GREENC		1
@@ -50,7 +50,8 @@ void GRP_CreateTRColors(char *pal,char *outfortrbuffer)
 
     float absr, absg, absb;
 
-    unsigned int col,col2,findcol,bestfit = 0;
+	int col, col2;
+	int findcol, bestfit = 0;
 
 
  /* Lightlevelon + lightlevelunder must equal to 1 */
@@ -66,35 +67,35 @@ void GRP_CreateTRColors(char *pal,char *outfortrbuffer)
     int maxpalettecolor=256;
     for (col2 = 0; col2 < maxpalettecolor; col2++)
     {
-	fr2 = (float)REDELEM(pal,col2) * LIGHTLEVELUNDER;
-	fg2 = (float)GREENELEM(pal,col2) * LIGHTLEVELUNDER;
-	fb2 = (float)BLUEELEM(pal,col2) * LIGHTLEVELUNDER;
-	for (col = 0; col < maxpalettecolor; col++)
-	{
-	    fr= (float)REDELEM(pal,col) * LIGHTLEVELON;
-	    fg= (float)GREENELEM(pal,col) * LIGHTLEVELON;
-	    fb= (float)BLUEELEM(pal,col) * LIGHTLEVELON;
+		fr2 = (float)REDELEM(pal,col2) * LIGHTLEVELUNDER;
+		fg2 = (float)GREENELEM(pal,col2) * LIGHTLEVELUNDER;
+		fb2 = (float)BLUEELEM(pal,col2) * LIGHTLEVELUNDER;
+		for (col = 0; col < maxpalettecolor; col++)
+		{
+			fr= (float)REDELEM(pal,col) * LIGHTLEVELON;
+			fg= (float)GREENELEM(pal,col) * LIGHTLEVELON;
+			fb= (float)BLUEELEM(pal,col) * LIGHTLEVELON;
 
-	    ir = (long)(fr + fr2);
-	    ig = (long)(fg + fg2);
-	    ib = (long)(fb + fb2);
+			ir = (long)(fr + fr2);
+			ig = (long)(fg + fg2);
+			ib = (long)(fb + fb2);
 
-	    lowest = 655350.0;
-	    for  (findcol = 0; findcol < maxpalettecolor; findcol++)
-	    {
-    		absr = ((float)REDELEM(pal,findcol) - ir) * REDCOLORPERCENTAGE;				//r-percentage RED in any color
-    		absg = ((float)GREENELEM(pal,findcol) - ig) * GREENCOLORPERCENTAGE;			//g-percentage GREEN in any color
-    		absb = ((float)BLUEELEM(pal,findcol) - ib) * BLUECOLORPERCENTAGE;			//b-percentage BLUE in any color
+			lowest = 655350.0;
+			for  (findcol = 0; findcol < maxpalettecolor; findcol++)
+			{
+    			absr = ((float)REDELEM(pal,findcol) - ir) * REDCOLORPERCENTAGE;				//r-percentage RED in any color
+    			absg = ((float)GREENELEM(pal,findcol) - ig) * GREENCOLORPERCENTAGE;			//g-percentage GREEN in any color
+    			absb = ((float)BLUEELEM(pal,findcol) - ib) * BLUECOLORPERCENTAGE;			//b-percentage BLUE in any color
 
-    		coldif = sqrt(absr*absr + absg*absg + absb*absb);
-    		if  (coldif < lowest)//found best equality
-    		{
-    		    lowest = coldif;
-    		    bestfit = findcol;
-    		}
-	    }
-	    outfortrbuffer[col2 * maxpalettecolor + col] = bestfit;
-	}
+    			coldif = sqrt(absr*absr + absg*absg + absb*absb);
+    			if  (coldif < lowest)//found best equality
+    			{
+    				lowest = coldif;
+    				bestfit = findcol;
+    			}
+			}
+			outfortrbuffer[col2 * maxpalettecolor + col] = bestfit;
+		}
     }
 }
 //==========================
@@ -107,7 +108,8 @@ void GRP_CreateSpecialTranspTable(char *pal,char *outfortrbuffer,float LIGHTLEVE
 
     float absr, absg, absb;
 
-	unsigned int col,col2,findcol,bestfit = 0;
+	int col, col2;
+	int findcol, bestfit = 0;
 
 
  /* Lightlevelon + lightlevelunder must equal to 1 */
@@ -123,35 +125,35 @@ void GRP_CreateSpecialTranspTable(char *pal,char *outfortrbuffer,float LIGHTLEVE
     int maxpalettecolor=256;
     for (col2 = 0; col2 < maxpalettecolor; col2++)
     {
-	fr2 = (float)REDELEM(pal,col2) * LIGHTLEVELUNDER1;
-	fg2 = (float)GREENELEM(pal,col2) * LIGHTLEVELUNDER1;
-	fb2 = (float)BLUEELEM(pal,col2) * LIGHTLEVELUNDER1;
-	for (col = 0; col < maxpalettecolor; col++)
-	{
-	    fr= (float)REDELEM(pal,col) * LIGHTLEVELON1;
-	    fg= (float)GREENELEM(pal,col) * LIGHTLEVELON1;
-	    fb= (float)BLUEELEM(pal,col) * LIGHTLEVELON1;
+		fr2 = (float)REDELEM(pal,col2) * LIGHTLEVELUNDER1;
+		fg2 = (float)GREENELEM(pal,col2) * LIGHTLEVELUNDER1;
+		fb2 = (float)BLUEELEM(pal,col2) * LIGHTLEVELUNDER1;
+		for (col = 0; col < maxpalettecolor; col++)
+		{
+			fr= (float)REDELEM(pal,col) * LIGHTLEVELON1;
+			fg= (float)GREENELEM(pal,col) * LIGHTLEVELON1;
+			fb= (float)BLUEELEM(pal,col) * LIGHTLEVELON1;
 
-	    ir = fr + fr2;
-	    ig = fg + fg2;
-	    ib = fb + fb2;
+			ir = fr + fr2;
+			ig = fg + fg2;
+			ib = fb + fb2;
 
-	    lowest = 655350.0;
-	    for  (findcol = 0; findcol < maxpalettecolor; findcol++)
-	    {
-    		absr = ((float)REDELEM(pal,findcol) - ir) * REDCOLORPERCENTAGE;				//r-percentage RED in any color
-    		absg = ((float)GREENELEM(pal,findcol) - ig) * GREENCOLORPERCENTAGE;			//g-percentage GREEN in any color
-    		absb = ((float)BLUEELEM(pal,findcol) - ib) * BLUECOLORPERCENTAGE;			//b-percentage BLUE in any color
+			lowest = 655350.0;
+			for  (findcol = 0; findcol < maxpalettecolor; findcol++)
+			{
+    			absr = ((float)REDELEM(pal,findcol) - ir) * REDCOLORPERCENTAGE;				//r-percentage RED in any color
+    			absg = ((float)GREENELEM(pal,findcol) - ig) * GREENCOLORPERCENTAGE;			//g-percentage GREEN in any color
+    			absb = ((float)BLUEELEM(pal,findcol) - ib) * BLUECOLORPERCENTAGE;			//b-percentage BLUE in any color
 
-    		coldif = sqrt(absr*absr + absg*absg + absb*absb);
-    		if  (coldif < lowest)//found best equality
-    		{
-    		    lowest = coldif;
-    		    bestfit = findcol;
-    		}
-	    }
-	    outfortrbuffer[col2 * maxpalettecolor + col] = bestfit;
-	}
+    			coldif = sqrt(absr*absr + absg*absg + absb*absb);
+    			if  (coldif < lowest)//found best equality
+    			{
+    				lowest = coldif;
+    				bestfit = findcol;
+    			}
+			}
+			outfortrbuffer[col2 * maxpalettecolor + col] = bestfit;
+		}
     }
 }
 //==========================
@@ -163,41 +165,41 @@ void GRP_CreateSpecialTranspTable(char *pal,char *outfortrbuffer,float LIGHTLEVE
 void GRP_CreateByRGB(char *pal,int rgb,float addgrd,char *outbuf)
 {
     float r1,g1,b1,r2,g2,b2;
-    unsigned int col,findcol,bestfit=0;
+    int findcol,bestfit=0;
+	int col;
     float absr, absg, absb,lowest,coldif;
 
     int maxpalettecolor = 256;
     for (col = 0; col < maxpalettecolor; col++)
     {
+		r1 = (float)REDELEM(pal,col) * GETR(rgb) * addgrd/100;
+		if (r1>255)
+    			r1 = 255;
+		g1 = (float)GREENELEM(pal,col) * GETG(rgb) * (int)addgrd/100;
+		if (g1>255)
+    			g1 = 255;
+		b1 = (float)BLUEELEM(pal,col) * GETB(rgb) * (int)addgrd/100;
+		if (b1>255)
+    			b1 = 255;
 
-	r1 = (float)REDELEM(pal,col) * GETR(rgb) * addgrd/100;
-	if (r1>255)
-    	    r1 = 255;
-	g1 = (float)GREENELEM(pal,col) * GETG(rgb) * (int)addgrd/100;
-	if (g1>255)
-    	    g1 = 255;
-	b1 = (float)BLUEELEM(pal,col) * GETB(rgb) * (int)addgrd/100;
-	if (b1>255)
-    	    b1 = 255;
+		lowest = 655350;
+		for  (findcol = 0; findcol < maxpalettecolor; findcol++)
+		{
+    			r2 = (float)REDELEM(pal,findcol);
+    			g2 = (float)GREENELEM(pal,findcol);
+    			b2 = (float)BLUEELEM(pal,findcol);
 
-	lowest = 655350;
-	for  (findcol = 0; findcol < maxpalettecolor; findcol++)
-	{
-    	    r2 = (float)REDELEM(pal,findcol);
-    	    g2 = (float)GREENELEM(pal,findcol);
-    	    b2 = (float)BLUEELEM(pal,findcol);
+    			absr = (r2 - r1) * GETR(rgb);
+    			absg = (g2 - g1) * GETG(rgb);
+    			absb = (b2 - b1) * GETB(rgb);
 
-    	    absr = (r2 - r1) * GETR(rgb);
-    	    absg = (g2 - g1) * GETG(rgb);
-    	    absb = (b2 - b1) * GETB(rgb);
-
-    	    coldif = sqrt(absr*absr + absg*absg + absb*absb);
-    	    if  (coldif < lowest)
-    	    {
-    		lowest = coldif;
-    		bestfit = findcol;
-    	    }
-	}
+    			coldif = sqrt(absr*absr + absg*absg + absb*absb);
+    			if  (coldif < lowest)
+    			{
+    				lowest = coldif;
+    				bestfit = findcol;
+    			}
+		}
 	outbuf[col] = bestfit;
     }
 }
@@ -209,38 +211,39 @@ void GRP_CreateMono(char *pal,char *outbuf)
 {
     float r1,g1,b1,r2,g2,b2;
     float c1;
-    unsigned int col,findcol,bestfit=0;
+    int findcol,bestfit=0;
+	int col;
     float absr, absg, absb,lowest,coldif;
 
     int maxpalettecolor = 256;
     for (col = 0; col < maxpalettecolor; col++)
     {
-	r1 = (float)REDELEM(pal,col) * REDCOLORPERCENTAGE;
-	g1 = (float)GREENELEM(pal,col) * GREENCOLORPERCENTAGE;
-	b1 = (float)BLUEELEM(pal,col) * BLUECOLORPERCENTAGE;
-	c1 = (r1+g1+b1)/100;
-	r1 = (int)c1;	//r,g,b equal in gray gradation
-	g1 = (int)c1;	//
-	b1 = (int)c1;	//
+		r1 = (float)REDELEM(pal,col) * REDCOLORPERCENTAGE;
+		g1 = (float)GREENELEM(pal,col) * GREENCOLORPERCENTAGE;
+		b1 = (float)BLUEELEM(pal,col) * BLUECOLORPERCENTAGE;
+		c1 = (r1+g1+b1)/100;
+		r1 = (int)c1;	//r,g,b equal in gray gradation
+		g1 = (int)c1;	//
+		b1 = (int)c1;	//
 
-	lowest = 655350.0;
-	for  (findcol = 0; findcol < maxpalettecolor; findcol++)
-	{
-    	    r2 = (float)REDELEM(pal,findcol);
-    	    g2 = (float)GREENELEM(pal,findcol);
-    	    b2 = (float)BLUEELEM(pal,findcol);
+		lowest = 655350.0;
+		for  (findcol = 0; findcol < maxpalettecolor; findcol++)
+		{
+    			r2 = (float)REDELEM(pal,findcol);
+    			g2 = (float)GREENELEM(pal,findcol);
+    			b2 = (float)BLUEELEM(pal,findcol);
 
-    	    absr = (r2-r1) * REDCOLORPERCENTAGE;
-    	    absg = (g2-g1) * GREENCOLORPERCENTAGE;
-    	    absb = (b2-b1) * BLUECOLORPERCENTAGE;
+    			absr = (r2-r1) * REDCOLORPERCENTAGE;
+    			absg = (g2-g1) * GREENCOLORPERCENTAGE;
+    			absb = (b2-b1) * BLUECOLORPERCENTAGE;
 
-    	    coldif = sqrt(absr*absr + absg*absg + absb*absb);
-    	    if  (coldif < lowest)
-    	    {
-    		lowest = coldif;
-    		bestfit = findcol;
-    	    }
-	}
+    			coldif = sqrt(absr*absr + absg*absg + absb*absb);
+    			if  (coldif < lowest)
+    			{
+    				lowest = coldif;
+    				bestfit = findcol;
+    			}
+		}
 	outbuf[col] = bestfit;
     }
 }
@@ -300,7 +303,8 @@ void GRP_CreateByRGBTable(char *pal,
 {
     float r1,g1,b1,r2,g2,b2;
     float coldif,lowest;
-    unsigned int col,findcol,grad,bestfit = 255;
+    int findcol,bestfit = 255;
+	int col,grad;
     float absr, absg, absb;
     unsigned char *glowcolors;
 
@@ -332,7 +336,7 @@ void GRP_CreateByRGBTable(char *pal,
 				absg = (g2-g1)*33;
 				absb = (b2-b1)*33;
 
-				coldif = sqrt(absr*absr + absg*absg + absb*absb);
+				coldif = (float) sqrt(absr*absr + absg*absg + absb*absb);
 				if  (coldif < lowest)
 				{
 					lowest = coldif;
@@ -352,7 +356,7 @@ void GRP_CreateByRGBTable(char *pal,
 void GRP_ConvertColorsToNewPalette(unsigned char *pictpal,unsigned char *newpal,unsigned char *conversionarray,int palettesize)//palettesize 3 or 4 bytes per pixel
 {
     float r1,g1,b1,absr,absg,absb,colorval,lowest;
-    unsigned int col,col2,bestfit;
+    int col,col2,bestfit;
 
     for (col = 0; col < 256; col++)
     {

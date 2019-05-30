@@ -1019,7 +1019,7 @@ int editboxaction(MENUSTR *allmenus)
 					return(0);
 				if (curlength < curitem->item.editbox->maxsymbols)
 				{
-					curitem->item.editbox->editstr[curlength] = keypressed;
+					curitem->item.editbox->editstr[curlength] = (unsigned char) keypressed;
 					curitem->item.editbox->editstr[curlength + 1] = 0;
 					curlength++;
 				}
@@ -2959,8 +2959,8 @@ void changeimageitem(MENUSTR *allmenus, int nr, const char *pcxfile)
 		menuitem->item.image->pcxfilename = (char *)wmalloc(len + 1);
 		strcpy(menuitem->item.image->pcxfilename, pcxfile);
 		menuitem->item.image->pcx = pcx;
-		menuitem->hotxsize = pcx->xsizePcx();
-		menuitem->hotysize = pcx->ysizePcx();
+		menuitem->hotxsize = (short) pcx->xsizePcx();
+		menuitem->hotysize = (short) pcx->ysizePcx();
 		setimageitem_visibilityxy(allmenus, nr, menuitem->hotxsize, menuitem->hotysize);
 	}
 	else

@@ -4935,7 +4935,7 @@ int WaitingDownload(MENUSTR *allmenus, void *data)
 				return WGET_DOWNLOAD_FILENOTFOUND;
 			}
 			fscanf(f, "%s", txtlabel);
-			mpqfile->wgetprocid = atoll(txtlabel);
+			mpqfile->wgetprocid = atoi(txtlabel);
 			fclose(f);
 		}
 		fsize = FILElength(mpqfile->filename);

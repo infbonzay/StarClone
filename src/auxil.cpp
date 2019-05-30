@@ -210,19 +210,19 @@ int rmdirrec(const char *dirname)
 	return 0;
 }
 //=======================================
-long long FILElength(FILE *descriptor)
+long FILElength(FILE *descriptor)
 {
-	long long old,len;
+	long old,len;
 	old = ftell(descriptor);
-	if (old==-1)
+	if (old == -1)
 		return(-1);
 	fseek(descriptor,0,SEEK_END);
 	len = ftell(descriptor);
-	fseek(descriptor,old,SEEK_SET);
+	fseek(descriptor, old, SEEK_SET);
 	return(len);
 }
 //=======================================
-long long FILElength(const char *fn)
+long FILElength(const char *fn)
 {
 	struct stat st;
 	memset(&st,0,sizeof(struct stat));
@@ -291,8 +291,8 @@ void calcsintables(void)
 	int i;
 	for (i=0;i<256;i++)
 	{
-		sintable256[i] = sin((i+64)*2*PI/256)*256;
-		costable256[i] = cos((i+64)*2*PI/256)*256;
+		sintable256[i] = (short) (sin((i+64)*2*PI/256) * 256);
+		costable256[i] = (short) (cos((i+64)*2*PI/256) * 256);
 	}
 }
 //===========================================
@@ -311,7 +311,7 @@ unsigned int mkchecksumm(char *filename)
 {
 	unsigned char *buff;
 	unsigned int chksum;
-	long long fsize;
+	long fsize;
 	FILE *f;
 	f = fopen(filename,"rb");
 	if (!f)

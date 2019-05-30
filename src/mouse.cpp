@@ -63,7 +63,7 @@ int HighMouse::LoadOneCursor(char *filename, int typemouse)
 		if (GRP_Load(filename, &cursors[typemouse].mousegrp))
 			return -1;
 	}
-	cursors[typemouse].maxpositions = cursors[typemouse].mousegrp->CountPictures;
+	cursors[typemouse].maxpositions = (unsigned char) cursors[typemouse].mousegrp->CountPictures;
 	return 0;
 }
 //==============================
@@ -521,9 +521,9 @@ void HighMouse::RefreshMouseType(int xk, int yk)
 			{
 			case 0:
 				if (!screenMapInfo->ScrollX)
-					screenMapInfo->ScrollX = (int)ScrollMapX(0, SMOUTHMOUSE);
+					screenMapInfo->ScrollX = (int) ScrollMapX(0, SMOUTHMOUSE);
 				if (!screenMapInfo->ScrollY)
-					screenMapInfo->ScrollY = (int)ScrollMapY(0, SMOUTHMOUSE);
+					screenMapInfo->ScrollY = (int) ScrollMapY(0, SMOUTHMOUSE);
 				break;
 			case 1:
 				if (xk)
@@ -531,9 +531,9 @@ void HighMouse::RefreshMouseType(int xk, int yk)
 					MouseOnBorder = 1;
 					MouseType = MOUSELEFTSCROLL;
 					if (!screenMapInfo->ScrollX)
-						screenMapInfo->ScrollX = (int)ScrollMapX(-1, SMOUTHMOUSE);
+						screenMapInfo->ScrollX = (int) ScrollMapX(-1, SMOUTHMOUSE);
 					if (!screenMapInfo->ScrollY)
-						screenMapInfo->ScrollY = (int)ScrollMapY(0, SMOUTHMOUSE);
+						screenMapInfo->ScrollY = (int) ScrollMapY(0, SMOUTHMOUSE);
 				}
 				else
 					MouseType = NORMALMOUSE;
