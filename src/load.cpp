@@ -834,29 +834,51 @@ void savelog(const char *mes, int i)
 //============================================
 int LoadDatTblFiles(DATTBLSTRUCT *dattbl)
 {
-	if (mpqloadfile(SC_IMAGES_DAT, (char **)&dattbl->images_dat))
-		;//return(-1);
-	if (mpqloadfile(SC_SPRITES_DAT, (char **)&dattbl->sprites_dat))
-		;//return(-2);
-	if (mpqloadfile(SC_UNITS_DAT, (char **)&dattbl->units_dat))
-		;//return(-3);
-	if (mpqloadfile(SC_FLINGY_DAT, (char **)&dattbl->flingy_dat))
-		;//return(-3);
-	if (mpqloadfile(SC_PORTDATA_DAT, (char **)&dattbl->portdata_dat))
-		;//return(-4);
-	if (mpqloadfile(SC_WEAPONS_DAT, (char **)&dattbl->weapons_dat))
-		;//return(-5);
-	if (mpqloadfile(SC_UPGRADES_DAT, (char **)&dattbl->upgrades_dat))
-		;//return(-6);
-	if (mpqloadfile(SC_TECHDATA_DAT, (char **)&dattbl->techdata_dat))
-		;//return(-7);
-	if (mpqloadfile(SC_ORDERS_DAT, (char **)&dattbl->orders_dat))
-		;//return(-8);
-	if (mpqloadfile(SC_SFXDATA_DAT, (char **)&dattbl->sfxdata_dat))
-		;//return(-9);
-	if (mpqloadfile(SC_MAPDATA_DAT, (char **)&dattbl->mapdata_dat))
-		;//return(-10);
-	dattbl->images_tbl = new TBL();
+	if (mpqloadfile(SC_IMAGES_DAT, (char **)&dattbl->images_dat)) 
+	{
+	}
+	
+	if (mpqloadfile(SC_SPRITES_DAT, (char **)&dattbl->sprites_dat)) 
+	{
+	}
+	
+	if (mpqloadfile(SC_UNITS_DAT, (char **)&dattbl->units_dat)) 
+	{
+	}
+	
+	if (mpqloadfile(SC_FLINGY_DAT, (char **)&dattbl->flingy_dat)) 
+	{
+	}
+	
+	if (mpqloadfile(SC_PORTDATA_DAT, (char **)&dattbl->portdata_dat)) 
+	{
+	}
+	
+	if (mpqloadfile(SC_WEAPONS_DAT, (char **)&dattbl->weapons_dat)) 
+	{
+	}
+	
+	if (mpqloadfile(SC_UPGRADES_DAT, (char **)&dattbl->upgrades_dat)) 
+	{
+	}
+	
+	if (mpqloadfile(SC_TECHDATA_DAT, (char **)&dattbl->techdata_dat)) 
+	{
+	}
+	
+	if (mpqloadfile(SC_ORDERS_DAT, (char **)&dattbl->orders_dat)) 
+	{
+	}
+	
+	if (mpqloadfile(SC_SFXDATA_DAT, (char **)&dattbl->sfxdata_dat)) 
+	{
+	}
+	
+	if (mpqloadfile(SC_MAPDATA_DAT, (char **)&dattbl->mapdata_dat)) 
+	{
+	}
+
+		dattbl->images_tbl = new TBL();
 	dattbl->images_tbl->loadTBL(SC_IMAGES_TBL);
 
 	dattbl->portdata_tbl = new TBL();
