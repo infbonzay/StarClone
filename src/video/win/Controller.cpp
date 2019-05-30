@@ -314,8 +314,8 @@ int Controller::QueryVideoMode(int x, int y, int bpp, int fullscreen)
 			return 0;
 		}
 
-		if (InitD3D(Surface->window, &Surface->d3d, &Surface->d3ddev, x, y, Surface->FullScreen))
-			return (0);
+//		if (InitD3D(Surface->window, &Surface->d3d, &Surface->d3ddev, x, y, Surface->FullScreen))
+//			return (0);
 
 		Surface->hdc = GetDC(Surface->window);
 
