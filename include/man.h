@@ -190,9 +190,9 @@ struct OBJ
 
 		signed char		lastdamageoverlays;
 		unsigned char	selectedbits;
-		unsigned char	SC_Unit;		//starcraft unit number
-		unsigned char	SC_ConstrUnit;	//starcraft constr unit number
-		unsigned char	SC_FromUnit;	//from what unit nr, this unit morphing, or 255 if none
+		SCUNIT			SC_Unit;		//starcraft unit number
+		SCUNIT			SC_ConstrUnit;	//starcraft constr unit number
+		SCUNIT			SC_FromUnit;	//from what unit nr, this unit morphing, or 255 if none
 		unsigned char	timerepair;		//timeme for repair in one position
 		unsigned char	searchforatack_tick;
 		unsigned char	movetoobj_tick;

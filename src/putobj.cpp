@@ -498,7 +498,7 @@ void ShowUpgradesInBar(int XWINPOS, int YWINPOS, OBJ *a, OBJstruct *b)
 		xpos += 36;
 		mousehot += 2;
 	}
-	Subunit1 = alldattbl.units_dat->Subunit1[SC_Unit];
+	Subunit1 = (SCUNIT) alldattbl.units_dat->Subunit1[SC_Unit];
 	if (Subunit1 < MAX_UNITS_ELEM)
 		SC_Unit = Subunit1;
 	weapon_id1 = alldattbl.units_dat->GroundWeapon[SC_Unit];

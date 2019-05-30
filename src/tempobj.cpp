@@ -134,10 +134,10 @@ OBJ *CreateUnitsFromMAP(struct unit_on_map *unit, StarMapInfo *loadedmap)
 	case SC_MINERAL1OBJ://minerals
 	case SC_MINERAL2OBJ:
 	case SC_MINERAL3OBJ:
-		a = CreateMineralsOnMap(unit->xpos, unit->ypos, unit->unit_type, GREYNEUTRALCOLORPLAYER, unit->resource_count, MAXMINERALSINSTACK, loadedmap);
+		a = CreateMineralsOnMap(unit->xpos, unit->ypos, (SCUNIT) unit->unit_type, GREYNEUTRALCOLORPLAYER, unit->resource_count, MAXMINERALSINSTACK, loadedmap);
 		break;
 	case SC_GEYSEROBJ:
-		a = CreateGeyserOnMap(unit->xpos, unit->ypos, unit->unit_type, GREYNEUTRALCOLORPLAYER, unit->resource_count, MAXGASINSTACK, loadedmap);
+		a = CreateGeyserOnMap(unit->xpos, unit->ypos, (SCUNIT) unit->unit_type, GREYNEUTRALCOLORPLAYER, unit->resource_count, MAXGASINSTACK, loadedmap);
 		break;
 	case SC_STARTLOC://start location
 		if (GAMETYPE == MAP_GAMETYPE_USEMAPSETTINGS)
@@ -206,9 +206,9 @@ OBJ *CreateUnitsFromMAP(struct unit_on_map *unit, StarMapInfo *loadedmap)
 		}
 		else
 		{
-			if (!IsGroupNeutralFlag(unit->unit_type))				//in melee do not create neutral units/builds
+			if (!IsGroupNeutralFlag((SCUNIT) unit->unit_type))				//in melee do not create neutral units/builds
 				return(NULL);
-			a = createobjfulllife(unit->xpos, unit->ypos, unit->unit_type, unit->player);
+			a = createobjfulllife(unit->xpos, unit->ypos,(SCUNIT) unit->unit_type, unit->player);
 		}
 		break;
 	}
@@ -232,9 +232,9 @@ void AddToMinimapNeutralObjs(mylist *units, StarMapInfo *loadedmap, int playorte
 		{
 			if (unit->player >= PLAYEDPLAYERS)
 			{
-				if (IsBuild(unit->unit_type))
+				if (IsBuild((SCUNIT) unit->unit_type))
 				{
-					if (IfCanClickOBJ(unit->unit_type))
+					if (IfCanClickOBJ((SCUNIT) unit->unit_type))
 						ObjOnMiniMap(unit->xpos / 32 - sx / 64, unit->ypos / 32 - sy / 64, sx, sy, MINIMAP_COLORFORRESOURCES, loadedmap->minimap);
 				}
 			}

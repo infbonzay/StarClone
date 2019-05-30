@@ -624,7 +624,7 @@ int constrbuild(int nb)
 {
 	if (mageprop[nb].type_id == ORDERS_UNIT)//if unit constr
 	{
-		highMouse->Construct.SC_BuildUnit = mageprop[nb].obj_id;
+		highMouse->Construct.SC_BuildUnit = (SCUNIT) mageprop[nb].obj_id;
 	}
 	else
 		if (nb == MODELANDING)

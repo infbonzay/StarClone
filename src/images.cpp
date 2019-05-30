@@ -847,7 +847,8 @@ MAIN_IMG *OBJCreateImage(OBJ *a, int x256, int y256, unsigned char useiscriptnr,
 {
 	MAIN_IMG *img;
 	unsigned short flags, flingy_id, sprites_id, images_id;
-	unsigned char side, subunitnr, elevationlevel;
+	unsigned char side, elevationlevel;
+	SCUNIT subunitnr;
 	if (a->SC_Unit == SC_MAPREVEALEROBJ)
 		flags = SC_IMAGE_FLAG_DISABLEDRAW;
 	else
@@ -880,7 +881,7 @@ MAIN_IMG *OBJCreateImage(OBJ *a, int x256, int y256, unsigned char useiscriptnr,
 		side = myrand(MAXFACEDIRECTIONS);
 	img = new MAIN_IMG(images_id, x256, y256, elevationlevel, imagelo_id, side * 8, a->color, flags, useiscriptnr);
 	a->mainimage = img;
-	subunitnr = alldattbl.units_dat->Subunit1[a->SC_Unit];
+	subunitnr = (SCUNIT) alldattbl.units_dat->Subunit1[a->SC_Unit];
 	if (subunitnr < MAX_UNITS_ELEM)
 	{
 		img->flags |= SC_IMAGE_FLAG_NEEDTOCREATESUBUNIT;

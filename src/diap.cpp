@@ -191,7 +191,7 @@ selectedicon:
 						break;
 					case ORDERS_UNIT:
 						strcpy(iconstr, alldattbl.stattxt_tbl->get_TBL_STR(mp->stattxt_id_enable) + 2);
-						GetCostUnit(mp->obj_id, &need[NEED_MINERALS], &need[NEED_GAS]);
+						GetCostUnit((SCUNIT) mp->obj_id, &need[NEED_MINERALS], &need[NEED_GAS]);
 						need[NEED_MANA] = 0;
 						if (mp->techid < MAX_TECHDATA_ELEM)
 							need[NEED_MANA] = GetTechEnergyCost(mp->techid);
@@ -201,10 +201,10 @@ selectedicon:
 						//								if (techdata_id<MAX_TECHDATA_ELEM)
 						//									need[NEED_MANA]=GetTechEnergyCost(techdata_id);
 						//							}
-						if (GetInEgg(mp->obj_id))
-							need[NEED_PSI] = GetSupplyUnit(mp->obj_id);
+						if (GetInEgg((SCUNIT) mp->obj_id))
+							need[NEED_PSI] = GetSupplyUnit((SCUNIT) mp->obj_id);
 						else
-							need[NEED_PSI] = GetSupplyUnit(mp->obj_id) / 2;
+							need[NEED_PSI] = GetSupplyUnit((SCUNIT) mp->obj_id) / 2;
 						break;
 					case ORDERS_UPGRADE:
 						upg = GetUpgradeTree(&map, NUMBGAMER, mp->obj_id);
@@ -544,7 +544,7 @@ static int CreateUnitProperties(struct OBJ *a, struct OBJstruct *b, int *prop, i
 				case ORDERS_UNIT:
 					if (mageprop[prop[i]].obj_id >= 0)
 					{
-						if (!GetUnitRestrictions(&map, playernr, mageprop[prop[i]].obj_id))
+						if (!GetUnitRestrictions(&map, playernr, (SCUNIT) mageprop[prop[i]].obj_id))
 							prop[i] = MODENON;
 					}
 					break;

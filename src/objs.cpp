@@ -259,7 +259,7 @@ struct OBJ *createobjlowlevel(OBJ *workerobj, int x, int y, SCUNIT SC_Unit, int 
 	OBJ *a;
 	OBJ *a2 = NULL;
 	OBJstruct *b;
-	unsigned char subunitnr;
+	SCUNIT subunitnr;
 	if (SC_Unit == SC_ASSIMILATOROBJ || SC_Unit == SC_EXTRACTOROBJ || SC_Unit == SC_REFINERYOBJ)
 	{
 		a2 = GetGEYSERfromMAP(x / SIZESPRLANSHX, y / SIZESPRLANSHY);
@@ -381,7 +381,7 @@ struct OBJ *createobjlowlevel(OBJ *workerobj, int x, int y, SCUNIT SC_Unit, int 
 	}
 	else
 	{
-		subunitnr = alldattbl.units_dat->Subunit1[SC_Unit];
+		subunitnr = (SCUNIT) alldattbl.units_dat->Subunit1[SC_Unit];
 		if (subunitnr < MAX_UNITS_ELEM)
 		{
 			a->subunit = createobjlowlevel(NULL, x, y, subunitnr, playernr, 3, 100, 100, 100, NOLOIMAGE);
@@ -1254,7 +1254,7 @@ void ChangeUnitSubUnitAndImagesAssociated(OBJ *a, SCUNIT SC_NewUnit)
 
 	a->subunit->mainimage->DeleteMainImgAndChilds();
 	a->subunit->mainimage = NULL;
-	a->subunit->SC_Unit = alldattbl.units_dat->Subunit1[SC_NewUnit];
+	a->subunit->SC_Unit = (SCUNIT) alldattbl.units_dat->Subunit1[SC_NewUnit];
 
 	CreateImageAndAddToList(a, x256, y256, 2, NOLOIMAGE);
 
@@ -1292,7 +1292,7 @@ int moveobj_addonmode(struct OBJ *a, struct OBJ *destobj, int mode, int x, int y
 			mageprop[mode].obj_id, mageprop[mode].stattxt_id_enable, mode, modemoveflags);
 		//		moveobj(a,NULL,x,y,a->playernr,mode,modemoveflags);
 
-		newobj = createobjman(x, y, mageprop[mode].obj_id, a->playernr);
+		newobj = createobjman(x, y, (SCUNIT) mageprop[mode].obj_id, a->playernr);
 		newobj->health = STARTBUILDLIFE;
 		newobj->shield = STARTBUILDSHIELD;
 		a->constrobj = newobj;
@@ -1327,8 +1327,8 @@ int moveobj_buildmode(struct OBJ *a, struct OBJ *destobj, int mode, int x, int y
 {
 	OBJ *newobj;
 	int mcost, gcost, x256, y256, constrerror;
-	unsigned char obj_id;
-	obj_id = mageprop[mode].obj_id;
+	SCUNIT obj_id;
+	obj_id = (SCUNIT) mageprop[mode].obj_id;
 	GetCostUnit(obj_id, &mcost, &gcost);
 	if (IsBuild(a->SC_Unit))
 	{
@@ -1453,8 +1453,8 @@ int moveobj_unitmode(struct OBJ *a, struct OBJ *destobj, int mode, int x, int y,
 {
 	int needmana;
 	OBJ *newobj;
-	unsigned char obj_id;
-	obj_id = mageprop[mode].obj_id;
+	SCUNIT obj_id;
+	obj_id = (SCUNIT) mageprop[mode].obj_id;
 	switch (obj_id)
 	{
 	case SC_SCANNERSWEEP:
@@ -1569,11 +1569,11 @@ int moveobj(struct OBJ *a, struct OBJ *destobj, int mode, int x, int y, int mode
 		a->prop &= ~VARMOVEINATACKMODE;
 	if (mageprop[mode].type_id == ORDERS_UNIT)
 	{
-		if (IsAddon(mageprop[mode].obj_id))
+		if (IsAddon((SCUNIT) mageprop[mode].obj_id))
 		{
 			return(moveobj_addonmode(a, destobj, mode, x, y, modemoveflags));
 		}
-		else if (IsBuild(mageprop[mode].obj_id))
+		else if (IsBuild((SCUNIT) mageprop[mode].obj_id))
 		{
 			return(moveobj_buildmode(a, destobj, mode, x, y, modemoveflags));
 		}
