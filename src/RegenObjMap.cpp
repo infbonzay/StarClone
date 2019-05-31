@@ -145,5 +145,14 @@ OBJ* RegenObjMap::GetNextObj(void)
 }
 
 //==========================================
-
+int RegenObjMap::ObjPosInList(void)
+{
+	return EnumFirst;
+}	
+//==========================================
+void RegenObjMap::ObjPosInList(int newEnumPos)
+{
+	EnumFirst = newEnumPos;
+}	
+//==========================================
 

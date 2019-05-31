@@ -23,6 +23,8 @@ public:
 	void DelObjList(OBJ *o);
 	void ClearEnumerateObj(void);
 	OBJ* GetNextObj(void);
+	int ObjPosInList(void);
+	void ObjPosInList(int newEnumPos);
 };
 
 #endif

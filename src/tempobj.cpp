@@ -12,6 +12,7 @@
 #include "doodad.h"
 #include "pylon.h"
 #include "stringfiles.h"
+#include "gener.h"
 #include "tempobj.h"
 
 int curentlocation;
@@ -278,29 +279,35 @@ void RemoveUnitsFromLists(mylist *units)
 //=====================================
 void ConnectingPairBuilds(StarMapInfo *loadedmap)
 {
-	int i, j;
-	OBJ *a;
+	int i, j, savedObjPos;
+	OBJ *a,*a2;
 	OBJstruct *b;
 	if (havezergparied)
 	{
-		for (i = 0;i < MaxObjects;i++)
+		regenObjMap->ClearEnumerateObj();
+		while( (a = regenObjMap->GetNextObj()) )
+//		for (i = 0;i < MaxObjects;i++)
 		{
-			a = objects[i];
+//			a = objects[i];
 			if (a->paried == ZERGPARIED)
 			{
-				for (j = i + 1;j < MaxObjects;j++)
+				savedObjPos = regenObjMap->ObjPosInList();
+				while( (a2 = regenObjMap->GetNextObj()) )
+//				for (j = i + 1;j < MaxObjects;j++)
 				{
-					if (a->unitserial2 == objects[j]->unitserial1)
+					a2 = objects[j];
+					if (a->unitserial2 == a2->unitserial1)
 					{
 						//found doubles builds
-						b = loadobj(objects[j]->SC_Unit);
-						a->doubleunit = objects[j];
+						b = loadobj(a2->SC_Unit);
+						a->doubleunit = a2;
 						ChangeTypeOfProp(a->doubleunit, b, PROPEMPTY);
-						objects[j]->doubleunit = a;
-						ChangeTypeOfProp(objects[j]->doubleunit, b, PROPEMPTY);
+						a2->doubleunit = a;
+						ChangeTypeOfProp(a2->doubleunit, b, PROPEMPTY);
 						break;
 					}
 				}
+				regenObjMap->ObjPosInList(savedObjPos);
 			}
 		}
 	}
