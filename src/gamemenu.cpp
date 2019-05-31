@@ -4503,9 +4503,11 @@ void MakeObserver(int playernr)
 	minimapmenu->iteminfo[MINIMAPDIALOG_DIPLOMACYBUTTON].Flags |= DIALOGBIN_FLAGS_ITEMDISABLED;
 	minimapmenu->iteminfo[MINIMAPDIALOG_MESSAGEBUTTON].Flags |= DIALOGBIN_FLAGS_ITEMDISABLED;
 	//all players units are stopped from their work
-	for (i = 0;i < MaxObjects;i++)
+	regenObjMap->ClearEnumerateObj();
+	while( (a = regenObjMap->GetNextObj()) )
+//	for (i = 0;i < MaxObjects;i++)
 	{
-		a = objects[i];
+//		a = objects[i];
 		if (a->playernr == playernr)
 			moveobj(a, NULL, MODESTOP, NOSHOWERROR);
 	}

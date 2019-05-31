@@ -1236,9 +1236,11 @@ void CreatePylonSelectArea(void)
 	OVERLAY_IMG *newimg;
 	if (pylonselected)
 	{
-		for (i = 0;i < MaxObjects;i++)
+		regenObjMap->ClearEnumerateObj();
+		while( (a = regenObjMap->GetNextObj()) )
+//		for (i = 0;i < MaxObjects;i++)
 		{
-			a = objects[i];
+//			a = objects[i];
 			if (a->SC_Unit == SC_PYLONOBJ && a->playernr == NUMBGAMER && !(a->prop & VARPYLONAREAACTIVE) && IsReadyOBJ(a))
 			{
 				a->prop |= VARPYLONAREAACTIVE;
@@ -1260,9 +1262,11 @@ void RemovePylonSelectArea(void)
 		if (drawpylonareaactive)
 		{
 			drawpylonareaactive = 0;
-			for (i = 0;i < MaxObjects;i++)
+			regenObjMap->ClearEnumerateObj();
+			while( (a = regenObjMap->GetNextObj()) )
+//			for (i = 0;i < MaxObjects;i++)
 			{
-				a = objects[i];
+//				a = objects[i];
 				if (a->SC_Unit == SC_PYLONOBJ && a->playernr == NUMBGAMER && (a->prop & VARPYLONAREAACTIVE))
 				{
 					//destroy pylon area images

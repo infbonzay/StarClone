@@ -57,14 +57,6 @@ void keyhandler(void)
 		}
 		if (mainController.KeyActive==F2)
 		{
-			for (int i=0;i<MaxObjects;i++)
-			{
-				if (objects[i]->playernr==1)
-					dieobj(objects[i]);
-			}
-		}
-		if (mainController.KeyActive==F2)
-		{
 	//		WaitingPlayersMenu(0x0fff);
 			showedmenu.prepareforshowmenu(&WaitingPlayersMenu,0xffff);
 																//all 12 players (0000 1111 1111 1111)

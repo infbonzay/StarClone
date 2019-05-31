@@ -287,9 +287,11 @@ int CheckForUnit(int(*ConditionFunction)(int *, int),
 		checkready = readyfunc[0];
 		UNITNRFORCHECK = unitid;
 	}
-	for (i = 0;i < MaxObjects;i++)
+	regenObjMap->ClearEnumerateObj();
+	while( (a = regenObjMap->GetNextObj()) )
+//	for (i = 0;i < MaxObjects;i++)
 	{
-		a = objects[i];
+//		a = objects[i];
 		if (a->modemove == MODEDIE)
 			continue;
 		if (actiononplayers & (1 << a->playernr))
@@ -735,6 +737,7 @@ int Action_Prepare(StarMapInfo *info, MAP_TRIGS *temptrg, int trig_nr, int playe
 	void(*ResTypeFunc)(int(*)(int *, int), int playernr, int cnt);
 	LEADERBOARD *leaderboard;
 	OBJ *newobj;
+	OBJ *a;
 	OBJstruct *b;
 	err = 0;
 	triggcnt = 0;
@@ -1006,14 +1009,17 @@ int Action_Prepare(StarMapInfo *info, MAP_TRIGS *temptrg, int trig_nr, int playe
 			nrofunits = CheckForUnit(NULL, ownedactiononplayers, unitnr, nrofunits, &newobj, NULL);
 			if (nrofunits)
 			{
-				for (j = 0;j < MaxObjects;j++)
+				regenObjMap->ClearEnumerateObj();
+				while( (a = regenObjMap->GetNextObj()) )
+//				for (j = 0;j < MaxObjects;j++)
 				{
-					if (GetTriggeredOBJState(objects[j]))
+//					a = objects[j];
+					if (GetTriggeredOBJState(a))
 					{
 						//done by previous trigger
-						SetTriggeredOBJState(objects[j], CLEARSTATE);
+						SetTriggeredOBJState(a, CLEARSTATE);
 						oldsnd = UnBlockSoundToPlay();
-						dieobj(objects[j]);
+						dieobj(a);
 						RestoreSoundToPlay(oldsnd);
 						if (--nrofunits == 0)
 							break;
@@ -1038,14 +1044,17 @@ int Action_Prepare(StarMapInfo *info, MAP_TRIGS *temptrg, int trig_nr, int playe
 			nrofunits = CheckForUnit(NULL, ownedactiononplayers, unitnr, nrofunits, &newobj, &info->gamelocations[locnr].coords);
 			if (nrofunits)
 			{
-				for (j = 0;j < MaxObjects;j++)
+				regenObjMap->ClearEnumerateObj();
+				while( (a = regenObjMap->GetNextObj()) )
+//				for (j = 0;j < MaxObjects;j++)
 				{
-					if (GetTriggeredOBJState(objects[j]))
+//					a = objects[j];
+					if (GetTriggeredOBJState(a))
 					{
 						//done by previous trigger
-						SetTriggeredOBJState(objects[j], CLEARSTATE);
+						SetTriggeredOBJState(a, CLEARSTATE);
 						oldsnd = UnBlockSoundToPlay();
-						dieobj(objects[j]);
+						dieobj(a);
 						RestoreSoundToPlay(oldsnd);
 						if (--nrofunits == 0)
 							break;
@@ -1070,13 +1079,16 @@ int Action_Prepare(StarMapInfo *info, MAP_TRIGS *temptrg, int trig_nr, int playe
 			nrofunits = CheckForUnit(NULL, ownedactiononplayers, unitnr, nrofunits, &newobj, NULL);
 			if (nrofunits)
 			{
-				for (j = 0;j < MaxObjects;j++)
+				regenObjMap->ClearEnumerateObj();
+				while( (a = regenObjMap->GetNextObj()) )
+//				for (j = 0;j < MaxObjects;j++)
 				{
-					if (GetTriggeredOBJState(objects[j]))
+//					a = objects[j];
+					if (GetTriggeredOBJState(a))
 					{
-						SetTriggeredOBJState(objects[j], CLEARSTATE);
+						SetTriggeredOBJState(a, CLEARSTATE);
 						oldsnd = BlockSoundToPlay();
-						dieobj_silently(objects[j]);
+						dieobj_silently(a);
 						RestoreSoundToPlay(oldsnd);
 						if (--nrofunits == 0)
 							break;
@@ -1103,14 +1115,17 @@ int Action_Prepare(StarMapInfo *info, MAP_TRIGS *temptrg, int trig_nr, int playe
 			nrofunits = CheckForUnit(NULL, ownedactiononplayers, unitnr, nrofunits, &newobj, &info->gamelocations[locnr].coords);
 			if (nrofunits)
 			{
-				for (j = 0;j < MaxObjects;j++)
+				regenObjMap->ClearEnumerateObj();
+				while( (a = regenObjMap->GetNextObj()) )
+//				for (j = 0;j < MaxObjects;j++)
 				{
-					if (GetTriggeredOBJState(objects[j]))
+//					a = objects[j];
+					if (GetTriggeredOBJState(a))
 					{
 						//done by previous trigger
-						SetTriggeredOBJState(objects[j], CLEARSTATE);
+						SetTriggeredOBJState(a, CLEARSTATE);
 						oldsnd = BlockSoundToPlay();
-						dieobj_silently(objects[j]);
+						dieobj_silently(a);
 						RestoreSoundToPlay(oldsnd);
 						if (--nrofunits == 0)
 							break;
@@ -1217,20 +1232,23 @@ int Action_Prepare(StarMapInfo *info, MAP_TRIGS *temptrg, int trig_nr, int playe
 			nrofunits = CheckForUnit(NULL, ownedactiononplayers, unitnr, nrofunits, &newobj, &info->gamelocations[locnr].coords);
 			if (nrofunits)
 			{
-				for (j = 0;j < MaxObjects;j++)
+				regenObjMap->ClearEnumerateObj();
+				while( (a = regenObjMap->GetNextObj()) )
+//				for (j = 0;j < MaxObjects;j++)
 				{
-					if (GetTriggeredOBJState(objects[j]))
+//					a = objects[j];
+					if (GetTriggeredOBJState(a))
 					{
 						//done by previous trigger
-						SetTriggeredOBJState(objects[j], CLEARSTATE);
-						b = loadobj(objects[j]->SC_Unit);
+						SetTriggeredOBJState(a, CLEARSTATE);
+						b = loadobj(a->SC_Unit);
 						//teleport to other location
 //								CenterXYArea(&info->gamelocations[searchloc].coords,&xobj,&yobj);
-						getcoordofnewunit(objects[j]->SC_Unit, &xobj, &yobj, &info->gamelocations[searchloc].coords);
-						ChangeObjXY(objects[j], xobj, yobj);
+						getcoordofnewunit(a->SC_Unit, &xobj, &yobj, &info->gamelocations[searchloc].coords);
+						ChangeObjXY(a, xobj, yobj);
 
-						ForceKartChanges(objects[j]);
-						moveobj(objects[j], NULL, MODESTOP, NOSHOWERROR);
+						ForceKartChanges(a);
+						moveobj(a, NULL, MODESTOP, NOSHOWERROR);
 						if (--nrofunits == 0)
 							break;
 					}
@@ -1279,22 +1297,25 @@ int Action_Prepare(StarMapInfo *info, MAP_TRIGS *temptrg, int trig_nr, int playe
 			nrofunits = CheckForUnit(NULL, ownedactiononplayers, unitnr, MaxObjects, &newobj, &info->gamelocations[searchloc].coords);
 			if (nrofunits)
 			{
-				for (j = 0;j < MaxObjects;j++)
+				regenObjMap->ClearEnumerateObj();
+				while( (a = regenObjMap->GetNextObj()) )
+//				for (j = 0;j < MaxObjects;j++)
 				{
-					if (GetTriggeredOBJState(objects[j]))
+//					a = objects[j];
+					if (GetTriggeredOBJState(a))
 					{
 						//done by previous trigger
-						SetTriggeredOBJState(objects[j], CLEARSTATE);
+						SetTriggeredOBJState(a, CLEARSTATE);
 						switch (openstate)
 						{
 						case TRG_TYPEFUNC_SWITCHSET:
-							SetInvincibleOBJ(objects[j], 1);
+							SetInvincibleOBJ(a, 1);
 							break;
 						case TRG_TYPEFUNC_SWITCHCLEAR:
-							SetInvincibleOBJ(objects[j], 0);
+							SetInvincibleOBJ(a, 0);
 							break;
 						case TRG_TYPEFUNC_SWITCHTOGGLE:
-							objects[j]->prop ^= VARINVINCIBILITY;
+							a->prop ^= VARINVINCIBILITY;
 							break;
 						}
 						if (--nrofunits == 0)
@@ -1369,35 +1390,38 @@ creationwithoutproperties:
 			//nrofunits = CheckForUnit(NULL,ownedactiononplayers,unitnr,nrofunits,&newobj,&info->gamelocations[locnr].coords,MODESTOP);
 			if (nrofunits)
 			{
-				for (j = 0;j < MaxObjects;j++)
+				regenObjMap->ClearEnumerateObj();
+				while( (a = regenObjMap->GetNextObj()) )
+//				for (j = 0;j < MaxObjects;j++)
 				{
-					if (GetTriggeredOBJState(objects[j]))
+//					a = objects[j];
+					if (GetTriggeredOBJState(a))
 					{
 						//done by previous trigger
-						SetTriggeredOBJState(objects[j], CLEARSTATE);
+						SetTriggeredOBJState(a, CLEARSTATE);
 						//order unburrow if needed, after then move,atack,...
 						deltax = 0;
 						deltay = 0;
-						if (IsAirUnit(objects[j]->SC_Unit))
+						if (IsAirUnit(a->SC_Unit))
 							deltay += 16;
-						switch (objects[j]->SC_Unit)
+						switch (a->SC_Unit)
 						{
 						case SC_TANKSIEGEOBJ:
 						case SC_HERO_EDMUNDDUKESMOBJ:
-							err = moveobj(objects[j], NULL, MODETANKNORMAL, NOSHOWERROR);
+							err = moveobj(a, NULL, MODETANKNORMAL, NOSHOWERROR);
 							if (err == MOVEOBJ_DONE)
-								AddModeMove(objects[j], NULL, state, xobj2 + deltax, yobj2 + deltay, NOSHOWERROR);
+								AddModeMove(a, NULL, state, xobj2 + deltax, yobj2 + deltay, NOSHOWERROR);
 							break;
 						default:
-							if (IsOBJBurrowed(objects[j]))
+							if (IsOBJBurrowed(a))
 							{
-								err = moveobj(objects[j], NULL, MODEUNBURROW, NOSHOWERROR);
+								err = moveobj(a, NULL, MODEUNBURROW, NOSHOWERROR);
 								if (err == MOVEOBJ_DONE)
-									AddModeMove(objects[j], NULL, state, xobj2 + deltax, yobj2 + deltay, NOSHOWERROR);
+									AddModeMove(a, NULL, state, xobj2 + deltax, yobj2 + deltay, NOSHOWERROR);
 							}
 							else
 							{
-								moveobj(objects[j], NULL, state, xobj2 + deltax, yobj2 + deltay, NOSHOWERROR);
+								moveobj(a, NULL, state, xobj2 + deltax, yobj2 + deltay, NOSHOWERROR);
 							}
 							break;
 						}
@@ -1436,15 +1460,18 @@ creationwithoutproperties:
 			nrofunits = CheckForUnit(NULL, ownedactiononplayers, unitnr, nrofunits, &newobj, &info->gamelocations[locnr].coords);
 			if (nrofunits)
 			{
-				for (j = 0;j < MaxObjects;j++)
+				regenObjMap->ClearEnumerateObj();
+				while( (a = regenObjMap->GetNextObj()) )
+//				for (j = 0;j < MaxObjects;j++)
 				{
-					if (GetTriggeredOBJState(objects[j]))
+//					a = objects[j];
+					if (GetTriggeredOBJState(a))
 					{
 						//done by previous trigger
-						SetTriggeredOBJState(objects[j], CLEARSTATE);
-						MakeMindControl(objects[j], playernr, PLAYER[playernr].colorRACE);
-						moveobj(objects[j], NULL, MODESTOP, NOSHOWERROR);
-						SetBlinkOBJ(objects[j]);
+						SetTriggeredOBJState(a, CLEARSTATE);
+						MakeMindControl(a, playernr, PLAYER[playernr].colorRACE);
+						moveobj(a, NULL, MODESTOP, NOSHOWERROR);
+						SetBlinkOBJ(a);
 						if (--nrofunits == 0)
 							break;
 					}
@@ -1469,15 +1496,18 @@ creationwithoutproperties:
 			nrofunits = CheckForUnit(NULL, ownedactiononplayers, unitnr, nrofunits, &newobj, &info->gamelocations[locnr].coords);
 			if (nrofunits)
 			{
-				for (j = 0;j < MaxObjects;j++)
+				regenObjMap->ClearEnumerateObj();
+				while( (a = regenObjMap->GetNextObj()) )
+//				for (j = 0;j < MaxObjects;j++)
 				{
-					if (GetTriggeredOBJState(objects[j]))
+//					a = objects[j];
+					if (GetTriggeredOBJState(a))
 					{
 						//done by previous trigger
-						SetTriggeredOBJState(objects[j], CLEARSTATE);
-						SetUnitPercentHealth(objects[j], state);
+						SetTriggeredOBJState(a, CLEARSTATE);
+						SetUnitPercentHealth(a, state);
 						//need to add fireblood images
-						AddRemoveBloodFlameOverlays(objects[j]);
+						AddRemoveBloodFlameOverlays(a);
 						if (--nrofunits == 0)
 							break;
 					}
@@ -1501,13 +1531,16 @@ creationwithoutproperties:
 			nrofunits = CheckForUnit(NULL, ownedactiononplayers, unitnr, nrofunits, &newobj, &info->gamelocations[locnr].coords);
 			if (nrofunits)
 			{
-				for (j = 0;j < MaxObjects;j++)
+				regenObjMap->ClearEnumerateObj();
+				while( (a = regenObjMap->GetNextObj()) )
+//				for (j = 0;j < MaxObjects;j++)
 				{
-					if (GetTriggeredOBJState(objects[j]))
+//					a = objects[j];
+					if (GetTriggeredOBJState(a))
 					{
 						//done by previous trigger
-						SetTriggeredOBJState(objects[j], CLEARSTATE);
-						SetUnitPercentMana(objects[j], state);
+						SetTriggeredOBJState(a, CLEARSTATE);
+						SetUnitPercentMana(a, state);
 						if (--nrofunits == 0)
 							break;
 					}
@@ -1531,13 +1564,16 @@ creationwithoutproperties:
 			nrofunits = CheckForUnit(NULL, ownedactiononplayers, unitnr, nrofunits, &newobj, &info->gamelocations[locnr].coords);
 			if (nrofunits)
 			{
-				for (j = 0;j < MaxObjects;j++)
+				regenObjMap->ClearEnumerateObj();
+				while( (a = regenObjMap->GetNextObj()) )
+//				for (j = 0;j < MaxObjects;j++)
 				{
-					if (GetTriggeredOBJState(objects[j]))
+//					a = objects[j];
+					if (GetTriggeredOBJState(a))
 					{
 						//done by previous trigger
-						SetTriggeredOBJState(objects[j], CLEARSTATE);
-						SetUnitPercentShield(objects[j], state);
+						SetTriggeredOBJState(a, CLEARSTATE);
+						SetUnitPercentShield(a, state);
 						if (--nrofunits == 0)
 							break;
 					}
@@ -1645,13 +1681,16 @@ int TRG_RunAIScriptAtLocation(StarMapInfo *info, int aiscriptnr, int playernr, i
 		nrofunits = CheckForUnit(NULL, playernrmask, SC_NUCLEARSILOOBJ, MaxObjects, &a, &info->gamelocations[locnr].coords);
 		if (nrofunits)
 		{
-			for (j = 0;j < MaxObjects;j++)
+			regenObjMap->ClearEnumerateObj();
+			while( (a = regenObjMap->GetNextObj()) )
+//			for (j = 0;j < MaxObjects;j++)
 			{
-				if (GetTriggeredOBJState(objects[j]))
+//				a = objects[j];
+				if (GetTriggeredOBJState(a))
 				{
 					//done by previous trigger
-					SetTriggeredOBJState(objects[j], CLEARSTATE);
-					a = CreateUnitInUnit(objects[j], SC_NUKEOBJ, 0, GetOBJx(objects[j]), GetOBJy(objects[j]));
+					SetTriggeredOBJState(a, CLEARSTATE);
+					a = CreateUnitInUnit(a, SC_NUKEOBJ, 0, GetOBJx(a), GetOBJy(a));
 					if (a)
 					{
 						ChangeSupply(a->playernr, a->SC_Unit, PLUSFACTOR);
@@ -1677,13 +1716,16 @@ int TRG_RunAIScriptAtLocation(StarMapInfo *info, int aiscriptnr, int playernr, i
 		nrofunits2 = nrofunits = CheckForUnit(NULL, 0x0fff, SC_MENUNIT, MaxObjects, &a, &info->gamelocations[locnr].coords);
 		if (nrofunits)
 		{
-			for (j = 0;j < MaxObjects;j++)
+			regenObjMap->ClearEnumerateObj();
+			while( (a = regenObjMap->GetNextObj()) )
+//			for (j = 0;j < MaxObjects;j++)
 			{
-				if (GetTriggeredOBJState(objects[j]))
+//				a = objects[j];
+				if (GetTriggeredOBJState(a))
 				{
 					//done by previous trigger
-					SetTriggeredOBJState(objects[j], CLEARSTATE);
-					AddOverlayAtrImages(objects[j], magenr, IMAGEOVERLAY_NOTDEPENDONMAINIMG);
+					SetTriggeredOBJState(a, CLEARSTATE);
+					AddOverlayAtrImages(a, magenr, IMAGEOVERLAY_NOTDEPENDONMAINIMG);
 					if (--nrofunits == 0)
 						break;
 				}
@@ -1710,26 +1752,34 @@ int TRG_RunAIScriptAtLocation(StarMapInfo *info, int aiscriptnr, int playernr, i
 		default:
 			findbunker = NULL;
 			bunkerlist = new mylist();
-			for (j = 0;j < MaxObjects;j++)
+
+			regenObjMap->ClearEnumerateObj();
+			while( (a = regenObjMap->GetNextObj()) )
+//			for (j = 0;j < MaxObjects;j++)
 			{
-				if (GetTriggeredOBJState(objects[j]))
+//				a = objects[j];
+				if (GetTriggeredOBJState(a))
 				{
 					//done by previous trigger
-					SetTriggeredOBJState(objects[j], CLEARSTATE);
-					bunkerlist->AddList(objects[j]);
+					SetTriggeredOBJState(a, CLEARSTATE);
+					bunkerlist->AddList(a);
 					if (--nrofunits2 == 0)
 						break;
 				}
 			}
 			break;
 		}
-		for (j = 0;j < MaxObjects;j++)
+		regenObjMap->ClearEnumerateObj();
+		while( (a = regenObjMap->GetNextObj()) )
+//		for (j = 0;j < MaxObjects;j++)
 		{
 			//if terran race and is organic unit (can enter bunker)
-			if (objects[j]->playernr == playernr)
-				if (IsTerranRace(objects[j]->SC_Unit) && IsOrganic(objects[j]->SC_Unit))
+//			a = objects[j];
+			if (a->playernr == playernr)
+			{
+				if (IsTerranRace(a->SC_Unit) && IsOrganic(a->SC_Unit))
 				{
-					if (SearchObjInArea(objects[j], &info->gamelocations[locnr].coords))
+					if (SearchObjInArea(a, &info->gamelocations[locnr].coords))
 					{
 						if (nrofunits != 1)
 						{
@@ -1739,7 +1789,7 @@ int TRG_RunAIScriptAtLocation(StarMapInfo *info, int aiscriptnr, int playernr, i
 							mindistance = 256 * SIZESPRLANSHX * 2;
 							while ((bunkerobj = (struct OBJ *)bunkerlist->GetNextListElem()))
 							{
-								dist = (int) hypot(GetOBJx(objects[j]) - GetOBJx(bunkerobj), GetOBJy(objects[j]) - GetOBJy(bunkerobj));
+								dist = (int) hypot(GetOBJx(a) - GetOBJx(bunkerobj), GetOBJy(a) - GetOBJy(bunkerobj));
 								if (dist < mindistance)
 								{
 									mindistance = dist;
@@ -1748,9 +1798,10 @@ int TRG_RunAIScriptAtLocation(StarMapInfo *info, int aiscriptnr, int playernr, i
 							}
 						}
 						if (findbunker)
-							moveobj(objects[j], findbunker, MODEMOVE, NOSHOWERROR);
+							moveobj(a, findbunker, MODEMOVE, NOSHOWERROR);
 					}
 				}
+			}
 		}
 		if (bunkerlist)
 			delete bunkerlist;				//dealloc all elements and free bunkerlist
@@ -1761,35 +1812,17 @@ int TRG_RunAIScriptAtLocation(StarMapInfo *info, int aiscriptnr, int playernr, i
 		info->pl_iowner[playernr] = OWNER_RESCUABLE;
 		ifhaverescuableplayers++;
 		applyrescuableunits();
-		//			ifhaverescuableplayers--;
-		/*			for (j=0;j<MaxObjects;j++)
-					{
-							a = objects[j];
-							if (a->playernr != NUMBGAMER)
-							{
-		//						bug in xterran7 medics with OWNER_COMPUTER do not attach to current player
-								if (map.pl_iowner[a->playernr] == OWNER_RESCUABLE)
-								// || map.pl_iowner[a->playernr] == OWNER_COMPUTER)
-								{
-									MakeMindControl(a,NUMBGAMER,a->color);
-									haverescued++;
-								}
-							}
-					}
-					if (haverescued)
-					{
-						play_race_rescue(gameconf.pl_race[NUMBGAMER],4,0);
-					}
-		*/
 		return(1);
 	case TRG_AISCRIPT_SETPLAYERTOENEMYHERE://121
 //			DEBUGMESSCR("setplayertoenemyhere:aiscript=0x%04x\n",aiscriptnr);
 			//in this location every unit give to player enemy status
 		for (i = 0;i < MAXPLAYERS;i++)
 			statpl[i] = 0;
-		for (j = 0;j < MaxObjects;j++)
+		regenObjMap->ClearEnumerateObj();
+		while( (a = regenObjMap->GetNextObj()) )
+//		for (j = 0;j < MaxObjects;j++)
 		{
-			a = objects[j];
+//			a = objects[j];
 			if (SearchObjInArea(a, &info->gamelocations[locnr].coords))
 			{
 				if (a->playernr != playernr && a->playernr < PLAYEDPLAYERS)
@@ -1811,9 +1844,11 @@ int TRG_RunAIScriptAtLocation(StarMapInfo *info, int aiscriptnr, int playernr, i
 			//in this location every unit give to player enemy status
 		for (i = 0;i < MAXPLAYERS;i++)
 			statpl[i] = 0;
-		for (j = 0;j < MaxObjects;j++)
+		regenObjMap->ClearEnumerateObj();
+		while( (a = regenObjMap->GetNextObj()) )
+//		for (j = 0;j < MaxObjects;j++)
 		{
-			a = objects[j];
+//			a = objects[j];
 			if (SearchObjInArea(a, &info->gamelocations[locnr].coords))
 			{
 				if (a->playernr != playernr && a->playernr < PLAYEDPLAYERS)
@@ -1834,12 +1869,14 @@ int TRG_RunAIScriptAtLocation(StarMapInfo *info, int aiscriptnr, int playernr, i
 		//!!!!!need to check how player is weak and go where, no  numbgamer!!!!!
 		if (SearchForUnitMask(NUMBGAMER, SPECIAL_ISBUILD, &xpos, &ypos))
 		{
-			for (j = 0;j < MaxObjects;j++)
+			regenObjMap->ClearEnumerateObj();
+			while( (a = regenObjMap->GetNextObj()) )
+//			for (j = 0;j < MaxObjects;j++)
 			{
-				a = objects[j];
+//				a = objects[j];
 				if (a->playernr == playernr && a->modemove == MODESTOP)
 				{
-					if (IsOBJBurrowed(objects[j]))
+					if (IsOBJBurrowed(a))
 					{
 						if (moveobj(a, NULL, MODEUNBURROW, NOSHOWERROR) == MOVEOBJ_DONE)
 							AddModeMove(a, NULL, MODEATACK, xpos, ypos, NOSHOWERROR);

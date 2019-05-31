@@ -23,6 +23,7 @@
 #include "lists.h"
 #include "actiondefault.h"
 #include "images.h"
+#include "gener.h"
 #include "ObjChecks.h"
 
 #define MINCARRIERCAPACITY		4
@@ -543,9 +544,11 @@ OBJ *SearchNewBounceOBJ(int x, int y, int playernr, OBJ *obj1, OBJ *obj2, int ma
 	int i, dist, mindist = 65535;
 	OBJ *a;
 	OBJ *finda = NULL;
-	for (i = 0;i < MaxObjects;i++)
+	regenObjMap->ClearEnumerateObj();
+	while( (a = regenObjMap->GetNextObj()) )
+//	for (i = 0;i < MaxObjects;i++)
 	{
-		a = objects[i];
+//		a = objects[i];
 		if (player_aliance(playernr, a->playernr) == ENEMYOBJ)
 		{
 			if (!OBJ_VAR_CHK(a, obj_notdetect, playernr))

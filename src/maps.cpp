@@ -801,9 +801,13 @@ void opentempmap(int playernr, int xkart, int ykart, int sizex, int sizey)
 //=================================
 void calcfullinvandsee(void)
 {
-	for (int i = 0;i < MaxObjects;i++)
+	OBJ *a;
+	regenObjMap->ClearEnumerateObj();
+	while( (a = regenObjMap->GetNextObj()) )
+//	for (int i = 0;i < MaxObjects;i++)
 	{
-		calcfullinvandseeobj(objects[i]);
+//		a = objects[i];
+		calcfullinvandseeobj(a);
 	}
 }
 //=================================
@@ -860,9 +864,11 @@ void ClearFinalOBJ(OBJ *a0)
 {
 	OBJ *a;
 	int i = 0;
-	for (i = 0;i < MaxObjects;i++)
+	regenObjMap->ClearEnumerateObj();
+	while( (a = regenObjMap->GetNextObj()) )
+//	for (i = 0;i < MaxObjects;i++)
 	{
-		a = objects[i];
+//		a = objects[i];
 		if (a0 == a->finalOBJ)
 		{
 			if (OBJ_VAR_CHK(a0, obj_notdetect, a->playernr))

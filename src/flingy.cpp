@@ -12,6 +12,7 @@
 #include "iscript.h"
 #include "vars.h"
 #include "images.h"
+#include "gener.h"
 #include "flingy.h"
 
 FLINGYLIST weaponflingy(3000);
@@ -165,9 +166,11 @@ void SC_FLINGY::StayAndWaitTime(void)
 	OBJ *a;
 	int i, mindist;
 	mindist = mageprop[frommodemove].diapazone;
-	for (i = 0;i < MaxObjects;i++)
+	regenObjMap->ClearEnumerateObj();
+	while( (a = regenObjMap->GetNextObj()) )
+//	for (i = 0;i < MaxObjects;i++)
 	{
-		a = objects[i];
+//		a = objects[i];
 		if (IsActiveUnit(a))
 		{
 			if (GetDistances(xdest256, ydest256, GetOBJx256(a), GetOBJy256(a)) <= mindist)

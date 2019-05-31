@@ -287,17 +287,19 @@ void ConnectingPairBuilds(StarMapInfo *loadedmap)
 		{
 			a = objects[i];
 			if (a->paried == ZERGPARIED)
-			for (j = i + 1;j < MaxObjects;j++)
 			{
-				if (a->unitserial2 == objects[j]->unitserial1)
+				for (j = i + 1;j < MaxObjects;j++)
 				{
-					//found doubles builds
-					b = loadobj(objects[j]->SC_Unit);
-					a->doubleunit = objects[j];
-					ChangeTypeOfProp(a->doubleunit, b, PROPEMPTY);
-					objects[j]->doubleunit = a;
-					ChangeTypeOfProp(objects[j]->doubleunit, b, PROPEMPTY);
-					break;
+					if (a->unitserial2 == objects[j]->unitserial1)
+					{
+						//found doubles builds
+						b = loadobj(objects[j]->SC_Unit);
+						a->doubleunit = objects[j];
+						ChangeTypeOfProp(a->doubleunit, b, PROPEMPTY);
+						objects[j]->doubleunit = a;
+						ChangeTypeOfProp(objects[j]->doubleunit, b, PROPEMPTY);
+						break;
+					}
 				}
 			}
 		}

@@ -13,6 +13,7 @@
 #include "overlay.h"
 #include "objs.h"
 #include "images.h"
+#include "gener.h"
 #include "pylon.h"
 //=================================
 unsigned char PylonTable[PYLONAREAY][PYLONAREAX] =
@@ -113,9 +114,11 @@ void AddBuildsInPower(unsigned char *pylonarea, int playernr)
 {
 	int i, j, k, nrofpower, xp, yp, xs, ys;
 	OBJ *a;
-	for (k = 0;k < MaxObjects;k++)
+	regenObjMap->ClearEnumerateObj();
+	while( (a = regenObjMap->GetNextObj()) )
+//	for (k = 0;k < MaxObjects;k++)
 	{
-		a = objects[k];
+//		a = objects[k];
 		if (a->playernr != playernr)
 			continue;
 		if (a->prop & VARPOWEROFF)
@@ -144,9 +147,11 @@ void DelBuildsFromPower(unsigned char *pylonarea, int playernr)
 {
 	int i, j, k, nrofpower, xp, yp, xs, ys;
 	OBJ *a;
-	for (k = 0;k < MaxObjects;k++)
+	regenObjMap->ClearEnumerateObj();
+	while( (a = regenObjMap->GetNextObj()) )
+//	for (k = 0;k < MaxObjects;k++)
 	{
-		a = objects[k];
+//		a = objects[k];
 		if (a->playernr != playernr)
 			continue;
 		if (!(a->prop & VARPOWEROFF) && a->modemove != MODEDIE)

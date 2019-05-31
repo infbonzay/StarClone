@@ -495,22 +495,25 @@ void SetAroundTable(void)
 int CreateNuke(OBJ *a,int x,int y)
 {
 	MAIN_IMG *newimg;
-	OBJ *nuke;
+	OBJ *nuke,*a1;
 	int i,nukestartx,nukestarty;
-	for (i=0;i<MaxObjects;i++)
+	regenObjMap->ClearEnumerateObj();
+	while( (a1 = regenObjMap->GetNextObj()) )
+//	for (i=0;i<MaxObjects;i++)
 	{
-		if (objects[i]->SC_Unit == SC_NUCLEARSILOOBJ	&&
-			objects[i]->playernr == a->playernr			&&
-			!(objects[i]->prop & VARPOWEROFF))
+//		a1 = objects[i];
+		if (a1->SC_Unit == SC_NUCLEARSILOOBJ	&&
+			a1->playernr == a->playernr			&&
+			!(a1->prop & VARPOWEROFF))
 		{
-			if (getchilds(objects[i]))//check if we have bomb in nukesilo
+			if (getchilds(a1))//check if we have bomb in nukesilo
 			{
 				//nuke already in nuclear silo
-				nuke = objects[i]->childs->parentof[0];
-				nukestartx = GetOBJx(objects[i]);
-				nukestarty = GetOBJy(objects[i]);
+				nuke = a1->childs->parentof[0];
+				nukestartx = GetOBJx(a1);
+				nukestarty = GetOBJy(a1);
 				SetOBJxy256(nuke,nukestartx<<8,(nukestarty-INITIAL_NUKE_YPOS)<<8);
-//				nuke->playernr = objects[i]->playernr;
+//				nuke->playernr = a1->playernr;
 				nuke->playernr = GREYNEUTRALCOLORPLAYER;
 				nuke->prop &= ~(VARNOTHERE | VARINBASE);
 				nuke->finalOBJ = NULL;
@@ -527,7 +530,7 @@ int CreateNuke(OBJ *a,int x,int y)
 				nuke->doubleunit = a;
 				a->doubleunit = nuke;
 				a->memoryformage=0;
-				delchild(objects[i],objects[i]->childs->parentof[0]);
+				delchild(a1,a1->childs->parentof[0]);
 				PLAYER[a->playernr].nukes--;
 				ChangeSupply(a->playernr,SC_NUKEOBJ,MINUSFACTOR);
 

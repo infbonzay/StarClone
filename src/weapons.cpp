@@ -29,6 +29,7 @@
 #include "stringfiles.h"
 #include "images.h"
 #include "iscript.h"
+#include "gener.h"
 #include "weapons.h"
 
 WEAPONS_UNIT weapons[MAX_WEAPONS_ELEM];
@@ -480,9 +481,11 @@ void WeaponDoDamage(OBJ *atacker, OBJ *destobj, int x256, int y256, SCUNIT SC_Un
 		if (atacker)
 			if (mageprop[castmagenr].sound_id[SOUNDONHIT])
 				Play_sfxdata(GetOBJx(atacker), GetOBJy(atacker), mageprop[castmagenr].sound_id[SOUNDONHIT], 2);
-		for (i = 0;i < MaxObjects;i++)
+		regenObjMap->ClearEnumerateObj();
+		while( (a = regenObjMap->GetNextObj()) )
+//		for (i = 0;i < MaxObjects;i++)
 		{
-			a = objects[i];
+//			a = objects[i];
 			if (IsActiveUnit(a) && a != atacker)
 			{
 				if (GetDistanceTo256(a, x256, y256) <= mindist[0])
@@ -559,9 +562,11 @@ void WeaponDoDamage(OBJ *atacker, OBJ *destobj, int x256, int y256, SCUNIT SC_Un
 			mindist[0] = mageprop[castmagenr].diapazone;
 		else
 			mindist[0] = alldattbl.weapons_dat->InnerSplash[weapon_id] * 256;
-		for (i = 0;i < MaxObjects;i++)
+		regenObjMap->ClearEnumerateObj();
+		while( (a = regenObjMap->GetNextObj()) )
+//		for (i = 0;i < MaxObjects;i++)
 		{
-			a = objects[i];
+//			a = objects[i];
 			if (IsActiveUnit(a) && a != atacker)
 			{
 				if (GetDistanceTo256(a, x256, y256) <= mindist[0])
@@ -613,9 +618,11 @@ void WeaponDoDamage(OBJ *atacker, OBJ *destobj, int x256, int y256, SCUNIT SC_Un
 			mindist[0] = mageprop[castmagenr].diapazone;
 		else
 			mindist[0] = alldattbl.weapons_dat->InnerSplash[weapon_id] * 256;
-		for (i = 0;i < MaxObjects;i++)
+		regenObjMap->ClearEnumerateObj();
+		while( (a = regenObjMap->GetNextObj()) )
+//		for (i = 0;i < MaxObjects;i++)
 		{
-			a = objects[i];
+//			a = objects[i];
 			if (IsActiveUnit(a) && a != atacker)
 			{
 				if (GetDistanceTo256(a, x256, y256) <= mindist[0])
@@ -642,9 +649,11 @@ void WeaponDoDamage(OBJ *atacker, OBJ *destobj, int x256, int y256, SCUNIT SC_Un
 		//correct nuke explotion position
 		x256 = GetOBJx256(atacker);
 		y256 = GetOBJy256(atacker);
-		for (i = 0;i < MaxObjects;i++)
+		regenObjMap->ClearEnumerateObj();
+		while( (a = regenObjMap->GetNextObj()) )
+//		for (i = 0;i < MaxObjects;i++)
 		{
-			a = objects[i];
+//			a = objects[i];
 			if (IsActiveUnit(a))
 			{
 				//distance256 = GetDistanceTo256(a,x256,y256);
@@ -724,9 +733,11 @@ void WeaponDoDamage(OBJ *atacker, OBJ *destobj, int x256, int y256, SCUNIT SC_Un
 			mindist[0] = mageprop[castmagenr].diapazone;
 		else
 			mindist[0] = alldattbl.weapons_dat->InnerSplash[weapon_id] * 256;
-		for (i = 0;i < MaxObjects;i++)
+		regenObjMap->ClearEnumerateObj();
+		while( (a = regenObjMap->GetNextObj()) )
+//		for (i = 0;i < MaxObjects;i++)
 		{
-			a = objects[i];
+//			a = objects[i];
 			if (IsActiveUnit(a) && a != atacker)
 			{
 				if (GetDistanceTo256(a, x256, y256) <= mindist[0])
@@ -795,9 +806,11 @@ void WeaponDoDamage(OBJ *atacker, OBJ *destobj, int x256, int y256, SCUNIT SC_Un
 			mindist[0] = mageprop[castmagenr].diapazone;
 		else
 			mindist[0] = alldattbl.weapons_dat->InnerSplash[weapon_id] * 256;
-		for (i = 0;i < MaxObjects;i++)
+		regenObjMap->ClearEnumerateObj();
+		while( (a = regenObjMap->GetNextObj()) )
+//		for (i = 0;i < MaxObjects;i++)
 		{
-			a = objects[i];
+//			a = objects[i];
 			if (IsActiveUnit(a) && a != atacker)
 			{
 				if (GetDistanceTo256(a, x256, y256) <= mindist[0])
@@ -835,9 +848,11 @@ void WeaponDoDamage(OBJ *atacker, OBJ *destobj, int x256, int y256, SCUNIT SC_Un
 		mindist[1] = alldattbl.weapons_dat->MediumSplash[weapon_id] * 256;
 		mindist[2] = alldattbl.weapons_dat->OuterSplash[weapon_id] * 256;
 		damage = GetWeaponDamage(SC_Unit, playernr, weapon_id) << 8;
-		for (i = 0;i < MaxObjects;i++)
+		regenObjMap->ClearEnumerateObj();
+		while( (a = regenObjMap->GetNextObj()) )
+//		for (i = 0;i < MaxObjects;i++)
 		{
-			a = objects[i];
+//			a = objects[i];
 			if (IsActiveUnit(a) && (player_aliance(playernr, a->playernr) != MYOBJ || a == destobj))
 			{
 				distance256 = GetDistanceTo256(a, x256, y256);
@@ -872,9 +887,11 @@ void WeaponDoDamage(OBJ *atacker, OBJ *destobj, int x256, int y256, SCUNIT SC_Un
 		mindist[1] = alldattbl.weapons_dat->MediumSplash[weapon_id] * 256;
 		mindist[2] = alldattbl.weapons_dat->OuterSplash[weapon_id] * 256;
 		damage = GetWeaponDamage(SC_Unit, playernr, weapon_id) << 8;
-		for (i = 0;i < MaxObjects;i++)
+		regenObjMap->ClearEnumerateObj();
+		while( (a = regenObjMap->GetNextObj()) )
+//		for (i = 0;i < MaxObjects;i++)
 		{
-			a = objects[i];
+//			a = objects[i];
 			if (IsActiveUnit(a))
 			{
 				distance256 = GetDistanceTo256(a, x256, y256);
@@ -912,9 +929,11 @@ void WeaponDoDamage(OBJ *atacker, OBJ *destobj, int x256, int y256, SCUNIT SC_Un
 		LowLevelDamage(atacker, destobj, weapon_id,
 			alldattbl.weapons_dat->WeaponType[weapon_id],
 			realdamage, 0, 0);
-		for (i = 0;i < MaxObjects;i++)
+		regenObjMap->ClearEnumerateObj();
+		while( (a = regenObjMap->GetNextObj()) )
+//		for (i = 0;i < MaxObjects;i++)
 		{
-			a = objects[i];
+//			a = objects[i];
 			if (IsOnSkyOBJ(a) && ((player_aliance(playernr, a->playernr) == ENEMYOBJ) || a == destobj))
 			{
 				if (WeaponCanApplyOnUnit(a, playernr, weapon_id))

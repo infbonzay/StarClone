@@ -353,16 +353,18 @@ void minimap_showobjs(void)
 void putobjsonminimap(void)
 {
 	int i;
-	struct OBJ *a;
+	OBJ *a;
 	//	  struct OBJstruct *b;
 	if ((MAPUNITSREGENERATIONBIT) && (MAPDEF&UNITS))			//if Desenterrain && time to regeneration minimap
 	{
-		for (i = 0;i < MaxObjects;i++)
+		regenObjMap->ClearEnumerateObj();
+		while( (a = regenObjMap->GetNextObj()) )
+//		for (i = 0;i < MaxObjects;i++)
 		{
-			a = objects[i];
+			//a = objects[i];
 			if (IfCanClickOBJ(a->SC_Unit))
 			{
-				if (!(a->prop&(VARINBASE | VARNOTHERE | VARINTRANSPORT)))
+				if (!( a->prop & (VARINBASE | VARNOTHERE | VARINTRANSPORT)))
 				{
 					if (!OBJ_VAR_CHK(a, obj_notdetect, NUMBGAMER))
 					{
@@ -1665,12 +1667,13 @@ void DrawBuildPlace(void)
 	OBJ *a;
 	if (highMouse->Construct.SC_BuildUnit)
 	{
-		for (i = 0;i < MaxObjects;i++)
+		regenObjMap->ClearEnumerateObj();
+		while( (a = regenObjMap->GetNextObj()) )
+//		for (i = 0;i < MaxObjects;i++)
 		{
-			a = objects[i];
+//			a = objects[i];
 			if (IsBuild(a->SC_Unit))
 				putbuildneededtodraw(a);
 		}
 	}
 }
-

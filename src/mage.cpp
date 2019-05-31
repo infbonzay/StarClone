@@ -82,9 +82,11 @@ void mageattributedothings(OBJ *a)
 					}
 					else
 					{
-						for (j = 0;j < MaxObjects;j++)
+						regenObjMap->ClearEnumerateObj();
+						while( (a2 = regenObjMap->GetNextObj()) )
+//						for (j = 0;j < MaxObjects;j++)
 						{
-							a2 = objects[j];
+//							a2 = objects[j];
 							if (a2 != a)
 							{
 								if (IsOrganic(a2->SC_Unit) && !IsOBJBurrowed(a2))
@@ -556,9 +558,11 @@ void CastSpellWithOutWeaponnr(OBJ *casterobj, int castmagenr)
 		break;
 	case MODERECALL:
 		mindist = mageprop[castmagenr].diapazone;
-		for (i = 0;i < MaxObjects;i++)
+		regenObjMap->ClearEnumerateObj();
+		while( (a = regenObjMap->GetNextObj()) )
+//		for (i = 0;i < MaxObjects;i++)
 		{
-			a = objects[i];
+//			a = objects[i];
 			if (casterobj->playernr == a->playernr && IsActiveUnit(a) && !IsBuild(a->SC_Unit) && a != casterobj)
 			{
 				if (GetDistanceTo256(a, casterobj->finalx, casterobj->finaly) <= mindist)

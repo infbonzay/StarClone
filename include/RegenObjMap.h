@@ -11,6 +11,7 @@ class RegenObjMap
 	int		RegenCycleNr;
 	int		NrRegenObjs;
 	int		RegenFromNr;
+	int		EnumFirst;
 
 public:
 
@@ -20,6 +21,8 @@ public:
 	void ChangeObjPos(OBJ *o, int newposinlist);
 	void AddObjList(OBJ *o);
 	void DelObjList(OBJ *o);
+	void ClearEnumerateObj(void);
+	OBJ* GetNextObj(void);
 };
 
 #endif

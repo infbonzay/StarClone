@@ -539,9 +539,11 @@ void addtolist_onetypeobj(SelectionObjs *list, OBJ *a, int x1, int y1, int x2, i
 {
 	int i, x, y;
 	struct OBJ *c;
-	for (i = 0;i < MaxObjects;i++)
+	regenObjMap->ClearEnumerateObj();
+	while( (c = regenObjMap->GetNextObj()) )
+//	for (i = 0;i < MaxObjects;i++)
 	{
-		c = objects[i];
+//		c = objects[i];
 		if (IsInvincibleUnit(c->SC_Unit))
 			continue;
 		if (c->playernr == a->playernr && a->SC_Unit == c->SC_Unit)
@@ -577,9 +579,11 @@ struct OBJ *founduniqueobj(int x1, int y1)
 		new SelectionObjs(MAXSELECTMAN),
 		new SelectionObjs(MAXSELECTMAN),
 	};
-	for (i = 0;i < MaxObjects;i++)
+	regenObjMap->ClearEnumerateObj();
+	while( (o = regenObjMap->GetNextObj()) )
+//	for (i = 0;i < MaxObjects;i++)
 	{
-		o = objects[i];
+//		o = objects[i];
 		if (o->mainimage->flags & SC_IMAGE_FLAG_DISABLEDRAW)
 			continue;
 		nodoodad = 1;
@@ -738,9 +742,11 @@ void selectMAN(int x1, int y1, int x2, int y2, int mode)
 	}
 	else
 	{
-		for (i = 0;i < MaxObjects;i++)
+		regenObjMap->ClearEnumerateObj();
+		while( (a = regenObjMap->GetNextObj()) )
+//		for (i = 0;i < MaxObjects;i++)
 		{
-			a = objects[i];
+//			a = objects[i];
 			if (a->mainimage->flags & SC_IMAGE_FLAG_DISABLEDRAW)
 				continue;
 			bool nodoodad = true;
@@ -960,9 +966,11 @@ void allobjdecrmtimemage(void)
 {
 	int i;
 	struct OBJ *a;
-	for (i = 0;i < MaxObjects;i++)
+	regenObjMap->ClearEnumerateObj();
+	while( (a = regenObjMap->GetNextObj()) )
+//	for (i = 0;i < MaxObjects;i++)
 	{
-		a = objects[i];
+//		a = objects[i];
 		DecrementOBJAtr(a);
 	}
 }
@@ -1029,9 +1037,11 @@ void allobj_dieheal(void)
 {
 	int i, lifechange;
 	struct OBJ *a;
-	for (i = 0;i < MaxObjects;i++)
+	regenObjMap->ClearEnumerateObj();
+	while( (a = regenObjMap->GetNextObj()) )
+//	for (i = 0;i < MaxObjects;i++)
 	{
-		a = objects[i];
+//		a = objects[i];
 		if (a->modemove == MODEDIE)
 			continue;
 		lifechange = ApplyDamageToUnit(a);
@@ -1060,9 +1070,11 @@ void allobjconstr(void)
 {
 	int i;
 	struct OBJ *a;
-	for (i = 0;i < MaxObjects;i++)
+	regenObjMap->ClearEnumerateObj();
+	while( (a = regenObjMap->GetNextObj()) )
+//	for (i = 0;i < MaxObjects;i++)
 	{
-		a = objects[i];
+//		a = objects[i];
 		TickUnderConstruct(a);	//perform construct build
 		if (!(a->prop&VARNOTWORK))
 			workingbuilds(a);
@@ -1120,9 +1132,11 @@ void invisiblestick(void)
 {
 	int i;
 	OBJ *a;
-	for (i = 0;i < MaxObjects;i++)
+	regenObjMap->ClearEnumerateObj();
+	while( (a = regenObjMap->GetNextObj()) )
+//	for (i = 0;i < MaxObjects;i++)
 	{
-		a = objects[i];
+//		a = objects[i];
 		if (a->modemove == MODEDIE || IsInvincibleOBJ(a))
 			continue;
 		if (IsDoodadState(a->SC_Unit))
@@ -3546,9 +3560,11 @@ void makeallblinking(void)
 {
 	int i;
 	OBJ *a;
-	for (i = 0;i < MaxObjects;i++)
+	regenObjMap->ClearEnumerateObj();
+	while( (a = regenObjMap->GetNextObj()) )
+//	for (i = 0;i < MaxObjects;i++)
 	{
-		a = objects[i];
+//		a = objects[i];
 		if (a->blinkvalue)
 			a->blinkvalue--;
 	}
@@ -3612,12 +3628,14 @@ void ChangeObjXYDelta(struct OBJ *a, int xdelta, int ydelta)
 void DeleteOldObjPointers(struct OBJ *a)
 {
 	int i;
-	struct OBJ *b;
+	OBJ *b;
 	//	  struct MAGEARRAY *c;
 		//find pointers in all objects
-	for (i = 0;i < MaxObjects;i++)
+	regenObjMap->ClearEnumerateObj();
+	while( (b = regenObjMap->GetNextObj()) )
+//	for (i = 0;i < MaxObjects;i++)
 	{
-		b = objects[i];
+//		b = objects[i];
 		if (b->finalOBJ == a)
 		{
 			b->finalOBJ = NULL;
@@ -3690,9 +3708,11 @@ void RemoveFromDestination(OBJ *a)
 	OBJ *a1, *tempobj;
 	if (IsUnitBaseBuild(a) == 1)
 	{
-		for (i = 0;i < MaxObjects;i++)
+		regenObjMap->ClearEnumerateObj();
+		while( (a1 = regenObjMap->GetNextObj()) )
+//		for (i = 0;i < MaxObjects;i++)
 		{
-			a1 = objects[i];
+//			a1 = objects[i];
 			if (IsWorkerUnit(a1->SC_Unit))
 				if (a1->finalOBJ == a)
 				{
@@ -3702,9 +3722,11 @@ void RemoveFromDestination(OBJ *a)
 	}
 	if (IsResource(a, a->SC_Unit))
 	{
-		for (i = 0;i < MaxObjects;i++)
+		regenObjMap->ClearEnumerateObj();
+		while( (a1 = regenObjMap->GetNextObj()) )
+//		for (i = 0;i < MaxObjects;i++)
 		{
-			a1 = objects[i];
+//			a1 = objects[i];
 			if (IsWorkerUnit(a1->SC_Unit))
 				if (a1->finalOBJ == a)
 				{
@@ -3763,9 +3785,11 @@ void applyrescuableunits(void)
 	{
 		if (ifhaverescuableplayers)
 		{
-			for (i = 0;i < MaxObjects;i++)
+			regenObjMap->ClearEnumerateObj();
+			while( (a = regenObjMap->GetNextObj()) )
+//			for (i = 0;i < MaxObjects;i++)
 			{
-				a = objects[i];
+//				a = objects[i];
 				//if rescuable unit/player need to apply to seeit player
 				if (map.pl_iowner[a->playernr] == OWNER_RESCUABLE)
 				{
@@ -4148,9 +4172,11 @@ void SearchForAtacks(void)
 {
 	int i;
 	OBJ *a;
-	for (i = 0;i < MaxObjects;i++)
+	regenObjMap->ClearEnumerateObj();
+	while( (a = regenObjMap->GetNextObj()) )
+//	for (i = 0;i < MaxObjects;i++)
 	{
-		a = objects[i];
+//		a = objects[i];
 		if (IsFullAutoAttack(a->SC_Unit))
 		{
 			if (!a->finalOBJ)							//TODO i need to atack unit who atack me
@@ -4209,9 +4235,11 @@ OBJ *FindObjForAtack(OBJ *a,
 			addsiegerange = 5 * 32;
 		}
 	}
-	for (i = 0;i < MaxObjects;i++)
+	regenObjMap->ClearEnumerateObj();
+	while( (a2 = regenObjMap->GetNextObj()) )
+//	for (i = 0;i < MaxObjects;i++)
 	{
-		a2 = objects[i];
+//		a2 = objects[i];
 		if (checkspecialfunc)
 			if (checkspecialfunc(a2->SC_Unit))
 				continue;
@@ -4650,9 +4678,11 @@ void TellOtherUnitsAboutAtacking(OBJ *a, OBJ *atacker)
 	unsigned char weaponid;
 	int i, allstat,canatack;
 	OBJ *a2;
-	for (i = 0;i < MaxObjects;i++)
+	regenObjMap->ClearEnumerateObj();
+	while( (a2 = regenObjMap->GetNextObj()) )
+//	for (i = 0;i < MaxObjects;i++)
 	{
-		a2 = objects[i];
+//		a2 = objects[i];
 		allstat = player_aliance(a->playernr, a2->playernr);
 		if (allstat == MYOBJ || allstat == ALLIANCEOBJ)
 		{
@@ -5137,10 +5167,14 @@ void CheckForWalkChanges(OBJ *a, int xpos, int ypos)
 void AdditionalUnitsProceed(void)
 {
 	int i;
-	for (i = 0;i < MaxObjects;i++)
+	OBJ *a;
+	regenObjMap->ClearEnumerateObj();
+	while( (a = regenObjMap->GetNextObj()) )
+//	for (i = 0;i < MaxObjects;i++)
 	{
-		if (objects[i]->modemove != MODEDIE)
-			AdditionalUnitProceed(objects[i], objects[i]->mainimage);
+//		a = objects[i];
+		if (a->modemove != MODEDIE)
+			AdditionalUnitProceed(a, a->mainimage);
 	}
 }
 //=================================
@@ -5152,10 +5186,12 @@ void AllOBJMoving(void)
 	unsigned char flingy_id, side1;
 	MAIN_IMG *img;
 	OBJ *a;
-	for (i = 0;i < MaxObjects;i++)
+	regenObjMap->ClearEnumerateObj();
+	while( (a = regenObjMap->GetNextObj()) )
+//	for (i = 0;i < MaxObjects;i++)
 	{
+//		a = objects[i];
 		nextmoveignorefullinertion = 0;
-		a = objects[i];
 		img = a->mainimage;
 		flingy_id = alldattbl.units_dat->flingy_id[a->SC_Unit];
 		switch (alldattbl.flingy_dat->MoveControl[flingy_id])
