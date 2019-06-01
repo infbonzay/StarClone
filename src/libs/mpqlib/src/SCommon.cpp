@@ -964,23 +964,3 @@ void FreeMPQArchive(TMPQArchive *& ha)
         ha = NULL;
     }
 }
-
-int GetMPQLibVer(void)
-{
-    char vv[200];
-    int vers=0;
-    char *ver=vv;
-    char *pospoint;
-    
-    strncpy(vv,VERSION,199);
-    pospoint = strstr(ver,".");
-    *pospoint = 0;
-    vers+=(atoi(ver)<<16);
-    ver = pospoint+1;
-    pospoint = strstr(ver,".");
-    *pospoint = 0;
-    vers+=(atoi(ver)<<8);
-    ver = pospoint+1;
-    vers+=atoi(ver);
-    return(vers);
-}

@@ -397,8 +397,6 @@ int   WINAPI SFileEnumLocales(HANDLE hMPQ, const char * szFileName, UINT * plcLo
 int WINAPI SCompCompress   (char * pbOutBuffer, int * pdwOutLength, char * pbInBuffer, int dwInLength, int uCompressions, int nCmpType, int nCmpLevel);
 int WINAPI SCompDecompress (char * pbOutBuffer, int * pdwOutLength, char * pbInBuffer, int dwInLength);
 
-int  GetMPQLibVer(void);
-
 #ifdef __cplusplus
     }
 #endif
