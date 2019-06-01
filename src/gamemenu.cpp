@@ -30,6 +30,7 @@
 #include "mytime.h"
 #include "netwgame.h"
 #include "audio.h"
+#include "Enumerator.h"
 #include "gamemenu.h"
 
 #define CHECKFORINSTALLEXE
@@ -4503,8 +4504,8 @@ void MakeObserver(int playernr)
 	minimapmenu->iteminfo[MINIMAPDIALOG_DIPLOMACYBUTTON].Flags |= DIALOGBIN_FLAGS_ITEMDISABLED;
 	minimapmenu->iteminfo[MINIMAPDIALOG_MESSAGEBUTTON].Flags |= DIALOGBIN_FLAGS_ITEMDISABLED;
 	//all players units are stopped from their work
-	regenObjMap->ClearEnumerateObj();
-	while( (a = regenObjMap->GetNextObj()) )
+	Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+	while( (a = EnumObj.GetNext()) )
 //	for (i = 0;i < MaxObjects;i++)
 	{
 //		a = objects[i];

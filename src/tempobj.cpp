@@ -1,4 +1,5 @@
 
+#include "Enumerator.h"
 #include "diap.h"
 #include "load.h"
 #include "walk.h"
@@ -279,23 +280,23 @@ void RemoveUnitsFromLists(mylist *units)
 //=====================================
 void ConnectingPairBuilds(StarMapInfo *loadedmap)
 {
-	int i, j, savedObjPos;
+	int i, j;
 	OBJ *a,*a2;
 	OBJstruct *b;
 	if (havezergparied)
 	{
-		regenObjMap->ClearEnumerateObj();
-		while( (a = regenObjMap->GetNextObj()) )
+		Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+		while( (a = EnumObj.GetNext()) )
 //		for (i = 0;i < MaxObjects;i++)
 		{
 //			a = objects[i];
 			if (a->paried == ZERGPARIED)
 			{
-				savedObjPos = regenObjMap->ObjPosInList();
-				while( (a2 = regenObjMap->GetNextObj()) )
+				Enumerator<OBJ *> EnumObj2(&MaxObjects, objects, i + 1);
+				while( (a2 = EnumObj2.GetNext()) )
 //				for (j = i + 1;j < MaxObjects;j++)
 				{
-					a2 = objects[j];
+//					a2 = objects[j];
 					if (a->unitserial2 == a2->unitserial1)
 					{
 						//found doubles builds
@@ -307,7 +308,6 @@ void ConnectingPairBuilds(StarMapInfo *loadedmap)
 						break;
 					}
 				}
-				regenObjMap->ObjPosInList(savedObjPos);
 			}
 		}
 	}

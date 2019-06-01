@@ -3,6 +3,7 @@
 #include "scripts.h"
 #include "load.h"
 
+#include "Enumerator.h"
 #include "auxil.h"
 #include "gener.h"
 #include "diap.h"
@@ -497,8 +498,8 @@ int CreateNuke(OBJ *a,int x,int y)
 	MAIN_IMG *newimg;
 	OBJ *nuke,*a1;
 	int i,nukestartx,nukestarty;
-	regenObjMap->ClearEnumerateObj();
-	while( (a1 = regenObjMap->GetNextObj()) )
+	Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+	while( (a1 = EnumObj.GetNext()) )
 //	for (i=0;i<MaxObjects;i++)
 	{
 //		a1 = objects[i];

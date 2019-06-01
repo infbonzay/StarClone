@@ -2,6 +2,7 @@
 
 #include <math.h>
 
+#include "Enumerator.h"
 #include "load.h"
 #include "mage.h"
 #include "wmem.h"
@@ -544,8 +545,8 @@ OBJ *SearchNewBounceOBJ(int x, int y, int playernr, OBJ *obj1, OBJ *obj2, int ma
 	int i, dist, mindist = 65535;
 	OBJ *a;
 	OBJ *finda = NULL;
-	regenObjMap->ClearEnumerateObj();
-	while( (a = regenObjMap->GetNextObj()) )
+	Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+	while( (a = EnumObj.GetNext()) )
 //	for (i = 0;i < MaxObjects;i++)
 	{
 //		a = objects[i];

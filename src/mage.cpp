@@ -4,6 +4,7 @@
 
 #include "unitaction.h"
 
+#include "Enumerator.h"
 #include "vars.h"
 #include "man.h"
 #include "putobj.h"
@@ -82,8 +83,8 @@ void mageattributedothings(OBJ *a)
 					}
 					else
 					{
-						regenObjMap->ClearEnumerateObj();
-						while( (a2 = regenObjMap->GetNextObj()) )
+						Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+						while( (a2 = EnumObj.GetNext()) )
 //						for (j = 0;j < MaxObjects;j++)
 						{
 //							a2 = objects[j];
@@ -557,23 +558,25 @@ void CastSpellWithOutWeaponnr(OBJ *casterobj, int castmagenr)
 		}
 		break;
 	case MODERECALL:
-		mindist = mageprop[castmagenr].diapazone;
-		regenObjMap->ClearEnumerateObj();
-		while( (a = regenObjMap->GetNextObj()) )
-//		for (i = 0;i < MaxObjects;i++)
 		{
-//			a = objects[i];
-			if (casterobj->playernr == a->playernr && IsActiveUnit(a) && !IsBuild(a->SC_Unit) && a != casterobj)
+			mindist = mageprop[castmagenr].diapazone;
+			Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+			while( (a = EnumObj.GetNext()) )
+//			for (i = 0;i < MaxObjects;i++)
 			{
-				if (GetDistanceTo256(a, casterobj->finalx, casterobj->finaly) <= mindist)
+//				a = objects[i];
+				if (casterobj->playernr == a->playernr && IsActiveUnit(a) && !IsBuild(a->SC_Unit) && a != casterobj)
 				{
-					if (IsHallucination(a))
+					if (GetDistanceTo256(a, casterobj->finalx, casterobj->finaly) <= mindist)
 					{
-						dieobj(a);
-						continue;
+						if (IsHallucination(a))
+						{
+							dieobj(a);
+							continue;
+						}
+						AddOverlayAtrImages(a, castmagenr, IMAGEOVERLAY_NOTDEPENDONMAINIMG);
+						ApplyCastedMage(a, casterobj, castmagenr);
 					}
-					AddOverlayAtrImages(a, castmagenr, IMAGEOVERLAY_NOTDEPENDONMAINIMG);
-					ApplyCastedMage(a, casterobj, castmagenr);
 				}
 			}
 		}

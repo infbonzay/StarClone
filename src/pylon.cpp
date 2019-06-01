@@ -1,4 +1,5 @@
 
+#include "Enumerator.h"
 #include "wmem.h"
 #include "audio.h"
 
@@ -114,8 +115,8 @@ void AddBuildsInPower(unsigned char *pylonarea, int playernr)
 {
 	int i, j, k, nrofpower, xp, yp, xs, ys;
 	OBJ *a;
-	regenObjMap->ClearEnumerateObj();
-	while( (a = regenObjMap->GetNextObj()) )
+	Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+	while( (a = EnumObj.GetNext()) )
 //	for (k = 0;k < MaxObjects;k++)
 	{
 //		a = objects[k];
@@ -147,8 +148,8 @@ void DelBuildsFromPower(unsigned char *pylonarea, int playernr)
 {
 	int i, j, k, nrofpower, xp, yp, xs, ys;
 	OBJ *a;
-	regenObjMap->ClearEnumerateObj();
-	while( (a = regenObjMap->GetNextObj()) )
+	Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+	while( (a = EnumObj.GetNext()) )
 //	for (k = 0;k < MaxObjects;k++)
 	{
 //		a = objects[k];

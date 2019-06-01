@@ -3,6 +3,7 @@
 #include <grplib/gr8.h>
 #include <grplib/usegrp.h>
 
+#include "Enumerator.h"
 #include "auxil.h"
 #include "man.h"
 #include "key.h"
@@ -357,11 +358,11 @@ void putobjsonminimap(void)
 	//	  struct OBJstruct *b;
 	if ((MAPUNITSREGENERATIONBIT) && (MAPDEF&UNITS))			//if Desenterrain && time to regeneration minimap
 	{
-		regenObjMap->ClearEnumerateObj();
-		while( (a = regenObjMap->GetNextObj()) )
+		Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+		while( (a = EnumObj.GetNext()) )
 //		for (i = 0;i < MaxObjects;i++)
 		{
-			//a = objects[i];
+//			a = objects[i];
 			if (IfCanClickOBJ(a->SC_Unit))
 			{
 				if (!( a->prop & (VARINBASE | VARNOTHERE | VARINTRANSPORT)))
@@ -1667,8 +1668,8 @@ void DrawBuildPlace(void)
 	OBJ *a;
 	if (highMouse->Construct.SC_BuildUnit)
 	{
-		regenObjMap->ClearEnumerateObj();
-		while( (a = regenObjMap->GetNextObj()) )
+		Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+		while( (a = EnumObj.GetNext()) )
 //		for (i = 0;i < MaxObjects;i++)
 		{
 //			a = objects[i];

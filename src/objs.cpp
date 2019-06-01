@@ -1,6 +1,7 @@
 
 #include <math.h>
 
+#include "Enumerator.h"
 #include "auxil.h"
 #include "debug.h"
 #include "man.h"
@@ -539,8 +540,8 @@ void addtolist_onetypeobj(SelectionObjs *list, OBJ *a, int x1, int y1, int x2, i
 {
 	int i, x, y;
 	struct OBJ *c;
-	regenObjMap->ClearEnumerateObj();
-	while( (c = regenObjMap->GetNextObj()) )
+	Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+	while( (c = EnumObj.GetNext()) )
 //	for (i = 0;i < MaxObjects;i++)
 	{
 //		c = objects[i];
@@ -579,8 +580,8 @@ struct OBJ *founduniqueobj(int x1, int y1)
 		new SelectionObjs(MAXSELECTMAN),
 		new SelectionObjs(MAXSELECTMAN),
 	};
-	regenObjMap->ClearEnumerateObj();
-	while( (o = regenObjMap->GetNextObj()) )
+	Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+	while( (o = EnumObj.GetNext()) )
 //	for (i = 0;i < MaxObjects;i++)
 	{
 //		o = objects[i];
@@ -742,8 +743,8 @@ void selectMAN(int x1, int y1, int x2, int y2, int mode)
 	}
 	else
 	{
-		regenObjMap->ClearEnumerateObj();
-		while( (a = regenObjMap->GetNextObj()) )
+		Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+		while( (a = EnumObj.GetNext()) )
 //		for (i = 0;i < MaxObjects;i++)
 		{
 //			a = objects[i];
@@ -966,8 +967,8 @@ void allobjdecrmtimemage(void)
 {
 	int i;
 	struct OBJ *a;
-	regenObjMap->ClearEnumerateObj();
-	while( (a = regenObjMap->GetNextObj()) )
+	Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+	while( (a = EnumObj.GetNext()) )
 //	for (i = 0;i < MaxObjects;i++)
 	{
 //		a = objects[i];
@@ -1037,8 +1038,8 @@ void allobj_dieheal(void)
 {
 	int i, lifechange;
 	struct OBJ *a;
-	regenObjMap->ClearEnumerateObj();
-	while( (a = regenObjMap->GetNextObj()) )
+	Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+	while( (a = EnumObj.GetNext()) )
 //	for (i = 0;i < MaxObjects;i++)
 	{
 //		a = objects[i];
@@ -1070,8 +1071,8 @@ void allobjconstr(void)
 {
 	int i;
 	struct OBJ *a;
-	regenObjMap->ClearEnumerateObj();
-	while( (a = regenObjMap->GetNextObj()) )
+	Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+	while( (a = EnumObj.GetNext()) )
 //	for (i = 0;i < MaxObjects;i++)
 	{
 //		a = objects[i];
@@ -1132,8 +1133,8 @@ void invisiblestick(void)
 {
 	int i;
 	OBJ *a;
-	regenObjMap->ClearEnumerateObj();
-	while( (a = regenObjMap->GetNextObj()) )
+	Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+	while( (a = EnumObj.GetNext()) )
 //	for (i = 0;i < MaxObjects;i++)
 	{
 //		a = objects[i];
@@ -3560,8 +3561,8 @@ void makeallblinking(void)
 {
 	int i;
 	OBJ *a;
-	regenObjMap->ClearEnumerateObj();
-	while( (a = regenObjMap->GetNextObj()) )
+	Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+	while( (a = EnumObj.GetNext()) )
 //	for (i = 0;i < MaxObjects;i++)
 	{
 //		a = objects[i];
@@ -3631,8 +3632,8 @@ void DeleteOldObjPointers(struct OBJ *a)
 	OBJ *b;
 	//	  struct MAGEARRAY *c;
 		//find pointers in all objects
-	regenObjMap->ClearEnumerateObj();
-	while( (b = regenObjMap->GetNextObj()) )
+	Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+	while( (b = EnumObj.GetNext()) )
 //	for (i = 0;i < MaxObjects;i++)
 	{
 //		b = objects[i];
@@ -3708,8 +3709,8 @@ void RemoveFromDestination(OBJ *a)
 	OBJ *a1, *tempobj;
 	if (IsUnitBaseBuild(a) == 1)
 	{
-		regenObjMap->ClearEnumerateObj();
-		while( (a1 = regenObjMap->GetNextObj()) )
+		Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+		while( (a1 = EnumObj.GetNext()) )
 //		for (i = 0;i < MaxObjects;i++)
 		{
 //			a1 = objects[i];
@@ -3722,8 +3723,8 @@ void RemoveFromDestination(OBJ *a)
 	}
 	if (IsResource(a, a->SC_Unit))
 	{
-		regenObjMap->ClearEnumerateObj();
-		while( (a1 = regenObjMap->GetNextObj()) )
+		Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+		while( (a1 = EnumObj.GetNext()) )
 //		for (i = 0;i < MaxObjects;i++)
 		{
 //			a1 = objects[i];
@@ -3785,8 +3786,8 @@ void applyrescuableunits(void)
 	{
 		if (ifhaverescuableplayers)
 		{
-			regenObjMap->ClearEnumerateObj();
-			while( (a = regenObjMap->GetNextObj()) )
+			Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+			while( (a = EnumObj.GetNext()) )
 //			for (i = 0;i < MaxObjects;i++)
 			{
 //				a = objects[i];
@@ -4172,8 +4173,8 @@ void SearchForAtacks(void)
 {
 	int i;
 	OBJ *a;
-	regenObjMap->ClearEnumerateObj();
-	while( (a = regenObjMap->GetNextObj()) )
+	Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+	while( (a = EnumObj.GetNext()) )
 //	for (i = 0;i < MaxObjects;i++)
 	{
 //		a = objects[i];
@@ -4235,8 +4236,8 @@ OBJ *FindObjForAtack(OBJ *a,
 			addsiegerange = 5 * 32;
 		}
 	}
-	regenObjMap->ClearEnumerateObj();
-	while( (a2 = regenObjMap->GetNextObj()) )
+	Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+	while( (a2 = EnumObj.GetNext()) )
 //	for (i = 0;i < MaxObjects;i++)
 	{
 //		a2 = objects[i];
@@ -4678,8 +4679,8 @@ void TellOtherUnitsAboutAtacking(OBJ *a, OBJ *atacker)
 	unsigned char weaponid;
 	int i, allstat,canatack;
 	OBJ *a2;
-	regenObjMap->ClearEnumerateObj();
-	while( (a2 = regenObjMap->GetNextObj()) )
+	Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+	while( (a2 = EnumObj.GetNext()) )
 //	for (i = 0;i < MaxObjects;i++)
 	{
 //		a2 = objects[i];
@@ -5168,8 +5169,8 @@ void AdditionalUnitsProceed(void)
 {
 	int i;
 	OBJ *a;
-	regenObjMap->ClearEnumerateObj();
-	while( (a = regenObjMap->GetNextObj()) )
+	Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+	while( (a = EnumObj.GetNext()) )
 //	for (i = 0;i < MaxObjects;i++)
 	{
 //		a = objects[i];
@@ -5186,8 +5187,8 @@ void AllOBJMoving(void)
 	unsigned char flingy_id, side1;
 	MAIN_IMG *img;
 	OBJ *a;
-	regenObjMap->ClearEnumerateObj();
-	while( (a = regenObjMap->GetNextObj()) )
+	Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+	while( (a = EnumObj.GetNext()) )
 //	for (i = 0;i < MaxObjects;i++)
 	{
 //		a = objects[i];

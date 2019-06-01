@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <math.h>
 
+#include "Enumerator.h"
 #include "auxil.h"
 #include "man.h"
 #include "maps.h"
@@ -23,8 +24,8 @@ void UnitsMAPRefresh(void)
 {
 	int i;
 	OBJ *a;
-	regenObjMap->ClearEnumerateObj();
-	while( (a = regenObjMap->GetNextObj()) )
+	Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+	while( (a = EnumObj.GetNext()) )
 //	for (i = 0;i < MaxObjects;i++)
 	{
 //		a = objects[i];
@@ -121,8 +122,8 @@ int isobjtobeinfest(struct OBJ *a)
 struct OBJ *SearchUnitFunc(int playernr, int(*funccheckunit)(SCUNIT SC_Unit), int nearx, int neary, int dist)
 {
 	OBJ *a;
-	regenObjMap->ClearEnumerateObj();
-	while( (a = regenObjMap->GetNextObj()) )
+	Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+	while( (a = EnumObj.GetNext()) )
 //	for (int i = 0;i < MaxObjects;i++)
 	{
 //		a = objects[i];
@@ -145,8 +146,8 @@ struct OBJ *SearchUnit(int playernr, SCUNIT SC_Unit, int shieldp, int healthp, i
 {
 	int i, allstat;
 	OBJ *a;
-	regenObjMap->ClearEnumerateObj();
-	while( (a = regenObjMap->GetNextObj()) )
+	Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+	while( (a = EnumObj.GetNext()) )
 //	for (i = 0;i < MaxObjects;i++)
 	{
 //		a = objects[i];
@@ -173,8 +174,8 @@ struct OBJ *SearchOBJforOBJ(struct OBJ *a, int modemage)
 	struct OBJ *destobj;
 	int mindistance, i, findobj = 0;
 	mindistance = mageprop[modemage].diapazone;
-	regenObjMap->ClearEnumerateObj();
-	while( (destobj = regenObjMap->GetNextObj()) )
+	Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+	while( (destobj = EnumObj.GetNext()) )
 //	for (i = 0;i < MaxObjects;i++)
 	{
 //		destobj = objects[i];
@@ -221,8 +222,8 @@ OBJ *SearchObjs(int x, int y, int range, int *array, int arraydim)
 {
 	int i, j;
 	OBJ *a;
-	regenObjMap->ClearEnumerateObj();
-	while( (a = regenObjMap->GetNextObj()) )
+	Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+	while( (a = EnumObj.GetNext()) )
 //	for (i = 0;i < MaxObjects;i++)
 	{
 //		a = objects[i];
@@ -240,8 +241,8 @@ OBJ *SearchForObjInXY(int x, int y, unsigned char *SC_Units, int nrofunits)
 {
 	int i, j;
 	OBJ *a;
-	regenObjMap->ClearEnumerateObj();
-	while( (a = regenObjMap->GetNextObj()) )
+	Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+	while( (a = EnumObj.GetNext()) )
 //	for (i = 0;i < MaxObjects;i++)
 	{
 //		a = objects[i];
@@ -256,8 +257,8 @@ OBJ *SearchForObjInXY(int x, int y, unsigned char *SC_Units, int nrofunits)
 int SearchForUnitMask(int playernr, int mask, int *x, int *y)
 {
 	OBJ *a;
-	regenObjMap->ClearEnumerateObj();
-	while( (a = regenObjMap->GetNextObj()) )
+	Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+	while( (a = EnumObj.GetNext()) )
 //	for (int i = 0;i < MaxObjects;i++)
 	{
 //		a = objects[i];
@@ -281,8 +282,8 @@ int FindSC_UnitType(OBJ *a2, int player, SCUNIT SC_Unit, SCUNIT SC_AddonUnit)
 			if (a2->addonobj->SC_Unit == SC_Unit)
 				return(1);
 	}
-	regenObjMap->ClearEnumerateObj();
-	while( (a = regenObjMap->GetNextObj()) )
+	Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+	while( (a = EnumObj.GetNext()) )
 //	for (int i = 0;i < MaxObjects;i++)
 	{
 //		a = objects[i];
@@ -366,8 +367,8 @@ struct OBJ *GetNearCenter(struct OBJ *a)
 	int i;
 	struct OBJ *a2, *retobj = NULL;
 	float distance = 32000, tempdist;
-	regenObjMap->ClearEnumerateObj();
-	while( (a2 = regenObjMap->GetNextObj()) )
+	Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+	while( (a2 = EnumObj.GetNext()) )
 //	for (i = 0;i < MaxObjects;i++)
 	{
 //		a2 = objects[i];
@@ -391,8 +392,8 @@ struct OBJ *GetNearResource(struct OBJ *a, SCUNIT SC_res_nr, int *resvalability)
 	struct OBJstruct *astr = loadobj(a->SC_Unit);
 	int distance = GetUnitSightRange(a, astr)*SIZESPRLANSHX;
 	*resvalability = 0;
-	regenObjMap->ClearEnumerateObj();
-	while( (a2 = regenObjMap->GetNextObj()) )
+	Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+	while( (a2 = EnumObj.GetNext()) )
 //	for (i = 0;i < MaxObjects;i++)
 	{
 //		a2 = objects[i];
@@ -527,8 +528,8 @@ int IsWorkerUnit(SCUNIT SC_Unit)
 OBJ *GetGEYSERfromMAP(int xmap, int ymap)
 {
 	OBJ *a;
-	regenObjMap->ClearEnumerateObj();
-	while( (a = regenObjMap->GetNextObj()) )
+	Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+	while( (a = EnumObj.GetNext()) )
 //	for (int i = 0;i < MaxObjects;i++)
 	{
 //		a = objects[i];

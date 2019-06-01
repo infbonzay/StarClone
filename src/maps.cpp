@@ -2,6 +2,7 @@
 #include <grplib/usegrp.h>
 
 #include "lists.h"
+#include "Enumerator.h"
 
 #include "auxil.h"
 #include "man.h"
@@ -802,8 +803,8 @@ void opentempmap(int playernr, int xkart, int ykart, int sizex, int sizey)
 void calcfullinvandsee(void)
 {
 	OBJ *a;
-	regenObjMap->ClearEnumerateObj();
-	while( (a = regenObjMap->GetNextObj()) )
+	Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+	while( (a = EnumObj.GetNext()) )
 //	for (int i = 0;i < MaxObjects;i++)
 	{
 //		a = objects[i];
@@ -864,8 +865,8 @@ void ClearFinalOBJ(OBJ *a0)
 {
 	OBJ *a;
 	int i = 0;
-	regenObjMap->ClearEnumerateObj();
-	while( (a = regenObjMap->GetNextObj()) )
+	Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+	while( (a = EnumObj.GetNext()) )
 //	for (i = 0;i < MaxObjects;i++)
 	{
 //		a = objects[i];

@@ -13,7 +13,6 @@ void RegenObjMap::Init(void)
 	NrRegenObjs = 0;
 	RegenCycleNr = INT_MAX;
 	RegenFromNr = 0;
-	ClearEnumerateObj();
 }
 //=====================================
 void RegenObjMap::OpenMapCycle(void)
@@ -132,27 +131,3 @@ void RegenObjMap::DelObjList(OBJ *o)
 	ChangeObjPos(objects[nrinlist], nrinlist);
 }
 //==========================================
-void RegenObjMap::ClearEnumerateObj(void)
-{
-	EnumFirst = 0;
-}
-//==========================================
-OBJ* RegenObjMap::GetNextObj(void)
-{
-	if (EnumFirst < MaxObjects)
-		return objects[EnumFirst++];
-	return NULL;
-}
-
-//==========================================
-int RegenObjMap::ObjPosInList(void)
-{
-	return EnumFirst;
-}	
-//==========================================
-void RegenObjMap::ObjPosInList(int newEnumPos)
-{
-	EnumFirst = newEnumPos;
-}	
-//==========================================
-

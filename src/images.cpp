@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "Enumerator.h"
 #include "putobj.h"
 #include "gr.h"
 #include "defsunits.h"
@@ -1236,8 +1237,8 @@ void CreatePylonSelectArea(void)
 	OVERLAY_IMG *newimg;
 	if (pylonselected)
 	{
-		regenObjMap->ClearEnumerateObj();
-		while( (a = regenObjMap->GetNextObj()) )
+		Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+		while( (a = EnumObj.GetNext()) )
 //		for (i = 0;i < MaxObjects;i++)
 		{
 //			a = objects[i];
@@ -1262,8 +1263,8 @@ void RemovePylonSelectArea(void)
 		if (drawpylonareaactive)
 		{
 			drawpylonareaactive = 0;
-			regenObjMap->ClearEnumerateObj();
-			while( (a = regenObjMap->GetNextObj()) )
+			Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+			while( (a = EnumObj.GetNext()) )
 //			for (i = 0;i < MaxObjects;i++)
 			{
 //				a = objects[i];

@@ -1,6 +1,7 @@
 
 #include <math.h>
 
+#include "Enumerator.h"
 #include "mage.h"
 #include "putobj.h"
 #include "load.h"
@@ -287,8 +288,8 @@ int CheckForUnit(int(*ConditionFunction)(int *, int),
 		checkready = readyfunc[0];
 		UNITNRFORCHECK = unitid;
 	}
-	regenObjMap->ClearEnumerateObj();
-	while( (a = regenObjMap->GetNextObj()) )
+	Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+	while( (a = EnumObj.GetNext()) )
 //	for (i = 0;i < MaxObjects;i++)
 	{
 //		a = objects[i];
@@ -1009,8 +1010,8 @@ int Action_Prepare(StarMapInfo *info, MAP_TRIGS *temptrg, int trig_nr, int playe
 			nrofunits = CheckForUnit(NULL, ownedactiononplayers, unitnr, nrofunits, &newobj, NULL);
 			if (nrofunits)
 			{
-				regenObjMap->ClearEnumerateObj();
-				while( (a = regenObjMap->GetNextObj()) )
+				Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+				while( (a = EnumObj.GetNext()) )
 //				for (j = 0;j < MaxObjects;j++)
 				{
 //					a = objects[j];
@@ -1044,8 +1045,8 @@ int Action_Prepare(StarMapInfo *info, MAP_TRIGS *temptrg, int trig_nr, int playe
 			nrofunits = CheckForUnit(NULL, ownedactiononplayers, unitnr, nrofunits, &newobj, &info->gamelocations[locnr].coords);
 			if (nrofunits)
 			{
-				regenObjMap->ClearEnumerateObj();
-				while( (a = regenObjMap->GetNextObj()) )
+				Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+				while( (a = EnumObj.GetNext()) )
 //				for (j = 0;j < MaxObjects;j++)
 				{
 //					a = objects[j];
@@ -1079,8 +1080,8 @@ int Action_Prepare(StarMapInfo *info, MAP_TRIGS *temptrg, int trig_nr, int playe
 			nrofunits = CheckForUnit(NULL, ownedactiononplayers, unitnr, nrofunits, &newobj, NULL);
 			if (nrofunits)
 			{
-				regenObjMap->ClearEnumerateObj();
-				while( (a = regenObjMap->GetNextObj()) )
+				Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+				while( (a = EnumObj.GetNext()) )
 //				for (j = 0;j < MaxObjects;j++)
 				{
 //					a = objects[j];
@@ -1115,8 +1116,8 @@ int Action_Prepare(StarMapInfo *info, MAP_TRIGS *temptrg, int trig_nr, int playe
 			nrofunits = CheckForUnit(NULL, ownedactiononplayers, unitnr, nrofunits, &newobj, &info->gamelocations[locnr].coords);
 			if (nrofunits)
 			{
-				regenObjMap->ClearEnumerateObj();
-				while( (a = regenObjMap->GetNextObj()) )
+				Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+				while( (a = EnumObj.GetNext()) )
 //				for (j = 0;j < MaxObjects;j++)
 				{
 //					a = objects[j];
@@ -1232,8 +1233,8 @@ int Action_Prepare(StarMapInfo *info, MAP_TRIGS *temptrg, int trig_nr, int playe
 			nrofunits = CheckForUnit(NULL, ownedactiononplayers, unitnr, nrofunits, &newobj, &info->gamelocations[locnr].coords);
 			if (nrofunits)
 			{
-				regenObjMap->ClearEnumerateObj();
-				while( (a = regenObjMap->GetNextObj()) )
+				Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+				while( (a = EnumObj.GetNext()) )
 //				for (j = 0;j < MaxObjects;j++)
 				{
 //					a = objects[j];
@@ -1297,8 +1298,8 @@ int Action_Prepare(StarMapInfo *info, MAP_TRIGS *temptrg, int trig_nr, int playe
 			nrofunits = CheckForUnit(NULL, ownedactiononplayers, unitnr, MaxObjects, &newobj, &info->gamelocations[searchloc].coords);
 			if (nrofunits)
 			{
-				regenObjMap->ClearEnumerateObj();
-				while( (a = regenObjMap->GetNextObj()) )
+				Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+				while( (a = EnumObj.GetNext()) )
 //				for (j = 0;j < MaxObjects;j++)
 				{
 //					a = objects[j];
@@ -1390,8 +1391,8 @@ creationwithoutproperties:
 			//nrofunits = CheckForUnit(NULL,ownedactiononplayers,unitnr,nrofunits,&newobj,&info->gamelocations[locnr].coords,MODESTOP);
 			if (nrofunits)
 			{
-				regenObjMap->ClearEnumerateObj();
-				while( (a = regenObjMap->GetNextObj()) )
+				Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+				while( (a = EnumObj.GetNext()) )
 //				for (j = 0;j < MaxObjects;j++)
 				{
 //					a = objects[j];
@@ -1460,8 +1461,8 @@ creationwithoutproperties:
 			nrofunits = CheckForUnit(NULL, ownedactiononplayers, unitnr, nrofunits, &newobj, &info->gamelocations[locnr].coords);
 			if (nrofunits)
 			{
-				regenObjMap->ClearEnumerateObj();
-				while( (a = regenObjMap->GetNextObj()) )
+				Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+				while( (a = EnumObj.GetNext()) )
 //				for (j = 0;j < MaxObjects;j++)
 				{
 //					a = objects[j];
@@ -1496,8 +1497,8 @@ creationwithoutproperties:
 			nrofunits = CheckForUnit(NULL, ownedactiononplayers, unitnr, nrofunits, &newobj, &info->gamelocations[locnr].coords);
 			if (nrofunits)
 			{
-				regenObjMap->ClearEnumerateObj();
-				while( (a = regenObjMap->GetNextObj()) )
+				Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+				while( (a = EnumObj.GetNext()) )
 //				for (j = 0;j < MaxObjects;j++)
 				{
 //					a = objects[j];
@@ -1531,8 +1532,8 @@ creationwithoutproperties:
 			nrofunits = CheckForUnit(NULL, ownedactiononplayers, unitnr, nrofunits, &newobj, &info->gamelocations[locnr].coords);
 			if (nrofunits)
 			{
-				regenObjMap->ClearEnumerateObj();
-				while( (a = regenObjMap->GetNextObj()) )
+				Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+				while( (a = EnumObj.GetNext()) )
 //				for (j = 0;j < MaxObjects;j++)
 				{
 //					a = objects[j];
@@ -1564,8 +1565,8 @@ creationwithoutproperties:
 			nrofunits = CheckForUnit(NULL, ownedactiononplayers, unitnr, nrofunits, &newobj, &info->gamelocations[locnr].coords);
 			if (nrofunits)
 			{
-				regenObjMap->ClearEnumerateObj();
-				while( (a = regenObjMap->GetNextObj()) )
+				Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+				while( (a = EnumObj.GetNext()) )
 //				for (j = 0;j < MaxObjects;j++)
 				{
 //					a = objects[j];
@@ -1681,8 +1682,8 @@ int TRG_RunAIScriptAtLocation(StarMapInfo *info, int aiscriptnr, int playernr, i
 		nrofunits = CheckForUnit(NULL, playernrmask, SC_NUCLEARSILOOBJ, MaxObjects, &a, &info->gamelocations[locnr].coords);
 		if (nrofunits)
 		{
-			regenObjMap->ClearEnumerateObj();
-			while( (a = regenObjMap->GetNextObj()) )
+			Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+			while( (a = EnumObj.GetNext()) )
 //			for (j = 0;j < MaxObjects;j++)
 			{
 //				a = objects[j];
@@ -1716,8 +1717,8 @@ int TRG_RunAIScriptAtLocation(StarMapInfo *info, int aiscriptnr, int playernr, i
 		nrofunits2 = nrofunits = CheckForUnit(NULL, 0x0fff, SC_MENUNIT, MaxObjects, &a, &info->gamelocations[locnr].coords);
 		if (nrofunits)
 		{
-			regenObjMap->ClearEnumerateObj();
-			while( (a = regenObjMap->GetNextObj()) )
+			Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+			while( (a = EnumObj.GetNext()) )
 //			for (j = 0;j < MaxObjects;j++)
 			{
 //				a = objects[j];
@@ -1752,9 +1753,8 @@ int TRG_RunAIScriptAtLocation(StarMapInfo *info, int aiscriptnr, int playernr, i
 		default:
 			findbunker = NULL;
 			bunkerlist = new mylist();
-
-			regenObjMap->ClearEnumerateObj();
-			while( (a = regenObjMap->GetNextObj()) )
+			Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+			while( (a = EnumObj.GetNext()) )
 //			for (j = 0;j < MaxObjects;j++)
 			{
 //				a = objects[j];
@@ -1769,36 +1769,38 @@ int TRG_RunAIScriptAtLocation(StarMapInfo *info, int aiscriptnr, int playernr, i
 			}
 			break;
 		}
-		regenObjMap->ClearEnumerateObj();
-		while( (a = regenObjMap->GetNextObj()) )
-//		for (j = 0;j < MaxObjects;j++)
 		{
-			//if terran race and is organic unit (can enter bunker)
-//			a = objects[j];
-			if (a->playernr == playernr)
+			Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+			while( (a = EnumObj.GetNext()) )
+//			for (j = 0;j < MaxObjects;j++)
 			{
-				if (IsTerranRace(a->SC_Unit) && IsOrganic(a->SC_Unit))
+				//if terran race and is organic unit (can enter bunker)
+//				a = objects[j];
+				if (a->playernr == playernr)
 				{
-					if (SearchObjInArea(a, &info->gamelocations[locnr].coords))
+					if (IsTerranRace(a->SC_Unit) && IsOrganic(a->SC_Unit))
 					{
-						if (nrofunits != 1)
+						if (SearchObjInArea(a, &info->gamelocations[locnr].coords))
 						{
-							//find closest bunker for unit
-							findbunker = NULL;
-							bunkerlist->EnumListInit();
-							mindistance = 256 * SIZESPRLANSHX * 2;
-							while ((bunkerobj = (struct OBJ *)bunkerlist->GetNextListElem()))
+							if (nrofunits != 1)
 							{
-								dist = (int) hypot(GetOBJx(a) - GetOBJx(bunkerobj), GetOBJy(a) - GetOBJy(bunkerobj));
-								if (dist < mindistance)
+								//find closest bunker for unit
+								findbunker = NULL;
+								bunkerlist->EnumListInit();
+								mindistance = 256 * SIZESPRLANSHX * 2;
+								while ((bunkerobj = (struct OBJ *)bunkerlist->GetNextListElem()))
 								{
-									mindistance = dist;
-									findbunker = bunkerobj;
+									dist = (int) hypot(GetOBJx(a) - GetOBJx(bunkerobj), GetOBJy(a) - GetOBJy(bunkerobj));
+									if (dist < mindistance)
+									{
+										mindistance = dist;
+										findbunker = bunkerobj;
+									}
 								}
 							}
+							if (findbunker)
+								moveobj(a, findbunker, MODEMOVE, NOSHOWERROR);
 						}
-						if (findbunker)
-							moveobj(a, findbunker, MODEMOVE, NOSHOWERROR);
 					}
 				}
 			}
@@ -1817,60 +1819,72 @@ int TRG_RunAIScriptAtLocation(StarMapInfo *info, int aiscriptnr, int playernr, i
 //			DEBUGMESSCR("setplayertoenemyhere:aiscript=0x%04x\n",aiscriptnr);
 			//in this location every unit give to player enemy status
 		for (i = 0;i < MAXPLAYERS;i++)
-			statpl[i] = 0;
-		regenObjMap->ClearEnumerateObj();
-		while( (a = regenObjMap->GetNextObj()) )
-//		for (j = 0;j < MaxObjects;j++)
 		{
-//			a = objects[j];
-			if (SearchObjInArea(a, &info->gamelocations[locnr].coords))
+			statpl[i] = 0;
+		}
+		{
+			Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+			while( (a = EnumObj.GetNext()) )
+//			for (j = 0;j < MaxObjects;j++)
 			{
-				if (a->playernr != playernr && a->playernr < PLAYEDPLAYERS)
+//				a = objects[j];
+				if (SearchObjInArea(a, &info->gamelocations[locnr].coords))
 				{
-					statpl[a->playernr] = 1;
+					if (a->playernr != playernr && a->playernr < PLAYEDPLAYERS)
+					{
+						statpl[a->playernr] = 1;
+					}
 				}
 			}
 		}
 		for (i = 0;i < MAXPLAYERS;i++)
+		{
 			if (statpl[i])
 			{
 				CreateAliance(info, playernr, i, ENEMYOBJ);
 				CreateAliance(info, i, playernr, ENEMYOBJ);
 			}
+		}
 		return(1);
 		break;
 	case TRG_AISCRIPT_SETPLAYERTOALLIESHERE://????
 //			DEBUGMESSCR("setplayertoenemyhere:aiscript=0x%04x\n",aiscriptnr);
 			//in this location every unit give to player enemy status
 		for (i = 0;i < MAXPLAYERS;i++)
-			statpl[i] = 0;
-		regenObjMap->ClearEnumerateObj();
-		while( (a = regenObjMap->GetNextObj()) )
-//		for (j = 0;j < MaxObjects;j++)
 		{
-//			a = objects[j];
-			if (SearchObjInArea(a, &info->gamelocations[locnr].coords))
+			statpl[i] = 0;
+		}
+		{
+			Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+			while( (a = EnumObj.GetNext()) )
+//			for (j = 0;j < MaxObjects;j++)
 			{
-				if (a->playernr != playernr && a->playernr < PLAYEDPLAYERS)
+//				a = objects[j];
+				if (SearchObjInArea(a, &info->gamelocations[locnr].coords))
 				{
-					statpl[a->playernr] = 1;
+					if (a->playernr != playernr && a->playernr < PLAYEDPLAYERS)
+					{
+						statpl[a->playernr] = 1;
+					}
 				}
 			}
 		}
 		for (i = 0;i < MAXPLAYERS;i++)
+		{
 			if (statpl[i])
 			{
 				CreateAliance(info, playernr, i, ALLIANCEOBJ);
 				CreateAliance(info, i, playernr, ALLIANCEOBJ);
 			}
+		}
 		return(1);
 		break;
 	case TRG_AISCRIPT_SETALLUNITSTORANDOMSUICIDEMISSION:
 		//!!!!!need to check how player is weak and go where, no  numbgamer!!!!!
 		if (SearchForUnitMask(NUMBGAMER, SPECIAL_ISBUILD, &xpos, &ypos))
 		{
-			regenObjMap->ClearEnumerateObj();
-			while( (a = regenObjMap->GetNextObj()) )
+			Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+			while( (a = EnumObj.GetNext()) )
 //			for (j = 0;j < MaxObjects;j++)
 			{
 //				a = objects[j];
