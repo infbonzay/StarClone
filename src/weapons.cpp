@@ -6,7 +6,6 @@
 #include <grplib/grp.h>
 #include <math.h>
 
-#include "Enumerator.h"
 #include "audio.h"
 #include "objs.h"
 
@@ -31,6 +30,8 @@
 #include "images.h"
 #include "iscript.h"
 #include "gener.h"
+#include "man.h"
+#include "Enumerate.h"
 #include "weapons.h"
 
 WEAPONS_UNIT weapons[MAX_WEAPONS_ELEM];
@@ -483,7 +484,7 @@ void WeaponDoDamage(OBJ *atacker, OBJ *destobj, int x256, int y256, SCUNIT SC_Un
 			if (mageprop[castmagenr].sound_id[SOUNDONHIT])
 				Play_sfxdata(GetOBJx(atacker), GetOBJy(atacker), mageprop[castmagenr].sound_id[SOUNDONHIT], 2);
 		{
-			Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+			Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 			while( (a = EnumObj.GetNext()) )
 //			for (i = 0;i < MaxObjects;i++)
 			{
@@ -566,7 +567,7 @@ void WeaponDoDamage(OBJ *atacker, OBJ *destobj, int x256, int y256, SCUNIT SC_Un
 		else
 			mindist[0] = alldattbl.weapons_dat->InnerSplash[weapon_id] * 256;
 		{
-			Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+			Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 			while( (a = EnumObj.GetNext()) )
 //			for (i = 0;i < MaxObjects;i++)
 			{
@@ -624,7 +625,7 @@ void WeaponDoDamage(OBJ *atacker, OBJ *destobj, int x256, int y256, SCUNIT SC_Un
 		else
 			mindist[0] = alldattbl.weapons_dat->InnerSplash[weapon_id] * 256;
 		{
-			Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+			Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 			while( (a = EnumObj.GetNext()) )
 //			for (i = 0;i < MaxObjects;i++)
 			{
@@ -657,7 +658,7 @@ void WeaponDoDamage(OBJ *atacker, OBJ *destobj, int x256, int y256, SCUNIT SC_Un
 		x256 = GetOBJx256(atacker);
 		y256 = GetOBJy256(atacker);
 		{
-			Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+			Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 			while( (a = EnumObj.GetNext()) )
 //			for (i = 0;i < MaxObjects;i++)
 			{
@@ -743,7 +744,7 @@ void WeaponDoDamage(OBJ *atacker, OBJ *destobj, int x256, int y256, SCUNIT SC_Un
 		else
 			mindist[0] = alldattbl.weapons_dat->InnerSplash[weapon_id] * 256;
 		{
-			Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+			Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 			while( (a = EnumObj.GetNext()) )
 //			for (i = 0;i < MaxObjects;i++)
 			{
@@ -818,7 +819,7 @@ void WeaponDoDamage(OBJ *atacker, OBJ *destobj, int x256, int y256, SCUNIT SC_Un
 		else
 			mindist[0] = alldattbl.weapons_dat->InnerSplash[weapon_id] * 256;
 		{
-			Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+			Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 			while( (a = EnumObj.GetNext()) )
 //			for (i = 0;i < MaxObjects;i++)
 			{
@@ -862,7 +863,7 @@ void WeaponDoDamage(OBJ *atacker, OBJ *destobj, int x256, int y256, SCUNIT SC_Un
 		mindist[2] = alldattbl.weapons_dat->OuterSplash[weapon_id] * 256;
 		damage = GetWeaponDamage(SC_Unit, playernr, weapon_id) << 8;
 		{
-			Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+			Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 			while( (a = EnumObj.GetNext()) )
 //			for (i = 0;i < MaxObjects;i++)
 			{
@@ -903,7 +904,7 @@ void WeaponDoDamage(OBJ *atacker, OBJ *destobj, int x256, int y256, SCUNIT SC_Un
 		mindist[2] = alldattbl.weapons_dat->OuterSplash[weapon_id] * 256;
 		damage = GetWeaponDamage(SC_Unit, playernr, weapon_id) << 8;
 		{
-			Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+			Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 			while( (a = EnumObj.GetNext()) )
 //			for (i = 0;i < MaxObjects;i++)
 			{
@@ -947,7 +948,7 @@ void WeaponDoDamage(OBJ *atacker, OBJ *destobj, int x256, int y256, SCUNIT SC_Un
 			alldattbl.weapons_dat->WeaponType[weapon_id],
 			realdamage, 0, 0);
 		{
-			Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+			Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 			while( (a = EnumObj.GetNext()) )
 //			for (i = 0;i < MaxObjects;i++)
 			{

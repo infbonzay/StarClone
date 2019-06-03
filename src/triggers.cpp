@@ -1,7 +1,6 @@
 
 #include <math.h>
 
-#include "Enumerator.h"
 #include "mage.h"
 #include "putobj.h"
 #include "load.h"
@@ -27,6 +26,8 @@
 #include "weapons.h"
 #include "music.h"
 #include "audio.h"
+#include "man.h"
+#include "Enumerate.h"
 #include "triggers.h"
 
 //#define				TRIG_DEBUG
@@ -288,7 +289,7 @@ int CheckForUnit(int(*ConditionFunction)(int *, int),
 		checkready = readyfunc[0];
 		UNITNRFORCHECK = unitid;
 	}
-	Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 	while( (a = EnumObj.GetNext()) )
 //	for (i = 0;i < MaxObjects;i++)
 	{
@@ -1010,7 +1011,7 @@ int Action_Prepare(StarMapInfo *info, MAP_TRIGS *temptrg, int trig_nr, int playe
 			nrofunits = CheckForUnit(NULL, ownedactiononplayers, unitnr, nrofunits, &newobj, NULL);
 			if (nrofunits)
 			{
-				Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+				Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 				while( (a = EnumObj.GetNext()) )
 //				for (j = 0;j < MaxObjects;j++)
 				{
@@ -1045,7 +1046,7 @@ int Action_Prepare(StarMapInfo *info, MAP_TRIGS *temptrg, int trig_nr, int playe
 			nrofunits = CheckForUnit(NULL, ownedactiononplayers, unitnr, nrofunits, &newobj, &info->gamelocations[locnr].coords);
 			if (nrofunits)
 			{
-				Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+				Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 				while( (a = EnumObj.GetNext()) )
 //				for (j = 0;j < MaxObjects;j++)
 				{
@@ -1080,7 +1081,7 @@ int Action_Prepare(StarMapInfo *info, MAP_TRIGS *temptrg, int trig_nr, int playe
 			nrofunits = CheckForUnit(NULL, ownedactiononplayers, unitnr, nrofunits, &newobj, NULL);
 			if (nrofunits)
 			{
-				Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+				Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 				while( (a = EnumObj.GetNext()) )
 //				for (j = 0;j < MaxObjects;j++)
 				{
@@ -1116,7 +1117,7 @@ int Action_Prepare(StarMapInfo *info, MAP_TRIGS *temptrg, int trig_nr, int playe
 			nrofunits = CheckForUnit(NULL, ownedactiononplayers, unitnr, nrofunits, &newobj, &info->gamelocations[locnr].coords);
 			if (nrofunits)
 			{
-				Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+				Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 				while( (a = EnumObj.GetNext()) )
 //				for (j = 0;j < MaxObjects;j++)
 				{
@@ -1233,7 +1234,7 @@ int Action_Prepare(StarMapInfo *info, MAP_TRIGS *temptrg, int trig_nr, int playe
 			nrofunits = CheckForUnit(NULL, ownedactiononplayers, unitnr, nrofunits, &newobj, &info->gamelocations[locnr].coords);
 			if (nrofunits)
 			{
-				Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+				Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 				while( (a = EnumObj.GetNext()) )
 //				for (j = 0;j < MaxObjects;j++)
 				{
@@ -1298,7 +1299,7 @@ int Action_Prepare(StarMapInfo *info, MAP_TRIGS *temptrg, int trig_nr, int playe
 			nrofunits = CheckForUnit(NULL, ownedactiononplayers, unitnr, MaxObjects, &newobj, &info->gamelocations[searchloc].coords);
 			if (nrofunits)
 			{
-				Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+				Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 				while( (a = EnumObj.GetNext()) )
 //				for (j = 0;j < MaxObjects;j++)
 				{
@@ -1391,7 +1392,7 @@ creationwithoutproperties:
 			//nrofunits = CheckForUnit(NULL,ownedactiononplayers,unitnr,nrofunits,&newobj,&info->gamelocations[locnr].coords,MODESTOP);
 			if (nrofunits)
 			{
-				Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+				Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 				while( (a = EnumObj.GetNext()) )
 //				for (j = 0;j < MaxObjects;j++)
 				{
@@ -1461,7 +1462,7 @@ creationwithoutproperties:
 			nrofunits = CheckForUnit(NULL, ownedactiononplayers, unitnr, nrofunits, &newobj, &info->gamelocations[locnr].coords);
 			if (nrofunits)
 			{
-				Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+				Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 				while( (a = EnumObj.GetNext()) )
 //				for (j = 0;j < MaxObjects;j++)
 				{
@@ -1497,7 +1498,7 @@ creationwithoutproperties:
 			nrofunits = CheckForUnit(NULL, ownedactiononplayers, unitnr, nrofunits, &newobj, &info->gamelocations[locnr].coords);
 			if (nrofunits)
 			{
-				Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+				Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 				while( (a = EnumObj.GetNext()) )
 //				for (j = 0;j < MaxObjects;j++)
 				{
@@ -1532,7 +1533,7 @@ creationwithoutproperties:
 			nrofunits = CheckForUnit(NULL, ownedactiononplayers, unitnr, nrofunits, &newobj, &info->gamelocations[locnr].coords);
 			if (nrofunits)
 			{
-				Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+				Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 				while( (a = EnumObj.GetNext()) )
 //				for (j = 0;j < MaxObjects;j++)
 				{
@@ -1565,7 +1566,7 @@ creationwithoutproperties:
 			nrofunits = CheckForUnit(NULL, ownedactiononplayers, unitnr, nrofunits, &newobj, &info->gamelocations[locnr].coords);
 			if (nrofunits)
 			{
-				Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+				Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 				while( (a = EnumObj.GetNext()) )
 //				for (j = 0;j < MaxObjects;j++)
 				{
@@ -1682,7 +1683,7 @@ int TRG_RunAIScriptAtLocation(StarMapInfo *info, int aiscriptnr, int playernr, i
 		nrofunits = CheckForUnit(NULL, playernrmask, SC_NUCLEARSILOOBJ, MaxObjects, &a, &info->gamelocations[locnr].coords);
 		if (nrofunits)
 		{
-			Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+			Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 			while( (a = EnumObj.GetNext()) )
 //			for (j = 0;j < MaxObjects;j++)
 			{
@@ -1717,7 +1718,7 @@ int TRG_RunAIScriptAtLocation(StarMapInfo *info, int aiscriptnr, int playernr, i
 		nrofunits2 = nrofunits = CheckForUnit(NULL, 0x0fff, SC_MENUNIT, MaxObjects, &a, &info->gamelocations[locnr].coords);
 		if (nrofunits)
 		{
-			Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+			Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 			while( (a = EnumObj.GetNext()) )
 //			for (j = 0;j < MaxObjects;j++)
 			{
@@ -1753,7 +1754,7 @@ int TRG_RunAIScriptAtLocation(StarMapInfo *info, int aiscriptnr, int playernr, i
 		default:
 			findbunker = NULL;
 			bunkerlist = new mylist();
-			Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+			Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 			while( (a = EnumObj.GetNext()) )
 //			for (j = 0;j < MaxObjects;j++)
 			{
@@ -1770,7 +1771,7 @@ int TRG_RunAIScriptAtLocation(StarMapInfo *info, int aiscriptnr, int playernr, i
 			break;
 		}
 		{
-			Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+			Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 			while( (a = EnumObj.GetNext()) )
 //			for (j = 0;j < MaxObjects;j++)
 			{
@@ -1823,7 +1824,7 @@ int TRG_RunAIScriptAtLocation(StarMapInfo *info, int aiscriptnr, int playernr, i
 			statpl[i] = 0;
 		}
 		{
-			Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+			Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 			while( (a = EnumObj.GetNext()) )
 //			for (j = 0;j < MaxObjects;j++)
 			{
@@ -1855,7 +1856,7 @@ int TRG_RunAIScriptAtLocation(StarMapInfo *info, int aiscriptnr, int playernr, i
 			statpl[i] = 0;
 		}
 		{
-			Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+			Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 			while( (a = EnumObj.GetNext()) )
 //			for (j = 0;j < MaxObjects;j++)
 			{
@@ -1883,7 +1884,7 @@ int TRG_RunAIScriptAtLocation(StarMapInfo *info, int aiscriptnr, int playernr, i
 		//!!!!!need to check how player is weak and go where, no  numbgamer!!!!!
 		if (SearchForUnitMask(NUMBGAMER, SPECIAL_ISBUILD, &xpos, &ypos))
 		{
-			Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+			Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 			while( (a = EnumObj.GetNext()) )
 //			for (j = 0;j < MaxObjects;j++)
 			{

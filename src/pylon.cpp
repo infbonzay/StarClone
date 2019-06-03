@@ -1,5 +1,4 @@
 
-#include "Enumerator.h"
 #include "wmem.h"
 #include "audio.h"
 
@@ -15,7 +14,10 @@
 #include "objs.h"
 #include "images.h"
 #include "gener.h"
+#include "man.h"
+#include "Enumerate.h"
 #include "pylon.h"
+
 //=================================
 unsigned char PylonTable[PYLONAREAY][PYLONAREAX] =
 {
@@ -115,7 +117,7 @@ void AddBuildsInPower(unsigned char *pylonarea, int playernr)
 {
 	int i, j, k, nrofpower, xp, yp, xs, ys;
 	OBJ *a;
-	Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 	while( (a = EnumObj.GetNext()) )
 //	for (k = 0;k < MaxObjects;k++)
 	{
@@ -148,7 +150,7 @@ void DelBuildsFromPower(unsigned char *pylonarea, int playernr)
 {
 	int i, j, k, nrofpower, xp, yp, xs, ys;
 	OBJ *a;
-	Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 	while( (a = EnumObj.GetNext()) )
 //	for (k = 0;k < MaxObjects;k++)
 	{

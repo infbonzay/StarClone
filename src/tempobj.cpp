@@ -1,5 +1,4 @@
 
-#include "Enumerator.h"
 #include "diap.h"
 #include "load.h"
 #include "walk.h"
@@ -14,6 +13,8 @@
 #include "pylon.h"
 #include "stringfiles.h"
 #include "gener.h"
+#include "man.h"
+#include "Enumerate.h"
 #include "tempobj.h"
 
 int curentlocation;
@@ -285,14 +286,14 @@ void ConnectingPairBuilds(StarMapInfo *loadedmap)
 	OBJstruct *b;
 	if (havezergparied)
 	{
-		Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+		Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 		while( (a = EnumObj.GetNext()) )
 //		for (i = 0;i < MaxObjects;i++)
 		{
 //			a = objects[i];
 			if (a->paried == ZERGPARIED)
 			{
-				Enumerator<OBJ *> EnumObj2(&MaxObjects, objects, i + 1);
+				Enumerate<OBJ *> EnumObj2(&MaxObjects, objects, i + 1);
 				while( (a2 = EnumObj2.GetNext()) )
 //				for (j = i + 1;j < MaxObjects;j++)
 				{

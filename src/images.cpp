@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "Enumerator.h"
 #include "putobj.h"
 #include "gr.h"
 #include "defsunits.h"
@@ -24,6 +23,8 @@
 #include "doodad.h"
 #include "flingy.h"
 #include "gener.h"
+#include "man.h"
+#include "Enumerate.h"
 #include "images.h"
 
 #define MAXIMAGELEVELS	20
@@ -1237,7 +1238,7 @@ void CreatePylonSelectArea(void)
 	OVERLAY_IMG *newimg;
 	if (pylonselected)
 	{
-		Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+		Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 		while( (a = EnumObj.GetNext()) )
 //		for (i = 0;i < MaxObjects;i++)
 		{
@@ -1263,7 +1264,7 @@ void RemovePylonSelectArea(void)
 		if (drawpylonareaactive)
 		{
 			drawpylonareaactive = 0;
-			Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+			Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 			while( (a = EnumObj.GetNext()) )
 //			for (i = 0;i < MaxObjects;i++)
 			{

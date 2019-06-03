@@ -1,7 +1,5 @@
 
 #include <math.h>
-
-#include "Enumerator.h"
 #include "auxil.h"
 #include "debug.h"
 #include "man.h"
@@ -41,6 +39,8 @@
 #include "overlay.h"
 #include "sigorder.h"
 #include "key.h"
+#include "man.h"
+#include "Enumerate.h"
 #include "objs.h"
 
 //===========================================
@@ -540,7 +540,7 @@ void addtolist_onetypeobj(SelectionObjs *list, OBJ *a, int x1, int y1, int x2, i
 {
 	int i, x, y;
 	struct OBJ *c;
-	Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 	while( (c = EnumObj.GetNext()) )
 //	for (i = 0;i < MaxObjects;i++)
 	{
@@ -580,7 +580,7 @@ struct OBJ *founduniqueobj(int x1, int y1)
 		new SelectionObjs(MAXSELECTMAN),
 		new SelectionObjs(MAXSELECTMAN),
 	};
-	Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 	while( (o = EnumObj.GetNext()) )
 //	for (i = 0;i < MaxObjects;i++)
 	{
@@ -743,7 +743,7 @@ void selectMAN(int x1, int y1, int x2, int y2, int mode)
 	}
 	else
 	{
-		Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+		Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 		while( (a = EnumObj.GetNext()) )
 //		for (i = 0;i < MaxObjects;i++)
 		{
@@ -967,7 +967,7 @@ void allobjdecrmtimemage(void)
 {
 	int i;
 	struct OBJ *a;
-	Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 	while( (a = EnumObj.GetNext()) )
 //	for (i = 0;i < MaxObjects;i++)
 	{
@@ -1038,7 +1038,7 @@ void allobj_dieheal(void)
 {
 	int i, lifechange;
 	struct OBJ *a;
-	Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 	while( (a = EnumObj.GetNext()) )
 //	for (i = 0;i < MaxObjects;i++)
 	{
@@ -1071,7 +1071,7 @@ void allobjconstr(void)
 {
 	int i;
 	struct OBJ *a;
-	Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 	while( (a = EnumObj.GetNext()) )
 //	for (i = 0;i < MaxObjects;i++)
 	{
@@ -1133,7 +1133,7 @@ void invisiblestick(void)
 {
 	int i;
 	OBJ *a;
-	Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 	while( (a = EnumObj.GetNext()) )
 //	for (i = 0;i < MaxObjects;i++)
 	{
@@ -3561,7 +3561,7 @@ void makeallblinking(void)
 {
 	int i;
 	OBJ *a;
-	Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 	while( (a = EnumObj.GetNext()) )
 //	for (i = 0;i < MaxObjects;i++)
 	{
@@ -3632,7 +3632,7 @@ void DeleteOldObjPointers(struct OBJ *a)
 	OBJ *b;
 	//	  struct MAGEARRAY *c;
 		//find pointers in all objects
-	Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 	while( (b = EnumObj.GetNext()) )
 //	for (i = 0;i < MaxObjects;i++)
 	{
@@ -3709,7 +3709,7 @@ void RemoveFromDestination(OBJ *a)
 	OBJ *a1, *tempobj;
 	if (IsUnitBaseBuild(a) == 1)
 	{
-		Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+		Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 		while( (a1 = EnumObj.GetNext()) )
 //		for (i = 0;i < MaxObjects;i++)
 		{
@@ -3723,7 +3723,7 @@ void RemoveFromDestination(OBJ *a)
 	}
 	if (IsResource(a, a->SC_Unit))
 	{
-		Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+		Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 		while( (a1 = EnumObj.GetNext()) )
 //		for (i = 0;i < MaxObjects;i++)
 		{
@@ -3786,7 +3786,7 @@ void applyrescuableunits(void)
 	{
 		if (ifhaverescuableplayers)
 		{
-			Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+			Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 			while( (a = EnumObj.GetNext()) )
 //			for (i = 0;i < MaxObjects;i++)
 			{
@@ -4173,7 +4173,7 @@ void SearchForAtacks(void)
 {
 	int i;
 	OBJ *a;
-	Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 	while( (a = EnumObj.GetNext()) )
 //	for (i = 0;i < MaxObjects;i++)
 	{
@@ -4236,7 +4236,7 @@ OBJ *FindObjForAtack(OBJ *a,
 			addsiegerange = 5 * 32;
 		}
 	}
-	Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 	while( (a2 = EnumObj.GetNext()) )
 //	for (i = 0;i < MaxObjects;i++)
 	{
@@ -4679,7 +4679,7 @@ void TellOtherUnitsAboutAtacking(OBJ *a, OBJ *atacker)
 	unsigned char weaponid;
 	int i, allstat,canatack;
 	OBJ *a2;
-	Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 	while( (a2 = EnumObj.GetNext()) )
 //	for (i = 0;i < MaxObjects;i++)
 	{
@@ -5169,7 +5169,7 @@ void AdditionalUnitsProceed(void)
 {
 	int i;
 	OBJ *a;
-	Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 	while( (a = EnumObj.GetNext()) )
 //	for (i = 0;i < MaxObjects;i++)
 	{
@@ -5187,7 +5187,7 @@ void AllOBJMoving(void)
 	unsigned char flingy_id, side1;
 	MAIN_IMG *img;
 	OBJ *a;
-	Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 	while( (a = EnumObj.GetNext()) )
 //	for (i = 0;i < MaxObjects;i++)
 	{

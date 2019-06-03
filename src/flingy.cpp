@@ -3,7 +3,8 @@
 #include <stdlib.h>
 #include <math.h>
 
-#include "Enumerator.h"
+#include "man.h"
+#include "Enumerate.h"
 #include "mage.h"
 #include "weapons.h"
 #include "ObjChecks.h"
@@ -167,7 +168,7 @@ void SC_FLINGY::StayAndWaitTime(void)
 	OBJ *a;
 	int i, mindist;
 	mindist = mageprop[frommodemove].diapazone;
-	Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 	while( (a = EnumObj.GetNext()) )
 //	for (i = 0;i < MaxObjects;i++)
 	{

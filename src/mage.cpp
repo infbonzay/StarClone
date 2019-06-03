@@ -4,7 +4,6 @@
 
 #include "unitaction.h"
 
-#include "Enumerator.h"
 #include "vars.h"
 #include "man.h"
 #include "putobj.h"
@@ -26,6 +25,7 @@
 #include "images.h"
 #include "weapons.h"
 #include "sigorder.h"
+#include "Enumerate.h"
 #include "mage.h"
 //=======================================
 int GetMageAtr(ATROBJ *a, int atrnr)
@@ -83,7 +83,7 @@ void mageattributedothings(OBJ *a)
 					}
 					else
 					{
-						Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+						Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 						while( (a2 = EnumObj.GetNext()) )
 //						for (j = 0;j < MaxObjects;j++)
 						{
@@ -560,7 +560,7 @@ void CastSpellWithOutWeaponnr(OBJ *casterobj, int castmagenr)
 	case MODERECALL:
 		{
 			mindist = mageprop[castmagenr].diapazone;
-			Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+			Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 			while( (a = EnumObj.GetNext()) )
 //			for (i = 0;i < MaxObjects;i++)
 			{

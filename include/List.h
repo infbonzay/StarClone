@@ -43,23 +43,6 @@ public:
 	~List();
 };
 //=========================================
-
-template <typename T>
-class Enumerate
-{
-protected:
-	int				EnumValue;
-	int				GlobalEnumValue;
-	List<T>			*_list;
-	ListElem<T>		*CurrentEnum;
-public:
-	T	GetNextElem(void);
-
-	Enumerate(List<T> *list);
-	~Enumerate();
-};
-
-//=========================================
 template <typename T>
 void List<T>::Clear(void)
 {
@@ -211,45 +194,6 @@ bool List<T>::Contains(T elem)
 	}
 	return false;
 }
-//=========================================
-template <typename T>
-Enumerate<T>::Enumerate(List<T> *list)
-{
-	EnumValue = 0;
-	GlobalEnumValue = 0;
-	_list = list;
-	CurrentEnum = list->First;
-}
-//=========================================
-template <typename T>
-Enumerate<T>::~Enumerate()
-{
-}
-//=========================================
-template <typename T>
-T Enumerate<T>::GetNextElem(void)
-{
-
-	T retval;
-	if (!CurrentEnum)
-		return NULL;
-	do {
-		while (EnumValue >= MAXLISTELEMENTS)
-		{
-			do {
-				CurrentEnum = CurrentEnum->Next;	//go to next slot
-				if (!CurrentEnum)
-					return NULL;
-				EnumValue = 0;
-			} while (CurrentEnum->EmptyElem == MAXLISTELEMENTS);	//repeat at next if we have empty entire slot
-		}
-		if (CurrentEnum->PresenceFlag[EnumValue])
-			break;
-		GlobalEnumValue++;
-	} while (1);
-	return(CurrentEnum->Elements[EnumValue++]);
-}
-
 //=========================================
 template <typename T>
 class ListSimple

@@ -2,7 +2,6 @@
 
 #include <math.h>
 
-#include "Enumerator.h"
 #include "load.h"
 #include "mage.h"
 #include "wmem.h"
@@ -10,7 +9,6 @@
 #include "defsunits.h"
 #include "maps.h"
 #include "objs.h"
-
 #include "defs.h"
 #include "man.h"
 #include "auxil.h"
@@ -25,6 +23,7 @@
 #include "actiondefault.h"
 #include "images.h"
 #include "gener.h"
+#include "Enumerate.h"
 #include "ObjChecks.h"
 
 #define MINCARRIERCAPACITY		4
@@ -545,7 +544,7 @@ OBJ *SearchNewBounceOBJ(int x, int y, int playernr, OBJ *obj1, OBJ *obj2, int ma
 	int i, dist, mindist = 65535;
 	OBJ *a;
 	OBJ *finda = NULL;
-	Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 	while( (a = EnumObj.GetNext()) )
 //	for (i = 0;i < MaxObjects;i++)
 	{

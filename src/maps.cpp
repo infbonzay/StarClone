@@ -2,8 +2,6 @@
 #include <grplib/usegrp.h>
 
 #include "lists.h"
-#include "Enumerator.h"
-
 #include "auxil.h"
 #include "man.h"
 #include "doodad.h"
@@ -25,6 +23,8 @@
 #include "market.h"
 #include "images.h"
 #include "walk.h"
+#include "man.h"
+#include "Enumerate.h"
 #include "maps.h"
 
 StarMapInfo map;
@@ -803,7 +803,7 @@ void opentempmap(int playernr, int xkart, int ykart, int sizex, int sizey)
 void calcfullinvandsee(void)
 {
 	OBJ *a;
-	Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 	while( (a = EnumObj.GetNext()) )
 //	for (int i = 0;i < MaxObjects;i++)
 	{
@@ -865,7 +865,7 @@ void ClearFinalOBJ(OBJ *a0)
 {
 	OBJ *a;
 	int i = 0;
-	Enumerator<OBJ *> EnumObj(&MaxObjects, objects);
+	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 	while( (a = EnumObj.GetNext()) )
 //	for (i = 0;i < MaxObjects;i++)
 	{
