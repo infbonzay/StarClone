@@ -1240,9 +1240,7 @@ void CreatePylonSelectArea(void)
 	{
 		Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 		while( (a = EnumObj.GetNext()) )
-//		for (i = 0;i < MaxObjects;i++)
 		{
-//			a = objects[i];
 			if (a->SC_Unit == SC_PYLONOBJ && a->playernr == NUMBGAMER && !(a->prop & VARPYLONAREAACTIVE) && IsReadyOBJ(a))
 			{
 				a->prop |= VARPYLONAREAACTIVE;
@@ -1266,9 +1264,7 @@ void RemovePylonSelectArea(void)
 			drawpylonareaactive = 0;
 			Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 			while( (a = EnumObj.GetNext()) )
-//			for (i = 0;i < MaxObjects;i++)
 			{
-//				a = objects[i];
 				if (a->SC_Unit == SC_PYLONOBJ && a->playernr == NUMBGAMER && (a->prop & VARPYLONAREAACTIVE))
 				{
 					//destroy pylon area images

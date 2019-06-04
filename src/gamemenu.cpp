@@ -4506,9 +4506,7 @@ void MakeObserver(int playernr)
 	//all players units are stopped from their work
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 	while( (a = EnumObj.GetNext()) )
-//	for (i = 0;i < MaxObjects;i++)
 	{
-//		a = objects[i];
 		if (a->playernr == playernr)
 			moveobj(a, NULL, MODESTOP, NOSHOWERROR);
 	}

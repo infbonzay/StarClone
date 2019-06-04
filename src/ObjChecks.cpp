@@ -474,9 +474,11 @@ char *getOBJname(SCUNIT SC_Unit)
 void DestroyMarked(void)
 {
 	OBJ *a;
-	for (int i = MaxObjects - 1;i >= 0;i--)
+	Enumerate<OBJ *> EnumObj(&MaxObjects, objects, MaxObjects - 1);
+	while( (a = EnumObj.GetBack()) )
+//	for (int i = MaxObjects - 1;i >= 0;i--)
 	{
-		a = objects[i];
+//		a = objects[i];
 		if (a->prop & VARDIESILENTLY)
 		{
 			ForceDestroyAllOBJsImages(a);
@@ -546,9 +548,7 @@ OBJ *SearchNewBounceOBJ(int x, int y, int playernr, OBJ *obj1, OBJ *obj2, int ma
 	OBJ *finda = NULL;
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 	while( (a = EnumObj.GetNext()) )
-//	for (i = 0;i < MaxObjects;i++)
 	{
-//		a = objects[i];
 		if (player_aliance(playernr, a->playernr) == ENEMYOBJ)
 		{
 			if (!OBJ_VAR_CHK(a, obj_notdetect, playernr))

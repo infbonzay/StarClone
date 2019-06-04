@@ -501,9 +501,7 @@ int CreateNuke(OBJ *a,int x,int y)
 	int i,nukestartx,nukestarty;
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 	while( (a1 = EnumObj.GetNext()) )
-//	for (i=0;i<MaxObjects;i++)
 	{
-//		a1 = objects[i];
 		if (a1->SC_Unit == SC_NUCLEARSILOOBJ	&&
 			a1->playernr == a->playernr			&&
 			!(a1->prop & VARPOWEROFF))

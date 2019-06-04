@@ -291,9 +291,7 @@ int CheckForUnit(int(*ConditionFunction)(int *, int),
 	}
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 	while( (a = EnumObj.GetNext()) )
-//	for (i = 0;i < MaxObjects;i++)
 	{
-//		a = objects[i];
 		if (a->modemove == MODEDIE)
 			continue;
 		if (actiononplayers & (1 << a->playernr))
@@ -1013,9 +1011,7 @@ int Action_Prepare(StarMapInfo *info, MAP_TRIGS *temptrg, int trig_nr, int playe
 			{
 				Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 				while( (a = EnumObj.GetNext()) )
-//				for (j = 0;j < MaxObjects;j++)
 				{
-//					a = objects[j];
 					if (GetTriggeredOBJState(a))
 					{
 						//done by previous trigger
@@ -1048,9 +1044,7 @@ int Action_Prepare(StarMapInfo *info, MAP_TRIGS *temptrg, int trig_nr, int playe
 			{
 				Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 				while( (a = EnumObj.GetNext()) )
-//				for (j = 0;j < MaxObjects;j++)
 				{
-//					a = objects[j];
 					if (GetTriggeredOBJState(a))
 					{
 						//done by previous trigger
@@ -1083,9 +1077,7 @@ int Action_Prepare(StarMapInfo *info, MAP_TRIGS *temptrg, int trig_nr, int playe
 			{
 				Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 				while( (a = EnumObj.GetNext()) )
-//				for (j = 0;j < MaxObjects;j++)
 				{
-//					a = objects[j];
 					if (GetTriggeredOBJState(a))
 					{
 						SetTriggeredOBJState(a, CLEARSTATE);
@@ -1119,9 +1111,7 @@ int Action_Prepare(StarMapInfo *info, MAP_TRIGS *temptrg, int trig_nr, int playe
 			{
 				Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 				while( (a = EnumObj.GetNext()) )
-//				for (j = 0;j < MaxObjects;j++)
 				{
-//					a = objects[j];
 					if (GetTriggeredOBJState(a))
 					{
 						//done by previous trigger
@@ -1236,9 +1226,7 @@ int Action_Prepare(StarMapInfo *info, MAP_TRIGS *temptrg, int trig_nr, int playe
 			{
 				Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 				while( (a = EnumObj.GetNext()) )
-//				for (j = 0;j < MaxObjects;j++)
 				{
-//					a = objects[j];
 					if (GetTriggeredOBJState(a))
 					{
 						//done by previous trigger
@@ -1301,9 +1289,7 @@ int Action_Prepare(StarMapInfo *info, MAP_TRIGS *temptrg, int trig_nr, int playe
 			{
 				Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 				while( (a = EnumObj.GetNext()) )
-//				for (j = 0;j < MaxObjects;j++)
 				{
-//					a = objects[j];
 					if (GetTriggeredOBJState(a))
 					{
 						//done by previous trigger
@@ -1394,9 +1380,7 @@ creationwithoutproperties:
 			{
 				Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 				while( (a = EnumObj.GetNext()) )
-//				for (j = 0;j < MaxObjects;j++)
 				{
-//					a = objects[j];
 					if (GetTriggeredOBJState(a))
 					{
 						//done by previous trigger
@@ -1464,9 +1448,7 @@ creationwithoutproperties:
 			{
 				Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 				while( (a = EnumObj.GetNext()) )
-//				for (j = 0;j < MaxObjects;j++)
 				{
-//					a = objects[j];
 					if (GetTriggeredOBJState(a))
 					{
 						//done by previous trigger
@@ -1500,9 +1482,7 @@ creationwithoutproperties:
 			{
 				Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 				while( (a = EnumObj.GetNext()) )
-//				for (j = 0;j < MaxObjects;j++)
 				{
-//					a = objects[j];
 					if (GetTriggeredOBJState(a))
 					{
 						//done by previous trigger
@@ -1535,9 +1515,7 @@ creationwithoutproperties:
 			{
 				Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 				while( (a = EnumObj.GetNext()) )
-//				for (j = 0;j < MaxObjects;j++)
 				{
-//					a = objects[j];
 					if (GetTriggeredOBJState(a))
 					{
 						//done by previous trigger
@@ -1568,9 +1546,7 @@ creationwithoutproperties:
 			{
 				Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 				while( (a = EnumObj.GetNext()) )
-//				for (j = 0;j < MaxObjects;j++)
 				{
-//					a = objects[j];
 					if (GetTriggeredOBJState(a))
 					{
 						//done by previous trigger
@@ -1685,9 +1661,7 @@ int TRG_RunAIScriptAtLocation(StarMapInfo *info, int aiscriptnr, int playernr, i
 		{
 			Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 			while( (a = EnumObj.GetNext()) )
-//			for (j = 0;j < MaxObjects;j++)
 			{
-//				a = objects[j];
 				if (GetTriggeredOBJState(a))
 				{
 					//done by previous trigger
@@ -1720,9 +1694,7 @@ int TRG_RunAIScriptAtLocation(StarMapInfo *info, int aiscriptnr, int playernr, i
 		{
 			Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 			while( (a = EnumObj.GetNext()) )
-//			for (j = 0;j < MaxObjects;j++)
 			{
-//				a = objects[j];
 				if (GetTriggeredOBJState(a))
 				{
 					//done by previous trigger
@@ -1756,9 +1728,7 @@ int TRG_RunAIScriptAtLocation(StarMapInfo *info, int aiscriptnr, int playernr, i
 			bunkerlist = new mylist();
 			Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 			while( (a = EnumObj.GetNext()) )
-//			for (j = 0;j < MaxObjects;j++)
 			{
-//				a = objects[j];
 				if (GetTriggeredOBJState(a))
 				{
 					//done by previous trigger
@@ -1773,10 +1743,8 @@ int TRG_RunAIScriptAtLocation(StarMapInfo *info, int aiscriptnr, int playernr, i
 		{
 			Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 			while( (a = EnumObj.GetNext()) )
-//			for (j = 0;j < MaxObjects;j++)
 			{
 				//if terran race and is organic unit (can enter bunker)
-//				a = objects[j];
 				if (a->playernr == playernr)
 				{
 					if (IsTerranRace(a->SC_Unit) && IsOrganic(a->SC_Unit))
@@ -1826,9 +1794,7 @@ int TRG_RunAIScriptAtLocation(StarMapInfo *info, int aiscriptnr, int playernr, i
 		{
 			Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 			while( (a = EnumObj.GetNext()) )
-//			for (j = 0;j < MaxObjects;j++)
 			{
-//				a = objects[j];
 				if (SearchObjInArea(a, &info->gamelocations[locnr].coords))
 				{
 					if (a->playernr != playernr && a->playernr < PLAYEDPLAYERS)
@@ -1858,9 +1824,7 @@ int TRG_RunAIScriptAtLocation(StarMapInfo *info, int aiscriptnr, int playernr, i
 		{
 			Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 			while( (a = EnumObj.GetNext()) )
-//			for (j = 0;j < MaxObjects;j++)
 			{
-//				a = objects[j];
 				if (SearchObjInArea(a, &info->gamelocations[locnr].coords))
 				{
 					if (a->playernr != playernr && a->playernr < PLAYEDPLAYERS)
@@ -1886,9 +1850,7 @@ int TRG_RunAIScriptAtLocation(StarMapInfo *info, int aiscriptnr, int playernr, i
 		{
 			Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 			while( (a = EnumObj.GetNext()) )
-//			for (j = 0;j < MaxObjects;j++)
 			{
-//				a = objects[j];
 				if (a->playernr == playernr && a->modemove == MODESTOP)
 				{
 					if (IsOBJBurrowed(a))

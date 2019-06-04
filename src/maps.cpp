@@ -805,9 +805,7 @@ void calcfullinvandsee(void)
 	OBJ *a;
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 	while( (a = EnumObj.GetNext()) )
-//	for (int i = 0;i < MaxObjects;i++)
 	{
-//		a = objects[i];
 		calcfullinvandseeobj(a);
 	}
 }
@@ -867,9 +865,7 @@ void ClearFinalOBJ(OBJ *a0)
 	int i = 0;
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 	while( (a = EnumObj.GetNext()) )
-//	for (i = 0;i < MaxObjects;i++)
 	{
-//		a = objects[i];
 		if (a0 == a->finalOBJ)
 		{
 			if (OBJ_VAR_CHK(a0, obj_notdetect, a->playernr))

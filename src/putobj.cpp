@@ -360,9 +360,7 @@ void putobjsonminimap(void)
 	{
 		Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 		while( (a = EnumObj.GetNext()) )
-//		for (i = 0;i < MaxObjects;i++)
 		{
-//			a = objects[i];
 			if (IfCanClickOBJ(a->SC_Unit))
 			{
 				if (!( a->prop & (VARINBASE | VARNOTHERE | VARINTRANSPORT)))
@@ -1670,9 +1668,7 @@ void DrawBuildPlace(void)
 	{
 		Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 		while( (a = EnumObj.GetNext()) )
-//		for (i = 0;i < MaxObjects;i++)
 		{
-//			a = objects[i];
 			if (IsBuild(a->SC_Unit))
 				putbuildneededtodraw(a);
 		}

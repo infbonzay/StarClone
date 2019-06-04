@@ -85,9 +85,7 @@ void mageattributedothings(OBJ *a)
 					{
 						Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 						while( (a2 = EnumObj.GetNext()) )
-//						for (j = 0;j < MaxObjects;j++)
 						{
-//							a2 = objects[j];
 							if (a2 != a)
 							{
 								if (IsOrganic(a2->SC_Unit) && !IsOBJBurrowed(a2))
@@ -562,9 +560,7 @@ void CastSpellWithOutWeaponnr(OBJ *casterobj, int castmagenr)
 			mindist = mageprop[castmagenr].diapazone;
 			Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 			while( (a = EnumObj.GetNext()) )
-//			for (i = 0;i < MaxObjects;i++)
 			{
-//				a = objects[i];
 				if (casterobj->playernr == a->playernr && IsActiveUnit(a) && !IsBuild(a->SC_Unit) && a != casterobj)
 				{
 					if (GetDistanceTo256(a, casterobj->finalx, casterobj->finaly) <= mindist)

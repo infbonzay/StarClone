@@ -22,13 +22,10 @@
 //=========================================
 void UnitsMAPRefresh(void)
 {
-	int i;
 	OBJ *a;
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 	while( (a = EnumObj.GetNext()) )
-//	for (i = 0;i < MaxObjects;i++)
 	{
-//		a = objects[i];
 		a->prop |= VARKARTCHANGES;
 	}
 }
@@ -36,9 +33,13 @@ void UnitsMAPRefresh(void)
 //==========================================
 void freeOBJS(void)
 {
-	for (int i = MaxObjects - 1;i >= 0;i--)
+	OBJ *a;
+	Enumerate<OBJ *> EnumObj(&MaxObjects, objects, MaxObjects - 1);
+	while ((a = EnumObj.GetBack()))
+//	for (int i = MaxObjects - 1;i >= 0;i--)
 	{
-		destroyobj(objects[i]);
+//		a = objects[i];
+		destroyobj(a);
 	}
 	MaxObjects = 0;
 }
@@ -124,9 +125,7 @@ struct OBJ *SearchUnitFunc(int playernr, int(*funccheckunit)(SCUNIT SC_Unit), in
 	OBJ *a;
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 	while( (a = EnumObj.GetNext()) )
-//	for (int i = 0;i < MaxObjects;i++)
 	{
-//		a = objects[i];
 		if (a->mainimage)
 			if (controldistanceunit(nearx, neary, GetOBJx(a), GetOBJy(a), dist))
 			{
@@ -148,9 +147,7 @@ struct OBJ *SearchUnit(int playernr, SCUNIT SC_Unit, int shieldp, int healthp, i
 	OBJ *a;
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 	while( (a = EnumObj.GetNext()) )
-//	for (i = 0;i < MaxObjects;i++)
 	{
-//		a = objects[i];
 		if (a->SC_Unit == SC_Unit)
 		{
 			if (IsActiveUnit(a))
@@ -176,9 +173,7 @@ struct OBJ *SearchOBJforOBJ(struct OBJ *a, int modemage)
 	mindistance = mageprop[modemage].diapazone;
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 	while( (destobj = EnumObj.GetNext()) )
-//	for (i = 0;i < MaxObjects;i++)
 	{
-//		destobj = objects[i];
 		if (a == destobj || destobj->modemove == MODEDIE)
 			continue;
 		switch (modemage)
@@ -224,9 +219,7 @@ OBJ *SearchObjs(int x, int y, int range, int *array, int arraydim)
 	OBJ *a;
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 	while( (a = EnumObj.GetNext()) )
-//	for (i = 0;i < MaxObjects;i++)
 	{
-//		a = objects[i];
 		for (j = 0;j < arraydim;j++)
 			if (a->SC_Unit == array[j])
 				if (controldistanceunit(x, y, GetOBJx(a), GetOBJy(a), range))
@@ -243,9 +236,7 @@ OBJ *SearchForObjInXY(int x, int y, unsigned char *SC_Units, int nrofunits)
 	OBJ *a;
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 	while( (a = EnumObj.GetNext()) )
-//	for (i = 0;i < MaxObjects;i++)
 	{
-//		a = objects[i];
 		for (j = 0;j < nrofunits;j++)
 			if (a->SC_Unit == SC_Units[j] && !IsOnSkyOBJ(a))
 				if (GetOBJx(a) == x && GetOBJy(a) == y)
@@ -259,9 +250,7 @@ int SearchForUnitMask(int playernr, int mask, int *x, int *y)
 	OBJ *a;
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 	while( (a = EnumObj.GetNext()) )
-//	for (int i = 0;i < MaxObjects;i++)
 	{
-//		a = objects[i];
 		if (a->playernr == playernr && (alldattbl.units_dat->SpecialAbilityFlags[a->SC_Unit] & mask))
 		{
 			*x = (a->mainimage->xpos >> 8);
@@ -284,9 +273,7 @@ int FindSC_UnitType(OBJ *a2, int player, SCUNIT SC_Unit, SCUNIT SC_AddonUnit)
 	}
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 	while( (a = EnumObj.GetNext()) )
-//	for (int i = 0;i < MaxObjects;i++)
 	{
-//		a = objects[i];
 		if (a->playernr == player)
 		{
 			if (a->SC_Unit == SC_Unit)
@@ -369,9 +356,7 @@ struct OBJ *GetNearCenter(struct OBJ *a)
 	float distance = 32000, tempdist;
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 	while( (a2 = EnumObj.GetNext()) )
-//	for (i = 0;i < MaxObjects;i++)
 	{
-//		a2 = objects[i];
 		if (a2->playernr == a->playernr && IsUnitBaseBuild(a2) == 1)
 		{
 			tempdist = (float)hypot(GetOBJx(a) - GetOBJx(a2), GetOBJy(a) - GetOBJy(a2));
@@ -394,9 +379,7 @@ struct OBJ *GetNearResource(struct OBJ *a, SCUNIT SC_res_nr, int *resvalability)
 	*resvalability = 0;
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 	while( (a2 = EnumObj.GetNext()) )
-//	for (i = 0;i < MaxObjects;i++)
 	{
-//		a2 = objects[i];
 		if (IsResource(a2, SC_res_nr))
 		{
 			tempdist = (int)hypot(GetOBJx(a) - GetOBJx(a2), GetOBJy(a) - GetOBJy(a2));
@@ -530,9 +513,7 @@ OBJ *GetGEYSERfromMAP(int xmap, int ymap)
 	OBJ *a;
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 	while( (a = EnumObj.GetNext()) )
-//	for (int i = 0;i < MaxObjects;i++)
 	{
-//		a = objects[i];
 		if (a->SC_Unit == SC_GEYSEROBJ)
 		{
 			if (a->xkart == xmap && a->ykart == ymap)

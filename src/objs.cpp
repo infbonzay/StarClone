@@ -542,9 +542,7 @@ void addtolist_onetypeobj(SelectionObjs *list, OBJ *a, int x1, int y1, int x2, i
 	struct OBJ *c;
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 	while( (c = EnumObj.GetNext()) )
-//	for (i = 0;i < MaxObjects;i++)
 	{
-//		c = objects[i];
 		if (IsInvincibleUnit(c->SC_Unit))
 			continue;
 		if (c->playernr == a->playernr && a->SC_Unit == c->SC_Unit)
@@ -582,9 +580,7 @@ struct OBJ *founduniqueobj(int x1, int y1)
 	};
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 	while( (o = EnumObj.GetNext()) )
-//	for (i = 0;i < MaxObjects;i++)
 	{
-//		o = objects[i];
 		if (o->mainimage->flags & SC_IMAGE_FLAG_DISABLEDRAW)
 			continue;
 		nodoodad = 1;
@@ -745,9 +741,7 @@ void selectMAN(int x1, int y1, int x2, int y2, int mode)
 	{
 		Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 		while( (a = EnumObj.GetNext()) )
-//		for (i = 0;i < MaxObjects;i++)
 		{
-//			a = objects[i];
 			if (a->mainimage->flags & SC_IMAGE_FLAG_DISABLEDRAW)
 				continue;
 			bool nodoodad = true;
@@ -969,9 +963,7 @@ void allobjdecrmtimemage(void)
 	struct OBJ *a;
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 	while( (a = EnumObj.GetNext()) )
-//	for (i = 0;i < MaxObjects;i++)
 	{
-//		a = objects[i];
 		DecrementOBJAtr(a);
 	}
 }
@@ -1040,9 +1032,7 @@ void allobj_dieheal(void)
 	struct OBJ *a;
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 	while( (a = EnumObj.GetNext()) )
-//	for (i = 0;i < MaxObjects;i++)
 	{
-//		a = objects[i];
 		if (a->modemove == MODEDIE)
 			continue;
 		lifechange = ApplyDamageToUnit(a);
@@ -1073,9 +1063,7 @@ void allobjconstr(void)
 	struct OBJ *a;
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 	while( (a = EnumObj.GetNext()) )
-//	for (i = 0;i < MaxObjects;i++)
 	{
-//		a = objects[i];
 		TickUnderConstruct(a);	//perform construct build
 		if (!(a->prop&VARNOTWORK))
 			workingbuilds(a);
@@ -1135,9 +1123,7 @@ void invisiblestick(void)
 	OBJ *a;
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 	while( (a = EnumObj.GetNext()) )
-//	for (i = 0;i < MaxObjects;i++)
 	{
-//		a = objects[i];
 		if (a->modemove == MODEDIE || IsInvincibleOBJ(a))
 			continue;
 		if (IsDoodadState(a->SC_Unit))
@@ -3563,9 +3549,7 @@ void makeallblinking(void)
 	OBJ *a;
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 	while( (a = EnumObj.GetNext()) )
-//	for (i = 0;i < MaxObjects;i++)
 	{
-//		a = objects[i];
 		if (a->blinkvalue)
 			a->blinkvalue--;
 	}
@@ -3634,9 +3618,7 @@ void DeleteOldObjPointers(struct OBJ *a)
 		//find pointers in all objects
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 	while( (b = EnumObj.GetNext()) )
-//	for (i = 0;i < MaxObjects;i++)
 	{
-//		b = objects[i];
 		if (b->finalOBJ == a)
 		{
 			b->finalOBJ = NULL;
@@ -3711,9 +3693,7 @@ void RemoveFromDestination(OBJ *a)
 	{
 		Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 		while( (a1 = EnumObj.GetNext()) )
-//		for (i = 0;i < MaxObjects;i++)
 		{
-//			a1 = objects[i];
 			if (IsWorkerUnit(a1->SC_Unit))
 				if (a1->finalOBJ == a)
 				{
@@ -3725,9 +3705,7 @@ void RemoveFromDestination(OBJ *a)
 	{
 		Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 		while( (a1 = EnumObj.GetNext()) )
-//		for (i = 0;i < MaxObjects;i++)
 		{
-//			a1 = objects[i];
 			if (IsWorkerUnit(a1->SC_Unit))
 				if (a1->finalOBJ == a)
 				{
@@ -3788,9 +3766,7 @@ void applyrescuableunits(void)
 		{
 			Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 			while( (a = EnumObj.GetNext()) )
-//			for (i = 0;i < MaxObjects;i++)
 			{
-//				a = objects[i];
 				//if rescuable unit/player need to apply to seeit player
 				if (map.pl_iowner[a->playernr] == OWNER_RESCUABLE)
 				{
@@ -4175,9 +4151,7 @@ void SearchForAtacks(void)
 	OBJ *a;
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 	while( (a = EnumObj.GetNext()) )
-//	for (i = 0;i < MaxObjects;i++)
 	{
-//		a = objects[i];
 		if (IsFullAutoAttack(a->SC_Unit))
 		{
 			if (!a->finalOBJ)							//TODO i need to atack unit who atack me
@@ -4238,9 +4212,7 @@ OBJ *FindObjForAtack(OBJ *a,
 	}
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 	while( (a2 = EnumObj.GetNext()) )
-//	for (i = 0;i < MaxObjects;i++)
 	{
-//		a2 = objects[i];
 		if (checkspecialfunc)
 			if (checkspecialfunc(a2->SC_Unit))
 				continue;
@@ -4681,9 +4653,7 @@ void TellOtherUnitsAboutAtacking(OBJ *a, OBJ *atacker)
 	OBJ *a2;
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 	while( (a2 = EnumObj.GetNext()) )
-//	for (i = 0;i < MaxObjects;i++)
 	{
-//		a2 = objects[i];
 		allstat = player_aliance(a->playernr, a2->playernr);
 		if (allstat == MYOBJ || allstat == ALLIANCEOBJ)
 		{
@@ -5171,9 +5141,7 @@ void AdditionalUnitsProceed(void)
 	OBJ *a;
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 	while( (a = EnumObj.GetNext()) )
-//	for (i = 0;i < MaxObjects;i++)
 	{
-//		a = objects[i];
 		if (a->modemove != MODEDIE)
 			AdditionalUnitProceed(a, a->mainimage);
 	}
@@ -5189,9 +5157,7 @@ void AllOBJMoving(void)
 	OBJ *a;
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 	while( (a = EnumObj.GetNext()) )
-//	for (i = 0;i < MaxObjects;i++)
 	{
-//		a = objects[i];
 		nextmoveignorefullinertion = 0;
 		img = a->mainimage;
 		flingy_id = alldattbl.units_dat->flingy_id[a->SC_Unit];

@@ -119,9 +119,7 @@ void AddBuildsInPower(unsigned char *pylonarea, int playernr)
 	OBJ *a;
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 	while( (a = EnumObj.GetNext()) )
-//	for (k = 0;k < MaxObjects;k++)
 	{
-//		a = objects[k];
 		if (a->playernr != playernr)
 			continue;
 		if (a->prop & VARPOWEROFF)
@@ -152,9 +150,7 @@ void DelBuildsFromPower(unsigned char *pylonarea, int playernr)
 	OBJ *a;
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 	while( (a = EnumObj.GetNext()) )
-//	for (k = 0;k < MaxObjects;k++)
 	{
-//		a = objects[k];
 		if (a->playernr != playernr)
 			continue;
 		if (!(a->prop & VARPOWEROFF) && a->modemove != MODEDIE)

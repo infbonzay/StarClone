@@ -170,9 +170,7 @@ void SC_FLINGY::StayAndWaitTime(void)
 	mindist = mageprop[frommodemove].diapazone;
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 	while( (a = EnumObj.GetNext()) )
-//	for (i = 0;i < MaxObjects;i++)
 	{
-//		a = objects[i];
 		if (IsActiveUnit(a))
 		{
 			if (GetDistances(xdest256, ydest256, GetOBJx256(a), GetOBJy256(a)) <= mindist)
