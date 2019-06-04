@@ -9,6 +9,7 @@
 #include "player.h"
 #include "man.h"
 #include "defsmodes.h"
+#include "network_general.h"
 #include "const.h"
 #include "fonts.h"
 #include "tbl.h"
@@ -196,7 +197,7 @@ extern int		iconxcoord[][3];
 extern int		iconycoord[][3];
 extern int		xicon[];
 extern int		yicon[];
-extern char		forexit[];
+extern char		forexit[500];
 extern int		properties[];
 extern char		selectableproperties[];
 
@@ -268,12 +269,12 @@ extern unsigned int MY_PCID,SERVER_PCID,CHECKSUMMMAP,MAPLOADEDLENGTH,FILESIZEMAP
 extern char		*GAMETITLE,*BASENAMEMAP;
 extern char		*prefix_campaignpath;
 
-extern char		GAMETITLESTR[];
-extern char		GAMEHOSTIP[];
-extern char		TXTCHAT[];
+extern char		GAMETITLESTR[STARCLONE_NETWORKJOIN_MAXGAMETITLESYMB + 1];
+extern char		GAMEHOSTIP[15 + 1];
+extern char		TXTCHAT[MAXCHATSYMB + 1];
 
 
-extern char		MAPNAME[];
+extern char		MAPNAME[STARCLONE_NETWORKJOIN_MAXMAPNAMESYMB + 1];
 extern int		MAPSIZEX,MAPSIZEY;
 extern char		MAXPLRS,PAUSEGAME,PAUSEINTRIG,MENUACTIVE,gamestatus;
 extern unsigned char gamestatusremainticks,warparchon;

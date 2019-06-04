@@ -1,6 +1,9 @@
 #if !defined(_GRP_FONT)
 #define _GRP_FONT
 
+#if defined (_MSC_VER)
+	#pragma warning( disable : 4200 )								//disable 0 size array ex.    int myarray[];
+#endif
 #include <stdio.h>
 
 #pragma pack(push,1)
