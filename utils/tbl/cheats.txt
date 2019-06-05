@@ -9,3 +9,4 @@
 /showcells
 /kill
 /quit
+/victory

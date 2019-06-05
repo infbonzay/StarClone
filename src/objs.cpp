@@ -5287,6 +5287,8 @@ int TryToEnterNydus(OBJ *a, OBJ *nydus)
 	int x, y;
 	if (nydus->doubleunit && GetUnitRace(a->SC_Unit) == ZERGRACE && IsGroundUnit(a->SC_Unit))
 	{
+		if (IsOBJUnderConstruct(nydus) || IsOBJUnderConstruct(nydus->doubleunit))
+			return 0;
 		Play_sfxdata_id(nydus, SFXDATA_INTONYDUS, 4, 0);
 		getcoordofnewunit(nydus->doubleunit, a->SC_Unit, &x, &y);
 		ChangeObjXY(a, x, y);

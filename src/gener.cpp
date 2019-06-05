@@ -1793,6 +1793,10 @@ void ActivateCheat(int cheatid)
 	case 10:	//quit
 		menustatus = EXITGAME;
 		break;
+	case 11:	//victory
+		gamestatus = WINGAME;
+		gamestatusremainticks = WAITGAMETICKSBEFORESHOWGAMESTATUSMESSAGE;
+		break;
 	}
 }
 

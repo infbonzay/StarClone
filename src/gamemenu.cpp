@@ -4864,7 +4864,9 @@ int chatboxmenu(MENUDRAW *menudraw, MENUPARAMS *menuparams)
 			strcat(txt1, ": " GWHITECOLORFONTCHAR);
 			strcat(txt1, geteditboxtext(menudraw->menutodraw, 0));
 			if (NETWORKGAME)
+			{
 				netplay.SendGame_NetworkText(txt1);
+			}
 			else
 			{
 				if ((cheatid = CheckForCheats(geteditboxtext(menudraw->menutodraw, 0))) < 0)	//show message if no cheats
