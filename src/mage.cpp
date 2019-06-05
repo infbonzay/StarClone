@@ -46,7 +46,7 @@ int DeltaMageAtr(ATROBJ *a, int atrnr, int value)
 //==============================================
 void mageattributedothings(OBJ *a)
 {
-	OBJ *a2;
+	OBJ *o;
 	int x256, y256;
 	int typemage, i, j;
 	for (i = 0;i < MAXMAGEATR;i++)
@@ -73,28 +73,28 @@ void mageattributedothings(OBJ *a)
 						if (a->in_transport->loaded)
 							for (j = 0;j < a->in_transport->loaded->nrofloadedunits;j++)
 							{
-								a2 = a->in_transport->loaded->loadedunits[j];
-								if (a != a2)
+								o = a->in_transport->loaded->loadedunits[j];
+								if (a != o)
 								{
-									if (IsOrganic(a2->SC_Unit))
-										LowLevelDamage(NULL, a2, WEAPONID_IRRADIATE, DAMAGE_IGNOREARMOR, irradiatedamagepertick, 0, 0);
+									if (IsOrganic(o->SC_Unit))
+										LowLevelDamage(NULL, o, WEAPONID_IRRADIATE, DAMAGE_IGNOREARMOR, irradiatedamagepertick, 0, 0);
 								}
 							}
 					}
 					else
 					{
 						Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
-						while( (a2 = EnumObj.GetNext()) )
+						while( (o = EnumObj.GetNext()) )
 						{
-							if (a2 != a)
+							if (o != a)
 							{
-								if (IsOrganic(a2->SC_Unit) && !IsOBJBurrowed(a2))
+								if (IsOrganic(o->SC_Unit) && !IsOBJBurrowed(o))
 								{
-									if (GetDistanceTo256(a2, x256, y256) <= mageprop[typemage].diapazone)
+									if (GetDistanceTo256(o, x256, y256) <= mageprop[typemage].diapazone)
 									{
-										if (accesstomage(a->playernr, a2, typemage))
+										if (accesstomage(a->playernr, o, typemage))
 										{
-											LowLevelDamage(NULL, a2, WEAPONID_IRRADIATE, DAMAGE_IGNOREARMOR, irradiatedamagepertick, 0, 0);
+											LowLevelDamage(NULL, o, WEAPONID_IRRADIATE, DAMAGE_IGNOREARMOR, irradiatedamagepertick, 0, 0);
 										}
 									}
 								}
@@ -417,7 +417,7 @@ int existatrdecloak(struct OBJ *a)
 //==============================================
 void MakeMindControl(OBJ *a, int playernr, int ncolor)
 {
-	OBJ *a2;
+	OBJ *o;
 	if (IfHaveSubUnit(a->SC_Unit))
 		MakeMindControl(a->subunit, playernr, ncolor);
 	if (a->SC_Unit == SC_PYLONOBJ)
@@ -435,25 +435,25 @@ void MakeMindControl(OBJ *a, int playernr, int ncolor)
 	{
 		for (int i = 0;i < a->childs->nrofchildunits;i++)
 		{
-			a2 = a->childs->parentof[i];
-			if (a2)
+			o = a->childs->parentof[i];
+			if (o)
 			{
 				//remove interceptor from parent if it is in base
-				if (a2->SC_Unit == SC_INTERCEPTOROBJ && !(a2->prop & VARINBASE))
+				if (o->SC_Unit == SC_INTERCEPTOROBJ && !(o->prop & VARINBASE))
 				{
-					delchild(a, a2);
+					delchild(a, o);
 				}
 				else
 				{
-					if (a2->SC_Unit == SC_NUKEOBJ)
-						PLAYER[a2->playernr].nukes--;
-					ChangeSupply(a->playernr, a2->SC_Unit, MINUSFACTOR);
-					a2->playernr = playernr;
-					a2->color = ncolor;
-					a2->mainimage->imageusercolor = ncolor;
-					ChangeSupply(a->playernr, a2->SC_Unit, PLUSFACTOR);
-					if (a2->SC_Unit == SC_NUKEOBJ)
-						PLAYER[a2->playernr].nukes++;
+					if (o->SC_Unit == SC_NUKEOBJ)
+						PLAYER[o->playernr].nukes--;
+					ChangeSupply(a->playernr, o->SC_Unit, MINUSFACTOR);
+					o->playernr = playernr;
+					o->color = ncolor;
+					o->mainimage->imageusercolor = ncolor;
+					ChangeSupply(a->playernr, o->SC_Unit, PLUSFACTOR);
+					if (o->SC_Unit == SC_NUKEOBJ)
+						PLAYER[o->playernr].nukes++;
 				}
 			}
 		}
@@ -537,7 +537,7 @@ void CastSpell(OBJ *casterobj)
 //=======================================
 void CastSpellWithOutWeaponnr(OBJ *casterobj, int castmagenr)
 {
-	OBJ *a, *destobj;
+	OBJ *o, *destobj;
 	int i, mindist;
 	int oldsnd, leftsize, rightsize;
 	if (mageprop[castmagenr].sound_id[SOUNDONHIT])
@@ -559,19 +559,19 @@ void CastSpellWithOutWeaponnr(OBJ *casterobj, int castmagenr)
 		{
 			mindist = mageprop[castmagenr].diapazone;
 			Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
-			while( (a = EnumObj.GetNext()) )
+			while( (o = EnumObj.GetNext()) )
 			{
-				if (casterobj->playernr == a->playernr && IsActiveUnit(a) && !IsBuild(a->SC_Unit) && a != casterobj)
+				if (casterobj->playernr == o->playernr && IsActiveUnit(o) && !IsBuild(o->SC_Unit) && o != casterobj)
 				{
-					if (GetDistanceTo256(a, casterobj->finalx, casterobj->finaly) <= mindist)
+					if (GetDistanceTo256(o, casterobj->finalx, casterobj->finaly) <= mindist)
 					{
-						if (IsHallucination(a))
+						if (IsHallucination(o))
 						{
-							dieobj(a);
+							dieobj(o);
 							continue;
 						}
-						AddOverlayAtrImages(a, castmagenr, IMAGEOVERLAY_NOTDEPENDONMAINIMG);
-						ApplyCastedMage(a, casterobj, castmagenr);
+						AddOverlayAtrImages(o, castmagenr, IMAGEOVERLAY_NOTDEPENDONMAINIMG);
+						ApplyCastedMage(o, casterobj, castmagenr);
 					}
 				}
 			}
@@ -616,14 +616,14 @@ void CastSpellWithOutWeaponnr(OBJ *casterobj, int castmagenr)
 				oldsnd = BlockSoundToPlay();
 				leftsize = GetUnitDimensions(destobj->SC_Unit, UNITDIM_LEFT);
 				rightsize = GetUnitDimensions(destobj->SC_Unit, UNITDIM_RIGHT);
-				a = createobjfulllife(GetOBJx(destobj) - leftsize - rightsize, GetOBJy(destobj), destobj->SC_Unit, casterobj->playernr);
+				o = createobjfulllife(GetOBJx(destobj) - leftsize - rightsize, GetOBJy(destobj), destobj->SC_Unit, casterobj->playernr);
 				for (i = ATRPARASITEFROM;i < MAXMAGEATR;i++)
-					SetMageAtr(&a->atrobj, i, 0);
-				SetHallucinationOBJ(a);
-				a = createobjfulllife(GetOBJx(destobj) + leftsize + rightsize, GetOBJy(destobj), destobj->SC_Unit, casterobj->playernr);
+					SetMageAtr(&o->atrobj, i, 0);
+				SetHallucinationOBJ(o);
+				o = createobjfulllife(GetOBJx(destobj) + leftsize + rightsize, GetOBJy(destobj), destobj->SC_Unit, casterobj->playernr);
 				for (i = ATRPARASITEFROM;i < MAXMAGEATR;i++)
-					SetMageAtr(&a->atrobj, i, 0);
-				SetHallucinationOBJ(a);
+					SetMageAtr(&o->atrobj, i, 0);
+				SetHallucinationOBJ(o);
 				RestoreSoundToPlay(oldsnd);
 				AddOverlayAtrImages(destobj, castmagenr, IMAGEOVERLAY_NOTDEPENDONMAINIMG);
 			}

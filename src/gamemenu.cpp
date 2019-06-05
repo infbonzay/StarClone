@@ -4492,7 +4492,7 @@ void cleartitle(MENUSTR *title)
 //==========================================
 void MakeObserver(int playernr)
 {
-	OBJ *a;
+	OBJ *o;
 	int i, pl;
 	PLAYER[playernr].isobserverflag |= PLAYER_ISOBSERVER;
 	for (pl = 0;pl < force_slots.realplayers;pl++)
@@ -4505,10 +4505,10 @@ void MakeObserver(int playernr)
 	minimapmenu->iteminfo[MINIMAPDIALOG_MESSAGEBUTTON].Flags |= DIALOGBIN_FLAGS_ITEMDISABLED;
 	//all players units are stopped from their work
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
-	while( (a = EnumObj.GetNext()) )
+	while( (o = EnumObj.GetNext()) )
 	{
-		if (a->playernr == playernr)
-			moveobj(a, NULL, MODESTOP, NOSHOWERROR);
+		if (o->playernr == playernr)
+			moveobj(o, NULL, MODESTOP, NOSHOWERROR);
 	}
 }
 //==========================================

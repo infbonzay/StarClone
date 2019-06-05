@@ -165,24 +165,24 @@ void SC_FLINGY::DelFlingy(void)
 //=========================================
 void SC_FLINGY::StayAndWaitTime(void)
 {
-	OBJ *a;
+	OBJ *o;
 	int i, mindist;
 	mindist = mageprop[frommodemove].diapazone;
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
-	while( (a = EnumObj.GetNext()) )
+	while( (o = EnumObj.GetNext()) )
 	{
-		if (IsActiveUnit(a))
+		if (IsActiveUnit(o))
 		{
-			if (GetDistances(xdest256, ydest256, GetOBJx256(a), GetOBJy256(a)) <= mindist)
+			if (GetDistances(xdest256, ydest256, GetOBJx256(o), GetOBJy256(o)) <= mindist)
 			{
-				if (IsHallucination(a))
+				if (IsHallucination(o))
 				{
-					dieobj(a);
+					dieobj(o);
 					continue;
 				}
-				if (!WeaponCanApplyOnUnit(a, playernr, weapon_id))
+				if (!WeaponCanApplyOnUnit(o, playernr, weapon_id))
 					continue;
-				a->psistormdamage = dmgpertick;
+				o->psistormdamage = dmgpertick;
 			}
 		}
 	}

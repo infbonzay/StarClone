@@ -1234,17 +1234,17 @@ void AddShieldImage(struct OBJ *a, int directiondamage)
 void CreatePylonSelectArea(void)
 {
 	int i;
-	OBJ *a;
+	OBJ *o;
 	OVERLAY_IMG *newimg;
 	if (pylonselected)
 	{
 		Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
-		while( (a = EnumObj.GetNext()) )
+		while( (o = EnumObj.GetNext()) )
 		{
-			if (a->SC_Unit == SC_PYLONOBJ && a->playernr == NUMBGAMER && !(a->prop & VARPYLONAREAACTIVE) && IsReadyOBJ(a))
+			if (o->SC_Unit == SC_PYLONOBJ && o->playernr == NUMBGAMER && !(o->prop & VARPYLONAREAACTIVE) && IsReadyOBJ(o))
 			{
-				a->prop |= VARPYLONAREAACTIVE;
-				newimg = new OVERLAY_IMG(a->mainimage, IMAGEID_PYLONSELECTAREA1, 0, 0, a->mainimage->elevationlevel - 2,
+				o->prop |= VARPYLONAREAACTIVE;
+				newimg = new OVERLAY_IMG(o->mainimage, IMAGEID_PYLONSELECTAREA1, 0, 0, o->mainimage->elevationlevel - 2,
 					SC_IMAGE_FLAG_IMGUNDER | SC_IMAGE_FLAG_IGNOREPARENTSAVEINFOGTABLE, ISCRIPTNR_INIT);
 				iscriptinfo.ExecuteScript(newimg);
 				drawpylonareaactive = 1;
@@ -1256,20 +1256,20 @@ void CreatePylonSelectArea(void)
 void RemovePylonSelectArea(void)
 {
 	int i;
-	OBJ *a;
+	OBJ *o;
 	if (!pylonselected)
 	{
 		if (drawpylonareaactive)
 		{
 			drawpylonareaactive = 0;
 			Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
-			while( (a = EnumObj.GetNext()) )
+			while( (o = EnumObj.GetNext()) )
 			{
-				if (a->SC_Unit == SC_PYLONOBJ && a->playernr == NUMBGAMER && (a->prop & VARPYLONAREAACTIVE))
+				if (o->SC_Unit == SC_PYLONOBJ && o->playernr == NUMBGAMER && (o->prop & VARPYLONAREAACTIVE))
 				{
 					//destroy pylon area images
-					a->prop &= ~VARPYLONAREAACTIVE;
-					DelSpecificChildsImageID(a->mainimage, IMAGEID_PYLONSELECTAREA1, IMAGEID_PYLONSELECTAREA4);
+					o->prop &= ~VARPYLONAREAACTIVE;
+					DelSpecificChildsImageID(o->mainimage, IMAGEID_PYLONSELECTAREA1, IMAGEID_PYLONSELECTAREA4);
 				}
 			}
 		}

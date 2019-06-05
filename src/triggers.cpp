@@ -277,7 +277,7 @@ int CheckForUnit(int(*ConditionFunction)(int *, int),
 {
 	int i, nrofunits = 0, checkready = 0;
 	int(*UnitTypeFunc) (SCUNIT);
-	struct OBJ *a, *last = NULL;
+	struct OBJ *o, *last = NULL;
 	if (unitid >= MAX_UNITS_ELEM)
 	{
 		UnitTypeFunc = CheckUnit[unitid - MAX_UNITS_ELEM];			//>228 (0xe5-0xe8)
@@ -290,25 +290,25 @@ int CheckForUnit(int(*ConditionFunction)(int *, int),
 		UNITNRFORCHECK = unitid;
 	}
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
-	while( (a = EnumObj.GetNext()) )
+	while( (o = EnumObj.GetNext()) )
 	{
-		if (a->modemove == MODEDIE)
+		if (o->modemove == MODEDIE)
 			continue;
-		if (actiononplayers & (1 << a->playernr))
+		if (actiononplayers & (1 << o->playernr))
 		{
-			if (checkready && !IsReadyOBJ(a))
+			if (checkready && !IsReadyOBJ(o))
 				continue;
-			else if ((*UnitTypeFunc)(a->SC_Unit))
+			else if ((*UnitTypeFunc)(o->SC_Unit))
 			{
 				if (searcharea)
-					if (!SearchObjInArea(a, searcharea))
+					if (!SearchObjInArea(o, searcharea))
 						continue;
 				nrofunits++;
 				if (retlast)
 				{
-					SetTriggeredOBJState(a, SETSTATE);
-					//						objlist->AddElem(a);
-					last = a;
+					SetTriggeredOBJState(o, SETSTATE);
+					//						objlist->AddElem(o);
+					last = o;
 					if (--cntunits == 0)
 						break;
 				}
@@ -737,7 +737,7 @@ int Action_Prepare(StarMapInfo *info, MAP_TRIGS *temptrg, int trig_nr, int playe
 	void(*ResTypeFunc)(int(*)(int *, int), int playernr, int cnt);
 	LEADERBOARD *leaderboard;
 	OBJ *newobj;
-	OBJ *a;
+	OBJ *o;
 	OBJstruct *b;
 	err = 0;
 	triggcnt = 0;
@@ -1010,14 +1010,14 @@ int Action_Prepare(StarMapInfo *info, MAP_TRIGS *temptrg, int trig_nr, int playe
 			if (nrofunits)
 			{
 				Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
-				while( (a = EnumObj.GetNext()) )
+				while( (o = EnumObj.GetNext()) )
 				{
-					if (GetTriggeredOBJState(a))
+					if (GetTriggeredOBJState(o))
 					{
 						//done by previous trigger
-						SetTriggeredOBJState(a, CLEARSTATE);
+						SetTriggeredOBJState(o, CLEARSTATE);
 						oldsnd = UnBlockSoundToPlay();
-						dieobj(a);
+						dieobj(o);
 						RestoreSoundToPlay(oldsnd);
 						if (--nrofunits == 0)
 							break;
@@ -1043,14 +1043,14 @@ int Action_Prepare(StarMapInfo *info, MAP_TRIGS *temptrg, int trig_nr, int playe
 			if (nrofunits)
 			{
 				Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
-				while( (a = EnumObj.GetNext()) )
+				while( (o = EnumObj.GetNext()) )
 				{
-					if (GetTriggeredOBJState(a))
+					if (GetTriggeredOBJState(o))
 					{
 						//done by previous trigger
-						SetTriggeredOBJState(a, CLEARSTATE);
+						SetTriggeredOBJState(o, CLEARSTATE);
 						oldsnd = UnBlockSoundToPlay();
-						dieobj(a);
+						dieobj(o);
 						RestoreSoundToPlay(oldsnd);
 						if (--nrofunits == 0)
 							break;
@@ -1076,13 +1076,13 @@ int Action_Prepare(StarMapInfo *info, MAP_TRIGS *temptrg, int trig_nr, int playe
 			if (nrofunits)
 			{
 				Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
-				while( (a = EnumObj.GetNext()) )
+				while( (o = EnumObj.GetNext()) )
 				{
-					if (GetTriggeredOBJState(a))
+					if (GetTriggeredOBJState(o))
 					{
-						SetTriggeredOBJState(a, CLEARSTATE);
+						SetTriggeredOBJState(o, CLEARSTATE);
 						oldsnd = BlockSoundToPlay();
-						dieobj_silently(a);
+						dieobj_silently(o);
 						RestoreSoundToPlay(oldsnd);
 						if (--nrofunits == 0)
 							break;
@@ -1110,14 +1110,14 @@ int Action_Prepare(StarMapInfo *info, MAP_TRIGS *temptrg, int trig_nr, int playe
 			if (nrofunits)
 			{
 				Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
-				while( (a = EnumObj.GetNext()) )
+				while( (o = EnumObj.GetNext()) )
 				{
-					if (GetTriggeredOBJState(a))
+					if (GetTriggeredOBJState(o))
 					{
 						//done by previous trigger
-						SetTriggeredOBJState(a, CLEARSTATE);
+						SetTriggeredOBJState(o, CLEARSTATE);
 						oldsnd = BlockSoundToPlay();
-						dieobj_silently(a);
+						dieobj_silently(o);
 						RestoreSoundToPlay(oldsnd);
 						if (--nrofunits == 0)
 							break;
@@ -1225,20 +1225,20 @@ int Action_Prepare(StarMapInfo *info, MAP_TRIGS *temptrg, int trig_nr, int playe
 			if (nrofunits)
 			{
 				Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
-				while( (a = EnumObj.GetNext()) )
+				while( (o = EnumObj.GetNext()) )
 				{
-					if (GetTriggeredOBJState(a))
+					if (GetTriggeredOBJState(o))
 					{
 						//done by previous trigger
-						SetTriggeredOBJState(a, CLEARSTATE);
-						b = loadobj(a->SC_Unit);
+						SetTriggeredOBJState(o, CLEARSTATE);
+						b = loadobj(o->SC_Unit);
 						//teleport to other location
 //								CenterXYArea(&info->gamelocations[searchloc].coords,&xobj,&yobj);
-						getcoordofnewunit(a->SC_Unit, &xobj, &yobj, &info->gamelocations[searchloc].coords);
-						ChangeObjXY(a, xobj, yobj);
+						getcoordofnewunit(o->SC_Unit, &xobj, &yobj, &info->gamelocations[searchloc].coords);
+						ChangeObjXY(o, xobj, yobj);
 
-						ForceKartChanges(a);
-						moveobj(a, NULL, MODESTOP, NOSHOWERROR);
+						ForceKartChanges(o);
+						moveobj(o, NULL, MODESTOP, NOSHOWERROR);
 						if (--nrofunits == 0)
 							break;
 					}
@@ -1288,22 +1288,22 @@ int Action_Prepare(StarMapInfo *info, MAP_TRIGS *temptrg, int trig_nr, int playe
 			if (nrofunits)
 			{
 				Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
-				while( (a = EnumObj.GetNext()) )
+				while( (o = EnumObj.GetNext()) )
 				{
-					if (GetTriggeredOBJState(a))
+					if (GetTriggeredOBJState(o))
 					{
 						//done by previous trigger
-						SetTriggeredOBJState(a, CLEARSTATE);
+						SetTriggeredOBJState(o, CLEARSTATE);
 						switch (openstate)
 						{
 						case TRG_TYPEFUNC_SWITCHSET:
-							SetInvincibleOBJ(a, 1);
+							SetInvincibleOBJ(o, 1);
 							break;
 						case TRG_TYPEFUNC_SWITCHCLEAR:
-							SetInvincibleOBJ(a, 0);
+							SetInvincibleOBJ(o, 0);
 							break;
 						case TRG_TYPEFUNC_SWITCHTOGGLE:
-							a->prop ^= VARINVINCIBILITY;
+							o->prop ^= VARINVINCIBILITY;
 							break;
 						}
 						if (--nrofunits == 0)
@@ -1379,35 +1379,35 @@ creationwithoutproperties:
 			if (nrofunits)
 			{
 				Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
-				while( (a = EnumObj.GetNext()) )
+				while( (o = EnumObj.GetNext()) )
 				{
-					if (GetTriggeredOBJState(a))
+					if (GetTriggeredOBJState(o))
 					{
 						//done by previous trigger
-						SetTriggeredOBJState(a, CLEARSTATE);
+						SetTriggeredOBJState(o, CLEARSTATE);
 						//order unburrow if needed, after then move,atack,...
 						deltax = 0;
 						deltay = 0;
-						if (IsAirUnit(a->SC_Unit))
+						if (IsAirUnit(o->SC_Unit))
 							deltay += 16;
-						switch (a->SC_Unit)
+						switch (o->SC_Unit)
 						{
 						case SC_TANKSIEGEOBJ:
 						case SC_HERO_EDMUNDDUKESMOBJ:
-							err = moveobj(a, NULL, MODETANKNORMAL, NOSHOWERROR);
+							err = moveobj(o, NULL, MODETANKNORMAL, NOSHOWERROR);
 							if (err == MOVEOBJ_DONE)
-								AddModeMove(a, NULL, state, xobj2 + deltax, yobj2 + deltay, NOSHOWERROR);
+								AddModeMove(o, NULL, state, xobj2 + deltax, yobj2 + deltay, NOSHOWERROR);
 							break;
 						default:
-							if (IsOBJBurrowed(a))
+							if (IsOBJBurrowed(o))
 							{
-								err = moveobj(a, NULL, MODEUNBURROW, NOSHOWERROR);
+								err = moveobj(o, NULL, MODEUNBURROW, NOSHOWERROR);
 								if (err == MOVEOBJ_DONE)
-									AddModeMove(a, NULL, state, xobj2 + deltax, yobj2 + deltay, NOSHOWERROR);
+									AddModeMove(o, NULL, state, xobj2 + deltax, yobj2 + deltay, NOSHOWERROR);
 							}
 							else
 							{
-								moveobj(a, NULL, state, xobj2 + deltax, yobj2 + deltay, NOSHOWERROR);
+								moveobj(o, NULL, state, xobj2 + deltax, yobj2 + deltay, NOSHOWERROR);
 							}
 							break;
 						}
@@ -1447,15 +1447,15 @@ creationwithoutproperties:
 			if (nrofunits)
 			{
 				Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
-				while( (a = EnumObj.GetNext()) )
+				while( (o = EnumObj.GetNext()) )
 				{
-					if (GetTriggeredOBJState(a))
+					if (GetTriggeredOBJState(o))
 					{
 						//done by previous trigger
-						SetTriggeredOBJState(a, CLEARSTATE);
-						MakeMindControl(a, playernr, PLAYER[playernr].colorRACE);
-						moveobj(a, NULL, MODESTOP, NOSHOWERROR);
-						SetBlinkOBJ(a);
+						SetTriggeredOBJState(o, CLEARSTATE);
+						MakeMindControl(o, playernr, PLAYER[playernr].colorRACE);
+						moveobj(o, NULL, MODESTOP, NOSHOWERROR);
+						SetBlinkOBJ(o);
 						if (--nrofunits == 0)
 							break;
 					}
@@ -1481,15 +1481,15 @@ creationwithoutproperties:
 			if (nrofunits)
 			{
 				Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
-				while( (a = EnumObj.GetNext()) )
+				while( (o = EnumObj.GetNext()) )
 				{
-					if (GetTriggeredOBJState(a))
+					if (GetTriggeredOBJState(o))
 					{
 						//done by previous trigger
-						SetTriggeredOBJState(a, CLEARSTATE);
-						SetUnitPercentHealth(a, state);
+						SetTriggeredOBJState(o, CLEARSTATE);
+						SetUnitPercentHealth(o, state);
 						//need to add fireblood images
-						AddRemoveBloodFlameOverlays(a);
+						AddRemoveBloodFlameOverlays(o);
 						if (--nrofunits == 0)
 							break;
 					}
@@ -1514,13 +1514,13 @@ creationwithoutproperties:
 			if (nrofunits)
 			{
 				Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
-				while( (a = EnumObj.GetNext()) )
+				while( (o = EnumObj.GetNext()) )
 				{
-					if (GetTriggeredOBJState(a))
+					if (GetTriggeredOBJState(o))
 					{
 						//done by previous trigger
-						SetTriggeredOBJState(a, CLEARSTATE);
-						SetUnitPercentMana(a, state);
+						SetTriggeredOBJState(o, CLEARSTATE);
+						SetUnitPercentMana(o, state);
 						if (--nrofunits == 0)
 							break;
 					}
@@ -1545,13 +1545,13 @@ creationwithoutproperties:
 			if (nrofunits)
 			{
 				Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
-				while( (a = EnumObj.GetNext()) )
+				while( (o = EnumObj.GetNext()) )
 				{
-					if (GetTriggeredOBJState(a))
+					if (GetTriggeredOBJState(o))
 					{
 						//done by previous trigger
-						SetTriggeredOBJState(a, CLEARSTATE);
-						SetUnitPercentShield(a, state);
+						SetTriggeredOBJState(o, CLEARSTATE);
+						SetUnitPercentShield(o, state);
 						if (--nrofunits == 0)
 							break;
 					}
@@ -1617,7 +1617,7 @@ int TRG_RunAIScriptAtLocation(StarMapInfo *info, int aiscriptnr, int playernr, i
 {
 	char statpl[MAXPLAYERS];
 	int pl, i, j, haverescued, magenr, xpos, ypos, nrofunits, nrofunits2, dist, mindistance;
-	OBJ *a, *bunkerobj, *findbunker;
+	OBJ *o, *bunkerobj, *findbunker;
 	mylist *bunkerlist = NULL;
 	if (locnr >= 0)
 	{
@@ -1655,21 +1655,21 @@ int TRG_RunAIScriptAtLocation(StarMapInfo *info, int aiscriptnr, int playernr, i
 		return(1);
 	case TRG_AISCRIPT_FILLSILOWITHNUKE_TYPEB:
 		//			DEBUGMESSCR("fillsilowithnukes:aiscript=0x%04x\n",aiscriptnr);
-		a = NULL;
-		nrofunits = CheckForUnit(NULL, playernrmask, SC_NUCLEARSILOOBJ, MaxObjects, &a, &info->gamelocations[locnr].coords);
+		o = NULL;
+		nrofunits = CheckForUnit(NULL, playernrmask, SC_NUCLEARSILOOBJ, MaxObjects, &o, &info->gamelocations[locnr].coords);
 		if (nrofunits)
 		{
 			Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
-			while( (a = EnumObj.GetNext()) )
+			while( (o = EnumObj.GetNext()) )
 			{
-				if (GetTriggeredOBJState(a))
+				if (GetTriggeredOBJState(o))
 				{
 					//done by previous trigger
-					SetTriggeredOBJState(a, CLEARSTATE);
-					a = CreateUnitInUnit(a, SC_NUKEOBJ, 0, GetOBJx(a), GetOBJy(a));
-					if (a)
+					SetTriggeredOBJState(o, CLEARSTATE);
+					o = CreateUnitInUnit(o, SC_NUKEOBJ, 0, GetOBJx(o), GetOBJy(o));
+					if (o)
 					{
-						ChangeSupply(a->playernr, a->SC_Unit, PLUSFACTOR);
+						ChangeSupply(o->playernr, o->SC_Unit, PLUSFACTOR);
 						if (--nrofunits == 0)
 							break;
 					}
@@ -1680,26 +1680,26 @@ int TRG_RunAIScriptAtLocation(StarMapInfo *info, int aiscriptnr, int playernr, i
 	case TRG_AISCRIPT_CAST_DISRUPTIONWEB://70
 //			DEBUGMESSCR("disruptionweb:aiscript=0x%04x\n",aiscriptnr);
 		magenr = MODEDISRUPTION;
-		a = createobjfulllife(xpos, ypos, SC_MISC_DISRUPTIONWEB, GREYNEUTRALCOLORPLAYER);
-		a->timeleft = mageprop[magenr].timemageactive;
+		o = createobjfulllife(xpos, ypos, SC_MISC_DISRUPTIONWEB, GREYNEUTRALCOLORPLAYER);
+		o->timeleft = mageprop[magenr].timemageactive;
 		Play_sfxdata(xpos, ypos, SFXDATA_DISRUPTIONWEB, 2);
 		return(1);
 	case TRG_AISCRIPT_SHOW_RECALL://101
 //			DEBUGMESSCR("recall:aiscript=0x%04x\n",aiscriptnr);
 			// need to check if we have arbiters for this players
-		a = NULL;
+		o = NULL;
 		magenr = MODERECALL;
-		nrofunits2 = nrofunits = CheckForUnit(NULL, 0x0fff, SC_MENUNIT, MaxObjects, &a, &info->gamelocations[locnr].coords);
+		nrofunits2 = nrofunits = CheckForUnit(NULL, 0x0fff, SC_MENUNIT, MaxObjects, &o, &info->gamelocations[locnr].coords);
 		if (nrofunits)
 		{
 			Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
-			while( (a = EnumObj.GetNext()) )
+			while( (o = EnumObj.GetNext()) )
 			{
-				if (GetTriggeredOBJState(a))
+				if (GetTriggeredOBJState(o))
 				{
 					//done by previous trigger
-					SetTriggeredOBJState(a, CLEARSTATE);
-					AddOverlayAtrImages(a, magenr, IMAGEOVERLAY_NOTDEPENDONMAINIMG);
+					SetTriggeredOBJState(o, CLEARSTATE);
+					AddOverlayAtrImages(o, magenr, IMAGEOVERLAY_NOTDEPENDONMAINIMG);
 					if (--nrofunits == 0)
 						break;
 				}
@@ -1712,28 +1712,28 @@ int TRG_RunAIScriptAtLocation(StarMapInfo *info, int aiscriptnr, int playernr, i
 		break;
 	case TRG_AISCRIPT_ENTERCLOSESTBUNKER://107
 //			DEBUGMESSCR("enterclostestbunker:aiscript=0x%04x\n",aiscriptnr);
-		a = NULL;
-		nrofunits2 = nrofunits = CheckForUnit(NULL, playernrmask, SC_BUNKEROBJ, MaxObjects, &a, &info->gamelocations[locnr].coords);
+		o = NULL;
+		nrofunits2 = nrofunits = CheckForUnit(NULL, playernrmask, SC_BUNKEROBJ, MaxObjects, &o, &info->gamelocations[locnr].coords);
 		switch (nrofunits)
 		{
 		case 0:
 			return(1);
 		case 1:
 			//onlyone bunker
-			SetTriggeredOBJState(a, CLEARSTATE);
-			findbunker = a;
+			SetTriggeredOBJState(o, CLEARSTATE);
+			findbunker = o;
 			break;
 		default:
 			findbunker = NULL;
 			bunkerlist = new mylist();
 			Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
-			while( (a = EnumObj.GetNext()) )
+			while( (o = EnumObj.GetNext()) )
 			{
-				if (GetTriggeredOBJState(a))
+				if (GetTriggeredOBJState(o))
 				{
 					//done by previous trigger
-					SetTriggeredOBJState(a, CLEARSTATE);
-					bunkerlist->AddList(a);
+					SetTriggeredOBJState(o, CLEARSTATE);
+					bunkerlist->AddList(o);
 					if (--nrofunits2 == 0)
 						break;
 				}
@@ -1742,14 +1742,14 @@ int TRG_RunAIScriptAtLocation(StarMapInfo *info, int aiscriptnr, int playernr, i
 		}
 		{
 			Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
-			while( (a = EnumObj.GetNext()) )
+			while( (o = EnumObj.GetNext()) )
 			{
 				//if terran race and is organic unit (can enter bunker)
-				if (a->playernr == playernr)
+				if (o->playernr == playernr)
 				{
-					if (IsTerranRace(a->SC_Unit) && IsOrganic(a->SC_Unit))
+					if (IsTerranRace(o->SC_Unit) && IsOrganic(o->SC_Unit))
 					{
-						if (SearchObjInArea(a, &info->gamelocations[locnr].coords))
+						if (SearchObjInArea(o, &info->gamelocations[locnr].coords))
 						{
 							if (nrofunits != 1)
 							{
@@ -1759,7 +1759,7 @@ int TRG_RunAIScriptAtLocation(StarMapInfo *info, int aiscriptnr, int playernr, i
 								mindistance = 256 * SIZESPRLANSHX * 2;
 								while ((bunkerobj = (struct OBJ *)bunkerlist->GetNextListElem()))
 								{
-									dist = (int) hypot(GetOBJx(a) - GetOBJx(bunkerobj), GetOBJy(a) - GetOBJy(bunkerobj));
+									dist = (int) hypot(GetOBJx(o) - GetOBJx(bunkerobj), GetOBJy(o) - GetOBJy(bunkerobj));
 									if (dist < mindistance)
 									{
 										mindistance = dist;
@@ -1768,7 +1768,7 @@ int TRG_RunAIScriptAtLocation(StarMapInfo *info, int aiscriptnr, int playernr, i
 								}
 							}
 							if (findbunker)
-								moveobj(a, findbunker, MODEMOVE, NOSHOWERROR);
+								moveobj(o, findbunker, MODEMOVE, NOSHOWERROR);
 						}
 					}
 				}
@@ -1793,13 +1793,13 @@ int TRG_RunAIScriptAtLocation(StarMapInfo *info, int aiscriptnr, int playernr, i
 		}
 		{
 			Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
-			while( (a = EnumObj.GetNext()) )
+			while( (o = EnumObj.GetNext()) )
 			{
-				if (SearchObjInArea(a, &info->gamelocations[locnr].coords))
+				if (SearchObjInArea(o, &info->gamelocations[locnr].coords))
 				{
-					if (a->playernr != playernr && a->playernr < PLAYEDPLAYERS)
+					if (o->playernr != playernr && o->playernr < PLAYEDPLAYERS)
 					{
-						statpl[a->playernr] = 1;
+						statpl[o->playernr] = 1;
 					}
 				}
 			}
@@ -1823,13 +1823,13 @@ int TRG_RunAIScriptAtLocation(StarMapInfo *info, int aiscriptnr, int playernr, i
 		}
 		{
 			Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
-			while( (a = EnumObj.GetNext()) )
+			while( (o = EnumObj.GetNext()) )
 			{
-				if (SearchObjInArea(a, &info->gamelocations[locnr].coords))
+				if (SearchObjInArea(o, &info->gamelocations[locnr].coords))
 				{
-					if (a->playernr != playernr && a->playernr < PLAYEDPLAYERS)
+					if (o->playernr != playernr && o->playernr < PLAYEDPLAYERS)
 					{
-						statpl[a->playernr] = 1;
+						statpl[o->playernr] = 1;
 					}
 				}
 			}
@@ -1849,18 +1849,18 @@ int TRG_RunAIScriptAtLocation(StarMapInfo *info, int aiscriptnr, int playernr, i
 		if (SearchForUnitMask(NUMBGAMER, SPECIAL_ISBUILD, &xpos, &ypos))
 		{
 			Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
-			while( (a = EnumObj.GetNext()) )
+			while( (o = EnumObj.GetNext()) )
 			{
-				if (a->playernr == playernr && a->modemove == MODESTOP)
+				if (o->playernr == playernr && o->modemove == MODESTOP)
 				{
-					if (IsOBJBurrowed(a))
+					if (IsOBJBurrowed(o))
 					{
-						if (moveobj(a, NULL, MODEUNBURROW, NOSHOWERROR) == MOVEOBJ_DONE)
-							AddModeMove(a, NULL, MODEATACK, xpos, ypos, NOSHOWERROR);
+						if (moveobj(o, NULL, MODEUNBURROW, NOSHOWERROR) == MOVEOBJ_DONE)
+							AddModeMove(o, NULL, MODEATACK, xpos, ypos, NOSHOWERROR);
 					}
 					else
 					{
-						moveobj(a, NULL, MODEATACK, xpos, ypos, NOSHOWERROR);
+						moveobj(o, NULL, MODEATACK, xpos, ypos, NOSHOWERROR);
 					}
 				}
 			}

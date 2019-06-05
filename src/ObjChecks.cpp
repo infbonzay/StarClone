@@ -473,19 +473,19 @@ char *getOBJname(SCUNIT SC_Unit)
 //=================================
 void DestroyMarked(void)
 {
-	OBJ *a;
+	OBJ *o;
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects, MaxObjects - 1);
-	while( (a = EnumObj.GetBack()) )
+	while( (o = EnumObj.GetBack()) )
 //	for (int i = MaxObjects - 1;i >= 0;i--)
 	{
-//		a = objects[i];
-		if (a->prop & VARDIESILENTLY)
+//		o = objects[i];
+		if (o->prop & VARDIESILENTLY)
 		{
-			ForceDestroyAllOBJsImages(a);
+			ForceDestroyAllOBJsImages(o);
 		}
-		if (a->prop & VARMARKFORDESTROY)
+		if (o->prop & VARMARKFORDESTROY)
 		{
-			destroyobj(a);
+			destroyobj(o);
 		}
 	}
 }
@@ -544,27 +544,27 @@ int IsAtackerActiveUnit(OBJ *a)
 OBJ *SearchNewBounceOBJ(int x, int y, int playernr, OBJ *obj1, OBJ *obj2, int maxdist)
 {
 	int i, dist, mindist = 65535;
-	OBJ *a;
+	OBJ *o;
 	OBJ *finda = NULL;
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
-	while( (a = EnumObj.GetNext()) )
+	while( (o = EnumObj.GetNext()) )
 	{
-		if (player_aliance(playernr, a->playernr) == ENEMYOBJ)
+		if (player_aliance(playernr, o->playernr) == ENEMYOBJ)
 		{
-			if (!OBJ_VAR_CHK(a, obj_notdetect, playernr))
-				if (IsActiveUnit(a))
+			if (!OBJ_VAR_CHK(o, obj_notdetect, playernr))
+				if (IsActiveUnit(o))
 				{
-					if (a == obj1 || a == obj2)
+					if (o == obj1 || o == obj2)
 						continue;
-					dist = GetDistanceTo(a, x, y);
-					//				dist=(int)hypot(GetOBJx(a) - x,GetOBJy(a) - y);
+					dist = GetDistanceTo(o, x, y);
+					//				dist=(int)hypot(GetOBJx(o) - x,GetOBJy(o) - y);
 					if (dist < maxdist)
 						if (dist < mindist)
 						{
 							mindist = dist;
-							finda = a;
+							finda = o;
 						}
-					//					return(a);
+					//					return(o);
 				}
 		}
 	}

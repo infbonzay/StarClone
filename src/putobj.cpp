@@ -354,22 +354,22 @@ void minimap_showobjs(void)
 void putobjsonminimap(void)
 {
 	int i;
-	OBJ *a;
+	OBJ *o;
 	//	  struct OBJstruct *b;
 	if ((MAPUNITSREGENERATIONBIT) && (MAPDEF&UNITS))			//if Desenterrain && time to regeneration minimap
 	{
 		Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
-		while( (a = EnumObj.GetNext()) )
+		while( (o = EnumObj.GetNext()) )
 		{
-			if (IfCanClickOBJ(a->SC_Unit))
+			if (IfCanClickOBJ(o->SC_Unit))
 			{
-				if (!( a->prop & (VARINBASE | VARNOTHERE | VARINTRANSPORT)))
+				if (!( o->prop & (VARINBASE | VARNOTHERE | VARINTRANSPORT)))
 				{
-					if (!OBJ_VAR_CHK(a, obj_notdetect, NUMBGAMER))
+					if (!OBJ_VAR_CHK(o, obj_notdetect, NUMBGAMER))
 					{
-						if (mapSEE(a->xkart, a->ykart) >= 1)
+						if (mapSEE(o->xkart, o->ykart) >= 1)
 						{
-							minimap_showedobjs.AddList(a);
+							minimap_showedobjs.AddList(o);
 						}
 					}
 				}
@@ -1663,14 +1663,14 @@ void putbuildplacemessage(int errorstate)
 void DrawBuildPlace(void)
 {
 	int i;
-	OBJ *a;
+	OBJ *o;
 	if (highMouse->Construct.SC_BuildUnit)
 	{
 		Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
-		while( (a = EnumObj.GetNext()) )
+		while( (o = EnumObj.GetNext()) )
 		{
-			if (IsBuild(a->SC_Unit))
-				putbuildneededtodraw(a);
+			if (IsBuild(o->SC_Unit))
+				putbuildneededtodraw(o);
 		}
 	}
 }

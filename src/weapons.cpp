@@ -465,7 +465,7 @@ void WeaponDoDamage(OBJ *atacker, OBJ *destobj, int x256, int y256, SCUNIT SC_Un
 	int playernr, unsigned char weapon_id, int castmagenr, int targetnr, mylist *listdamaged)
 {
 	MAIN_IMG *newimg;
-	OBJ *a;
+	OBJ *o;
 	int mindist[3], i, realdamage, damage, distance256, prevsporecnt, corrvalue;
 	switch (alldattbl.weapons_dat->WeaponEffect[weapon_id])
 	{
@@ -485,21 +485,21 @@ void WeaponDoDamage(OBJ *atacker, OBJ *destobj, int x256, int y256, SCUNIT SC_Un
 				Play_sfxdata(GetOBJx(atacker), GetOBJy(atacker), mageprop[castmagenr].sound_id[SOUNDONHIT], 2);
 		{
 			Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
-			while( (a = EnumObj.GetNext()) )
+			while( (o = EnumObj.GetNext()) )
 			{
-				if (IsActiveUnit(a) && a != atacker)
+				if (IsActiveUnit(o) && o != atacker)
 				{
-					if (GetDistanceTo256(a, x256, y256) <= mindist[0])
+					if (GetDistanceTo256(o, x256, y256) <= mindist[0])
 					{
-						if (IsHallucination(a))
+						if (IsHallucination(o))
 						{
-							dieobj(a);
+							dieobj(o);
 							continue;
 						}
-						if (!WeaponCanApplyOnUnit(a, playernr, weapon_id))
+						if (!WeaponCanApplyOnUnit(o, playernr, weapon_id))
 							continue;
-						AddOverlayAtrImages(a, castmagenr, IMAGEOVERLAY_DEPENDONMAINIMG);
-						ApplyCastedMage(a, atacker, castmagenr);
+						AddOverlayAtrImages(o, castmagenr, IMAGEOVERLAY_DEPENDONMAINIMG);
+						ApplyCastedMage(o, atacker, castmagenr);
 					}
 				}
 			}
@@ -530,12 +530,12 @@ void WeaponDoDamage(OBJ *atacker, OBJ *destobj, int x256, int y256, SCUNIT SC_Un
 		}
 		break;
 	case WEFFECT_DISRUPTIONWEB:
-		a = createobjfulllife(x256 >> 8, y256 >> 8, SC_MISC_DISRUPTIONWEB, GREYNEUTRALCOLORPLAYER);
-		a->timeleft = mageprop[castmagenr].timemageactive;
+		o = createobjfulllife(x256 >> 8, y256 >> 8, SC_MISC_DISRUPTIONWEB, GREYNEUTRALCOLORPLAYER);
+		o->timeleft = mageprop[castmagenr].timemageactive;
 		break;
 	case WEFFECT_DARKSWARM:
-		a = createobjfulllife(x256 >> 8, y256 >> 8, SC_MISC_DARKSWARM, GREYNEUTRALCOLORPLAYER);
-		a->timeleft = mageprop[castmagenr].timemageactive;
+		o = createobjfulllife(x256 >> 8, y256 >> 8, SC_MISC_DARKSWARM, GREYNEUTRALCOLORPLAYER);
+		o->timeleft = mageprop[castmagenr].timemageactive;
 		break;
 	case WEFFECT_CONSUME:
 		//have iscript sound
@@ -566,21 +566,21 @@ void WeaponDoDamage(OBJ *atacker, OBJ *destobj, int x256, int y256, SCUNIT SC_Un
 			mindist[0] = alldattbl.weapons_dat->InnerSplash[weapon_id] * 256;
 		{
 			Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
-			while( (a = EnumObj.GetNext()) )
+			while( (o = EnumObj.GetNext()) )
 			{
-				if (IsActiveUnit(a) && a != atacker)
+				if (IsActiveUnit(o) && o != atacker)
 				{
-					if (GetDistanceTo256(a, x256, y256) <= mindist[0])
+					if (GetDistanceTo256(o, x256, y256) <= mindist[0])
 					{
-						if (IsHallucination(a))
+						if (IsHallucination(o))
 						{
-							dieobj(a);
+							dieobj(o);
 							continue;
 						}
-						if (!WeaponCanApplyOnUnit(a, playernr, weapon_id))
+						if (!WeaponCanApplyOnUnit(o, playernr, weapon_id))
 							continue;
-						AddOverlayAtrImages(a, castmagenr, IMAGEOVERLAY_DEPENDONMAINIMG);
-						ApplyCastedMage(a, atacker, castmagenr);
+						AddOverlayAtrImages(o, castmagenr, IMAGEOVERLAY_DEPENDONMAINIMG);
+						ApplyCastedMage(o, atacker, castmagenr);
 					}
 				}
 			}
@@ -622,21 +622,21 @@ void WeaponDoDamage(OBJ *atacker, OBJ *destobj, int x256, int y256, SCUNIT SC_Un
 			mindist[0] = alldattbl.weapons_dat->InnerSplash[weapon_id] * 256;
 		{
 			Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
-			while( (a = EnumObj.GetNext()) )
+			while( (o = EnumObj.GetNext()) )
 			{
-				if (IsActiveUnit(a) && a != atacker)
+				if (IsActiveUnit(o) && o != atacker)
 				{
-					if (GetDistanceTo256(a, x256, y256) <= mindist[0])
+					if (GetDistanceTo256(o, x256, y256) <= mindist[0])
 					{
-						if (IsHallucination(a))
+						if (IsHallucination(o))
 						{
-							dieobj(a);
+							dieobj(o);
 							continue;
 						}
-						if (!WeaponCanApplyOnUnit(a, playernr, weapon_id))
+						if (!WeaponCanApplyOnUnit(o, playernr, weapon_id))
 							continue;
-						AddOverlayAtrImages(a, castmagenr, IMAGEOVERLAY_DEPENDONMAINIMG);
-						ApplyCastedMage(a, atacker, castmagenr);
+						AddOverlayAtrImages(o, castmagenr, IMAGEOVERLAY_DEPENDONMAINIMG);
+						ApplyCastedMage(o, atacker, castmagenr);
 					}
 				}
 			}
@@ -653,12 +653,12 @@ void WeaponDoDamage(OBJ *atacker, OBJ *destobj, int x256, int y256, SCUNIT SC_Un
 		y256 = GetOBJy256(atacker);
 		{
 			Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
-			while( (a = EnumObj.GetNext()) )
+			while( (o = EnumObj.GetNext()) )
 			{
-				if (IsActiveUnit(a))
+				if (IsActiveUnit(o))
 				{
-					//distance256 = GetDistanceTo256(a,x256,y256);
-					distance256 = GetDistances(GetOBJx256(a), GetOBJy256(a), x256, y256);
+					//distance256 = GetDistanceTo256(o,x256,y256);
+					distance256 = GetDistances(GetOBJx256(o), GetOBJy256(o), x256, y256);
 					if (distance256 <= mindist[0])
 						realdamage = damage;
 					else
@@ -669,11 +669,11 @@ void WeaponDoDamage(OBJ *atacker, OBJ *destobj, int x256, int y256, SCUNIT SC_Un
 								realdamage = damage / 4;
 							else
 								continue;//out of damage range
-					if (!WeaponCanApplyOnUnit(a, playernr, weapon_id))
+					if (!WeaponCanApplyOnUnit(o, playernr, weapon_id))
 						continue;
-					if (GetUnitMaxHitPoints(a->SC_Unit) * 2 / 3 > realdamage)				//damage or 2/3 of unit's life+shield, depend who bigger
-						realdamage = GetUnitMaxHealth(a->SC_Unit) * 2 / 3;
-					LowLevelDamage(atacker, a, weapon_id,
+					if (GetUnitMaxHitPoints(o->SC_Unit) * 2 / 3 > realdamage)				//damage or 2/3 of unit's life+shield, depend who bigger
+						realdamage = GetUnitMaxHealth(o->SC_Unit) * 2 / 3;
+					LowLevelDamage(atacker, o, weapon_id,
 						alldattbl.weapons_dat->WeaponType[weapon_id],
 						realdamage, 0, 0);
 				}
@@ -737,21 +737,21 @@ void WeaponDoDamage(OBJ *atacker, OBJ *destobj, int x256, int y256, SCUNIT SC_Un
 			mindist[0] = alldattbl.weapons_dat->InnerSplash[weapon_id] * 256;
 		{
 			Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
-			while( (a = EnumObj.GetNext()) )
+			while( (o = EnumObj.GetNext()) )
 			{
-				if (IsActiveUnit(a) && a != atacker)
+				if (IsActiveUnit(o) && o != atacker)
 				{
-					if (GetDistanceTo256(a, x256, y256) <= mindist[0])
+					if (GetDistanceTo256(o, x256, y256) <= mindist[0])
 					{
-						if (IsHallucination(a))
+						if (IsHallucination(o))
 						{
-							dieobj(a);
+							dieobj(o);
 							continue;
 						}
-						if (!WeaponCanApplyOnUnit(a, playernr, weapon_id))
+						if (!WeaponCanApplyOnUnit(o, playernr, weapon_id))
 							continue;
-						AddOverlayAtrImages(a, castmagenr, IMAGEOVERLAY_DEPENDONMAINIMG);
-						ApplyCastedMage(a, atacker, castmagenr);
+						AddOverlayAtrImages(o, castmagenr, IMAGEOVERLAY_DEPENDONMAINIMG);
+						ApplyCastedMage(o, atacker, castmagenr);
 					}
 				}
 			}
@@ -810,21 +810,21 @@ void WeaponDoDamage(OBJ *atacker, OBJ *destobj, int x256, int y256, SCUNIT SC_Un
 			mindist[0] = alldattbl.weapons_dat->InnerSplash[weapon_id] * 256;
 		{
 			Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
-			while( (a = EnumObj.GetNext()) )
+			while( (o = EnumObj.GetNext()) )
 			{
-				if (IsActiveUnit(a) && a != atacker)
+				if (IsActiveUnit(o) && o != atacker)
 				{
-					if (GetDistanceTo256(a, x256, y256) <= mindist[0])
+					if (GetDistanceTo256(o, x256, y256) <= mindist[0])
 					{
-						if (IsHallucination(a))
+						if (IsHallucination(o))
 						{
-							dieobj(a);
+							dieobj(o);
 							continue;
 						}
-						if (!WeaponCanApplyOnUnit(a, playernr, weapon_id))
+						if (!WeaponCanApplyOnUnit(o, playernr, weapon_id))
 							continue;
-						SetUnitShield(a, 0);
-						SetUnitMana(a, 0);
+						SetUnitShield(o, 0);
+						SetUnitMana(o, 0);
 					}
 				}
 			}
@@ -852,11 +852,11 @@ void WeaponDoDamage(OBJ *atacker, OBJ *destobj, int x256, int y256, SCUNIT SC_Un
 		damage = GetWeaponDamage(SC_Unit, playernr, weapon_id) << 8;
 		{
 			Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
-			while( (a = EnumObj.GetNext()) )
+			while( (o = EnumObj.GetNext()) )
 			{
-				if (IsActiveUnit(a) && (player_aliance(playernr, a->playernr) != MYOBJ || a == destobj))
+				if (IsActiveUnit(o) && (player_aliance(playernr, o->playernr) != MYOBJ || o == destobj))
 				{
-					distance256 = GetDistanceTo256(a, x256, y256);
+					distance256 = GetDistanceTo256(o, x256, y256);
 					if (distance256 <= mindist[0])
 						realdamage = damage;
 					else
@@ -867,15 +867,15 @@ void WeaponDoDamage(OBJ *atacker, OBJ *destobj, int x256, int y256, SCUNIT SC_Un
 								realdamage = damage / 4;
 							else
 								continue;//out of damage range
-					if (!WeaponCanApplyOnUnit(a, playernr, weapon_id))
+					if (!WeaponCanApplyOnUnit(o, playernr, weapon_id))
 						continue;
 					if (listdamaged)
 					{
-						if (listdamaged->HaveElem(a))
+						if (listdamaged->HaveElem(o))
 							continue;
-						listdamaged->AddList(a);
+						listdamaged->AddList(o);
 					}
-					LowLevelDamage(atacker, a, weapon_id,
+					LowLevelDamage(atacker, o, weapon_id,
 						alldattbl.weapons_dat->WeaponType[weapon_id],
 						realdamage, 0, 0);
 				}
@@ -891,11 +891,11 @@ void WeaponDoDamage(OBJ *atacker, OBJ *destobj, int x256, int y256, SCUNIT SC_Un
 		damage = GetWeaponDamage(SC_Unit, playernr, weapon_id) << 8;
 		{
 			Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
-			while( (a = EnumObj.GetNext()) )
+			while( (o = EnumObj.GetNext()) )
 			{
-				if (IsActiveUnit(a))
+				if (IsActiveUnit(o))
 				{
-					distance256 = GetDistanceTo256(a, x256, y256);
+					distance256 = GetDistanceTo256(o, x256, y256);
 					if (distance256 < mindist[0])
 						realdamage = damage;
 					else
@@ -906,15 +906,15 @@ void WeaponDoDamage(OBJ *atacker, OBJ *destobj, int x256, int y256, SCUNIT SC_Un
 								realdamage = damage / 4;
 							else
 								continue;//out of damage range
-					if (!WeaponCanApplyOnUnit(a, playernr, weapon_id))
+					if (!WeaponCanApplyOnUnit(o, playernr, weapon_id))
 						continue;
 					if (listdamaged)
 					{
-						if (listdamaged->HaveElem(a))
+						if (listdamaged->HaveElem(o))
 							continue;
-						listdamaged->AddList(a);
+						listdamaged->AddList(o);
 					}
-					LowLevelDamage(atacker, a, weapon_id,
+					LowLevelDamage(atacker, o, weapon_id,
 						alldattbl.weapons_dat->WeaponType[weapon_id],
 						realdamage, 0, 0);
 				}
@@ -933,30 +933,30 @@ void WeaponDoDamage(OBJ *atacker, OBJ *destobj, int x256, int y256, SCUNIT SC_Un
 			realdamage, 0, 0);
 		{
 			Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
-			while( (a = EnumObj.GetNext()) )
+			while( (o = EnumObj.GetNext()) )
 			{
-				if (IsOnSkyOBJ(a) && ((player_aliance(playernr, a->playernr) == ENEMYOBJ) || a == destobj))
+				if (IsOnSkyOBJ(o) && ((player_aliance(playernr, o->playernr) == ENEMYOBJ) || o == destobj))
 				{
-					if (WeaponCanApplyOnUnit(a, playernr, weapon_id))
+					if (WeaponCanApplyOnUnit(o, playernr, weapon_id))
 					{
-						if (IsHallucination(a))
+						if (IsHallucination(o))
 						{
-							dieobj(a);
+							dieobj(o);
 							continue;
 						}
-						if (GetDistanceTo256(a, x256, y256) <= CORROSIVEACIDSPLASHRADIUS)
+						if (GetDistanceTo256(o, x256, y256) <= CORROSIVEACIDSPLASHRADIUS)
 						{
-							prevsporecnt = GetCorrosiveAcidValue(a);
-							corrvalue = GetMageAtr(&a->atrobj, ATRCORROSIVEACID) + CORROSIVEACIDINCREMENTTICKS;
-							if (a == destobj)
+							prevsporecnt = GetCorrosiveAcidValue(o);
+							corrvalue = GetMageAtr(&o->atrobj, ATRCORROSIVEACID) + CORROSIVEACIDINCREMENTTICKS;
+							if (o == destobj)
 								corrvalue += CORROSIVEACIDINCREMENTTICKS;
 							if (corrvalue > CORROSIVEACIDMAXATRVAL)
 								corrvalue = CORROSIVEACIDMAXATRVAL;
-							SetMageAtr(&a->atrobj, ATRCORROSIVEACID, corrvalue);
+							SetMageAtr(&o->atrobj, ATRCORROSIVEACID, corrvalue);
 							if (!prevsporecnt)
-								InitSporeImage(a, corrvalue);
+								InitSporeImage(o, corrvalue);
 							else
-								ChangeSporeImage(a, prevsporecnt, GetCorrosiveAcidValue(a));
+								ChangeSporeImage(o, prevsporecnt, GetCorrosiveAcidValue(o));
 						}
 					}
 				}

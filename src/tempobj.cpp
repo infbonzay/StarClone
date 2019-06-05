@@ -282,26 +282,26 @@ void RemoveUnitsFromLists(mylist *units)
 void ConnectingPairBuilds(StarMapInfo *loadedmap)
 {
 	int i, j;
-	OBJ *a,*a2;
+	OBJ *o,*o2;
 	OBJstruct *b;
 	if (havezergparied)
 	{
 		Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
-		while( (a = EnumObj.GetNext()) )
+		while( (o = EnumObj.GetNext()) )
 		{
-			if (a->paried == ZERGPARIED)
+			if (o->paried == ZERGPARIED)
 			{
 				Enumerate<OBJ *> EnumObj2(&MaxObjects, objects, i + 1);
-				while( (a2 = EnumObj2.GetNext()) )
+				while( (o2 = EnumObj2.GetNext()) )
 				{
-					if (a->unitserial2 == a2->unitserial1)
+					if (o->unitserial2 == o2->unitserial1)
 					{
 						//found doubles builds
-						b = loadobj(a2->SC_Unit);
-						a->doubleunit = a2;
-						ChangeTypeOfProp(a->doubleunit, b, PROPEMPTY);
-						a2->doubleunit = a;
-						ChangeTypeOfProp(a2->doubleunit, b, PROPEMPTY);
+						b = loadobj(o2->SC_Unit);
+						o->doubleunit = o2;
+						ChangeTypeOfProp(o->doubleunit, b, PROPEMPTY);
+						o2->doubleunit = o;
+						ChangeTypeOfProp(o2->doubleunit, b, PROPEMPTY);
 						break;
 					}
 				}

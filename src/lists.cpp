@@ -22,24 +22,24 @@
 //=========================================
 void UnitsMAPRefresh(void)
 {
-	OBJ *a;
+	OBJ *o;
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
-	while( (a = EnumObj.GetNext()) )
+	while( (o = EnumObj.GetNext()) )
 	{
-		a->prop |= VARKARTCHANGES;
+		o->prop |= VARKARTCHANGES;
 	}
 }
 
 //==========================================
 void freeOBJS(void)
 {
-	OBJ *a;
+	OBJ *o;
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects, MaxObjects - 1);
-	while ((a = EnumObj.GetBack()))
+	while ((o = EnumObj.GetBack()))
 //	for (int i = MaxObjects - 1;i >= 0;i--)
 	{
-//		a = objects[i];
-		destroyobj(a);
+//		o = objects[i];
+		destroyobj(o);
 	}
 	MaxObjects = 0;
 }
@@ -122,18 +122,18 @@ int isobjtobeinfest(struct OBJ *a)
 //==========================================
 struct OBJ *SearchUnitFunc(int playernr, int(*funccheckunit)(SCUNIT SC_Unit), int nearx, int neary, int dist)
 {
-	OBJ *a;
+	OBJ *o;
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
-	while( (a = EnumObj.GetNext()) )
+	while( (o = EnumObj.GetNext()) )
 	{
-		if (a->mainimage)
-			if (controldistanceunit(nearx, neary, GetOBJx(a), GetOBJy(a), dist))
+		if (o->mainimage)
+			if (controldistanceunit(nearx, neary, GetOBJx(o), GetOBJy(o), dist))
 			{
-				if ((*funccheckunit)(a->SC_Unit))
+				if ((*funccheckunit)(o->SC_Unit))
 				{
-					if (IsActiveUnit(a) && !a->carryobj)
+					if (IsActiveUnit(o) && !o->carryobj)
 					{
-						return(a);
+						return(o);
 					}
 				}
 			}
@@ -144,19 +144,19 @@ struct OBJ *SearchUnitFunc(int playernr, int(*funccheckunit)(SCUNIT SC_Unit), in
 struct OBJ *SearchUnit(int playernr, SCUNIT SC_Unit, int shieldp, int healthp, int energyp)
 {
 	int i, allstat;
-	OBJ *a;
+	OBJ *o;
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
-	while( (a = EnumObj.GetNext()) )
+	while( (o = EnumObj.GetNext()) )
 	{
-		if (a->SC_Unit == SC_Unit)
+		if (o->SC_Unit == SC_Unit)
 		{
-			if (IsActiveUnit(a))
+			if (IsActiveUnit(o))
 			{
-				allstat = player_aliance(a->playernr, playernr);
+				allstat = player_aliance(o->playernr, playernr);
 				if (allstat == MYOBJ || allstat == ALLIANCEOBJ)
 				{
-					if (a->shield > shieldp && a->health > healthp && a->mana > energyp)
-						return(a);
+					if (o->shield > shieldp && o->health > healthp && o->mana > energyp)
+						return(o);
 				}
 			}
 		}
@@ -216,15 +216,15 @@ struct OBJ *SearchOBJforOBJ(struct OBJ *a, int modemage)
 OBJ *SearchObjs(int x, int y, int range, int *array, int arraydim)
 {
 	int i, j;
-	OBJ *a;
+	OBJ *o;
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
-	while( (a = EnumObj.GetNext()) )
+	while( (o = EnumObj.GetNext()) )
 	{
 		for (j = 0;j < arraydim;j++)
-			if (a->SC_Unit == array[j])
-				if (controldistanceunit(x, y, GetOBJx(a), GetOBJy(a), range))
+			if (o->SC_Unit == array[j])
+				if (controldistanceunit(x, y, GetOBJx(o), GetOBJy(o), range))
 				{
-					return(a);
+					return(o);
 				}
 	}
 	return(NULL);
@@ -233,28 +233,28 @@ OBJ *SearchObjs(int x, int y, int range, int *array, int arraydim)
 OBJ *SearchForObjInXY(int x, int y, unsigned char *SC_Units, int nrofunits)
 {
 	int i, j;
-	OBJ *a;
+	OBJ *o;
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
-	while( (a = EnumObj.GetNext()) )
+	while( (o = EnumObj.GetNext()) )
 	{
 		for (j = 0;j < nrofunits;j++)
-			if (a->SC_Unit == SC_Units[j] && !IsOnSkyOBJ(a))
-				if (GetOBJx(a) == x && GetOBJy(a) == y)
-					return(a);
+			if (o->SC_Unit == SC_Units[j] && !IsOnSkyOBJ(o))
+				if (GetOBJx(o) == x && GetOBJy(o) == y)
+					return(o);
 	}
 	return(NULL);
 }
 //=================================
 int SearchForUnitMask(int playernr, int mask, int *x, int *y)
 {
-	OBJ *a;
+	OBJ *o;
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
-	while( (a = EnumObj.GetNext()) )
+	while( (o = EnumObj.GetNext()) )
 	{
-		if (a->playernr == playernr && (alldattbl.units_dat->SpecialAbilityFlags[a->SC_Unit] & mask))
+		if (o->playernr == playernr && (alldattbl.units_dat->SpecialAbilityFlags[o->SC_Unit] & mask))
 		{
-			*x = (a->mainimage->xpos >> 8);
-			*y = (a->mainimage->ypos >> 8);
+			*x = (o->mainimage->xpos >> 8);
+			*y = (o->mainimage->ypos >> 8);
 			return(TRUE);
 		}
 	}
@@ -263,7 +263,7 @@ int SearchForUnitMask(int playernr, int mask, int *x, int *y)
 //=================================
 int FindSC_UnitType(OBJ *a2, int player, SCUNIT SC_Unit, SCUNIT SC_AddonUnit)
 {
-	OBJ *a;
+	OBJ *o;
 	//if check for addon, we need to check addon in selected build(OBJ *a2)
 	if (IsAddon(SC_Unit))
 	{
@@ -272,13 +272,13 @@ int FindSC_UnitType(OBJ *a2, int player, SCUNIT SC_Unit, SCUNIT SC_AddonUnit)
 				return(1);
 	}
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
-	while( (a = EnumObj.GetNext()) )
+	while( (o = EnumObj.GetNext()) )
 	{
-		if (a->playernr == player)
+		if (o->playernr == player)
 		{
-			if (a->SC_Unit == SC_Unit)
+			if (o->SC_Unit == SC_Unit)
 			{
-				if (IsReadyOBJ(a))
+				if (IsReadyOBJ(o))
 				{
 					if (SC_AddonUnit == SC_NOUNITNR)
 					{
@@ -286,7 +286,7 @@ int FindSC_UnitType(OBJ *a2, int player, SCUNIT SC_Unit, SCUNIT SC_AddonUnit)
 					}
 					else
 					{
-						if (a->addonobj && a->addonobj->SC_Unit == SC_AddonUnit && IsReadyOBJ(a->addonobj))
+						if (o->addonobj && o->addonobj->SC_Unit == SC_AddonUnit && IsReadyOBJ(o->addonobj))
 							return(1);
 					}
 				}
@@ -294,19 +294,19 @@ int FindSC_UnitType(OBJ *a2, int player, SCUNIT SC_Unit, SCUNIT SC_AddonUnit)
 			else
 				if (SC_Unit == SC_HATCHERYOBJ)
 				{
-					if ((a->SC_Unit == SC_LAIROBJ || a->SC_Unit == SC_HIVEOBJ))
+					if ((o->SC_Unit == SC_LAIROBJ || o->SC_Unit == SC_HIVEOBJ))
 						return(1);
 				}
 				else
 					if (SC_Unit == SC_LAIROBJ)
 					{
-						if (a->SC_Unit == SC_HIVEOBJ)
+						if (o->SC_Unit == SC_HIVEOBJ)
 							return(1);
 					}
 					else
 						if (SC_Unit == SC_SPIREOBJ)
 						{
-							if (a->SC_Unit == SC_GREATERSPIREOBJ)
+							if (o->SC_Unit == SC_GREATERSPIREOBJ)
 								return(1);
 						}
 		}
@@ -510,14 +510,14 @@ int IsWorkerUnit(SCUNIT SC_Unit)
 //=================================
 OBJ *GetGEYSERfromMAP(int xmap, int ymap)
 {
-	OBJ *a;
+	OBJ *o;
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
-	while( (a = EnumObj.GetNext()) )
+	while( (o = EnumObj.GetNext()) )
 	{
-		if (a->SC_Unit == SC_GEYSEROBJ)
+		if (o->SC_Unit == SC_GEYSEROBJ)
 		{
-			if (a->xkart == xmap && a->ykart == ymap)
-				return(a);
+			if (o->xkart == xmap && o->ykart == ymap)
+				return(o);
 		}
 	}
 	return(NULL);

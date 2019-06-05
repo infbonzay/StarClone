@@ -802,11 +802,11 @@ void opentempmap(int playernr, int xkart, int ykart, int sizex, int sizey)
 //=================================
 void calcfullinvandsee(void)
 {
-	OBJ *a;
+	OBJ *o;
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
-	while( (a = EnumObj.GetNext()) )
+	while( (o = EnumObj.GetNext()) )
 	{
-		calcfullinvandseeobj(a);
+		calcfullinvandseeobj(o);
 	}
 }
 //=================================
@@ -859,17 +859,17 @@ void calcfullinvandseeobj(OBJ *a)
 		ClearFinalOBJ(a);
 }
 //==================================
-void ClearFinalOBJ(OBJ *a0)
+void ClearFinalOBJ(OBJ *a)
 {
-	OBJ *a;
+	OBJ *o;
 	int i = 0;
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
-	while( (a = EnumObj.GetNext()) )
+	while( (o = EnumObj.GetNext()) )
 	{
-		if (a0 == a->finalOBJ)
+		if (a == o->finalOBJ)
 		{
-			if (OBJ_VAR_CHK(a0, obj_notdetect, a->playernr))
-				moveobj(a, NULL, MODESTOP, NOSHOWERROR);
+			if (OBJ_VAR_CHK(a, obj_notdetect, o->playernr))
+				moveobj(o, NULL, MODESTOP, NOSHOWERROR);
 		}
 	}
 }

@@ -539,24 +539,24 @@ void deselectallobj(int playernr)
 void addtolist_onetypeobj(SelectionObjs *list, OBJ *a, int x1, int y1, int x2, int y2)
 {
 	int i, x, y;
-	struct OBJ *c;
+	struct OBJ *o;
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
-	while( (c = EnumObj.GetNext()) )
+	while( (o = EnumObj.GetNext()) )
 	{
-		if (IsInvincibleUnit(c->SC_Unit))
+		if (IsInvincibleUnit(o->SC_Unit))
 			continue;
-		if (c->playernr == a->playernr && a->SC_Unit == c->SC_Unit)
+		if (o->playernr == a->playernr && a->SC_Unit == o->SC_Unit)
 		{
-			x = GetOBJx(c);
-			y = GetOBJy(c);
-			if (!OBJ_VAR_CHK(c, obj_notdetect, NUMBGAMER))
+			x = GetOBJx(o);
+			y = GetOBJy(o);
+			if (!OBJ_VAR_CHK(o, obj_notdetect, NUMBGAMER))
 			{
 				if (x > x1 - GetUnitWidthAndHeight(a->SC_Unit, UNITDIM_WIDTH) / 2 &&
 					y > y1 - GetUnitWidthAndHeight(a->SC_Unit, UNITDIM_HEIGHT) / 2 &&
 					x < x2 + GetUnitWidthAndHeight(a->SC_Unit, UNITDIM_WIDTH) / 2 &&
 					y < y2 + GetUnitWidthAndHeight(a->SC_Unit, UNITDIM_HEIGHT) / 2)
 				{
-					list->Add(c);
+					list->Add(o);
 				}
 			}
 		}
@@ -693,7 +693,7 @@ int IfUnitIsSelectable2(OBJ *a)
 void selectMAN(int x1, int y1, int x2, int y2, int mode)
 {
 	int i, x, y, unittype, totalselected = 0;
-	OBJ *firstobj, *a, *speakOBJ;
+	OBJ *firstobj, *o, *speakOBJ;
 	SelectionObjs *selectnow[SELECTUNITTYPES] =
 	{
 		new SelectionObjs(1),
@@ -714,17 +714,17 @@ void selectMAN(int x1, int y1, int x2, int y2, int mode)
 	x2 = x2 + map.MAPXGLOBAL;
 	y1 = y1 + map.MAPYGLOBAL;
 	y2 = y2 + map.MAPYGLOBAL;
-	a = NULL;
+	o = NULL;
 	//int ctrl = KEYPRESS(CTRLLKEY) || KEYPRESS(CTRLRKEY) || highMouse->DoubleClick;
 	int ctrl = (mainController.KeyFlags & CTRLKEYMASK) || highMouse->DoubleClick;
 	if (ctrl || ((x2 - x1 <= MINHAP) && (y2 - y1 <= MINHAP)))
-		a = founduniqueobj(x1, y1);
-	if (a)
+		o = founduniqueobj(x1, y1);
+	if (o)
 	{
-		unittype = GetSelectedUnitType(a->SC_Unit, a->playernr);
+		unittype = GetSelectedUnitType(o->SC_Unit, o->playernr);
 		if (ctrl)
 		{
-			addtolist_onetypeobj(selectnow[unittype], a,
+			addtolist_onetypeobj(selectnow[unittype], o,
 				map.MAPXGLOBAL,
 				map.MAPYGLOBAL,
 				map.MAPXGLOBAL + screenMapInfo->SizeX32 * SIZESPRLANSHX,
@@ -733,33 +733,33 @@ void selectMAN(int x1, int y1, int x2, int y2, int mode)
 		}
 		else
 		{
-			selectnow[unittype]->Add(a);
+			selectnow[unittype]->Add(o);
 			totalselected++;
 		}
 	}
 	else
 	{
 		Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
-		while( (a = EnumObj.GetNext()) )
+		while( (o = EnumObj.GetNext()) )
 		{
-			if (a->mainimage->flags & SC_IMAGE_FLAG_DISABLEDRAW)
+			if (o->mainimage->flags & SC_IMAGE_FLAG_DISABLEDRAW)
 				continue;
 			bool nodoodad = true;
-			if (IsDoodadState(a->SC_Unit) && (IsInvincibleUnit(a->SC_Unit) || GetDoodadState(a) == DOODAD_BOTTOM_STATE))
+			if (IsDoodadState(o->SC_Unit) && (IsInvincibleUnit(o->SC_Unit) || GetDoodadState(o) == DOODAD_BOTTOM_STATE))
 				nodoodad = false;
-			if (IfCanClickOBJ(a->SC_Unit) && nodoodad && (!a->carryobj || !IsPickupUnit(a->SC_Unit)))
+			if (IfCanClickOBJ(o->SC_Unit) && nodoodad && (!o->carryobj || !IsPickupUnit(o->SC_Unit)))
 			{
-				x = GetOBJx(a);
-				y = GetOBJy(a);
-				if (x > x1 - GetUnitWidthAndHeight(a->SC_Unit, UNITDIM_WIDTH) / 2 &&
-					y > y1 - GetUnitWidthAndHeight(a->SC_Unit, UNITDIM_HEIGHT) / 2 &&
-					x < x2 + GetUnitWidthAndHeight(a->SC_Unit, UNITDIM_WIDTH) / 2 &&
-					y < y2 + GetUnitWidthAndHeight(a->SC_Unit, UNITDIM_HEIGHT) / 2)
+				x = GetOBJx(o);
+				y = GetOBJy(o);
+				if (x > x1 - GetUnitWidthAndHeight(o->SC_Unit, UNITDIM_WIDTH) / 2 &&
+					y > y1 - GetUnitWidthAndHeight(o->SC_Unit, UNITDIM_HEIGHT) / 2 &&
+					x < x2 + GetUnitWidthAndHeight(o->SC_Unit, UNITDIM_WIDTH) / 2 &&
+					y < y2 + GetUnitWidthAndHeight(o->SC_Unit, UNITDIM_HEIGHT) / 2)
 				{
-					if (IfUnitIsSelectable(a))
+					if (IfUnitIsSelectable(o))
 					{
-						unittype = GetSelectedUnitType(a->SC_Unit, a->playernr);
-						selectnow[unittype]->Add(a);
+						unittype = GetSelectedUnitType(o->SC_Unit, o->playernr);
+						selectnow[unittype]->Add(o);
 						totalselected++;
 					}
 				}
@@ -770,9 +770,9 @@ void selectMAN(int x1, int y1, int x2, int y2, int mode)
 	{
 		//deselect all selected units
 		SelectedUnits.EnumListInit();
-		while ((a = (OBJ *)SelectedUnits.GetNextListElem(NULL)))
+		while ((o = (OBJ *)SelectedUnits.GetNextListElem(NULL)))
 		{
-			doselectedOBJbit(a, NUMBGAMER, 0);
+			doselectedOBJbit(o, NUMBGAMER, 0);
 		}
 
 		if (!mode)
@@ -794,9 +794,9 @@ void selectMAN(int x1, int y1, int x2, int y2, int mode)
 			SelectedUnitTypes = SELECT_UNIT_MY;
 		}
 		SelectedUnits.EnumListInit();
-		while ((a = (OBJ *)SelectedUnits.GetNextListElem(NULL)))
+		while ((o = (OBJ *)SelectedUnits.GetNextListElem(NULL)))
 		{
-			doselectedOBJbit(a, NUMBGAMER, 1);
+			doselectedOBJbit(o, NUMBGAMER, 1);
 		}
 		if (SelectedUnits.Count())
 		{
@@ -960,11 +960,11 @@ int DecrementLifeMage(struct OBJ *a)
 void allobjdecrmtimemage(void)
 {
 	int i;
-	struct OBJ *a;
+	struct OBJ *o;
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
-	while( (a = EnumObj.GetNext()) )
+	while( (o = EnumObj.GetNext()) )
 	{
-		DecrementOBJAtr(a);
+		DecrementOBJAtr(o);
 	}
 }
 //========================================
@@ -1029,30 +1029,30 @@ int ApplyDamageToUnit(struct OBJ *a)
 void allobj_dieheal(void)
 {
 	int i, lifechange;
-	struct OBJ *a;
+	struct OBJ *o;
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
-	while( (a = EnumObj.GetNext()) )
+	while( (o = EnumObj.GetNext()) )
 	{
-		if (a->modemove == MODEDIE)
+		if (o->modemove == MODEDIE)
 			continue;
-		lifechange = ApplyDamageToUnit(a);
+		lifechange = ApplyDamageToUnit(o);
 		if (lifechange == 2)
 			continue;
-		//		  if (a->modemove == MODEDIE)
+		//		  if (o->modemove == MODEDIE)
 		//			continue;
-		mageattributedothings(a);
-		if (IsShieldEnable(a->SC_Unit))
-			if (!a->shielddamage)
-				lifechange += RegenerateShield(a);
-		if (!IsOBJUnderConstruct(a))
+		mageattributedothings(o);
+		if (IsShieldEnable(o->SC_Unit))
+			if (!o->shielddamage)
+				lifechange += RegenerateShield(o);
+		if (!IsOBJUnderConstruct(o))
 		{
-			if (!a->lifedamage)
-				lifechange += RegenerateHealth(a);
-			DecrementLifeMage(a);
+			if (!o->lifedamage)
+				lifechange += RegenerateHealth(o);
+			DecrementLifeMage(o);
 		}
 		if (lifechange)
 		{
-			AddRemoveBloodFlameOverlays(a);
+			AddRemoveBloodFlameOverlays(o);
 		}
 	}
 }
@@ -1060,13 +1060,13 @@ void allobj_dieheal(void)
 void allobjconstr(void)
 {
 	int i;
-	struct OBJ *a;
+	struct OBJ *o;
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
-	while( (a = EnumObj.GetNext()) )
+	while( (o = EnumObj.GetNext()) )
 	{
-		TickUnderConstruct(a);	//perform construct build
-		if (!(a->prop&VARNOTWORK))
-			workingbuilds(a);
+		TickUnderConstruct(o);	//perform construct build
+		if (!(o->prop&VARNOTWORK))
+			workingbuilds(o);
 	}
 }
 //=============================================
@@ -1120,44 +1120,44 @@ int makeinvisibles(struct OBJ *a)
 void invisiblestick(void)
 {
 	int i;
-	OBJ *a;
+	OBJ *o;
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
-	while( (a = EnumObj.GetNext()) )
+	while( (o = EnumObj.GetNext()) )
 	{
-		if (a->modemove == MODEDIE || IsInvincibleOBJ(a))
+		if (o->modemove == MODEDIE || IsInvincibleOBJ(o))
 			continue;
-		if (IsDoodadState(a->SC_Unit))
+		if (IsDoodadState(o->SC_Unit))
 			continue;
-		if (GetMageAtr(&a->atrobj, ATRSTASIS) == 0)
+		if (GetMageAtr(&o->atrobj, ATRSTASIS) == 0)
 		{
-			if (a->prop & VARNOTHERE)
+			if (o->prop & VARNOTHERE)
 				continue;
-			if (makeinvisibles(a))
+			if (makeinvisibles(o))
 			{
-				if (OBJ_VAR_CHK(a, obj_invsee, NUMBGAMER))
+				if (OBJ_VAR_CHK(o, obj_invsee, NUMBGAMER))
 				{
 					//invisible detected
-					if (IsOBJBurrowed(a))
-						a->mainimage->newgrpmethod = DRAWBURROWED;
+					if (IsOBJBurrowed(o))
+						o->mainimage->newgrpmethod = DRAWBURROWED;
 					else
-						a->mainimage->newgrpmethod = TRANSPARENT;
+						o->mainimage->newgrpmethod = TRANSPARENT;
 				}
 				else
 				{
 					//invisible notdetected
-					a->mainimage->newgrpmethod = DISTORTION;
+					o->mainimage->newgrpmethod = DISTORTION;
 				}
 			}
 			else
 			{
 				//unit become full visible,change image grpmethod
-				SetCloakedFlag(a, 0);
-				a->mainimage->newgrpmethod = NORMAL;
+				SetCloakedFlag(o, 0);
+				o->mainimage->newgrpmethod = NORMAL;
 			}
 		}
 		else
 		{
-			a->mainimage->newgrpmethod = TRANSPARENT;
+			o->mainimage->newgrpmethod = TRANSPARENT;
 		}
 	}
 }
@@ -3546,12 +3546,12 @@ void ReturnedToBase(struct OBJ *a)//after moved to base
 void makeallblinking(void)
 {
 	int i;
-	OBJ *a;
+	OBJ *o;
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
-	while( (a = EnumObj.GetNext()) )
+	while( (o = EnumObj.GetNext()) )
 	{
-		if (a->blinkvalue)
-			a->blinkvalue--;
+		if (o->blinkvalue)
+			o->blinkvalue--;
 	}
 }
 //=================================
@@ -3613,49 +3613,48 @@ void ChangeObjXYDelta(struct OBJ *a, int xdelta, int ydelta)
 void DeleteOldObjPointers(struct OBJ *a)
 {
 	int i;
-	OBJ *b;
+	OBJ *o;
 	//	  struct MAGEARRAY *c;
 		//find pointers in all objects
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
-	while( (b = EnumObj.GetNext()) )
+	while( (o = EnumObj.GetNext()) )
 	{
-		if (b->finalOBJ == a)
+		if (o->finalOBJ == a)
 		{
-			b->finalOBJ = NULL;
-			//			b->prop &= ~VARMOVEOBJACT;
+			o->finalOBJ = NULL;
+			//			o->prop &= ~VARMOVEOBJACT;
 		}
-		if (b->carryobj == a)
-			b->carryobj = NULL;
-		if (b->atrobj.arbiterrecallobj == a)
+		if (o->carryobj == a)
+			o->carryobj = NULL;
+		if (o->atrobj.arbiterrecallobj == a)
 			//found an recalled obj without arbiter - master of this mage
-			b->atrobj.arbiterrecallobj = NULL;
+			o->atrobj.arbiterrecallobj = NULL;
 		// if have child units verify if child dead
-		if (b->childs)
+		if (o->childs)
 		{
-			for (int j = 0;j < getchilds(b);j++)
+			for (int j = 0;j < getchilds(o);j++)
 			{
-				if (b->childs->parentof[j] == a)
-					b->childs->parentof[j] = NULL;
+				if (o->childs->parentof[j] == a)
+					o->childs->parentof[j] = NULL;
 			}
 		}
-		if (b->resourceobj == a)
-			b->resourceobj = NULL;
-		if (b->prevresourceobj == a)
-			b->prevresourceobj = NULL;
-		if (b->in_transport == a)
-			b->in_transport = NULL;
-		if (b->whoatack == a)
-			b->whoatack = NULL;
-		if (b->finalOBJ == a)
+		if (o->resourceobj == a)
+			o->resourceobj = NULL;
+		if (o->prevresourceobj == a)
+			o->prevresourceobj = NULL;
+		if (o->in_transport == a)
+			o->in_transport = NULL;
+		if (o->whoatack == a)
+			o->whoatack = NULL;
+		if (o->finalOBJ == a)
 		{
-			moveobj(b, NULL, MODESTOP, NOSHOWERROR);
-			b->finalOBJ = NULL;
+			moveobj(o, NULL, MODESTOP, NOSHOWERROR);
+			o->finalOBJ = NULL;
 		}
-		if (b->constrobj == a)
-			b->constrobj = NULL;
-		DelOBJFromModeList(b, a);		//search in obj b ref to obj a
+		if (o->constrobj == a)
+			o->constrobj = NULL;
+		DelOBJFromModeList(o, a);		//search in obj o ref to obj a
 	}
-	OBJ *o;
 	SelectedUnits.EnumListInit();
 	while ((o = (OBJ *)SelectedUnits.GetNextListElem(NULL)))
 	{
@@ -3759,23 +3758,23 @@ void ContinueSCVConstruct(OBJ *a, OBJ *aa)//a-mainunit,b-constructedunit
 void applyrescuableunits(void)
 {
 	int i, haverescued = 0;
-	OBJ *a, *c;
+	OBJ *o, *c;
 	//	  if (MINIMAPREFRESHCYCLE)
 	{
 		if (ifhaverescuableplayers)
 		{
 			Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
-			while( (a = EnumObj.GetNext()) )
+			while( (o = EnumObj.GetNext()) )
 			{
 				//if rescuable unit/player need to apply to seeit player
-				if (map.pl_iowner[a->playernr] == OWNER_RESCUABLE)
+				if (map.pl_iowner[o->playernr] == OWNER_RESCUABLE)
 				{
-					//					printf("rescuable=%s\n",getOBJname(a->SC_Unit));
-					c = SearchOBJforOBJ(a, SEARCHMODE_RESCUABLE);
+					//					printf("rescuable=%s\n",getOBJname(o->SC_Unit));
+					c = SearchOBJforOBJ(o, SEARCHMODE_RESCUABLE);
 					if (c)
 					{
-						MakeMindControl(a, NUMBGAMER, a->color);
-						SetBlinkOBJ(a);
+						MakeMindControl(o, NUMBGAMER, o->color);
+						SetBlinkOBJ(o);
 						if (++haverescued > 2)
 							break;
 					}
@@ -4148,29 +4147,29 @@ struct OBJ* OneUnitSearchGoal(OBJ *a, int ignoremodes, int facedirectionatackonl
 void SearchForAtacks(void)
 {
 	int i;
-	OBJ *a;
+	OBJ *o;
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
-	while( (a = EnumObj.GetNext()) )
+	while( (o = EnumObj.GetNext()) )
 	{
-		if (IsFullAutoAttack(a->SC_Unit))
+		if (IsFullAutoAttack(o->SC_Unit))
 		{
-			if (!a->finalOBJ)							//TODO i need to atack unit who atack me
+			if (!o->finalOBJ)							//TODO i need to atack unit who atack me
 			{
-				if (a->searchforatack_tick-- == 0)
+				if (o->searchforatack_tick-- == 0)
 				{
-					a->searchforatack_tick = MAXWAIT_SEARCHATACK_TICK;
-					OneUnitSearchGoal(a, 0, 0);
+					o->searchforatack_tick = MAXWAIT_SEARCHATACK_TICK;
+					OneUnitSearchGoal(o, 0, 0);
 				}
 			}
 		}
 		else
 		{
-			if (!a->finalOBJ)
+			if (!o->finalOBJ)
 			{
-				if (a->searchforatack_tick-- == 0)
+				if (o->searchforatack_tick-- == 0)
 				{
-					a->searchforatack_tick = MAXWAIT_SEARCHATACK_TICK;
-					OneUnitSearchGoal(a, 0, 4);			//atack only face direction
+					o->searchforatack_tick = MAXWAIT_SEARCHATACK_TICK;
+					OneUnitSearchGoal(o, 0, 4);			//atack only face direction
 				}
 			}
 		}
@@ -4194,7 +4193,7 @@ OBJ *FindObjForAtack(OBJ *a,
 	int deltaz, i, j, minrange, maxrange, mindeltaz[3], weapon_id, wmask;
 	int addsiegerange = 0;
 	unsigned char neededside;
-	OBJ *a2, *findobj[3];
+	OBJ *o, *findobj[3];
 	findobj[NOATACKER] = NULL;					//no atacker
 	mindeltaz[NOATACKER] = 256 * 256 * 256;
 
@@ -4211,24 +4210,24 @@ OBJ *FindObjForAtack(OBJ *a,
 		}
 	}
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
-	while( (a2 = EnumObj.GetNext()) )
+	while( (o = EnumObj.GetNext()) )
 	{
 		if (checkspecialfunc)
-			if (checkspecialfunc(a2->SC_Unit))
+			if (checkspecialfunc(o->SC_Unit))
 				continue;
-		if (UnitIgnoreInvisibles(a->SC_Unit) || !OBJ_VAR_CHK(a2, obj_notdetect, a->playernr))
+		if (UnitIgnoreInvisibles(a->SC_Unit) || !OBJ_VAR_CHK(o, obj_notdetect, a->playernr))
 		{
 			//we see this object
-			if (player_aliance(a->playernr, a2->playernr) == ENEMYOBJ && OBJ_VAR_CHK(a2, obj_see, a->playernr))
+			if (player_aliance(a->playernr, o->playernr) == ENEMYOBJ && OBJ_VAR_CHK(o, obj_see, a->playernr))
 			{
 				weapon_id = MAX_WEAPONS_ELEM;
-				if ((weaponmask & 1) && !IsOnSkyOBJ(a2))
+				if ((weaponmask & 1) && !IsOnSkyOBJ(o))
 					weapon_id = groundweapon;
-				if ((weaponmask & 2) && IsOnSkyOBJ(a2))
+				if ((weaponmask & 2) && IsOnSkyOBJ(o))
 					weapon_id = airweapon;
 				if (weapon_id < MAX_WEAPONS_ELEM)
 				{
-					if (IsActiveUnitForAtack(a2, false))
+					if (IsActiveUnitForAtack(o, false))
 					{
 						//this is enemy, need to check detect vision radius
 						minrange = alldattbl.weapons_dat->MinimumRange[weapon_id];
@@ -4238,8 +4237,8 @@ OBJ *FindObjForAtack(OBJ *a,
 						else
 							maxrange *= SIZESPRLANSHX;
 						maxrange += addsiegerange;
-						deltaz = GetDistanceBetweenUnits256(a, a2) / 256;
-						wmask = UnitWeaponMask(a2->SC_Unit);
+						deltaz = GetDistanceBetweenUnits256(a, o) / 256;
+						wmask = UnitWeaponMask(o->SC_Unit);
 						for (j = 0;wmask;j++, wmask >>= 1)
 						{
 							if (wmask & 1)
@@ -4248,12 +4247,12 @@ OBJ *FindObjForAtack(OBJ *a,
 								{
 									if (weaponmask & 4)			//atackfacedirectiononly
 									{
-										neededside = CalcDirection(GetOBJx256(a), GetOBJy256(a), GetOBJx256(a2), GetOBJy256(a2));
+										neededside = CalcDirection(GetOBJx256(a), GetOBJy256(a), GetOBJx256(o), GetOBJy256(o));
 										if (abs(a->mainimage->side - neededside) / 8 > 1)
 											continue;
 									}
 									mindeltaz[j] = deltaz;
-									findobj[j] = a2;
+									findobj[j] = o;
 								}
 							}
 						}
@@ -4650,33 +4649,33 @@ void TellOtherUnitsAboutAtacking(OBJ *a, OBJ *atacker)
 {
 	unsigned char weaponid;
 	int i, allstat,canatack;
-	OBJ *a2;
+	OBJ *o;
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
-	while( (a2 = EnumObj.GetNext()) )
+	while( (o = EnumObj.GetNext()) )
 	{
-		allstat = player_aliance(a->playernr, a2->playernr);
+		allstat = player_aliance(a->playernr, o->playernr);
 		if (allstat == MYOBJ || allstat == ALLIANCEOBJ)
 		{
-			if (a2->modemove == MODESTOP && a2 != a)
+			if (o->modemove == MODESTOP && o != a)
 			{
-				if (IsAtackerActiveUnit(a2))
+				if (IsAtackerActiveUnit(o))
 				{
-					if (controldistanceunit(GetOBJx(a), GetOBJy(a), GetOBJx(a2), GetOBJy(a2), MINREACTIONDISTANCEFORATACKING))
+					if (controldistanceunit(GetOBJx(a), GetOBJy(a), GetOBJx(o), GetOBJy(o), MINREACTIONDISTANCEFORATACKING))
 					{
 						//tell other unit to atack my atacker
-						if (IsOBJBurrowed(a2))
+						if (IsOBJBurrowed(o))
 						{
-							if (a2->SC_Unit != SC_LURKEROBJ)
+							if (o->SC_Unit != SC_LURKEROBJ)
 							{
-								if (a2->SC_Unit == SC_VULTUREMINEOBJ)
+								if (o->SC_Unit == SC_VULTUREMINEOBJ)
 									continue;
-								moveobj(a2, NULL, MODEUNBURROW, NOSHOWERROR);
+								moveobj(o, NULL, MODEUNBURROW, NOSHOWERROR);
 							}
 						}
 						else
 						{
-							if (a2->SC_Unit != SC_LURKEROBJ)
-								moveobj(a2, atacker, MODEATACK, NOSHOWERROR);
+							if (o->SC_Unit != SC_LURKEROBJ)
+								moveobj(o, atacker, MODEATACK, NOSHOWERROR);
 						}
 					}
 				}
@@ -5138,12 +5137,12 @@ void CheckForWalkChanges(OBJ *a, int xpos, int ypos)
 void AdditionalUnitsProceed(void)
 {
 	int i;
-	OBJ *a;
+	OBJ *o;
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
-	while( (a = EnumObj.GetNext()) )
+	while( (o = EnumObj.GetNext()) )
 	{
-		if (a->modemove != MODEDIE)
-			AdditionalUnitProceed(a, a->mainimage);
+		if (o->modemove != MODEDIE)
+			AdditionalUnitProceed(o, o->mainimage);
 	}
 }
 //=================================
@@ -5154,21 +5153,21 @@ void AllOBJMoving(void)
 
 	unsigned char flingy_id, side1;
 	MAIN_IMG *img;
-	OBJ *a;
+	OBJ *o;
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
-	while( (a = EnumObj.GetNext()) )
+	while( (o = EnumObj.GetNext()) )
 	{
 		nextmoveignorefullinertion = 0;
-		img = a->mainimage;
-		flingy_id = alldattbl.units_dat->flingy_id[a->SC_Unit];
+		img = o->mainimage;
+		flingy_id = alldattbl.units_dat->flingy_id[o->SC_Unit];
 		switch (alldattbl.flingy_dat->MoveControl[flingy_id])
 		{
 		case FLINGYMOVECONTROL_ISCRIPT:
 			if (img->movefactor)
 			{
-				PathFinding_MovePortionType1(a, img, GetSpeed(a, img->movefactor));
-				if (a->subunit)
-					ChangeSubUnitCoords(a->subunit, a);
+				PathFinding_MovePortionType1(o, img, GetSpeed(o, img->movefactor));
+				if (o->subunit)
+					ChangeSubUnitCoords(o->subunit, o);
 				img->movefactor = 0;
 			}
 			break;
@@ -5180,104 +5179,104 @@ void AllOBJMoving(void)
 				rot = img->Rotation(img->TurnRadius);
 				if (!rot)
 				{
-					//						img->MoveInUnitDirection(a,side1,GetSpeed(a,a->topspeed));
-					img->MoveInUnitDirection(a, side1, GetSpeed(a, a->currentspeed));
-					img->UnitNeededDirection256(CalcDirection(GetOBJx256(a), GetOBJy256(a), a->finalx, a->finaly));
+					//						img->MoveInUnitDirection(o,side1,GetSpeed(o,o->topspeed));
+					img->MoveInUnitDirection(o, side1, GetSpeed(o, o->currentspeed));
+					img->UnitNeededDirection256(CalcDirection(GetOBJx256(o), GetOBJy256(o), o->finalx, o->finaly));
 					continue;
 				}
-				if (a->modemove == MODETURN180)
+				if (o->modemove == MODETURN180)
 				{
-					ApplyNextModeMove(a);
+					ApplyNextModeMove(o);
 					continue;
 				}
-				if (CalcDestVars(a, a->finalOBJ, GetOBJx256(a), GetOBJy256(a), a->finalx, a->finaly, flingy_id))
+				if (CalcDestVars(o, o->finalOBJ, GetOBJx256(o), GetOBJy256(o), o->finalx, o->finaly, flingy_id))
 				{
 					//need to stop engines
-					InitStopAfterMove(a);
+					InitStopAfterMove(o);
 				}
 			}
-			if (a->prop &  VARACCELERATIONBIT)
+			if (o->prop &  VARACCELERATIONBIT)
 			{
 				//accelerate speed
-				a->currentspeed += alldattbl.flingy_dat->Acceleration[flingy_id];
-				if (a->currentspeed > a->topspeed)
+				o->currentspeed += alldattbl.flingy_dat->Acceleration[flingy_id];
+				if (o->currentspeed > o->topspeed)
 				{
 					//reach topspeed
-					a->currentspeed = a->topspeed;
+					o->currentspeed = o->topspeed;
 				}
 			}
 			else
 			{
-				if (a->prop & VARDONOTAPPLYNEXTMOVE)
+				if (o->prop & VARDONOTAPPLYNEXTMOVE)
 					continue;
-				if (!a->currentspeed)
+				if (!o->currentspeed)
 				{
-					if (a->movelist && a->movelist->GetUsedElem())
-						ApplyNextModeMove(a);
-					if (a->finalOBJ && IsPickupUnit(a->finalOBJ->SC_Unit) && IsWorkerUnit(a->SC_Unit) && !a->carryobj)
+					if (o->movelist && o->movelist->GetUsedElem())
+						ApplyNextModeMove(o);
+					if (o->finalOBJ && IsPickupUnit(o->finalOBJ->SC_Unit) && IsWorkerUnit(o->SC_Unit) && !o->carryobj)
 					{
-						PickupObj(a, a->finalOBJ);
+						PickupObj(o, o->finalOBJ);
 					}
 					continue;
 				}
 				if (alldattbl.flingy_dat->MoveControl[flingy_id] == FLINGYMOVECONTROL_WEAPON)
 				{
-					a->currentspeed = a->currentspeed / 2;
+					o->currentspeed = o->currentspeed / 2;
 				}
 				else
 				{
-					a->currentspeed -= a->deacceleration;
+					o->currentspeed -= o->deacceleration;
 				}
-				if (a->currentspeed <= 0)
+				if (o->currentspeed <= 0)
 				{
 					//stop move
-					a->currentspeed = 0;
-					if (a->finalOBJ && a->finalOBJ->SC_Unit == SC_NYDUSCANALOBJ)
-						if (TryToEnterNydus(a, a->finalOBJ))
+					o->currentspeed = 0;
+					if (o->finalOBJ && o->finalOBJ->SC_Unit == SC_NYDUSCANALOBJ)
+						if (TryToEnterNydus(o, o->finalOBJ))
 							continue;
-					if (a->prop & VARPATROLFLAG)
+					if (o->prop & VARPATROLFLAG)
 					{
-						initmoveaction(a, NULL, MODEPATROL, a->finalx >> 8, a->finaly >> 8, a->startx, a->starty);
+						initmoveaction(o, NULL, MODEPATROL, o->finalx >> 8, o->finaly >> 8, o->startx, o->starty);
 					}
 					else
 					{
 						//set next move from list
-						if (!a->finalOBJ)
+						if (!o->finalOBJ)
 						{
-							if (!(a->prop & VARHOLDPOSBIT))
+							if (!(o->prop & VARHOLDPOSBIT))
 							{
-								ApplyNextModeMove(a);
+								ApplyNextModeMove(o);
 							}
 						}
 						else
 						{
-							if (a->modemove != MODEATACK)
-								ApplyNextModeMove(a);
+							if (o->modemove != MODEATACK)
+								ApplyNextModeMove(o);
 						}
 					}
 					continue;
 				}
 				else
 				{
-					if (a->prop & VARNEXTMODEMOVEIGNOREINERTION)
+					if (o->prop & VARNEXTMODEMOVEIGNOREINERTION)
 					{
 						nextmoveignorefullinertion = 1;
-						//  						ApplyNextModeMove(a);
+						//  						ApplyNextModeMove(o);
 						//  						break;
 					}
 				}
 			}
-			PathFinding_MovePortionType2(a, img, flingy_id, GetSpeed(a, a->currentspeed));
+			PathFinding_MovePortionType2(o, img, flingy_id, GetSpeed(o, o->currentspeed));
 			if (nextmoveignorefullinertion)
 			{
-				ApplyNextModeMove(a);
+				ApplyNextModeMove(o);
 				break;
 			}
 			//
-			//				if (a->subunit)
-			//					ChangeSubUnitCoords(a->subunit,a);
+			//				if (o->subunit)
+			//					ChangeSubUnitCoords(o->subunit,o);
 
-			//				printf("speed=%d ensnaired=%d\n",a->currentspeed,curspeed);
+			//				printf("speed=%d ensnaired=%d\n",o->currentspeed,curspeed);
 			break;
 		}//switch
 	}

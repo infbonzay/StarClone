@@ -116,28 +116,28 @@ void DelPylonArea(StarMapInfo *mymap, OBJ *a, int playernr)
 void AddBuildsInPower(unsigned char *pylonarea, int playernr)
 {
 	int i, j, k, nrofpower, xp, yp, xs, ys;
-	OBJ *a;
+	OBJ *o;
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
-	while( (a = EnumObj.GetNext()) )
+	while( (o = EnumObj.GetNext()) )
 	{
-		if (a->playernr != playernr)
+		if (o->playernr != playernr)
 			continue;
-		if (a->prop & VARPOWEROFF)
+		if (o->prop & VARPOWEROFF)
 		{
-			if (RequiresPylonEnergy(a->SC_Unit))
+			if (RequiresPylonEnergy(o->SC_Unit))
 			{
 				nrofpower = 0;
-				xp = (GetOBJx(a) - GetUnitWidthAndHeight(a->SC_Unit, UNITDIM_WIDTH) / 2) / SIZESPRLANSHX;
-				yp = (GetOBJy(a) - GetUnitWidthAndHeight(a->SC_Unit, UNITDIM_HEIGHT) / 2) / SIZESPRLANSHY;
-				xs = GetUnitWidthAndHeight(a->SC_Unit, UNITDIM_WIDTH) / SIZESPRLANSHX;
-				ys = GetUnitWidthAndHeight(a->SC_Unit, UNITDIM_HEIGHT) / SIZESPRLANSHY;
+				xp = (GetOBJx(o) - GetUnitWidthAndHeight(o->SC_Unit, UNITDIM_WIDTH) / 2) / SIZESPRLANSHX;
+				yp = (GetOBJy(o) - GetUnitWidthAndHeight(o->SC_Unit, UNITDIM_HEIGHT) / 2) / SIZESPRLANSHY;
+				xs = GetUnitWidthAndHeight(o->SC_Unit, UNITDIM_WIDTH) / SIZESPRLANSHX;
+				ys = GetUnitWidthAndHeight(o->SC_Unit, UNITDIM_HEIGHT) / SIZESPRLANSHY;
 				for (i = 0;i < ys;i++)
 					for (j = 0;j < xs;j++)
 						if (pylonarea[(i + yp)*MAXXMAP + j + xp])
 							nrofpower++;
 				if (nrofpower >= xs * ys / 2)
 				{
-					moveobj(a, NULL, MODEPOWERON, NOSHOWERROR);
+					moveobj(o, NULL, MODEPOWERON, NOSHOWERROR);
 				}
 			}
 		}
@@ -147,31 +147,31 @@ void AddBuildsInPower(unsigned char *pylonarea, int playernr)
 void DelBuildsFromPower(unsigned char *pylonarea, int playernr)
 {
 	int i, j, k, nrofpower, xp, yp, xs, ys;
-	OBJ *a;
+	OBJ *o;
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
-	while( (a = EnumObj.GetNext()) )
+	while( (o = EnumObj.GetNext()) )
 	{
-		if (a->playernr != playernr)
+		if (o->playernr != playernr)
 			continue;
-		if (!(a->prop & VARPOWEROFF) && a->modemove != MODEDIE)
+		if (!(o->prop & VARPOWEROFF) && o->modemove != MODEDIE)
 		{
-			if (!IsOBJUnderConstruct(a))
-				if (RequiresPylonEnergy(a->SC_Unit))
+			if (!IsOBJUnderConstruct(o))
+				if (RequiresPylonEnergy(o->SC_Unit))
 				{
 					nrofpower = 0;
-					xp = (GetOBJx(a) - GetUnitWidthAndHeight(a->SC_Unit, UNITDIM_WIDTH) / 2) / SIZESPRLANSHX;
-					yp = (GetOBJy(a) - GetUnitWidthAndHeight(a->SC_Unit, UNITDIM_HEIGHT) / 2) / SIZESPRLANSHY;
-					xs = GetUnitWidthAndHeight(a->SC_Unit, UNITDIM_WIDTH) / SIZESPRLANSHX;
-					ys = GetUnitWidthAndHeight(a->SC_Unit, UNITDIM_HEIGHT) / SIZESPRLANSHY;
+					xp = (GetOBJx(o) - GetUnitWidthAndHeight(o->SC_Unit, UNITDIM_WIDTH) / 2) / SIZESPRLANSHX;
+					yp = (GetOBJy(o) - GetUnitWidthAndHeight(o->SC_Unit, UNITDIM_HEIGHT) / 2) / SIZESPRLANSHY;
+					xs = GetUnitWidthAndHeight(o->SC_Unit, UNITDIM_WIDTH) / SIZESPRLANSHX;
+					ys = GetUnitWidthAndHeight(o->SC_Unit, UNITDIM_HEIGHT) / SIZESPRLANSHY;
 					for (i = 0;i < ys;i++)
 						for (j = 0;j < xs;j++)
 							if (pylonarea[(i + yp)*MAXXMAP + j + xp])
 								nrofpower++;
 					if (nrofpower < xs*ys / 2)
 					{
-						if (gameconf.audioconf.buildsounds && a->playernr == NUMBGAMER)
-							Play_sfxdata_id(a, sfx_powerdown[PROTOSSRACE], 2, 0);
-						moveobj(a, NULL, MODEPOWEROFF, NOSHOWERROR);
+						if (gameconf.audioconf.buildsounds && o->playernr == NUMBGAMER)
+							Play_sfxdata_id(o, sfx_powerdown[PROTOSSRACE], 2, 0);
+						moveobj(o, NULL, MODEPOWEROFF, NOSHOWERROR);
 					}
 				}
 		}
