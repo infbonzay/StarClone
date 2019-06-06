@@ -353,7 +353,6 @@ void minimap_showobjs(void)
 //==============================================
 void putobjsonminimap(void)
 {
-	int i;
 	OBJ *o;
 	//	  struct OBJstruct *b;
 	if ((MAPUNITSREGENERATIONBIT) && (MAPDEF&UNITS))			//if Desenterrain && time to regeneration minimap
@@ -1662,7 +1661,6 @@ void putbuildplacemessage(int errorstate)
 //====================================================
 void DrawBuildPlace(void)
 {
-	int i;
 	OBJ *o;
 	if (highMouse->Construct.SC_BuildUnit)
 	{

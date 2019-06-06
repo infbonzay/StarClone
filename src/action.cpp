@@ -498,7 +498,7 @@ int CreateNuke(OBJ *a,int x,int y)
 {
 	MAIN_IMG *newimg;
 	OBJ *nuke,*o;
-	int i,nukestartx,nukestarty;
+	int nukestartx,nukestarty;
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 	while( (o = EnumObj.GetNext()) )
 	{

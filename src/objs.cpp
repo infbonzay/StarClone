@@ -538,7 +538,7 @@ void deselectallobj(int playernr)
 //=====================================
 void addtolist_onetypeobj(SelectionObjs *list, OBJ *a, int x1, int y1, int x2, int y2)
 {
-	int i, x, y;
+	int x, y;
 	struct OBJ *o;
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 	while( (o = EnumObj.GetNext()) )
@@ -959,7 +959,6 @@ int DecrementLifeMage(struct OBJ *a)
 //========================================
 void allobjdecrmtimemage(void)
 {
-	int i;
 	struct OBJ *o;
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 	while( (o = EnumObj.GetNext()) )
@@ -1028,7 +1027,7 @@ int ApplyDamageToUnit(struct OBJ *a)
 //========================================
 void allobj_dieheal(void)
 {
-	int i, lifechange;
+	int lifechange;
 	struct OBJ *o;
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 	while( (o = EnumObj.GetNext()) )
@@ -1059,8 +1058,7 @@ void allobj_dieheal(void)
 //========================================
 void allobjconstr(void)
 {
-	int i;
-	struct OBJ *o;
+	OBJ *o;
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 	while( (o = EnumObj.GetNext()) )
 	{
@@ -1119,7 +1117,6 @@ int makeinvisibles(struct OBJ *a)
 //========================================
 void invisiblestick(void)
 {
-	int i;
 	OBJ *o;
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 	while( (o = EnumObj.GetNext()) )
@@ -3545,7 +3542,6 @@ void ReturnedToBase(struct OBJ *a)//after moved to base
 //=================================
 void makeallblinking(void)
 {
-	int i;
 	OBJ *o;
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 	while( (o = EnumObj.GetNext()) )
@@ -3612,7 +3608,6 @@ void ChangeObjXYDelta(struct OBJ *a, int xdelta, int ydelta)
 //==========================================
 void DeleteOldObjPointers(struct OBJ *a)
 {
-	int i;
 	OBJ *o;
 	//	  struct MAGEARRAY *c;
 		//find pointers in all objects
@@ -3686,7 +3681,7 @@ int QueueDelObj(struct OBJ *obj)
 //==========================================
 void RemoveFromDestination(OBJ *a)
 {
-	int i, resval;
+	int resval;
 	OBJ *a1, *tempobj;
 	if (IsUnitBaseBuild(a) == 1)
 	{
@@ -3757,7 +3752,7 @@ void ContinueSCVConstruct(OBJ *a, OBJ *aa)//a-mainunit,b-constructedunit
 //==================================
 void applyrescuableunits(void)
 {
-	int i, haverescued = 0;
+	int haverescued = 0;
 	OBJ *o, *c;
 	//	  if (MINIMAPREFRESHCYCLE)
 	{
@@ -4146,7 +4141,6 @@ struct OBJ* OneUnitSearchGoal(OBJ *a, int ignoremodes, int facedirectionatackonl
 //=================================
 void SearchForAtacks(void)
 {
-	int i;
 	OBJ *o;
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 	while( (o = EnumObj.GetNext()) )
@@ -4190,7 +4184,7 @@ OBJ *FindObjForAtack(OBJ *a,
 	unsigned char airweapon,
 	int(*checkspecialfunc)(SCUNIT))
 {
-	int deltaz, i, j, minrange, maxrange, mindeltaz[3], weapon_id, wmask;
+	int deltaz, j, minrange, maxrange, mindeltaz[3], weapon_id, wmask;
 	int addsiegerange = 0;
 	unsigned char neededside;
 	OBJ *o, *findobj[3];
@@ -4647,8 +4641,7 @@ void TryToScanArea(OBJ *a, OBJ *scanobjarea)
 //=================================
 void TellOtherUnitsAboutAtacking(OBJ *a, OBJ *atacker)
 {
-	unsigned char weaponid;
-	int i, allstat,canatack;
+	int allstat;
 	OBJ *o;
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 	while( (o = EnumObj.GetNext()) )
@@ -5136,7 +5129,6 @@ void CheckForWalkChanges(OBJ *a, int xpos, int ypos)
 //deltax,deltay - delta between movedunit & destination unit
 void AdditionalUnitsProceed(void)
 {
-	int i;
 	OBJ *o;
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 	while( (o = EnumObj.GetNext()) )
@@ -5148,7 +5140,7 @@ void AdditionalUnitsProceed(void)
 //=================================
 void AllOBJMoving(void)
 {
-	int i, rot;
+	int rot;
 	signed char nextmoveignorefullinertion;
 
 	unsigned char flingy_id, side1;

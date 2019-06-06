@@ -143,7 +143,7 @@ struct OBJ *SearchUnitFunc(int playernr, int(*funccheckunit)(SCUNIT SC_Unit), in
 //==========================================
 struct OBJ *SearchUnit(int playernr, SCUNIT SC_Unit, int shieldp, int healthp, int energyp)
 {
-	int i, allstat;
+	int allstat;
 	OBJ *o;
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 	while( (o = EnumObj.GetNext()) )
@@ -169,7 +169,7 @@ struct OBJ *SearchUnit(int playernr, SCUNIT SC_Unit, int shieldp, int healthp, i
 struct OBJ *SearchOBJforOBJ(struct OBJ *a, int modemage)
 {
 	struct OBJ *destobj;
-	int mindistance, i, findobj = 0;
+	int mindistance, findobj = 0;
 	mindistance = mageprop[modemage].diapazone;
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 	while( (destobj = EnumObj.GetNext()) )
@@ -215,7 +215,7 @@ struct OBJ *SearchOBJforOBJ(struct OBJ *a, int modemage)
 //==========================================
 OBJ *SearchObjs(int x, int y, int range, int *array, int arraydim)
 {
-	int i, j;
+	int j;
 	OBJ *o;
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 	while( (o = EnumObj.GetNext()) )
@@ -232,7 +232,7 @@ OBJ *SearchObjs(int x, int y, int range, int *array, int arraydim)
 //=================================
 OBJ *SearchForObjInXY(int x, int y, unsigned char *SC_Units, int nrofunits)
 {
-	int i, j;
+	int j;
 	OBJ *o;
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 	while( (o = EnumObj.GetNext()) )
@@ -351,7 +351,6 @@ int controldistanceunit(int dx1, int dy1, int dx2, int dy2, int range)
 //=================================
 struct OBJ *GetNearCenter(struct OBJ *a)
 {
-	int i;
 	struct OBJ *a2, *retobj = NULL;
 	float distance = 32000, tempdist;
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
@@ -372,7 +371,7 @@ struct OBJ *GetNearCenter(struct OBJ *a)
 //=================================
 struct OBJ *GetNearResource(struct OBJ *a, SCUNIT SC_res_nr, int *resvalability)
 {
-	int i, tempdist;
+	int tempdist;
 	struct OBJ *a2, *retobj = NULL;
 	struct OBJstruct *astr = loadobj(a->SC_Unit);
 	int distance = GetUnitSightRange(a, astr)*SIZESPRLANSHX;

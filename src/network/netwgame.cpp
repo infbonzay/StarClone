@@ -91,7 +91,7 @@ void GetBYTESFromArray(char *destbuf, char *allarray, int buffsize, const char *
 //=============================================
 int UpdateAllGamesTime(void)
 {
-	int i, max, maxnr, updatelists = 0;
+	int i, updatelists = 0;
 	NETGAME *crgame;
 	newgames.EnumListInit();
 	while ((crgame = (NETGAME *)newgames.GetNextListElem(&i)))
@@ -111,7 +111,7 @@ int UpdateAllGamesTime(void)
 //=============================================
 int AddListCreatedGame(NETWORK_JOIN_PACKET *mypacket, struct sockaddr_in *Addr)
 {
-	int i, max=0, maxnr;
+	int max=0;
 	NETGAME *crgame;
 	newgames.EnumListInit();
 	while ((crgame = (NETGAME *)newgames.GetNextListElem()))
@@ -161,7 +161,7 @@ int AddListCreatedGame(NETWORK_JOIN_PACKET *mypacket, struct sockaddr_in *Addr)
 //=============================================
 void UpdateGamesList(MENUSTR *allmenus, int listitem)
 {
-	int i, max = 0, maxnr, selectnr;
+	int max = 0, selectnr;
 	gamelist.FlushList();
 	NETGAME *crgame;
 	newgames.EnumListInit();
@@ -181,7 +181,6 @@ void UpdateGamesList(MENUSTR *allmenus, int listitem)
 //=============================================
 void UpdateGameInfo(MENUSTR *allmenus, int listnr, int selectnr)
 {
-	int i, max, maxnr;
 	char *gametitle;
 	char txt1[10];
 	NETGAME *crgame;
@@ -234,7 +233,6 @@ void EmptyAllGamesList(void)
 //=============================================
 int GetGameId(int sellist, char *gametitle)
 {
-	int maxnr, max, i;
 	NETGAME *crgame;
 	newgames.EnumListInit();
 	while ((crgame = (NETGAME *)newgames.GetNextListElem()))
@@ -249,7 +247,6 @@ int GetGameId(int sellist, char *gametitle)
 //==========================================
 int CheckForGameName(char *gametitle)
 {
-	int i, max, maxnr;
 	NETGAME *crgame;
 //	if (max == MAXCREATEDGAMES)
 //		return(3);
@@ -764,7 +761,7 @@ int Guest_CheckJoinPacket(MENUSTR *allmenus, NETWORK_INFO *sendsock, NETWORK_INF
 //==========================================
 int FillNetworkAddr(NETWORK_INFO *info, int PCID)
 {
-	int i, max, maxnr, updatelists = 0;
+	int i, updatelists = 0;
 	NETGAME *crgame;
 	newgames.EnumListInit();
 	while ((crgame = (NETGAME *)newgames.GetNextListElem(&i)))
@@ -1079,7 +1076,6 @@ int SendCommandToPlayer(MENUSTR *allmenus, int playernr, int command, NETWORK_IN
 //==========================================
 int SendCommandToAll(MENUSTR *allmenus, int command, NETWORK_INFO *sendsock, NETWORK_INFO *recvsock)
 {
-	int i, max, maxnr;
 	NETWPLAYERINFO *pl;
 	connectedplayers.EnumListInit();
 	while ((pl = (NETWPLAYERINFO *)connectedplayers.GetNextListElem()))
@@ -1127,7 +1123,6 @@ void BuffPrepareForWrite(char *fn, long pos, int size, char *buff)
 //==========================================
 void Master_CopyPlayersAddr(void)
 {
-	int i, max, maxnr;
 	NETWPLAYERINFO *pl;
 	memset(&PLAYER[0].Addr, 0, sizeof(struct sockaddr_in));
 	connectedplayers.EnumListInit();

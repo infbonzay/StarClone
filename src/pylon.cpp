@@ -115,7 +115,7 @@ void DelPylonArea(StarMapInfo *mymap, OBJ *a, int playernr)
 //=================================
 void AddBuildsInPower(unsigned char *pylonarea, int playernr)
 {
-	int i, j, k, nrofpower, xp, yp, xs, ys;
+	int i, j, nrofpower, xp, yp, xs, ys;
 	OBJ *o;
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 	while( (o = EnumObj.GetNext()) )
@@ -146,7 +146,7 @@ void AddBuildsInPower(unsigned char *pylonarea, int playernr)
 //=================================
 void DelBuildsFromPower(unsigned char *pylonarea, int playernr)
 {
-	int i, j, k, nrofpower, xp, yp, xs, ys;
+	int i, j, nrofpower, xp, yp, xs, ys;
 	OBJ *o;
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
 	while( (o = EnumObj.GetNext()) )

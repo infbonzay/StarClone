@@ -275,7 +275,7 @@ int(*CheckUnit[5])(SCUNIT) =
 int CheckForUnit(int(*ConditionFunction)(int *, int),
 	int actiononplayers, int unitid, int cntunits, OBJ **retlast, struct XY *searcharea)
 {
-	int i, nrofunits = 0, checkready = 0;
+	int nrofunits = 0, checkready = 0;
 	int(*UnitTypeFunc) (SCUNIT);
 	struct OBJ *o, *last = NULL;
 	if (unitid >= MAX_UNITS_ELEM)
@@ -1616,7 +1616,7 @@ int TRG_RunAIScript(StarMapInfo *info, int aiscriptnr, int playernr, int playern
 int TRG_RunAIScriptAtLocation(StarMapInfo *info, int aiscriptnr, int playernr, int playernrmask, int locnr)
 {
 	char statpl[MAXPLAYERS];
-	int pl, i, j, haverescued, magenr, xpos, ypos, nrofunits, nrofunits2, dist, mindistance;
+	int pl, i, haverescued, magenr, xpos, ypos, nrofunits, nrofunits2, dist, mindistance;
 	OBJ *o, *bunkerobj, *findbunker;
 	mylist *bunkerlist = NULL;
 	if (locnr >= 0)

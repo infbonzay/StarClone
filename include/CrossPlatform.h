@@ -18,10 +18,10 @@
 #define chdir _chdir
 #define close _close
 #define itoa(value, buffer, radix) _itoa_s(value, buffer, sizeof(buffer) - 1, radix)
-#define strcat(dest, source) strcat_s(dest, sizeof(dest)-1, source)
-#define strcpy(dest, source) strcpy_s(dest, sizeof(dest)-1, source)
-#define strncat(dest, source, size) strncat_s(dest, sizeof(dest)-1, source, size)
-#define strncpy(dest, source, size) strncpy_s(dest, sizeof(dest)-1, source, size)
+//#define strcat(dest, source) strcat_s(dest, sizeof(dest)-1, source)
+//#define strcpy(dest, source) strcpy_s(dest, sizeof(dest)-1, source)
+//#define strncat(dest, source, size) strncat_s(dest, sizeof(dest)-1, source, size)
+//#define strncpy(dest, source, size) strncpy_s(dest, sizeof(dest)-1, source, size)
 
 #define stricmp _stricmp
 #define strlwr(str) _strlwr_s(str, sizeof(str) - 1)

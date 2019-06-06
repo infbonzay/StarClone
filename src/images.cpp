@@ -1233,7 +1233,6 @@ void AddShieldImage(struct OBJ *a, int directiondamage)
 //========================================
 void CreatePylonSelectArea(void)
 {
-	int i;
 	OBJ *o;
 	OVERLAY_IMG *newimg;
 	if (pylonselected)
@@ -1255,7 +1254,6 @@ void CreatePylonSelectArea(void)
 //========================================
 void RemovePylonSelectArea(void)
 {
-	int i;
 	OBJ *o;
 	if (!pylonselected)
 	{

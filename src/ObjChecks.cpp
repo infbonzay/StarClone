@@ -543,7 +543,7 @@ int IsAtackerActiveUnit(OBJ *a)
 //=================================
 OBJ *SearchNewBounceOBJ(int x, int y, int playernr, OBJ *obj1, OBJ *obj2, int maxdist)
 {
-	int i, dist, mindist = 65535;
+	int dist, mindist = 65535;
 	OBJ *o;
 	OBJ *finda = NULL;
 	Enumerate<OBJ *> EnumObj(&MaxObjects, objects);

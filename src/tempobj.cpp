@@ -281,13 +281,13 @@ void RemoveUnitsFromLists(mylist *units)
 //=====================================
 void ConnectingPairBuilds(StarMapInfo *loadedmap)
 {
-	int i, j;
+	int i;
 	OBJ *o,*o2;
 	OBJstruct *b;
 	if (havezergparied)
 	{
 		Enumerate<OBJ *> EnumObj(&MaxObjects, objects);
-		while( (o = EnumObj.GetNext()) )
+		while( (o = EnumObj.GetNext(&i)) )
 		{
 			if (o->paried == ZERGPARIED)
 			{
