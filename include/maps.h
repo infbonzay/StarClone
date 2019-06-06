@@ -51,6 +51,8 @@ int	 GetVisionBitsPlayer(int playernr);
 void opentempmap(int playernr,int xkart,int ykart,int sizex,int sizey);
 int	 GetMapFog(int x,int y);
 void ClearFinalOBJ(OBJ *a0);
+void TryScrollMap(void );
+
 
 extern StarMapInfo map;
 

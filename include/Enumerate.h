@@ -26,6 +26,7 @@ public:
 	Enumerate<T>(int *MaxElem, T *Elems);
 	~Enumerate<T>();
 
+	T GetNext(int *curpos);
 	T GetNext(void);
 	T GetBack(void);
 };
@@ -35,8 +36,6 @@ class EnumerateList : public IEnumerate<T>
 {
 protected:
 	int				_PosElem;
-	//int				GlobalEnumValue;
-	//List<T>			*_list;
 	ListElem<T>		*CurrentEnum;
 public:
 
@@ -72,14 +71,21 @@ Enumerate<T>::~Enumerate()
 }
 //=========================================
 template <typename T>
-T Enumerate<T>::GetNext(void)
+T Enumerate<T>::GetNext(int *curpos)
 {
 	if (_PosElem < *_MaxElements)
 	{
+		if (curpos)
+		{
+			*curpos = _PosElem;
+		}
 		return (_Elements[_PosElem++]);
 	}
 	return NULL;
 }
+//=========================================
+template <typename T>
+T Enumerate<T>::GetNext(void) { return GetNext(NULL); };
 //=========================================
 template <typename T>
 T Enumerate<T>::GetBack(void)

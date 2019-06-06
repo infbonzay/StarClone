@@ -895,6 +895,7 @@ int gogame(StarMapInfo *info)
 {
 	int resettimerforplayers, prevgameticks = -1;
 	int activatedwaittimer;
+	TICKCOUNTER		*ActionCounter;
 
 	int pc;
 	SCREEN_REGION	lastmenuregion;
@@ -952,19 +953,14 @@ int gogame(StarMapInfo *info)
 	karta_aria = 0;
 	select_aria = 0;
 	movieminikarta = false;
-
+	ActionCounter = mytimer.CreateTickCounter();
 
 	do {
 		screenDraw->ClearRegions();
 		needredesen = 0;
 		clearactionBITS();
 		mainController.EventsLoop();
-/*		if (!(gameconf.grmode.flags & DISPLAYFLAGS_WINDOWACTIVE))
-		{
-			gameconf.grmode.flags |= DISPLAYFLAGS_WINDOWACTIVE;
-			mainController.KeyActive = F10;
-		}
-*/
+
 		screenMapInfo->ScrollX = 0;
 		screenMapInfo->ScrollY = 0;
 
@@ -979,6 +975,10 @@ int gogame(StarMapInfo *info)
 		{
 			mainController.KeyActive = 0;
 			mainController.LastKey = 0;
+		}
+		if (mytimer.CheckForExpired(ActionCounter, CYCLESTOSCROLLMAPPERSEC))
+		{
+			TryScrollMap();
 		}
 		timeid = mytimer.TimeIsCome(gameconf.speedconf.gamespeed);
 		if (PAUSEGAME)
@@ -1194,11 +1194,6 @@ int gogame(StarMapInfo *info)
 				if (ShowButtonMenu(&terr_menu, NULL))
 					ChangeTerrain();
 				ShowButtonMenu(&mess_menu, &messagingmenu);
-
-				//showF10menu(&f10_menu);
-				//showDIPLOMACYmenu(&dipl_menu);
-				//showTERRAINmenu(&terr_menu);
-				//showMESSAGEmenu(&mess_menu);
 			}
 		}
 		retmenu = 0;
@@ -1285,6 +1280,9 @@ int gogame(StarMapInfo *info)
 	} while (menustatus == CONTINUEGAME);
 	if (ALLMENUS.Count() > 0)
 		DEBUGMESSCR("REMAIN ALLMENUS lists\n");
+
+	mytimer.DestroyTickCounter(ActionCounter);
+
 	ALLMENUS.DeallocList();
 	netplay.DeInitNetworkTicks();
 	deletemainscreenmouseevents();

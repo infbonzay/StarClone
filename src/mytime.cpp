@@ -248,6 +248,16 @@ TIMER_TICK TIMER::GetDeltaCounter(TICKCOUNTER *t)
 	return(delta);
 }
 //====================================================================
+bool TIMER::CheckForExpired(TICKCOUNTER *t, TIMER_TICK mindelta)
+{
+	if (tick_current - t->starttick >= mindelta)
+	{
+		t->starttick += mindelta;
+		return true;
+	}
+	return false;
+}
+//====================================================================
 void TIMER::DestroyTickCounter(TICKCOUNTER *t)
 {
 	if (t)

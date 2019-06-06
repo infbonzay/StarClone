@@ -1032,3 +1032,9 @@ void RevealMap::AddObj(OBJ *o)
 	}
 }
 //=====================================
+void TryScrollMap(void )
+{
+	
+}	
+
+
