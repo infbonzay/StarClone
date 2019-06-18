@@ -121,7 +121,7 @@ TIMER_TICK TIMER::GetTimeTicks(void)
 {
 	struct timeval ticks;
 	clock_gettime(0, &ticks);
-	return((TIMER_TICK)(ticks.tv_sec) * TICKS_RES + ticks.tv_usec * 1000);
+	return (ticks.tv_sec * TICKS_RES + ticks.tv_usec * 1000LL);
 }
 #endif
 /*#ifdef UNDERDOS
