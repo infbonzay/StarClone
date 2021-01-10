@@ -400,13 +400,10 @@ MENUAPPEAR *MenuAppear(MENUSTR *allmenus, int elems, MENUFIRSTDATA *menudata, ME
 		if (allmenus->menu[e].itemtype != ISIMAGE)
 			printf("Error elem(%d) is not IMAGE\n", e);
 		items->Add(oneitem = new MenuItemPcx(allmenus->menu[e].item.image->pcx));
-		oneitem->AddMoveAction();
 		if (menudata[i].disabled == 0)
 			oneitem->EnableVisible();
 		else
 			oneitem->DisableVisible();
-		oneitem->moveaction->SetMoveScript(&MoveItem::SimpleMoveScript);
-		oneitem->moveaction->SetTempVars();
 		oneitem->SetPcxParam(allmenus->menu[e].item.image->color1,
 			allmenus->menu[e].item.image->color2,
 			allmenus->menu[e].item.image->transvalue);
@@ -5693,7 +5690,7 @@ int videoopt(MENUDRAW *menudraw, MENUPARAMS *menuparams)
 
 		if (!mainController.CanFullScreen())
 			setmenuitem_DISABLED(menudraw->menutodraw, 15, TRUE);
-		
+
 	}
 	ret = drawmenu_ONETICK(menudraw->menutodraw);
 	switch (ret)

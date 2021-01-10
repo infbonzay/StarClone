@@ -5,8 +5,18 @@
 #include "MenuItem.h"
 
 //=================================================================
-MoveItem::MoveItem(void)
+//#define MAXACCEL 17
+//const int accelertable[MAXACCEL] = {1,1,2,3,5,8,12,16,21,29,40,52,65,79,94,110,128};
+#define MAXACCEL 13
+const uint8_t accelertable[MAXACCEL] = { 1,1,2,3,5,8,13,21,34,55,89,144,233 };
+//=================================================================
+MoveItem::MoveItem(MenuItem *parent, uint32_t speedX, uint32_t speedY, uint32_t accelerate)
 {
+	Parent = parent;
+	_moveScriptFunc = &MoveItem::SimpleMoveScript;
+	SetParams(speedX, speedY, accelerate);
+	_tempval1 = MAXACCEL - 1;
+	_tempval2 = -1;
 }
 //=================================================================
 MoveItem::~MoveItem(void)
@@ -15,25 +25,14 @@ MoveItem::~MoveItem(void)
 //=================================================================
 int MoveItem::Move(void)
 {
-	if (IsEnabledMoveScript())
+	if (IsEnableMoveScript())
 	{
-		if (MoveScriptFunc)
+		if (_moveScriptFunc)
 		{
-			return	(this->*MoveItem::MoveScriptFunc)();
+			return	(this->*MoveItem::_moveScriptFunc)();
 		}
 	}
 	return(1);	//return end of script work
-}
-//=================================================================
-//#define MAXACCEL 17
-//const int accelertable[MAXACCEL] = {1,1,2,3,5,8,12,16,21,29,40,52,65,79,94,110,128};
-#define MAXACCEL 13
-const uint8_t accelertable[MAXACCEL] = { 1,1,2,3,5,8,13,21,34,55,89,144,233 };
-//=================================================================
-void MoveItem::SetTempVars(void)
-{
-	tempval1 = MAXACCEL - 1;
-	tempval2 = -1;
 }
 //=================================================================
 int MoveItem::SimpleScriptCalcMaxDistance(void)
@@ -42,36 +41,36 @@ int MoveItem::SimpleScriptCalcMaxDistance(void)
 	return(1 + 1 + 2 + 3 + 5 + 8 + 13 + 21 + 34 + 55 + 89 + 144 + 233);
 }
 //=================================================================
-void MoveItem::SetParams(uint32_t spx, uint32_t spy, uint32_t acc)
+void MoveItem::SetParams(uint32_t speedX, uint32_t speedY, uint32_t accelerateXY)
 {
-	speedx = spx;
-	speedy = spy;
-	accelerate = acc;
+	_speedx = speedX;
+	_speedy = speedY;
+	_accelerate = accelerateXY;
 }
 //=================================================================
 int MoveItem::SimpleMoveScript(void)
 {
-	accelerate = accelertable[tempval1];
-	if (speedx > 0)
-		parent->xpos += accelerate;
+	_accelerate = accelertable[_tempval1];
+	if (_speedx > 0)
+		Parent->AddX(_accelerate);
 	else
-		if (speedx < 0)
-			parent->xpos -= accelerate;
-	if (speedy > 0)
-		parent->ypos += accelerate;
+		if (_speedx < 0)
+			Parent->AddX(-_accelerate);
+	if (_speedy > 0)
+		Parent->AddY(_accelerate);
 	else
-		if (speedy < 0)
-			parent->ypos -= accelerate;
-	tempval1 += tempval2;
-	if (tempval1 >= MAXACCEL || tempval1 < 0)
+		if (_speedy < 0)
+			Parent->AddY(-_accelerate);
+	_tempval1 += _tempval2;
+	if (_tempval1 >= MAXACCEL || _tempval1 < 0)
 	{
-		tempval1 -= tempval2;
+		_tempval1 -= _tempval2;
 	}
 	else
 		return(0);
-	tempval2 = -tempval2;
-	speedx = -speedx;
-	speedy = -speedy;
+	_tempval2 = -_tempval2;
+	_speedx = -_speedx;
+	_speedy = -_speedy;
 	DisableMoveScript();
 	return(1);
 }
@@ -80,6 +79,8 @@ MenuItem::MenuItem(void)
 {
 	SetFlags(0x00);
 	SetXYPos(0, 0);
+	this->moveaction = NULL;
+	this->AddMoveAction(&MoveItem::SimpleMoveScript, 0, 0, 0);
 }
 //=================================================================
 MenuItem::~MenuItem()
@@ -91,19 +92,19 @@ MenuItem::~MenuItem()
 	}
 }
 //=================================================================
-void MenuItem::AddMoveAction(void)
+void MenuItem::AddMoveAction(int (MoveItem::*moveFuncAdr)(void), int speedX, int speedY, int accelerate)
 {
-	moveaction = new MoveItem();						//add move obj
-	moveaction->parent = this;
-
-	moveaction->SetMoveScript(NULL);
-	moveaction->SetTempVars();
-	moveaction->SetParams(0, 0, 0);
+	if (moveaction)
+	{
+		delete moveaction;
+	}
+	moveaction = new MoveItem(this, speedX, speedY, accelerate);
+	moveaction->SetMoveScript(moveFuncAdr);
 }
 //=================================================================
 MenuItemPcx::MenuItemPcx(PCX *pcx) : MenuItem()
 {
-	obj = pcx;
+	_pcx = pcx;
 }
 //=================================================================
 MenuItemPcx::~MenuItemPcx()
@@ -112,49 +113,16 @@ MenuItemPcx::~MenuItemPcx()
 //=================================================================
 void MenuItemPcx::SetPcxParam(uint8_t color1, uint8_t color2, uint8_t color3)
 {
-	holecolor = color1;
-	transpcolor = color2;
-	grdtransp = color3;
+	_holecolor = color1;
+	_transpcolor = color2;
+	_grdtransp = color3;
 }
 //=================================================================
 void MenuItemPcx::Draw(void)
 {
-	if (IsVisibled())
+	if (IsVisible())
 	{
-		obj->PutPcx(xpos, ypos, holecolor, transpcolor, grdtransp);
+		_pcx->PutPcx(_xpos, _ypos, _holecolor, _transpcolor, _grdtransp);
 	}
 }
 //=================================================================
-/*int SimpleMoveScript(MoveItem *item)
-{
-	item->accelerate = accelertable[ item->tempval1 ];
-	if (item->speedx > 0)
-		item->parent->xpos += item->accelerate;
-	else
-		if (item->speedx < 0)
-			item->parent->xpos -= item->accelerate;
-	if (item->speedy > 0)
-		item->parent->ypos += item->accelerate;
-	else
-		if (item->speedy < 0)
-			item->parent->ypos -= item->accelerate;
-	item->tempval1 += item->tempval2;
-	if (item->tempval1 >= MAXACCEL)
-	{
-		item->tempval1--;
-	}else if (item->tempval1 < 0)
-	{
-		item->tempval1++;
-	}
-	else
-		return(0);
-	item->tempval2 = -item->tempval2;
-	item->speedx = -item->speedx;
-	item->speedy = -item->speedy;
-	item->DisableMoveScript();
-	return(1);
-}
-*/
-//=================================================================
-
-

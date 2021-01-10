@@ -23,7 +23,7 @@ protected:
 	long		currentTick;
 	int			maxElements;
 	int			queuedElements;
-	struct QUEUEELEMENT *allElements;
+	QUEUEELEMENT *allElements;
 
 	void		(*EndQueueCallBackFunction)(void *,int );
 	void		DestroyAllElements(void);

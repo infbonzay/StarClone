@@ -15,66 +15,67 @@ class MenuItem;
 class MoveItem
 {
 public:
-	MenuItem	*parent;
-	uint8_t		flags;
-	int32_t		speedx;
-	int32_t		speedy;
-	int32_t		accelerate;
-	int			tempval1;
-	int			tempval2;
-	int			(MoveItem::*MoveScriptFunc)(void);
-	
+	MenuItem	*Parent;
+private:
+	uint8_t		_flags;
+	int32_t		_speedx;
+	int32_t		_speedy;
+	int32_t		_accelerate;
+	int			_tempval1;
+	int			_tempval2;
+	int			(MoveItem::*_moveScriptFunc)(void);
+
 public:
-				MoveItem();
+				MoveItem(MenuItem *parent, uint32_t spx, uint32_t spy, uint32_t acc);
 				~MoveItem();
-	inline void SetFlags(uint8_t flgs) { flags = flgs; };
-	inline void SetMoveScript( int (MoveItem::*FuncAdr)(void) ) { MoveScriptFunc = FuncAdr; };
-	inline void EnableMoveScript(void) { SetFlags(flags |= MOVEITEM_FLAG_MOVESCRIPT); };
-	inline void DisableMoveScript(void) { SetFlags(flags &= ~MOVEITEM_FLAG_MOVESCRIPT); };
-	inline int	IsEnabledMoveScript(void) { return flags & MOVEITEM_FLAG_MOVESCRIPT; }; 
+	inline void SetFlags(uint8_t flgs) { _flags = flgs; };
+	inline void SetMoveScript( int (MoveItem::*FuncAdr)(void) ) { _moveScriptFunc = FuncAdr; };
+	inline void EnableMoveScript(void) { SetFlags(_flags |= MOVEITEM_FLAG_MOVESCRIPT); };
+	inline void DisableMoveScript(void) { SetFlags(_flags &= ~MOVEITEM_FLAG_MOVESCRIPT); };
+	inline int	IsEnableMoveScript(void) { return _flags & MOVEITEM_FLAG_MOVESCRIPT; };
 	int			Move(void);
-	void		SetTempVars(void);
+	//void		SetTempVars(void);
 	int			SimpleMoveScript(void);
 	int			SimpleScriptCalcMaxDistance(void);
-	void		SetParams(uint32_t spx, uint32_t spy, uint32_t acc);
-	
+	void		SetParams(uint32_t speddX, uint32_t speedY, uint32_t accelerate);
+
 };
 //=================================================================
 class MenuItem
 {
+private:
+	uint8_t		_flags;
 protected:
-	uint8_t		flags;			
+	int32_t		_xpos;			//screen x position
+	int32_t		_ypos;			//screen y position
 public:
 	MoveItem	*moveaction;
-	int32_t		xpos;			//screen x position
-	int32_t		ypos;			//screen y position
-
 				MenuItem();
 				~MenuItem();
-	
-//	  void		Draw(void);
-	void		AddMoveAction(void);
-	inline void SetFlags(uint8_t flgs) { flags = flgs; };
-	inline void EnableVisible(void) { SetFlags(flags |= MENUITEM_FLAG_VISIBILITY); };
-	inline void DisableVisible(void) { SetFlags(flags &= ~MENUITEM_FLAG_VISIBILITY); };
-	inline int	IsVisibled(void) { return flags & MENUITEM_FLAG_VISIBILITY; }; 
-	inline void SetXYPos(int x,int y) { xpos = x; ypos = y; };
+
+	void		AddMoveAction(int (MoveItem::*moveFuncAdr)(void), int speedX, int speedY, int accelerate);
+	inline void SetFlags(uint8_t flgs) { _flags = flgs; };
+	inline void EnableVisible(void) { SetFlags(_flags |= MENUITEM_FLAG_VISIBILITY); };
+	inline void DisableVisible(void) { SetFlags(_flags &= ~MENUITEM_FLAG_VISIBILITY); };
+	inline int	IsVisible(void) { return _flags & MENUITEM_FLAG_VISIBILITY; };
+	inline void SetXYPos(int x,int y) { _xpos = x; _ypos = y; };
+	inline void AddX(int deltaX) { _xpos += deltaX; };
+	inline void AddY(int deltaY) { _ypos += deltaY; };
 };
 //=================================================================
 class MenuItemPcx : public MenuItem
 {
-protected:
-	uint8_t		holecolor;		//hole color
-	uint8_t		transpcolor;	//transparentcolor
-	uint8_t		grdtransp;		//transparent factor 0-3 25,50,75,100
-	PCX			*obj;			//object to draw
-public:	   
+private:
+	uint8_t		_holecolor;		//hole color
+	uint8_t		_transpcolor;	//transparentcolor
+	uint8_t		_grdtransp;		//transparent factor 0-3 25,50,75,100
+	PCX			*_pcx;			//pcx to draw
+public:
 				MenuItemPcx(PCX *pcx);
 				~MenuItemPcx();
 
 	void		Draw(void);
-	void		SetPcxParam(uint8_t color1,uint8_t color2,uint8_t color3);
-
+	void		SetPcxParam(uint8_t color1, uint8_t color2, uint8_t color3);
 };
 //=================================================================
 

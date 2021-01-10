@@ -1034,7 +1034,7 @@ void RevealMap::AddObj(OBJ *o)
 //=====================================
 void TryScrollMap(void )
 {
-	
+//	DEBUGMESSCR("refresh\n");	
 }	
 
 
