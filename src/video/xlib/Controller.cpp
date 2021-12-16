@@ -12,7 +12,7 @@ Controller mainController;
 //==========================
 int Controller::Init(void)
 {
-	Display	*display = XOpenDisplay ( NULL );
+	Display	*display = XOpenDisplay ( ":0" );
 	if ( display == NULL )
 	{
 		DEBUGMESSCR("Cannot connect to xserver\n");
