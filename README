@@ -1,4 +1,5 @@
 
+
 needed libraries
 
 SDL 		- (optional)
@@ -11,6 +12,13 @@ mpqlib		- (optional)
 to configure use cmake
 	cmake detects if exist SDL or Xlib (if SDL exist try to detect SDL_mixer to enable sounds)
 
+0. (Ubuntu users need to has those libs installed
+	sudo apt install cmake
+	sudo apt install g++
+	sudo apt install libx11-dev
+	sudo apt install libz-dev
+	sudo apt install libxxf86vm-dev
+    )
 1. build and lanch steps (puts compiled binary to StarClone/bin/)
 
 	cmake .
@@ -27,3 +35,4 @@ to configure use cmake
 	Broodwar install.exe to broodinstall.exe in StarClone/bin
 
 5. you may create StarClone/bin/maps and copy some StarCraft maps there
+
