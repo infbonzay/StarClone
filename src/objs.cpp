@@ -3669,10 +3669,10 @@ int QueueDelObj(struct OBJ *obj)
 	for (i = 0;i < QueueGame.GetQueueElements();i++)
 	{
 		act = (struct QUEUEACTION *)(QueueGame.GetElemNr(i)->ID);
-		if (act->destobj == obj || act->obj == obj)
+		if (act != NULL && act->destobj == obj || act->obj == obj)
 		{
 			QueueAction(act, DESTROYQUEUE);
-			QueueGame.DelQueue(i--, 1);
+			QueueGame.DelQueue(i);
 			ret++;
 		}
 	}

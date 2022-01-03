@@ -20,23 +20,23 @@ struct QUEUEELEMENT
 class Queue
 {
 protected:
+	int		FirstEmptyElement;
 	long		currentTick;
-	int			maxElements;
-	int			queuedElements;
+	int		maxElements;
+	int		queuedElements;
 	QUEUEELEMENT *allElements;
 
 	void		(*EndQueueCallBackFunction)(void *,int );
 	void		DestroyAllElements(void);
-	int			InsertInQueue(int absolutegameticks);
 
 public:
-		 Queue();
-		 Queue(void (*func)(void *,int ),int maxelements);
+		Queue();
+		Queue(void (*func)(void *,int ),int maxelements);
 		~Queue(void);
 	void EmptyQueue(void);
-	int	 AddToQueue(void *IDqueue,int waitgameticks);
-	int	 QueueMain(int addticks);
-	void DelQueue(int from,int count);
+	int	AddToQueue(void *IDqueue,int waitgameticks);
+	int	QueueMain(int addticks);
+	void	DelQueue(int elemnr);
 	void ShowAllQueue(void);
 
 	//========================
@@ -47,7 +47,8 @@ public:
 	//========================
 	inline int GetQueueElements(void)
 	{
-		return queuedElements;
+		//return queuedElements;
+		return maxElements;
 	}
 	//========================
 	inline struct QUEUEELEMENT *GetElemNr(int nr)

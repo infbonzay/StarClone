@@ -6,6 +6,7 @@ cmake_install.cmake
 compile*
 autom4te.cache/
 build/*
+bin/*.info
 bin/mem.*
 bin/characters/*
 bin/StarClone*
