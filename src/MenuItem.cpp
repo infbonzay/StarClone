@@ -85,19 +85,21 @@ MenuItem::MenuItem(void)
 //=================================================================
 MenuItem::~MenuItem()
 {
+	this->RemoveMoveAction();
+}
+//=================================================================
+void MenuItem::RemoveMoveAction()
+{
 	if (moveaction)
 	{
-		delete moveaction;								//delet move obj
+		delete moveaction;
 		moveaction = NULL;
 	}
 }
 //=================================================================
 void MenuItem::AddMoveAction(int (MoveItem::*moveFuncAdr)(void), int speedX, int speedY, int accelerate)
 {
-	if (moveaction)
-	{
-		delete moveaction;
-	}
+	this->RemoveMoveAction();
 	moveaction = new MoveItem(this, speedX, speedY, accelerate);
 	moveaction->SetMoveScript(moveFuncAdr);
 }

@@ -58,6 +58,7 @@ public:
 	inline void EnableVisible(void) { SetFlags(_flags |= MENUITEM_FLAG_VISIBILITY); };
 	inline void DisableVisible(void) { SetFlags(_flags &= ~MENUITEM_FLAG_VISIBILITY); };
 	inline int	IsVisible(void) { return _flags & MENUITEM_FLAG_VISIBILITY; };
+	void 		RemoveMoveAction();
 	inline void SetXYPos(int x,int y) { _xpos = x; _ypos = y; };
 	inline void AddX(int deltaX) { _xpos += deltaX; };
 	inline void AddY(int deltaY) { _ypos += deltaY; };
