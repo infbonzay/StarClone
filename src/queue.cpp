@@ -9,144 +9,140 @@
 //==========================================
 Queue::Queue(void)
 {
-	EndQueueCallBackFunction = NULL;
-	maxElements = 0;
-	currentTick = 0;
-	queuedElements = 0;
+    EndQueueCallBackFunction = NULL;
+    maxElements = 0;
+    currentTick = 0;
+    queuedElements = 0;
+    EmptyElementNr = 0;
 }
 //==========================================
 Queue::Queue(void(*func)(void *, int), int maxelements)
 {
-	EndQueueCallBackFunction = func;
-	allElements = (struct QUEUEELEMENT *) wmalloc(maxelements * sizeof(struct QUEUEELEMENT));
-	memset(allElements, 0, maxelements * sizeof(struct QUEUEELEMENT));
-	maxElements = maxelements;
-	currentTick = 0;
-	queuedElements = 0;
+    EndQueueCallBackFunction = func;
+    allElements = (struct QUEUEELEMENT *) wmalloc(maxelements * sizeof(struct QUEUEELEMENT));
+    memset(allElements, 0, maxelements * sizeof(struct QUEUEELEMENT));
+    maxElements = maxelements;
+    currentTick = 0;
+    queuedElements = 0;
+    EmptyElementNr = 0;
 }
 //==========================================
 Queue::~Queue(void)
 {
-	EmptyQueue();
-	wfree(allElements);
-	EndQueueCallBackFunction = NULL;
-	allElements = NULL;
-	maxElements = 0;
+    EmptyQueue();
+    wfree(allElements);
+    EndQueueCallBackFunction = NULL;
+    allElements = NULL;
+    maxElements = 0;
+    EmptyElementNr = 0;
 }
 //==========================================
 void Queue::EmptyQueue(void)
 {
-	DestroyAllElements();
-	queuedElements = 0;
+    DestroyAllElements();
+    queuedElements = 0;
+    EmptyElementNr = 0;
 }
 //==========================================
 int Queue::AddToQueue(void *IDqueue, int waitgameticks)
 {
-	int whereToInsert, needtocopy;
-	int executetime;
-	if (queuedElements >= maxElements)	//queue is full
-		return QUEUEFULL;
-	executetime = currentTick + waitgameticks;
-	//need to find where I need to insert new element sorted by time
-	whereToInsert = InsertInQueue(executetime);
-	//need to do shift all memory after insertion 
-	needtocopy = (queuedElements - whereToInsert) * sizeof(struct QUEUEELEMENT);
-	//if last element no need to make shift
-	if (needtocopy)
-		memmove(&allElements[whereToInsert + 1], &allElements[whereToInsert], needtocopy);
-	allElements[whereToInsert].ID = IDqueue;
-	allElements[whereToInsert].executeTick = executetime;
-	queuedElements++;
-	return(whereToInsert);
+    int i;
+    long executetime;
+    if (queuedElements >= maxElements)    //queue is full
+    {
+        return QUEUEFULL;
+    }
+    i = EmptyElementNr;
+    executetime = currentTick + (long) waitgameticks;
+    while( i < maxElements )
+    {
+        if (allElements[i].ID == NULL)
+        {
+            allElements[i].ID = IDqueue;
+            allElements[i].executeTick = executetime;
+            queuedElements++;
+            EmptyElementNr = i + 1;
+            if (EmptyElementNr >= maxElements)
+            {
+                EmptyElementNr = 0;
+            }    
+            return(i);
+        }
+        i++;
+    }
+    i = 0;
+    while( i < EmptyElementNr )
+    {
+        if (allElements[i].ID == NULL)
+        {
+            allElements[i].ID = IDqueue;
+            allElements[i].executeTick = executetime;
+            queuedElements++;
+            EmptyElementNr = i + 1;
+            return(i);
+        }
+        i++;
+    }
+    return 0;
 }
 //==========================================
 int Queue::QueueMain(int addticks)
 {
-	struct QUEUEELEMENT *tempqueue;
-	int factor;
-	int i, j;
-	currentTick += addticks;
-	if (queuedElements)
-	{
-		factor = allElements[0].executeTick - currentTick;
-		if (factor <= 0)
-		{
-			for (i = 1;i < queuedElements;i++)
-				if (currentTick < allElements[i].executeTick)
-					break;
-			//			ShowAllQueue();
-						//now i = number of queue elements to proceed
-			tempqueue = (struct QUEUEELEMENT  *) wmalloc(i * sizeof(struct QUEUEELEMENT));
-			memmove(tempqueue, &allElements[0], i * sizeof(struct QUEUEELEMENT));
-			DelQueue(0, i);
-			for (j = 0;j < i;j++)
-			{
-				(*EndQueueCallBackFunction)(tempqueue[j].ID, NORMALPASSQUEUE);
-				tempqueue[j].ID = NULL;
-			}
-			wfree(tempqueue);
-			//			ShowAllQueue();
-			return 1;
-		}
-	}
-	return 0;
+    int i;//TODO parce only queuedElements
+    currentTick += (long) addticks;
+    if (queuedElements)
+    {
+        for (i = 0 ; i < maxElements; i++)
+        {
+            if (allElements[i].ID != NULL)
+            {
+                if (currentTick - allElements[i].executeTick >= 0)
+                {
+                    (*EndQueueCallBackFunction)(allElements[i].ID, NORMALPASSQUEUE);
+                    DelQueue(i);
+                    allElements[i].ID = NULL;
+                }
+            }
+        }
+    }
+    return QUEUEOK;
 }
 //==========================================
 void Queue::DestroyAllElements(void)
 {
-	int i;
-	for (i = 0;i < queuedElements;i++)
-	{
-		(*EndQueueCallBackFunction)(allElements[i].ID, DESTROYQUEUE);
-	}
+    int i;
+    for (i = 0;i < maxElements;i++)
+    {
+        if (allElements[i].ID != NULL)
+        {
+            (*EndQueueCallBackFunction)(allElements[i].ID, DESTROYQUEUE);
+            allElements[i].ID = NULL;
+        }
+    }
 }
 //==========================================
-void Queue::DelQueue(int from, int count)
+void Queue::DelQueue(int elementNr)
 {
-	if (from + count > queuedElements)
-		count = queuedElements - from;
-	if (count)
-	{
-		queuedElements -= count;
-		if (queuedElements - from > 0)
-			memmove(&allElements[from], &allElements[from + count],
-			(queuedElements - from) * sizeof(struct QUEUEELEMENT));
-	}
-}
-//==========================================
-int Queue::InsertInQueue(int absolutegameticks)
-{
-	struct QUEUEELEMENT *elem;
-	int leftpos, rightpos, pos;
-	if (!queuedElements)
-		return 0;
-	leftpos = 0;
-	rightpos = queuedElements;
-	do {
-		pos = (rightpos + leftpos) / 2;
-		elem = &allElements[pos];
-		if (pos == leftpos)
-			break;
-		if (elem->executeTick < absolutegameticks)
-			leftpos = pos;
-		else
-			rightpos = pos;
-	} while (1);
-	if (elem->executeTick < absolutegameticks)
-		return (pos + 1);
-	else
-		return 0;
+    if (allElements[elementNr].ID != NULL)
+    {
+        allElements[elementNr].ID = NULL;
+        queuedElements--;
+        if (elementNr < EmptyElementNr)
+        {
+            EmptyElementNr = elementNr;
+        }    
+    }
 }
 //==========================================
 void Queue::ShowAllQueue(void)
 {
-	QUEUEACTION *act;
-	int i;
-	for (i = 0;i < queuedElements;i++)
-	{
-		act = (QUEUEACTION *)allElements[i].ID;
-		printf("%d:	 type=%d\n", i, act->actiontype);
-	}
-	printf("\n");
+    QUEUEACTION *act;
+    int i;
+    for (i = 0;i < queuedElements;i++)
+    {
+        act = (QUEUEACTION *)allElements[i].ID;
+        printf("%d:     type=%d\n", i, act->actiontype);
+    }
+    printf("\n");
 }
 //==========================================
